@@ -1,0 +1,26 @@
+{
+  "name": "@antoneeo/agentic-sdlc-skill",
+  "version": "1.0.6",
+  "description": "Protocollo SDLC Documentation-First per Gemini CLI. Gestisce audit, analisi, sviluppo e chiusura feature con documentazione sincronizzata.",
+  "keywords": [
+    "gemini-cli",
+    "skill",
+    "sdlc",
+    "documentation",
+    "ai-agent"
+  ],
+  "author": "antoneeo",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "skills",
+    "gemini-extension.json",
+    "references",
+    "README.md",
+    "CHANGELOG.md",
+    "assets",
+    "scripts"
+  ]
+}
