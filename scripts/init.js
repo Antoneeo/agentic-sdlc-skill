@@ -21,8 +21,7 @@ const directories = [
   path.join(cwd, 'ai_docs'),
   path.join(cwd, 'ai_docs', 'strategic'),
   path.join(cwd, 'ai_docs', 'audit'),
-  path.join(cwd, 'ai_docs', 'solutions'),
-  path.join(cwd, '.codex')
+  path.join(cwd, 'ai_docs', 'solutions')
 ];
 
 const files = {
@@ -33,7 +32,7 @@ const files = {
   handoff: path.join(cwd, 'ai_docs', 'audit', 'handoff.md'),
   claudeConfig: path.join(cwd, 'CLAUDE.md'),
   geminiConfig: path.join(cwd, 'GEMINI.md'),
-  codexHooks: path.join(cwd, '.codex', 'hooks.json'),
+  codexAgents: path.join(cwd, 'AGENTS.md'),
   cursorRules: path.join(cwd, '.cursorrules')
 };
 
@@ -68,21 +67,6 @@ Upon feature completion:
 - Update \`ai_docs/strategic/architecture.md\` and \`ai_docs/strategic/existing_features.md\` if necessary.
 - Update \`ai_docs/strategic/features_history.md\` setting status to \`[COMPLETED]\`.
 `;
-
-const codexHooksContent = JSON.stringify({
-  hooks: {
-    SessionStart: [
-      {
-        hooks: [
-          {
-            type: "command",
-            command: `echo '${protocolContent.replace(/'/g, "'\\''")}'`
-          }
-        ]
-      }
-    ]
-  }
-}, null, 2);
 
 const historyBoilerplate = `# Feature History
 
@@ -133,7 +117,7 @@ if (checkCommand('gemini')) {
 
 if (checkCommand('codex')) {
   console.log('✅ Codex AI detected.');
-  writeIfNotExists(files.codexHooks, codexHooksContent, 'Codex AI Hooks');
+  writeIfNotExists(files.codexAgents, protocolContent, 'Codex AGENTS.md');
 }
 
 // Cursor/Windsurf (always recommended)
@@ -143,5 +127,5 @@ console.log('\n✅ Setup completed successfully!');
 console.log('💡 Next steps:');
 console.log('   1. If using Claude Code, start it: it will read CLAUDE.md.');
 console.log('   2. If using Gemini CLI, commands will use GEMINI.md.');
-console.log('   3. If using Codex, session hooks will inject the protocol.');
+console.log('   3. If using Codex, restart/open the project so it reads AGENTS.md.');
 console.log('   4. Start analyzing the codebase following ai_docs/audit/audit_plan.md.');

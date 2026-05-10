@@ -9,6 +9,9 @@ const PACKAGE_ROOT = path.resolve(__dirname, '..');
 const SKILL_SOURCE = path.join(PACKAGE_ROOT, 'skills', 'agentic-sdlc-skill');
 const CLAUDE_SKILLS_DIR = path.join(os.homedir(), '.claude', 'skills');
 const CLAUDE_SKILL_TARGET = path.join(CLAUDE_SKILLS_DIR, 'agentic-sdlc');
+const CODEX_HOME = process.env.CODEX_HOME || path.join(os.homedir(), '.codex');
+const CODEX_SKILLS_DIR = path.join(CODEX_HOME, 'skills');
+const CODEX_SKILL_TARGET = path.join(CODEX_SKILLS_DIR, 'agentic-sdlc');
 
 function checkCommand(cmd) {
   try {
@@ -52,12 +55,33 @@ function installClaudeSkill() {
   }
 }
 
+function installCodexSkill() {
+  if (!fs.existsSync(SKILL_SOURCE)) {
+    console.log(`⚠️  Skill source not found at ${SKILL_SOURCE}; skipping Codex install.`);
+    return false;
+  }
+  try {
+    fs.mkdirSync(CODEX_SKILLS_DIR, { recursive: true });
+    copyRecursive(SKILL_SOURCE, CODEX_SKILL_TARGET);
+    console.log(`📦 Installed Codex skill at: ${CODEX_SKILL_TARGET}`);
+    console.log('   Restart Codex to load it. Invoke it as "$agentic-sdlc" or by asking for Agentic SDLC.');
+    return true;
+  } catch (err) {
+    console.log(`⚠️  Failed to install Codex skill: ${err.message}`);
+    console.log(`   Manual install: copy "${SKILL_SOURCE}" to "${CODEX_SKILL_TARGET}".`);
+    return false;
+  }
+}
+
+function hasCodexHome() {
+  return Boolean(process.env.CODEX_HOME) || fs.existsSync(CODEX_HOME);
+}
+
 console.log('\n--- Agentic SDLC Skill Discovery ---');
 
 const agents = [
   { name: 'Claude Code', cmd: 'claude', onDetect: installClaudeSkill },
-  { name: 'Gemini CLI', cmd: 'gemini' },
-  { name: 'Codex AI', cmd: 'codex' }
+  { name: 'Gemini CLI', cmd: 'gemini' }
 ];
 
 let detected = false;
@@ -68,6 +92,12 @@ agents.forEach(agent => {
     if (typeof agent.onDetect === 'function') agent.onDetect();
   }
 });
+
+if (checkCommand('codex') || hasCodexHome()) {
+  console.log(`✅ Detected: Codex AI`);
+  detected = true;
+  installCodexSkill();
+}
 
 if (!detected) {
   console.log('ℹ️  No specific AI CLI detected globally, but you can still use the skill.');

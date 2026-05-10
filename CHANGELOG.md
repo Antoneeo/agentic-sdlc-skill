@@ -2,6 +2,17 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.2.2] - 2026-05-10
+### Changed
+- README convertito in inglese per la pubblicazione npm.
+- Versione allineata a `1.2.2` in `package.json` e `gemini-extension.json`.
+
+## [1.2.1] - 2026-05-10
+### Fixed
+- `postinstall` ora registra la skill anche per Codex copiandola in `$CODEX_HOME/skills/agentic-sdlc/` oppure `~/.codex/skills/agentic-sdlc/`.
+- `preuninstall` rimuove anche la copia Codex della skill.
+- `agentic-sdlc-init` ora crea `AGENTS.md` per Codex invece di `.codex/hooks.json`, che Codex non carica come istruzioni di progetto.
+
 ## [1.2.0] - 2026-05-10
 ### Added
 - **Auto-installazione skill nativa Claude Code**: il `postinstall` ora copia `skills/agentic-sdlc-skill/` in `~/.claude/skills/agentic-sdlc/` quando rileva il CLI `claude`. La skill diventa disponibile come `agentic-sdlc` nel tool `Skill` di Claude Code dopo riavvio.

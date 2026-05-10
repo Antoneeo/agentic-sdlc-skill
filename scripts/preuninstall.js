@@ -5,12 +5,18 @@ const path = require('path');
 const os = require('os');
 
 const CLAUDE_SKILL_TARGET = path.join(os.homedir(), '.claude', 'skills', 'agentic-sdlc');
+const CODEX_HOME = process.env.CODEX_HOME || path.join(os.homedir(), '.codex');
+const CODEX_SKILL_TARGET = path.join(CODEX_HOME, 'skills', 'agentic-sdlc');
 
-if (fs.existsSync(CLAUDE_SKILL_TARGET)) {
+function removeSkill(target, label) {
+  if (!fs.existsSync(target)) return;
   try {
-    fs.rmSync(CLAUDE_SKILL_TARGET, { recursive: true, force: true });
-    console.log(`🧹 Removed Claude Code skill at: ${CLAUDE_SKILL_TARGET}`);
+    fs.rmSync(target, { recursive: true, force: true });
+    console.log(`🧹 Removed ${label} skill at: ${target}`);
   } catch (err) {
-    console.log(`⚠️  Could not remove ${CLAUDE_SKILL_TARGET}: ${err.message}`);
+    console.log(`⚠️  Could not remove ${target}: ${err.message}`);
   }
 }
+
+removeSkill(CLAUDE_SKILL_TARGET, 'Claude Code');
+removeSkill(CODEX_SKILL_TARGET, 'Codex');

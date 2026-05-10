@@ -1,7 +1,7 @@
 {
   "name": "@antoneeo/agentic-sdlc-skill",
-  "version": "1.2.0",
-  "description": "Protocollo SDLC Documentation-First per Claude Code, Gemini CLI e Codex. Auto-installa la skill nativa Claude Code in ~/.claude/skills/. Gestisce audit, analisi, sviluppo e chiusura feature con documentazione sincronizzata.",
+  "version": "1.2.2",
+  "description": "Protocollo SDLC Documentation-First per Claude Code, Gemini CLI e Codex. Auto-installa le skill native in ~/.claude/skills/ e ~/.codex/skills/. Gestisce audit, analisi, sviluppo e chiusura feature con documentazione sincronizzata.",
   "keywords": [
     "claude-code",
     "claude-skill",
