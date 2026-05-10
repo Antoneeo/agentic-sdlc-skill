@@ -41,4 +41,5 @@ Una volta installata, avvia Gemini CLI e verifica che la skill sia presente:
 - `gemini-extension.json`: Manifesto dell'estensione.
 
 ---
-Sviluppato da **antoneeo**
+Realizzato da **Antonio Pinto** ([GitHub](https://github.com/Antoneeo))
+© 2026 Antonio Pinto. Tutti i diritti riservati.

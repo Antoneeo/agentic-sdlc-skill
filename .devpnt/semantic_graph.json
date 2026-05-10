@@ -1,0 +1,1243 @@
+{
+  "version": "1.0",
+  "nodes": [
+    {
+      "ref": "file:.gitignore",
+      "kind": "file",
+      "path": ".gitignore",
+      "name": ".gitignore",
+      "language": null,
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:CHANGELOG.md",
+      "kind": "file",
+      "path": "CHANGELOG.md",
+      "name": "CHANGELOG.md",
+      "language": null,
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:README.md",
+      "kind": "file",
+      "path": "README.md",
+      "name": "README.md",
+      "language": null,
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:examples/docs/architecture.md",
+      "kind": "file",
+      "path": "examples/docs/architecture.md",
+      "name": "architecture.md",
+      "language": null,
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:examples/docs/existing_features.md",
+      "kind": "file",
+      "path": "examples/docs/existing_features.md",
+      "name": "existing_features.md",
+      "language": null,
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:examples/docs/features_history.md",
+      "kind": "file",
+      "path": "examples/docs/features_history.md",
+      "name": "features_history.md",
+      "language": null,
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:examples/docs/solutions/ANALYSIS_pdf_extractor.md",
+      "kind": "file",
+      "path": "examples/docs/solutions/ANALYSIS_pdf_extractor.md",
+      "name": "ANALYSIS_pdf_extractor.md",
+      "language": null,
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:fs",
+      "kind": "file",
+      "path": "fs",
+      "name": "fs",
+      "language": null,
+      "source_kind": "semantic_javascript",
+      "provenance": "semantic_javascript",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "semantic_javascript",
+        "provenance": "semantic_javascript",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:gemini-extension.json",
+      "kind": "file",
+      "path": "gemini-extension.json",
+      "name": "gemini-extension.json",
+      "language": null,
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:git_push_tag.bat",
+      "kind": "file",
+      "path": "git_push_tag.bat",
+      "name": "git_push_tag.bat",
+      "language": null,
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:package.json",
+      "kind": "file",
+      "path": "package.json",
+      "name": "package.json",
+      "language": null,
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:path",
+      "kind": "file",
+      "path": "path",
+      "name": "path",
+      "language": null,
+      "source_kind": "semantic_javascript",
+      "provenance": "semantic_javascript",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "semantic_javascript",
+        "provenance": "semantic_javascript",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:references/analysis_template.md",
+      "kind": "file",
+      "path": "references/analysis_template.md",
+      "name": "analysis_template.md",
+      "language": null,
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:references/architecture_template.md",
+      "kind": "file",
+      "path": "references/architecture_template.md",
+      "name": "architecture_template.md",
+      "language": null,
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:references/existing_features_template.md",
+      "kind": "file",
+      "path": "references/existing_features_template.md",
+      "name": "existing_features_template.md",
+      "language": null,
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:references/features_history_template.md",
+      "kind": "file",
+      "path": "references/features_history_template.md",
+      "name": "features_history_template.md",
+      "language": null,
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:scripts/init.js",
+      "kind": "file",
+      "path": "scripts/init.js",
+      "name": "init.js",
+      "language": "javascript",
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:skills/agentic-sdlc-skill/SKILL.md",
+      "kind": "file",
+      "path": "skills/agentic-sdlc-skill/SKILL.md",
+      "name": "SKILL.md",
+      "language": null,
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "folder:.",
+      "kind": "folder",
+      "path": ".",
+      "name": ".",
+      "language": null,
+      "source_kind": "project_tree",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "project_tree",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "folder:examples",
+      "kind": "folder",
+      "path": "examples",
+      "name": "examples",
+      "language": null,
+      "source_kind": "project_tree",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "project_tree",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "folder:examples/docs",
+      "kind": "folder",
+      "path": "examples/docs",
+      "name": "docs",
+      "language": null,
+      "source_kind": "project_tree",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "project_tree",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "folder:examples/docs/solutions",
+      "kind": "folder",
+      "path": "examples/docs/solutions",
+      "name": "solutions",
+      "language": null,
+      "source_kind": "project_tree",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "project_tree",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "folder:references",
+      "kind": "folder",
+      "path": "references",
+      "name": "references",
+      "language": null,
+      "source_kind": "project_tree",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "project_tree",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "folder:scripts",
+      "kind": "folder",
+      "path": "scripts",
+      "name": "scripts",
+      "language": null,
+      "source_kind": "project_tree",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "project_tree",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "folder:skills",
+      "kind": "folder",
+      "path": "skills",
+      "name": "skills",
+      "language": null,
+      "source_kind": "project_tree",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "project_tree",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "folder:skills/agentic-sdlc-skill",
+      "kind": "folder",
+      "path": "skills/agentic-sdlc-skill",
+      "name": "agentic-sdlc-skill",
+      "language": null,
+      "source_kind": "project_tree",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "project_tree",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "js_symbol:scripts/init.js:writeIfNotExists",
+      "kind": "js_symbol",
+      "path": "scripts/init.js",
+      "name": "writeIfNotExists",
+      "language": "javascript",
+      "source_kind": "semantic_javascript",
+      "provenance": "semantic_javascript",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "semantic_javascript",
+        "provenance": "semantic_javascript",
+        "confidence": 1.0,
+        "is_static_confirmed": true,
+        "line": 73,
+        "alias": false
+      }
+    },
+    {
+      "ref": "js_symbol_name:writeIfNotExists",
+      "kind": "js_symbol",
+      "path": "scripts/init.js",
+      "name": "writeIfNotExists",
+      "language": "javascript",
+      "source_kind": "semantic_javascript",
+      "provenance": "semantic_javascript",
+      "confidence": 0.9,
+      "is_static_confirmed": false,
+      "metadata": {
+        "source_kind": "semantic_javascript",
+        "provenance": "semantic_javascript",
+        "confidence": 0.9,
+        "is_static_confirmed": false,
+        "line": 73,
+        "alias": true
+      }
+    },
+    {
+      "ref": "summary:file:.gitignore",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/a855a5a55dd8aaf44678a1046b4b537e6e48c418e2b1d6a3d90e4b6edc14e4fd.desc",
+      "name": "File summary: .gitignore",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": ".gitignore",
+        "source_path": ".devpnt/cache/descriptions/a855a5a55dd8aaf44678a1046b4b537e6e48c418e2b1d6a3d90e4b6edc14e4fd.desc",
+        "content_excerpt": "- Purpose: Defines version control exclusion rules to prevent tracking sensitive credentials, build artifacts, and runtime environment data.\n- Key Components: \n    - Configuration patterns: Filters `config.json` and `config.ini` to protect secrets.\n    - Environment/IDE settings: Excludes `.vscode`, `venv/`, and `__pycache__/` to maintain repository portability.\n    - Runtime artifacts: Ignores da",
+        "content_hash": "c700ca9ac06273b3d5c8fe6a730213cf88c189a10e07a2845c26216b0ad85ada",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:CHANGELOG.md",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/69ec7f4ecc8b27772da542d946d042b949d214f7c7e0cfa33bbcd2b294ec7be4.desc",
+      "name": "File summary: CHANGELOG.md",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "CHANGELOG.md",
+        "source_path": ".devpnt/cache/descriptions/69ec7f4ecc8b27772da542d946d042b949d214f7c7e0cfa33bbcd2b294ec7be4.desc",
+        "content_excerpt": "- Purpose: Maintains a chronological record of versioned changes, features, and refinements for the Agentic SDLC Skill.\n- Key Components: \n    - Version Headers: Define release versions (e.g., [1.0.6]) and timestamps.\n    - Change Categories: Utilize \"Aggiunto\" (Added), \"Modificato\" (Changed), and \"Corretto\" (Fixed) tags.\n- Key Dependencies: None (Human-managed documentation).\n- Complexity: Low; s",
+        "content_hash": "ddadda9dd99901bd89837459a384b4e26d62be73e26c5efdaa8ae17076d7b604",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:README.md",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/6c1b50e57a138ac0f5025e3b821fa1e81b4155365f723a8685f4c9e2a455e85f.desc",
+      "name": "File summary: README.md",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "README.md",
+        "source_path": ".devpnt/cache/descriptions/6c1b50e57a138ac0f5025e3b821fa1e81b4155365f723a8685f4c9e2a455e85f.desc",
+        "content_excerpt": "- Purpose: Defines the installation, usage, and architectural standards for the Agentic SDLC skill within the Gemini CLI environment.\n- Key Components:\n    - `gemini-extension.json`: Acts as the manifest file for skill registration.\n    - `skills/`: Contains the core logic and behavioral definitions for the SDLC workflow.\n    - `references/`: Provides documentation templates (architecture, history",
+        "content_hash": "fc48034f57821600c0afbf8e0b11fb14b3342fd341efa04969172832d4077bf5",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:examples/docs/architecture.md",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/f10fa7b4d2db336d82e740801377ca4fc31d3fae48a6c484b79cec0c8f738f03.desc",
+      "name": "File summary: examples/docs/architecture.md",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "examples/docs/architecture.md",
+        "source_path": ".devpnt/cache/descriptions/f10fa7b4d2db336d82e740801377ca4fc31d3fae48a6c484b79cec0c8f738f03.desc",
+        "content_excerpt": "- Purpose: Serves as the high-level architectural reference and technical specification for the project's development workflow.\n- Key Components:\n    - Tech Stack Definition: Standardizes Node.js, Gemini CLI, and the custom Gemini Skill Framework.\n    - Directory Map: Outlines the organizational structure for core logic, documentation, and feature analysis.\n    - SDLC Policy: Mandates a \"Documenta",
+        "content_hash": "eb775461dbc80f6b3263a971bd5c2400721d647bbe6c3ef2901b472b8f6f8264",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:examples/docs/existing_features.md",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/daedacf588850c2fc78d81e190f9119b1c6328e4cdfc69615398211666e31eb1.desc",
+      "name": "File summary: examples/docs/existing_features.md",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "examples/docs/existing_features.md",
+        "source_path": ".devpnt/cache/descriptions/daedacf588850c2fc78d81e190f9119b1c6328e4cdfc69615398211666e31eb1.desc",
+        "content_excerpt": "- Purpose: Serves as a high-level index documenting the project's foundational milestones and core architectural paradigms.\n- Key Components:\n    - [000] Init Progetto: Establishes the repository's baseline directory structure and configuration.\n    - [001] Skill Agentic SDLC: Defines the \"Documentation-First\" operational workflow integrated into the Gemini CLI.\n- Key Dependencies: Gemini CLI, pro",
+        "content_hash": "a10b577b59a98abc233c166383cfcedd864691e96b009cc0c0834b8b2d087c60",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:examples/docs/features_history.md",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/7198207e759a9a880a7580531710ff2a376a83d808e61dbd97cd9446f3e6291d.desc",
+      "name": "File summary: examples/docs/features_history.md",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "examples/docs/features_history.md",
+        "source_path": ".devpnt/cache/descriptions/7198207e759a9a880a7580531710ff2a376a83d808e61dbd97cd9446f3e6291d.desc",
+        "content_excerpt": "- Purpose: Tracks the lifecycle, status, and documentation of system feature development.\n- Key Components: \n    - Feature Registry: A Markdown-based table tracking IDs, names, and current development status.\n    - Status Indicators: Metadata flags (COMPLETED, PLANNED) for project roadmap visualization.\n    - Analysis References: Links to specific design documentation files for pending tasks.\n- Ke",
+        "content_hash": "514e8fab692c682976b81d562dc6521acd5a7509070b573bb6091a8139b75b49",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:examples/docs/solutions/ANALYSIS_pdf_extractor.md",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/9862d8b257814fe539c8451fe6d26a4642617198fab056eecacbf7c2bd4ff840.desc",
+      "name": "File summary: examples/docs/solutions/ANALYSIS_pdf_extractor.md",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "examples/docs/solutions/ANALYSIS_pdf_extractor.md",
+        "source_path": ".devpnt/cache/descriptions/9862d8b257814fe539c8451fe6d26a4642617198fab056eecacbf7c2bd4ff840.desc",
+        "content_excerpt": "- Purpose: Defines the architectural requirements and development roadmap for a portable Node.js CLI tool to extract text from PDFs.\n- Key Components:\n    - `pdf_extractor.js`: Core logic for text extraction using `pdf-parse`.\n    - `ai_helper.js`: Optional interface for AI/OCR fallback for non-selectable text.\n    - `build-script`: Configuration for `pkg` to bundle the application into a standalo",
+        "content_hash": "193bb8c86f8e5ec737edf42705d7e5c9e2f7104bfaecc07793eb2a9faf492973",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:gemini-extension.json",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/9dd0cd7063df73b411a933742220cccd8bf6bbe5bc46640d25bba4bf11f7a178.desc",
+      "name": "File summary: gemini-extension.json",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "gemini-extension.json",
+        "source_path": ".devpnt/cache/descriptions/9dd0cd7063df73b411a933742220cccd8bf6bbe5bc46640d25bba4bf11f7a178.desc",
+        "content_excerpt": "- Purpose: Defines the metadata and identity for the \"agentic-sdlc-skill\" Gemini CLI extension.\n- Key Components:\n  - `name`: Identifies the extension as an agentic SDLC tool.\n  - `version`: Tracks the release lifecycle (v1.0.6).\n  - `description`: Specifies the documentation-first protocol for SDLC automation.\n- Key Dependencies: None (manifest configuration file).\n- Complexity: Low; standard JSO",
+        "content_hash": "885026f912f3c2b3ea6769a239c7cd4357035dd9e2ea2ece2ff5c18aa2f8cda1",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:git_push_tag.bat",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/6cc82945588afaedf4998fec15a4cb231af4bde9ed654d419956ff1a420a314a.desc",
+      "name": "File summary: git_push_tag.bat",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "git_push_tag.bat",
+        "source_path": ".devpnt/cache/descriptions/6cc82945588afaedf4998fec15a4cb231af4bde9ed654d419956ff1a420a314a.desc",
+        "content_excerpt": "- Purpose: Automates a Git workflow by staging changes, committing, tagging, and pushing to the remote origin.\n- Key Components:\n    - `git add`: Stages all local changes for the new commit.\n    - `git commit`: Finalizes the change set with the provided commit message.\n    - `git tag`: Creates a reference tag on the current local commit.\n    - `git push`: Synchronizes the current branch and the ne",
+        "content_hash": "d4f22e7c4627ae08d2efaea6c1e09a6e3577e4fb43ff1067cb9f7e5864c4dd6a",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:package.json",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/676ccb6af89bfbe437465bc3d10bb69a46af6acc4f0b10db53334daf5e77b99a.desc",
+      "name": "File summary: package.json",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "package.json",
+        "source_path": ".devpnt/cache/descriptions/676ccb6af89bfbe437465bc3d10bb69a46af6acc4f0b10db53334daf5e77b99a.desc",
+        "content_excerpt": "- Purpose: Defines the metadata, distribution configuration, and package structure for an AI-agent SDLC skill module compatible with Gemini CLI.\n- Key Components:\n    - `@antoneeo/agentic-sdlc-skill`: Identifies the package for scoped NPM distribution.\n    - `files`: Specifies the directory structure (skills, references, scripts) included in the published artifact.\n    - `publishConfig`: Configure",
+        "content_hash": "b67d0c2aa0fc83dbd16658e8cfba1b90405a99979c8c4477aed505ceb5e896cd",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:references/analysis_template.md",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/f210a9f626dc69a11553e5cc07f5165001a27cd33dc15e801267640f3417dbc1.desc",
+      "name": "File summary: references/analysis_template.md",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "references/analysis_template.md",
+        "source_path": ".devpnt/cache/descriptions/f210a9f626dc69a11553e5cc07f5165001a27cd33dc15e801267640f3417dbc1.desc",
+        "content_excerpt": "- Purpose: Provides a standardized documentation template for performing structured technical impact assessments and feature analysis.\n- Key Components:\n    - Obiettivo: Defines business requirements and problem statements.\n    - Impatto: Evaluates technical debt, performance regressions, and architectural changes.\n    - Piano d'Azione: Tracks procedural implementation steps and progress.\n    - St",
+        "content_hash": "a5b2ea4c36f9e99fde5fbcc91c040dd9194e384e1cfc1127423824e16dda2444",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:references/architecture_template.md",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/544de3e521ca52a36b01f4800d99947b3c67a049c9e3631f633f8096c863829c.desc",
+      "name": "File summary: references/architecture_template.md",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "references/architecture_template.md",
+        "source_path": ".devpnt/cache/descriptions/544de3e521ca52a36b01f4800d99947b3c67a049c9e3631f633f8096c863829c.desc",
+        "content_excerpt": "- Purpose: Provides a standardized documentation template for defining project architecture and technology stacks.\n- Key Components: \n    - Tech Stack Section: Defines language, framework, database, and testing tools.\n    - Directory Structure: Maps the repository organization (`src`, `docs`, `tests`).\n    - Architectural Patterns: Specifies design paradigms (e.g., MVC, Clean Architecture, DI).\n- ",
+        "content_hash": "9cd317cc97c123b8a48d60710f86e722ec2dc1b21c8aaff3ec1929ab92b3a39b",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:references/existing_features_template.md",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/78c6af71c2876612b95758d6120f43d9b85e59772717ccfebf0f07b1cd62d0fd.desc",
+      "name": "File summary: references/existing_features_template.md",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "references/existing_features_template.md",
+        "source_path": ".devpnt/cache/descriptions/78c6af71c2876612b95758d6120f43d9b85e59772717ccfebf0f07b1cd62d0fd.desc",
+        "content_excerpt": "- Purpose: Serves as a documentation template for tracking and inventorying existing system features.\n- Key Components:\n    - Feature Entry Format: Standardized list item structure requiring unique IDs, names, and descriptions.\n    - Markdown Header: Structural anchor for consistent documentation indexing.\n- Key Dependencies: None (Markdown-based).\n- Complexity: Low; static document template requi",
+        "content_hash": "bf117a0176224b2b572e622b32ef03488ef3d4834f1db4286ea2a8368ebb70d6",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:references/features_history_template.md",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/6bdc9f5ecb31da996d076c39a5c8a0385a209cab5b4c6adfb62dea204617bd49.desc",
+      "name": "File summary: references/features_history_template.md",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "references/features_history_template.md",
+        "source_path": ".devpnt/cache/descriptions/6bdc9f5ecb31da996d076c39a5c8a0385a209cab5b4c6adfb62dea204617bd49.desc",
+        "content_excerpt": "- Purpose: Serves as a Markdown-based schema template for tracking the lifecycle and status of project features.\n- Key Components:\n    - Feature Table: Structured Markdown table capturing ID, status, timeline, and documentation links.\n    - Placeholder Syntax: Uses bracketed tokens (e.g., [ID], [PLANNED]) to indicate required metadata fields.\n    - Status Indicators: Standardizes feature progress ",
+        "content_hash": "aa23dff2ceee32ca8c4ca188dc62b9e8b6db0dd75c086851bd031f704000a993",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:scripts/init.js",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/0ef7e137842a183c06530128125c9f7ff1fd8d972a27bcbe0a2f0d64100097c8.desc",
+      "name": "File summary: scripts/init.js",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "scripts/init.js",
+        "source_path": ".devpnt/cache/descriptions/0ef7e137842a183c06530128125c9f7ff1fd8d972a27bcbe0a2f0d64100097c8.desc",
+        "content_excerpt": "- Purpose: Initializes the \"Agentic SDLC\" workspace by generating required documentation structures and AI-specific instruction files.\n- Key Components:\n    - `directories`: Defines mandatory project paths (`/docs`, `/docs/solutions`).\n    - `protocolContent`: Hardcoded string containing the mandatory \"Documentation-First\" system prompt.\n    - `writeIfNotExists`: Utility function ensuring idempote",
+        "content_hash": "3bc35d9026ea025dfc0955ff9146d2c66b482e32bbc7008491e93f1c03027215",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:skills/agentic-sdlc-skill/SKILL.md",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/d891f879c501a852a87290eb9da49f93a62189f974e3677f41cbef3936f016e3.desc",
+      "name": "File summary: skills/agentic-sdlc-skill/SKILL.md",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "skills/agentic-sdlc-skill/SKILL.md",
+        "source_path": ".devpnt/cache/descriptions/d891f879c501a852a87290eb9da49f93a62189f974e3677f41cbef3936f016e3.desc",
+        "content_excerpt": "- Purpose: Defines a mandatory \"Documentation-First\" SDLC protocol for agentic software development, ensuring architectural integrity and traceability.\n- Key Components:\n    - Audit & Alignment: Ensures system comprehension via `audit_plan.md` and foundational docs before implementation.\n    - Feature Analysis: Enforces structured planning via `ANALYSIS_[feature].md` prior to any code generation.\n",
+        "content_hash": "cdd7627157cc6fc1d91f78df7430f73d8ecdad52edab9235997320a57cc8a4a4",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:folder:.",
+      "kind": "summary",
+      "path": ".workdir/ai_summaries/_folder-summary.ai.txt",
+      "name": "Folder summary: .",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "folder_summary",
+        "target_path": ".",
+        "source_path": ".workdir/ai_summaries/_folder-summary.ai.txt",
+        "content_excerpt": "The root directory orchestrates the \"Agentic SDLC\" framework, acting as the primary repository for the Gemini CLI extension. It integrates specialized agentic capabilities, architectural documentation templates, and environment bootstrapping scripts. The structure enforces a \"Documentation-First\" development lifecycle, where project governance, feature auditing, and automated environment setup are",
+        "content_hash": "31864ff69ae777a8aa5c6dbf22d3600c9117b8431529d01e2c4b46ee5f070fad",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:folder:examples",
+      "kind": "summary",
+      "path": ".workdir/ai_summaries/examples/_folder-summary.ai.txt",
+      "name": "Folder summary: examples",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "folder_summary",
+        "target_path": "examples",
+        "source_path": ".workdir/ai_summaries/examples/_folder-summary.ai.txt",
+        "content_excerpt": "The `examples` directory functions as the root container for project-level demonstration, governance, and reference material. It acts as an organizational wrapper for the documentation suite, establishing the architectural and procedural context for developers working within the Gemini Skill Framework. It does not contain source code directly but orchestrates the availability of implementation roa",
+        "content_hash": "9525a82b48f4504bf338f5eb29524553e2cc954db66175446061650d535ee858",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:folder:examples/docs",
+      "kind": "summary",
+      "path": ".workdir/ai_summaries/examples/docs/_folder-summary.ai.txt",
+      "name": "Folder summary: examples/docs",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "folder_summary",
+        "target_path": "examples/docs",
+        "source_path": ".workdir/ai_summaries/examples/docs/_folder-summary.ai.txt",
+        "content_excerpt": "The `examples/docs` directory serves as the project’s central governance and architectural knowledge base. It enforces a \"Documentation-First\" SDLC, housing technical specifications, feature roadmaps, and historical tracking files. This directory acts as the foundational reference for developers to ensure consistent implementation of the Gemini Skill Framework before code execution.",
+        "content_hash": "d72c544c3c68ab9147064c33981940a03d90b7f2d66b15771535cdd27a8a4e3b",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:folder:examples/docs/solutions",
+      "kind": "summary",
+      "path": ".workdir/ai_summaries/examples/docs/solutions/_folder-summary.ai.txt",
+      "name": "Folder summary: examples/docs/solutions",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "folder_summary",
+        "target_path": "examples/docs/solutions",
+        "source_path": ".workdir/ai_summaries/examples/docs/solutions/_folder-summary.ai.txt",
+        "content_excerpt": "This directory functions as a documentation repository for architectural blueprints and solution roadmaps. It provides high-level design specifications for specialized CLI tools, focusing on the intersection of utility-driven automation and cross-platform packaging. By housing these analytical documents, it serves as the foundational reference for developers implementing modular Node.js executable",
+        "content_hash": "03ff50c84797bfb18cd82ac77568ce4476b6981e50cfa97f73d293b10e577b90",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:folder:references",
+      "kind": "summary",
+      "path": ".workdir/ai_summaries/references/_folder-summary.ai.txt",
+      "name": "Folder summary: references",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "folder_summary",
+        "target_path": "references",
+        "source_path": ".workdir/ai_summaries/references/_folder-summary.ai.txt",
+        "content_excerpt": "The `references` directory acts as a foundational library of Markdown-based documentation templates. Its primary role is to enforce architectural rigor, consistency, and standard communication patterns across the repository. It provides schemas for technical scoping, architectural design, and feature lifecycle management, ensuring developers follow uniform structures for project documentation.",
+        "content_hash": "99860fcf8b0c323a9cb4fc5c4bfa0a63435c60fee2fed2aef24d87c29cdf9731",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:folder:scripts",
+      "kind": "summary",
+      "path": ".workdir/ai_summaries/scripts/_folder-summary.ai.txt",
+      "name": "Folder summary: scripts",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "folder_summary",
+        "target_path": "scripts",
+        "source_path": ".workdir/ai_summaries/scripts/_folder-summary.ai.txt",
+        "content_excerpt": "The `scripts` directory serves as the bootstrapping layer for the \"Agentic SDLC\" architecture. It automates workspace environment setup by enforcing mandatory documentation structures and AI-instructional files. By leveraging idempotent filesystem operations, this directory ensures that new developer environments or AI-integrated projects adhere to a standardized \"Documentation-First\" workflow upo",
+        "content_hash": "7b3d9224d4cfd04d00a276f4b1e432db945a61285ace41b940d3a510bfff09a9",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:folder:skills",
+      "kind": "summary",
+      "path": ".workdir/ai_summaries/skills/_folder-summary.ai.txt",
+      "name": "Folder summary: skills",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "folder_summary",
+        "target_path": "skills",
+        "source_path": ".workdir/ai_summaries/skills/_folder-summary.ai.txt",
+        "content_excerpt": "The `skills` directory serves as the root registry for specialized agentic capabilities. It organizes domain-specific workflows into modular, reusable packages that define how agents interact with the development lifecycle. This directory acts as the entry point for extending system behavior, where individual skills function as encapsulated controllers that consume global system prompts and produc",
+        "content_hash": "3b2ecc083f3674ecbcaebc456aac6a3682509e951e562e7dfb2e78bd06782b8d",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:folder:skills/agentic-sdlc-skill",
+      "kind": "summary",
+      "path": ".workdir/ai_summaries/skills/agentic-sdlc-skill/_folder-summary.ai.txt",
+      "name": "Folder summary: skills/agentic-sdlc-skill",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "folder_summary",
+        "target_path": "skills/agentic-sdlc-skill",
+        "source_path": ".workdir/ai_summaries/skills/agentic-sdlc-skill/_folder-summary.ai.txt",
+        "content_excerpt": "The `skills/agentic-sdlc-skill` directory acts as the architectural backbone for the development lifecycle, enforcing a \"Documentation-First\" protocol. It dictates how agentic systems must transition from conceptual analysis to implementation, ensuring that state—and thus context—is preserved between sessions. It acts as a mandatory procedural layer, consuming system state to produce verified code",
+        "content_hash": "9aa8da19838b026ee117ffa1d0984dfcb8593c8a7613e7eeb52478058af5afa4",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    }
+  ],
+  "edges": [
+    {
+      "type": "calls",
+      "from_ref": "js_symbol_name:writeIfNotExists",
+      "to_ref": "js_symbol:scripts/init.js:writeIfNotExists",
+      "provenance": "semantic_javascript",
+      "confidence": 0.9,
+      "is_static_confirmed": false,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:file:.gitignore",
+      "to_ref": "file:.gitignore",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:file:CHANGELOG.md",
+      "to_ref": "file:CHANGELOG.md",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:file:README.md",
+      "to_ref": "file:README.md",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:file:examples/docs/architecture.md",
+      "to_ref": "file:examples/docs/architecture.md",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:file:examples/docs/existing_features.md",
+      "to_ref": "file:examples/docs/existing_features.md",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:file:examples/docs/features_history.md",
+      "to_ref": "file:examples/docs/features_history.md",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:file:examples/docs/solutions/ANALYSIS_pdf_extractor.md",
+      "to_ref": "file:examples/docs/solutions/ANALYSIS_pdf_extractor.md",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:file:gemini-extension.json",
+      "to_ref": "file:gemini-extension.json",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:file:git_push_tag.bat",
+      "to_ref": "file:git_push_tag.bat",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:file:package.json",
+      "to_ref": "file:package.json",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:file:references/analysis_template.md",
+      "to_ref": "file:references/analysis_template.md",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:file:references/architecture_template.md",
+      "to_ref": "file:references/architecture_template.md",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:file:references/existing_features_template.md",
+      "to_ref": "file:references/existing_features_template.md",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:file:references/features_history_template.md",
+      "to_ref": "file:references/features_history_template.md",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:file:scripts/init.js",
+      "to_ref": "file:scripts/init.js",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:file:skills/agentic-sdlc-skill/SKILL.md",
+      "to_ref": "file:skills/agentic-sdlc-skill/SKILL.md",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:folder:.",
+      "to_ref": "folder:.",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:folder:examples",
+      "to_ref": "folder:examples",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:folder:examples/docs",
+      "to_ref": "folder:examples/docs",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:folder:examples/docs/solutions",
+      "to_ref": "folder:examples/docs/solutions",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:folder:references",
+      "to_ref": "folder:references",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:folder:scripts",
+      "to_ref": "folder:scripts",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:folder:skills",
+      "to_ref": "folder:skills",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:folder:skills/agentic-sdlc-skill",
+      "to_ref": "folder:skills/agentic-sdlc-skill",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "defines",
+      "from_ref": "file:scripts/init.js",
+      "to_ref": "js_symbol:scripts/init.js:writeIfNotExists",
+      "provenance": "semantic_javascript",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "imports",
+      "from_ref": "file:scripts/init.js",
+      "to_ref": "file:fs",
+      "provenance": "semantic_javascript",
+      "confidence": 0.9,
+      "is_static_confirmed": false,
+      "metadata": {}
+    },
+    {
+      "type": "imports",
+      "from_ref": "file:scripts/init.js",
+      "to_ref": "file:path",
+      "provenance": "semantic_javascript",
+      "confidence": 0.9,
+      "is_static_confirmed": false,
+      "metadata": {}
+    }
+  ]
+}

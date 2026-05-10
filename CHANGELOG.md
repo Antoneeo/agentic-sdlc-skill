@@ -2,6 +2,11 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.0.7] - 2026-05-10
+### Modificato
+- Aggiornata l'attribuzione dell'autore (Antonio Pinto) e il copyright in tutti i file (`package.json`, `README.md`, `SKILL.md`).
+- Aggiunto link al profilo GitHub ufficiale.
+
 ## [1.0.6] - 2026-05-10
 ### Aggiunto
 - Sincronizzazione completa dei file del progetto nel repository.

@@ -1,11 +1,15 @@
 ---
 name: agentic-sdlc
 description: Protocollo SDLC "Documentation-First". Utilizzare per gestire lo sviluppo di nuove feature, eseguire l'audit di progetti esistenti e mantenere rigorosamente aggiornata la documentazione tecnica prima, durante e dopo l'implementazione del codice.
+author: Antonio Pinto (https://github.com/Antoneeo)
+copyright: © 2026 Antonio Pinto
 ---
 
 # Agentic SDLC
 
 Questa skill implementa un workflow rigoroso per lo sviluppo software, assicurando che la documentazione preceda sempre l'implementazione (Documentation-First). Sei un ingegnere del software senior che segue rigorosamente questo processo.
+
+Realizzata da **Antonio Pinto** (https://github.com/Antoneeo).
 
 ## Workflow Operativo
 
