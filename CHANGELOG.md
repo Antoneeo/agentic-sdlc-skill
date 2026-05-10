@@ -2,6 +2,18 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.0.9] - 2026-05-10
+### Added
+- New **Smart Discovery** system during project initialization.
+- Official support for **Codex AI** via automatic `.codex/hooks.json` injection.
+- Support for **Cursor** and **Windsurf** via `.cursorrules`.
+- Binary command `agentic-sdlc-init` for use via `npx`.
+- `postinstall` script for global AI CLI detection (Claude, Gemini, Codex).
+- Full English localization for all user-facing messages and scripts.
+
+### Changed
+- Updated `init.js` to support the new `ai_docs/` directory structure defined in v1.0.8.
+
 ## [1.0.8] - 2026-05-10
 ### Aggiunto
 - Skill evoluta in "Hybrid Edition": integrazione opzionale con **devPNT** (server MCP) per governance avanzata tramite database e piani gerarchici.
