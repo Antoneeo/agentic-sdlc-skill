@@ -2,6 +2,18 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.2.0] - 2026-05-10
+### Added
+- **Auto-installazione skill nativa Claude Code**: il `postinstall` ora copia `skills/agentic-sdlc-skill/` in `~/.claude/skills/agentic-sdlc/` quando rileva il CLI `claude`. La skill diventa disponibile come `agentic-sdlc` nel tool `Skill` di Claude Code dopo riavvio.
+- Nuovo script `preuninstall.js` che rimuove la skill da `~/.claude/skills/agentic-sdlc/` durante `npm uninstall`.
+- Fallback `copyRecursive` per Node < 16.7 (quando `fs.cpSync` non disponibile).
+
+### Changed
+- `package.json`: bump versione a 1.2.0, aggiunti keyword `claude-code` e `claude-skill`, descrizione aggiornata per riflettere supporto Claude Code nativo.
+
+### Fixed
+- Risolto bug per cui il pacchetto npm non registrava la skill in Claude Code (la cartella `~/.claude/skills/` non veniva mai popolata).
+
 ## [1.1.0] - 2026-05-10
 ### Fixed
 - Fixed path inconsistencies in the generated `CLAUDE.md`, `GEMINI.md`, and `.cursorrules` protocols. Added full paths (`ai_docs/strategic/`) to all document references to ensure AI agents (like Claude) can correctly find and update them.

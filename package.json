@@ -1,8 +1,10 @@
 {
   "name": "@antoneeo/agentic-sdlc-skill",
-  "version": "1.1.0",
-  "description": "Protocollo SDLC Documentation-First per Gemini CLI. Gestisce audit, analisi, sviluppo e chiusura feature con documentazione sincronizzata.",
+  "version": "1.2.0",
+  "description": "Protocollo SDLC Documentation-First per Claude Code, Gemini CLI e Codex. Auto-installa la skill nativa Claude Code in ~/.claude/skills/. Gestisce audit, analisi, sviluppo e chiusura feature con documentazione sincronizzata.",
   "keywords": [
+    "claude-code",
+    "claude-skill",
     "gemini-cli",
     "skill",
     "sdlc",
@@ -18,7 +20,8 @@
     "agentic-sdlc-init": "scripts/init.js"
   },
   "scripts": {
-    "postinstall": "node scripts/postinstall.js"
+    "postinstall": "node scripts/postinstall.js",
+    "preuninstall": "node scripts/preuninstall.js"
   },
   "files": [
     "skills",
