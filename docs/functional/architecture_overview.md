@@ -1,20 +1,20 @@
 <!-- devpnt:generated
-  date: 2026-05-10T06:55:37
+  date: 2026-05-10T08:11:22
   generator: functional_docs_generator v1.0
   sources: examples, references, scripts, skills, skills/agentic-sdlc-skill
   model: GoogleGemini/gemini-3.1-flash-lite-preview
-  summary_hash: 3d3bff1727b4fcba
+  summary_hash: 93e45e2c2b7cb9b4
 -->
 
 ## Subsystems
 
 | Subsystem | Role | Key Responsibilities |
 | :--- | :--- | :--- |
-| examples | Root container | Project-level demonstration, governance, and reference documentation. |
-| references | Documentation library | Enforcing architectural rigor, consistency, and standard communication schemas. |
-| scripts | Bootstrapping layer | Workspace environment setup, enforcing documentation structures, and idempotent filesystem operations. |
-| skills | Capability registry | Organizing domain-specific workflows into modular, reusable packages. |
-| skills/agentic-sdlc-skill | Architectural backbone | Providing core development lifecycle capabilities for agents. |
+| examples | Project root container | Organizational wrapper for demos, governance, and reference material. |
+| references | Documentation library | Enforces architectural rigor and provides standard communication templates. |
+| scripts | Bootstrapping layer | Automates workspace setup and enforces documentation structures. |
+| skills | Operational registry | Acts as a modular container for agent-specific capabilities. |
+| skills/agentic-sdlc-skill | SDLC protocol | Houses the "Documentation-First" SDLC operational protocol. |
 
 ## Dependency Map
 
@@ -22,8 +22,8 @@
 
 ## Boundaries
 
-- examples: does not implement core agentic logic
-- references: does not execute system-level automation scripts
-- scripts: does not define domain-specific agentic skills
-- skills: does not handle project-level governance documentation
-- skills/agentic-sdlc-skill: does not manage repository-wide environment bootstrapping
+- examples: does not implement core application logic
+- references: does not execute automated tasks
+- scripts: does not host business-level agent skills
+- skills: does not provide global documentation templates
+- skills/agentic-sdlc-skill: does not handle infrastructure environment setup

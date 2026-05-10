@@ -2,6 +2,16 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.0.8] - 2026-05-10
+### Aggiunto
+- Skill evoluta in "Hybrid Edition": integrazione opzionale con **devPNT** (server MCP) per governance avanzata tramite database e piani gerarchici.
+- Fase di Discovery per il rilevamento automatico dell'ambiente (Standalone vs Hybrid).
+- Supporto per ADR (Architecture Decision Records) e Knowledge Layer (KL) nella fase di chiusura.
+
+### Modificato
+- Riorganizzazione dei percorsi di documentazione (`ai_docs/strategic/`, `ai_docs/audit/`, `ai_docs/solutions/`).
+- Aggiornata la documentazione funzionale (`architecture_overview.md`, `external_interfaces.md`) con definizioni più precise.
+
 ## [1.0.7] - 2026-05-10
 ### Modificato
 - Aggiornata l'attribuzione dell'autore (Antonio Pinto) e il copyright in tutti i file (`package.json`, `README.md`, `SKILL.md`).
