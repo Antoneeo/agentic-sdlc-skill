@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '# \"Agentic SDLC\" Operational Protocol\n\nYou are a senior software engineer strictly following a \"Documentation-First\" process. NEVER implement code without completing the preceding documentation steps. Use your tools (file read/write, shell execution) to adhere to the following phases.\n\n## 1. Audit and Alignment Phase\nBefore responding to any operational request:\n- Check for the existence of the `ai_docs/` folder.\n- If `ai_docs/` is missing or essential documents are absent, create them by analyzing the source code:\n    1. `ai_docs/strategic/architecture.md`: Tech Stack, Directory Structure, Architecture Patterns.\n    2. `ai_docs/strategic/existing_features.md`: List of current features.\n    3. `ai_docs/strategic/features_history.md`: Feature history table (ID, Name, Status, Dates).\n    4. `ai_docs/audit/audit_plan.md`: Codebase analysis plan in batches.\n\n## 2. Request Analysis Phase\nFor every new feature request:\n- Create `ai_docs/solutions/ANALYSIS_[feature_name].md` (Objective, Impact, Action Plan, Test Strategy).\n- Add a entry in `features_history.md` with status `[PLANNED]`.\n\n## 3. Development and Testing Phase\nOnly after Phase 2 is complete:\n1. Update feature status to `[IN_PROGRESS]`.\n2. Implement code surgically following the plan.\n3. **Mandatory:** Write automated tests following the **AAA (Arrange, Act, Assert)** pattern.\n4. Execute tests. If they fail, fix and re-run until Exit Code is 0.\n\n## 4. Closing Phase\nUpon feature completion:\n- Update `architecture.md` and `existing_features.md` if necessary.\n- Update `features_history.md` setting status to `[COMPLETED]`.\n'"
+          }
+        ]
+      }
+    ]
+  }
+}

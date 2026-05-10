@@ -2,6 +2,11 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.1.0] - 2026-05-10
+### Fixed
+- Fixed path inconsistencies in the generated `CLAUDE.md`, `GEMINI.md`, and `.cursorrules` protocols. Added full paths (`ai_docs/strategic/`) to all document references to ensure AI agents (like Claude) can correctly find and update them.
+- Cleaned up encoding issues in initialization scripts.
+
 ## [1.0.9] - 2026-05-10
 ### Added
 - New **Smart Discovery** system during project initialization.

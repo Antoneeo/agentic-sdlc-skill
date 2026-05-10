@@ -54,19 +54,19 @@ Before responding to any operational request:
 ## 2. Request Analysis Phase
 For every new feature request:
 - Create \`ai_docs/solutions/ANALYSIS_[feature_name].md\` (Objective, Impact, Action Plan, Test Strategy).
-- Add a entry in \`features_history.md\` with status \`[PLANNED]\`.
+- Add an entry in \`ai_docs/strategic/features_history.md\` with status \`[PLANNED]\`.
 
 ## 3. Development and Testing Phase
 Only after Phase 2 is complete:
-1. Update feature status to \`[IN_PROGRESS]\`.
+1. Update feature status to \`[IN_PROGRESS]\` in \`ai_docs/strategic/features_history.md\`.
 2. Implement code surgically following the plan.
 3. **Mandatory:** Write automated tests following the **AAA (Arrange, Act, Assert)** pattern.
 4. Execute tests. If they fail, fix and re-run until Exit Code is 0.
 
 ## 4. Closing Phase
 Upon feature completion:
-- Update \`architecture.md\` and \`existing_features.md\` if necessary.
-- Update \`features_history.md\` setting status to \`[COMPLETED]\`.
+- Update \`ai_docs/strategic/architecture.md\` and \`ai_docs/strategic/existing_features.md\` if necessary.
+- Update \`ai_docs/strategic/features_history.md\` setting status to \`[COMPLETED]\`.
 `;
 
 const codexHooksContent = JSON.stringify({
