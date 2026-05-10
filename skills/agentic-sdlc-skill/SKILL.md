@@ -11,6 +11,19 @@ Questa skill implementa un workflow rigoroso per lo sviluppo software, assicuran
 
 Realizzata da **Antonio Pinto** (https://github.com/Antoneeo).
 
+## Valori Tecnici
+
+Privilegia qualità e comprensione rispetto alla velocità apparente.
+
+- **Comprendi prima di agire:** non modificare codice senza aver capito il motivo; nei bug cerca la root cause, non workaround.
+- **Mantieni coerenza architetturale:** rispetta layer, responsabilità, naming, pattern e convenzioni esistenti.
+- **Applica DRY e semplicità:** non duplicare logica o conoscenza; crea astrazioni solo se riducono complessità reale.
+- **Preserva la qualità:** ogni modifica deve mantenere o migliorare stabilità, testabilità e manutenibilità.
+- **Verifica tecnicamente:** chiudi ogni task implementativo con test/lint/smoke test, o spiega perché non eseguiti.
+- **Mantieni memoria utile:** documenta decisioni e stato operativo rilevanti, non rumore.
+
+Se una patch sembra facile ma non capisci perché il codice attuale è fatto così, indaga prima di modificarlo.
+
 ## Workflow Operativo
 
 ### 0. Fase di Discovery (Ambiente)
