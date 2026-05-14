@@ -28,21 +28,24 @@ The `postinstall` script automatically detects installed CLIs and configures eac
 
 If after `npm install -g` you do **not** see the line `--- Agentic SDLC Skill Discovery ---` in the npm output, and `~/.claude/skills/agentic-sdlc/` does not exist, the `postinstall` hook was skipped by npm. The most common cause is `ignore-scripts=true` in your npm config (set by some Node installers, corporate IT policies, or security tools).
 
-Run the install explicitly via the dedicated bin command — it does not depend on the `postinstall` hook:
+The package ships an explicit `agentic-sdlc-install-skill` command that does the same work but does **not** depend on the `postinstall` hook. After `npm install -g`, the bin shim is created regardless of `ignore-scripts`, so you can simply run:
 
 ```bash
-npx @antoneeo/agentic-sdlc-skill agentic-sdlc-install-skill
+npm install -g @antoneeo/agentic-sdlc-skill@latest
+agentic-sdlc-install-skill
 ```
 
-Alternatively, fix the npm config and reinstall:
+You should see the `--- Agentic SDLC Skill Discovery ---` banner and `📦 Installed Claude Code skill at: ...`. Then restart Claude Code (or Codex) and the skill will be available.
+
+> **Note on `npx`**: because the package exposes two bin commands, the shorthand `npx @antoneeo/agentic-sdlc-skill agentic-sdlc-install-skill` does not work — npx cannot disambiguate. If you prefer npx, use the explicit `-p` form: `npx -p @antoneeo/agentic-sdlc-skill agentic-sdlc-install-skill`.
+
+Alternatively, fix the npm config and reinstall (the `postinstall` hook will then run automatically):
 
 ```bash
 npm config set ignore-scripts false
 npm uninstall -g @antoneeo/agentic-sdlc-skill
 npm install -g @antoneeo/agentic-sdlc-skill@latest
 ```
-
-Then restart Claude Code (or Codex) and the skill will be available.
 
 ### Via Gemini CLI (local alternative)
 
