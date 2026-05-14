@@ -2,6 +2,16 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.3.0] - 2026-05-14
+### Added
+- Nuovo comando esplicito `agentic-sdlc-install-skill` (registrato come `bin`): installa la skill in `~/.claude/skills/agentic-sdlc/` e `~/.codex/skills/agentic-sdlc/` **senza dipendere dal `postinstall` hook**. Risolve i casi in cui `npm` salta gli script (configurazioni `ignore-scripts=true`, policy IT aziendali, alcuni installer Node) e l'auto-install fallisce silenziosamente.
+- Sezione "Troubleshooting" nel README con istruzioni per il caso in cui la skill non venga rilevata da Claude Code dopo `npm install -g`.
+
+### Usage
+```bash
+npx @antoneeo/agentic-sdlc-skill agentic-sdlc-install-skill
+```
+
 ## [1.2.4] - 2026-05-14
 ### Fixed
 - `postinstall` ora rileva Claude Code anche quando il CLI `claude` non è nel PATH (es. Claude Desktop con Claude Code integrato): la presenza di `~/.claude/` o della variabile `CLAUDE_CONFIG_DIR` è sufficiente per attivare l'installazione della skill in `~/.claude/skills/agentic-sdlc/`. Stesso pattern già usato per Codex.

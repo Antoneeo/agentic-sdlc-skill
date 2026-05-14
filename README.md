@@ -24,6 +24,26 @@ The `postinstall` script automatically detects installed CLIs and configures eac
 
 `npm uninstall -g @antoneeo/agentic-sdlc-skill` also removes the skills from `~/.claude/skills/agentic-sdlc/` and `~/.codex/skills/agentic-sdlc/`.
 
+#### Troubleshooting — skill not visible in Claude Code after install
+
+If after `npm install -g` you do **not** see the line `--- Agentic SDLC Skill Discovery ---` in the npm output, and `~/.claude/skills/agentic-sdlc/` does not exist, the `postinstall` hook was skipped by npm. The most common cause is `ignore-scripts=true` in your npm config (set by some Node installers, corporate IT policies, or security tools).
+
+Run the install explicitly via the dedicated bin command — it does not depend on the `postinstall` hook:
+
+```bash
+npx @antoneeo/agentic-sdlc-skill agentic-sdlc-install-skill
+```
+
+Alternatively, fix the npm config and reinstall:
+
+```bash
+npm config set ignore-scripts false
+npm uninstall -g @antoneeo/agentic-sdlc-skill
+npm install -g @antoneeo/agentic-sdlc-skill@latest
+```
+
+Then restart Claude Code (or Codex) and the skill will be available.
+
 ### Via Gemini CLI (local alternative)
 
 > **Tip:** Before installing, copy this folder from the USB drive to your computer's hard drive (for example, `C:\tools\agentic-sdlc-skill`). This keeps the skill available even after the USB drive is removed.
