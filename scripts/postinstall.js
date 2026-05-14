@@ -7,7 +7,8 @@ const os = require('os');
 
 const PACKAGE_ROOT = path.resolve(__dirname, '..');
 const SKILL_SOURCE = path.join(PACKAGE_ROOT, 'skills', 'agentic-sdlc-skill');
-const CLAUDE_SKILLS_DIR = path.join(os.homedir(), '.claude', 'skills');
+const CLAUDE_HOME = process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude');
+const CLAUDE_SKILLS_DIR = path.join(CLAUDE_HOME, 'skills');
 const CLAUDE_SKILL_TARGET = path.join(CLAUDE_SKILLS_DIR, 'agentic-sdlc');
 const CODEX_HOME = process.env.CODEX_HOME || path.join(os.homedir(), '.codex');
 const CODEX_SKILLS_DIR = path.join(CODEX_HOME, 'skills');
@@ -77,21 +78,24 @@ function hasCodexHome() {
   return Boolean(process.env.CODEX_HOME) || fs.existsSync(CODEX_HOME);
 }
 
+function hasClaudeHome() {
+  return Boolean(process.env.CLAUDE_CONFIG_DIR) || fs.existsSync(CLAUDE_HOME);
+}
+
 console.log('\n--- Agentic SDLC Skill Discovery ---');
 
-const agents = [
-  { name: 'Claude Code', cmd: 'claude', onDetect: installClaudeSkill },
-  { name: 'Gemini CLI', cmd: 'gemini' }
-];
-
 let detected = false;
-agents.forEach(agent => {
-  if (checkCommand(agent.cmd)) {
-    console.log(`✅ Detected: ${agent.name}`);
-    detected = true;
-    if (typeof agent.onDetect === 'function') agent.onDetect();
-  }
-});
+
+if (checkCommand('claude') || hasClaudeHome()) {
+  console.log(`✅ Detected: Claude Code`);
+  detected = true;
+  installClaudeSkill();
+}
+
+if (checkCommand('gemini')) {
+  console.log(`✅ Detected: Gemini CLI`);
+  detected = true;
+}
 
 if (checkCommand('codex') || hasCodexHome()) {
   console.log(`✅ Detected: Codex AI`);

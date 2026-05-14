@@ -2,6 +2,11 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.2.4] - 2026-05-14
+### Fixed
+- `postinstall` ora rileva Claude Code anche quando il CLI `claude` non è nel PATH (es. Claude Desktop con Claude Code integrato): la presenza di `~/.claude/` o della variabile `CLAUDE_CONFIG_DIR` è sufficiente per attivare l'installazione della skill in `~/.claude/skills/agentic-sdlc/`. Stesso pattern già usato per Codex.
+- `preuninstall` rispetta `CLAUDE_CONFIG_DIR` per rimuovere la skill dalla directory di configurazione corretta.
+
 ## [1.2.2] - 2026-05-10
 ### Changed
 - README convertito in inglese per la pubblicazione npm.

@@ -4,7 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const CLAUDE_SKILL_TARGET = path.join(os.homedir(), '.claude', 'skills', 'agentic-sdlc');
+const CLAUDE_HOME = process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude');
+const CLAUDE_SKILL_TARGET = path.join(CLAUDE_HOME, 'skills', 'agentic-sdlc');
 const CODEX_HOME = process.env.CODEX_HOME || path.join(os.homedir(), '.codex');
 const CODEX_SKILL_TARGET = path.join(CODEX_HOME, 'skills', 'agentic-sdlc');
 
