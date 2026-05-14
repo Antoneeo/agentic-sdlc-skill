@@ -2,6 +2,11 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.3.1] - 2026-05-14
+### Fixed
+- Correzione documentazione (README + CHANGELOG) della sintassi per invocare il bin `agentic-sdlc-install-skill`. La forma `npx @antoneeo/agentic-sdlc-skill agentic-sdlc-install-skill` documentata in 1.3.0 **non funziona** perché npx non riesce a disambiguare il bin quando il pacchetto ne espone più di uno (errore: `could not determine executable to run`). Sintassi corretta: lanciare `agentic-sdlc-install-skill` direttamente dopo `npm install -g`, oppure usare `npx -p @antoneeo/agentic-sdlc-skill agentic-sdlc-install-skill` con `-p` esplicito.
+- Nessuna modifica al codice della skill: il bin di 1.3.0 funziona correttamente, era solo la doc a indicare la sintassi sbagliata.
+
 ## [1.3.0] - 2026-05-14
 ### Added
 - Nuovo comando esplicito `agentic-sdlc-install-skill` (registrato come `bin`): installa la skill in `~/.claude/skills/agentic-sdlc/` e `~/.codex/skills/agentic-sdlc/` **senza dipendere dal `postinstall` hook**. Risolve i casi in cui `npm` salta gli script (configurazioni `ignore-scripts=true`, policy IT aziendali, alcuni installer Node) e l'auto-install fallisce silenziosamente.
@@ -9,7 +14,8 @@ Tutte le modifiche significative a questa skill saranno documentate in questo fi
 
 ### Usage
 ```bash
-npx @antoneeo/agentic-sdlc-skill agentic-sdlc-install-skill
+npm install -g @antoneeo/agentic-sdlc-skill@latest
+agentic-sdlc-install-skill
 ```
 
 ## [1.2.4] - 2026-05-14
