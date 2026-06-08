@@ -1,14 +1,14 @@
 <!-- devpnt:generated
-  date: 2026-05-10T08:11:23
+  date: 2026-06-07T10:17:41
   generator: functional_docs_generator v1.0
-  sources: scripts
-  model: GoogleGemini/gemini-3.1-flash-lite-preview
-  summary_hash: 7ac6a03d1a7c6997
+  sources: ai_docs
+  model: GoogleGemini/gemini-flash-lite-latest
+  summary_hash: fef560d594542ef7
 -->
 
-## Filesystem Initialization Interface
-- Name: Local Workspace Bootstrapper
-- Direction: outbound
-- Authentication: none
-- Message Format: native filesystem operations
-- Module: scripts/init.js
+## Agent Plugin Communication
+- Name: MCP-based SSE Tool Server
+- Direction: bidirectional
+- Authentication: pending (future implementation required)
+- Message Format: Server-Sent Events (SSE)
+- Module: ai_docs/solutions/
