@@ -2,6 +2,13 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.4.0] - 2026-06-07
+### Added
+- Introdotta la governance della **Vision** con nuova struttura `ai_docs/vision/` (`project_vision.md`, `roadmap.md`, `principles.md`, `features/`).
+- Aggiunto il **Vision Gate** nel workflow operativo: ogni feature significativa deve essere verificata rispetto a obiettivi, non-obiettivi, benefici attesi e segnali di successo prima dell'analisi tecnica.
+- Aggiunti template Vision in `references/` e sezione `Allineamento alla Vision` nel template di analisi.
+- `agentic-sdlc-init` ora crea i documenti Vision boilerplate nei nuovi progetti.
+
 ## [1.3.1] - 2026-05-14
 ### Fixed
 - Correzione documentazione (README + CHANGELOG) della sintassi per invocare il bin `agentic-sdlc-install-skill`. La forma `npx @antoneeo/agentic-sdlc-skill agentic-sdlc-install-skill` documentata in 1.3.0 **non funziona** perché npx non riesce a disambiguare il bin quando il pacchetto ne espone più di uno (errore: `could not determine executable to run`). Sintassi corretta: lanciare `agentic-sdlc-install-skill` direttamente dopo `npm install -g`, oppure usare `npx -p @antoneeo/agentic-sdlc-skill agentic-sdlc-install-skill` con `-p` esplicito.

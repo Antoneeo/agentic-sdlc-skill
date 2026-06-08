@@ -8,7 +8,10 @@
 
 ## Struttura delle Directory
 - `src/`: Codice sorgente.
-- `docs/`: Documentazione tecnica.
+- `ai_docs/vision/`: Vision di progetto, roadmap, principi e mini-vision delle feature.
+- `ai_docs/strategic/`: Architettura, feature esistenti e storico feature.
+- `ai_docs/solutions/`: Analisi e piani delle singole feature.
+- `ai_docs/audit/`: Piano di audit e handoff di sessione.
 - `tests/`: Test automatici.
 
 ## Pattern Architetturali

@@ -3,7 +3,8 @@
 A "Documentation-First" SDLC protocol designed to manage the software development lifecycle rigorously. It natively supports **Claude Code** (skill auto-installed in `~/.claude/skills/`), **Gemini CLI** (extension), and **Codex AI** (skill auto-installed in `~/.codex/skills/`).
 
 ## Key Features
-- **Documentation-First**: Requires documentation (`docs/`) to be created or updated before writing code.
+- **Documentation-First**: Requires documentation (`ai_docs/`) to be created or updated before writing code.
+- **Vision-Guided Governance**: Adds `ai_docs/vision/` and a Vision Gate so features stay aligned with goals, non-goals, and expected benefits.
 - **Automatic Audit**: Analyzes the existing architecture and features.
 - **Traceable Workflow**: Tracks feature status in `features_history.md`.
 - **Built-In Quality**: Native integration of analysis, development, and testing.
@@ -76,7 +77,8 @@ After installation, start Gemini CLI and verify that the skill is available:
 
 ## Project Structure
 - `skills/`: Contains the skill logic (`SKILL.md`).
-- `references/`: Markdown templates for architecture, analysis, and feature history.
+- `references/`: Markdown templates for Vision, architecture, analysis, and feature history.
+- `ai_docs/vision/`: Project and feature Vision documents created by the SDLC workflow.
 - `gemini-extension.json`: Extension manifest.
 
 ---
