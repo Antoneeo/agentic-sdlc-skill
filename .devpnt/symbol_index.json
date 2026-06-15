@@ -1,4 +1,5478 @@
 {
   "version": "1.1",
-  "by_file": {}
+  "by_file": {
+    "agentic-sdlc-v2/agentic-sdlc-v2/scripts/sdlc_check.py": {
+      "hash": "ca50e0baf12de44ad16e2f7cc892b51ff746841458081cb4fd90c3ecfd9f8b27",
+      "definitions": [
+        {
+          "name": "utc_now_iso",
+          "type": "function",
+          "line": 42
+        },
+        {
+          "name": "find_project_root",
+          "type": "function",
+          "line": 46
+        },
+        {
+          "name": "read_text",
+          "type": "function",
+          "line": 54
+        },
+        {
+          "name": "parse_iso",
+          "type": "function",
+          "line": 58
+        },
+        {
+          "name": "norm_text",
+          "type": "function",
+          "line": 70
+        },
+        {
+          "name": "load_frontmatter",
+          "type": "function",
+          "line": 74
+        },
+        {
+          "name": "list_analyses",
+          "type": "function",
+          "line": 87
+        },
+        {
+          "name": "iter_files",
+          "type": "function",
+          "line": 101
+        },
+        {
+          "name": "git_available",
+          "type": "function",
+          "line": 113
+        },
+        {
+          "name": "git_head",
+          "type": "function",
+          "line": 122
+        },
+        {
+          "name": "git_changed_since",
+          "type": "function",
+          "line": 131
+        },
+        {
+          "name": "build_index",
+          "type": "function",
+          "line": 150
+        },
+        {
+          "name": "cmd_index",
+          "type": "function",
+          "line": 173
+        },
+        {
+          "name": "cmd_validate",
+          "type": "function",
+          "line": 183
+        },
+        {
+          "name": "parse_audit_plan",
+          "type": "function",
+          "line": 267
+        },
+        {
+          "name": "cmd_stale",
+          "type": "function",
+          "line": 290
+        },
+        {
+          "name": "cmd_mark",
+          "type": "function",
+          "line": 339
+        },
+        {
+          "name": "cmd_mark.row_text",
+          "type": "method",
+          "line": 350
+        },
+        {
+          "name": "cmd_check",
+          "type": "function",
+          "line": 374
+        },
+        {
+          "name": "cmd_gate",
+          "type": "function",
+          "line": 386
+        },
+        {
+          "name": "main",
+          "type": "function",
+          "line": 423
+        }
+      ],
+      "imports": [
+        "argparse",
+        "json",
+        "os",
+        "re",
+        "subprocess",
+        "sys",
+        "datetime",
+        "pathlib"
+      ],
+      "references": [
+        {
+          "symbol": "timedelta",
+          "line": 31
+        },
+        {
+          "symbol": "sys.stdout.reconfigure",
+          "line": 34
+        },
+        {
+          "symbol": "sys.stdout",
+          "line": 34
+        },
+        {
+          "symbol": "sys",
+          "line": 34
+        },
+        {
+          "symbol": "sys.stderr.reconfigure",
+          "line": 35
+        },
+        {
+          "symbol": "sys.stderr",
+          "line": 35
+        },
+        {
+          "symbol": "sys",
+          "line": 35
+        },
+        {
+          "symbol": "Exception",
+          "line": 36
+        },
+        {
+          "symbol": "datetime.now(timezone.utc).strftime",
+          "line": 43
+        },
+        {
+          "symbol": "datetime.now",
+          "line": 43
+        },
+        {
+          "symbol": "datetime",
+          "line": 43
+        },
+        {
+          "symbol": "timezone.utc",
+          "line": 43
+        },
+        {
+          "symbol": "timezone",
+          "line": 43
+        },
+        {
+          "symbol": "Path(start or os.getcwd()).resolve",
+          "line": 47
+        },
+        {
+          "symbol": "Path",
+          "line": 47
+        },
+        {
+          "symbol": "start",
+          "line": 47
+        },
+        {
+          "symbol": "os.getcwd",
+          "line": 47
+        },
+        {
+          "symbol": "os",
+          "line": 47
+        },
+        {
+          "symbol": "cur",
+          "line": 48
+        },
+        {
+          "symbol": "list",
+          "line": 48
+        },
+        {
+          "symbol": "cur.parents",
+          "line": 48
+        },
+        {
+          "symbol": "(p / 'ai_docs').is_dir",
+          "line": 49
+        },
+        {
+          "symbol": "p",
+          "line": 49
+        },
+        {
+          "symbol": "p",
+          "line": 50
+        },
+        {
+          "symbol": "cur",
+          "line": 51
+        },
+        {
+          "symbol": "path.read_text",
+          "line": 55
+        },
+        {
+          "symbol": "path",
+          "line": 55
+        },
+        {
+          "symbol": "value",
+          "line": 59
+        },
+        {
+          "symbol": "datetime.fromisoformat",
+          "line": 62
+        },
+        {
+          "symbol": "datetime",
+          "line": 62
+        },
+        {
+          "symbol": "value.strip().replace",
+          "line": 62
+        },
+        {
+          "symbol": "value.strip",
+          "line": 62
+        },
+        {
+          "symbol": "value",
+          "line": 62
+        },
+        {
+          "symbol": "dt.tzinfo",
+          "line": 63
+        },
+        {
+          "symbol": "dt",
+          "line": 63
+        },
+        {
+          "symbol": "dt.replace",
+          "line": 64
+        },
+        {
+          "symbol": "dt",
+          "line": 64
+        },
+        {
+          "symbol": "timezone.utc",
+          "line": 64
+        },
+        {
+          "symbol": "timezone",
+          "line": 64
+        },
+        {
+          "symbol": "dt",
+          "line": 65
+        },
+        {
+          "symbol": "ValueError",
+          "line": 66
+        },
+        {
+          "symbol": "'\\n'.join",
+          "line": 71
+        },
+        {
+          "symbol": "line.rstrip",
+          "line": 71
+        },
+        {
+          "symbol": "line",
+          "line": 71
+        },
+        {
+          "symbol": "s.strip().splitlines",
+          "line": 71
+        },
+        {
+          "symbol": "s.strip",
+          "line": 71
+        },
+        {
+          "symbol": "s",
+          "line": 71
+        },
+        {
+          "symbol": "lines",
+          "line": 76
+        },
+        {
+          "symbol": "lines[0].strip",
+          "line": 76
+        },
+        {
+          "symbol": "meta",
+          "line": 77
+        },
+        {
+          "symbol": "lines",
+          "line": 78
+        },
+        {
+          "symbol": "line.strip",
+          "line": 79
+        },
+        {
+          "symbol": "line",
+          "line": 79
+        },
+        {
+          "symbol": "re.match",
+          "line": 81
+        },
+        {
+          "symbol": "re",
+          "line": 81
+        },
+        {
+          "symbol": "line",
+          "line": 81
+        },
+        {
+          "symbol": "m",
+          "line": 82
+        },
+        {
+          "symbol": "meta",
+          "line": 83
+        },
+        {
+          "symbol": "m.group(1).strip().lower",
+          "line": 83
+        },
+        {
+          "symbol": "m.group(1).strip",
+          "line": 83
+        },
+        {
+          "symbol": "m.group",
+          "line": 83
+        },
+        {
+          "symbol": "m",
+          "line": 83
+        },
+        {
+          "symbol": "m.group(2).strip",
+          "line": 83
+        },
+        {
+          "symbol": "meta",
+          "line": 84
+        },
+        {
+          "symbol": "root",
+          "line": 89
+        },
+        {
+          "symbol": "sol.is_dir",
+          "line": 91
+        },
+        {
+          "symbol": "sol",
+          "line": 91
+        },
+        {
+          "symbol": "out",
+          "line": 92
+        },
+        {
+          "symbol": "sorted",
+          "line": 93
+        },
+        {
+          "symbol": "sol.glob",
+          "line": 93
+        },
+        {
+          "symbol": "sol",
+          "line": 93
+        },
+        {
+          "symbol": "read_text",
+          "line": 94
+        },
+        {
+          "symbol": "p",
+          "line": 94
+        },
+        {
+          "symbol": "text",
+          "line": 95
+        },
+        {
+          "symbol": "out.append",
+          "line": 97
+        },
+        {
+          "symbol": "out",
+          "line": 97
+        },
+        {
+          "symbol": "p",
+          "line": 97
+        },
+        {
+          "symbol": "load_frontmatter",
+          "line": 97
+        },
+        {
+          "symbol": "text.splitlines",
+          "line": 97
+        },
+        {
+          "symbol": "text",
+          "line": 97
+        },
+        {
+          "symbol": "out",
+          "line": 98
+        },
+        {
+          "symbol": "target.is_file",
+          "line": 102
+        },
+        {
+          "symbol": "target",
+          "line": 102
+        },
+        {
+          "symbol": "target",
+          "line": 103
+        },
+        {
+          "symbol": "os.walk",
+          "line": 105
+        },
+        {
+          "symbol": "os",
+          "line": 105
+        },
+        {
+          "symbol": "target",
+          "line": 105
+        },
+        {
+          "symbol": "dirnames",
+          "line": 106
+        },
+        {
+          "symbol": "d",
+          "line": 106
+        },
+        {
+          "symbol": "SKIP_DIRS",
+          "line": 106
+        },
+        {
+          "symbol": "d.startswith",
+          "line": 106
+        },
+        {
+          "symbol": "filenames",
+          "line": 107
+        },
+        {
+          "symbol": "Path",
+          "line": 108
+        },
+        {
+          "symbol": "dirpath",
+          "line": 108
+        },
+        {
+          "symbol": "name",
+          "line": 108
+        },
+        {
+          "symbol": "subprocess.run",
+          "line": 115
+        },
+        {
+          "symbol": "subprocess",
+          "line": 115
+        },
+        {
+          "symbol": "str",
+          "line": 116
+        },
+        {
+          "symbol": "root",
+          "line": 116
+        },
+        {
+          "symbol": "r.returncode",
+          "line": 117
+        },
+        {
+          "symbol": "r",
+          "line": 117
+        },
+        {
+          "symbol": "r.stdout.strip",
+          "line": 117
+        },
+        {
+          "symbol": "r.stdout",
+          "line": 117
+        },
+        {
+          "symbol": "Exception",
+          "line": 118
+        },
+        {
+          "symbol": "subprocess.run",
+          "line": 124
+        },
+        {
+          "symbol": "subprocess",
+          "line": 124
+        },
+        {
+          "symbol": "str",
+          "line": 125
+        },
+        {
+          "symbol": "root",
+          "line": 125
+        },
+        {
+          "symbol": "r.returncode",
+          "line": 126
+        },
+        {
+          "symbol": "r",
+          "line": 126
+        },
+        {
+          "symbol": "r.stdout.strip",
+          "line": 126
+        },
+        {
+          "symbol": "r.stdout",
+          "line": 126
+        },
+        {
+          "symbol": "Exception",
+          "line": 127
+        },
+        {
+          "symbol": "subprocess.run",
+          "line": 134
+        },
+        {
+          "symbol": "subprocess",
+          "line": 134
+        },
+        {
+          "symbol": "ref",
+          "line": 134
+        },
+        {
+          "symbol": "rel_path",
+          "line": 134
+        },
+        {
+          "symbol": "str",
+          "line": 135
+        },
+        {
+          "symbol": "root",
+          "line": 135
+        },
+        {
+          "symbol": "r.returncode",
+          "line": 136
+        },
+        {
+          "symbol": "r",
+          "line": 136
+        },
+        {
+          "symbol": "l.strip",
+          "line": 138
+        },
+        {
+          "symbol": "l",
+          "line": 138
+        },
+        {
+          "symbol": "r.stdout.splitlines",
+          "line": 138
+        },
+        {
+          "symbol": "r.stdout",
+          "line": 138
+        },
+        {
+          "symbol": "r",
+          "line": 138
+        },
+        {
+          "symbol": "subprocess.run",
+          "line": 139
+        },
+        {
+          "symbol": "subprocess",
+          "line": 139
+        },
+        {
+          "symbol": "rel_path",
+          "line": 139
+        },
+        {
+          "symbol": "str",
+          "line": 140
+        },
+        {
+          "symbol": "root",
+          "line": 140
+        },
+        {
+          "symbol": "r2.returncode",
+          "line": 141
+        },
+        {
+          "symbol": "r2",
+          "line": 141
+        },
+        {
+          "symbol": "l.strip",
+          "line": 142
+        },
+        {
+          "symbol": "l",
+          "line": 142
+        },
+        {
+          "symbol": "r2.stdout.splitlines",
+          "line": 142
+        },
+        {
+          "symbol": "r2.stdout",
+          "line": 142
+        },
+        {
+          "symbol": "r2",
+          "line": 142
+        },
+        {
+          "symbol": "sorted",
+          "line": 143
+        },
+        {
+          "symbol": "set",
+          "line": 143
+        },
+        {
+          "symbol": "changed",
+          "line": 143
+        },
+        {
+          "symbol": "Exception",
+          "line": 144
+        },
+        {
+          "symbol": "list_analyses",
+          "line": 152
+        },
+        {
+          "symbol": "root",
+          "line": 152
+        },
+        {
+          "symbol": "rows.append",
+          "line": 153
+        },
+        {
+          "symbol": "rows",
+          "line": 153
+        },
+        {
+          "symbol": "meta.get",
+          "line": 154
+        },
+        {
+          "symbol": "meta",
+          "line": 154
+        },
+        {
+          "symbol": "meta.get",
+          "line": 155
+        },
+        {
+          "symbol": "meta",
+          "line": 155
+        },
+        {
+          "symbol": "p.stem.replace",
+          "line": 155
+        },
+        {
+          "symbol": "p.stem",
+          "line": 155
+        },
+        {
+          "symbol": "p",
+          "line": 155
+        },
+        {
+          "symbol": "meta.get",
+          "line": 156
+        },
+        {
+          "symbol": "meta",
+          "line": 156
+        },
+        {
+          "symbol": "meta.get",
+          "line": 157
+        },
+        {
+          "symbol": "meta",
+          "line": 157
+        },
+        {
+          "symbol": "meta.get",
+          "line": 158
+        },
+        {
+          "symbol": "meta",
+          "line": 158
+        },
+        {
+          "symbol": "meta.get",
+          "line": 159
+        },
+        {
+          "symbol": "meta",
+          "line": 159
+        },
+        {
+          "symbol": "p.name",
+          "line": 160
+        },
+        {
+          "symbol": "p",
+          "line": 160
+        },
+        {
+          "symbol": "rows.sort",
+          "line": 162
+        },
+        {
+          "symbol": "rows",
+          "line": 162
+        },
+        {
+          "symbol": "r",
+          "line": 162
+        },
+        {
+          "symbol": "INDEX_HEADER",
+          "line": 163
+        },
+        {
+          "symbol": "rows",
+          "line": 168
+        },
+        {
+          "symbol": "lines.append",
+          "line": 169
+        },
+        {
+          "symbol": "lines",
+          "line": 169
+        },
+        {
+          "symbol": "' | '.join",
+          "line": 169
+        },
+        {
+          "symbol": "r",
+          "line": 169
+        },
+        {
+          "symbol": "'\\n'.join",
+          "line": 170
+        },
+        {
+          "symbol": "lines",
+          "line": 170
+        },
+        {
+          "symbol": "root",
+          "line": 174
+        },
+        {
+          "symbol": "target.parent.mkdir",
+          "line": 175
+        },
+        {
+          "symbol": "target.parent",
+          "line": 175
+        },
+        {
+          "symbol": "target",
+          "line": 175
+        },
+        {
+          "symbol": "target.write_text",
+          "line": 176
+        },
+        {
+          "symbol": "target",
+          "line": 176
+        },
+        {
+          "symbol": "build_index",
+          "line": 176
+        },
+        {
+          "symbol": "root",
+          "line": 176
+        },
+        {
+          "symbol": "print",
+          "line": 177
+        },
+        {
+          "symbol": "target",
+          "line": 177
+        },
+        {
+          "symbol": "root",
+          "line": 185
+        },
+        {
+          "symbol": "ai.is_dir",
+          "line": 186
+        },
+        {
+          "symbol": "ai",
+          "line": 186
+        },
+        {
+          "symbol": "print",
+          "line": 187
+        },
+        {
+          "symbol": "ai",
+          "line": 187
+        },
+        {
+          "symbol": "VISION_FILES",
+          "line": 191
+        },
+        {
+          "symbol": "ai",
+          "line": 192
+        },
+        {
+          "symbol": "name",
+          "line": 192
+        },
+        {
+          "symbol": "f.is_file",
+          "line": 193
+        },
+        {
+          "symbol": "f",
+          "line": 193
+        },
+        {
+          "symbol": "warnings.append",
+          "line": 194
+        },
+        {
+          "symbol": "warnings",
+          "line": 194
+        },
+        {
+          "symbol": "name",
+          "line": 194
+        },
+        {
+          "symbol": "'\\n'.join",
+          "line": 196
+        },
+        {
+          "symbol": "read_text(f).splitlines",
+          "line": 196
+        },
+        {
+          "symbol": "read_text",
+          "line": 196
+        },
+        {
+          "symbol": "f",
+          "line": 196
+        },
+        {
+          "symbol": "re.search",
+          "line": 197
+        },
+        {
+          "symbol": "re",
+          "line": 197
+        },
+        {
+          "symbol": "head",
+          "line": 197
+        },
+        {
+          "symbol": "m",
+          "line": 198
+        },
+        {
+          "symbol": "errors.append",
+          "line": 199
+        },
+        {
+          "symbol": "errors",
+          "line": 199
+        },
+        {
+          "symbol": "name",
+          "line": 199
+        },
+        {
+          "symbol": "m.group",
+          "line": 200
+        },
+        {
+          "symbol": "m",
+          "line": 200
+        },
+        {
+          "symbol": "warnings.append",
+          "line": 201
+        },
+        {
+          "symbol": "warnings",
+          "line": 201
+        },
+        {
+          "symbol": "name",
+          "line": 201
+        },
+        {
+          "symbol": "list_analyses",
+          "line": 205
+        },
+        {
+          "symbol": "root",
+          "line": 205
+        },
+        {
+          "symbol": "analyses",
+          "line": 206
+        },
+        {
+          "symbol": "p.name",
+          "line": 207
+        },
+        {
+          "symbol": "p",
+          "line": 207
+        },
+        {
+          "symbol": "meta",
+          "line": 208
+        },
+        {
+          "symbol": "errors.append",
+          "line": 209
+        },
+        {
+          "symbol": "errors",
+          "line": 209
+        },
+        {
+          "symbol": "rel",
+          "line": 209
+        },
+        {
+          "symbol": "meta.get",
+          "line": 211
+        },
+        {
+          "symbol": "meta",
+          "line": 211
+        },
+        {
+          "symbol": "fid",
+          "line": 212
+        },
+        {
+          "symbol": "errors.append",
+          "line": 213
+        },
+        {
+          "symbol": "errors",
+          "line": 213
+        },
+        {
+          "symbol": "rel",
+          "line": 213
+        },
+        {
+          "symbol": "fid",
+          "line": 214
+        },
+        {
+          "symbol": "seen_ids",
+          "line": 214
+        },
+        {
+          "symbol": "errors.append",
+          "line": 215
+        },
+        {
+          "symbol": "errors",
+          "line": 215
+        },
+        {
+          "symbol": "rel",
+          "line": 215
+        },
+        {
+          "symbol": "fid",
+          "line": 215
+        },
+        {
+          "symbol": "seen_ids",
+          "line": 215
+        },
+        {
+          "symbol": "seen_ids",
+          "line": 217
+        },
+        {
+          "symbol": "fid",
+          "line": 217
+        },
+        {
+          "symbol": "rel",
+          "line": 217
+        },
+        {
+          "symbol": "meta.get",
+          "line": 218
+        },
+        {
+          "symbol": "meta",
+          "line": 218
+        },
+        {
+          "symbol": "stato",
+          "line": 219
+        },
+        {
+          "symbol": "VALID_STATES",
+          "line": 219
+        },
+        {
+          "symbol": "errors.append",
+          "line": 220
+        },
+        {
+          "symbol": "errors",
+          "line": 220
+        },
+        {
+          "symbol": "rel",
+          "line": 220
+        },
+        {
+          "symbol": "stato",
+          "line": 220
+        },
+        {
+          "symbol": "'/'.join",
+          "line": 220
+        },
+        {
+          "symbol": "sorted",
+          "line": 220
+        },
+        {
+          "symbol": "VALID_STATES",
+          "line": 220
+        },
+        {
+          "symbol": "meta.get",
+          "line": 221
+        },
+        {
+          "symbol": "meta",
+          "line": 221
+        },
+        {
+          "symbol": "errors.append",
+          "line": 222
+        },
+        {
+          "symbol": "errors",
+          "line": 222
+        },
+        {
+          "symbol": "rel",
+          "line": 222
+        },
+        {
+          "symbol": "stato",
+          "line": 223
+        },
+        {
+          "symbol": "meta.get",
+          "line": 223
+        },
+        {
+          "symbol": "meta",
+          "line": 223
+        },
+        {
+          "symbol": "errors.append",
+          "line": 224
+        },
+        {
+          "symbol": "errors",
+          "line": 224
+        },
+        {
+          "symbol": "rel",
+          "line": 224
+        },
+        {
+          "symbol": "meta.get",
+          "line": 225
+        },
+        {
+          "symbol": "meta",
+          "line": 225
+        },
+        {
+          "symbol": "livello",
+          "line": 226
+        },
+        {
+          "symbol": "livello.upper",
+          "line": 226
+        },
+        {
+          "symbol": "VALID_LEVELS",
+          "line": 226
+        },
+        {
+          "symbol": "warnings.append",
+          "line": 227
+        },
+        {
+          "symbol": "warnings",
+          "line": 227
+        },
+        {
+          "symbol": "rel",
+          "line": 227
+        },
+        {
+          "symbol": "livello",
+          "line": 227
+        },
+        {
+          "symbol": "'/'.join",
+          "line": 227
+        },
+        {
+          "symbol": "sorted",
+          "line": 227
+        },
+        {
+          "symbol": "VALID_LEVELS",
+          "line": 227
+        },
+        {
+          "symbol": "text",
+          "line": 228
+        },
+        {
+          "symbol": "errors.append",
+          "line": 229
+        },
+        {
+          "symbol": "errors",
+          "line": 229
+        },
+        {
+          "symbol": "rel",
+          "line": 229
+        },
+        {
+          "symbol": "sec",
+          "line": 231
+        },
+        {
+          "symbol": "text",
+          "line": 231
+        },
+        {
+          "symbol": "warnings.append",
+          "line": 232
+        },
+        {
+          "symbol": "warnings",
+          "line": 232
+        },
+        {
+          "symbol": "rel",
+          "line": 232
+        },
+        {
+          "symbol": "sec",
+          "line": 232
+        },
+        {
+          "symbol": "ai",
+          "line": 235
+        },
+        {
+          "symbol": "analyses",
+          "line": 236
+        },
+        {
+          "symbol": "hist.is_file",
+          "line": 237
+        },
+        {
+          "symbol": "hist",
+          "line": 237
+        },
+        {
+          "symbol": "errors.append",
+          "line": 238
+        },
+        {
+          "symbol": "errors",
+          "line": 238
+        },
+        {
+          "symbol": "norm_text",
+          "line": 239
+        },
+        {
+          "symbol": "read_text",
+          "line": 239
+        },
+        {
+          "symbol": "hist",
+          "line": 239
+        },
+        {
+          "symbol": "build_index",
+          "line": 239
+        },
+        {
+          "symbol": "root",
+          "line": 239
+        },
+        {
+          "symbol": "errors.append",
+          "line": 240
+        },
+        {
+          "symbol": "errors",
+          "line": 240
+        },
+        {
+          "symbol": "ai",
+          "line": 243
+        },
+        {
+          "symbol": "hand.is_file",
+          "line": 244
+        },
+        {
+          "symbol": "hand",
+          "line": 244
+        },
+        {
+          "symbol": "re.search",
+          "line": 245
+        },
+        {
+          "symbol": "re",
+          "line": 245
+        },
+        {
+          "symbol": "read_text",
+          "line": 245
+        },
+        {
+          "symbol": "hand",
+          "line": 245
+        },
+        {
+          "symbol": "m",
+          "line": 246
+        },
+        {
+          "symbol": "warnings.append",
+          "line": 247
+        },
+        {
+          "symbol": "warnings",
+          "line": 247
+        },
+        {
+          "symbol": "datetime.strptime(m.group(1), '%Y-%m-%d').replace",
+          "line": 250
+        },
+        {
+          "symbol": "datetime.strptime",
+          "line": 250
+        },
+        {
+          "symbol": "datetime",
+          "line": 250
+        },
+        {
+          "symbol": "m.group",
+          "line": 250
+        },
+        {
+          "symbol": "m",
+          "line": 250
+        },
+        {
+          "symbol": "timezone.utc",
+          "line": 250
+        },
+        {
+          "symbol": "timezone",
+          "line": 250
+        },
+        {
+          "symbol": "(datetime.now(timezone.utc) - stamp).days",
+          "line": 251
+        },
+        {
+          "symbol": "datetime.now",
+          "line": 251
+        },
+        {
+          "symbol": "datetime",
+          "line": 251
+        },
+        {
+          "symbol": "timezone.utc",
+          "line": 251
+        },
+        {
+          "symbol": "timezone",
+          "line": 251
+        },
+        {
+          "symbol": "stamp",
+          "line": 251
+        },
+        {
+          "symbol": "age",
+          "line": 252
+        },
+        {
+          "symbol": "warnings.append",
+          "line": 253
+        },
+        {
+          "symbol": "warnings",
+          "line": 253
+        },
+        {
+          "symbol": "age",
+          "line": 253
+        },
+        {
+          "symbol": "ValueError",
+          "line": 254
+        },
+        {
+          "symbol": "warnings.append",
+          "line": 255
+        },
+        {
+          "symbol": "warnings",
+          "line": 255
+        },
+        {
+          "symbol": "warnings",
+          "line": 257
+        },
+        {
+          "symbol": "print",
+          "line": 258
+        },
+        {
+          "symbol": "w",
+          "line": 258
+        },
+        {
+          "symbol": "errors",
+          "line": 259
+        },
+        {
+          "symbol": "print",
+          "line": 260
+        },
+        {
+          "symbol": "e",
+          "line": 260
+        },
+        {
+          "symbol": "print",
+          "line": 261
+        },
+        {
+          "symbol": "len",
+          "line": 261
+        },
+        {
+          "symbol": "errors",
+          "line": 261
+        },
+        {
+          "symbol": "warnings",
+          "line": 261
+        },
+        {
+          "symbol": "errors",
+          "line": 262
+        },
+        {
+          "symbol": "root",
+          "line": 268
+        },
+        {
+          "symbol": "f.is_file",
+          "line": 270
+        },
+        {
+          "symbol": "f",
+          "line": 270
+        },
+        {
+          "symbol": "read_text(f).splitlines",
+          "line": 271
+        },
+        {
+          "symbol": "read_text",
+          "line": 271
+        },
+        {
+          "symbol": "f",
+          "line": 271
+        },
+        {
+          "symbol": "enumerate",
+          "line": 272
+        },
+        {
+          "symbol": "lines",
+          "line": 272
+        },
+        {
+          "symbol": "line.strip().startswith",
+          "line": 273
+        },
+        {
+          "symbol": "line.strip",
+          "line": 273
+        },
+        {
+          "symbol": "line",
+          "line": 273
+        },
+        {
+          "symbol": "c.strip",
+          "line": 275
+        },
+        {
+          "symbol": "c",
+          "line": 275
+        },
+        {
+          "symbol": "line.strip().strip('|').split",
+          "line": 275
+        },
+        {
+          "symbol": "line.strip().strip",
+          "line": 275
+        },
+        {
+          "symbol": "line.strip",
+          "line": 275
+        },
+        {
+          "symbol": "line",
+          "line": 275
+        },
+        {
+          "symbol": "len",
+          "line": 276
+        },
+        {
+          "symbol": "cells",
+          "line": 276
+        },
+        {
+          "symbol": "cells[0].lower",
+          "line": 278
+        },
+        {
+          "symbol": "cells",
+          "line": 278
+        },
+        {
+          "symbol": "set",
+          "line": 278
+        },
+        {
+          "symbol": "rows.append",
+          "line": 280
+        },
+        {
+          "symbol": "rows",
+          "line": 280
+        },
+        {
+          "symbol": "i",
+          "line": 281
+        },
+        {
+          "symbol": "cells",
+          "line": 282
+        },
+        {
+          "symbol": "cells[1].upper",
+          "line": 283
+        },
+        {
+          "symbol": "cells",
+          "line": 283
+        },
+        {
+          "symbol": "len",
+          "line": 284
+        },
+        {
+          "symbol": "cells",
+          "line": 284
+        },
+        {
+          "symbol": "len",
+          "line": 285
+        },
+        {
+          "symbol": "cells",
+          "line": 285
+        },
+        {
+          "symbol": "f",
+          "line": 287
+        },
+        {
+          "symbol": "lines",
+          "line": 287
+        },
+        {
+          "symbol": "rows",
+          "line": 287
+        },
+        {
+          "symbol": "parse_audit_plan",
+          "line": 291
+        },
+        {
+          "symbol": "root",
+          "line": 291
+        },
+        {
+          "symbol": "rows",
+          "line": 292
+        },
+        {
+          "symbol": "print",
+          "line": 293
+        },
+        {
+          "symbol": "f",
+          "line": 293
+        },
+        {
+          "symbol": "git_available",
+          "line": 296
+        },
+        {
+          "symbol": "root",
+          "line": 296
+        },
+        {
+          "symbol": "rows",
+          "line": 298
+        },
+        {
+          "symbol": "row",
+          "line": 299
+        },
+        {
+          "symbol": "row",
+          "line": 301
+        },
+        {
+          "symbol": "root",
+          "line": 302
+        },
+        {
+          "symbol": "rel",
+          "line": 302
+        },
+        {
+          "symbol": "target.exists",
+          "line": 303
+        },
+        {
+          "symbol": "target",
+          "line": 303
+        },
+        {
+          "symbol": "print",
+          "line": 304
+        },
+        {
+          "symbol": "rel",
+          "line": 304
+        },
+        {
+          "symbol": "use_git",
+          "line": 307
+        },
+        {
+          "symbol": "re.fullmatch",
+          "line": 307
+        },
+        {
+          "symbol": "re",
+          "line": 307
+        },
+        {
+          "symbol": "ref",
+          "line": 307
+        },
+        {
+          "symbol": "git_changed_since",
+          "line": 308
+        },
+        {
+          "symbol": "root",
+          "line": 308
+        },
+        {
+          "symbol": "ref",
+          "line": 308
+        },
+        {
+          "symbol": "rel.replace",
+          "line": 308
+        },
+        {
+          "symbol": "rel",
+          "line": 308
+        },
+        {
+          "symbol": "res",
+          "line": 309
+        },
+        {
+          "symbol": "print",
+          "line": 310
+        },
+        {
+          "symbol": "rel",
+          "line": 310
+        },
+        {
+          "symbol": "ref",
+          "line": 310
+        },
+        {
+          "symbol": "res",
+          "line": 312
+        },
+        {
+          "symbol": "parse_iso",
+          "line": 314
+        },
+        {
+          "symbol": "ref",
+          "line": 314
+        },
+        {
+          "symbol": "ts",
+          "line": 315
+        },
+        {
+          "symbol": "print",
+          "line": 316
+        },
+        {
+          "symbol": "rel",
+          "line": 316
+        },
+        {
+          "symbol": "ref",
+          "line": 316
+        },
+        {
+          "symbol": "iter_files",
+          "line": 318
+        },
+        {
+          "symbol": "target",
+          "line": 318
+        },
+        {
+          "symbol": "datetime.fromtimestamp",
+          "line": 319
+        },
+        {
+          "symbol": "datetime",
+          "line": 319
+        },
+        {
+          "symbol": "fp.stat().st_mtime",
+          "line": 319
+        },
+        {
+          "symbol": "fp.stat",
+          "line": 319
+        },
+        {
+          "symbol": "fp",
+          "line": 319
+        },
+        {
+          "symbol": "timezone.utc",
+          "line": 319
+        },
+        {
+          "symbol": "timezone",
+          "line": 319
+        },
+        {
+          "symbol": "mtime",
+          "line": 320
+        },
+        {
+          "symbol": "ts",
+          "line": 320
+        },
+        {
+          "symbol": "MTIME_GRACE",
+          "line": 320
+        },
+        {
+          "symbol": "changed.append",
+          "line": 321
+        },
+        {
+          "symbol": "changed",
+          "line": 321
+        },
+        {
+          "symbol": "str(fp.relative_to(root)).replace",
+          "line": 321
+        },
+        {
+          "symbol": "str",
+          "line": 321
+        },
+        {
+          "symbol": "fp.relative_to",
+          "line": 321
+        },
+        {
+          "symbol": "fp",
+          "line": 321
+        },
+        {
+          "symbol": "root",
+          "line": 321
+        },
+        {
+          "symbol": "changed",
+          "line": 322
+        },
+        {
+          "symbol": "stale.append",
+          "line": 323
+        },
+        {
+          "symbol": "stale",
+          "line": 323
+        },
+        {
+          "symbol": "rel",
+          "line": 323
+        },
+        {
+          "symbol": "changed",
+          "line": 323
+        },
+        {
+          "symbol": "stale",
+          "line": 325
+        },
+        {
+          "symbol": "print",
+          "line": 326
+        },
+        {
+          "symbol": "print",
+          "line": 328
+        },
+        {
+          "symbol": "stale",
+          "line": 329
+        },
+        {
+          "symbol": "print",
+          "line": 330
+        },
+        {
+          "symbol": "rel",
+          "line": 330
+        },
+        {
+          "symbol": "len",
+          "line": 330
+        },
+        {
+          "symbol": "changed",
+          "line": 330
+        },
+        {
+          "symbol": "changed",
+          "line": 331
+        },
+        {
+          "symbol": "print",
+          "line": 332
+        },
+        {
+          "symbol": "c",
+          "line": 332
+        },
+        {
+          "symbol": "len",
+          "line": 333
+        },
+        {
+          "symbol": "changed",
+          "line": 333
+        },
+        {
+          "symbol": "print",
+          "line": 334
+        },
+        {
+          "symbol": "len",
+          "line": 334
+        },
+        {
+          "symbol": "changed",
+          "line": 334
+        },
+        {
+          "symbol": "print",
+          "line": 335
+        },
+        {
+          "symbol": "parse_audit_plan",
+          "line": 340
+        },
+        {
+          "symbol": "root",
+          "line": 340
+        },
+        {
+          "symbol": "git_available",
+          "line": 341
+        },
+        {
+          "symbol": "root",
+          "line": 341
+        },
+        {
+          "symbol": "git_head",
+          "line": 341
+        },
+        {
+          "symbol": "utc_now_iso",
+          "line": 341
+        },
+        {
+          "symbol": "r['path'].replace('\\\\', '/').rstrip",
+          "line": 342
+        },
+        {
+          "symbol": "r['path'].replace",
+          "line": 342
+        },
+        {
+          "symbol": "r",
+          "line": 342
+        },
+        {
+          "symbol": "rows",
+          "line": 342
+        },
+        {
+          "symbol": "lines",
+          "line": 344
+        },
+        {
+          "symbol": "path",
+          "line": 351
+        },
+        {
+          "symbol": "ref",
+          "line": 351
+        },
+        {
+          "symbol": "note",
+          "line": 351
+        },
+        {
+          "symbol": "paths",
+          "line": 354
+        },
+        {
+          "symbol": "raw.replace('\\\\', '/').rstrip",
+          "line": 355
+        },
+        {
+          "symbol": "raw.replace",
+          "line": 355
+        },
+        {
+          "symbol": "raw",
+          "line": 355
+        },
+        {
+          "symbol": "key",
+          "line": 356
+        },
+        {
+          "symbol": "(root / key).is_dir",
+          "line": 356
+        },
+        {
+          "symbol": "root",
+          "line": 356
+        },
+        {
+          "symbol": "by_path.get",
+          "line": 357
+        },
+        {
+          "symbol": "by_path",
+          "line": 357
+        },
+        {
+          "symbol": "key",
+          "line": 357
+        },
+        {
+          "symbol": "existing",
+          "line": 358
+        },
+        {
+          "symbol": "lines",
+          "line": 359
+        },
+        {
+          "symbol": "existing",
+          "line": 359
+        },
+        {
+          "symbol": "row_text",
+          "line": 359
+        },
+        {
+          "symbol": "print",
+          "line": 360
+        },
+        {
+          "symbol": "existing",
+          "line": 360
+        },
+        {
+          "symbol": "ref",
+          "line": 360
+        },
+        {
+          "symbol": "appended.append",
+          "line": 362
+        },
+        {
+          "symbol": "appended",
+          "line": 362
+        },
+        {
+          "symbol": "row_text",
+          "line": 362
+        },
+        {
+          "symbol": "display",
+          "line": 362
+        },
+        {
+          "symbol": "print",
+          "line": 363
+        },
+        {
+          "symbol": "display",
+          "line": 363
+        },
+        {
+          "symbol": "ref",
+          "line": 363
+        },
+        {
+          "symbol": "appended",
+          "line": 365
+        },
+        {
+          "symbol": "rows",
+          "line": 366
+        },
+        {
+          "symbol": "max",
+          "line": 366
+        },
+        {
+          "symbol": "r",
+          "line": 366
+        },
+        {
+          "symbol": "len",
+          "line": 366
+        },
+        {
+          "symbol": "lines",
+          "line": 366
+        },
+        {
+          "symbol": "lines",
+          "line": 367
+        },
+        {
+          "symbol": "insert_at",
+          "line": 367
+        },
+        {
+          "symbol": "appended",
+          "line": 367
+        },
+        {
+          "symbol": "f.parent.mkdir",
+          "line": 369
+        },
+        {
+          "symbol": "f.parent",
+          "line": 369
+        },
+        {
+          "symbol": "f",
+          "line": 369
+        },
+        {
+          "symbol": "f.write_text",
+          "line": 370
+        },
+        {
+          "symbol": "f",
+          "line": 370
+        },
+        {
+          "symbol": "'\\n'.join",
+          "line": 370
+        },
+        {
+          "symbol": "lines",
+          "line": 370
+        },
+        {
+          "symbol": "print",
+          "line": 375
+        },
+        {
+          "symbol": "cmd_validate",
+          "line": 376
+        },
+        {
+          "symbol": "root",
+          "line": 376
+        },
+        {
+          "symbol": "print",
+          "line": 377
+        },
+        {
+          "symbol": "cmd_stale",
+          "line": 378
+        },
+        {
+          "symbol": "root",
+          "line": 378
+        },
+        {
+          "symbol": "print",
+          "line": 379
+        },
+        {
+          "symbol": "rc_v",
+          "line": 379
+        },
+        {
+          "symbol": "rc_s",
+          "line": 379
+        },
+        {
+          "symbol": "rc_v",
+          "line": 380
+        },
+        {
+          "symbol": "rc_s",
+          "line": 380
+        },
+        {
+          "symbol": "rc_v",
+          "line": 381
+        },
+        {
+          "symbol": "rc_s",
+          "line": 381
+        },
+        {
+          "symbol": "args.file",
+          "line": 387
+        },
+        {
+          "symbol": "args",
+          "line": 387
+        },
+        {
+          "symbol": "args.hook",
+          "line": 388
+        },
+        {
+          "symbol": "args",
+          "line": 388
+        },
+        {
+          "symbol": "sys.stdin.buffer.read().decode",
+          "line": 392
+        },
+        {
+          "symbol": "sys.stdin.buffer.read",
+          "line": 392
+        },
+        {
+          "symbol": "sys.stdin.buffer",
+          "line": 392
+        },
+        {
+          "symbol": "sys.stdin",
+          "line": 392
+        },
+        {
+          "symbol": "sys",
+          "line": 392
+        },
+        {
+          "symbol": "json.loads",
+          "line": 393
+        },
+        {
+          "symbol": "json",
+          "line": 393
+        },
+        {
+          "symbol": "raw",
+          "line": 393
+        },
+        {
+          "symbol": "(payload.get('tool_input') or {}).get",
+          "line": 394
+        },
+        {
+          "symbol": "payload.get",
+          "line": 394
+        },
+        {
+          "symbol": "payload",
+          "line": 394
+        },
+        {
+          "symbol": "Exception",
+          "line": 395
+        },
+        {
+          "symbol": "file_path",
+          "line": 397
+        },
+        {
+          "symbol": "args.root",
+          "line": 399
+        },
+        {
+          "symbol": "args",
+          "line": 399
+        },
+        {
+          "symbol": "Path(args.root).resolve",
+          "line": 399
+        },
+        {
+          "symbol": "Path",
+          "line": 399
+        },
+        {
+          "symbol": "find_project_root",
+          "line": 399
+        },
+        {
+          "symbol": "str(Path(file_path).resolve().relative_to(root)).replace",
+          "line": 401
+        },
+        {
+          "symbol": "str",
+          "line": 401
+        },
+        {
+          "symbol": "Path(file_path).resolve().relative_to",
+          "line": 401
+        },
+        {
+          "symbol": "Path(file_path).resolve",
+          "line": 401
+        },
+        {
+          "symbol": "Path",
+          "line": 401
+        },
+        {
+          "symbol": "file_path",
+          "line": 401
+        },
+        {
+          "symbol": "root",
+          "line": 401
+        },
+        {
+          "symbol": "ValueError",
+          "line": 402
+        },
+        {
+          "symbol": "rel.startswith",
+          "line": 404
+        },
+        {
+          "symbol": "rel",
+          "line": 404
+        },
+        {
+          "symbol": "p.strip().replace('\\\\', '/').rstrip",
+          "line": 406
+        },
+        {
+          "symbol": "p.strip().replace",
+          "line": 406
+        },
+        {
+          "symbol": "p.strip",
+          "line": 406
+        },
+        {
+          "symbol": "p",
+          "line": 406
+        },
+        {
+          "symbol": "(args.protected or '').split",
+          "line": 407
+        },
+        {
+          "symbol": "args.protected",
+          "line": 407
+        },
+        {
+          "symbol": "args",
+          "line": 407
+        },
+        {
+          "symbol": "p.strip",
+          "line": 407
+        },
+        {
+          "symbol": "p",
+          "line": 407
+        },
+        {
+          "symbol": "protected",
+          "line": 408
+        },
+        {
+          "symbol": "any",
+          "line": 410
+        },
+        {
+          "symbol": "rel",
+          "line": 410
+        },
+        {
+          "symbol": "p",
+          "line": 410
+        },
+        {
+          "symbol": "rel.startswith",
+          "line": 410
+        },
+        {
+          "symbol": "protected",
+          "line": 410
+        },
+        {
+          "symbol": "list_analyses",
+          "line": 412
+        },
+        {
+          "symbol": "root",
+          "line": 412
+        },
+        {
+          "symbol": "meta.get",
+          "line": 413
+        },
+        {
+          "symbol": "meta",
+          "line": 413
+        },
+        {
+          "symbol": "sys.stderr.write",
+          "line": 415
+        },
+        {
+          "symbol": "sys.stderr",
+          "line": 415
+        },
+        {
+          "symbol": "sys",
+          "line": 415
+        },
+        {
+          "symbol": "rel",
+          "line": 416
+        },
+        {
+          "symbol": "argparse.ArgumentParser",
+          "line": 424
+        },
+        {
+          "symbol": "argparse",
+          "line": 424
+        },
+        {
+          "symbol": "common.add_argument",
+          "line": 425
+        },
+        {
+          "symbol": "common",
+          "line": 425
+        },
+        {
+          "symbol": "argparse.ArgumentParser",
+          "line": 427
+        },
+        {
+          "symbol": "argparse",
+          "line": 427
+        },
+        {
+          "symbol": "ap.add_subparsers",
+          "line": 429
+        },
+        {
+          "symbol": "ap",
+          "line": 429
+        },
+        {
+          "symbol": "sub.add_parser",
+          "line": 430
+        },
+        {
+          "symbol": "sub",
+          "line": 430
+        },
+        {
+          "symbol": "common",
+          "line": 430
+        },
+        {
+          "symbol": "sub.add_parser",
+          "line": 431
+        },
+        {
+          "symbol": "sub",
+          "line": 431
+        },
+        {
+          "symbol": "common",
+          "line": 431
+        },
+        {
+          "symbol": "sub.add_parser",
+          "line": 432
+        },
+        {
+          "symbol": "sub",
+          "line": 432
+        },
+        {
+          "symbol": "common",
+          "line": 432
+        },
+        {
+          "symbol": "sub.add_parser",
+          "line": 433
+        },
+        {
+          "symbol": "sub",
+          "line": 433
+        },
+        {
+          "symbol": "common",
+          "line": 433
+        },
+        {
+          "symbol": "sub.add_parser",
+          "line": 434
+        },
+        {
+          "symbol": "sub",
+          "line": 434
+        },
+        {
+          "symbol": "common",
+          "line": 434
+        },
+        {
+          "symbol": "mp.add_argument",
+          "line": 435
+        },
+        {
+          "symbol": "mp",
+          "line": 435
+        },
+        {
+          "symbol": "sub.add_parser",
+          "line": 436
+        },
+        {
+          "symbol": "sub",
+          "line": 436
+        },
+        {
+          "symbol": "common",
+          "line": 436
+        },
+        {
+          "symbol": "gp.add_argument",
+          "line": 437
+        },
+        {
+          "symbol": "gp",
+          "line": 437
+        },
+        {
+          "symbol": "gp.add_argument",
+          "line": 438
+        },
+        {
+          "symbol": "gp",
+          "line": 438
+        },
+        {
+          "symbol": "gp.add_argument",
+          "line": 439
+        },
+        {
+          "symbol": "gp",
+          "line": 439
+        },
+        {
+          "symbol": "ap.parse_args",
+          "line": 441
+        },
+        {
+          "symbol": "ap",
+          "line": 441
+        },
+        {
+          "symbol": "argv",
+          "line": 441
+        },
+        {
+          "symbol": "args.cmd",
+          "line": 442
+        },
+        {
+          "symbol": "args",
+          "line": 442
+        },
+        {
+          "symbol": "cmd_gate",
+          "line": 443
+        },
+        {
+          "symbol": "args",
+          "line": 443
+        },
+        {
+          "symbol": "args.root",
+          "line": 445
+        },
+        {
+          "symbol": "args",
+          "line": 445
+        },
+        {
+          "symbol": "Path(args.root).resolve",
+          "line": 445
+        },
+        {
+          "symbol": "Path",
+          "line": 445
+        },
+        {
+          "symbol": "find_project_root",
+          "line": 445
+        },
+        {
+          "symbol": "args.cmd",
+          "line": 446
+        },
+        {
+          "symbol": "args",
+          "line": 446
+        },
+        {
+          "symbol": "cmd_check",
+          "line": 447
+        },
+        {
+          "symbol": "root",
+          "line": 447
+        },
+        {
+          "symbol": "args.cmd",
+          "line": 448
+        },
+        {
+          "symbol": "args",
+          "line": 448
+        },
+        {
+          "symbol": "cmd_validate",
+          "line": 449
+        },
+        {
+          "symbol": "root",
+          "line": 449
+        },
+        {
+          "symbol": "args.cmd",
+          "line": 450
+        },
+        {
+          "symbol": "args",
+          "line": 450
+        },
+        {
+          "symbol": "cmd_index",
+          "line": 451
+        },
+        {
+          "symbol": "root",
+          "line": 451
+        },
+        {
+          "symbol": "args.cmd",
+          "line": 452
+        },
+        {
+          "symbol": "args",
+          "line": 452
+        },
+        {
+          "symbol": "cmd_stale",
+          "line": 453
+        },
+        {
+          "symbol": "root",
+          "line": 453
+        },
+        {
+          "symbol": "args.cmd",
+          "line": 454
+        },
+        {
+          "symbol": "args",
+          "line": 454
+        },
+        {
+          "symbol": "cmd_mark",
+          "line": 455
+        },
+        {
+          "symbol": "root",
+          "line": 455
+        },
+        {
+          "symbol": "args.paths",
+          "line": 455
+        },
+        {
+          "symbol": "args",
+          "line": 455
+        },
+        {
+          "symbol": "__name__",
+          "line": 459
+        },
+        {
+          "symbol": "sys.exit",
+          "line": 460
+        },
+        {
+          "symbol": "sys",
+          "line": 460
+        },
+        {
+          "symbol": "main",
+          "line": 460
+        }
+      ]
+    },
+    "skills/agentic-sdlc-skill/scripts/sdlc_check.py": {
+      "hash": "f1fd0c0cf4ef891d6dc44048b1e1b1116fea12db4b27acba527010600c14bb94",
+      "definitions": [
+        {
+          "name": "utc_now_iso",
+          "type": "function",
+          "line": 42
+        },
+        {
+          "name": "find_project_root",
+          "type": "function",
+          "line": 46
+        },
+        {
+          "name": "read_text",
+          "type": "function",
+          "line": 54
+        },
+        {
+          "name": "parse_iso",
+          "type": "function",
+          "line": 58
+        },
+        {
+          "name": "norm_text",
+          "type": "function",
+          "line": 70
+        },
+        {
+          "name": "load_frontmatter",
+          "type": "function",
+          "line": 74
+        },
+        {
+          "name": "list_analyses",
+          "type": "function",
+          "line": 87
+        },
+        {
+          "name": "iter_files",
+          "type": "function",
+          "line": 101
+        },
+        {
+          "name": "git_available",
+          "type": "function",
+          "line": 113
+        },
+        {
+          "name": "git_head",
+          "type": "function",
+          "line": 122
+        },
+        {
+          "name": "git_has_changes",
+          "type": "function",
+          "line": 131
+        },
+        {
+          "name": "git_changed_since",
+          "type": "function",
+          "line": 142
+        },
+        {
+          "name": "build_index",
+          "type": "function",
+          "line": 161
+        },
+        {
+          "name": "cmd_index",
+          "type": "function",
+          "line": 184
+        },
+        {
+          "name": "cmd_validate",
+          "type": "function",
+          "line": 194
+        },
+        {
+          "name": "parse_audit_plan",
+          "type": "function",
+          "line": 278
+        },
+        {
+          "name": "cmd_stale",
+          "type": "function",
+          "line": 301
+        },
+        {
+          "name": "cmd_mark",
+          "type": "function",
+          "line": 350
+        },
+        {
+          "name": "cmd_mark.row_text",
+          "type": "method",
+          "line": 364
+        },
+        {
+          "name": "cmd_check",
+          "type": "function",
+          "line": 388
+        },
+        {
+          "name": "cmd_gate",
+          "type": "function",
+          "line": 400
+        },
+        {
+          "name": "main",
+          "type": "function",
+          "line": 437
+        }
+      ],
+      "imports": [
+        "argparse",
+        "json",
+        "os",
+        "re",
+        "subprocess",
+        "sys",
+        "datetime",
+        "pathlib"
+      ],
+      "references": [
+        {
+          "symbol": "timedelta",
+          "line": 31
+        },
+        {
+          "symbol": "sys.stdout.reconfigure",
+          "line": 34
+        },
+        {
+          "symbol": "sys.stdout",
+          "line": 34
+        },
+        {
+          "symbol": "sys",
+          "line": 34
+        },
+        {
+          "symbol": "sys.stderr.reconfigure",
+          "line": 35
+        },
+        {
+          "symbol": "sys.stderr",
+          "line": 35
+        },
+        {
+          "symbol": "sys",
+          "line": 35
+        },
+        {
+          "symbol": "Exception",
+          "line": 36
+        },
+        {
+          "symbol": "datetime.now(timezone.utc).strftime",
+          "line": 43
+        },
+        {
+          "symbol": "datetime.now",
+          "line": 43
+        },
+        {
+          "symbol": "datetime",
+          "line": 43
+        },
+        {
+          "symbol": "timezone.utc",
+          "line": 43
+        },
+        {
+          "symbol": "timezone",
+          "line": 43
+        },
+        {
+          "symbol": "Path(start or os.getcwd()).resolve",
+          "line": 47
+        },
+        {
+          "symbol": "Path",
+          "line": 47
+        },
+        {
+          "symbol": "start",
+          "line": 47
+        },
+        {
+          "symbol": "os.getcwd",
+          "line": 47
+        },
+        {
+          "symbol": "os",
+          "line": 47
+        },
+        {
+          "symbol": "cur",
+          "line": 48
+        },
+        {
+          "symbol": "list",
+          "line": 48
+        },
+        {
+          "symbol": "cur.parents",
+          "line": 48
+        },
+        {
+          "symbol": "(p / 'ai_docs').is_dir",
+          "line": 49
+        },
+        {
+          "symbol": "p",
+          "line": 49
+        },
+        {
+          "symbol": "p",
+          "line": 50
+        },
+        {
+          "symbol": "cur",
+          "line": 51
+        },
+        {
+          "symbol": "path.read_text",
+          "line": 55
+        },
+        {
+          "symbol": "path",
+          "line": 55
+        },
+        {
+          "symbol": "value",
+          "line": 59
+        },
+        {
+          "symbol": "datetime.fromisoformat",
+          "line": 62
+        },
+        {
+          "symbol": "datetime",
+          "line": 62
+        },
+        {
+          "symbol": "value.strip().replace",
+          "line": 62
+        },
+        {
+          "symbol": "value.strip",
+          "line": 62
+        },
+        {
+          "symbol": "value",
+          "line": 62
+        },
+        {
+          "symbol": "dt.tzinfo",
+          "line": 63
+        },
+        {
+          "symbol": "dt",
+          "line": 63
+        },
+        {
+          "symbol": "dt.replace",
+          "line": 64
+        },
+        {
+          "symbol": "dt",
+          "line": 64
+        },
+        {
+          "symbol": "timezone.utc",
+          "line": 64
+        },
+        {
+          "symbol": "timezone",
+          "line": 64
+        },
+        {
+          "symbol": "dt",
+          "line": 65
+        },
+        {
+          "symbol": "ValueError",
+          "line": 66
+        },
+        {
+          "symbol": "'\\n'.join",
+          "line": 71
+        },
+        {
+          "symbol": "line.rstrip",
+          "line": 71
+        },
+        {
+          "symbol": "line",
+          "line": 71
+        },
+        {
+          "symbol": "s.strip().splitlines",
+          "line": 71
+        },
+        {
+          "symbol": "s.strip",
+          "line": 71
+        },
+        {
+          "symbol": "s",
+          "line": 71
+        },
+        {
+          "symbol": "lines",
+          "line": 76
+        },
+        {
+          "symbol": "lines[0].strip",
+          "line": 76
+        },
+        {
+          "symbol": "meta",
+          "line": 77
+        },
+        {
+          "symbol": "lines",
+          "line": 78
+        },
+        {
+          "symbol": "line.strip",
+          "line": 79
+        },
+        {
+          "symbol": "line",
+          "line": 79
+        },
+        {
+          "symbol": "re.match",
+          "line": 81
+        },
+        {
+          "symbol": "re",
+          "line": 81
+        },
+        {
+          "symbol": "line",
+          "line": 81
+        },
+        {
+          "symbol": "m",
+          "line": 82
+        },
+        {
+          "symbol": "meta",
+          "line": 83
+        },
+        {
+          "symbol": "m.group(1).strip().lower",
+          "line": 83
+        },
+        {
+          "symbol": "m.group(1).strip",
+          "line": 83
+        },
+        {
+          "symbol": "m.group",
+          "line": 83
+        },
+        {
+          "symbol": "m",
+          "line": 83
+        },
+        {
+          "symbol": "m.group(2).strip",
+          "line": 83
+        },
+        {
+          "symbol": "meta",
+          "line": 84
+        },
+        {
+          "symbol": "root",
+          "line": 89
+        },
+        {
+          "symbol": "sol.is_dir",
+          "line": 91
+        },
+        {
+          "symbol": "sol",
+          "line": 91
+        },
+        {
+          "symbol": "out",
+          "line": 92
+        },
+        {
+          "symbol": "sorted",
+          "line": 93
+        },
+        {
+          "symbol": "sol.glob",
+          "line": 93
+        },
+        {
+          "symbol": "sol",
+          "line": 93
+        },
+        {
+          "symbol": "read_text",
+          "line": 94
+        },
+        {
+          "symbol": "p",
+          "line": 94
+        },
+        {
+          "symbol": "text",
+          "line": 95
+        },
+        {
+          "symbol": "out.append",
+          "line": 97
+        },
+        {
+          "symbol": "out",
+          "line": 97
+        },
+        {
+          "symbol": "p",
+          "line": 97
+        },
+        {
+          "symbol": "load_frontmatter",
+          "line": 97
+        },
+        {
+          "symbol": "text.splitlines",
+          "line": 97
+        },
+        {
+          "symbol": "text",
+          "line": 97
+        },
+        {
+          "symbol": "out",
+          "line": 98
+        },
+        {
+          "symbol": "target.is_file",
+          "line": 102
+        },
+        {
+          "symbol": "target",
+          "line": 102
+        },
+        {
+          "symbol": "target",
+          "line": 103
+        },
+        {
+          "symbol": "os.walk",
+          "line": 105
+        },
+        {
+          "symbol": "os",
+          "line": 105
+        },
+        {
+          "symbol": "target",
+          "line": 105
+        },
+        {
+          "symbol": "dirnames",
+          "line": 106
+        },
+        {
+          "symbol": "d",
+          "line": 106
+        },
+        {
+          "symbol": "SKIP_DIRS",
+          "line": 106
+        },
+        {
+          "symbol": "d.startswith",
+          "line": 106
+        },
+        {
+          "symbol": "filenames",
+          "line": 107
+        },
+        {
+          "symbol": "Path",
+          "line": 108
+        },
+        {
+          "symbol": "dirpath",
+          "line": 108
+        },
+        {
+          "symbol": "name",
+          "line": 108
+        },
+        {
+          "symbol": "subprocess.run",
+          "line": 115
+        },
+        {
+          "symbol": "subprocess",
+          "line": 115
+        },
+        {
+          "symbol": "str",
+          "line": 116
+        },
+        {
+          "symbol": "root",
+          "line": 116
+        },
+        {
+          "symbol": "r.returncode",
+          "line": 117
+        },
+        {
+          "symbol": "r",
+          "line": 117
+        },
+        {
+          "symbol": "r.stdout.strip",
+          "line": 117
+        },
+        {
+          "symbol": "r.stdout",
+          "line": 117
+        },
+        {
+          "symbol": "Exception",
+          "line": 118
+        },
+        {
+          "symbol": "subprocess.run",
+          "line": 124
+        },
+        {
+          "symbol": "subprocess",
+          "line": 124
+        },
+        {
+          "symbol": "str",
+          "line": 125
+        },
+        {
+          "symbol": "root",
+          "line": 125
+        },
+        {
+          "symbol": "r.returncode",
+          "line": 126
+        },
+        {
+          "symbol": "r",
+          "line": 126
+        },
+        {
+          "symbol": "r.stdout.strip",
+          "line": 126
+        },
+        {
+          "symbol": "r.stdout",
+          "line": 126
+        },
+        {
+          "symbol": "Exception",
+          "line": 127
+        },
+        {
+          "symbol": "rel_path.replace",
+          "line": 134
+        },
+        {
+          "symbol": "rel_path",
+          "line": 134
+        },
+        {
+          "symbol": "subprocess.run",
+          "line": 135
+        },
+        {
+          "symbol": "subprocess",
+          "line": 135
+        },
+        {
+          "symbol": "rel",
+          "line": 135
+        },
+        {
+          "symbol": "str",
+          "line": 136
+        },
+        {
+          "symbol": "root",
+          "line": 136
+        },
+        {
+          "symbol": "r.returncode",
+          "line": 137
+        },
+        {
+          "symbol": "r",
+          "line": 137
+        },
+        {
+          "symbol": "bool",
+          "line": 137
+        },
+        {
+          "symbol": "r.stdout.strip",
+          "line": 137
+        },
+        {
+          "symbol": "r.stdout",
+          "line": 137
+        },
+        {
+          "symbol": "Exception",
+          "line": 138
+        },
+        {
+          "symbol": "subprocess.run",
+          "line": 145
+        },
+        {
+          "symbol": "subprocess",
+          "line": 145
+        },
+        {
+          "symbol": "ref",
+          "line": 145
+        },
+        {
+          "symbol": "rel_path",
+          "line": 145
+        },
+        {
+          "symbol": "str",
+          "line": 146
+        },
+        {
+          "symbol": "root",
+          "line": 146
+        },
+        {
+          "symbol": "r.returncode",
+          "line": 147
+        },
+        {
+          "symbol": "r",
+          "line": 147
+        },
+        {
+          "symbol": "l.strip",
+          "line": 149
+        },
+        {
+          "symbol": "l",
+          "line": 149
+        },
+        {
+          "symbol": "r.stdout.splitlines",
+          "line": 149
+        },
+        {
+          "symbol": "r.stdout",
+          "line": 149
+        },
+        {
+          "symbol": "r",
+          "line": 149
+        },
+        {
+          "symbol": "subprocess.run",
+          "line": 150
+        },
+        {
+          "symbol": "subprocess",
+          "line": 150
+        },
+        {
+          "symbol": "rel_path",
+          "line": 150
+        },
+        {
+          "symbol": "str",
+          "line": 151
+        },
+        {
+          "symbol": "root",
+          "line": 151
+        },
+        {
+          "symbol": "r2.returncode",
+          "line": 152
+        },
+        {
+          "symbol": "r2",
+          "line": 152
+        },
+        {
+          "symbol": "l.strip",
+          "line": 153
+        },
+        {
+          "symbol": "l",
+          "line": 153
+        },
+        {
+          "symbol": "r2.stdout.splitlines",
+          "line": 153
+        },
+        {
+          "symbol": "r2.stdout",
+          "line": 153
+        },
+        {
+          "symbol": "r2",
+          "line": 153
+        },
+        {
+          "symbol": "sorted",
+          "line": 154
+        },
+        {
+          "symbol": "set",
+          "line": 154
+        },
+        {
+          "symbol": "changed",
+          "line": 154
+        },
+        {
+          "symbol": "Exception",
+          "line": 155
+        },
+        {
+          "symbol": "list_analyses",
+          "line": 163
+        },
+        {
+          "symbol": "root",
+          "line": 163
+        },
+        {
+          "symbol": "rows.append",
+          "line": 164
+        },
+        {
+          "symbol": "rows",
+          "line": 164
+        },
+        {
+          "symbol": "meta.get",
+          "line": 165
+        },
+        {
+          "symbol": "meta",
+          "line": 165
+        },
+        {
+          "symbol": "meta.get",
+          "line": 166
+        },
+        {
+          "symbol": "meta",
+          "line": 166
+        },
+        {
+          "symbol": "p.stem.replace",
+          "line": 166
+        },
+        {
+          "symbol": "p.stem",
+          "line": 166
+        },
+        {
+          "symbol": "p",
+          "line": 166
+        },
+        {
+          "symbol": "meta.get",
+          "line": 167
+        },
+        {
+          "symbol": "meta",
+          "line": 167
+        },
+        {
+          "symbol": "meta.get",
+          "line": 168
+        },
+        {
+          "symbol": "meta",
+          "line": 168
+        },
+        {
+          "symbol": "meta.get",
+          "line": 169
+        },
+        {
+          "symbol": "meta",
+          "line": 169
+        },
+        {
+          "symbol": "meta.get",
+          "line": 170
+        },
+        {
+          "symbol": "meta",
+          "line": 170
+        },
+        {
+          "symbol": "p.name",
+          "line": 171
+        },
+        {
+          "symbol": "p",
+          "line": 171
+        },
+        {
+          "symbol": "rows.sort",
+          "line": 173
+        },
+        {
+          "symbol": "rows",
+          "line": 173
+        },
+        {
+          "symbol": "r",
+          "line": 173
+        },
+        {
+          "symbol": "INDEX_HEADER",
+          "line": 174
+        },
+        {
+          "symbol": "rows",
+          "line": 179
+        },
+        {
+          "symbol": "lines.append",
+          "line": 180
+        },
+        {
+          "symbol": "lines",
+          "line": 180
+        },
+        {
+          "symbol": "' | '.join",
+          "line": 180
+        },
+        {
+          "symbol": "r",
+          "line": 180
+        },
+        {
+          "symbol": "'\\n'.join",
+          "line": 181
+        },
+        {
+          "symbol": "lines",
+          "line": 181
+        },
+        {
+          "symbol": "root",
+          "line": 185
+        },
+        {
+          "symbol": "target.parent.mkdir",
+          "line": 186
+        },
+        {
+          "symbol": "target.parent",
+          "line": 186
+        },
+        {
+          "symbol": "target",
+          "line": 186
+        },
+        {
+          "symbol": "target.write_text",
+          "line": 187
+        },
+        {
+          "symbol": "target",
+          "line": 187
+        },
+        {
+          "symbol": "build_index",
+          "line": 187
+        },
+        {
+          "symbol": "root",
+          "line": 187
+        },
+        {
+          "symbol": "print",
+          "line": 188
+        },
+        {
+          "symbol": "target",
+          "line": 188
+        },
+        {
+          "symbol": "root",
+          "line": 196
+        },
+        {
+          "symbol": "ai.is_dir",
+          "line": 197
+        },
+        {
+          "symbol": "ai",
+          "line": 197
+        },
+        {
+          "symbol": "print",
+          "line": 198
+        },
+        {
+          "symbol": "ai",
+          "line": 198
+        },
+        {
+          "symbol": "VISION_FILES",
+          "line": 202
+        },
+        {
+          "symbol": "ai",
+          "line": 203
+        },
+        {
+          "symbol": "name",
+          "line": 203
+        },
+        {
+          "symbol": "f.is_file",
+          "line": 204
+        },
+        {
+          "symbol": "f",
+          "line": 204
+        },
+        {
+          "symbol": "warnings.append",
+          "line": 205
+        },
+        {
+          "symbol": "warnings",
+          "line": 205
+        },
+        {
+          "symbol": "name",
+          "line": 205
+        },
+        {
+          "symbol": "'\\n'.join",
+          "line": 207
+        },
+        {
+          "symbol": "read_text(f).splitlines",
+          "line": 207
+        },
+        {
+          "symbol": "read_text",
+          "line": 207
+        },
+        {
+          "symbol": "f",
+          "line": 207
+        },
+        {
+          "symbol": "re.search",
+          "line": 208
+        },
+        {
+          "symbol": "re",
+          "line": 208
+        },
+        {
+          "symbol": "head",
+          "line": 208
+        },
+        {
+          "symbol": "m",
+          "line": 209
+        },
+        {
+          "symbol": "errors.append",
+          "line": 210
+        },
+        {
+          "symbol": "errors",
+          "line": 210
+        },
+        {
+          "symbol": "name",
+          "line": 210
+        },
+        {
+          "symbol": "m.group",
+          "line": 211
+        },
+        {
+          "symbol": "m",
+          "line": 211
+        },
+        {
+          "symbol": "warnings.append",
+          "line": 212
+        },
+        {
+          "symbol": "warnings",
+          "line": 212
+        },
+        {
+          "symbol": "name",
+          "line": 212
+        },
+        {
+          "symbol": "list_analyses",
+          "line": 216
+        },
+        {
+          "symbol": "root",
+          "line": 216
+        },
+        {
+          "symbol": "analyses",
+          "line": 217
+        },
+        {
+          "symbol": "p.name",
+          "line": 218
+        },
+        {
+          "symbol": "p",
+          "line": 218
+        },
+        {
+          "symbol": "meta",
+          "line": 219
+        },
+        {
+          "symbol": "errors.append",
+          "line": 220
+        },
+        {
+          "symbol": "errors",
+          "line": 220
+        },
+        {
+          "symbol": "rel",
+          "line": 220
+        },
+        {
+          "symbol": "meta.get",
+          "line": 222
+        },
+        {
+          "symbol": "meta",
+          "line": 222
+        },
+        {
+          "symbol": "fid",
+          "line": 223
+        },
+        {
+          "symbol": "errors.append",
+          "line": 224
+        },
+        {
+          "symbol": "errors",
+          "line": 224
+        },
+        {
+          "symbol": "rel",
+          "line": 224
+        },
+        {
+          "symbol": "fid",
+          "line": 225
+        },
+        {
+          "symbol": "seen_ids",
+          "line": 225
+        },
+        {
+          "symbol": "errors.append",
+          "line": 226
+        },
+        {
+          "symbol": "errors",
+          "line": 226
+        },
+        {
+          "symbol": "rel",
+          "line": 226
+        },
+        {
+          "symbol": "fid",
+          "line": 226
+        },
+        {
+          "symbol": "seen_ids",
+          "line": 226
+        },
+        {
+          "symbol": "seen_ids",
+          "line": 228
+        },
+        {
+          "symbol": "fid",
+          "line": 228
+        },
+        {
+          "symbol": "rel",
+          "line": 228
+        },
+        {
+          "symbol": "meta.get",
+          "line": 229
+        },
+        {
+          "symbol": "meta",
+          "line": 229
+        },
+        {
+          "symbol": "stato",
+          "line": 230
+        },
+        {
+          "symbol": "VALID_STATES",
+          "line": 230
+        },
+        {
+          "symbol": "errors.append",
+          "line": 231
+        },
+        {
+          "symbol": "errors",
+          "line": 231
+        },
+        {
+          "symbol": "rel",
+          "line": 231
+        },
+        {
+          "symbol": "stato",
+          "line": 231
+        },
+        {
+          "symbol": "'/'.join",
+          "line": 231
+        },
+        {
+          "symbol": "sorted",
+          "line": 231
+        },
+        {
+          "symbol": "VALID_STATES",
+          "line": 231
+        },
+        {
+          "symbol": "meta.get",
+          "line": 232
+        },
+        {
+          "symbol": "meta",
+          "line": 232
+        },
+        {
+          "symbol": "errors.append",
+          "line": 233
+        },
+        {
+          "symbol": "errors",
+          "line": 233
+        },
+        {
+          "symbol": "rel",
+          "line": 233
+        },
+        {
+          "symbol": "stato",
+          "line": 234
+        },
+        {
+          "symbol": "meta.get",
+          "line": 234
+        },
+        {
+          "symbol": "meta",
+          "line": 234
+        },
+        {
+          "symbol": "errors.append",
+          "line": 235
+        },
+        {
+          "symbol": "errors",
+          "line": 235
+        },
+        {
+          "symbol": "rel",
+          "line": 235
+        },
+        {
+          "symbol": "meta.get",
+          "line": 236
+        },
+        {
+          "symbol": "meta",
+          "line": 236
+        },
+        {
+          "symbol": "livello",
+          "line": 237
+        },
+        {
+          "symbol": "livello.upper",
+          "line": 237
+        },
+        {
+          "symbol": "VALID_LEVELS",
+          "line": 237
+        },
+        {
+          "symbol": "warnings.append",
+          "line": 238
+        },
+        {
+          "symbol": "warnings",
+          "line": 238
+        },
+        {
+          "symbol": "rel",
+          "line": 238
+        },
+        {
+          "symbol": "livello",
+          "line": 238
+        },
+        {
+          "symbol": "'/'.join",
+          "line": 238
+        },
+        {
+          "symbol": "sorted",
+          "line": 238
+        },
+        {
+          "symbol": "VALID_LEVELS",
+          "line": 238
+        },
+        {
+          "symbol": "text",
+          "line": 239
+        },
+        {
+          "symbol": "errors.append",
+          "line": 240
+        },
+        {
+          "symbol": "errors",
+          "line": 240
+        },
+        {
+          "symbol": "rel",
+          "line": 240
+        },
+        {
+          "symbol": "sec",
+          "line": 242
+        },
+        {
+          "symbol": "text",
+          "line": 242
+        },
+        {
+          "symbol": "warnings.append",
+          "line": 243
+        },
+        {
+          "symbol": "warnings",
+          "line": 243
+        },
+        {
+          "symbol": "rel",
+          "line": 243
+        },
+        {
+          "symbol": "sec",
+          "line": 243
+        },
+        {
+          "symbol": "ai",
+          "line": 246
+        },
+        {
+          "symbol": "analyses",
+          "line": 247
+        },
+        {
+          "symbol": "hist.is_file",
+          "line": 248
+        },
+        {
+          "symbol": "hist",
+          "line": 248
+        },
+        {
+          "symbol": "errors.append",
+          "line": 249
+        },
+        {
+          "symbol": "errors",
+          "line": 249
+        },
+        {
+          "symbol": "norm_text",
+          "line": 250
+        },
+        {
+          "symbol": "read_text",
+          "line": 250
+        },
+        {
+          "symbol": "hist",
+          "line": 250
+        },
+        {
+          "symbol": "build_index",
+          "line": 250
+        },
+        {
+          "symbol": "root",
+          "line": 250
+        },
+        {
+          "symbol": "errors.append",
+          "line": 251
+        },
+        {
+          "symbol": "errors",
+          "line": 251
+        },
+        {
+          "symbol": "ai",
+          "line": 254
+        },
+        {
+          "symbol": "hand.is_file",
+          "line": 255
+        },
+        {
+          "symbol": "hand",
+          "line": 255
+        },
+        {
+          "symbol": "re.search",
+          "line": 256
+        },
+        {
+          "symbol": "re",
+          "line": 256
+        },
+        {
+          "symbol": "read_text",
+          "line": 256
+        },
+        {
+          "symbol": "hand",
+          "line": 256
+        },
+        {
+          "symbol": "m",
+          "line": 257
+        },
+        {
+          "symbol": "warnings.append",
+          "line": 258
+        },
+        {
+          "symbol": "warnings",
+          "line": 258
+        },
+        {
+          "symbol": "datetime.strptime(m.group(1), '%Y-%m-%d').replace",
+          "line": 261
+        },
+        {
+          "symbol": "datetime.strptime",
+          "line": 261
+        },
+        {
+          "symbol": "datetime",
+          "line": 261
+        },
+        {
+          "symbol": "m.group",
+          "line": 261
+        },
+        {
+          "symbol": "m",
+          "line": 261
+        },
+        {
+          "symbol": "timezone.utc",
+          "line": 261
+        },
+        {
+          "symbol": "timezone",
+          "line": 261
+        },
+        {
+          "symbol": "(datetime.now(timezone.utc) - stamp).days",
+          "line": 262
+        },
+        {
+          "symbol": "datetime.now",
+          "line": 262
+        },
+        {
+          "symbol": "datetime",
+          "line": 262
+        },
+        {
+          "symbol": "timezone.utc",
+          "line": 262
+        },
+        {
+          "symbol": "timezone",
+          "line": 262
+        },
+        {
+          "symbol": "stamp",
+          "line": 262
+        },
+        {
+          "symbol": "age",
+          "line": 263
+        },
+        {
+          "symbol": "warnings.append",
+          "line": 264
+        },
+        {
+          "symbol": "warnings",
+          "line": 264
+        },
+        {
+          "symbol": "age",
+          "line": 264
+        },
+        {
+          "symbol": "ValueError",
+          "line": 265
+        },
+        {
+          "symbol": "warnings.append",
+          "line": 266
+        },
+        {
+          "symbol": "warnings",
+          "line": 266
+        },
+        {
+          "symbol": "warnings",
+          "line": 268
+        },
+        {
+          "symbol": "print",
+          "line": 269
+        },
+        {
+          "symbol": "w",
+          "line": 269
+        },
+        {
+          "symbol": "errors",
+          "line": 270
+        },
+        {
+          "symbol": "print",
+          "line": 271
+        },
+        {
+          "symbol": "e",
+          "line": 271
+        },
+        {
+          "symbol": "print",
+          "line": 272
+        },
+        {
+          "symbol": "len",
+          "line": 272
+        },
+        {
+          "symbol": "errors",
+          "line": 272
+        },
+        {
+          "symbol": "warnings",
+          "line": 272
+        },
+        {
+          "symbol": "errors",
+          "line": 273
+        },
+        {
+          "symbol": "root",
+          "line": 279
+        },
+        {
+          "symbol": "f.is_file",
+          "line": 281
+        },
+        {
+          "symbol": "f",
+          "line": 281
+        },
+        {
+          "symbol": "read_text(f).splitlines",
+          "line": 282
+        },
+        {
+          "symbol": "read_text",
+          "line": 282
+        },
+        {
+          "symbol": "f",
+          "line": 282
+        },
+        {
+          "symbol": "enumerate",
+          "line": 283
+        },
+        {
+          "symbol": "lines",
+          "line": 283
+        },
+        {
+          "symbol": "line.strip().startswith",
+          "line": 284
+        },
+        {
+          "symbol": "line.strip",
+          "line": 284
+        },
+        {
+          "symbol": "line",
+          "line": 284
+        },
+        {
+          "symbol": "c.strip",
+          "line": 286
+        },
+        {
+          "symbol": "c",
+          "line": 286
+        },
+        {
+          "symbol": "line.strip().strip('|').split",
+          "line": 286
+        },
+        {
+          "symbol": "line.strip().strip",
+          "line": 286
+        },
+        {
+          "symbol": "line.strip",
+          "line": 286
+        },
+        {
+          "symbol": "line",
+          "line": 286
+        },
+        {
+          "symbol": "len",
+          "line": 287
+        },
+        {
+          "symbol": "cells",
+          "line": 287
+        },
+        {
+          "symbol": "cells[0].lower",
+          "line": 289
+        },
+        {
+          "symbol": "cells",
+          "line": 289
+        },
+        {
+          "symbol": "set",
+          "line": 289
+        },
+        {
+          "symbol": "rows.append",
+          "line": 291
+        },
+        {
+          "symbol": "rows",
+          "line": 291
+        },
+        {
+          "symbol": "i",
+          "line": 292
+        },
+        {
+          "symbol": "cells",
+          "line": 293
+        },
+        {
+          "symbol": "cells[1].upper",
+          "line": 294
+        },
+        {
+          "symbol": "cells",
+          "line": 294
+        },
+        {
+          "symbol": "len",
+          "line": 295
+        },
+        {
+          "symbol": "cells",
+          "line": 295
+        },
+        {
+          "symbol": "len",
+          "line": 296
+        },
+        {
+          "symbol": "cells",
+          "line": 296
+        },
+        {
+          "symbol": "f",
+          "line": 298
+        },
+        {
+          "symbol": "lines",
+          "line": 298
+        },
+        {
+          "symbol": "rows",
+          "line": 298
+        },
+        {
+          "symbol": "parse_audit_plan",
+          "line": 302
+        },
+        {
+          "symbol": "root",
+          "line": 302
+        },
+        {
+          "symbol": "rows",
+          "line": 303
+        },
+        {
+          "symbol": "print",
+          "line": 304
+        },
+        {
+          "symbol": "f",
+          "line": 304
+        },
+        {
+          "symbol": "git_available",
+          "line": 307
+        },
+        {
+          "symbol": "root",
+          "line": 307
+        },
+        {
+          "symbol": "rows",
+          "line": 309
+        },
+        {
+          "symbol": "row",
+          "line": 310
+        },
+        {
+          "symbol": "row",
+          "line": 312
+        },
+        {
+          "symbol": "root",
+          "line": 313
+        },
+        {
+          "symbol": "rel",
+          "line": 313
+        },
+        {
+          "symbol": "target.exists",
+          "line": 314
+        },
+        {
+          "symbol": "target",
+          "line": 314
+        },
+        {
+          "symbol": "print",
+          "line": 315
+        },
+        {
+          "symbol": "rel",
+          "line": 315
+        },
+        {
+          "symbol": "use_git",
+          "line": 318
+        },
+        {
+          "symbol": "re.fullmatch",
+          "line": 318
+        },
+        {
+          "symbol": "re",
+          "line": 318
+        },
+        {
+          "symbol": "ref",
+          "line": 318
+        },
+        {
+          "symbol": "git_changed_since",
+          "line": 319
+        },
+        {
+          "symbol": "root",
+          "line": 319
+        },
+        {
+          "symbol": "ref",
+          "line": 319
+        },
+        {
+          "symbol": "rel.replace",
+          "line": 319
+        },
+        {
+          "symbol": "rel",
+          "line": 319
+        },
+        {
+          "symbol": "res",
+          "line": 320
+        },
+        {
+          "symbol": "print",
+          "line": 321
+        },
+        {
+          "symbol": "rel",
+          "line": 321
+        },
+        {
+          "symbol": "ref",
+          "line": 321
+        },
+        {
+          "symbol": "res",
+          "line": 323
+        },
+        {
+          "symbol": "parse_iso",
+          "line": 325
+        },
+        {
+          "symbol": "ref",
+          "line": 325
+        },
+        {
+          "symbol": "ts",
+          "line": 326
+        },
+        {
+          "symbol": "print",
+          "line": 327
+        },
+        {
+          "symbol": "rel",
+          "line": 327
+        },
+        {
+          "symbol": "ref",
+          "line": 327
+        },
+        {
+          "symbol": "iter_files",
+          "line": 329
+        },
+        {
+          "symbol": "target",
+          "line": 329
+        },
+        {
+          "symbol": "datetime.fromtimestamp",
+          "line": 330
+        },
+        {
+          "symbol": "datetime",
+          "line": 330
+        },
+        {
+          "symbol": "fp.stat().st_mtime",
+          "line": 330
+        },
+        {
+          "symbol": "fp.stat",
+          "line": 330
+        },
+        {
+          "symbol": "fp",
+          "line": 330
+        },
+        {
+          "symbol": "timezone.utc",
+          "line": 330
+        },
+        {
+          "symbol": "timezone",
+          "line": 330
+        },
+        {
+          "symbol": "mtime",
+          "line": 331
+        },
+        {
+          "symbol": "ts",
+          "line": 331
+        },
+        {
+          "symbol": "MTIME_GRACE",
+          "line": 331
+        },
+        {
+          "symbol": "changed.append",
+          "line": 332
+        },
+        {
+          "symbol": "changed",
+          "line": 332
+        },
+        {
+          "symbol": "str(fp.relative_to(root)).replace",
+          "line": 332
+        },
+        {
+          "symbol": "str",
+          "line": 332
+        },
+        {
+          "symbol": "fp.relative_to",
+          "line": 332
+        },
+        {
+          "symbol": "fp",
+          "line": 332
+        },
+        {
+          "symbol": "root",
+          "line": 332
+        },
+        {
+          "symbol": "changed",
+          "line": 333
+        },
+        {
+          "symbol": "stale.append",
+          "line": 334
+        },
+        {
+          "symbol": "stale",
+          "line": 334
+        },
+        {
+          "symbol": "rel",
+          "line": 334
+        },
+        {
+          "symbol": "changed",
+          "line": 334
+        },
+        {
+          "symbol": "stale",
+          "line": 336
+        },
+        {
+          "symbol": "print",
+          "line": 337
+        },
+        {
+          "symbol": "print",
+          "line": 339
+        },
+        {
+          "symbol": "stale",
+          "line": 340
+        },
+        {
+          "symbol": "print",
+          "line": 341
+        },
+        {
+          "symbol": "rel",
+          "line": 341
+        },
+        {
+          "symbol": "len",
+          "line": 341
+        },
+        {
+          "symbol": "changed",
+          "line": 341
+        },
+        {
+          "symbol": "changed",
+          "line": 342
+        },
+        {
+          "symbol": "print",
+          "line": 343
+        },
+        {
+          "symbol": "c",
+          "line": 343
+        },
+        {
+          "symbol": "len",
+          "line": 344
+        },
+        {
+          "symbol": "changed",
+          "line": 344
+        },
+        {
+          "symbol": "print",
+          "line": 345
+        },
+        {
+          "symbol": "len",
+          "line": 345
+        },
+        {
+          "symbol": "changed",
+          "line": 345
+        },
+        {
+          "symbol": "print",
+          "line": 346
+        },
+        {
+          "symbol": "parse_audit_plan",
+          "line": 351
+        },
+        {
+          "symbol": "root",
+          "line": 351
+        },
+        {
+          "symbol": "git_available",
+          "line": 352
+        },
+        {
+          "symbol": "root",
+          "line": 352
+        },
+        {
+          "symbol": "any",
+          "line": 352
+        },
+        {
+          "symbol": "git_has_changes",
+          "line": 353
+        },
+        {
+          "symbol": "root",
+          "line": 353
+        },
+        {
+          "symbol": "raw.replace('\\\\', '/').rstrip",
+          "line": 353
+        },
+        {
+          "symbol": "raw.replace",
+          "line": 353
+        },
+        {
+          "symbol": "raw",
+          "line": 353
+        },
+        {
+          "symbol": "paths",
+          "line": 353
+        },
+        {
+          "symbol": "use_git_ref",
+          "line": 355
+        },
+        {
+          "symbol": "git_head",
+          "line": 355
+        },
+        {
+          "symbol": "root",
+          "line": 355
+        },
+        {
+          "symbol": "utc_now_iso",
+          "line": 355
+        },
+        {
+          "symbol": "r['path'].replace('\\\\', '/').rstrip",
+          "line": 356
+        },
+        {
+          "symbol": "r['path'].replace",
+          "line": 356
+        },
+        {
+          "symbol": "r",
+          "line": 356
+        },
+        {
+          "symbol": "rows",
+          "line": 356
+        },
+        {
+          "symbol": "lines",
+          "line": 358
+        },
+        {
+          "symbol": "path",
+          "line": 365
+        },
+        {
+          "symbol": "ref",
+          "line": 365
+        },
+        {
+          "symbol": "note",
+          "line": 365
+        },
+        {
+          "symbol": "paths",
+          "line": 368
+        },
+        {
+          "symbol": "raw.replace('\\\\', '/').rstrip",
+          "line": 369
+        },
+        {
+          "symbol": "raw.replace",
+          "line": 369
+        },
+        {
+          "symbol": "raw",
+          "line": 369
+        },
+        {
+          "symbol": "key",
+          "line": 370
+        },
+        {
+          "symbol": "(root / key).is_dir",
+          "line": 370
+        },
+        {
+          "symbol": "root",
+          "line": 370
+        },
+        {
+          "symbol": "by_path.get",
+          "line": 371
+        },
+        {
+          "symbol": "by_path",
+          "line": 371
+        },
+        {
+          "symbol": "key",
+          "line": 371
+        },
+        {
+          "symbol": "existing",
+          "line": 372
+        },
+        {
+          "symbol": "lines",
+          "line": 373
+        },
+        {
+          "symbol": "existing",
+          "line": 373
+        },
+        {
+          "symbol": "row_text",
+          "line": 373
+        },
+        {
+          "symbol": "print",
+          "line": 374
+        },
+        {
+          "symbol": "existing",
+          "line": 374
+        },
+        {
+          "symbol": "ref",
+          "line": 374
+        },
+        {
+          "symbol": "appended.append",
+          "line": 376
+        },
+        {
+          "symbol": "appended",
+          "line": 376
+        },
+        {
+          "symbol": "row_text",
+          "line": 376
+        },
+        {
+          "symbol": "display",
+          "line": 376
+        },
+        {
+          "symbol": "print",
+          "line": 377
+        },
+        {
+          "symbol": "display",
+          "line": 377
+        },
+        {
+          "symbol": "ref",
+          "line": 377
+        },
+        {
+          "symbol": "appended",
+          "line": 379
+        },
+        {
+          "symbol": "rows",
+          "line": 380
+        },
+        {
+          "symbol": "max",
+          "line": 380
+        },
+        {
+          "symbol": "r",
+          "line": 380
+        },
+        {
+          "symbol": "len",
+          "line": 380
+        },
+        {
+          "symbol": "lines",
+          "line": 380
+        },
+        {
+          "symbol": "lines",
+          "line": 381
+        },
+        {
+          "symbol": "insert_at",
+          "line": 381
+        },
+        {
+          "symbol": "appended",
+          "line": 381
+        },
+        {
+          "symbol": "f.parent.mkdir",
+          "line": 383
+        },
+        {
+          "symbol": "f.parent",
+          "line": 383
+        },
+        {
+          "symbol": "f",
+          "line": 383
+        },
+        {
+          "symbol": "f.write_text",
+          "line": 384
+        },
+        {
+          "symbol": "f",
+          "line": 384
+        },
+        {
+          "symbol": "'\\n'.join",
+          "line": 384
+        },
+        {
+          "symbol": "lines",
+          "line": 384
+        },
+        {
+          "symbol": "print",
+          "line": 389
+        },
+        {
+          "symbol": "cmd_validate",
+          "line": 390
+        },
+        {
+          "symbol": "root",
+          "line": 390
+        },
+        {
+          "symbol": "print",
+          "line": 391
+        },
+        {
+          "symbol": "cmd_stale",
+          "line": 392
+        },
+        {
+          "symbol": "root",
+          "line": 392
+        },
+        {
+          "symbol": "print",
+          "line": 393
+        },
+        {
+          "symbol": "rc_v",
+          "line": 393
+        },
+        {
+          "symbol": "rc_s",
+          "line": 393
+        },
+        {
+          "symbol": "rc_v",
+          "line": 394
+        },
+        {
+          "symbol": "rc_s",
+          "line": 394
+        },
+        {
+          "symbol": "rc_v",
+          "line": 395
+        },
+        {
+          "symbol": "rc_s",
+          "line": 395
+        },
+        {
+          "symbol": "args.file",
+          "line": 401
+        },
+        {
+          "symbol": "args",
+          "line": 401
+        },
+        {
+          "symbol": "args.hook",
+          "line": 402
+        },
+        {
+          "symbol": "args",
+          "line": 402
+        },
+        {
+          "symbol": "sys.stdin.buffer.read().decode",
+          "line": 406
+        },
+        {
+          "symbol": "sys.stdin.buffer.read",
+          "line": 406
+        },
+        {
+          "symbol": "sys.stdin.buffer",
+          "line": 406
+        },
+        {
+          "symbol": "sys.stdin",
+          "line": 406
+        },
+        {
+          "symbol": "sys",
+          "line": 406
+        },
+        {
+          "symbol": "json.loads",
+          "line": 407
+        },
+        {
+          "symbol": "json",
+          "line": 407
+        },
+        {
+          "symbol": "raw",
+          "line": 407
+        },
+        {
+          "symbol": "(payload.get('tool_input') or {}).get",
+          "line": 408
+        },
+        {
+          "symbol": "payload.get",
+          "line": 408
+        },
+        {
+          "symbol": "payload",
+          "line": 408
+        },
+        {
+          "symbol": "Exception",
+          "line": 409
+        },
+        {
+          "symbol": "file_path",
+          "line": 411
+        },
+        {
+          "symbol": "args.root",
+          "line": 413
+        },
+        {
+          "symbol": "args",
+          "line": 413
+        },
+        {
+          "symbol": "Path(args.root).resolve",
+          "line": 413
+        },
+        {
+          "symbol": "Path",
+          "line": 413
+        },
+        {
+          "symbol": "find_project_root",
+          "line": 413
+        },
+        {
+          "symbol": "str(Path(file_path).resolve().relative_to(root)).replace",
+          "line": 415
+        },
+        {
+          "symbol": "str",
+          "line": 415
+        },
+        {
+          "symbol": "Path(file_path).resolve().relative_to",
+          "line": 415
+        },
+        {
+          "symbol": "Path(file_path).resolve",
+          "line": 415
+        },
+        {
+          "symbol": "Path",
+          "line": 415
+        },
+        {
+          "symbol": "file_path",
+          "line": 415
+        },
+        {
+          "symbol": "root",
+          "line": 415
+        },
+        {
+          "symbol": "ValueError",
+          "line": 416
+        },
+        {
+          "symbol": "rel.startswith",
+          "line": 418
+        },
+        {
+          "symbol": "rel",
+          "line": 418
+        },
+        {
+          "symbol": "p.strip().replace('\\\\', '/').rstrip",
+          "line": 420
+        },
+        {
+          "symbol": "p.strip().replace",
+          "line": 420
+        },
+        {
+          "symbol": "p.strip",
+          "line": 420
+        },
+        {
+          "symbol": "p",
+          "line": 420
+        },
+        {
+          "symbol": "(args.protected or '').split",
+          "line": 421
+        },
+        {
+          "symbol": "args.protected",
+          "line": 421
+        },
+        {
+          "symbol": "args",
+          "line": 421
+        },
+        {
+          "symbol": "p.strip",
+          "line": 421
+        },
+        {
+          "symbol": "p",
+          "line": 421
+        },
+        {
+          "symbol": "protected",
+          "line": 422
+        },
+        {
+          "symbol": "any",
+          "line": 424
+        },
+        {
+          "symbol": "rel",
+          "line": 424
+        },
+        {
+          "symbol": "p",
+          "line": 424
+        },
+        {
+          "symbol": "rel.startswith",
+          "line": 424
+        },
+        {
+          "symbol": "protected",
+          "line": 424
+        },
+        {
+          "symbol": "list_analyses",
+          "line": 426
+        },
+        {
+          "symbol": "root",
+          "line": 426
+        },
+        {
+          "symbol": "meta.get",
+          "line": 427
+        },
+        {
+          "symbol": "meta",
+          "line": 427
+        },
+        {
+          "symbol": "sys.stderr.write",
+          "line": 429
+        },
+        {
+          "symbol": "sys.stderr",
+          "line": 429
+        },
+        {
+          "symbol": "sys",
+          "line": 429
+        },
+        {
+          "symbol": "rel",
+          "line": 430
+        },
+        {
+          "symbol": "argparse.ArgumentParser",
+          "line": 438
+        },
+        {
+          "symbol": "argparse",
+          "line": 438
+        },
+        {
+          "symbol": "common.add_argument",
+          "line": 439
+        },
+        {
+          "symbol": "common",
+          "line": 439
+        },
+        {
+          "symbol": "argparse.ArgumentParser",
+          "line": 441
+        },
+        {
+          "symbol": "argparse",
+          "line": 441
+        },
+        {
+          "symbol": "ap.add_subparsers",
+          "line": 443
+        },
+        {
+          "symbol": "ap",
+          "line": 443
+        },
+        {
+          "symbol": "sub.add_parser",
+          "line": 444
+        },
+        {
+          "symbol": "sub",
+          "line": 444
+        },
+        {
+          "symbol": "common",
+          "line": 444
+        },
+        {
+          "symbol": "sub.add_parser",
+          "line": 445
+        },
+        {
+          "symbol": "sub",
+          "line": 445
+        },
+        {
+          "symbol": "common",
+          "line": 445
+        },
+        {
+          "symbol": "sub.add_parser",
+          "line": 446
+        },
+        {
+          "symbol": "sub",
+          "line": 446
+        },
+        {
+          "symbol": "common",
+          "line": 446
+        },
+        {
+          "symbol": "sub.add_parser",
+          "line": 447
+        },
+        {
+          "symbol": "sub",
+          "line": 447
+        },
+        {
+          "symbol": "common",
+          "line": 447
+        },
+        {
+          "symbol": "sub.add_parser",
+          "line": 448
+        },
+        {
+          "symbol": "sub",
+          "line": 448
+        },
+        {
+          "symbol": "common",
+          "line": 448
+        },
+        {
+          "symbol": "mp.add_argument",
+          "line": 449
+        },
+        {
+          "symbol": "mp",
+          "line": 449
+        },
+        {
+          "symbol": "sub.add_parser",
+          "line": 450
+        },
+        {
+          "symbol": "sub",
+          "line": 450
+        },
+        {
+          "symbol": "common",
+          "line": 450
+        },
+        {
+          "symbol": "gp.add_argument",
+          "line": 451
+        },
+        {
+          "symbol": "gp",
+          "line": 451
+        },
+        {
+          "symbol": "gp.add_argument",
+          "line": 452
+        },
+        {
+          "symbol": "gp",
+          "line": 452
+        },
+        {
+          "symbol": "gp.add_argument",
+          "line": 453
+        },
+        {
+          "symbol": "gp",
+          "line": 453
+        },
+        {
+          "symbol": "ap.parse_args",
+          "line": 455
+        },
+        {
+          "symbol": "ap",
+          "line": 455
+        },
+        {
+          "symbol": "argv",
+          "line": 455
+        },
+        {
+          "symbol": "args.cmd",
+          "line": 456
+        },
+        {
+          "symbol": "args",
+          "line": 456
+        },
+        {
+          "symbol": "cmd_gate",
+          "line": 457
+        },
+        {
+          "symbol": "args",
+          "line": 457
+        },
+        {
+          "symbol": "args.root",
+          "line": 459
+        },
+        {
+          "symbol": "args",
+          "line": 459
+        },
+        {
+          "symbol": "Path(args.root).resolve",
+          "line": 459
+        },
+        {
+          "symbol": "Path",
+          "line": 459
+        },
+        {
+          "symbol": "find_project_root",
+          "line": 459
+        },
+        {
+          "symbol": "args.cmd",
+          "line": 460
+        },
+        {
+          "symbol": "args",
+          "line": 460
+        },
+        {
+          "symbol": "cmd_check",
+          "line": 461
+        },
+        {
+          "symbol": "root",
+          "line": 461
+        },
+        {
+          "symbol": "args.cmd",
+          "line": 462
+        },
+        {
+          "symbol": "args",
+          "line": 462
+        },
+        {
+          "symbol": "cmd_validate",
+          "line": 463
+        },
+        {
+          "symbol": "root",
+          "line": 463
+        },
+        {
+          "symbol": "args.cmd",
+          "line": 464
+        },
+        {
+          "symbol": "args",
+          "line": 464
+        },
+        {
+          "symbol": "cmd_index",
+          "line": 465
+        },
+        {
+          "symbol": "root",
+          "line": 465
+        },
+        {
+          "symbol": "args.cmd",
+          "line": 466
+        },
+        {
+          "symbol": "args",
+          "line": 466
+        },
+        {
+          "symbol": "cmd_stale",
+          "line": 467
+        },
+        {
+          "symbol": "root",
+          "line": 467
+        },
+        {
+          "symbol": "args.cmd",
+          "line": 468
+        },
+        {
+          "symbol": "args",
+          "line": 468
+        },
+        {
+          "symbol": "cmd_mark",
+          "line": 469
+        },
+        {
+          "symbol": "root",
+          "line": 469
+        },
+        {
+          "symbol": "args.paths",
+          "line": 469
+        },
+        {
+          "symbol": "args",
+          "line": 469
+        },
+        {
+          "symbol": "__name__",
+          "line": 473
+        },
+        {
+          "symbol": "sys.exit",
+          "line": 474
+        },
+        {
+          "symbol": "sys",
+          "line": 474
+        },
+        {
+          "symbol": "main",
+          "line": 474
+        }
+      ]
+    }
+  }
 }

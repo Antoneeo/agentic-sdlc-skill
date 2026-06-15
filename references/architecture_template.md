@@ -1,3 +1,7 @@
+---
+description: Stack, struttura directory e pattern architetturali del progetto.
+status: CURRENT
+---
 # Architettura del Progetto
 
 ## Stack Tecnologico

@@ -1,86 +1,81 @@
 # Agentic SDLC Skill for Claude Code, Gemini CLI & Codex
 
-A "Documentation-First" SDLC protocol designed to manage the software development lifecycle rigorously. It natively supports **Claude Code** (skill auto-installed in `~/.claude/skills/`), **Gemini CLI** (extension), and **Codex AI** (skill auto-installed in `~/.codex/skills/`).
+`agentic-sdlc` is a Documentation-First SDLC protocol for AI coding agents. It supports Claude Code, Codex, Gemini CLI, Cursor/Windsurf-style project instructions, and optional devPNT governance.
 
 ## Key Features
-- **Documentation-First**: Requires documentation (`ai_docs/`) to be created or updated before writing code.
-- **Vision-Guided Governance**: Adds `ai_docs/vision/` and a Vision Gate so features stay aligned with goals, non-goals, and expected benefits.
-- **Automatic Audit**: Analyzes the existing architecture and features.
-- **Traceable Workflow**: Tracks feature status in `features_history.md`.
-- **Built-In Quality**: Native integration of analysis, development, and testing.
+
+- **Risk-proportional workflow**: L1/L2/L3/Spike triage avoids heavyweight process for trivial work.
+- **Vision-guided governance**: Standalone projects use `ai_docs/vision/`; Hybrid projects use devPNT `M-VISION` as the milestone north star.
+- **Standalone complete**: works fully with local `ai_docs/` without requiring devPNT.
+- **devPNT symbiosis**: when devPNT is available, Master Plan, Action Plan, M-VISION, and governed artifacts become the authoritative planning layer.
+- **Installed support files**: Claude, Codex, and Gemini receive the full skill folder, including `templates.md`, `ENFORCEMENT.md`, and `scripts/sdlc_check.py`.
+- **Mechanical checks**: optional validator for document structure, generated feature history, stale audit areas, and protected-path gates.
 
 ## Installation
 
-### Via npm (recommended - installs for all detected CLIs)
-
-```bash
-npm install -g @antoneeo/agentic-sdlc-skill
-```
-
-The `postinstall` script automatically detects installed CLIs and configures each one:
-
-- **Claude Code**: copies the skill to `~/.claude/skills/agentic-sdlc/`. Restart Claude Code; invoke it through the `Skill` tool as `agentic-sdlc`, or let it trigger automatically from SDLC/audit prompts.
-- **Gemini CLI**: suggests `gemini extensions install` (see below).
-- **Codex AI**: copies the skill to `$CODEX_HOME/skills/agentic-sdlc/` or `~/.codex/skills/agentic-sdlc/`. Restart Codex to load it.
-
-`npm uninstall -g @antoneeo/agentic-sdlc-skill` also removes the skills from `~/.claude/skills/agentic-sdlc/` and `~/.codex/skills/agentic-sdlc/`.
-
-#### Troubleshooting — skill not visible in Claude Code after install
-
-If after `npm install -g` you do **not** see the line `--- Agentic SDLC Skill Discovery ---` in the npm output, and `~/.claude/skills/agentic-sdlc/` does not exist, the `postinstall` hook was skipped by npm. The most common cause is `ignore-scripts=true` in your npm config (set by some Node installers, corporate IT policies, or security tools).
-
-The package ships an explicit `agentic-sdlc-install-skill` command that does the same work but does **not** depend on the `postinstall` hook. After `npm install -g`, the bin shim is created regardless of `ignore-scripts`, so you can simply run:
+### Via npm
 
 ```bash
 npm install -g @antoneeo/agentic-sdlc-skill@latest
 agentic-sdlc-install-skill
 ```
 
-You should see the `--- Agentic SDLC Skill Discovery ---` banner and `📦 Installed Claude Code skill at: ...`. Then restart Claude Code (or Codex) and the skill will be available.
+The installer copies `skills/agentic-sdlc-skill/` recursively into native skill locations:
 
-> **Note on `npx`**: because the package exposes two bin commands, the shorthand `npx @antoneeo/agentic-sdlc-skill agentic-sdlc-install-skill` does not work — npx cannot disambiguate. If you prefer npx, use the explicit `-p` form: `npx -p @antoneeo/agentic-sdlc-skill agentic-sdlc-install-skill`.
+- Claude Code: `~/.claude/skills/agentic-sdlc/`
+- Codex: `~/.codex/skills/agentic-sdlc/`
+- Gemini CLI: `~/.gemini/skills/agentic-sdlc/`
 
-Alternatively, fix the npm config and reinstall (the `postinstall` hook will then run automatically):
+Restart the relevant agent, or reload skills where the CLI supports it.
+
+The global package also exposes:
 
 ```bash
-npm config set ignore-scripts false
-npm uninstall -g @antoneeo/agentic-sdlc-skill
-npm install -g @antoneeo/agentic-sdlc-skill@latest
+agentic-sdlc-init
 ```
 
-### Via Gemini CLI (local alternative)
+Run it inside a project to create `ai_docs/`, Vision documents, strategic docs, audit plan, and agent protocol files (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursorrules`).
 
-> **Tip:** Before installing, copy this folder from the USB drive to your computer's hard drive (for example, `C:\tools\agentic-sdlc-skill`). This keeps the skill available even after the USB drive is removed.
+## Runtime Shape
 
-To install this extension, open a terminal in the folder that contains this README and run:
+The actual runtime skill is the folder:
+
+```text
+skills/agentic-sdlc-skill/
+├── SKILL.md
+├── templates.md
+├── ENFORCEMENT.md
+└── scripts/
+    └── sdlc_check.py
+```
+
+`SKILL.md` is the entrypoint. Supporting files are loaded or executed only when the agent needs them.
+
+## Standalone vs Hybrid
+
+Standalone:
+
+- `ai_docs/` is the source of truth.
+- Vision, analysis, audit, handoff, test strategy, and feature history are maintained locally.
+
+Hybrid/devPNT:
+
+- devPNT governs `M-VISION`, Master Plan, Action Plan, and versioned artifacts.
+- `ai_docs/` remains useful as readable context, fallback, handoff, or shadow copy.
+- Divergence between user request, local Vision, and devPNT `M-VISION` must be surfaced before implementation.
+
+## Gemini Extension Alternative
+
+You can still install this folder as a Gemini extension:
 
 ```bash
 gemini extensions install .
 ```
 
-*Note: If you are in a different folder, replace `.` with the full path to the skill folder.*
+For native Gemini Agent Skills, the npm installer now copies the skill folder into `~/.gemini/skills/agentic-sdlc/`.
 
-## Global Availability
-Once installation is complete, the skill is **globally available**. You can close this folder and move to **any other project** on your PC: Gemini CLI will automatically recognize the commands and workflow of the `agentic-sdlc` skill.
+## Created By
 
-## Getting Started
+Created by **Antonio Pinto** ([GitHub](https://github.com/Antoneeo)).
 
-After installation, start Gemini CLI and verify that the skill is available:
-
-1. **List available skills:**
-   ```bash
-   /skills list all
-   ```
-2. **Activate the skill:**
-   The skill activates automatically when it detects requests related to development, audits, or feature management. You can also invoke it explicitly:
-   > "Use the agentic-sdlc skill to analyze this project"
-
-## Project Structure
-- `skills/`: Contains the skill logic (`SKILL.md`).
-- `references/`: Markdown templates for Vision, architecture, analysis, and feature history.
-- `ai_docs/vision/`: Project and feature Vision documents created by the SDLC workflow.
-- `gemini-extension.json`: Extension manifest.
-
----
-Created by **Antonio Pinto** ([GitHub](https://github.com/Antoneeo))
 (c) 2026 Antonio Pinto. All rights reserved.

@@ -1,25 +1,44 @@
+---
+id: F-XXX
+feature: [Nome Feature]
+stato: PLANNED
+livello: L3
+data_inizio: YYYY-MM-DD
+data_fine:
+---
 # Analisi della Feature: [Nome Feature]
 
 ## Obiettivo
 - Cosa si vuole ottenere?
-- Quali problemi risolve?
+- Quale problema risolve?
 
-## Allineamento alla Vision
-- Quale documento di Vision guida questa feature? (`ai_docs/vision/project_vision.md` o `ai_docs/vision/features/VISION_[nome_feature].md`)
-- Quale beneficio atteso realizza?
-- Quali non-obiettivi o vincoli di Vision devono essere rispettati?
-- Quali segnali di successo dimostreranno che la feature è coerente con la Vision?
+## Vision della Feature
+- Documento guida: `ai_docs/vision/project_vision.md` o `ai_docs/vision/features/VISION_[nome_feature].md`.
+- Stato della Vision guida: DRAFT oppure APPROVED.
+- Beneficio atteso.
+- Non-obiettivi / fuori scope.
+- Segnali di successo.
 
 ## Impatto
-- Modifiche ai file esistenti?
-- Impatti sulle performance?
-- Nuove dipendenze?
+- File o moduli coinvolti.
+- API, contratti o formati dati impattati.
+- Performance, migrazioni o nuove dipendenze.
+
+## Sicurezza e Threat Model
+- Superfici toccate: input esterni, authN/authZ, crittografia, rete, dati personali, filesystem.
+- Minacce principali.
+- Mitigazioni.
+- Se non c'e' impatto di sicurezza, motivare perche.
 
 ## Piano d'Azione
-1. [ ] Sviluppo...
-2. [ ] Test...
+- [ ] Sviluppo
+- [ ] Test
+- [ ] Chiusura documentale
 
 ## Strategia di Test
-- Test unitari (AAA Pattern)
-- Test d'integrazione
-- Esempi di input e output attesi
+- Unit test AAA.
+- Test di integrazione o smoke check.
+- Verifica alternativa se i test automatici non sono eseguibili.
+
+## Diario / Stato Corrente
+- YYYY-MM-DD: Stato iniziale e prossimo passo.

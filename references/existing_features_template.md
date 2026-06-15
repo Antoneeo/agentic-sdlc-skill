@@ -1,3 +1,7 @@
+---
+description: Catalogo sintetico delle funzionalità esistenti del progetto.
+status: CURRENT
+---
 # Funzionalità Esistenti
 
 - [ID] **Nome Feature**: Descrizione sintetica della funzionalità.

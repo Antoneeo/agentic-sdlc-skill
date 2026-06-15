@@ -1,6 +1,6 @@
 {
   "name": "agentic-sdlc-skill",
-  "version": "1.4.0",
-  "description": "Protocollo SDLC Documentation-First per Gemini CLI.",
+  "version": "1.6.0",
+  "description": "Protocollo SDLC Documentation-First con triage, Vision governance e integrazione opzionale devPNT.",
   "author": "Antonio Pinto (https://github.com/Antoneeo)"
 }

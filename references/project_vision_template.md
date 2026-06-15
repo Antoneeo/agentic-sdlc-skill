@@ -1,13 +1,14 @@
 # Vision del Progetto
+Stato: DRAFT
 
 ## North Star
-- Qual è l'obiettivo finale che il progetto deve preservare nel tempo?
+- Qual e' l'obiettivo finale che il progetto deve preservare nel tempo?
 
 ## Problema Centrale
 - Quale problema reale risolve il progetto?
 
 ## Utenti Target
-- Chi sono gli utenti o stakeholder principali?
+- Chi sono utenti o stakeholder principali?
 
 ## Valore Atteso
 - Quale beneficio misurabile o osservabile deve produrre il progetto?
@@ -18,7 +19,7 @@
 
 ## Non-Obiettivi
 - [Cosa il progetto non vuole diventare]
-- [Cosa è esplicitamente fuori scope]
+- [Cosa e' esplicitamente fuori scope]
 
 ## Segnali di Successo
 - [Indicatore qualitativo o quantitativo]

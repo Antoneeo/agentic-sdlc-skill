@@ -13,6 +13,9 @@ const CLAUDE_SKILL_TARGET = path.join(CLAUDE_SKILLS_DIR, 'agentic-sdlc');
 const CODEX_HOME = process.env.CODEX_HOME || path.join(os.homedir(), '.codex');
 const CODEX_SKILLS_DIR = path.join(CODEX_HOME, 'skills');
 const CODEX_SKILL_TARGET = path.join(CODEX_SKILLS_DIR, 'agentic-sdlc');
+const GEMINI_HOME = process.env.GEMINI_HOME || path.join(os.homedir(), '.gemini');
+const GEMINI_SKILLS_DIR = path.join(GEMINI_HOME, 'skills');
+const GEMINI_SKILL_TARGET = path.join(GEMINI_SKILLS_DIR, 'agentic-sdlc');
 
 function checkCommand(cmd) {
   try {
@@ -74,12 +77,34 @@ function installCodexSkill() {
   }
 }
 
+function installGeminiSkill() {
+  if (!fs.existsSync(SKILL_SOURCE)) {
+    console.log(`⚠️  Skill source not found at ${SKILL_SOURCE}; skipping Gemini install.`);
+    return false;
+  }
+  try {
+    fs.mkdirSync(GEMINI_SKILLS_DIR, { recursive: true });
+    copyRecursive(SKILL_SOURCE, GEMINI_SKILL_TARGET);
+    console.log(`📦 Installed Gemini skill at: ${GEMINI_SKILL_TARGET}`);
+    console.log('   Run "gemini skills reload" or restart Gemini CLI to load it.');
+    return true;
+  } catch (err) {
+    console.log(`⚠️  Failed to install Gemini skill: ${err.message}`);
+    console.log(`   Manual install: copy "${SKILL_SOURCE}" to "${GEMINI_SKILL_TARGET}".`);
+    return false;
+  }
+}
+
 function hasCodexHome() {
   return Boolean(process.env.CODEX_HOME) || fs.existsSync(CODEX_HOME);
 }
 
 function hasClaudeHome() {
   return Boolean(process.env.CLAUDE_CONFIG_DIR) || fs.existsSync(CLAUDE_HOME);
+}
+
+function hasGeminiHome() {
+  return Boolean(process.env.GEMINI_HOME) || fs.existsSync(GEMINI_HOME);
 }
 
 console.log('\n--- Agentic SDLC Skill Discovery ---');
@@ -92,9 +117,10 @@ if (checkCommand('claude') || hasClaudeHome()) {
   installClaudeSkill();
 }
 
-if (checkCommand('gemini')) {
+if (checkCommand('gemini') || hasGeminiHome()) {
   console.log(`✅ Detected: Gemini CLI`);
   detected = true;
+  installGeminiSkill();
 }
 
 if (checkCommand('codex') || hasCodexHome()) {

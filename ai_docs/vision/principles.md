@@ -1,4 +1,5 @@
 # Vision Principles
+Stato: DRAFT
 
 ## Principles
 - **Vision before solution**: clarify intended benefit and non-goals before choosing implementation details.

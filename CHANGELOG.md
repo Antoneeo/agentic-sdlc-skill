@@ -2,6 +2,41 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.6.0] - 2026-06-15
+### Added
+- **Manifest generato dei documenti canonici** (`ai_docs/INDEX.md`): `sdlc_check.py index` ora produce, oltre a `features_history.md`, un indice completo di tutti i doc in `vision/`, `reference/`, `architecture/`, `functional/`, `strategic/`, con descrizione e stato letti dall'header. Si rigenera, quindi non drifta.
+- **Lifecycle dei documenti canonici**: convenzione header `status: CURRENT|SUPERSEDED|DRAFT|DEPRECATED` + `supersedes:`. `validate` avvisa se `status` manca/è invalido o se un doc superseduto è ancora `CURRENT`. Stop ai grep che riportano a guide obsolete.
+- **Modello a due indici** documentato nella sezione "Documenti ai_docs" di `SKILL.md`: `README.md` curato (must-read, a mano) vs `INDEX.md` generato (completo, meccanico) — ruoli separati, prima confusi in un unico README che driftava.
+
+### Changed
+- §1 Audit: leggere `README.md` + `INDEX.md` all'avvio per sapere cosa esiste prima di esplorare il codice.
+- §3 Analisi: cercare con glob/grep un'ANALYSIS esistente prima di crearne una nuova (anti-duplicazione).
+- §5 Chiusura: gate "Indici allineati" — rigenerare `INDEX.md`, aggiornare il `README.md` curato per i must-read, marcare lo `status`; doc canonico non indicizzato o senza `status` = chiusura sporca.
+- `templates.md`: aggiunto il template dell'header dei documenti canonici.
+
+### Fixed
+- `sdlc_check.py` legge ora i file con `utf-8-sig`: un BOM iniziale (file autorati su Windows) non impedisce più il riconoscimento del frontmatter `---`.
+- L'estrattore dell'header riconosce sia il frontmatter `status:` sia la riga in corpo `**Status:**`/`Stato:`, e gli stati di tutte le convenzioni in uso (canonici `CURRENT/SUPERSEDED/DRAFT/DEPRECATED`, vision `DRAFT/APPROVED`, ADR `Accepted/Proposed/Rejected`) — niente più falsi avvisi "status non riconosciuto" su `APPROVED`/`Accepted`.
+- La descrizione del manifest salta righe di metadati (`Date`, `Created`, `Task ref`, ...) e i commenti HTML, così non finiscono come descrizione del documento.
+- `index` non genera più un `INDEX.md` vuoto su progetti senza documenti canonici (solo `solutions/`+`audit/`).
+
+### Migrazione (da 1.5.x)
+- Al primo `sdlc_check.py check`/`validate` dopo l'upgrade, un progetto con documenti canonici darà **un errore** `ai_docs/INDEX.md mancante`: è atteso — esegui **una volta** `sdlc_check.py index` per generarlo. Da lì in poi resta allineato.
+- I documenti canonici preesistenti senza `status:` produrranno **avvisi** (non errori): aggiungi l'header `description:`/`status:` per silenziarli. I nuovi progetti nascono già compatibili (template aggiornati).
+
+## [1.5.0] - 2026-06-13
+### Added
+- Introdotta la Regola Zero di triage (`L1`, `L2`, `L3`, `Spike`) per rendere il processo proporzionale al rischio.
+- Aggiunta simbiosi esplicita con devPNT: in Hybrid la `M-VISION` guida la milestone, il Master Plan resta roadmap strategica e l'Action Plan governa l'esecuzione tattica.
+- Aggiunti support file dentro la skill runtime: `templates.md`, `ENFORCEMENT.md`, `scripts/sdlc_check.py`.
+- `agentic-sdlc-install-skill` ora installa la skill nativa anche in `~/.gemini/skills/agentic-sdlc/`.
+- Aggiunto validatore meccanico opzionale per frontmatter ANALYSIS, Vision state, indice feature e audit stale.
+
+### Changed
+- Il nome pubblico resta `agentic-sdlc`; la proposta v2 e' stata integrata come evoluzione, non come skill parallela.
+- Aggiornati `agentic-sdlc-init`, template, protocolli generati, README e metadata.
+- La modalita Standalone resta completa; devPNT e' un livello di governance superiore, non un prerequisito.
+
 ## [1.4.0] - 2026-06-07
 ### Added
 - Introdotta la governance della **Vision** con nuova struttura `ai_docs/vision/` (`project_vision.md`, `roadmap.md`, `principles.md`, `features/`).

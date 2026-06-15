@@ -1,6 +1,7 @@
 # Principi di Vision
+Stato: DRAFT
 
-I principi in questo file guidano trade-off, scope e decisioni tecniche quando più soluzioni sono possibili.
+I principi in questo file guidano trade-off, scope e decisioni tecniche quando piu soluzioni sono possibili.
 
 ## Principi
 - **[Principio]**: [Descrizione pratica del criterio decisionale].
@@ -9,4 +10,4 @@ I principi in questo file guidano trade-off, scope e decisioni tecniche quando p
 - Preferire [A] rispetto a [B] quando [condizione].
 
 ## Anti-Pattern Strategici
-- [Comportamento o direzione da evitare perché devia dalla Vision].
+- [Comportamento o direzione da evitare perche devia dalla Vision].
