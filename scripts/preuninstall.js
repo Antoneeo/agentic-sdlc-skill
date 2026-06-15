@@ -8,6 +8,8 @@ const CLAUDE_HOME = process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.c
 const CLAUDE_SKILL_TARGET = path.join(CLAUDE_HOME, 'skills', 'agentic-sdlc');
 const CODEX_HOME = process.env.CODEX_HOME || path.join(os.homedir(), '.codex');
 const CODEX_SKILL_TARGET = path.join(CODEX_HOME, 'skills', 'agentic-sdlc');
+const GEMINI_HOME = process.env.GEMINI_HOME || path.join(os.homedir(), '.gemini');
+const GEMINI_SKILL_TARGET = path.join(GEMINI_HOME, 'skills', 'agentic-sdlc');
 
 function removeSkill(target, label) {
   if (!fs.existsSync(target)) return;
@@ -21,3 +23,4 @@ function removeSkill(target, label) {
 
 removeSkill(CLAUDE_SKILL_TARGET, 'Claude Code');
 removeSkill(CODEX_SKILL_TARGET, 'Codex');
+removeSkill(GEMINI_SKILL_TARGET, 'Gemini');

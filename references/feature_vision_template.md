@@ -1,5 +1,7 @@
 # Vision della Feature: [Nome Feature]
 
+Usare un file separato solo quando la feature attraversa piu ANALYSIS o piu milestone. Altrimenti tenere la Vision della Feature dentro `ANALYSIS_[feature].md`.
+
 ## Problema
 - Quale problema specifico risolve questa feature?
 

@@ -1,4 +1,5 @@
 # Project Vision
+Stato: DRAFT
 
 ## North Star
 - Agentic SDLC must help AI coding agents deliver software changes that remain aligned with the project's long-term intent, not only with the latest local request.
