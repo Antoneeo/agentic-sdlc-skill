@@ -2,7 +2,7 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
-## [Unreleased - 1.7.0] (Phase 0 of the evolution roadmap)
+## [1.7.0] - 2026-07-02 (Phases 0-1 of the evolution roadmap)
 ### Changed (breaking-soft)
 - **English is now the canonical language of the skill**: `SKILL.md`, `templates.md`, `ENFORCEMENT.md`, validator messages, generated indexes and the project protocol are in English. New ANALYSIS documents use English frontmatter keys (`status`, `level`, `start_date`, `end_date`) and English section headings. **Existing projects keep working**: the validator silently accepts the deprecated Italian keys (`stato`, `livello`, `data_inizio`, `data_fine`) and Italian headings.
 - The generated project protocol (`CLAUDE.md`/`GEMINI.md`/`AGENTS.md`/`.cursorrules`) is now a **thin pointer** to the skill (triage summary + where things live + closure gate) instead of a condensed copy of its rules, which had drifted from `SKILL.md`.
