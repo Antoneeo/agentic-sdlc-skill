@@ -1,7 +1,7 @@
 {
   "name": "@antoneeo/agentic-sdlc-skill",
   "version": "1.6.0",
-  "description": "Protocollo SDLC Documentation-First per Claude Code, Gemini CLI e Codex con triage, Vision governance, support file installati e integrazione opzionale devPNT.",
+  "description": "Documentation-First SDLC protocol for Claude Code, Gemini CLI and Codex with risk triage, Vision governance, installed support files and optional devPNT integration.",
   "keywords": [
     "claude-code",
     "claude-skill",
