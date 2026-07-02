@@ -1,172 +1,174 @@
 ---
 name: agentic-sdlc
-description: Protocollo SDLC Documentation-First con triage proporzionale, Vision come guida, modalita Standalone completa e simbiosi opzionale con devPNT. Usare per feature, bug significativi, refactor, audit e manutenzione documentata.
+description: Documentation-First SDLC protocol with risk-proportional triage, Vision as a guide, a complete Standalone mode and optional symbiosis with devPNT. Use for features, significant bugs, refactors, audits and documented maintenance.
 author: Antonio Pinto (https://github.com/Antoneeo)
 copyright: (c) 2026 Antonio Pinto
 ---
 
 # Agentic SDLC
 
-Questa skill guida lo sviluppo software con un processo Documentation-First proporzionale al rischio. Deve funzionare pienamente anche senza devPNT. Quando devPNT e' disponibile e configurato per il progetto corrente, la skill lavora in simbiosi con la sua governance: M-VISION, Master Plan, Action Plan e artefatti versionati diventano il quadro autorevole per milestone e implementazione.
+This skill guides software development with a Documentation-First process proportional to risk. It must work fully even without devPNT. When devPNT is available and configured for the current project, the skill works in symbiosis with its governance: M-VISION, Master Plan, Action Plan and versioned artifacts become the authoritative frame for milestones and implementation.
 
-File di supporto nella directory della skill:
-- `templates.md`: template per Vision, ANALYSIS, Spike, audit plan e handoff.
-- `scripts/sdlc_check.py`: validatore meccanico per `ai_docs/` (`check`, `validate`, `index`, `stale`, `mark`, `gate`).
-- `ENFORCEMENT.md`: setup opzionale per CI e hook.
+Support files in the skill directory:
+- `templates.md`: templates for Vision, ANALYSIS, Spike, audit plan and handoff.
+- `scripts/sdlc_check.py`: mechanical validator for `ai_docs/` (`check`, `validate`, `index`, `stale`, `mark`, `gate`).
+- `ENFORCEMENT.md`: optional setup for CI and hooks.
 
-Leggi questi file solo quando servono. `SKILL.md` e' il contratto operativo; i support file sono risorse progressive.
+Read these files only when needed. `SKILL.md` is the operating contract; the support files are progressive resources.
 
-## Valori Tecnici
+## Technical Values
 
-- **Comprendi prima di agire:** non modificare codice senza capire root cause, vincoli e forma attuale.
-- **Mantieni coerenza architetturale:** rispetta layer, responsabilita, naming, pattern e convenzioni esistenti.
-- **Applica DRY e semplicita:** non duplicare logica o conoscenza; astrai solo se riduce complessita reale.
-- **Preserva qualita:** ogni modifica deve mantenere o migliorare stabilita, testabilita e manutenibilita.
-- **Verifica tecnicamente:** chiudi lavoro implementativo con test, lint, smoke check o motivo esplicito.
-- **Mantieni memoria utile:** documenta decisioni e stato operativo rilevanti, non testo riempitivo.
-- **Proteggi la Vision:** ogni decisione deve restare allineata a benefici attesi, utenti, non-obiettivi e segnali di successo.
+- **Understand before acting:** do not modify code without understanding root cause, constraints and current shape.
+- **Preserve architectural coherence:** respect existing layers, responsibilities, naming, patterns and conventions.
+- **Apply DRY and simplicity:** do not duplicate logic or knowledge; abstract only when it reduces real complexity.
+- **Preserve quality:** every change must maintain or improve stability, testability and maintainability.
+- **Verify technically:** close implementation work with tests, lint, smoke checks or an explicit reason.
+- **Keep useful memory:** document relevant decisions and operational state, not filler text.
+- **Protect the Vision:** every decision must stay aligned with expected benefits, users, non-goals and success signals.
 
-Se una patch sembra facile ma non capisci perche il codice attuale e' fatto cosi, indaga prima.
+If a patch looks easy but you do not understand why the current code is shaped the way it is, investigate first.
 
-## Regola Zero: Triage
+## Rule Zero: Triage
 
-Classifica sempre la richiesta prima di scegliere il processo. Dichiara il livello scelto all'utente quando inizi il lavoro operativo.
+Always classify the request before choosing the process. Declare the chosen level to the user when you start operational work.
 
-| Livello | Criteri | Processo richiesto |
+| Level | Criteria | Required process |
 |---|---|---|
-| **L1 - Triviale** | Circa 10 righe in 1-2 file; nessun cambio API, dipendenza o comportamento nuovo; refusi o fix che ripristinano comportamento gia atteso | Implementa. Esegui test pertinenti se esistono. Nessun nuovo documento. |
-| **L2 - Piccolo** | Root cause chiara; massimo 3 file; nessuna nuova dipendenza o API pubblica; rischio basso | Mini-analisi nel messaggio: obiettivo, impatto, sicurezza, test. Test obbligatori. Nessun nuovo documento salvo aggiornare analisi/handoff esistenti se utile. |
-| **L3 - Significativo** | Oltre 3 file, API/contratti, nuova dipendenza, comportamento visibile, area security-sensitive, cambio architetturale o design non ovvio | Workflow completo: Vision Gate, analisi, piano, implementazione, test, chiusura. |
-| **Spike** | Esplorazione time-boxed per ridurre incertezza | Codice non mergiabile in main. Esito in `ai_docs/solutions/SPIKE_[tema].md`. Per produzione riclassifica come L2 o L3. |
+| **L1 - Trivial** | About 10 lines in 1-2 files; no API, dependency or new-behavior change; typos or fixes restoring already-expected behavior | Implement. Run relevant existing tests. No new documents. |
+| **L2 - Small** | Clear root cause; at most 3 files; no new dependency or public API; low risk | Mini-analysis in the message: objective, impact, security, tests. Tests mandatory. No new document, except updating an existing analysis/handoff if useful. |
+| **L3 - Significant** | More than 3 files, APIs/contracts, new dependency, user-visible behavior, security-sensitive area, architectural change or non-obvious design | Full workflow: Vision Gate, analysis, plan, implementation, tests, closure. |
+| **Spike** | Time-boxed exploration to reduce uncertainty | Code not mergeable into main. Outcome in `ai_docs/solutions/SPIKE_[topic].md`. For production, reclassify as L2 or L3. |
 
-Regole trasversali:
-- Parsing input esterni, authN/authZ, crittografia, rete, dati personali e filesystem sono security-sensitive: mai L1.
-- Se durante L1/L2 emerge impatto maggiore, fermati, riclassifica e dichiaralo.
-- Nel dubbio scegli il livello piu alto.
-- L'audit completo non parte per L1/L2 salvo richiesta esplicita.
+Cross-cutting rules:
+- Parsing of external input, authN/authZ, cryptography, networking, personal data and filesystem access are security-sensitive: never L1.
+- If a bigger impact emerges during L1/L2 work, stop, reclassify and declare it.
+- When in doubt, pick the higher level.
+- The full audit does not start for L1/L2 unless explicitly requested.
 
-## Modalita Operative
+## Operating Modes
 
-### Standalone completa
+### Full Standalone
 
-Usa questa modalita quando devPNT non e' disponibile, non e' configurato per il progetto corrente o l'utente chiede esplicitamente un workflow solo filesystem.
+Use this mode when devPNT is unavailable, not configured for the current project, or the user explicitly asks for a filesystem-only workflow.
 
-Fonte di verita:
+Source of truth:
 - Vision: `ai_docs/vision/project_vision.md`, `roadmap.md`, `principles.md`.
-- Feature/analisi: `ai_docs/solutions/ANALYSIS_[feature].md`.
+- Features/analyses: `ai_docs/solutions/ANALYSIS_[feature].md`.
 - Audit/handoff: `ai_docs/audit/`.
-- Storico feature: `ai_docs/strategic/features_history.md` manuale o generato dal validatore, in base alla struttura adottata dal progetto.
+- Feature history: `ai_docs/strategic/features_history.md`, manual or generated by the validator, depending on the structure the project adopts.
 
-La modalita Standalone non e' ridotta: deve poter gestire audit, feature, bug significativi, test, handoff e chiusura senza devPNT.
+Standalone mode is not reduced: it must handle audits, features, significant bugs, tests, handoffs and closure without devPNT.
 
-### Hybrid in simbiosi con devPNT
+### Hybrid in symbiosis with devPNT
 
-Usa questa modalita quando i tool `devpnt_*` sono disponibili e puntano al progetto corrente.
+Use this mode when the `devpnt_*` tools are available and point at the current project.
 
-Gerarchia autorevole:
-1. **M-VISION devPNT**: faro strategico della milestone. Prima di design o codice, leggila e verifica benefici, success signals, scope-in e non-goals.
-2. **Master Plan devPNT**: roadmap strategica e milestone.
-3. **Action Plan devPNT**: lavoro tattico corrente per il goal attivo.
-4. **Artefatti governati devPNT**: `D-UC`, `P-TM`, `E-ISP`, `E-TDD`, `E-TP`, ADR.
-5. **`ai_docs/` locale**: contesto leggibile, fallback Standalone, handoff locale o shadow/mirror quando utile.
+Authoritative hierarchy:
+1. **devPNT M-VISION**: strategic beacon of the milestone. Before design or code, read it and verify benefits, success signals, scope-in and non-goals.
+2. **devPNT Master Plan**: strategic roadmap and milestones.
+3. **devPNT Action Plan**: current tactical work for the active goal.
+4. **devPNT governed artifacts**: `D-UC`, `P-TM`, `E-ISP`, `E-TDD`, `E-TP`, ADR.
+5. **Local `ai_docs/`**: readable context, Standalone fallback, local handoff or shadow/mirror when useful.
 
-Regole Hybrid:
-- devPNT e' la fonte governata per piani e artefatti; non creare una seconda verita in `ai_docs/`.
-- La skill resta autonoma: se devPNT non c'e', passa a Standalone senza perdere capacita.
-- Se richiesta utente, Vision locale e M-VISION divergono, fermati e rendi esplicito il conflitto.
-- Non creare o modificare milestone senza rispettare la M-VISION.
-- Non accettare automaticamente proposte devPNT: presenta la preview e attendi conferma esplicita.
-- Se il protocollo devPNT locale impone bootstrap, piani o gate piu severi, seguili.
+Hybrid rules:
+- devPNT is the governed source for plans and artifacts; do not create a second truth in `ai_docs/`.
+- The skill stays autonomous: if devPNT is not there, switch to Standalone without losing capability.
+- If the user request, the local Vision and the M-VISION diverge, stop and make the conflict explicit.
+- Do not create or modify milestones without respecting the M-VISION.
+- Never auto-accept devPNT proposals: present the preview and wait for explicit confirmation.
+- If the local devPNT protocol imposes stricter bootstrap, plans or gates, follow them.
 
-## Workflow L3
+## L3 Workflow
 
-### 1. Audit e Allineamento
+### 1. Audit and Alignment
 
-- Leggi `ai_docs/audit/handoff.md` se esiste; se ha Data/Branch non coerenti, trattalo come storico.
-- Leggi `ai_docs/README.md` (must-read curati) e `ai_docs/INDEX.md` (manifest generato di tutti i doc canonici) per sapere cosa esiste prima di esplorare il codice. `solutions/` e `audit/` non sono indicizzate per file: cercale con glob/grep.
-- Se `ai_docs/` manca o e' incompleta, crea struttura e documenti minimi analizzando il progetto a lotti.
-- In Standalone usa `ai_docs/audit/audit_plan.md` per mappatura e stato.
-- In Hybrid preferisci la mappatura devPNT/KL quando disponibile; non duplicare la governance dei piani.
-- Per template dettagliati usa `templates.md`.
+- Read `ai_docs/audit/handoff.md` if it exists; if its Date/Branch are inconsistent, treat it as history.
+- Read `ai_docs/README.md` (curated must-reads) and `ai_docs/INDEX.md` (generated manifest of all canonical docs) to know what exists before exploring the code. `solutions/` and `audit/` are not indexed per file: search them with glob/grep.
+- If `ai_docs/` is missing or incomplete, create the structure and minimal documents by analyzing the project in batches.
+- In Standalone use `ai_docs/audit/audit_plan.md` for mapping and state.
+- In Hybrid prefer the devPNT/KL mapping when available; do not duplicate plan governance.
+- For detailed templates use `templates.md`.
 
 ### 2. Vision Gate
 
 Standalone:
-- Leggi `project_vision.md`, `roadmap.md`, `principles.md`.
-- Se un documento dichiara `Stato: DRAFT`, trattalo come ipotesi: segnala conflitti, ma non bloccare una richiesta esplicita dell'utente.
-- Se dichiara `Stato: APPROVED`, e la richiesta confligge, fermati e chiedi scelta: aggiornare Vision o modificare/rifiutare la richiesta.
-- Non promuovere mai una Vision a `APPROVED` senza conferma dell'utente.
+- Read `project_vision.md`, `roadmap.md`, `principles.md`.
+- If a document declares `Status: DRAFT`, treat it as a hypothesis: flag conflicts, but do not block an explicit user request.
+- If it declares `Status: APPROVED` and the request conflicts, stop and ask for a choice: update the Vision or modify/reject the request.
+- Never promote a Vision to `APPROVED` without the user's confirmation.
 
 Hybrid:
-- Leggi la M-VISION della milestone o chiedi/crea il passaggio richiesto dal protocollo devPNT.
-- Verifica che la richiesta serva un beneficio o success signal della M-VISION.
-- Se la richiesta aggiunge scope non autorizzato, trattala come divergenza di Vision.
+- Read the milestone's M-VISION, or ask for/create the step required by the devPNT protocol.
+- Verify that the request serves a benefit or success signal of the M-VISION.
+- If the request adds unauthorized scope, treat it as a Vision divergence.
 
-### 3. Analisi della Richiesta
+### 3. Request Analysis
 
 Standalone L3:
-- Prima di creare un nuovo `ANALYSIS_[feature].md`, cerca con glob/grep in `ai_docs/solutions/` un'analisi gia' esistente sullo stesso tema: se c'e', aggiornala invece di duplicarla.
-- Crea o aggiorna `ai_docs/solutions/ANALYSIS_[feature].md`.
-- Sezioni minime: Obiettivo, Vision della Feature o Allineamento alla Vision, Impatto, Sicurezza e Threat Model, Piano d'Azione, Strategia di Test, Diario/Stato Corrente.
-- Per feature che attraversano piu milestone o piu analisi, crea anche `ai_docs/vision/features/VISION_[feature].md`.
+- Before creating a new `ANALYSIS_[feature].md`, search `ai_docs/solutions/` with glob/grep for an existing analysis on the same topic: if there is one, update it instead of duplicating it.
+- Create or update `ai_docs/solutions/ANALYSIS_[feature].md`.
+- Minimum sections: Objective, Feature Vision (or Vision Alignment), Impact, Security and Threat Model, Action Plan, Test Strategy, Diary/Current State.
+- For features spanning multiple milestones or multiple analyses, also create `ai_docs/vision/features/VISION_[feature].md`.
 
 Hybrid L3:
-- Ripristina Master Plan, Action Plan e documenti collegati.
-- Usa devPNT per piani e artefatti governati.
-- Usa `ai_docs/solutions/SHADOW_[doc_key]_vX.Y.md` solo come shadow leggibile quando serve; in divergenza vince devPNT.
+- Restore the Master Plan, Action Plan and linked documents.
+- Use devPNT for plans and governed artifacts.
+- Use `ai_docs/solutions/SHADOW_[doc_key]_vX.Y.md` only as a readable shadow when needed; on divergence devPNT wins.
 
-### 4. Sviluppo e Test
+### 4. Development and Testing
 
-- Implementa solo dopo il gate documentale richiesto dal livello.
-- Modifica in modo chirurgico, coerente con il piano.
-- Scrivi o aggiorna test automatici pertinenti; usa AAA per unit test quando applicabile.
-- Se l'ambiente non permette test automatici, dichiara verifica alternativa e motivo.
-- Circuit breaker: dopo 3 esecuzioni consecutive senza progresso sui test, fermati e chiedi istruzioni.
-- Aggiorna il Diario dell'ANALYSIS o l'Action Plan quando completi milestone, incontri blocchi o cambi decisione.
+- Implement only after the documentation gate required by the level.
+- Modify surgically, consistently with the plan.
+- Write or update relevant automated tests; use AAA for unit tests when applicable.
+- If the environment does not allow automated tests, declare the alternative verification and the reason.
+- Circuit breaker: after 3 consecutive runs without progress on the tests, stop and ask for instructions.
+- Update the ANALYSIS Diary or the Action Plan when you complete milestones, hit blockers or change decisions.
 
-### 5. Chiusura
+### 5. Closure
 
-- Esegui test/lint/smoke check pertinenti.
-- Verifica allineamento con Vision locale o M-VISION devPNT.
-- Aggiorna solo i documenti effettivamente impattati.
-- **Indici allineati (Poka-Yoke)**: se hai creato, spostato o rimosso documenti canonici (`vision/`, `reference/`, `architecture/`, `functional/`, `strategic/`):
-  - rigenera il manifest con `sdlc_check.py index` (scrive `ai_docs/INDEX.md`) — non scriverlo a mano;
-  - se il documento e' must-read, aggiungi/aggiorna la sua riga nel `README.md` curato;
-  - se il documento ne sostituisce un altro, marca il vecchio `status: SUPERSEDED` e dichiara `supersedes:` nel nuovo;
-  - se hai creato una nuova sottodirectory canonica, dalle uno scopo nel `README.md`.
-  Doc canonico non indicizzato o senza `status` = chiusura sporca (`sdlc_check.py check` fallisce/avvisa). Non dichiarare DONE finche' non e' pulito. Dettagli: sezione "Documenti ai_docs".
-- In Hybrid proponi ADR/KL quando ci sono decisioni architetturali.
-- In Standalone, se il progetto adotta `sdlc_check.py`, esegui `python <skill_dir>/scripts/sdlc_check.py check --root <project_root>` o la copia locale equivalente.
-- I documenti aggiornati devono viaggiare nello stesso commit/PR del codice che descrivono.
+- Run the relevant tests/lint/smoke checks.
+- Verify alignment with the local Vision or the devPNT M-VISION.
+- Update only the documents actually impacted.
+- **Aligned indexes (Poka-Yoke)**: if you created, moved or removed canonical documents (`vision/`, `reference/`, `architecture/`, `functional/`, `strategic/`):
+  - regenerate the manifest with `sdlc_check.py index` (writes `ai_docs/INDEX.md`) — never write it by hand;
+  - if the document is a must-read, add/update its line in the curated `README.md`;
+  - if the document replaces another, mark the old one `status: SUPERSEDED` and declare `supersedes:` in the new one;
+  - if you created a new canonical subdirectory, give it a purpose in `README.md`.
+  A canonical doc that is unindexed or lacks `status` = dirty closure (`sdlc_check.py check` fails/warns). Do not declare DONE until it is clean. Details: section "ai_docs documents".
+- In Hybrid propose ADR/KL updates when there were architectural decisions.
+- In Standalone, if the project adopts `sdlc_check.py`, run `python <skill_dir>/scripts/sdlc_check.py check --root <project_root>` or the equivalent local copy.
+- Updated documents must travel in the same commit/PR as the code they describe.
 
-## Documenti ai_docs: due indici + lifecycle
+## ai_docs documents: two indexes + lifecycle
 
-I documenti in `ai_docs/` hanno due ruoli serviti da due indici distinti — non confonderli:
+Documents in `ai_docs/` play two roles served by two distinct indexes — do not confuse them:
 
-- **`ai_docs/README.md` (curato, a mano):** la priorita' di lettura. Poche righe, solo must-read canonici, cambia di rado. Giudizio umano su "cosa leggere prima".
-- **`ai_docs/INDEX.md` (generato, `sdlc_check.py index`):** il manifest completo di ogni doc canonico (`vision/`, `reference/`, `architecture/`, `functional/`, `strategic/`) con descrizione e stato. Mai a mano: si rigenera, cosi' non drifta.
-- **`strategic/features_history.md` (generato):** lo storico delle ANALYSIS, dai loro frontmatter.
-- `audit/` e `solutions/` sono discovery-by-grep: non entrano nel manifest.
+- **`ai_docs/README.md` (curated, by hand):** the reading priority. Few lines, only canonical must-reads, changes rarely. Human judgement on "what to read first".
+- **`ai_docs/INDEX.md` (generated, `sdlc_check.py index`):** the complete manifest of every canonical doc (`vision/`, `reference/`, `architecture/`, `functional/`, `strategic/`) with description and status. Never by hand: it is regenerated, so it does not drift.
+- **`strategic/features_history.md` (generated):** the ANALYSIS history, from their frontmatter.
+- `audit/` and `solutions/` are discovery-by-grep: they do not enter the manifest.
 
-**Header dei documenti canonici (lifecycle).** Ogni doc in quelle directory dovrebbe aprirsi con un frontmatter minimo, cosi' il manifest si genera da solo e un agente sa subito se fidarsi:
+**Canonical document header (lifecycle).** Every doc in those directories should open with a minimal frontmatter, so the manifest generates itself and an agent knows immediately whether to trust it:
 
 ```markdown
 ---
-description: Una riga — cos'e' e quando leggerlo.
+description: One line — what it is and when to read it.
 status: CURRENT              # CURRENT | SUPERSEDED | DRAFT | DEPRECATED
-supersedes: vecchio_doc.md   # solo se rimpiazza un altro doc
+supersedes: old_doc.md       # only if it replaces another doc
 ---
 ```
 
-In fallback (nessun frontmatter) il manifest deduce il titolo dal primo `# H1` e la descrizione dalla prima riga di prosa o blockquote; ma senza `status` un doc non porta segnale di freschezza. `status` mancante, valore non valido, o doc superseduto ancora `CURRENT` = avviso in `validate`. Un doc `SUPERSEDED` resta sul filesystem come storico, ma il suo stato lo dichiara morto: niente piu' grep che riportano a guide obsolete.
+As a fallback (no frontmatter) the manifest derives the title from the first `# H1` and the description from the first prose line or blockquote; but without `status` a doc carries no freshness signal. A missing `status`, an invalid value, or a superseded doc still marked `CURRENT` = warning in `validate`. A `SUPERSEDED` doc stays on the filesystem as history, but its state declares it dead: no more greps leading back to obsolete guidance.
 
-Senza Python/hook (ambienti minimali) gli indici e gli header restano una disciplina di prosa: aggiorna `README.md` e marca lo `status` a mano; il validatore e' solo il backstop dove e' adottato.
+Without Python/hooks (minimal environments) the indexes and headers remain a prose discipline: update `README.md` and mark the `status` by hand; the validator is only the backstop where it is adopted.
 
-## Enforcement Meccanico
+Legacy note: the validator also accepts the deprecated Italian frontmatter keys (`stato`, `livello`, `data_inizio`, `data_fine`) and Italian section headings in existing projects. New documents must use the English forms.
 
-Il prompt non e' enforcement. Quando il progetto richiede garanzie ripetibili:
-- leggi `ENFORCEMENT.md`;
-- usa `scripts/sdlc_check.py validate` in CI;
-- usa `scripts/sdlc_check.py gate` solo per directory security-critical, non per tutto il repository.
+## Mechanical Enforcement
 
-Il validatore e' un supporto, non un prerequisito universale: la skill deve restare usabile anche in ambienti senza Python o senza hook, dichiarando cosa non puo' verificare automaticamente.
+The prompt is not enforcement. When the project needs repeatable guarantees:
+- read `ENFORCEMENT.md`;
+- use `scripts/sdlc_check.py validate --strict` in CI;
+- use `scripts/sdlc_check.py gate` only for security-critical directories, not for the whole repository.
+
+The validator is a support, not a universal prerequisite: the skill must stay usable in environments without Python or hooks, declaring what it cannot verify automatically.
