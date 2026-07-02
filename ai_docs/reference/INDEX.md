@@ -6,4 +6,4 @@ shows what the guide was distilled from. Freshness: run `sdlc_check.py stale`.
 
 | Guide | Status | When to consult | Source | Source version |
 |---|---|---|---|---|
-| `GUIDE_release.md` | CURRENT | How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish. | Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat). | - |
+| `GUIDE_release.md` | CURRENT | How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish. | Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior). | - |
