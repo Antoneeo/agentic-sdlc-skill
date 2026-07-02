@@ -1,4 +1,4 @@
-<!-- SHADOW generated from devPNT (e_tdd_operative_guides_u1 v1.0) - do not edit by hand -->
+<!-- SHADOW generated from devPNT (e_tdd_operative_guides_u1 v1.1) - do not edit by hand -->
 # E-TDD: Operative Guides — Unit 1 (project-scope guides)
 
 **Type:** Technical Design Document
@@ -282,5 +282,9 @@ Scenario battery (extends the existing scratch-project harness):
 8. Router drift (hand-edited reference/INDEX.md) → validate ERROR.
 9. init.js smoke: template extraction still resolves all 6 needles after templates.md addition.
 
-## 6. Implementation dispatch plan (model-per-dispatch)
-Single implementer task (one coherent diff), dispatched to a **Sonnet-tier** subagent with a self-contained brief: this E-TDD §2 verbatim + file paths + test battery §5 as acceptance. Review: `devpnt-code-reviewer` (deep) on the diff vs this E-TDD. Escalation to deep implementer after two review FAILs (roadmap 4.2 decision).
+## 6. Implementation dispatch plan (model-per-dispatch, client-agnostic)
+Single implementer task (one coherent diff), dispatched to an **economy-tier** subagent — the client's mid/fast model, whatever the client is (Claude Code, Gemini/Antigravity, Codex, ...). Tiers are CLIENT-RELATIVE capability levels, never provider model names: `economy` = the client's mid/fast tier (sufficient because the granular §2 design turns implementation into transcription, not invention); `deep` = the strongest model the client offers (used for review). The tier→model binding lives outside governed artifacts — in the client's agent definitions or session configuration; dated illustrative examples may live in the skill's support files, marked as examples. Execution records (REVIEW_LOG `model` column, diaries) log the CONCRETE model actually used.
+
+Brief: self-contained — this E-TDD §2 (via its exported shadow path) + file paths + test battery §5 as acceptance; no session history.
+Review: independent code review at **deep tier** on the diff vs this E-TDD (devPNT §4.6 realization ladder: native subagent → fresh one-shot client run → declared self-pass).
+Escalation: after two review FAILs on the same task, re-dispatch at deep tier (roadmap 4.2 decision).
