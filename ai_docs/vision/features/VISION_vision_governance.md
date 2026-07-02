@@ -1,3 +1,7 @@
+---
+description: Feature vision for the Vision governance layer (ai_docs/vision/, Vision Gate) delivered in 1.4.0.
+status: CURRENT
+---
 # Vision della Feature: Vision Governance
 
 ## Problema

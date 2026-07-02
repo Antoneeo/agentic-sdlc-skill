@@ -1,192 +1,212 @@
-# Template dei documenti — Agentic SDLC
+# Document templates — Agentic SDLC
 
-Regole generali:
-- Documenti concisi: ≤ ~80 righe ciascuno (handoff ≤ 20). Se un documento cresce oltre, va diviso, non gonfiato.
-- La conformità al template non è l'obiettivo: se una sezione non ha contenuto reale, scrivi esplicitamente perché non si applica. Mai testo riempitivo.
-- Date sempre assolute, in UTC dove indicato.
+General rules:
+- Concise documents: ≤ ~80 lines each (handoff ≤ 20). If a document grows beyond that, split it, do not inflate it.
+- Template conformance is not the goal: if a section has no real content, state explicitly why it does not apply. Never filler text.
+- Dates always absolute, UTC where indicated.
 
-## Header dei documenti canonici (vision/ reference/ architecture/ functional/ strategic/)
+## Canonical document header (vision/ reference/ architecture/ functional/ strategic/)
 
-Ogni documento canonico durevole apre con questo frontmatter: alimenta il manifest generato `ai_docs/INDEX.md` e dà a un agente il segnale di freschezza prima che si fidi del contenuto.
+Every durable canonical document opens with this frontmatter: it feeds the generated manifest `ai_docs/INDEX.md` and gives an agent the freshness signal before it trusts the content.
 
 ```markdown
 ---
-description: Una riga — cos'è il documento e quando leggerlo.
+description: One line — what the document is and when to read it.
 status: CURRENT              # CURRENT | SUPERSEDED | DRAFT | DEPRECATED
-supersedes: vecchio_doc.md   # solo se rimpiazza un altro doc canonico
+supersedes: old_doc.md       # only if it replaces another canonical doc
 ---
-# Titolo del Documento
+# Document Title
 ```
 
-Quando un doc ne sostituisce un altro: il nuovo dichiara `supersedes:`, il vecchio passa a `status: SUPERSEDED` (resta come storico, non si cancella). `sdlc_check.py validate` avvisa se `status` manca o se un doc superseduto è ancora `CURRENT`.
+When a doc replaces another: the new one declares `supersedes:`, the old one switches to `status: SUPERSEDED` (it stays as history, do not delete it). `sdlc_check.py validate` warns if `status` is missing or if a superseded doc is still `CURRENT`.
+
+## ai_docs/README.md
+
+Curated must-read index, by hand (it is NOT the generated manifest). Created at init, updated rarely, only for real must-reads.
+
+```markdown
+# ai_docs — reading guide
+
+Must-reads for this project, in order. The full manifest of canonical docs is
+`INDEX.md` (generated — regenerate with `sdlc_check.py index`, never edit by hand).
+
+1. `vision/project_vision.md` — why the project exists (check its Status first).
+2. `strategic/architecture.md` — how it is built.
+3. `audit/handoff.md` — where work stopped last session (if present).
+
+Directory purposes: `vision/` (project direction), `strategic/` (architecture and
+feature catalog), `reference/` (operative guides), `solutions/` (per-feature
+analyses, discovery-by-grep), `audit/` (audit plan and handoff).
+```
 
 ## ai_docs/vision/project_vision.md
 
 ```markdown
-# Vision del Progetto
-Stato: DRAFT
-<!-- Stato: DRAFT (ricostruita dall'agente, NON è autorità di gating)
-     oppure APPROVED (da <chi>, <data>) — solo dopo conferma esplicita dell'utente -->
+# Project Vision
+Status: DRAFT
+<!-- Status: DRAFT (reconstructed by the agent, NOT a gating authority)
+     or APPROVED (by <who>, <date>) — only after the user's explicit confirmation -->
 
 ## North Star
-## Utenti Target
-## Problema Centrale
-## Obiettivi
-## Non-Obiettivi
-## Segnali di Successo
+## Target Users
+## Core Problem
+## Goals
+## Non-Goals
+## Success Signals
 ```
 
 ## ai_docs/vision/roadmap.md
 
 ```markdown
 # Roadmap
-Stato: DRAFT
+Status: DRAFT
 
-## Milestone
-<!-- per ciascuna: beneficio atteso, priorità, indicatore di avanzamento -->
+## Milestones
+<!-- for each: expected benefit, priority, progress indicator -->
 ```
 
 ## ai_docs/vision/principles.md
 
 ```markdown
-# Principi Decisionali
-Stato: DRAFT
+# Decision Principles
+Status: DRAFT
 
-<!-- elenco puntato dei principi stabili che guidano trade-off e scope, dal più critico -->
+<!-- bullet list of the stable principles guiding trade-offs and scope, most critical first -->
 ```
 
-## ai_docs/vision/features/VISION_[nome_feature].md
+## ai_docs/vision/features/VISION_[feature_name].md
 
-Solo per feature che attraversano più ANALYSIS o più milestone: negli altri casi la vision di feature vive nella sezione `## Vision della Feature` dell'ANALYSIS.
+Only for features spanning multiple ANALYSIS documents or multiple milestones: otherwise the feature vision lives in the `## Feature Vision` section of the ANALYSIS.
 
 ```markdown
-# Vision Feature: [Nome]
+# Feature Vision: [Name]
 
-## Problema
-## Beneficio Atteso
-## Utenti o Stakeholder
-## Segnali di Successo
-## Non-Obiettivi / Fuori Scope
-## Vincoli e Principi Collegati
+## Problem
+## Expected Benefit
+## Users or Stakeholders
+## Success Signals
+## Non-Goals / Out of Scope
+## Related Constraints and Principles
 ```
 
-## ai_docs/solutions/ANALYSIS_[nome_feature].md
+## ai_docs/solutions/ANALYSIS_[feature_name].md
 
-Il frontmatter è la fonte di verità dello stato della feature (l'indice `features_history.md` si genera da qui).
+The frontmatter is the source of truth for the feature state (the `features_history.md` index is generated from it).
 
 ```markdown
 ---
 id: F-001
-feature: Nome Feature
-stato: PLANNED
-livello: L3
-data_inizio: 2026-06-11
-data_fine:
+feature: Feature Name
+status: PLANNED
+level: L3
+start_date: 2026-06-11
+end_date:
 ---
-# Analisi della Feature: [Nome]
+# Feature Analysis: [Name]
 
-## Obiettivo
-<!-- cosa si vuole ottenere e quali problemi risolve -->
+## Objective
+<!-- what we want to achieve and which problems it solves -->
 
-## Vision della Feature
-<!-- beneficio atteso e problema risolto; allineamento alla vision di progetto
-     (citare il documento e il suo stato DRAFT/APPROVED); non-obiettivi/fuori scope
-     di questa feature; segnali di successo; stakeholder solo se non ovvi.
-     È l'unico posto della vision di feature: il file separato VISION_[feature].md
-     si crea solo se la feature attraversa più ANALYSIS o più milestone. -->
+## Feature Vision
+<!-- expected benefit and problem solved; alignment with the project vision
+     (cite the document and its DRAFT/APPROVED state); non-goals/out-of-scope
+     for this feature; success signals; stakeholders only if not obvious.
+     This is the single home of the feature vision: the separate file
+     VISION_[feature].md is created only if the feature spans multiple
+     ANALYSIS documents or multiple milestones. -->
 
-## Impatto
-<!-- file esistenti toccati, API/contratti, performance, nuove dipendenze -->
+## Impact
+<!-- existing files touched, APIs/contracts, performance, new dependencies -->
 
-## Sicurezza e Threat Model
-<!-- SEMPRE obbligatoria, anche in standalone.
-     Superfici toccate: input esterni, authN/authZ, crittografia, rete, dati personali, filesystem.
-     Minacce principali e mitigazioni. "Nessun impatto di sicurezza" va motivato, non dichiarato. -->
+## Security and Threat Model
+<!-- ALWAYS mandatory, also in Standalone.
+     Surfaces touched: external input, authN/authZ, cryptography, network, personal data, filesystem.
+     Main threats and mitigations. "No security impact" must be justified, not declared. -->
 
-## Piano d'Azione
+## Action Plan
 - [ ] ...
 
-## Strategia di Test
-<!-- unit AAA, integrazione, esempi. Se l'ambiente non è eseguibile (firmware/HIL):
-     verifica alternativa esplicita e motivo. -->
+## Test Strategy
+<!-- AAA unit tests, integration, examples. If the environment is not executable (firmware/HIL):
+     explicit alternative verification and reason. -->
 
-## Diario / Stato Corrente
-<!-- aggiornato a ogni milestone: dove sono, ultimo problema, prossimo passo.
-     È la fonte dell'handoff per questa feature. -->
+## Diary / Current State
+<!-- updated at every milestone: where I am, last problem, next step.
+     It is the handoff source for this feature. -->
 ```
 
-Stati ammessi nel frontmatter: `PLANNED` | `IN_PROGRESS` | `COMPLETED` | `CANCELLED`. `COMPLETED` richiede `data_fine`.
+Allowed frontmatter states: `PLANNED` | `IN_PROGRESS` | `COMPLETED` | `CANCELLED`. `COMPLETED` requires `end_date`. (The validator also accepts the deprecated Italian keys `stato`/`livello`/`data_inizio`/`data_fine` in existing projects.)
 
-## ai_docs/solutions/SPIKE_[tema].md
+## ai_docs/solutions/SPIKE_[topic].md
 
 ```markdown
-# Spike: [tema]
+# Spike: [topic]
 
-## Domanda da rispondere
+## Question to answer
 ## Time-box
-## Cosa è stato provato
-## Risposta / Esito
-## Conseguenze
-<!-- max 1 pagina. Il codice dello spike NON è mergiabile: per produzione riclassificare L2/L3. -->
+## What was tried
+## Answer / Outcome
+## Consequences
+<!-- max 1 page. Spike code is NOT mergeable: for production reclassify L2/L3. -->
 ```
 
-## ai_docs/audit/audit_plan.md (solo modalità Standalone)
+## ai_docs/audit/audit_plan.md (Standalone mode only)
 
-Il campo `Riferimento` (hash git o timestamp ISO UTC) è gestito da `sdlc_check.py mark` — non compilarlo a mano. La freschezza si verifica con `sdlc_check.py stale`.
+The `Reference` field (git hash or ISO UTC timestamp) is managed by `sdlc_check.py mark` — do not fill it by hand. Freshness is verified with `sdlc_check.py stale`.
 
 ```markdown
-# Piano di Audit
+# Audit Plan
 
-Stati: PENDING (da analizzare) | ANALYZED (analizzato, con riferimento) | SKIPPED (con motivo).
+States: PENDING (to analyze) | ANALYZED (analyzed, with reference) | SKIPPED (with reason).
 
-| Percorso | Stato | Riferimento | Note |
+| Path | Status | Reference | Notes |
 |---|---|---|---|
 | src/core/ | PENDING | - | |
-| vendor/ | SKIPPED | - | codice vendored |
+| vendor/ | SKIPPED | - | vendored code |
 ```
 
 ## ai_docs/audit/handoff.md
 
-Solo un puntatore, ≤ 20 righe. Il dettaglio vive nel Diario di ciascuna ANALYSIS.
+Just a pointer, ≤ 20 lines. The detail lives in the Diary of each ANALYSIS.
 
 ```markdown
 # Handoff
-Data: 2026-06-11 (UTC)
+Date: 2026-06-11 (UTC)
 Branch: feature/sso-login
-Agente: Claude
+Agent: Claude
 
-## Feature attive
-- F-001 — vedi solutions/ANALYSIS_login_sso.md (sezione Diario)
+## Active features
+- F-001 — see solutions/ANALYSIS_login_sso.md (Diary section)
 
-## Prossimo passo
-<!-- una riga -->
+## Next step
+<!-- one line -->
 
-## Note di sessione
-<!-- vision lette in questa sessione? draft da far validare? -->
+## Session notes
+<!-- visions read this session? drafts to have validated? -->
 ```
 
-## ai_docs/strategic/architecture.md e existing_features.md
+## ai_docs/strategic/architecture.md and existing_features.md
 
-Doc canonici: aprono con l'header (`description:`/`status:`) cosi' entrano puliti nel manifest `INDEX.md`.
+Canonical docs: they open with the header (`description:`/`status:`) so they enter the `INDEX.md` manifest cleanly.
 
 ```markdown
 ---
-description: Stack, struttura directory e pattern architetturali del progetto.
+description: Stack, directory structure and architectural patterns of the project.
 status: CURRENT
 ---
-# Architettura del Progetto
-## Stack Tecnologico
-## Struttura delle Directory
-## Pattern Architetturali
+# Project Architecture
+## Technology Stack
+## Directory Structure
+## Architectural Patterns
 ```
 
 ```markdown
 ---
-description: Catalogo sintetico delle funzionalità esistenti del progetto.
+description: Concise catalog of the project's existing features.
 status: CURRENT
 ---
-# Funzionalità Esistenti
-- [ID] **Nome Feature**: Descrizione
+# Existing Features
+- [ID] **Feature Name**: Description
 ```
 
-`ai_docs/strategic/features_history.md` e `ai_docs/INDEX.md` NON hanno template: sono generati da `sdlc_check.py index`.
+`ai_docs/strategic/features_history.md` and `ai_docs/INDEX.md` have NO template: they are generated by `sdlc_check.py index`.

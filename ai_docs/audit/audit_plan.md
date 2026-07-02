@@ -1,10 +1,10 @@
 # Audit Plan
 
-| Directory/File | Status | Notes |
-|:---|:---|:---|
-| / | [ANALYZED] | Baseline repository structure reviewed for Vision Governance. |
-| skills/agentic-sdlc-skill/SKILL.md | [ANALYZED] | Workflow updated with Vision Gate. |
-| references/ | [ANALYZED] | Vision and analysis templates updated. |
-| scripts/init.js | [ANALYZED] | Initialization now creates Vision folders and boilerplates. |
-| ai_docs/vision/ | [ANALYZED] | Project and feature Vision documents created. |
-| AGENTS.md / CLAUDE.md / GEMINI.md / .cursorrules | [ANALYZED] | Generated operational protocols synchronized. |
+States: PENDING (to analyze) | ANALYZED (analyzed, with reference) | SKIPPED (with reason).
+
+| Path | Status | Reference | Notes |
+|---|---|---|---|
+| examples/ | PENDING | - | legacy docs/ layout examples, predate the ai_docs structure |
+| sdlc-test-project/ | SKIPPED | - | manual test fixture, not product code |
+| skills/agentic-sdlc-skill/ | ANALYZED | e9d7ee2c9141 |  |
+| scripts/ | ANALYZED | e9d7ee2c9141 |  |
