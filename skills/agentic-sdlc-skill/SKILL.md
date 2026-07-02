@@ -11,6 +11,7 @@ This skill guides software development with a Documentation-First process propor
 
 Support files in the skill directory:
 - `templates.md`: templates for Vision, ANALYSIS, Spike, audit plan and handoff.
+- `guides.md`: pipeline for distilling user-provided indications into `ai_docs/reference/GUIDE_[topic].md`.
 - `scripts/sdlc_check.py`: mechanical validator for `ai_docs/` (`check`, `validate`, `index`, `stale`, `mark`, `gate`).
 - `ENFORCEMENT.md`: optional setup for CI and hooks.
 
@@ -144,9 +145,10 @@ IN_PROGRESS, or vice versa. They move in the same closure step.
 
 Pass `--hybrid` explicitly (never auto-detected — an explicit flag beats a guessed
 mode): `check --hybrid` and `stale --hybrid` skip audit-plan staleness (mapping is
-delegated to devPNT/KL); `gate --hybrid` also unlocks on the presence of an E-TDD
-shadow in `solutions/` (the Hybrid design gate) instead of requiring an IN_PROGRESS
-ANALYSIS.
+delegated to devPNT/KL) — guide-drift checking still runs (`ai_docs/reference/`
+is filesystem-first even in Hybrid, see the ownership matrix above); `gate --hybrid`
+also unlocks on the presence of an E-TDD shadow in `solutions/` (the Hybrid design
+gate) instead of requiring an IN_PROGRESS ANALYSIS.
 
 ## L3 Workflow
 
@@ -205,6 +207,7 @@ Hybrid L3:
   - if the document replaces another, mark the old one `status: SUPERSEDED` and declare `supersedes:` in the new one;
   - if you created a new canonical subdirectory, give it a purpose in `README.md`.
   A canonical doc that is unindexed or lacks `status` = dirty closure (`sdlc_check.py check` fails/warns). Do not declare DONE until it is clean. Details: section "ai_docs documents".
+  - guides created or changed: `sdlc_check.py index` regenerates BOTH manifests (`ai_docs/INDEX.md` and the guide router `ai_docs/reference/INDEX.md`) in one run.
 - In Hybrid propose ADR/KL updates when there were architectural decisions.
 - In Standalone, if the project adopts `sdlc_check.py`, run `python <skill_dir>/scripts/sdlc_check.py check --root <project_root>` or the equivalent local copy.
 - Updated documents must travel in the same commit/PR as the code they describe.
@@ -233,6 +236,19 @@ As a fallback (no frontmatter) the manifest derives the title from the first `# 
 Without Python/hooks (minimal environments) the indexes and headers remain a prose discipline: update `README.md` and mark the `status` by hand; the validator is only the backstop where it is adopted.
 
 Legacy note: the validator also accepts the deprecated Italian frontmatter keys (`stato`, `livello`, `data_inizio`, `data_fine`) and Italian section headings in existing projects. New documents must use the English forms.
+
+## Operative Guides
+
+Trigger test: the user hands over indications to follow (origin = user, not model
+knowledge) meant to govern how the agent operates (purpose = operative), not just
+inform an answer. Both hold → distill into `ai_docs/reference/GUIDE_[topic].md`.
+
+Fidelity constraint: only what the source supports; gaps marked `[not covered by
+source]`, never filled from general knowledge. Full pipeline, snapshotting and
+maintenance rules: `guides.md`.
+
+`ai_docs/reference/INDEX.md` is generated (the guide router) — never edit by hand,
+regenerate with `sdlc_check.py index`.
 
 ## Mechanical Enforcement
 

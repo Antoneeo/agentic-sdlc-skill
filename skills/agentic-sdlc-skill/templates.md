@@ -20,6 +20,41 @@ supersedes: old_doc.md       # only if it replaces another canonical doc
 
 When a doc replaces another: the new one declares `supersedes:`, the old one switches to `status: SUPERSEDED` (it stays as history, do not delete it). `sdlc_check.py validate` warns if `status` is missing or if a superseded doc is still `CURRENT`.
 
+## ai_docs/reference/GUIDE_[topic].md
+
+Operative guide distilled from USER-PROVIDED indications (never from model knowledge).
+The verbatim source snapshot lives in `ai_docs/reference/.sources/<slug>-<hash8>.md`;
+`source_hash` is the snapshot's SHA-256. Every `##` section carries a fidelity marker:
+`[source: <snapshot-file>#<anchor-or-line>]` for covered content, or a literal
+`[not covered by source]` for gaps. Sections are CHOSEN from the repertoire below —
+only those the source actually supports; never force empty ones.
+
+```markdown
+---
+description: One line, ≤160 chars — when to consult this guide.
+status: CURRENT
+source: Human-readable name of what the user provided.
+source_version: v1.2          # optional — only when the origin is versioned
+distilled_from: ai_docs/reference/.sources/topic-a1b2c3d4.md
+source_hash: <sha256 of the snapshot file>
+---
+# Guide: [Topic]
+
+## How to do [X]
+[source: topic-a1b2c3d4.md#setup]
+<!-- operative steps, imperative voice -->
+
+## How to verify it is done right
+[source: topic-a1b2c3d4.md#checks]
+
+## What NOT to do
+[not covered by source]
+<!-- the user's material does not address this: do not invent. -->
+```
+
+Section repertoire (pick what the source supports): How to do X / How to verify /
+What NOT to do / What to watch out for / Core principles / When this applies.
+
 ## ai_docs/README.md
 
 Curated must-read index, by hand (it is NOT the generated manifest). Created at init, updated rarely, only for real must-reads.
