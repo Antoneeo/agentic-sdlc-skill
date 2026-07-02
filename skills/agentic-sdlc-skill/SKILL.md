@@ -243,9 +243,12 @@ Trigger test: the user hands over indications to follow (origin = user, not mode
 knowledge) meant to govern how the agent operates (purpose = operative), not just
 inform an answer. Both hold → distill into `ai_docs/reference/GUIDE_[topic].md`.
 
-Fidelity constraint: only what the source supports; gaps marked `[not covered by
-source]`, never filled from general knowledge. Full pipeline, snapshotting and
-maintenance rules: `guides.md`.
+A guide TRAINS the agent, two levels: the guide is the **synthesis** a trained
+agent carries (compact — read whole before acting); the verbatim snapshot in
+`.sources/` is the **book**, reached on demand via the section markers. Fidelity
+constraint: only what the source supports; gaps marked `[not covered by source]`,
+never filled from general knowledge; selection and compression expected, addition
+forbidden. Full pipeline, DRY rule, snapshotting and maintenance: `guides.md`.
 
 `ai_docs/reference/INDEX.md` is generated (the guide router) — never edit by hand,
 regenerate with `sdlc_check.py index`.

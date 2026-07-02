@@ -23,11 +23,14 @@ When a doc replaces another: the new one declares `supersedes:`, the old one swi
 ## ai_docs/reference/GUIDE_[topic].md
 
 Operative guide distilled from USER-PROVIDED indications (never from model knowledge).
-The verbatim source snapshot lives in `ai_docs/reference/.sources/<slug>-<hash8>.md`;
-`source_hash` is the snapshot's SHA-256. Every `##` section carries a fidelity marker:
-`[source: <snapshot-file>#<anchor-or-line>]` for covered content, or a literal
+The guide is a SYNTHESIS — the compact training a reader takes in whole before acting;
+the verbatim snapshot in `ai_docs/reference/.sources/<slug>-<hash8>.md` is the book,
+reached on demand. `source_hash` is the snapshot's SHA-256. Every `##` section carries
+a fidelity marker: `[source: <snapshot-file>#<anchor-or-line>]` for covered content
+(doubling as the detail-lookup pointer into the book), or a literal
 `[not covered by source]` for gaps. Sections are CHOSEN from the repertoire below —
-only those the source actually supports; never force empty ones.
+only those the source actually supports; never force empty ones. A guide approaching
+the source's own length is a paraphrase, not a synthesis.
 
 ```markdown
 ---
