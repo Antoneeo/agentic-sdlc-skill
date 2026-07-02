@@ -1,8 +1,9 @@
 # Release Runbook — @antoneeo/agentic-sdlc-skill
 
 Approved by Antonio Pinto, 2026-07-02. Distilled from the v1.8.0 release session
-(first documented release run). This is the verbatim source ("book") for
-`GUIDE_release.md`; detail lives here, the guide is the synthesis.
+(first documented release run); amended same day by Antonio's indication to use
+`git_push_tag.bat` for the commit+tag+push step. This is the verbatim source
+("book") for `GUIDE_release.md`; detail lives here, the guide is the synthesis.
 
 ## Preconditions
 
@@ -60,19 +61,30 @@ new version.
 
 ## Git sequence
 
-1. On the feature branch, commit the release edits as
-   `Release vX.Y.Z: <short title>` — version bumps, CHANGELOG, README and the
-   handoff update travel together in this commit.
-2. Push the feature branch.
-3. Merge to main. Constraints on this machine (as of 2026-07): the `gh` CLI is
+Commit + tag + push are done with the repo-root script `git_push_tag.bat`
+(per Antonio's indication, 2026-07-02).
+
+1. Ensure the working tree contains ONLY the release edits — the script runs
+   `git add .`, so every pending change (including devPNT db churn, which is
+   tracked in this repo) is swept into the release commit. If unrelated changes
+   are pending, commit or isolate them first.
+2. From the feature branch run:
+   `git_push_tag.bat "Release vX.Y.Z: <short title>" vX.Y.Z`
+   The script stages everything, commits with the given message, tags, and
+   pushes both the current branch and the tag. The release commit carries the
+   version bumps, CHANGELOG, README and handoff update together.
+3. VERIFY the tag landed on the release commit:
+   `git rev-parse vX.Y.Z` must equal `git rev-parse HEAD`. The script tags HEAD
+   unconditionally — if its commit step failed (hook, empty stage), the tag
+   lands on the PREVIOUS commit; this is the same wrong-tag failure hit
+   manually in the v1.8.0 run. If the tag is wrong: `git tag -d vX.Y.Z`, fix,
+   re-run (if the tag was already pushed, delete the remote tag too:
+   `git push origin :refs/tags/vX.Y.Z`).
+4. Merge to main. Constraints on this machine (as of 2026-07): the `gh` CLI is
    NOT installed — create the PR via the GitHub web UI
    (`https://github.com/Antoneeo/agentic-sdlc-skill/pull/new/<branch>`); a
    direct push to main requires the user's explicit authorization in-session.
-4. Tag the RELEASE COMMIT (not whatever HEAD happens to be):
-   `git tag vX.Y.Z <release-commit-sha>` then `git push origin vX.Y.Z`.
-   Tag/ref pushes never touch the working tree — they are safe even when the
-   devPNT locks below are active. Historical pattern: one tag per release,
-   name `vX.Y.Z`.
+   Historical pattern: one tag per release, name `vX.Y.Z`.
 
 ## Known traps
 
@@ -84,15 +96,16 @@ Verified in the field, 2026-07-02:
   primary working tree (checkout, merge, stash) fails with
   `error: unable to unlink old '...': Invalid argument` — and
   "commit then switch" fails too, because the dbs re-drift immediately after
-  each commit. Do branch-crossing work in a separate `git worktree add`
-  checkout, or defer it to a session where the devPNT server is stopped.
+  each commit. Committing on the CURRENT branch (what `git_push_tag.bat` does)
+  is fine; do branch-crossing work in a separate `git worktree add` checkout,
+  or defer it to a session where the devPNT server is stopped.
+- **`git_push_tag.bat` failure mode**: the script does not stop on a failed
+  commit — the tag then lands on the previous HEAD. Always run the step-3
+  verification from the Git sequence above.
 - **npm 2FA**: `npm publish` stops with `EOTP` (one-time password via browser).
   The agent cannot complete it — the USER runs the final `npm publish`.
 - **PowerShell 5.1**: no `&&` chaining; `npm pack --dry-run` prints its file
   listing to stderr — use `--json` and parse instead.
-- **Never chain the tag after a merge that can fail**: in the v1.8.0 run,
-  `git merge; git tag v1.8.0` was chained with `;` — the merge aborted and the
-  tag landed on the wrong commit and had to be deleted. Tag explicitly by SHA.
 
 ## Publish
 
