@@ -1,3 +1,7 @@
+---
+description: Stack, package structure and architectural patterns of the skill repository.
+status: CURRENT
+---
 # Project Architecture
 
 ## Stack
