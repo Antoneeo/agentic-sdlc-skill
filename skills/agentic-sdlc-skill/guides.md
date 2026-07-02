@@ -56,6 +56,13 @@ guide with no `distilled_from` is not this pipeline's output.
    frontmatter with `source`, `distilled_from`, `source_hash` (the snapshot's
    SHA-256, matching what you just computed), optional `source_version`; body
    sections chosen from the repertoire, each with a fidelity marker.
+   **Write for selective reading**: guides are delivered by PATH and readers
+   grep/partial-read them — size is fine, opacity is not. Use the repertoire's
+   stable, self-describing headings (a reader must find "What NOT to do"
+   without reading the file top to bottom), keep one concern per `##` section,
+   and make the frontmatter `description` the "should I open this file at all"
+   answer. This is why a large well-structured single guide beats several
+   fragments: navigation replaces fragmentation.
 6. **Run `sdlc_check.py index`** so both `ai_docs/INDEX.md` and
    `ai_docs/reference/INDEX.md` (the guide router) regenerate.
 
