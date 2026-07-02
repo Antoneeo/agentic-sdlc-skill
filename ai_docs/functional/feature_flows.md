@@ -1,33 +1,31 @@
 ---
-description: devPNT-generated feature-flow doc. Snapshot 2026-05-10, predates the 1.5/1.6 restructuring: regenerate before trusting.
-status: DEPRECATED
+description: devPNT-generated feature-flow doc. Snapshot 2026-07-02; regenerate via devPNT after structural changes.
+status: CURRENT
 ---
 <!-- devpnt:generated
-  date: 2026-05-10T06:55:40
+  date: 2026-07-02T06:31:06
   generator: functional_docs_generator v1.0
   sources: (none)
-  model: GoogleGemini/gemini-3.1-flash-lite-preview
+  model: GoogleGemini/gemini-flash-lite-latest
   summary_hash: 76af802d0b7bb6d8
 -->
 
-### Authentication and Session Management
-1. [auth_gateway.py] — receives incoming request and validates credentials — passes session token to orchestrator
-2. [session_manager.py] — verifies session validity and retrieves user permissions — passes authorized status to the requested service
-3. [request_handler.py] — dispatches the request to the appropriate logic module — passes request context to the controller
+### User Authentication Flow
+1. [auth_manager.py] — verifies user credentials against the database — returns session_token
+2. [session_handler.py] — validates the session_token and initializes user context — passes user_id to main_controller.py
+3. [main_controller.py] — loads user-specific dashboard configuration — updates ui_renderer.py
 
-### Core Task Processing
-1. [api_router.py] — receives external API call and sanitizes input — passes data to the task orchestrator
-2. [task_orchestrator.py] — determines task priority and assigns resources — passes job metadata to the execution engine
-3. [execution_engine.py] — processes the core logic and updates state — passes result status to the database interface
-4. [db_connector.py] — persists the final state to the storage layer — passes completion confirmation to the response generator
+### Data Processing Flow
+1. [data_loader.py] — reads raw input from external sources — passes raw_data to data_processor.py
+2. [data_processor.py] — cleans and normalizes raw_data — passes structured_data to analytics_engine.py
+3. [analytics_engine.py] — performs statistical calculations on structured_data — sends results to report_generator.py
 
-### Configuration Initialization
-1. [main.py] — triggers system startup and environment loading — passes config paths to the loader
-2. [config_loader.py] — parses environment variables and secret files — passes configuration object to the orchestrator
-3. [system_orchestrator.py] — initializes system modules based on provided settings — passes ready signal to the network listener
-4. [network_listener.py] — opens communication ports and awaits external input — passes connection events to the router
+### Error Reporting Flow
+1. [error_logger.py] — captures exception details from the runtime environment — passes error_payload to notification_service.py
+2. [notification_service.py] — formats error_payload for stakeholder alert — sends formatted_message to email_client.py
+3. [email_client.py] — transmits alert to the system administrator — returns delivery_status to error_logger.py
 
-### Error Handling and Logging
-1. [exception_handler.py] — intercepts system runtime errors — passes error trace to the logging service
-2. [logger.py] — formats and writes error data to centralized storage — passes log status to the notification service
-3. [notification_service.py] — triggers alerts for critical system failures — passes notification result to the system monitor
+### Configuration Update Flow
+1. [config_loader.py] — parses changes from local .env files — passes new_config to validator.py
+2. [validator.py] — checks new_config against schema constraints — returns validated_config to app_initializer.py
+3. [app_initializer.py] — applies validated_config to active services — triggers system_restart.py
