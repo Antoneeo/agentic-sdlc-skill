@@ -109,8 +109,12 @@ def read_text(path):
 
 
 def sha256_file(path):
+    # CRLF->LF before hashing: a Windows checkout with core.autocrlf=true
+    # rewrites snapshot files, and a raw-byte hash would flag every guide
+    # [stale] on a fresh clone. Recorded hashes are LF-based, so normalizing
+    # maps CRLF copies back to the same digest.
     h = hashlib.sha256()
-    h.update(path.read_bytes())
+    h.update(path.read_bytes().replace(b"\r\n", b"\n"))
     return h.hexdigest()
 
 

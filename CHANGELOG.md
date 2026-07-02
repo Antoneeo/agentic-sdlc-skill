@@ -2,6 +2,14 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [Unreleased - 1.8.1]
+### Fixed
+- **Guide freshness hash is now line-ending independent**: `sha256_file` in `sdlc_check.py` normalizes CRLF → LF before hashing. Previously the raw-byte hash made a fresh Windows checkout with `core.autocrlf=true` rewrite `.sources/` snapshots and flag every guide `[stale]` (false positive). Backward compatible: recorded hashes were computed on LF content, and normalization maps CRLF copies back to the same digest. (Edge case: a hash recorded pre-1.8.1 on a snapshot that genuinely contained CRLF bytes will flag `[stale]` once — regenerate the hash.)
+- `guides.md` step 3 now states the hash is computed over LF-normalized content and recommends the `ai_docs/reference/.sources/** -text` `.gitattributes` rule to consumer projects (defense in depth: keeps snapshots byte-verbatim).
+
+### Test battery addition
+- Scenario 10 (extends the unit-1 battery): snapshot checked out with CRLF endings + guide recording the LF-normalized hash → `stale` must NOT flag it; a genuine content edit must still flag `[stale]`.
+
 ## [1.8.0] - 2026-07-02 (Feature B unit 1: operative guides, project scope)
 ### Added
 - **Operative guides** (`ai_docs/reference/GUIDE_[topic].md`): a durable, source-faithful layer distilled from USER-PROVIDED indications — the capability neither agentic-sdlc nor superpowers had. New support file `guides.md` (pipeline: topic decomposition → user confirmation → verbatim snapshot in `reference/.sources/` with SHA-256 → source-anchored extraction → per-section fidelity markers `[source: …]` / `[not covered by source]`); guide template with provenance frontmatter (`source`, `source_version`, `distilled_from`, `source_hash`) in `templates.md`; short "Operative Guides" section in `SKILL.md`.
