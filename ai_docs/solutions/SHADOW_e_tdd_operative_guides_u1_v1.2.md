@@ -1,4 +1,4 @@
-<!-- SHADOW generated from devPNT (e_tdd_operative_guides_u1 v1.1) - do not edit by hand -->
+<!-- SHADOW generated from devPNT (e_tdd_operative_guides_u1 v1.2) - do not edit by hand -->
 # E-TDD: Operative Guides — Unit 1 (project-scope guides)
 
 **Type:** Technical Design Document
