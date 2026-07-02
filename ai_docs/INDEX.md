@@ -22,11 +22,11 @@ not manifested here.
 
 | Document | Status | Description |
 |---|---|---|
-| `functional/architecture_overview.md` | CURRENT | devPNT-generated functional overview of the skill package architecture. Snapshot 2026-06-13; regenerate via devPNT after structural changes. |
-| `functional/data_entities.md` | DEPRECATED | devPNT-generated data-entity doc. Snapshot 2026-05-10, predates the 1.5/1.6 restructuring: regenerate before trusting. |
-| `functional/entry_points.md` | DEPRECATED | devPNT-generated entry-point doc. Snapshot 2026-05-10, predates the 1.5/1.6 restructuring: regenerate before trusting. |
-| `functional/external_interfaces.md` | CURRENT | devPNT-generated map of the package's external interfaces. Snapshot 2026-06-13; regenerate via devPNT after structural changes. |
-| `functional/feature_flows.md` | DEPRECATED | devPNT-generated feature-flow doc. Snapshot 2026-05-10, predates the 1.5/1.6 restructuring: regenerate before trusting. |
+| `functional/architecture_overview.md` | CURRENT | devPNT-generated functional overview of the skill package architecture. Snapshot 2026-07-02; regenerate via devPNT after structural changes. |
+| `functional/data_entities.md` | CURRENT | devPNT-generated data-entity doc. Snapshot 2026-07-02; regenerate via devPNT after structural changes. |
+| `functional/entry_points.md` | CURRENT | devPNT-generated entry-point doc. Snapshot 2026-07-02; regenerate via devPNT after structural changes. |
+| `functional/external_interfaces.md` | CURRENT | devPNT-generated map of the package's external interfaces. Snapshot 2026-07-02; regenerate via devPNT after structural changes. |
+| `functional/feature_flows.md` | CURRENT | devPNT-generated feature-flow doc. Snapshot 2026-07-02; regenerate via devPNT after structural changes. |
 
 ## strategic/
 

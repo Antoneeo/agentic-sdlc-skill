@@ -1,12 +1,12 @@
 ---
-description: devPNT-generated data-entity doc. Snapshot 2026-05-10, predates the 1.5/1.6 restructuring: regenerate before trusting.
-status: DEPRECATED
+description: devPNT-generated data-entity doc. Snapshot 2026-07-02; regenerate via devPNT after structural changes.
+status: CURRENT
 ---
 <!-- devpnt:generated
-  date: 2026-05-10T06:55:42
+  date: 2026-07-02T06:31:07
   generator: functional_docs_generator v1.0
   sources: (none)
-  model: GoogleGemini/gemini-3.1-flash-lite-preview
+  model: GoogleGemini/gemini-flash-lite-latest
   summary_hash: d2ae755f57e59dee
 -->
 
@@ -14,9 +14,9 @@ status: DEPRECATED
 
 | Entity | Python Classes | Key Attributes | Notes |
 | :--- | :--- | :--- | :--- |
-| User Profile | `User`, `UserProfile` | `id`, `username`, `email`, `bio` | Core identity and profile data for system actors. |
-| Content Item | `Post`, `Comment` | `id`, `author_id`, `body`, `created_at` | Primary user-generated data objects. |
-| Media Asset | `Image`, `Video` | `id`, `url`, `file_size`, `mime_type` | Stored binary content linked to users or posts. |
+| User Profile | `User`, `UserProfile` | `id`, `username`, `email`, `bio`, `preferences` | Represents core system actors and their identity metadata. |
+| Content Item | `Post`, `Comment` | `id`, `author_id`, `body`, `created_at` | Represents user-generated content entries. |
+| Media Asset | `Image`, `Video` | `id`, `url`, `file_size`, `format` | Represents binary files linked to content or profiles. |
 
 ## Relations
 
