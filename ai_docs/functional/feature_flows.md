@@ -1,3 +1,7 @@
+---
+description: devPNT-generated feature-flow doc. Snapshot 2026-05-10, predates the 1.5/1.6 restructuring: regenerate before trusting.
+status: DEPRECATED
+---
 <!-- devpnt:generated
   date: 2026-05-10T06:55:40
   generator: functional_docs_generator v1.0

@@ -3,202 +3,151 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const { SKILL_SOURCE, CLIENTS, clientDetected, loadTemplates, templateFor } = require('./lib');
 
 const cwd = process.cwd();
 
-// Helper for command checking
-function checkCommand(cmd) {
-  try {
-    execSync(`${cmd} --version`, { stdio: 'ignore' });
-    return true;
-  } catch (e) {
-    return false;
-  }
+// 1. Directory layout (canonical ai_docs structure, including reference/)
+const directories = [
+  'ai_docs',
+  'ai_docs/vision',
+  'ai_docs/vision/features',
+  'ai_docs/reference',
+  'ai_docs/strategic',
+  'ai_docs/audit',
+  'ai_docs/solutions',
+].map((d) => path.join(cwd, d));
+
+// 2. Project protocol (thin pointer — the operating contract is the skill).
+// Deliberately short: duplicating the skill's rules here made them drift.
+const protocolContent = `# Agentic SDLC — Project Protocol (pointer)
+
+This project follows the Agentic SDLC Documentation-First process. The full
+operating contract is the \`agentic-sdlc\` skill (installed in your agent's
+skills directory); this file is only the minimal always-on pointer.
+
+## Rule Zero — Triage every request
+- L1 Trivial: ~10 lines, 1-2 files, no API/dependency/behavior change. Implement + run existing tests; no docs.
+- L2 Small: clear root cause, at most 3 files, low risk. Mini-analysis in the reply; tests mandatory.
+- L3 Significant: >3 files, APIs/contracts, new dependency, user-visible behavior, security-sensitive area, or architectural change. Full workflow via the skill: Vision Gate -> ANALYSIS -> plan -> implement -> test -> closure.
+- Spike: time-boxed exploration; outcome in \`ai_docs/solutions/SPIKE_[topic].md\`; reclassify for production.
+- Security-sensitive areas (external input parsing, authN/authZ, crypto, network, personal data, filesystem) are never L1.
+- When in doubt, pick the higher level. Declare the chosen level when starting.
+
+## Where things live
+- Vision (gate for L3): \`ai_docs/vision/\` — \`Status: DRAFT\` informs, \`Status: APPROVED\` binds.
+- Feature analyses: \`ai_docs/solutions/ANALYSIS_[feature].md\` (frontmatter = feature state).
+- Must-reads: \`ai_docs/README.md\`; full generated manifest: \`ai_docs/INDEX.md\`.
+- If devPNT is available for this project, its M-VISION / plans / governed artifacts take over (Hybrid mode — see the skill).
+
+## Closure gate
+Docs travel in the same commit/PR as the code they describe. If the project
+adopts the validator, \`python <skill_dir>/scripts/sdlc_check.py check\` must be
+CLEAN before declaring work done.
+
+If the agentic-sdlc skill is not available in this client, ask the user to install it:
+\`npm i -g @antoneeo/agentic-sdlc-skill && agentic-sdlc-install-skill\`
+`;
+
+console.log('🚀 Initializing Agentic SDLC workflow...');
+
+// 3. Load templates from the single source (skill's templates.md)
+let sections;
+try {
+  sections = loadTemplates();
+} catch (err) {
+  console.error(`❌ Cannot load templates: ${err.message}`);
+  process.exit(1);
 }
 
-// 1. Path definitions
-const directories = [
-  path.join(cwd, 'ai_docs'),
-  path.join(cwd, 'ai_docs', 'vision'),
-  path.join(cwd, 'ai_docs', 'vision', 'features'),
-  path.join(cwd, 'ai_docs', 'strategic'),
-  path.join(cwd, 'ai_docs', 'audit'),
-  path.join(cwd, 'ai_docs', 'solutions')
-];
+// audit_plan: the template block carries illustrative rows; a fresh project
+// starts from a single root PENDING row instead.
+function initialAuditPlan() {
+  const tpl = templateFor(sections, 'audit_plan.md');
+  const lines = tpl.split('\n');
+  const sepIdx = lines.findIndex((l) => /^\|[-\s|:]+\|$/.test(l.trim()));
+  if (sepIdx === -1) return tpl; // unexpected shape: keep the template as-is
+  return lines.slice(0, sepIdx + 1).join('\n') + '\n| / | PENDING | - | Initial analysis |\n';
+}
 
-const files = {
-  projectVision: path.join(cwd, 'ai_docs', 'vision', 'project_vision.md'),
-  roadmap: path.join(cwd, 'ai_docs', 'vision', 'roadmap.md'),
-  principles: path.join(cwd, 'ai_docs', 'vision', 'principles.md'),
-  architecture: path.join(cwd, 'ai_docs', 'strategic', 'architecture.md'),
-  existingFeatures: path.join(cwd, 'ai_docs', 'strategic', 'existing_features.md'),
-  featuresHistory: path.join(cwd, 'ai_docs', 'strategic', 'features_history.md'),
-  auditPlan: path.join(cwd, 'ai_docs', 'audit', 'audit_plan.md'),
-  handoff: path.join(cwd, 'ai_docs', 'audit', 'handoff.md'),
-  claudeConfig: path.join(cwd, 'CLAUDE.md'),
-  geminiConfig: path.join(cwd, 'GEMINI.md'),
-  codexAgents: path.join(cwd, 'AGENTS.md'),
-  cursorRules: path.join(cwd, '.cursorrules')
-};
+let seedFiles;
+try {
+  seedFiles = [
+    ['ai_docs/README.md', templateFor(sections, 'ai_docs/README.md')],
+    ['ai_docs/vision/project_vision.md', templateFor(sections, 'project_vision.md')],
+    ['ai_docs/vision/roadmap.md', templateFor(sections, 'vision/roadmap.md')],
+    ['ai_docs/vision/principles.md', templateFor(sections, 'principles.md')],
+    ['ai_docs/strategic/architecture.md', templateFor(sections, 'architecture.md and existing_features.md', 0)],
+    ['ai_docs/strategic/existing_features.md', templateFor(sections, 'architecture.md and existing_features.md', 1)],
+    ['ai_docs/audit/audit_plan.md', initialAuditPlan()],
+    // NOTE: features_history.md and INDEX.md are NOT seeded — they are
+    // generated by `sdlc_check.py index` and would immediately fail validate.
+  ];
+} catch (err) {
+  console.error(`❌ ${err.message}`);
+  process.exit(1);
+}
 
-// 2. Operational Protocol (System Prompt)
-const protocolContent = `# "Agentic SDLC" Operational Protocol
-
-You are a senior software engineer following a Documentation-First and Vision-Guided process. The process is proportional to risk: do not apply heavyweight governance to trivial work, but never bypass Vision, security, or design gates for significant changes.
-
-## 0. Triage First
-Classify every operational request:
-- L1 Trivial: small local fix, no API/dependency/behavior expansion. Implement with relevant tests; no new docs.
-- L2 Small: clear root cause, up to 3 files, low risk. Provide mini-analysis in the response; test.
-- L3 Significant: public contract, user-visible behavior, security-sensitive area, new dependency, architectural impact, or more than 3 files. Use the full workflow below.
-- Spike: time-boxed exploration; document result in \`ai_docs/solutions/SPIKE_[topic].md\`; production work must be reclassified.
-
-Security-sensitive areas are never L1.
-
-## 1. Mode Selection
-- Standalone: if devPNT is unavailable, use \`ai_docs/\` as the complete source of truth.
-- Hybrid/devPNT: if devPNT is available and configured for this project, use it for governed state. The devPNT M-VISION is the milestone north star, Master Plan is strategic roadmap, Action Plan is tactical execution, and governed artifacts live in devPNT.
-- Do not create silent double truth. In Hybrid, \`ai_docs/\` is human-readable context, fallback, handoff, or shadow; devPNT governs plans and versioned artifacts.
-
-## 2. Audit and Alignment
-For L3 or explicit audit requests:
-- Check \`ai_docs/\`, \`ai_docs/vision/\`, \`ai_docs/strategic/\`, \`ai_docs/audit/\`, and \`ai_docs/solutions/\`.
-- If missing, create them by analyzing the codebase in batches.
-- Never treat architecture or feature history as a substitute for Vision.
-
-## 3. Vision Gate
-Standalone:
-- Read \`ai_docs/vision/project_vision.md\`, \`roadmap.md\`, and \`principles.md\`.
-- Vision documents start as \`Stato: DRAFT\`; DRAFT informs but does not block an explicit user request.
-- \`Stato: APPROVED\` is binding: surface conflicts before implementation.
-
-Hybrid/devPNT:
-- Read the active M-VISION before design or code.
-- Verify the request advances a stated benefit or success signal.
-- If request, local Vision, and M-VISION diverge, stop and surface the conflict.
-
-## 4. Request Analysis
-For L3 in Standalone:
-- Create or update \`ai_docs/solutions/ANALYSIS_[feature].md\`.
-- Include Objective, Feature Vision, Impact, Security and Threat Model, Action Plan, Test Strategy, and Diary/Current State.
-
-For L3 in Hybrid:
-- Restore Master Plan, Action Plan, and related devPNT artifacts.
-- Use devPNT for D-UC, P-TM, E-ISP, E-TDD, E-TP, ADR, and plan updates.
-- Use Markdown shadows only as readable mirrors, never as the authoritative source over devPNT.
-
-## 5. Development and Testing
-Only after the required gate for the triage level:
-1. Implement surgically following the plan.
-2. Write or update automated tests where possible, using AAA for unit tests.
-3. Run tests/lint/smoke checks. If the environment cannot run them, document the alternative verification.
-4. After 3 consecutive test runs without progress, stop and ask for guidance.
-
-## 6. Closing
-- Verify the result against local Vision or devPNT M-VISION.
-- Update only documents actually impacted.
-- In Hybrid, propose ADR/KL updates when architectural facts changed.
-- Keep docs and code in the same commit/PR.
-`;
-
-const projectVisionBoilerplate = `# Project Vision
-Stato: DRAFT
-
-## North Star
-- TBD
-
-## Target Users
-- TBD
-
-## Goals
-- TBD
-
-## Non-Goals
-- TBD
-
-## Success Signals
-- TBD
-`;
-
-const roadmapBoilerplate = `# Vision Roadmap
-Stato: DRAFT
-
-| Milestone | Expected Benefit | Priority | Success Signal | Status |
-|:---|:---|:---|:---|:---|
-| M1 | - | - | - | [PLANNED] |
-`;
-
-const principlesBoilerplate = `# Vision Principles
-Stato: DRAFT
-
-## Principles
-- TBD
-
-## Strategic Anti-Patterns
-- TBD
-`;
-
-const historyBoilerplate = `<!-- GENERATED by agentic-sdlc - update manually only if the project does not use sdlc_check.py index. -->
-# Feature History
-
-| ID | Feature Name | Level | Status | Start Date | End Date | Analysis Doc |
-|:---|:---|:---|:---|:---|:---|:---|
-`;
-
-console.log('🚀 Initializing Agentic SDLC workflow (Discovery Mode)...');
-
-// 3. Directory creation
-directories.forEach(dir => {
+// 4. Create directories
+directories.forEach((dir) => {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
     console.log(`📁 Created directory: ${path.relative(cwd, dir)}`);
   }
 });
 
-// 4. Basic file writing
-const writeIfNotExists = (filePath, content, description) => {
+// 5. Write seed files (never overwrite)
+const writeIfNotExists = (relPath, content, description) => {
+  const filePath = path.join(cwd, relPath);
   if (!fs.existsSync(filePath)) {
     fs.writeFileSync(filePath, content, 'utf8');
-    console.log(`📄 Created file: ${path.relative(cwd, filePath)} (${description})`);
+    console.log(`📄 Created file: ${relPath}${description ? ` (${description})` : ''}`);
     return true;
-  } else {
-    console.log(`⏭️  Skipped: ${path.relative(cwd, filePath)} already exists.`);
-    return false;
   }
+  console.log(`⏭️  Skipped: ${relPath} already exists.`);
+  return false;
 };
 
-writeIfNotExists(files.projectVision, projectVisionBoilerplate, 'Project Vision Boilerplate');
-writeIfNotExists(files.roadmap, roadmapBoilerplate, 'Vision Roadmap Boilerplate');
-writeIfNotExists(files.principles, principlesBoilerplate, 'Vision Principles Boilerplate');
-writeIfNotExists(files.architecture, '# Project Architecture\n\n- Stack:\n- Patterns:\n', 'Architecture Boilerplate');
-writeIfNotExists(files.existingFeatures, '# Existing Features\n\n- \n', 'Features Boilerplate');
-writeIfNotExists(files.featuresHistory, historyBoilerplate, 'History Table');
-writeIfNotExists(files.auditPlan, '# Audit Plan\n\nStates: PENDING | ANALYZED | SKIPPED.\n\n| Percorso | Stato | Riferimento | Note |\n|---|---|---|---|\n| / | PENDING | - | Initial analysis |\n', 'Audit Plan');
+seedFiles.forEach(([relPath, content]) => writeIfNotExists(relPath, content));
 
-// 5. Client Discovery and Configuration
+// 6. Client discovery and protocol pointers
 console.log('\n--- Environment Analysis ---');
 
-if (checkCommand('claude')) {
-  console.log('✅ Claude Code detected.');
-  writeIfNotExists(files.claudeConfig, protocolContent, 'Claude Configuration');
-}
+const protocolFiles = {
+  claude: 'CLAUDE.md',
+  gemini: 'GEMINI.md',
+  codex: 'AGENTS.md',
+};
 
-if (checkCommand('gemini')) {
-  console.log('✅ Gemini CLI detected.');
-  writeIfNotExists(files.geminiConfig, protocolContent, 'Gemini Configuration');
-}
-
-if (checkCommand('codex')) {
-  console.log('✅ Codex AI detected.');
-  writeIfNotExists(files.codexAgents, protocolContent, 'Codex AGENTS.md');
+for (const client of CLIENTS) {
+  if (clientDetected(client)) {
+    console.log(`✅ ${client.label} detected.`);
+    writeIfNotExists(protocolFiles[client.key], protocolContent, `${client.label} protocol pointer`);
+  }
 }
 
 // Cursor/Windsurf (always recommended)
-writeIfNotExists(files.cursorRules, protocolContent, 'Cursor/Windsurf Rules');
+writeIfNotExists('.cursorrules', protocolContent, 'Cursor/Windsurf rules');
+
+// 7. Generate ai_docs/INDEX.md so the very first `validate` is already clean.
+// The manifest is generated, never seeded: delegate to the validator if Python is available.
+const validator = path.join(SKILL_SOURCE, 'scripts', 'sdlc_check.py');
+let indexed = false;
+for (const py of ['python', 'python3', 'py']) {
+  try {
+    execSync(`${py} "${validator}" index --root "${cwd}"`, { stdio: 'ignore' });
+    console.log('📇 Generated ai_docs/INDEX.md (document manifest).');
+    indexed = true;
+    break;
+  } catch (e) { /* try the next interpreter */ }
+}
+if (!indexed) {
+  console.log('ℹ️  Python not found: generate the manifest later with '
+    + '"python <skill_dir>/scripts/sdlc_check.py index" (validate reports it until then).');
+}
 
 console.log('\n✅ Setup completed successfully!');
 console.log('💡 Next steps:');
-console.log('   1. If using Claude Code, start it: it will read CLAUDE.md.');
-console.log('   2. If using Gemini CLI, commands will use GEMINI.md.');
-console.log('   3. If using Codex, restart/open the project so it reads AGENTS.md.');
-console.log('   4. Start analyzing the codebase following ai_docs/audit/audit_plan.md.');
+console.log('   1. Make sure the agentic-sdlc skill is installed (agentic-sdlc-install-skill).');
+console.log('   2. Restart/open the project in your AI client so it reads the protocol pointer.');
+console.log('   3. Start with an audit following ai_docs/audit/audit_plan.md.');

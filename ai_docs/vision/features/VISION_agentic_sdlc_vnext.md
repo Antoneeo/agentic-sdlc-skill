@@ -1,3 +1,7 @@
+---
+description: Feature vision for the vNext evolution (triage, support files, mechanical validation, devPNT symbiosis) delivered in 1.5.0/1.6.0.
+status: CURRENT
+---
 # Vision Feature: Agentic SDLC vNext
 
 ## Problema

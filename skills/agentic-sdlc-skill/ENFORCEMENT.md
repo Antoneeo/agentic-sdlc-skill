@@ -1,32 +1,32 @@
-# Enforcement meccanico (opzionale, consigliato per i team)
+# Mechanical enforcement (optional, recommended for teams)
 
-Le regole a livello di prompt dipendono dalla disciplina del modello e degradano con contesti lunghi, compaction e istruzioni concorrenti. Tre livelli di garanzia crescente:
+Prompt-level rules depend on the model's discipline and degrade with long contexts, compaction and competing instructions. Three levels of increasing guarantee:
 
-## 1. Validazione interattiva (default, nessun setup)
+## 1. Interactive validation (default, no setup)
 
-L'agente esegue alla chiusura (Fase 5) un solo gate:
-
-```
-python "<dir_skill>/scripts/sdlc_check.py" check
-```
-
-(`check` = validate + stale in un comando.) Exit code ≠ 0 ⇒ la feature non si dichiara chiusa. È il livello minimo previsto dalla skill.
-
-## 2. Check in CI (consigliato per i team)
-
-Copia `scripts/sdlc_check.py` nel repository (es. `tools/sdlc_check.py`) e aggiungi alla pipeline:
+The agent runs a single gate at closure (Phase 5):
 
 ```
-python tools/sdlc_check.py validate
+python "<skill_dir>/scripts/sdlc_check.py" check
 ```
 
-Effetto: indice non rigenerato, frontmatter invalidi, sezione sicurezza mancante o stati incoerenti **bloccano la pipeline** invece di affidarsi alla memoria dell'agente. Funziona perché i documenti viaggiano nello stesso PR del codice (regola di Fase 5).
+(`check` = validate + stale in one command.) Exit code ≠ 0 ⇒ the feature is not declared closed. This is the minimum level the skill expects.
 
-Nota: la copia nel repo è quella autoritativa per la CI; aggiornala quando aggiorni la skill.
+## 2. Check in CI (recommended for teams)
 
-## 3. Hook PreToolUse (gate sulle scritture)
+Copy `scripts/sdlc_check.py` into the repository (e.g. `tools/sdlc_check.py`) and add to the pipeline:
 
-Blocca Edit/Write su percorsi protetti quando nessuna `ANALYSIS_*.md` è `IN_PROGRESS`. In `.claude/settings.json` del progetto:
+```
+python tools/sdlc_check.py validate --strict
+```
+
+Effect: an unregenerated index, invalid frontmatter, a missing security section or incoherent states **block the pipeline** instead of relying on the agent's memory. `--strict` also fails on warnings and on a missing `ai_docs/`, so a wrong working directory cannot produce a green pipeline. This works because documents travel in the same PR as the code (Phase 5 rule).
+
+Note: the copy in the repo is the authoritative one for CI; update it when you update the skill.
+
+## 3. PreToolUse hook (gate on writes)
+
+Blocks Edit/Write on protected paths when no `ANALYSIS_*.md` is `IN_PROGRESS`. In the project's `.claude/settings.json`:
 
 ```json
 {
@@ -37,7 +37,7 @@ Blocca Edit/Write su percorsi protetti quando nessuna `ANALYSIS_*.md` è `IN_PRO
         "hooks": [
           {
             "type": "command",
-            "command": "python \"C:\\Users\\<utente>\\.claude\\skills\\agentic-sdlc\\scripts\\sdlc_check.py\" gate --hook --protected \"src/auth;src/crypto\""
+            "command": "python \"C:\\Users\\<user>\\.claude\\skills\\agentic-sdlc\\scripts\\sdlc_check.py\" gate --hook --protected \"src/auth;src/crypto\""
           }
         ]
       }
@@ -46,10 +46,11 @@ Blocca Edit/Write su percorsi protetti quando nessuna `ANALYSIS_*.md` è `IN_PRO
 }
 ```
 
-Semantica: exit code 2 + messaggio su stderr ⇒ la scrittura viene bloccata e il messaggio è mostrato all'agente, che deve creare l'ANALYSIS (Fase 3) prima di riprovare.
+Semantics: exit code 2 + message on stderr ⇒ the write is blocked and the message is shown to the agent, which must create the ANALYSIS (Phase 3) before retrying.
 
-**Avvertenze d'uso:**
-- Il gate è volutamente grossolano: applicato a tutto `src/` bloccherebbe anche i task L1/L2 legittimi previsti dal Triage. Usalo **solo su directory security-critical** (`--protected "src/auth;src/crypto"`), dove "mai senza analisi" è la policy desiderata.
-- I percorsi in `--protected` sono prefissi relativi alla radice del progetto, separati da `;`.
-- `ai_docs/`, `tests/` e `test/` sono sempre esclusi dal blocco.
-- L'hook assume che la working directory sia la radice del progetto (comportamento standard degli hook di Claude Code).
+**Usage warnings:**
+- The gate is deliberately coarse: applied to all of `src/` it would also block the legitimate L1/L2 tasks foreseen by the Triage. Use it **only on security-critical directories** (`--protected "src/auth;src/crypto"`), where "never without analysis" is the desired policy.
+- The paths in `--protected` are prefixes relative to the project root, separated by `;`.
+- `ai_docs/`, `tests/` and `test/` are always excluded from blocking.
+- The hook assumes the working directory is the project root (standard behavior of Claude Code hooks).
+- **Hybrid/devPNT projects**: add `--hybrid` to the gate command. Governed designs live in the devPNT DB, so the gate also unlocks when an approved E-TDD shadow (`ai_docs/solutions/SHADOW_*tdd*.md`, exported before implementation — see the SKILL.md shadow discipline) is present. Without the flag the gate would block legitimate governed work. The flag is deliberately explicit: never auto-detected.

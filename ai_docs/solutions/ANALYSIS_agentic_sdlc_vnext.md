@@ -1,10 +1,10 @@
 ---
 id: F-002
 feature: Agentic SDLC vNext
-stato: COMPLETED
-livello: L3
-data_inizio: 2026-06-13
-data_fine: 2026-06-13
+status: COMPLETED
+level: L3
+start_date: 2026-06-13
+end_date: 2026-06-13
 ---
 # Analisi della Feature: Agentic SDLC vNext
 
