@@ -146,4 +146,5 @@ Ricognizione dello stato attuale di superpowers (v5.0.1–5.0.7, mar–mag 2026)
 - KB agente — percorso radice definitivo e comportamento su macchine senza KB.
 - Naming definitivo dei support file skill dopo la rimozione dell'ambiguità "reference".
 - D7 — semver del contratto `methodology_version`: cosa costituisce breaking change della metodologia (rinomina artefatti/stati sì; prosa no) e come devPNT dichiara il range compatibile.
+- Feature B — **guide multi-fonte**: il frontmatter attuale binda UNA fonte per guida (`distilled_from`/`source_hash` singolari); fonti diverse con overlap parziale non si fondono pulite (emerso dal field test 2026-07-02, regola DRY step 0 di guides.md). Estensione candidata: lista di coppie snapshot+hash nel frontmatter, con marcatori per-sezione che già puntano a snapshot distinti.
 - **Vincolo architetturale (deciso)**: gli agenti interni devPNT sono LEGACY — mai usarli per review o task sostanziosi (costo + orchestratore meno efficace dei client). L'AI interna devPNT serve solo task piccoli (summary, descrizioni, doc generation). Ogni lavoro LLM sostanzioso gira sull'orchestratore del client.
