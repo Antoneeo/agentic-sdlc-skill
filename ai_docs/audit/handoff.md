@@ -20,14 +20,21 @@ Agent: Claude (Fable, orchestrator) + economy-tier implementer
   path with legacy fallback. TDD 89/89 green. Verified live after restart.
 
 ## Next step
-M1 unit 2 E-ISP (agent-global KB). Elicitation round DONE (2026-07-02, per
-elicitation.md — first live use): (1) KB root = `~/.agentic-sdlc/ai_docs`,
-client-agnostic, ONE KB for Claude/Gemini/Codex; (2) discovery = fixed path
-documented in SKILL.md, reached via `sdlc_check --root` (path-injectable for
-context-free subagents); (3) undeclared project/global topic collision =
-validator warn, error under --strict (project wins per M-VISION); (4) client
-parity free by design — no per-client installer work in unit 2. Unit-2 nodes
-proposed in the M1 Action Plan. Release 1.9.0 deferred (accumulating).
+Release 1.9.0 (accumulated: M2 disciplines + Feature B unit 2 agent KB) per
+GUIDE_release — user's call on timing. After that, M1 and M2 both close
+(Feature B complete: unit 1 + unit 2 shipped). Then M3 (subagent execution)
+unblocks per Master Plan.
+
+## Unit 2 (agent-global KB) — COMPLETE, ready-to-release
+Full chain 2026-07-02: elicitation round (4 decisions: KB `~/.agentic-sdlc`
+client-agnostic; discovery = SKILL.md fixed path; collisions warn/--strict
+error; parity free) → E-ISP (deep review r1 FAIL on T6 overrides confinement,
+r2 PASS) → E-TDD (escalated light→deep for security design, r1 FAIL on battery
+coverage of symlink-escape + KB-root distilled_from, r2 PASS) → shadow →
+economy implementer, battery 12/12 (junction fallback for the symlink scenario,
+no-KB byte-identical regression) → deep code review PASS zero BLOCK.
+Commit 5a271ea. The KB is a root, not a feature: whole engine reused via
+--root; new code = check_kb_collisions in cmd_validate only.
 
 ## Session notes
 - project_vision.md APPROVED; roadmap/principles still DRAFT.
