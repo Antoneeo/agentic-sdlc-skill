@@ -1,0 +1,4 @@
+# Guide source snapshots are hashed byte-for-byte (source_hash provenance):
+# git must never rewrite their line endings, or the recorded SHA-256 breaks
+# on the next checkout (false [stale] from sdlc_check.py).
+ai_docs/reference/.sources/** -text
