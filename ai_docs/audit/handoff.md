@@ -20,7 +20,14 @@ Agent: Claude (Fable, orchestrator) + economy-tier implementer
   path with legacy fallback. TDD 89/89 green. Verified live after restart.
 
 ## Next step
-M1 unit 2 E-ISP (agent-global KB) — or release 1.9.0 first (user's call).
+M1 unit 2 E-ISP (agent-global KB). Elicitation round DONE (2026-07-02, per
+elicitation.md — first live use): (1) KB root = `~/.agentic-sdlc/ai_docs`,
+client-agnostic, ONE KB for Claude/Gemini/Codex; (2) discovery = fixed path
+documented in SKILL.md, reached via `sdlc_check --root` (path-injectable for
+context-free subagents); (3) undeclared project/global topic collision =
+validator warn, error under --strict (project wins per M-VISION); (4) client
+parity free by design — no per-client installer work in unit 2. Unit-2 nodes
+proposed in the M1 Action Plan. Release 1.9.0 deferred (accumulating).
 
 ## Session notes
 - project_vision.md APPROVED; roadmap/principles still DRAFT.
