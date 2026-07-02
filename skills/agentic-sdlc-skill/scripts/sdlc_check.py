@@ -12,6 +12,10 @@ Commands:
   mark       record paths as ANALYZED with the current reference (git hash, else UTC timestamp)
   gate       PreToolUse hook: block writes on protected paths without an IN_PROGRESS ANALYSIS (exit 2)
 
+Hybrid/devPNT mode: pass --hybrid explicitly on check/stale (skips audit-plan
+staleness, delegated to devPNT/KL) and on gate (also unlocks when an approved
+E-TDD shadow, solutions/SHADOW_*tdd*.md, exists).
+
 Canonical language is English. Legacy Italian frontmatter keys (stato, livello,
 data_inizio, data_fine) and section headings are still accepted for existing projects,
 but are deprecated: new documents should use the English forms.
@@ -151,6 +155,16 @@ def list_analyses(root):
             continue
         out.append((p, load_frontmatter(text.splitlines()), text))
     return out
+
+
+def has_etdd_shadow(root):
+    """True if an E-TDD shadow exported from devPNT exists in solutions/.
+    In Hybrid mode the approved E-TDD (exported BEFORE implementation) is the
+    design authorization that replaces the IN_PROGRESS ANALYSIS."""
+    sol = root / "ai_docs" / "solutions"
+    if not sol.is_dir():
+        return False
+    return any("tdd" in p.name.lower() for p in sol.glob("SHADOW_*.md"))
 
 
 def iter_files(target):
@@ -500,7 +514,10 @@ def parse_audit_plan(root):
     return f, lines, rows
 
 
-def cmd_stale(root):
+def cmd_stale(root, hybrid=False):
+    if hybrid:
+        print("[info] hybrid mode: audit-plan staleness is delegated to devPNT/KL, skipping.")
+        return 0
     f, _, rows = parse_audit_plan(root)
     if not rows:
         print(f"[info] no rows in {f}: nothing to check "
@@ -589,11 +606,11 @@ def cmd_mark(root, paths):
     return 0
 
 
-def cmd_check(root, strict=False):
+def cmd_check(root, strict=False, hybrid=False):
     print("===== validate =====")
     rc_v = cmd_validate(root, strict=strict)
     print("\n===== stale =====")
-    rc_s = cmd_stale(root)
+    rc_s = cmd_stale(root, hybrid=hybrid)
     print(f"\ncheck: {'CLEAN' if not (rc_v or rc_s) else 'NOT CLEAN'} "
           f"(validate rc={rc_v}, stale rc={rc_s})")
     return 1 if (rc_v or rc_s) else 0
@@ -630,6 +647,14 @@ def cmd_gate(args):
     for _, meta, _ in list_analyses(root):
         if meta.get("status") == "IN_PROGRESS":
             return 0
+    if args.hybrid and has_etdd_shadow(root):
+        return 0  # Hybrid design gate: an approved E-TDD shadow authorizes the change
+    if args.hybrid:
+        sys.stderr.write(
+            f"[sdlc gate] '{rel}' is on a protected path but no E-TDD shadow "
+            "(solutions/SHADOW_*tdd*.md) exists and no ANALYSIS_*.md is IN_PROGRESS. "
+            "In Hybrid mode, export the approved E-TDD shadow from devPNT before implementing.\n")
+        return 2
     sys.stderr.write(
         f"[sdlc gate] '{rel}' is on a protected path but no ANALYSIS_*.md is IN_PROGRESS. "
         "Create or reactivate the analysis (agentic-sdlc Phase 3) before modifying this file.\n")
@@ -646,17 +671,22 @@ def main(argv=None):
     strict_opt.add_argument("--strict", action="store_true",
                             help="fail on warnings and on missing ai_docs/ (for CI)")
 
+    hybrid_opt = argparse.ArgumentParser(add_help=False)
+    hybrid_opt.add_argument("--hybrid", action="store_true",
+                            help="Hybrid/devPNT mode: audit-plan staleness is delegated to devPNT/KL; "
+                                 "the gate also unlocks on an E-TDD shadow")
+
     ap = argparse.ArgumentParser(prog="sdlc_check.py",
                                  description="Mechanical validator for Agentic SDLC")
     sub = ap.add_subparsers(dest="cmd", required=True)
-    sub.add_parser("check", parents=[common, strict_opt],
+    sub.add_parser("check", parents=[common, strict_opt, hybrid_opt],
                    help="closure gate: validate + stale in one command")
     sub.add_parser("validate", parents=[common, strict_opt], help="verify ai_docs/ coherence")
     sub.add_parser("index", parents=[common], help="regenerate features_history.md + ai_docs/INDEX.md")
-    sub.add_parser("stale", parents=[common], help="areas modified after the last analysis")
+    sub.add_parser("stale", parents=[common, hybrid_opt], help="areas modified after the last analysis")
     mp = sub.add_parser("mark", parents=[common], help="record paths as ANALYZED")
     mp.add_argument("paths", nargs="+", help="paths relative to the project root")
-    gp = sub.add_parser("gate", parents=[common], help="PreToolUse hook (exit 2 = block)")
+    gp = sub.add_parser("gate", parents=[common, hybrid_opt], help="PreToolUse hook (exit 2 = block)")
     gp.add_argument("--hook", action="store_true", help="read the hook JSON payload from stdin")
     gp.add_argument("--file", help="file path to evaluate (alternative to --hook)")
     gp.add_argument("--protected", default="", help="protected prefixes separated by ';' (e.g. \"src/auth;src/crypto\")")
@@ -667,13 +697,13 @@ def main(argv=None):
 
     root = Path(args.root).resolve() if args.root else find_project_root()
     if args.cmd == "check":
-        return cmd_check(root, strict=args.strict)
+        return cmd_check(root, strict=args.strict, hybrid=args.hybrid)
     if args.cmd == "validate":
         return cmd_validate(root, strict=args.strict)
     if args.cmd == "index":
         return cmd_index(root)
     if args.cmd == "stale":
-        return cmd_stale(root)
+        return cmd_stale(root, hybrid=args.hybrid)
     if args.cmd == "mark":
         return cmd_mark(root, args.paths)
     return 0
