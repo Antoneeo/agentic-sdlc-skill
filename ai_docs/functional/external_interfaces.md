@@ -1,3 +1,7 @@
+---
+description: devPNT-generated map of the package's external interfaces. Snapshot 2026-06-13; regenerate via devPNT after structural changes.
+status: CURRENT
+---
 <!-- devpnt:generated
   date: 2026-06-13T05:23:51
   generator: functional_docs_generator v1.0

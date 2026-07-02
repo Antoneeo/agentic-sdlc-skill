@@ -1,7 +1,7 @@
 ---
 description: Roadmap della milestone di evoluzione — subagent operativi, guide operative/KB agente, eliminazione conflitti di convivenza con devPNT e posizionamento open-core. Sostituisce la bozza in docs/.
 status: DRAFT
-supersedes: docs/roadmap_evoluzione_agenti.md
+supersedes: roadmap_evoluzione_agenti_v1.md
 target_version: "1.7.0"
 ---
 

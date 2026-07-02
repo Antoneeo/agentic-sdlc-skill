@@ -1,10 +1,10 @@
 ---
 id: F-001
 feature: Vision Governance
-stato: COMPLETED
-livello: L3
-data_inizio: 2026-06-07
-data_fine: 2026-06-07
+status: COMPLETED
+level: L3
+start_date: 2026-06-07
+end_date: 2026-06-07
 ---
 # Analisi della Feature: Vision Governance
 

@@ -1,3 +1,7 @@
+---
+description: Concise catalog of the skill's existing features.
+status: CURRENT
+---
 # Existing Features
 
 - [000] **Project Initialization**: Creates baseline `ai_docs/` governance files and agent protocol instructions for supported AI tools.
