@@ -117,7 +117,7 @@ SessionStart hook (carica `README.md`/`INDEX.md` di progetto + indice KB agente,
 | F3 | Sezione bootstrap "OPERATIVE GUIDES" che inietta l'elenco (con status) da `ai_docs/reference/INDEX.md` | Chiude C11 con puntatori, zero copia | Base |
 | F4 | Governance guide per team: guide come doc_type governato, condivisione multi-progetto (vocazione del PKB) | Fence di prezzo individuale/team | Paid |
 | F5 | `devpnt_state_diff`: mismatch tra stato nodi plan e frontmatter shadow/ANALYSIS | Rende meccanico C5 | Base |
-| F6 | Review-as-a-service via MCP: tech/code-reviewer invocabili come tool, non solo come subagent Claude Code | Slot review di Feature A da qualunque client | Paid |
+| F6 | Review-prompt packaging via MCP: tool che RESTITUISCE un prompt di review autosufficiente (artefatto + checklist + estratti sorgente rilevanti), **senza eseguire LLM** — l'esecuzione avviene sempre sull'orchestratore del client (subagent nativo o run one-shot `gemini -p`/`codex exec`). Vincolo: gli agenti interni devPNT sono legacy (costosi, orchestratore meno efficace di Claude Code/Codex); l'AI interna resta solo per task piccoli (summary, descrizioni) | Slot review di Feature A da qualunque client, a costo client | Paid |
 | F7 | `devpnt_capabilities`: dichiara modalità/entitlement attivi (licenza, GUI, reviewer) e — bidirezionale, per D7 — presenza/versione della skill rilevata | Mode detection meccanico per la skill (Poka-Yoke) | Base |
 | F8 | Methodology-check nel bootstrap + installer che installa/vendorizza la skill (regola no-downgrade, range `methodology_version` compatibile); warning bloccante sui tool di governance se metodologia mancante | Implementa D7 | Base |
 
@@ -137,3 +137,4 @@ SessionStart hook (carica `README.md`/`INDEX.md` di progetto + indice KB agente,
 - KB agente — percorso radice definitivo e comportamento su macchine senza KB.
 - Naming definitivo dei support file skill dopo la rimozione dell'ambiguità "reference".
 - D7 — semver del contratto `methodology_version`: cosa costituisce breaking change della metodologia (rinomina artefatti/stati sì; prosa no) e come devPNT dichiara il range compatibile.
+- **Vincolo architetturale (deciso)**: gli agenti interni devPNT sono LEGACY — mai usarli per review o task sostanziosi (costo + orchestratore meno efficace dei client). L'AI interna devPNT serve solo task piccoli (summary, descrizioni, doc generation). Ogni lavoro LLM sostanzioso gira sull'orchestratore del client.

@@ -74,3 +74,9 @@ regressions from the Phase 0 battery re-run.
   ladder (native subagent -> server-side review tool [roadmap F6] -> declared
   self-pass). The Claude Code subagent files keep their model frontmatter - that is
   the right place for the binding.
+- 2026-07-02 (correction, user constraint): devPNT internal agents are LEGACY -
+  never used for reviews or substantial LLM work (cost + weaker orchestrator than
+  Claude Code/Codex); devPNT AI stays for small tasks only. Ladder rung (b) is now
+  a fresh ONE-SHOT run of the client itself (gemini -p / codex exec) with a
+  self-contained review prompt; roadmap F6 redefined as review-PROMPT packaging
+  (no LLM server-side), execution always on the client's orchestrator.
