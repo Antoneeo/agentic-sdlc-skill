@@ -3,6 +3,20 @@
 Support file for `ai_docs/reference/GUIDE_[topic].md`. Read this only when the
 trigger below fires; the template lives in `templates.md`.
 
+**The training model (what a guide IS).** A guide TRAINS the agent on a topic
+the user cares about, the way training works for a person: you study the
+material once, you carry a SYNTHESIS in your head, and you go back to the book
+when a task needs detail. Two levels, both produced by this pipeline:
+- **The guide = the synthesis** — compact and dense: core principles, decision
+  rules, the map of what exists, where people go wrong. Small enough that a
+  reader takes it in WHOLE before acting (that is the "preparation").
+- **The snapshot = the book** (`.sources/`, verbatim) — the details live here,
+  reachable on demand.
+- **The fidelity markers are the bridge**: `[source: <snapshot>#anchor]` both
+  proves provenance AND tells the reader where in the book the full detail is.
+A guide that restates the source at length is as wrong as a fragmented one:
+completeness is guaranteed by the book level, economy by the synthesis level.
+
 ## 1. When to trigger
 
 Trigger test is origin + purpose, not content taxonomy (no "is this technical
@@ -65,21 +79,28 @@ guide with no `distilled_from` is not this pipeline's output.
      just wrote, not of the original source).
    - The snapshot is verbatim: no paraphrasing, no reformatting beyond what is
      needed to save it as markdown.
-4. **Source-anchored extraction.** Every claim in the guide must trace back to
-   a specific point in the snapshot (`#anchor-or-line`). Do not extract from
-   memory of the conversation — re-read the snapshot while writing each
-   section.
+4. **Source-anchored SYNTHESIS (not restatement).** Select and compress what
+   the source says into the operative essence — decision rules, invariants,
+   the "where people go wrong" list — and POINT INTO the snapshot for the
+   detail (`[source: <snapshot>#anchor]` doubles as the detail-lookup
+   pointer: "full checklist → snapshot §7"). Every claim must still trace to
+   a specific point in the snapshot; do not extract from memory of the
+   conversation — re-read the snapshot while writing each section. Selection
+   and compression are allowed and expected; ADDITION is not (that stays
+   summarize-and-expand, forbidden). A guide approaching the source's own
+   length is a paraphrase, not a synthesis — wrong output.
 5. **Render per template** (`templates.md` → `## ai_docs/reference/GUIDE_[topic].md`):
    frontmatter with `source`, `distilled_from`, `source_hash` (the snapshot's
    SHA-256, matching what you just computed), optional `source_version`; body
    sections chosen from the repertoire, each with a fidelity marker.
-   **Write for selective reading**: guides are delivered by PATH and readers
-   grep/partial-read them — size is fine, opacity is not. Use the repertoire's
-   stable, self-describing headings (a reader must find "What NOT to do"
-   without reading the file top to bottom), keep one concern per `##` section,
-   and make the frontmatter `description` the "should I open this file at all"
-   answer. This is why a large well-structured single guide beats several
-   fragments: navigation replaces fragmentation.
+   **Write for the two-level read**: the guide (synthesis) is small enough to
+   be read WHOLE before acting; the snapshot (book) is where size lives and
+   where readers grep/partial-read on demand, following the section markers.
+   Use the repertoire's stable, self-describing headings, keep one concern per
+   `##` section, and make the frontmatter `description` the "should I open
+   this file at all" answer. This is why one synthesis + one book beats
+   several fragments: the synthesis guarantees the whole picture, the book
+   guarantees the details, the markers connect them.
 6. **Run `sdlc_check.py index`** so both `ai_docs/INDEX.md` and
    `ai_docs/reference/INDEX.md` (the guide router) regenerate.
 
