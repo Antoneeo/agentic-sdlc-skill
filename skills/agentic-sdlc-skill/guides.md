@@ -83,6 +83,13 @@ guide with no `distilled_from` is not this pipeline's output.
    - `hash8` = first 8 hex chars of the snapshot file's own SHA-256 (compute
      the snapshot first, hash it, then name it — the hash is of the file you
      just wrote, not of the original source).
+   - The hash is computed over LF-normalized content (CRLF → LF), exactly as
+     `sdlc_check.py` does in `sha256_file` — so recorded hashes survive
+     checkouts that rewrite line endings (e.g. Windows `core.autocrlf=true`).
+   - Recommended for consumer projects: add
+     `ai_docs/reference/.sources/** -text` to `.gitattributes` so git never
+     rewrites snapshot bytes at all (keeps snapshots byte-verbatim; the
+     normalized hash stays stable either way).
    - The snapshot is verbatim: no paraphrasing, no reformatting beyond what is
      needed to save it as markdown.
 4. **Source-anchored SYNTHESIS (not restatement).** Select and compress what

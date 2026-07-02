@@ -1,4 +1,5 @@
-# Guide source snapshots are hashed byte-for-byte (source_hash provenance):
-# git must never rewrite their line endings, or the recorded SHA-256 breaks
-# on the next checkout (false [stale] from sdlc_check.py).
+# Guide source snapshots stay byte-verbatim on disk (verbatim-snapshot fidelity):
+# git must not rewrite their line endings. Since v1.8.1 sdlc_check.py hashes
+# LF-normalized content, so source_hash survives CRLF checkouts even without
+# this rule — it remains as defense in depth for byte-level fidelity.
 ai_docs/reference/.sources/** -text
