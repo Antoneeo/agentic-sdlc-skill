@@ -8,6 +8,7 @@ Records each independent-review-gate pass (§4.5 tech artifacts, §4.6 code). Th
 | 2026-07-02 | e_isp_operative_guides_u1 | deep | devpnt-tech-reviewer | 10 | 10 | PASS | 2 |
 | 2026-07-02 | e_tdd_operative_guides_u1 | light | devpnt-tech-reviewer-light | 4 | 4 | PASS | 3 |
 | 2026-07-02 | impl unit-1 diff vs E-TDD | code | devpnt-code-reviewer (deep; implementer: sonnet, economy tier) | 2 | 2 | PASS | 1 |
+| 2026-07-02 | adr_2026-07-02_client_relative_model_tiers | light | devpnt-tech-reviewer-light | 2 | 2 | PASS | 1 |
 
 ## Notes
 - **impl unit-1** (Feature B / M1): first live run of model-per-dispatch — economy-tier implementer (Sonnet) working from the E-TDD shadow as a self-contained brief; deep code review PASSED first round with zero BLOCK (conformance exact on all E-ISP components, all three cmd_stale return conversions correct, T1/T2/T6/T8/T9 verified, needle resolution intact). 2 optional WARNs recorded as follow-up candidates, both documented-as-intended: (a) orphaned guide router (guides removed, INDEX.md left) only warns in cmd_index and is invisible to validate; (b) cmd_stale hashes distilled_from without re-running T6 confinement (validate already fails such a guide; stale alone is not fail-closed). Orchestrator ran the full §5 battery independently: 9/9 green + absolute-path variant.
