@@ -1,7 +1,5 @@
 # Project Vision
-Status: DRAFT
-<!-- Status: DRAFT (reflects the user's stated product vision, 2026-07-02) —
-     promote to APPROVED only on explicit user confirmation. -->
+Status: APPROVED (by Antonio Pinto, 2026-07-02)
 
 ## North Star
 Agentic SDLC must be the **best-in-class** methodology skill for AI coding agents: it keeps every change aligned with the project's long-term intent, and it does so by composing four layers into one coherent process — its own proportional-governance strengths, the execution discipline of superpowers, that project's frontier direction, and one capability neither has: reusable, source-faithful operative guides. devPNT sits over all of it as an optional paid amplifier, never a prerequisite.
