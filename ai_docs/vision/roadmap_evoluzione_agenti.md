@@ -120,6 +120,7 @@ SessionStart hook (carica `README.md`/`INDEX.md` di progetto + indice KB agente,
 | F6 | Review-prompt packaging via MCP: tool che RESTITUISCE un prompt di review autosufficiente (artefatto + checklist + estratti sorgente rilevanti), **senza eseguire LLM** — l'esecuzione avviene sempre sull'orchestratore del client (subagent nativo o run one-shot `gemini -p`/`codex exec`). Vincolo: gli agenti interni devPNT sono legacy (costosi, orchestratore meno efficace di Claude Code/Codex); l'AI interna resta solo per task piccoli (summary, descrizioni) | Slot review di Feature A da qualunque client, a costo client | Paid |
 | F7 | `devpnt_capabilities`: dichiara modalità/entitlement attivi (licenza, GUI, reviewer) e — bidirezionale, per D7 — presenza/versione della skill rilevata | Mode detection meccanico per la skill (Poka-Yoke) | Base |
 | F8 | Methodology-check nel bootstrap + installer che installa/vendorizza la skill (regola no-downgrade, range `methodology_version` compatibile); warning bloccante sui tool di governance se metodologia mancante | Implementa D7 | Base |
+| F9 | `functional_docs_generator` scrive in `ai_docs/functional/` (oggi target legacy `docs/` — osservato 2026-07-02) e emette il frontmatter lifecycle (`description`/`status`) | Allineamento layout C1 lato generatore | Base |
 
 ## 5-bis. Verifica indipendente vs superpowers (2026-07-02)
 
