@@ -99,8 +99,8 @@ TDD esplicito (red/green/refactor), systematic debugging, elicitation collaborat
 
 | # | Modifica | Dove |
 |---|---|---|
-| 4.1 | Piano eseguibile in `solutions/` con schema (path esatti, consumes/produces, comando di verifica); subcommand `sdlc_check.py plan`: **no piano valido, no dispatch**; in Hybrid `derived-from: e_tdd vX.Y`, mai autorato indipendente | `sdlc_check.py` + `templates.md` |
-| 4.2 | Loop di dispatch: subagent fresco per task; `check` tra un task e l'altro; review slot per-task (Standalone: reviewer proprio; Hybrid: reviewer devPNT) | nuovo support file skill |
+| 4.1 | Piano eseguibile in `solutions/` con schema (path esatti, consumes/produces, comando di verifica); subcommand `sdlc_check.py plan`: **no piano valido, no dispatch** + emissione meccanica del task-brief per ogni task (solo il task, le interfacce dai task precedenti e i puntatori alle guide — mai storia incollata); in Hybrid `derived-from: e_tdd vX.Y`, mai autorato indipendente | `sdlc_check.py` + `templates.md` |
+| 4.2 | Loop di dispatch: subagent fresco per task; `check` tra un task e l'altro; review slot per-task **one-shot, mai loop iterativi** (self-review inline dell'implementer + un reviewer + review ampia finale — lezione superpowers 5.0.x, §5-bis); Standalone: reviewer proprio; Hybrid: reviewer devPNT. **Progress ledger per-task durevole** (recovery da compaction, no ri-dispatch di task completati) | nuovo support file skill |
 | 4.3 | Degradazione meccanica: presenza del tool Task/Agent rilevata, non giudicata dal modello; fallback dichiarato su esecuzione same-session | support file |
 | 4.4 | Saldatura A×B: le guide rilevanti sono risolte e iniettate per valore nel prompt di ogni task | support file |
 
@@ -120,6 +120,15 @@ SessionStart hook (carica `README.md`/`INDEX.md` di progetto + indice KB agente,
 | F6 | Review-prompt packaging via MCP: tool che RESTITUISCE un prompt di review autosufficiente (artefatto + checklist + estratti sorgente rilevanti), **senza eseguire LLM** — l'esecuzione avviene sempre sull'orchestratore del client (subagent nativo o run one-shot `gemini -p`/`codex exec`). Vincolo: gli agenti interni devPNT sono legacy (costosi, orchestratore meno efficace di Claude Code/Codex); l'AI interna resta solo per task piccoli (summary, descrizioni) | Slot review di Feature A da qualunque client, a costo client | Paid |
 | F7 | `devpnt_capabilities`: dichiara modalità/entitlement attivi (licenza, GUI, reviewer) e — bidirezionale, per D7 — presenza/versione della skill rilevata | Mode detection meccanico per la skill (Poka-Yoke) | Base |
 | F8 | Methodology-check nel bootstrap + installer che installa/vendorizza la skill (regola no-downgrade, range `methodology_version` compatibile); warning bloccante sui tool di governance se metodologia mancante | Implementa D7 | Base |
+
+## 5-bis. Verifica indipendente vs superpowers (2026-07-02)
+
+Ricognizione dello stato attuale di superpowers (v5.0.1–5.0.7, mar–mag 2026) a conferma della direzione:
+- **Differenziatore intatto**: superpowers continua a non avere guide operative da indicazioni utente; la sua risposta agli standard aziendali è "scrivi una skill" (writing-skills) — alternativa già valutata e scartata in D6. Feature B resta l'aggiunta originale.
+- **Backlog confermato**: TDD, systematic debugging, elicitation socratica, code review, worktree tutti ancora core in superpowers; esclusioni (verification-before-completion, writing-skills) ancora giuste.
+- **Lezioni 5.0.x recepite in Fase 4**: (a) review per-task one-shot, mai loop iterativi (retromarcia documentata di superpowers sul costo, ~60% del tempo); (b) progress ledger durevole per il recovery da compaction; (c) task-brief meccanici ("42k caratteri di storia incollata" è l'anti-pattern che ha motivato il loro `scripts/task-brief`) — conferma sperimentale della tesi §2.
+- **F6 validata**: il loro `scripts/review-package` (impacchettamento meccanico del contesto di review, zero LLM) è il precedente diretto del nostro review-prompt packaging.
+- **Client-agnosticismo**: superpowers supporta ora Claude Code, Antigravity, Codex, Cursor, Copilot CLI e altri via SessionStart injection — conferma la generalizzazione dei review gate e alza la priorità del Backlog #7 (SessionStart hook).
 
 ## 6. Sequenza e dipendenze
 
