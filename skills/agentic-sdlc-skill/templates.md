@@ -20,6 +20,25 @@ supersedes: old_doc.md       # only if it replaces another canonical doc
 
 When a doc replaces another: the new one declares `supersedes:`, the old one switches to `status: SUPERSEDED` (it stays as history, do not delete it). `sdlc_check.py validate` warns if `status` is missing or if a superseded doc is still `CURRENT`.
 
+## ai_docs/README.md
+
+Curated must-read index, by hand (it is NOT the generated manifest). Created at init, updated rarely, only for real must-reads.
+
+```markdown
+# ai_docs — reading guide
+
+Must-reads for this project, in order. The full manifest of canonical docs is
+`INDEX.md` (generated — regenerate with `sdlc_check.py index`, never edit by hand).
+
+1. `vision/project_vision.md` — why the project exists (check its Status first).
+2. `strategic/architecture.md` — how it is built.
+3. `audit/handoff.md` — where work stopped last session (if present).
+
+Directory purposes: `vision/` (project direction), `strategic/` (architecture and
+feature catalog), `reference/` (operative guides), `solutions/` (per-feature
+analyses, discovery-by-grep), `audit/` (audit plan and handoff).
+```
+
 ## ai_docs/vision/project_vision.md
 
 ```markdown
