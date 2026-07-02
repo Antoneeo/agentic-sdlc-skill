@@ -11,6 +11,9 @@ Tutte le modifiche significative a questa skill saranno documentate in questo fi
 
 ### Added
 - `sdlc_check.py validate --strict` / `check --strict`: warnings and a missing `ai_docs/` become failures (for CI).
+- **Coexistence with devPNT (Phase 1, the Hybrid seam)**: new SKILL.md section with the ownership matrix (who is master per artifact in Standalone vs Hybrid), the triage equivalence table (one significance threshold, two vocabularies), the ANALYSIS↔plan-node state mapping and the shadow discipline (`SHADOW_[doc_key]_vX.Y.md`, exported BEFORE implementation; never saved under an `ANALYSIS_*` name).
+- `sdlc_check.py --hybrid` (explicit, never auto-detected) on `check`/`stale` (audit-plan staleness delegated to devPNT/KL) and on `gate` (an approved E-TDD shadow in `solutions/` authorizes writes on protected paths).
+- devPNT MCP doctrine (`mcp_system_prompt.md`, devPNT repo) slimmed accordingly: process (triage, phases, lifecycle, closure) deferred to the skill; `ai_docs/` layout aligned (adds `vision/` and `reference/`); shadow naming and shadow-before-implementation rule; checklist items for methodology, shadow export and hybrid closure gate.
 - Evolution roadmap for v1.7.0 in `ai_docs/vision/roadmap_evoluzione_agenti.md` (subagent execution, operative guides + agent-level knowledge base, devPNT seam, open-core positioning).
 
 ### Fixed

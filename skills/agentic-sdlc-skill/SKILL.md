@@ -78,6 +78,76 @@ Hybrid rules:
 - Never auto-accept devPNT proposals: present the preview and wait for explicit confirmation.
 - If the local devPNT protocol imposes stricter bootstrap, plans or gates, follow them.
 
+## Coexistence with devPNT (the Hybrid seam)
+
+This section is the single authoritative answer to "who owns what" when both the
+skill and devPNT are active. The skill owns the **process** (triage, phases, Vision
+Gate, lifecycle); devPNT owns the **machinery** (governed storage, versioned
+proposals, semantic analysis, independent reviewers). devPNT strengthens the
+process; it never replaces it.
+
+### Ownership matrix
+
+| Artifact | Standalone master | Hybrid master | Mirror rule |
+|---|---|---|---|
+| Product vision | `vision/project_vision.md` | `vision/project_vision.md` (product scope) | devPNT KL vision is regenerated from it, never edited independently |
+| Milestone vision | `vision/roadmap.md` milestones | devPNT M-VISION | `roadmap.md` may reference the M-VISION key; it never restates its content |
+| Feature design | `solutions/ANALYSIS_[feature].md` | devPNT E-ISP/E-TDD (+ D-UC/P-TM) | shadow exported from the ACCEPTED DB version as `SHADOW_[doc_key]_vX.Y.md`; on divergence the DB wins and the shadow is regenerated |
+| Plans | `## Action Plan` inside the ANALYSIS | devPNT Master/Action Plan | none |
+| Feature state | ANALYSIS frontmatter `status` | Action Plan node status | mapping table below; at closure both must move together |
+| ADR | `architecture/` (canonical dir) | devPNT DB (`adr_YYYY-MM-DD_slug`) | optional filesystem shadow `SHADOW_adr_*` exported at closure for grep-ability |
+| Audit / freshness | `audit/audit_plan.md` + `stale`/`mark` | devPNT KL coverage + summary status | run `check --hybrid` (skips audit-plan staleness) |
+| Operative guides | `ai_docs/reference/` | `ai_docs/reference/` — **filesystem-first even in Hybrid** | devPNT bootstrap may point at their index; it never copies their content |
+| Handoff | `audit/handoff.md` | `audit/handoff.md` | always filesystem |
+
+### Triage equivalence (one threshold, two vocabularies)
+
+devPNT's "significance threshold" and the skill's triage are the SAME test. Do not
+run two classifications:
+
+| Skill triage | devPNT equivalent | Governed artifacts |
+|---|---|---|
+| L1 Trivial | trivial exempt | none |
+| L2 Small | localized obvious edit | none — but see escalation |
+| L3 Significant | governed unit of change | D-UC/P-TM/E-ISP/E-TDD per the devPNT trigger policy |
+| Spike | exempt (non-mergeable) | `SPIKE_[topic].md` only |
+
+Escalation triggers (any one of these makes it L3, in BOTH vocabularies): touches
+more than one module, changes a public API/contract/message format, changes a data
+model or state machine, has a security surface, risks duplicating existing logic,
+or the design choice is non-obvious. An L2 that trips one of these is not an L2.
+
+### Feature state mapping
+
+| ANALYSIS frontmatter | devPNT plan node |
+|---|---|
+| PLANNED | READY (or BLOCKED / ON_HOLD while waiting) |
+| IN_PROGRESS | PROGRESS |
+| COMPLETED | DONE |
+| CANCELLED | CANCELLED |
+
+Closure discipline: never mark the node DONE while the shadow/ANALYSIS still says
+IN_PROGRESS, or vice versa. They move in the same closure step.
+
+### Shadow discipline (Hybrid)
+
+- Shadow filename: `SHADOW_[doc_key]_vX.Y.md`, first line
+  `<!-- SHADOW generated from devPNT (doc_key vX.Y) - do not edit by hand -->`.
+  Never save a shadow under an `ANALYSIS_*` name: that name means "authoritative
+  Standalone document" and the validator treats it as such.
+- **Export the approved E-TDD shadow BEFORE implementation** (not only at closure).
+  It gives context-free subagents their design input, unlocks `gate --hybrid`, and
+  guarantees the filesystem fallback if devPNT becomes unavailable mid-feature.
+- At closure, refresh all shadows from the accepted DB versions.
+
+### Validator in Hybrid
+
+Pass `--hybrid` explicitly (never auto-detected — an explicit flag beats a guessed
+mode): `check --hybrid` and `stale --hybrid` skip audit-plan staleness (mapping is
+delegated to devPNT/KL); `gate --hybrid` also unlocks on the presence of an E-TDD
+shadow in `solutions/` (the Hybrid design gate) instead of requiring an IN_PROGRESS
+ANALYSIS.
+
 ## L3 Workflow
 
 ### 1. Audit and Alignment

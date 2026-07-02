@@ -53,3 +53,4 @@ Semantics: exit code 2 + message on stderr ⇒ the write is blocked and the mess
 - The paths in `--protected` are prefixes relative to the project root, separated by `;`.
 - `ai_docs/`, `tests/` and `test/` are always excluded from blocking.
 - The hook assumes the working directory is the project root (standard behavior of Claude Code hooks).
+- **Hybrid/devPNT projects**: add `--hybrid` to the gate command. Governed designs live in the devPNT DB, so the gate also unlocks when an approved E-TDD shadow (`ai_docs/solutions/SHADOW_*tdd*.md`, exported before implementation — see the SKILL.md shadow discipline) is present. Without the flag the gate would block legitimate governed work. The flag is deliberately explicit: never auto-detected.
