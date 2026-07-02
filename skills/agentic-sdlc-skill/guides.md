@@ -22,10 +22,24 @@ guide with no `distilled_from` is not this pipeline's output.
 
 ## 2. Pipeline
 
-1. **Decompose into topics.** Read the indications/documents the user handed
-   over; propose a topic split (one `GUIDE_<topic>.md` per coherent operative
-   area). Do not guess a single mega-topic when the material covers several.
-2. **User confirms** the topic decomposition before any file is written.
+1. **Decompose into PREPARATION units — and weigh the fragmentation risk.**
+   A guide's goal is to PREPARE an agent for a situation: everything that
+   situation needs must arrive in ONE guide. The risk is asymmetric — extra
+   context injected costs tokens (cheap, recoverable); missing context makes
+   the agent invent or fail (the exact failure this pipeline exists to
+   prevent). Every split is a bet that no future task will cross the cut.
+   Therefore:
+   - **Default = one guide per source/domain.** Split ONLY when the resulting
+     guides would be consulted in DISJOINT situations — no plausible task
+     needs two of them at once.
+   - **Run the split test per proposed fragment and DECLARE it** in the
+     proposal: "which tasks consult this fragment, and would any of those
+     tasks also need another fragment?" Any overlap → merge, do not split.
+   - Heterogeneous sources (unrelated policies handed over together) are the
+     legitimate split case; a single coherent document about one subsystem
+     almost never is.
+2. **User confirms** the topic decomposition — including the declared
+   fragmentation-risk assessment — before any file is written.
 3. **Snapshot each source verbatim** into
    `ai_docs/reference/.sources/<slug>-<hash8>.md`:
    - `slug` derives from the topic (lowercase, hyphenated).
