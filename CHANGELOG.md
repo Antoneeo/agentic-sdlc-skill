@@ -2,6 +2,25 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [Unreleased - 1.7.0] (Phase 0 of the evolution roadmap)
+### Changed (breaking-soft)
+- **English is now the canonical language of the skill**: `SKILL.md`, `templates.md`, `ENFORCEMENT.md`, validator messages, generated indexes and the project protocol are in English. New ANALYSIS documents use English frontmatter keys (`status`, `level`, `start_date`, `end_date`) and English section headings. **Existing projects keep working**: the validator silently accepts the deprecated Italian keys (`stato`, `livello`, `data_inizio`, `data_fine`) and Italian headings.
+- The generated project protocol (`CLAUDE.md`/`GEMINI.md`/`AGENTS.md`/`.cursorrules`) is now a **thin pointer** to the skill (triage summary + where things live + closure gate) instead of a condensed copy of its rules, which had drifted from `SKILL.md`.
+- `init.js` now seeds `ai_docs/` from `templates.md` (single template source) instead of inline boilerplates; it creates `ai_docs/reference/` and the curated `ai_docs/README.md`, no longer seeds the generated `features_history.md`, and generates `INDEX.md` via the validator when Python is available, so the very first `sdlc_check.py check` on a fresh project is CLEAN.
+- Client detection unified between `init.js` and `postinstall.js` (`scripts/lib.js`): CLI on PATH **or** config home present (covers Claude Desktop with integrated Claude Code).
+
+### Added
+- `sdlc_check.py validate --strict` / `check --strict`: warnings and a missing `ai_docs/` become failures (for CI).
+- Evolution roadmap for v1.7.0 in `ai_docs/vision/roadmap_evoluzione_agenti.md` (subagent execution, operative guides + agent-level knowledge base, devPNT seam, open-core positioning).
+
+### Fixed
+- Shadow detection is structural (filename `SHADOW_*` or `<!-- SHADOW` marker on the first line): an ANALYSIS merely *mentioning* shadows is no longer silently skipped from index and validation.
+- `mark`/`index` fail fast when `ai_docs/` is missing instead of silently creating a second documentation root in the wrong directory.
+
+### Removed
+- Divergent `agentic-sdlc-v2/` copy (integrated in 1.5.0, the leftover risked edits on the wrong files).
+- `references/*_template.md` (duplicated `templates.md` and had already diverged).
+
 ## [1.6.0] - 2026-06-15
 ### Added
 - **Manifest generato dei documenti canonici** (`ai_docs/INDEX.md`): `sdlc_check.py index` ora produce, oltre a `features_history.md`, un indice completo di tutti i doc in `vision/`, `reference/`, `architecture/`, `functional/`, `strategic/`, con descrizione e stato letti dall'header. Si rigenera, quindi non drifta.
