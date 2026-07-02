@@ -30,10 +30,8 @@
     "skills/agentic-sdlc-skill/ENFORCEMENT.md",
     "skills/agentic-sdlc-skill/scripts/sdlc_check.py",
     "gemini-extension.json",
-    "references",
     "README.md",
     "CHANGELOG.md",
-    "assets",
     "scripts"
   ]
 }
