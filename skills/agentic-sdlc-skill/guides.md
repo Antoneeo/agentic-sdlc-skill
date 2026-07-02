@@ -53,6 +53,12 @@ guide with no `distilled_from` is not this pipeline's output.
      merge drops, or keep the topics separate if they truly are.
    Semantic overlap is NOT mechanically detectable: this step is agent
    discipline plus the human reviewing the router — say what you found.
+   **Also verify the handed SOURCE itself is current**: check its lifecycle
+   (status/supersedes headers) and search the project for a newer version of
+   the same document before snapshotting. A user may hand you a path that a
+   migrated copy has since superseded — distilling from it produces a guide
+   that is born stale. If you find a newer version, surface it and distill
+   from that one. (Learned the hard way on first field use, 2026-07-02.)
 1. **Decompose into PREPARATION units — and weigh the fragmentation risk.**
    A guide's goal is to PREPARE an agent for a situation: everything that
    situation needs must arrive in ONE guide. The risk is asymmetric — extra
