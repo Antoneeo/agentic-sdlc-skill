@@ -257,6 +257,8 @@ forbidden. Full pipeline, DRY rule, snapshotting and maintenance: `guides.md`.
 `ai_docs/reference/INDEX.md` is generated (the guide router) — never edit by hand,
 regenerate with `sdlc_check.py index`.
 
+**Agent-global KB.** A second, cross-project guide root lives at the fixed path `~/.agentic-sdlc/` (same `ai_docs/` structure, same validator/router/freshness engine via `sdlc_check.py --root ~/.agentic-sdlc`). Project guides win on topic collision; a project guide that overrides a KB guide MUST declare `overrides: GUIDE_<topic>.md` — the validator warns on undeclared collisions (error under `--strict`) and fail-closes on an `overrides:` value that escapes the KB. Discovery is this paragraph: agents and subagents reach KB guides by path, exactly like project guides.
+
 ## Mechanical Enforcement
 
 The prompt is not enforcement. When the project needs repeatable guarantees:
