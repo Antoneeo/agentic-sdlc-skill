@@ -2692,152 +2692,117 @@
       ]
     },
     "skills/agentic-sdlc-skill/scripts/sdlc_check.py": {
-      "hash": "7b9409a4083acf7d07ddffd1cbcce4939a1707638be4fc08567b1d540307b2fc",
+      "hash": "f1fd0c0cf4ef891d6dc44048b1e1b1116fea12db4b27acba527010600c14bb94",
       "definitions": [
         {
           "name": "utc_now_iso",
           "type": "function",
-          "line": 77
+          "line": 42
         },
         {
           "name": "find_project_root",
           "type": "function",
-          "line": 81
-        },
-        {
-          "name": "require_ai_docs",
-          "type": "function",
-          "line": 89
+          "line": 46
         },
         {
           "name": "read_text",
           "type": "function",
-          "line": 99
+          "line": 54
         },
         {
           "name": "parse_iso",
           "type": "function",
-          "line": 105
+          "line": 58
         },
         {
           "name": "norm_text",
           "type": "function",
-          "line": 117
+          "line": 70
         },
         {
           "name": "load_frontmatter",
           "type": "function",
-          "line": 121
-        },
-        {
-          "name": "is_shadow",
-          "type": "function",
-          "line": 138
+          "line": 74
         },
         {
           "name": "list_analyses",
           "type": "function",
-          "line": 145
-        },
-        {
-          "name": "has_etdd_shadow",
-          "type": "function",
-          "line": 160
+          "line": 87
         },
         {
           "name": "iter_files",
           "type": "function",
-          "line": 170
+          "line": 101
         },
         {
           "name": "git_available",
           "type": "function",
-          "line": 182
+          "line": 113
         },
         {
           "name": "git_head",
           "type": "function",
-          "line": 191
+          "line": 122
         },
         {
           "name": "git_has_changes",
           "type": "function",
-          "line": 200
+          "line": 131
         },
         {
           "name": "git_changed_since",
           "type": "function",
-          "line": 211
+          "line": 142
         },
         {
           "name": "build_index",
           "type": "function",
-          "line": 230
-        },
-        {
-          "name": "extract_doc_meta",
-          "type": "function",
-          "line": 259
-        },
-        {
-          "name": "list_canonical_docs",
-          "type": "function",
-          "line": 319
-        },
-        {
-          "name": "build_manifest",
-          "type": "function",
-          "line": 334
+          "line": 161
         },
         {
           "name": "cmd_index",
           "type": "function",
-          "line": 358
-        },
-        {
-          "name": "has_section",
-          "type": "function",
-          "line": 377
+          "line": 184
         },
         {
           "name": "cmd_validate",
           "type": "function",
-          "line": 381
+          "line": 194
         },
         {
           "name": "parse_audit_plan",
           "type": "function",
-          "line": 494
+          "line": 278
         },
         {
           "name": "cmd_stale",
           "type": "function",
-          "line": 517
+          "line": 301
         },
         {
           "name": "cmd_mark",
           "type": "function",
-          "line": 569
+          "line": 350
         },
         {
           "name": "cmd_mark.row_text",
           "type": "method",
-          "line": 585
+          "line": 364
         },
         {
           "name": "cmd_check",
           "type": "function",
-          "line": 609
+          "line": 388
         },
         {
           "name": "cmd_gate",
           "type": "function",
-          "line": 621
+          "line": 400
         },
         {
           "name": "main",
           "type": "function",
-          "line": 666
+          "line": 437
         }
       ],
       "imports": [
@@ -2853,3819 +2818,2659 @@
       "references": [
         {
           "symbol": "timedelta",
-          "line": 51
+          "line": 31
         },
         {
           "symbol": "sys.stdout.reconfigure",
-          "line": 69
+          "line": 34
         },
         {
           "symbol": "sys.stdout",
-          "line": 69
+          "line": 34
         },
         {
           "symbol": "sys",
-          "line": 69
+          "line": 34
         },
         {
           "symbol": "sys.stderr.reconfigure",
-          "line": 70
+          "line": 35
         },
         {
           "symbol": "sys.stderr",
-          "line": 70
+          "line": 35
         },
         {
           "symbol": "sys",
-          "line": 70
+          "line": 35
         },
         {
           "symbol": "Exception",
-          "line": 71
+          "line": 36
         },
         {
           "symbol": "datetime.now(timezone.utc).strftime",
-          "line": 78
+          "line": 43
         },
         {
           "symbol": "datetime.now",
-          "line": 78
+          "line": 43
         },
         {
           "symbol": "datetime",
-          "line": 78
+          "line": 43
         },
         {
           "symbol": "timezone.utc",
-          "line": 78
+          "line": 43
         },
         {
           "symbol": "timezone",
-          "line": 78
+          "line": 43
         },
         {
           "symbol": "Path(start or os.getcwd()).resolve",
-          "line": 82
+          "line": 47
         },
         {
           "symbol": "Path",
-          "line": 82
+          "line": 47
         },
         {
           "symbol": "start",
-          "line": 82
+          "line": 47
         },
         {
           "symbol": "os.getcwd",
-          "line": 82
+          "line": 47
         },
         {
           "symbol": "os",
-          "line": 82
+          "line": 47
         },
         {
           "symbol": "cur",
-          "line": 83
+          "line": 48
         },
         {
           "symbol": "list",
-          "line": 83
+          "line": 48
         },
         {
           "symbol": "cur.parents",
-          "line": 83
+          "line": 48
         },
         {
           "symbol": "(p / 'ai_docs').is_dir",
-          "line": 84
+          "line": 49
         },
         {
           "symbol": "p",
-          "line": 84
+          "line": 49
         },
         {
           "symbol": "p",
-          "line": 85
+          "line": 50
         },
         {
           "symbol": "cur",
-          "line": 86
-        },
-        {
-          "symbol": "(root / 'ai_docs').is_dir",
-          "line": 92
-        },
-        {
-          "symbol": "root",
-          "line": 92
-        },
-        {
-          "symbol": "print",
-          "line": 93
-        },
-        {
-          "symbol": "root",
-          "line": 93
-        },
-        {
-          "symbol": "command",
-          "line": 93
+          "line": 51
         },
         {
           "symbol": "path.read_text",
-          "line": 102
+          "line": 55
         },
         {
           "symbol": "path",
-          "line": 102
+          "line": 55
         },
         {
           "symbol": "value",
-          "line": 106
+          "line": 59
         },
         {
           "symbol": "datetime.fromisoformat",
-          "line": 109
+          "line": 62
         },
         {
           "symbol": "datetime",
-          "line": 109
+          "line": 62
         },
         {
           "symbol": "value.strip().replace",
-          "line": 109
+          "line": 62
         },
         {
           "symbol": "value.strip",
-          "line": 109
+          "line": 62
         },
         {
           "symbol": "value",
-          "line": 109
+          "line": 62
         },
         {
           "symbol": "dt.tzinfo",
-          "line": 110
+          "line": 63
         },
         {
           "symbol": "dt",
-          "line": 110
+          "line": 63
         },
         {
           "symbol": "dt.replace",
-          "line": 111
+          "line": 64
         },
         {
           "symbol": "dt",
-          "line": 111
+          "line": 64
         },
         {
           "symbol": "timezone.utc",
-          "line": 111
+          "line": 64
         },
         {
           "symbol": "timezone",
-          "line": 111
+          "line": 64
         },
         {
           "symbol": "dt",
-          "line": 112
+          "line": 65
         },
         {
           "symbol": "ValueError",
-          "line": 113
+          "line": 66
         },
         {
           "symbol": "'\\n'.join",
-          "line": 118
+          "line": 71
         },
         {
           "symbol": "line.rstrip",
-          "line": 118
+          "line": 71
         },
         {
           "symbol": "line",
-          "line": 118
+          "line": 71
         },
         {
           "symbol": "s.strip().splitlines",
-          "line": 118
+          "line": 71
         },
         {
           "symbol": "s.strip",
-          "line": 118
+          "line": 71
         },
         {
           "symbol": "s",
-          "line": 118
+          "line": 71
         },
         {
           "symbol": "lines",
-          "line": 123
+          "line": 76
         },
         {
           "symbol": "lines[0].strip",
-          "line": 123
+          "line": 76
         },
         {
           "symbol": "meta",
-          "line": 124
+          "line": 77
         },
         {
           "symbol": "lines",
-          "line": 125
+          "line": 78
         },
         {
           "symbol": "line.strip",
-          "line": 126
+          "line": 79
         },
         {
           "symbol": "line",
-          "line": 126
+          "line": 79
         },
         {
           "symbol": "re.match",
-          "line": 128
+          "line": 81
         },
         {
           "symbol": "re",
-          "line": 128
+          "line": 81
         },
         {
           "symbol": "line",
-          "line": 128
+          "line": 81
         },
         {
           "symbol": "m",
-          "line": 129
+          "line": 82
         },
         {
           "symbol": "meta",
-          "line": 130
+          "line": 83
         },
         {
           "symbol": "m.group(1).strip().lower",
-          "line": 130
+          "line": 83
         },
         {
           "symbol": "m.group(1).strip",
-          "line": 130
+          "line": 83
         },
         {
           "symbol": "m.group",
-          "line": 130
+          "line": 83
         },
         {
           "symbol": "m",
-          "line": 130
+          "line": 83
         },
         {
           "symbol": "m.group(2).strip",
-          "line": 130
-        },
-        {
-          "symbol": "LEGACY_KEYS.items",
-          "line": 132
-        },
-        {
-          "symbol": "LEGACY_KEYS",
-          "line": 132
-        },
-        {
-          "symbol": "legacy",
-          "line": 133
+          "line": 83
         },
         {
           "symbol": "meta",
-          "line": 133
-        },
-        {
-          "symbol": "canon",
-          "line": 133
-        },
-        {
-          "symbol": "meta",
-          "line": 134
-        },
-        {
-          "symbol": "canon",
-          "line": 134
-        },
-        {
-          "symbol": "legacy",
-          "line": 134
-        },
-        {
-          "symbol": "meta",
-          "line": 135
-        },
-        {
-          "symbol": "path.name.startswith",
-          "line": 142
-        },
-        {
-          "symbol": "path.name",
-          "line": 142
-        },
-        {
-          "symbol": "path",
-          "line": 142
-        },
-        {
-          "symbol": "first_line.lstrip().startswith",
-          "line": 142
-        },
-        {
-          "symbol": "first_line.lstrip",
-          "line": 142
-        },
-        {
-          "symbol": "first_line",
-          "line": 142
+          "line": 84
         },
         {
           "symbol": "root",
-          "line": 147
+          "line": 89
         },
         {
           "symbol": "sol.is_dir",
-          "line": 149
+          "line": 91
         },
         {
           "symbol": "sol",
-          "line": 149
+          "line": 91
         },
         {
           "symbol": "out",
-          "line": 150
+          "line": 92
         },
         {
           "symbol": "sorted",
-          "line": 151
+          "line": 93
         },
         {
           "symbol": "sol.glob",
-          "line": 151
+          "line": 93
         },
         {
           "symbol": "sol",
-          "line": 151
+          "line": 93
         },
         {
           "symbol": "read_text",
-          "line": 152
+          "line": 94
         },
         {
           "symbol": "p",
-          "line": 152
+          "line": 94
         },
         {
           "symbol": "text",
-          "line": 153
-        },
-        {
-          "symbol": "text.splitlines",
-          "line": 153
-        },
-        {
-          "symbol": "is_shadow",
-          "line": 154
-        },
-        {
-          "symbol": "p",
-          "line": 154
-        },
-        {
-          "symbol": "first_line",
-          "line": 154
+          "line": 95
         },
         {
           "symbol": "out.append",
-          "line": 156
+          "line": 97
         },
         {
           "symbol": "out",
-          "line": 156
+          "line": 97
         },
         {
           "symbol": "p",
-          "line": 156
+          "line": 97
         },
         {
           "symbol": "load_frontmatter",
-          "line": 156
+          "line": 97
         },
         {
           "symbol": "text.splitlines",
-          "line": 156
+          "line": 97
         },
         {
           "symbol": "text",
-          "line": 156
+          "line": 97
         },
         {
           "symbol": "out",
-          "line": 157
-        },
-        {
-          "symbol": "root",
-          "line": 164
-        },
-        {
-          "symbol": "sol.is_dir",
-          "line": 165
-        },
-        {
-          "symbol": "sol",
-          "line": 165
-        },
-        {
-          "symbol": "any",
-          "line": 167
-        },
-        {
-          "symbol": "p.name.lower",
-          "line": 167
-        },
-        {
-          "symbol": "p.name",
-          "line": 167
-        },
-        {
-          "symbol": "p",
-          "line": 167
-        },
-        {
-          "symbol": "sol.glob",
-          "line": 167
-        },
-        {
-          "symbol": "sol",
-          "line": 167
+          "line": 98
         },
         {
           "symbol": "target.is_file",
-          "line": 171
+          "line": 102
         },
         {
           "symbol": "target",
-          "line": 171
+          "line": 102
         },
         {
           "symbol": "target",
-          "line": 172
+          "line": 103
         },
         {
           "symbol": "os.walk",
-          "line": 174
+          "line": 105
         },
         {
           "symbol": "os",
-          "line": 174
+          "line": 105
         },
         {
           "symbol": "target",
-          "line": 174
+          "line": 105
         },
         {
           "symbol": "dirnames",
-          "line": 175
+          "line": 106
         },
         {
           "symbol": "d",
-          "line": 175
+          "line": 106
         },
         {
           "symbol": "SKIP_DIRS",
-          "line": 175
+          "line": 106
         },
         {
           "symbol": "d.startswith",
-          "line": 175
+          "line": 106
         },
         {
           "symbol": "filenames",
-          "line": 176
+          "line": 107
         },
         {
           "symbol": "Path",
-          "line": 177
+          "line": 108
         },
         {
           "symbol": "dirpath",
-          "line": 177
+          "line": 108
         },
         {
           "symbol": "name",
-          "line": 177
+          "line": 108
         },
         {
           "symbol": "subprocess.run",
-          "line": 184
+          "line": 115
         },
         {
           "symbol": "subprocess",
-          "line": 184
+          "line": 115
         },
         {
           "symbol": "str",
-          "line": 185
+          "line": 116
         },
         {
           "symbol": "root",
-          "line": 185
+          "line": 116
         },
         {
           "symbol": "r.returncode",
-          "line": 186
+          "line": 117
         },
         {
           "symbol": "r",
-          "line": 186
+          "line": 117
         },
         {
           "symbol": "r.stdout.strip",
-          "line": 186
+          "line": 117
         },
         {
           "symbol": "r.stdout",
-          "line": 186
+          "line": 117
         },
         {
           "symbol": "Exception",
-          "line": 187
+          "line": 118
         },
         {
           "symbol": "subprocess.run",
-          "line": 193
+          "line": 124
         },
         {
           "symbol": "subprocess",
-          "line": 193
+          "line": 124
         },
         {
           "symbol": "str",
-          "line": 194
+          "line": 125
         },
         {
           "symbol": "root",
-          "line": 194
+          "line": 125
         },
         {
           "symbol": "r.returncode",
-          "line": 195
+          "line": 126
         },
         {
           "symbol": "r",
-          "line": 195
+          "line": 126
         },
         {
           "symbol": "r.stdout.strip",
-          "line": 195
+          "line": 126
         },
         {
           "symbol": "r.stdout",
-          "line": 195
+          "line": 126
         },
         {
           "symbol": "Exception",
-          "line": 196
+          "line": 127
         },
         {
           "symbol": "rel_path.replace",
-          "line": 203
+          "line": 134
         },
         {
           "symbol": "rel_path",
-          "line": 203
+          "line": 134
         },
         {
           "symbol": "subprocess.run",
-          "line": 204
+          "line": 135
         },
         {
           "symbol": "subprocess",
-          "line": 204
+          "line": 135
         },
         {
           "symbol": "rel",
-          "line": 204
+          "line": 135
         },
         {
           "symbol": "str",
-          "line": 205
+          "line": 136
         },
         {
           "symbol": "root",
-          "line": 205
+          "line": 136
         },
         {
           "symbol": "r.returncode",
-          "line": 206
+          "line": 137
         },
         {
           "symbol": "r",
-          "line": 206
+          "line": 137
         },
         {
           "symbol": "bool",
-          "line": 206
+          "line": 137
         },
         {
           "symbol": "r.stdout.strip",
-          "line": 206
+          "line": 137
         },
         {
           "symbol": "r.stdout",
-          "line": 206
+          "line": 137
         },
         {
           "symbol": "Exception",
-          "line": 207
+          "line": 138
         },
         {
           "symbol": "subprocess.run",
-          "line": 214
+          "line": 145
         },
         {
           "symbol": "subprocess",
-          "line": 214
+          "line": 145
         },
         {
           "symbol": "ref",
-          "line": 214
+          "line": 145
         },
         {
           "symbol": "rel_path",
-          "line": 214
+          "line": 145
         },
         {
           "symbol": "str",
-          "line": 215
+          "line": 146
         },
         {
           "symbol": "root",
-          "line": 215
+          "line": 146
         },
         {
           "symbol": "r.returncode",
-          "line": 216
+          "line": 147
         },
         {
           "symbol": "r",
-          "line": 216
+          "line": 147
         },
         {
           "symbol": "l.strip",
-          "line": 218
+          "line": 149
         },
         {
           "symbol": "l",
-          "line": 218
+          "line": 149
         },
         {
           "symbol": "r.stdout.splitlines",
-          "line": 218
+          "line": 149
         },
         {
           "symbol": "r.stdout",
-          "line": 218
+          "line": 149
         },
         {
           "symbol": "r",
-          "line": 218
+          "line": 149
         },
         {
           "symbol": "subprocess.run",
-          "line": 219
+          "line": 150
         },
         {
           "symbol": "subprocess",
-          "line": 219
+          "line": 150
         },
         {
           "symbol": "rel_path",
-          "line": 219
+          "line": 150
         },
         {
           "symbol": "str",
-          "line": 220
+          "line": 151
         },
         {
           "symbol": "root",
-          "line": 220
+          "line": 151
         },
         {
           "symbol": "r2.returncode",
-          "line": 221
+          "line": 152
         },
         {
           "symbol": "r2",
-          "line": 221
+          "line": 152
         },
         {
           "symbol": "l.strip",
-          "line": 222
+          "line": 153
         },
         {
           "symbol": "l",
-          "line": 222
+          "line": 153
         },
         {
           "symbol": "r2.stdout.splitlines",
-          "line": 222
+          "line": 153
         },
         {
           "symbol": "r2.stdout",
-          "line": 222
+          "line": 153
         },
         {
           "symbol": "r2",
-          "line": 222
+          "line": 153
         },
         {
           "symbol": "sorted",
-          "line": 223
+          "line": 154
         },
         {
           "symbol": "set",
-          "line": 223
+          "line": 154
         },
         {
           "symbol": "changed",
-          "line": 223
+          "line": 154
         },
         {
           "symbol": "Exception",
-          "line": 224
+          "line": 155
         },
         {
           "symbol": "list_analyses",
-          "line": 232
+          "line": 163
         },
         {
           "symbol": "root",
-          "line": 232
+          "line": 163
         },
         {
           "symbol": "rows.append",
-          "line": 233
+          "line": 164
         },
         {
           "symbol": "rows",
-          "line": 233
+          "line": 164
         },
         {
           "symbol": "meta.get",
-          "line": 234
+          "line": 165
         },
         {
           "symbol": "meta",
-          "line": 234
+          "line": 165
         },
         {
           "symbol": "meta.get",
-          "line": 235
+          "line": 166
         },
         {
           "symbol": "meta",
-          "line": 235
+          "line": 166
         },
         {
           "symbol": "p.stem.replace",
-          "line": 235
+          "line": 166
         },
         {
           "symbol": "p.stem",
-          "line": 235
+          "line": 166
         },
         {
           "symbol": "p",
-          "line": 235
+          "line": 166
         },
         {
           "symbol": "meta.get",
-          "line": 236
+          "line": 167
         },
         {
           "symbol": "meta",
-          "line": 236
+          "line": 167
         },
         {
           "symbol": "meta.get",
-          "line": 237
+          "line": 168
         },
         {
           "symbol": "meta",
-          "line": 237
+          "line": 168
         },
         {
           "symbol": "meta.get",
-          "line": 238
+          "line": 169
         },
         {
           "symbol": "meta",
-          "line": 238
+          "line": 169
         },
         {
           "symbol": "meta.get",
-          "line": 239
+          "line": 170
         },
         {
           "symbol": "meta",
-          "line": 239
+          "line": 170
         },
         {
           "symbol": "p.name",
-          "line": 240
+          "line": 171
         },
         {
           "symbol": "p",
-          "line": 240
+          "line": 171
         },
         {
           "symbol": "rows.sort",
-          "line": 242
+          "line": 173
         },
         {
           "symbol": "rows",
-          "line": 242
+          "line": 173
         },
         {
           "symbol": "r",
-          "line": 242
+          "line": 173
         },
         {
           "symbol": "INDEX_HEADER",
-          "line": 243
+          "line": 174
         },
         {
           "symbol": "rows",
-          "line": 248
+          "line": 179
         },
         {
           "symbol": "lines.append",
-          "line": 249
+          "line": 180
         },
         {
           "symbol": "lines",
-          "line": 249
+          "line": 180
         },
         {
           "symbol": "' | '.join",
-          "line": 249
+          "line": 180
         },
         {
           "symbol": "r",
-          "line": 249
+          "line": 180
         },
         {
           "symbol": "'\\n'.join",
-          "line": 250
+          "line": 181
         },
         {
           "symbol": "lines",
-          "line": 250
-        },
-        {
-          "symbol": "re.compile",
-          "line": 254
-        },
-        {
-          "symbol": "re",
-          "line": 254
-        },
-        {
-          "symbol": "re.I",
-          "line": 254
-        },
-        {
-          "symbol": "re.compile",
-          "line": 256
-        },
-        {
-          "symbol": "re",
-          "line": 256
-        },
-        {
-          "symbol": "re.I",
-          "line": 256
-        },
-        {
-          "symbol": "read_text",
-          "line": 268
-        },
-        {
-          "symbol": "path",
-          "line": 268
-        },
-        {
-          "symbol": "text.splitlines",
-          "line": 269
-        },
-        {
-          "symbol": "text",
-          "line": 269
-        },
-        {
-          "symbol": "load_frontmatter",
-          "line": 270
-        },
-        {
-          "symbol": "lines",
-          "line": 270
-        },
-        {
-          "symbol": "lines",
-          "line": 271
-        },
-        {
-          "symbol": "lines",
-          "line": 272
-        },
-        {
-          "symbol": "lines[0].strip",
-          "line": 272
-        },
-        {
-          "symbol": "range",
-          "line": 273
-        },
-        {
-          "symbol": "min",
-          "line": 273
-        },
-        {
-          "symbol": "len",
-          "line": 273
-        },
-        {
-          "symbol": "lines",
-          "line": 273
-        },
-        {
-          "symbol": "lines[i].strip",
-          "line": 274
-        },
-        {
-          "symbol": "lines",
-          "line": 274
-        },
-        {
-          "symbol": "i",
-          "line": 274
-        },
-        {
-          "symbol": "lines",
-          "line": 275
-        },
-        {
-          "symbol": "i",
-          "line": 275
-        },
-        {
-          "symbol": "meta.get",
-          "line": 278
-        },
-        {
-          "symbol": "meta",
-          "line": 278
-        },
-        {
-          "symbol": "title",
-          "line": 279
-        },
-        {
-          "symbol": "body",
-          "line": 280
-        },
-        {
-          "symbol": "re.match",
-          "line": 281
-        },
-        {
-          "symbol": "re",
-          "line": 281
-        },
-        {
-          "symbol": "line",
-          "line": 281
-        },
-        {
-          "symbol": "m",
-          "line": 282
-        },
-        {
-          "symbol": "m.group(1).strip",
-          "line": 283
-        },
-        {
-          "symbol": "m.group",
-          "line": 283
-        },
-        {
-          "symbol": "m",
-          "line": 283
-        },
-        {
-          "symbol": "title",
-          "line": 285
-        },
-        {
-          "symbol": "path.stem",
-          "line": 285
-        },
-        {
-          "symbol": "path",
-          "line": 285
-        },
-        {
-          "symbol": "meta.get('status', '').upper",
-          "line": 287
-        },
-        {
-          "symbol": "meta.get",
-          "line": 287
-        },
-        {
-          "symbol": "meta",
-          "line": 287
-        },
-        {
-          "symbol": "status",
-          "line": 288
-        },
-        {
-          "symbol": "body",
-          "line": 289
-        },
-        {
-          "symbol": "_STATUS_LINE.match",
-          "line": 290
-        },
-        {
-          "symbol": "_STATUS_LINE",
-          "line": 290
-        },
-        {
-          "symbol": "line.strip",
-          "line": 290
-        },
-        {
-          "symbol": "line",
-          "line": 290
-        },
-        {
-          "symbol": "m",
-          "line": 291
-        },
-        {
-          "symbol": "m.group(1).upper",
-          "line": 292
-        },
-        {
-          "symbol": "m.group",
-          "line": 292
-        },
-        {
-          "symbol": "m",
-          "line": 292
-        },
-        {
-          "symbol": "meta.get",
-          "line": 295
-        },
-        {
-          "symbol": "meta",
-          "line": 295
-        },
-        {
-          "symbol": "desc",
-          "line": 296
-        },
-        {
-          "symbol": "body",
-          "line": 297
-        },
-        {
-          "symbol": "line.strip",
-          "line": 298
-        },
-        {
-          "symbol": "line",
-          "line": 298
-        },
-        {
-          "symbol": "s",
-          "line": 299
-        },
-        {
-          "symbol": "s.startswith",
-          "line": 299
-        },
-        {
-          "symbol": "_META_LINE.match",
-          "line": 299
-        },
-        {
-          "symbol": "_META_LINE",
-          "line": 299
-        },
-        {
-          "symbol": "s.startswith",
-          "line": 301
-        },
-        {
-          "symbol": "s",
-          "line": 301
-        },
-        {
-          "symbol": "s.lstrip('>').strip",
-          "line": 302
-        },
-        {
-          "symbol": "s.lstrip",
-          "line": 302
-        },
-        {
-          "symbol": "s",
-          "line": 302
-        },
-        {
-          "symbol": "_STATUS_LINE.match",
-          "line": 303
-        },
-        {
-          "symbol": "_STATUS_LINE",
-          "line": 303
-        },
-        {
-          "symbol": "s",
-          "line": 303
-        },
-        {
-          "symbol": "m",
-          "line": 304
-        },
-        {
-          "symbol": "s[m.end():].strip",
-          "line": 306
-        },
-        {
-          "symbol": "s",
-          "line": 306
-        },
-        {
-          "symbol": "m.end",
-          "line": 306
-        },
-        {
-          "symbol": "m",
-          "line": 306
-        },
-        {
-          "symbol": "rest",
-          "line": 307
-        },
-        {
-          "symbol": "rest",
-          "line": 309
-        },
-        {
-          "symbol": "s",
-          "line": 310
-        },
-        {
-          "symbol": "s",
-          "line": 311
-        },
-        {
-          "symbol": "re.sub('\\\\s+', ' ', desc).strip",
-          "line": 313
-        },
-        {
-          "symbol": "re.sub",
-          "line": 313
-        },
-        {
-          "symbol": "re",
-          "line": 313
-        },
-        {
-          "symbol": "desc",
-          "line": 313
-        },
-        {
-          "symbol": "len",
-          "line": 314
-        },
-        {
-          "symbol": "desc",
-          "line": 314
-        },
-        {
-          "symbol": "desc[:157].rstrip",
-          "line": 315
-        },
-        {
-          "symbol": "desc",
-          "line": 315
-        },
-        {
-          "symbol": "title",
-          "line": 316
-        },
-        {
-          "symbol": "desc",
-          "line": 316
-        },
-        {
-          "symbol": "status",
-          "line": 316
-        },
-        {
-          "symbol": "meta.get('supersedes', '').strip",
-          "line": 316
-        },
-        {
-          "symbol": "meta.get",
-          "line": 316
-        },
-        {
-          "symbol": "meta",
-          "line": 316
+          "line": 181
         },
         {
           "symbol": "root",
-          "line": 321
+          "line": 185
         },
         {
-          "symbol": "MANIFEST_DIRS",
-          "line": 323
+          "symbol": "target.parent.mkdir",
+          "line": 186
         },
         {
-          "symbol": "ai",
-          "line": 324
+          "symbol": "target.parent",
+          "line": 186
         },
         {
-          "symbol": "d",
-          "line": 324
+          "symbol": "target",
+          "line": 186
         },
         {
-          "symbol": "base.is_dir",
-          "line": 325
+          "symbol": "target.write_text",
+          "line": 187
         },
         {
-          "symbol": "base",
-          "line": 325
-        },
-        {
-          "symbol": "sorted",
-          "line": 327
-        },
-        {
-          "symbol": "base.rglob",
-          "line": 327
-        },
-        {
-          "symbol": "base",
-          "line": 327
-        },
-        {
-          "symbol": "p.name",
-          "line": 328
-        },
-        {
-          "symbol": "p",
-          "line": 328
-        },
-        {
-          "symbol": "GENERATED_DOCS",
-          "line": 328
-        },
-        {
-          "symbol": "out.append",
-          "line": 330
-        },
-        {
-          "symbol": "out",
-          "line": 330
-        },
-        {
-          "symbol": "p.relative_to(ai).as_posix",
-          "line": 330
-        },
-        {
-          "symbol": "p.relative_to",
-          "line": 330
-        },
-        {
-          "symbol": "p",
-          "line": 330
-        },
-        {
-          "symbol": "ai",
-          "line": 330
-        },
-        {
-          "symbol": "extract_doc_meta",
-          "line": 330
-        },
-        {
-          "symbol": "out",
-          "line": 331
-        },
-        {
-          "symbol": "list_canonical_docs",
-          "line": 335
-        },
-        {
-          "symbol": "root",
-          "line": 335
-        },
-        {
-          "symbol": "MANIFEST_HEADER",
-          "line": 336
-        },
-        {
-          "symbol": "docs",
-          "line": 344
-        },
-        {
-          "symbol": "by_dir.setdefault(rel.split('/', 1)[0], []).append",
-          "line": 345
-        },
-        {
-          "symbol": "by_dir.setdefault",
-          "line": 345
-        },
-        {
-          "symbol": "by_dir",
-          "line": 345
-        },
-        {
-          "symbol": "rel.split",
-          "line": 345
-        },
-        {
-          "symbol": "rel",
-          "line": 345
-        },
-        {
-          "symbol": "meta",
-          "line": 345
-        },
-        {
-          "symbol": "MANIFEST_DIRS",
-          "line": 346
-        },
-        {
-          "symbol": "by_dir.get",
-          "line": 347
-        },
-        {
-          "symbol": "by_dir",
-          "line": 347
-        },
-        {
-          "symbol": "top",
-          "line": 347
-        },
-        {
-          "symbol": "rows",
-          "line": 348
-        },
-        {
-          "symbol": "top",
-          "line": 350
-        },
-        {
-          "symbol": "rows",
-          "line": 352
-        },
-        {
-          "symbol": "(desc or title).replace",
-          "line": 353
-        },
-        {
-          "symbol": "desc",
-          "line": 353
-        },
-        {
-          "symbol": "title",
-          "line": 353
-        },
-        {
-          "symbol": "lines.append",
-          "line": 354
-        },
-        {
-          "symbol": "lines",
-          "line": 354
-        },
-        {
-          "symbol": "rel",
-          "line": 354
-        },
-        {
-          "symbol": "status",
-          "line": 354
-        },
-        {
-          "symbol": "d",
-          "line": 354
-        },
-        {
-          "symbol": "'\\n'.join(lines).rstrip",
-          "line": 355
-        },
-        {
-          "symbol": "'\\n'.join",
-          "line": 355
-        },
-        {
-          "symbol": "lines",
-          "line": 355
-        },
-        {
-          "symbol": "require_ai_docs",
-          "line": 359
-        },
-        {
-          "symbol": "root",
-          "line": 359
-        },
-        {
-          "symbol": "root",
-          "line": 361
-        },
-        {
-          "symbol": "hist.parent.mkdir",
-          "line": 362
-        },
-        {
-          "symbol": "hist.parent",
-          "line": 362
-        },
-        {
-          "symbol": "hist",
-          "line": 362
-        },
-        {
-          "symbol": "hist.write_text",
-          "line": 363
-        },
-        {
-          "symbol": "hist",
-          "line": 363
+          "symbol": "target",
+          "line": 187
         },
         {
           "symbol": "build_index",
-          "line": 363
+          "line": 187
         },
         {
           "symbol": "root",
-          "line": 363
+          "line": 187
         },
         {
           "symbol": "print",
-          "line": 364
+          "line": 188
         },
         {
-          "symbol": "hist",
-          "line": 364
-        },
-        {
-          "symbol": "list_canonical_docs",
-          "line": 366
+          "symbol": "target",
+          "line": 188
         },
         {
           "symbol": "root",
-          "line": 366
-        },
-        {
-          "symbol": "root",
-          "line": 367
-        },
-        {
-          "symbol": "manifest.write_text",
-          "line": 368
-        },
-        {
-          "symbol": "manifest",
-          "line": 368
-        },
-        {
-          "symbol": "build_manifest",
-          "line": 368
-        },
-        {
-          "symbol": "root",
-          "line": 368
-        },
-        {
-          "symbol": "print",
-          "line": 369
-        },
-        {
-          "symbol": "manifest",
-          "line": 369
-        },
-        {
-          "symbol": "print",
-          "line": 371
-        },
-        {
-          "symbol": "any",
-          "line": 378
-        },
-        {
-          "symbol": "a",
-          "line": 378
-        },
-        {
-          "symbol": "text",
-          "line": 378
-        },
-        {
-          "symbol": "aliases",
-          "line": 378
-        },
-        {
-          "symbol": "root",
-          "line": 383
+          "line": 196
         },
         {
           "symbol": "ai.is_dir",
-          "line": 384
+          "line": 197
         },
         {
           "symbol": "ai",
-          "line": 384
-        },
-        {
-          "symbol": "strict",
-          "line": 385
+          "line": 197
         },
         {
           "symbol": "print",
-          "line": 386
+          "line": 198
         },
         {
           "symbol": "ai",
-          "line": 386
-        },
-        {
-          "symbol": "print",
-          "line": 389
-        },
-        {
-          "symbol": "ai",
-          "line": 389
+          "line": 198
         },
         {
           "symbol": "VISION_FILES",
-          "line": 393
+          "line": 202
         },
         {
           "symbol": "ai",
-          "line": 394
+          "line": 203
         },
         {
           "symbol": "name",
-          "line": 394
+          "line": 203
         },
         {
           "symbol": "f.is_file",
-          "line": 395
+          "line": 204
         },
         {
           "symbol": "f",
-          "line": 395
+          "line": 204
         },
         {
           "symbol": "warnings.append",
-          "line": 396
+          "line": 205
         },
         {
           "symbol": "warnings",
-          "line": 396
+          "line": 205
         },
         {
           "symbol": "name",
-          "line": 396
+          "line": 205
         },
         {
           "symbol": "'\\n'.join",
-          "line": 398
+          "line": 207
         },
         {
           "symbol": "read_text(f).splitlines",
-          "line": 398
+          "line": 207
         },
         {
           "symbol": "read_text",
-          "line": 398
+          "line": 207
         },
         {
           "symbol": "f",
-          "line": 398
+          "line": 207
         },
         {
           "symbol": "re.search",
-          "line": 399
+          "line": 208
         },
         {
           "symbol": "re",
-          "line": 399
+          "line": 208
         },
         {
           "symbol": "head",
-          "line": 399
+          "line": 208
         },
         {
           "symbol": "m",
-          "line": 400
+          "line": 209
         },
         {
           "symbol": "errors.append",
-          "line": 401
+          "line": 210
         },
         {
           "symbol": "errors",
-          "line": 401
+          "line": 210
         },
         {
           "symbol": "name",
-          "line": 401
+          "line": 210
         },
         {
           "symbol": "m.group",
-          "line": 402
+          "line": 211
         },
         {
           "symbol": "m",
-          "line": 402
+          "line": 211
         },
         {
           "symbol": "warnings.append",
-          "line": 403
+          "line": 212
         },
         {
           "symbol": "warnings",
-          "line": 403
+          "line": 212
         },
         {
           "symbol": "name",
-          "line": 403
+          "line": 212
         },
         {
           "symbol": "list_analyses",
-          "line": 407
+          "line": 216
         },
         {
           "symbol": "root",
-          "line": 407
+          "line": 216
         },
         {
           "symbol": "analyses",
-          "line": 408
+          "line": 217
         },
         {
           "symbol": "p.name",
-          "line": 409
+          "line": 218
         },
         {
           "symbol": "p",
-          "line": 409
+          "line": 218
         },
         {
           "symbol": "meta",
-          "line": 410
+          "line": 219
         },
         {
           "symbol": "errors.append",
-          "line": 411
+          "line": 220
         },
         {
           "symbol": "errors",
-          "line": 411
+          "line": 220
         },
         {
           "symbol": "rel",
-          "line": 411
+          "line": 220
         },
         {
           "symbol": "meta.get",
-          "line": 413
+          "line": 222
         },
         {
           "symbol": "meta",
-          "line": 413
+          "line": 222
         },
         {
           "symbol": "fid",
-          "line": 414
+          "line": 223
         },
         {
           "symbol": "errors.append",
-          "line": 415
+          "line": 224
         },
         {
           "symbol": "errors",
-          "line": 415
+          "line": 224
         },
         {
           "symbol": "rel",
-          "line": 415
+          "line": 224
         },
         {
           "symbol": "fid",
-          "line": 416
+          "line": 225
         },
         {
           "symbol": "seen_ids",
-          "line": 416
+          "line": 225
         },
         {
           "symbol": "errors.append",
-          "line": 417
+          "line": 226
         },
         {
           "symbol": "errors",
-          "line": 417
+          "line": 226
         },
         {
           "symbol": "rel",
-          "line": 417
+          "line": 226
         },
         {
           "symbol": "fid",
-          "line": 417
+          "line": 226
         },
         {
           "symbol": "seen_ids",
-          "line": 417
+          "line": 226
         },
         {
           "symbol": "seen_ids",
-          "line": 419
+          "line": 228
         },
         {
           "symbol": "fid",
-          "line": 419
+          "line": 228
         },
         {
           "symbol": "rel",
-          "line": 419
+          "line": 228
         },
         {
           "symbol": "meta.get",
-          "line": 420
+          "line": 229
         },
         {
           "symbol": "meta",
-          "line": 420
+          "line": 229
         },
         {
-          "symbol": "status",
-          "line": 421
+          "symbol": "stato",
+          "line": 230
         },
         {
           "symbol": "VALID_STATES",
-          "line": 421
+          "line": 230
         },
         {
           "symbol": "errors.append",
-          "line": 422
+          "line": 231
         },
         {
           "symbol": "errors",
-          "line": 422
+          "line": 231
         },
         {
           "symbol": "rel",
-          "line": 422
+          "line": 231
         },
         {
-          "symbol": "status",
-          "line": 422
+          "symbol": "stato",
+          "line": 231
         },
         {
           "symbol": "'/'.join",
-          "line": 422
+          "line": 231
         },
         {
           "symbol": "sorted",
-          "line": 422
+          "line": 231
         },
         {
           "symbol": "VALID_STATES",
-          "line": 422
+          "line": 231
         },
         {
           "symbol": "meta.get",
-          "line": 423
+          "line": 232
         },
         {
           "symbol": "meta",
-          "line": 423
+          "line": 232
         },
         {
           "symbol": "errors.append",
-          "line": 424
+          "line": 233
         },
         {
           "symbol": "errors",
-          "line": 424
+          "line": 233
         },
         {
           "symbol": "rel",
-          "line": 424
+          "line": 233
         },
         {
-          "symbol": "status",
-          "line": 425
+          "symbol": "stato",
+          "line": 234
         },
         {
           "symbol": "meta.get",
-          "line": 425
+          "line": 234
         },
         {
           "symbol": "meta",
-          "line": 425
+          "line": 234
         },
         {
           "symbol": "errors.append",
-          "line": 426
+          "line": 235
         },
         {
           "symbol": "errors",
-          "line": 426
+          "line": 235
         },
         {
           "symbol": "rel",
-          "line": 426
+          "line": 235
         },
         {
           "symbol": "meta.get",
-          "line": 427
+          "line": 236
         },
         {
           "symbol": "meta",
-          "line": 427
+          "line": 236
         },
         {
-          "symbol": "level",
-          "line": 428
+          "symbol": "livello",
+          "line": 237
         },
         {
-          "symbol": "level.upper",
-          "line": 428
+          "symbol": "livello.upper",
+          "line": 237
         },
         {
           "symbol": "VALID_LEVELS",
-          "line": 428
+          "line": 237
         },
         {
           "symbol": "warnings.append",
-          "line": 429
+          "line": 238
         },
         {
           "symbol": "warnings",
-          "line": 429
+          "line": 238
         },
         {
           "symbol": "rel",
-          "line": 429
+          "line": 238
         },
         {
-          "symbol": "level",
-          "line": 429
+          "symbol": "livello",
+          "line": 238
         },
         {
           "symbol": "'/'.join",
-          "line": 429
+          "line": 238
         },
         {
           "symbol": "sorted",
-          "line": 429
+          "line": 238
         },
         {
           "symbol": "VALID_LEVELS",
-          "line": 429
-        },
-        {
-          "symbol": "has_section",
-          "line": 430
+          "line": 238
         },
         {
           "symbol": "text",
-          "line": 430
-        },
-        {
-          "symbol": "SECURITY_SECTION",
-          "line": 430
+          "line": 239
         },
         {
           "symbol": "errors.append",
-          "line": 431
+          "line": 240
         },
         {
           "symbol": "errors",
-          "line": 431
+          "line": 240
         },
         {
           "symbol": "rel",
-          "line": 431
+          "line": 240
         },
         {
-          "symbol": "ANALYSIS_SECTIONS",
-          "line": 432
-        },
-        {
-          "symbol": "has_section",
-          "line": 433
+          "symbol": "sec",
+          "line": 242
         },
         {
           "symbol": "text",
-          "line": 433
-        },
-        {
-          "symbol": "en",
-          "line": 433
-        },
-        {
-          "symbol": "it",
-          "line": 433
+          "line": 242
         },
         {
           "symbol": "warnings.append",
-          "line": 434
+          "line": 243
         },
         {
           "symbol": "warnings",
-          "line": 434
+          "line": 243
         },
         {
           "symbol": "rel",
-          "line": 434
+          "line": 243
         },
         {
-          "symbol": "en",
-          "line": 434
+          "symbol": "sec",
+          "line": 243
         },
         {
           "symbol": "ai",
-          "line": 437
+          "line": 246
         },
         {
           "symbol": "analyses",
-          "line": 438
+          "line": 247
         },
         {
           "symbol": "hist.is_file",
-          "line": 439
+          "line": 248
         },
         {
           "symbol": "hist",
-          "line": 439
+          "line": 248
         },
         {
           "symbol": "errors.append",
-          "line": 440
+          "line": 249
         },
         {
           "symbol": "errors",
-          "line": 440
+          "line": 249
         },
         {
           "symbol": "norm_text",
-          "line": 441
+          "line": 250
         },
         {
           "symbol": "read_text",
-          "line": 441
+          "line": 250
         },
         {
           "symbol": "hist",
-          "line": 441
+          "line": 250
         },
         {
           "symbol": "build_index",
-          "line": 441
+          "line": 250
         },
         {
           "symbol": "root",
-          "line": 441
+          "line": 250
         },
         {
           "symbol": "errors.append",
-          "line": 442
+          "line": 251
         },
         {
           "symbol": "errors",
-          "line": 442
-        },
-        {
-          "symbol": "list_canonical_docs",
-          "line": 445
-        },
-        {
-          "symbol": "root",
-          "line": 445
+          "line": 251
         },
         {
           "symbol": "ai",
-          "line": 446
-        },
-        {
-          "symbol": "docs",
-          "line": 447
-        },
-        {
-          "symbol": "manifest.is_file",
-          "line": 448
-        },
-        {
-          "symbol": "manifest",
-          "line": 448
-        },
-        {
-          "symbol": "errors.append",
-          "line": 449
-        },
-        {
-          "symbol": "errors",
-          "line": 449
-        },
-        {
-          "symbol": "norm_text",
-          "line": 450
-        },
-        {
-          "symbol": "read_text",
-          "line": 450
-        },
-        {
-          "symbol": "manifest",
-          "line": 450
-        },
-        {
-          "symbol": "build_manifest",
-          "line": 450
-        },
-        {
-          "symbol": "root",
-          "line": 450
-        },
-        {
-          "symbol": "errors.append",
-          "line": 451
-        },
-        {
-          "symbol": "errors",
-          "line": 451
-        },
-        {
-          "symbol": "rel",
-          "line": 454
-        },
-        {
-          "symbol": "meta",
-          "line": 454
-        },
-        {
-          "symbol": "docs",
-          "line": 454
-        },
-        {
-          "symbol": "docs",
-          "line": 455
-        },
-        {
-          "symbol": "status",
-          "line": 456
-        },
-        {
-          "symbol": "warnings.append",
-          "line": 457
-        },
-        {
-          "symbol": "warnings",
-          "line": 457
-        },
-        {
-          "symbol": "rel",
-          "line": 457
-        },
-        {
-          "symbol": "status",
-          "line": 458
-        },
-        {
-          "symbol": "CANONICAL_STATES",
-          "line": 458
-        },
-        {
-          "symbol": "warnings.append",
-          "line": 459
-        },
-        {
-          "symbol": "warnings",
-          "line": 459
-        },
-        {
-          "symbol": "rel",
-          "line": 459
-        },
-        {
-          "symbol": "status",
-          "line": 459
-        },
-        {
-          "symbol": "'/'.join",
-          "line": 459
-        },
-        {
-          "symbol": "sorted",
-          "line": 459
-        },
-        {
-          "symbol": "CANONICAL_STATES",
-          "line": 459
-        },
-        {
-          "symbol": "supersedes",
-          "line": 460
-        },
-        {
-          "symbol": "os.path.basename",
-          "line": 461
-        },
-        {
-          "symbol": "os.path",
-          "line": 461
-        },
-        {
-          "symbol": "os",
-          "line": 461
-        },
-        {
-          "symbol": "supersedes",
-          "line": 461
-        },
-        {
-          "symbol": "canon_status.items",
-          "line": 462
-        },
-        {
-          "symbol": "canon_status",
-          "line": 462
-        },
-        {
-          "symbol": "other",
-          "line": 463
-        },
-        {
-          "symbol": "supersedes",
-          "line": 463
-        },
-        {
-          "symbol": "other.endswith",
-          "line": 463
-        },
-        {
-          "symbol": "os.path.basename",
-          "line": 464
-        },
-        {
-          "symbol": "os.path",
-          "line": 464
-        },
-        {
-          "symbol": "os",
-          "line": 464
-        },
-        {
-          "symbol": "other",
-          "line": 464
-        },
-        {
-          "symbol": "base",
-          "line": 464
-        },
-        {
-          "symbol": "ost",
-          "line": 464
-        },
-        {
-          "symbol": "warnings.append",
-          "line": 465
-        },
-        {
-          "symbol": "warnings",
-          "line": 465
-        },
-        {
-          "symbol": "other",
-          "line": 465
-        },
-        {
-          "symbol": "rel",
-          "line": 465
-        },
-        {
-          "symbol": "ai",
-          "line": 468
+          "line": 254
         },
         {
           "symbol": "hand.is_file",
-          "line": 469
+          "line": 255
         },
         {
           "symbol": "hand",
-          "line": 469
+          "line": 255
         },
         {
           "symbol": "re.search",
-          "line": 470
+          "line": 256
         },
         {
           "symbol": "re",
-          "line": 470
+          "line": 256
         },
         {
           "symbol": "read_text",
-          "line": 470
+          "line": 256
         },
         {
           "symbol": "hand",
-          "line": 470
+          "line": 256
         },
         {
           "symbol": "m",
-          "line": 471
+          "line": 257
         },
         {
           "symbol": "warnings.append",
-          "line": 472
+          "line": 258
         },
         {
           "symbol": "warnings",
-          "line": 472
+          "line": 258
         },
         {
           "symbol": "datetime.strptime(m.group(1), '%Y-%m-%d').replace",
-          "line": 475
+          "line": 261
         },
         {
           "symbol": "datetime.strptime",
-          "line": 475
+          "line": 261
         },
         {
           "symbol": "datetime",
-          "line": 475
+          "line": 261
         },
         {
           "symbol": "m.group",
-          "line": 475
+          "line": 261
         },
         {
           "symbol": "m",
-          "line": 475
+          "line": 261
         },
         {
           "symbol": "timezone.utc",
-          "line": 475
+          "line": 261
         },
         {
           "symbol": "timezone",
-          "line": 475
+          "line": 261
         },
         {
           "symbol": "(datetime.now(timezone.utc) - stamp).days",
-          "line": 476
+          "line": 262
         },
         {
           "symbol": "datetime.now",
-          "line": 476
+          "line": 262
         },
         {
           "symbol": "datetime",
-          "line": 476
+          "line": 262
         },
         {
           "symbol": "timezone.utc",
-          "line": 476
+          "line": 262
         },
         {
           "symbol": "timezone",
-          "line": 476
+          "line": 262
         },
         {
           "symbol": "stamp",
-          "line": 476
+          "line": 262
         },
         {
           "symbol": "age",
-          "line": 477
+          "line": 263
         },
         {
           "symbol": "warnings.append",
-          "line": 478
+          "line": 264
         },
         {
           "symbol": "warnings",
-          "line": 478
+          "line": 264
         },
         {
           "symbol": "age",
-          "line": 478
+          "line": 264
         },
         {
           "symbol": "ValueError",
-          "line": 479
+          "line": 265
         },
         {
           "symbol": "warnings.append",
-          "line": 480
+          "line": 266
         },
         {
           "symbol": "warnings",
-          "line": 480
+          "line": 266
         },
         {
           "symbol": "warnings",
-          "line": 482
+          "line": 268
         },
         {
           "symbol": "print",
-          "line": 483
+          "line": 269
         },
         {
           "symbol": "w",
-          "line": 483
+          "line": 269
         },
         {
           "symbol": "errors",
-          "line": 484
+          "line": 270
         },
         {
           "symbol": "print",
-          "line": 485
+          "line": 271
         },
         {
           "symbol": "e",
-          "line": 485
+          "line": 271
         },
         {
           "symbol": "print",
-          "line": 486
+          "line": 272
         },
         {
           "symbol": "len",
-          "line": 486
+          "line": 272
         },
         {
           "symbol": "errors",
-          "line": 486
+          "line": 272
         },
         {
           "symbol": "warnings",
-          "line": 486
-        },
-        {
-          "symbol": "strict",
-          "line": 487
-        },
-        {
-          "symbol": "warnings",
-          "line": 487
+          "line": 272
         },
         {
           "symbol": "errors",
-          "line": 487
-        },
-        {
-          "symbol": "print",
-          "line": 488
-        },
-        {
-          "symbol": "errors",
-          "line": 489
-        },
-        {
-          "symbol": "strict",
-          "line": 489
-        },
-        {
-          "symbol": "warnings",
-          "line": 489
+          "line": 273
         },
         {
           "symbol": "root",
-          "line": 495
+          "line": 279
         },
         {
           "symbol": "f.is_file",
-          "line": 497
+          "line": 281
         },
         {
           "symbol": "f",
-          "line": 497
+          "line": 281
         },
         {
           "symbol": "read_text(f).splitlines",
-          "line": 498
+          "line": 282
         },
         {
           "symbol": "read_text",
-          "line": 498
+          "line": 282
         },
         {
           "symbol": "f",
-          "line": 498
+          "line": 282
         },
         {
           "symbol": "enumerate",
-          "line": 499
+          "line": 283
         },
         {
           "symbol": "lines",
-          "line": 499
+          "line": 283
         },
         {
           "symbol": "line.strip().startswith",
-          "line": 500
+          "line": 284
         },
         {
           "symbol": "line.strip",
-          "line": 500
+          "line": 284
         },
         {
           "symbol": "line",
-          "line": 500
+          "line": 284
         },
         {
           "symbol": "c.strip",
-          "line": 502
+          "line": 286
         },
         {
           "symbol": "c",
-          "line": 502
+          "line": 286
         },
         {
           "symbol": "line.strip().strip('|').split",
-          "line": 502
+          "line": 286
         },
         {
           "symbol": "line.strip().strip",
-          "line": 502
+          "line": 286
         },
         {
           "symbol": "line.strip",
-          "line": 502
+          "line": 286
         },
         {
           "symbol": "line",
-          "line": 502
+          "line": 286
         },
         {
           "symbol": "len",
-          "line": 503
+          "line": 287
         },
         {
           "symbol": "cells",
-          "line": 503
+          "line": 287
         },
         {
           "symbol": "cells[0].lower",
-          "line": 505
+          "line": 289
         },
         {
           "symbol": "cells",
-          "line": 505
+          "line": 289
         },
         {
           "symbol": "set",
-          "line": 505
+          "line": 289
         },
         {
           "symbol": "rows.append",
-          "line": 507
+          "line": 291
         },
         {
           "symbol": "rows",
-          "line": 507
+          "line": 291
         },
         {
           "symbol": "i",
-          "line": 508
+          "line": 292
         },
         {
           "symbol": "cells",
-          "line": 509
+          "line": 293
         },
         {
           "symbol": "cells[1].upper",
-          "line": 510
+          "line": 294
         },
         {
           "symbol": "cells",
-          "line": 510
+          "line": 294
         },
         {
           "symbol": "len",
-          "line": 511
+          "line": 295
         },
         {
           "symbol": "cells",
-          "line": 511
+          "line": 295
         },
         {
           "symbol": "len",
-          "line": 512
+          "line": 296
         },
         {
           "symbol": "cells",
-          "line": 512
+          "line": 296
         },
         {
           "symbol": "f",
-          "line": 514
+          "line": 298
         },
         {
           "symbol": "lines",
-          "line": 514
+          "line": 298
         },
         {
           "symbol": "rows",
-          "line": 514
-        },
-        {
-          "symbol": "hybrid",
-          "line": 518
-        },
-        {
-          "symbol": "print",
-          "line": 519
+          "line": 298
         },
         {
           "symbol": "parse_audit_plan",
-          "line": 521
+          "line": 302
         },
         {
           "symbol": "root",
-          "line": 521
+          "line": 302
         },
         {
           "symbol": "rows",
-          "line": 522
+          "line": 303
         },
         {
           "symbol": "print",
-          "line": 523
+          "line": 304
         },
         {
           "symbol": "f",
-          "line": 523
+          "line": 304
         },
         {
           "symbol": "git_available",
-          "line": 526
+          "line": 307
         },
         {
           "symbol": "root",
-          "line": 526
+          "line": 307
         },
         {
           "symbol": "rows",
-          "line": 528
+          "line": 309
         },
         {
           "symbol": "row",
-          "line": 529
+          "line": 310
         },
         {
           "symbol": "row",
-          "line": 531
+          "line": 312
         },
         {
           "symbol": "root",
-          "line": 532
+          "line": 313
         },
         {
           "symbol": "rel",
-          "line": 532
+          "line": 313
         },
         {
           "symbol": "target.exists",
-          "line": 533
+          "line": 314
         },
         {
           "symbol": "target",
-          "line": 533
+          "line": 314
         },
         {
           "symbol": "print",
-          "line": 534
+          "line": 315
         },
         {
           "symbol": "rel",
-          "line": 534
+          "line": 315
         },
         {
           "symbol": "use_git",
-          "line": 537
+          "line": 318
         },
         {
           "symbol": "re.fullmatch",
-          "line": 537
+          "line": 318
         },
         {
           "symbol": "re",
-          "line": 537
+          "line": 318
         },
         {
           "symbol": "ref",
-          "line": 537
+          "line": 318
         },
         {
           "symbol": "git_changed_since",
-          "line": 538
+          "line": 319
         },
         {
           "symbol": "root",
-          "line": 538
+          "line": 319
         },
         {
           "symbol": "ref",
-          "line": 538
+          "line": 319
         },
         {
           "symbol": "rel.replace",
-          "line": 538
+          "line": 319
         },
         {
           "symbol": "rel",
-          "line": 538
+          "line": 319
         },
         {
           "symbol": "res",
-          "line": 539
+          "line": 320
         },
         {
           "symbol": "print",
-          "line": 540
+          "line": 321
         },
         {
           "symbol": "rel",
-          "line": 540
+          "line": 321
         },
         {
           "symbol": "ref",
-          "line": 540
+          "line": 321
         },
         {
           "symbol": "res",
-          "line": 542
+          "line": 323
         },
         {
           "symbol": "parse_iso",
-          "line": 544
+          "line": 325
         },
         {
           "symbol": "ref",
-          "line": 544
+          "line": 325
         },
         {
           "symbol": "ts",
-          "line": 545
+          "line": 326
         },
         {
           "symbol": "print",
-          "line": 546
+          "line": 327
         },
         {
           "symbol": "rel",
-          "line": 546
+          "line": 327
         },
         {
           "symbol": "ref",
-          "line": 546
+          "line": 327
         },
         {
           "symbol": "iter_files",
-          "line": 548
+          "line": 329
         },
         {
           "symbol": "target",
-          "line": 548
+          "line": 329
         },
         {
           "symbol": "datetime.fromtimestamp",
-          "line": 549
+          "line": 330
         },
         {
           "symbol": "datetime",
-          "line": 549
+          "line": 330
         },
         {
           "symbol": "fp.stat().st_mtime",
-          "line": 549
+          "line": 330
         },
         {
           "symbol": "fp.stat",
-          "line": 549
+          "line": 330
         },
         {
           "symbol": "fp",
-          "line": 549
+          "line": 330
         },
         {
           "symbol": "timezone.utc",
-          "line": 549
+          "line": 330
         },
         {
           "symbol": "timezone",
-          "line": 549
+          "line": 330
         },
         {
           "symbol": "mtime",
-          "line": 550
+          "line": 331
         },
         {
           "symbol": "ts",
-          "line": 550
+          "line": 331
         },
         {
           "symbol": "MTIME_GRACE",
-          "line": 550
+          "line": 331
         },
         {
           "symbol": "changed.append",
-          "line": 551
+          "line": 332
         },
         {
           "symbol": "changed",
-          "line": 551
+          "line": 332
         },
         {
           "symbol": "str(fp.relative_to(root)).replace",
-          "line": 551
+          "line": 332
         },
         {
           "symbol": "str",
-          "line": 551
+          "line": 332
         },
         {
           "symbol": "fp.relative_to",
-          "line": 551
+          "line": 332
         },
         {
           "symbol": "fp",
-          "line": 551
+          "line": 332
         },
         {
           "symbol": "root",
-          "line": 551
+          "line": 332
         },
         {
           "symbol": "changed",
-          "line": 552
+          "line": 333
         },
         {
           "symbol": "stale.append",
-          "line": 553
+          "line": 334
         },
         {
           "symbol": "stale",
-          "line": 553
+          "line": 334
         },
         {
           "symbol": "rel",
-          "line": 553
+          "line": 334
         },
         {
           "symbol": "changed",
-          "line": 553
+          "line": 334
         },
         {
           "symbol": "stale",
-          "line": 555
+          "line": 336
         },
         {
           "symbol": "print",
-          "line": 556
+          "line": 337
         },
         {
           "symbol": "print",
-          "line": 558
+          "line": 339
         },
         {
           "symbol": "stale",
-          "line": 559
+          "line": 340
         },
         {
           "symbol": "print",
-          "line": 560
+          "line": 341
         },
         {
           "symbol": "rel",
-          "line": 560
+          "line": 341
         },
         {
           "symbol": "len",
-          "line": 560
+          "line": 341
         },
         {
           "symbol": "changed",
-          "line": 560
+          "line": 341
         },
         {
           "symbol": "changed",
-          "line": 561
+          "line": 342
         },
         {
           "symbol": "print",
-          "line": 562
+          "line": 343
         },
         {
           "symbol": "c",
-          "line": 562
+          "line": 343
         },
         {
           "symbol": "len",
-          "line": 563
+          "line": 344
         },
         {
           "symbol": "changed",
-          "line": 563
+          "line": 344
         },
         {
           "symbol": "print",
-          "line": 564
+          "line": 345
         },
         {
           "symbol": "len",
-          "line": 564
+          "line": 345
         },
         {
           "symbol": "changed",
-          "line": 564
+          "line": 345
         },
         {
           "symbol": "print",
-          "line": 565
-        },
-        {
-          "symbol": "require_ai_docs",
-          "line": 570
-        },
-        {
-          "symbol": "root",
-          "line": 570
+          "line": 346
         },
         {
           "symbol": "parse_audit_plan",
-          "line": 572
+          "line": 351
         },
         {
           "symbol": "root",
-          "line": 572
+          "line": 351
         },
         {
           "symbol": "git_available",
-          "line": 573
+          "line": 352
         },
         {
           "symbol": "root",
-          "line": 573
+          "line": 352
         },
         {
           "symbol": "any",
-          "line": 573
+          "line": 352
         },
         {
           "symbol": "git_has_changes",
-          "line": 574
+          "line": 353
         },
         {
           "symbol": "root",
-          "line": 574
+          "line": 353
         },
         {
           "symbol": "raw.replace('\\\\', '/').rstrip",
-          "line": 574
+          "line": 353
         },
         {
           "symbol": "raw.replace",
-          "line": 574
+          "line": 353
         },
         {
           "symbol": "raw",
-          "line": 574
+          "line": 353
         },
         {
           "symbol": "paths",
-          "line": 574
+          "line": 353
         },
         {
           "symbol": "use_git_ref",
-          "line": 576
+          "line": 355
         },
         {
           "symbol": "git_head",
-          "line": 576
+          "line": 355
         },
         {
           "symbol": "root",
-          "line": 576
+          "line": 355
         },
         {
           "symbol": "utc_now_iso",
-          "line": 576
+          "line": 355
         },
         {
           "symbol": "r['path'].replace('\\\\', '/').rstrip",
-          "line": 577
+          "line": 356
         },
         {
           "symbol": "r['path'].replace",
-          "line": 577
+          "line": 356
         },
         {
           "symbol": "r",
-          "line": 577
+          "line": 356
         },
         {
           "symbol": "rows",
-          "line": 577
+          "line": 356
         },
         {
           "symbol": "lines",
-          "line": 579
+          "line": 358
         },
         {
           "symbol": "path",
-          "line": 586
+          "line": 365
         },
         {
           "symbol": "ref",
-          "line": 586
+          "line": 365
         },
         {
           "symbol": "note",
-          "line": 586
+          "line": 365
         },
         {
           "symbol": "paths",
-          "line": 589
+          "line": 368
         },
         {
           "symbol": "raw.replace('\\\\', '/').rstrip",
-          "line": 590
+          "line": 369
         },
         {
           "symbol": "raw.replace",
-          "line": 590
+          "line": 369
         },
         {
           "symbol": "raw",
-          "line": 590
+          "line": 369
         },
         {
           "symbol": "key",
-          "line": 591
+          "line": 370
         },
         {
           "symbol": "(root / key).is_dir",
-          "line": 591
+          "line": 370
         },
         {
           "symbol": "root",
-          "line": 591
+          "line": 370
         },
         {
           "symbol": "by_path.get",
-          "line": 592
+          "line": 371
         },
         {
           "symbol": "by_path",
-          "line": 592
+          "line": 371
         },
         {
           "symbol": "key",
-          "line": 592
+          "line": 371
         },
         {
           "symbol": "existing",
-          "line": 593
+          "line": 372
         },
         {
           "symbol": "lines",
-          "line": 594
+          "line": 373
         },
         {
           "symbol": "existing",
-          "line": 594
+          "line": 373
         },
         {
           "symbol": "row_text",
-          "line": 594
+          "line": 373
         },
         {
           "symbol": "print",
-          "line": 595
+          "line": 374
         },
         {
           "symbol": "existing",
-          "line": 595
+          "line": 374
         },
         {
           "symbol": "ref",
-          "line": 595
+          "line": 374
         },
         {
           "symbol": "appended.append",
-          "line": 597
+          "line": 376
         },
         {
           "symbol": "appended",
-          "line": 597
+          "line": 376
         },
         {
           "symbol": "row_text",
-          "line": 597
+          "line": 376
         },
         {
           "symbol": "display",
-          "line": 597
+          "line": 376
         },
         {
           "symbol": "print",
-          "line": 598
+          "line": 377
         },
         {
           "symbol": "display",
-          "line": 598
+          "line": 377
         },
         {
           "symbol": "ref",
-          "line": 598
+          "line": 377
         },
         {
           "symbol": "appended",
-          "line": 600
+          "line": 379
         },
         {
           "symbol": "rows",
-          "line": 601
+          "line": 380
         },
         {
           "symbol": "max",
-          "line": 601
+          "line": 380
         },
         {
           "symbol": "r",
-          "line": 601
+          "line": 380
         },
         {
           "symbol": "len",
-          "line": 601
+          "line": 380
         },
         {
           "symbol": "lines",
-          "line": 601
+          "line": 380
         },
         {
           "symbol": "lines",
-          "line": 602
+          "line": 381
         },
         {
           "symbol": "insert_at",
-          "line": 602
+          "line": 381
         },
         {
           "symbol": "appended",
-          "line": 602
+          "line": 381
         },
         {
           "symbol": "f.parent.mkdir",
-          "line": 604
+          "line": 383
         },
         {
           "symbol": "f.parent",
-          "line": 604
+          "line": 383
         },
         {
           "symbol": "f",
-          "line": 604
+          "line": 383
         },
         {
           "symbol": "f.write_text",
-          "line": 605
+          "line": 384
         },
         {
           "symbol": "f",
-          "line": 605
+          "line": 384
         },
         {
           "symbol": "'\\n'.join",
-          "line": 605
+          "line": 384
         },
         {
           "symbol": "lines",
-          "line": 605
+          "line": 384
         },
         {
           "symbol": "print",
-          "line": 610
+          "line": 389
         },
         {
           "symbol": "cmd_validate",
-          "line": 611
+          "line": 390
         },
         {
           "symbol": "root",
-          "line": 611
-        },
-        {
-          "symbol": "strict",
-          "line": 611
+          "line": 390
         },
         {
           "symbol": "print",
-          "line": 612
+          "line": 391
         },
         {
           "symbol": "cmd_stale",
-          "line": 613
+          "line": 392
         },
         {
           "symbol": "root",
-          "line": 613
-        },
-        {
-          "symbol": "hybrid",
-          "line": 613
+          "line": 392
         },
         {
           "symbol": "print",
-          "line": 614
+          "line": 393
         },
         {
           "symbol": "rc_v",
-          "line": 614
+          "line": 393
         },
         {
           "symbol": "rc_s",
-          "line": 614
+          "line": 393
         },
         {
           "symbol": "rc_v",
-          "line": 615
+          "line": 394
         },
         {
           "symbol": "rc_s",
-          "line": 615
+          "line": 394
         },
         {
           "symbol": "rc_v",
-          "line": 616
+          "line": 395
         },
         {
           "symbol": "rc_s",
-          "line": 616
+          "line": 395
         },
         {
           "symbol": "args.file",
-          "line": 622
+          "line": 401
         },
         {
           "symbol": "args",
-          "line": 622
+          "line": 401
         },
         {
           "symbol": "args.hook",
-          "line": 623
+          "line": 402
         },
         {
           "symbol": "args",
-          "line": 623
+          "line": 402
         },
         {
           "symbol": "sys.stdin.buffer.read().decode",
-          "line": 627
+          "line": 406
         },
         {
           "symbol": "sys.stdin.buffer.read",
-          "line": 627
+          "line": 406
         },
         {
           "symbol": "sys.stdin.buffer",
-          "line": 627
+          "line": 406
         },
         {
           "symbol": "sys.stdin",
-          "line": 627
+          "line": 406
         },
         {
           "symbol": "sys",
-          "line": 627
+          "line": 406
         },
         {
           "symbol": "json.loads",
-          "line": 628
+          "line": 407
         },
         {
           "symbol": "json",
-          "line": 628
+          "line": 407
         },
         {
           "symbol": "raw",
-          "line": 628
+          "line": 407
         },
         {
           "symbol": "(payload.get('tool_input') or {}).get",
-          "line": 629
+          "line": 408
         },
         {
           "symbol": "payload.get",
-          "line": 629
+          "line": 408
         },
         {
           "symbol": "payload",
-          "line": 629
+          "line": 408
         },
         {
           "symbol": "Exception",
-          "line": 630
+          "line": 409
         },
         {
           "symbol": "file_path",
-          "line": 632
+          "line": 411
         },
         {
           "symbol": "args.root",
-          "line": 634
+          "line": 413
         },
         {
           "symbol": "args",
-          "line": 634
+          "line": 413
         },
         {
           "symbol": "Path(args.root).resolve",
-          "line": 634
+          "line": 413
         },
         {
           "symbol": "Path",
-          "line": 634
+          "line": 413
         },
         {
           "symbol": "find_project_root",
-          "line": 634
+          "line": 413
         },
         {
           "symbol": "str(Path(file_path).resolve().relative_to(root)).replace",
-          "line": 636
+          "line": 415
         },
         {
           "symbol": "str",
-          "line": 636
+          "line": 415
         },
         {
           "symbol": "Path(file_path).resolve().relative_to",
-          "line": 636
+          "line": 415
         },
         {
           "symbol": "Path(file_path).resolve",
-          "line": 636
+          "line": 415
         },
         {
           "symbol": "Path",
-          "line": 636
+          "line": 415
         },
         {
           "symbol": "file_path",
-          "line": 636
+          "line": 415
         },
         {
           "symbol": "root",
-          "line": 636
+          "line": 415
         },
         {
           "symbol": "ValueError",
-          "line": 637
+          "line": 416
         },
         {
           "symbol": "rel.startswith",
-          "line": 639
+          "line": 418
         },
         {
           "symbol": "rel",
-          "line": 639
+          "line": 418
         },
         {
           "symbol": "p.strip().replace('\\\\', '/').rstrip",
-          "line": 641
+          "line": 420
         },
         {
           "symbol": "p.strip().replace",
-          "line": 641
+          "line": 420
         },
         {
           "symbol": "p.strip",
-          "line": 641
+          "line": 420
         },
         {
           "symbol": "p",
-          "line": 641
+          "line": 420
         },
         {
           "symbol": "(args.protected or '').split",
-          "line": 642
+          "line": 421
         },
         {
           "symbol": "args.protected",
-          "line": 642
+          "line": 421
         },
         {
           "symbol": "args",
-          "line": 642
+          "line": 421
         },
         {
           "symbol": "p.strip",
-          "line": 642
+          "line": 421
         },
         {
           "symbol": "p",
-          "line": 642
+          "line": 421
         },
         {
           "symbol": "protected",
-          "line": 643
+          "line": 422
         },
         {
           "symbol": "any",
-          "line": 645
+          "line": 424
         },
         {
           "symbol": "rel",
-          "line": 645
+          "line": 424
         },
         {
           "symbol": "p",
-          "line": 645
+          "line": 424
         },
         {
           "symbol": "rel.startswith",
-          "line": 645
+          "line": 424
         },
         {
           "symbol": "protected",
-          "line": 645
+          "line": 424
         },
         {
           "symbol": "list_analyses",
-          "line": 647
+          "line": 426
         },
         {
           "symbol": "root",
-          "line": 647
+          "line": 426
         },
         {
           "symbol": "meta.get",
-          "line": 648
+          "line": 427
         },
         {
           "symbol": "meta",
-          "line": 648
-        },
-        {
-          "symbol": "args.hybrid",
-          "line": 650
-        },
-        {
-          "symbol": "args",
-          "line": 650
-        },
-        {
-          "symbol": "has_etdd_shadow",
-          "line": 650
-        },
-        {
-          "symbol": "root",
-          "line": 650
-        },
-        {
-          "symbol": "args.hybrid",
-          "line": 652
-        },
-        {
-          "symbol": "args",
-          "line": 652
+          "line": 427
         },
         {
           "symbol": "sys.stderr.write",
-          "line": 653
+          "line": 429
         },
         {
           "symbol": "sys.stderr",
-          "line": 653
+          "line": 429
         },
         {
           "symbol": "sys",
-          "line": 653
+          "line": 429
         },
         {
           "symbol": "rel",
-          "line": 654
-        },
-        {
-          "symbol": "sys.stderr.write",
-          "line": 658
-        },
-        {
-          "symbol": "sys.stderr",
-          "line": 658
-        },
-        {
-          "symbol": "sys",
-          "line": 658
-        },
-        {
-          "symbol": "rel",
-          "line": 659
+          "line": 430
         },
         {
           "symbol": "argparse.ArgumentParser",
-          "line": 667
+          "line": 438
         },
         {
           "symbol": "argparse",
-          "line": 667
+          "line": 438
         },
         {
           "symbol": "common.add_argument",
-          "line": 668
+          "line": 439
         },
         {
           "symbol": "common",
-          "line": 668
+          "line": 439
         },
         {
           "symbol": "argparse.ArgumentParser",
-          "line": 670
+          "line": 441
         },
         {
           "symbol": "argparse",
-          "line": 670
-        },
-        {
-          "symbol": "strict_opt.add_argument",
-          "line": 671
-        },
-        {
-          "symbol": "strict_opt",
-          "line": 671
-        },
-        {
-          "symbol": "argparse.ArgumentParser",
-          "line": 674
-        },
-        {
-          "symbol": "argparse",
-          "line": 674
-        },
-        {
-          "symbol": "hybrid_opt.add_argument",
-          "line": 675
-        },
-        {
-          "symbol": "hybrid_opt",
-          "line": 675
-        },
-        {
-          "symbol": "argparse.ArgumentParser",
-          "line": 679
-        },
-        {
-          "symbol": "argparse",
-          "line": 679
+          "line": 441
         },
         {
           "symbol": "ap.add_subparsers",
-          "line": 681
+          "line": 443
         },
         {
           "symbol": "ap",
-          "line": 681
+          "line": 443
         },
         {
           "symbol": "sub.add_parser",
-          "line": 682
+          "line": 444
         },
         {
           "symbol": "sub",
-          "line": 682
+          "line": 444
         },
         {
           "symbol": "common",
-          "line": 682
-        },
-        {
-          "symbol": "strict_opt",
-          "line": 682
-        },
-        {
-          "symbol": "hybrid_opt",
-          "line": 682
+          "line": 444
         },
         {
           "symbol": "sub.add_parser",
-          "line": 684
+          "line": 445
         },
         {
           "symbol": "sub",
-          "line": 684
+          "line": 445
         },
         {
           "symbol": "common",
-          "line": 684
-        },
-        {
-          "symbol": "strict_opt",
-          "line": 684
+          "line": 445
         },
         {
           "symbol": "sub.add_parser",
-          "line": 685
+          "line": 446
         },
         {
           "symbol": "sub",
-          "line": 685
+          "line": 446
         },
         {
           "symbol": "common",
-          "line": 685
+          "line": 446
         },
         {
           "symbol": "sub.add_parser",
-          "line": 686
+          "line": 447
         },
         {
           "symbol": "sub",
-          "line": 686
+          "line": 447
         },
         {
           "symbol": "common",
-          "line": 686
-        },
-        {
-          "symbol": "hybrid_opt",
-          "line": 686
+          "line": 447
         },
         {
           "symbol": "sub.add_parser",
-          "line": 687
+          "line": 448
         },
         {
           "symbol": "sub",
-          "line": 687
+          "line": 448
         },
         {
           "symbol": "common",
-          "line": 687
+          "line": 448
         },
         {
           "symbol": "mp.add_argument",
-          "line": 688
+          "line": 449
         },
         {
           "symbol": "mp",
-          "line": 688
+          "line": 449
         },
         {
           "symbol": "sub.add_parser",
-          "line": 689
+          "line": 450
         },
         {
           "symbol": "sub",
-          "line": 689
+          "line": 450
         },
         {
           "symbol": "common",
-          "line": 689
-        },
-        {
-          "symbol": "hybrid_opt",
-          "line": 689
+          "line": 450
         },
         {
           "symbol": "gp.add_argument",
-          "line": 690
+          "line": 451
         },
         {
           "symbol": "gp",
-          "line": 690
+          "line": 451
         },
         {
           "symbol": "gp.add_argument",
-          "line": 691
+          "line": 452
         },
         {
           "symbol": "gp",
-          "line": 691
+          "line": 452
         },
         {
           "symbol": "gp.add_argument",
-          "line": 692
+          "line": 453
         },
         {
           "symbol": "gp",
-          "line": 692
+          "line": 453
         },
         {
           "symbol": "ap.parse_args",
-          "line": 694
+          "line": 455
         },
         {
           "symbol": "ap",
-          "line": 694
+          "line": 455
         },
         {
           "symbol": "argv",
-          "line": 694
+          "line": 455
         },
         {
           "symbol": "args.cmd",
-          "line": 695
+          "line": 456
         },
         {
           "symbol": "args",
-          "line": 695
+          "line": 456
         },
         {
           "symbol": "cmd_gate",
-          "line": 696
+          "line": 457
         },
         {
           "symbol": "args",
-          "line": 696
+          "line": 457
         },
         {
           "symbol": "args.root",
-          "line": 698
+          "line": 459
         },
         {
           "symbol": "args",
-          "line": 698
+          "line": 459
         },
         {
           "symbol": "Path(args.root).resolve",
-          "line": 698
+          "line": 459
         },
         {
           "symbol": "Path",
-          "line": 698
+          "line": 459
         },
         {
           "symbol": "find_project_root",
-          "line": 698
+          "line": 459
         },
         {
           "symbol": "args.cmd",
-          "line": 699
+          "line": 460
         },
         {
           "symbol": "args",
-          "line": 699
+          "line": 460
         },
         {
           "symbol": "cmd_check",
-          "line": 700
+          "line": 461
         },
         {
           "symbol": "root",
-          "line": 700
-        },
-        {
-          "symbol": "args.strict",
-          "line": 700
-        },
-        {
-          "symbol": "args",
-          "line": 700
-        },
-        {
-          "symbol": "args.hybrid",
-          "line": 700
+          "line": 461
         },
         {
           "symbol": "args.cmd",
-          "line": 701
+          "line": 462
         },
         {
           "symbol": "args",
-          "line": 701
+          "line": 462
         },
         {
           "symbol": "cmd_validate",
-          "line": 702
+          "line": 463
         },
         {
           "symbol": "root",
-          "line": 702
-        },
-        {
-          "symbol": "args.strict",
-          "line": 702
-        },
-        {
-          "symbol": "args",
-          "line": 702
+          "line": 463
         },
         {
           "symbol": "args.cmd",
-          "line": 703
+          "line": 464
         },
         {
           "symbol": "args",
-          "line": 703
+          "line": 464
         },
         {
           "symbol": "cmd_index",
-          "line": 704
+          "line": 465
         },
         {
           "symbol": "root",
-          "line": 704
+          "line": 465
         },
         {
           "symbol": "args.cmd",
-          "line": 705
+          "line": 466
         },
         {
           "symbol": "args",
-          "line": 705
+          "line": 466
         },
         {
           "symbol": "cmd_stale",
-          "line": 706
+          "line": 467
         },
         {
           "symbol": "root",
-          "line": 706
-        },
-        {
-          "symbol": "args.hybrid",
-          "line": 706
-        },
-        {
-          "symbol": "args",
-          "line": 706
+          "line": 467
         },
         {
           "symbol": "args.cmd",
-          "line": 707
+          "line": 468
         },
         {
           "symbol": "args",
-          "line": 707
+          "line": 468
         },
         {
           "symbol": "cmd_mark",
-          "line": 708
+          "line": 469
         },
         {
           "symbol": "root",
-          "line": 708
+          "line": 469
         },
         {
           "symbol": "args.paths",
-          "line": 708
+          "line": 469
         },
         {
           "symbol": "args",
-          "line": 708
+          "line": 469
         },
         {
           "symbol": "__name__",
-          "line": 712
+          "line": 473
         },
         {
           "symbol": "sys.exit",
-          "line": 713
+          "line": 474
         },
         {
           "symbol": "sys",
-          "line": 713
+          "line": 474
         },
         {
           "symbol": "main",
-          "line": 713
+          "line": 474
         }
       ]
     }
