@@ -28,5 +28,9 @@ Unit 2 E-ISP (agent-global KB).
   in validate; T6 confinement reuse in cmd_stale. See REVIEW_LOG notes.
 - Ops: devPNT server locks .devpnt dbs — branch switches/merges need the server
   closed or a separate git worktree (documented in GUIDE_release "watch out").
-- KL still NOT INITIALIZED; project summary STALE — both relevant before unit 2
-  deep design work.
+- KL INITIALIZED (2026-07-02): manifest v1.1, 4 docs (architecture, vision,
+  principles, adr_digest) — injected at every bootstrap. Unblocking required
+  deleting a stale empty analysis-scope doc (pre-M38 .py-only scan cached
+  forever); the code-level self-heal fix for devPNT is tracked as a pending
+  task chip (kl_init_scope: rescan on empty cached scope).
+- Project summary CURRENT (regenerated 2026-07-02 17:23).
