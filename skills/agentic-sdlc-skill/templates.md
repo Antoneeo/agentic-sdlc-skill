@@ -40,6 +40,7 @@ source: Human-readable name of what the user provided.
 source_version: v1.2          # optional — only when the origin is versioned
 distilled_from: ai_docs/reference/.sources/topic-a1b2c3d4.md
 source_hash: <sha256 of the snapshot file>
+overrides: GUIDE_topic.md   # optional — only for a project guide overriding an agent-KB guide
 ---
 # Guide: [Topic]
 

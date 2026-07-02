@@ -9,6 +9,7 @@ Tutte le modifiche significative a questa skill saranno documentate in questo fi
 - `elicitation.md`: spec elicitation round (goal/benefit, scope boundaries, non-goals, constraints, acceptance signals) run before drafting the analysis in phase 3.
 - `review.md`: single definition of requesting, receiving, and performing code review, reused by the Hybrid review gates.
 - `SKILL.md` wiring: pointers to the four new files added at phase 3 (elicitation), phase 4 (TDD, debugging, circuit breaker), and phase 5 (review).
+- Agent-global KB (fixed root, project-wins precedence, `overrides:` with fail-closed confinement, collision warnings).
 
 ## [1.8.1] - 2026-07-02
 ### Fixed
