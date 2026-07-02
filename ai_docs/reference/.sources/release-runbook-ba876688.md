@@ -2,7 +2,8 @@
 
 Approved by Antonio Pinto, 2026-07-02. Distilled from the v1.8.0 release session
 (first documented release run); amended same day by Antonio's indication to use
-`git_push_tag.bat` for the commit+tag+push step. This is the verbatim source
+`git_push_tag.bat` for the commit+tag+push step, and again same day with the
+script's re-run behavior observed in the field. This is the verbatim source
 ("book") for `GUIDE_release.md`; detail lives here, the guide is the synthesis.
 
 ## Preconditions
@@ -102,6 +103,12 @@ Verified in the field, 2026-07-02:
 - **`git_push_tag.bat` failure mode**: the script does not stop on a failed
   commit — the tag then lands on the previous HEAD. Always run the step-3
   verification from the Git sequence above.
+- **`git_push_tag.bat` re-run with an existing tag**: `git tag` fails
+  (`fatal: tag 'vX.Y.Z' already exists`) but the script continues and pushes
+  anyway; the existing tag is NOT moved. Benign when the tag already points at
+  the intended release commit (observed in the v1.8.0 run); otherwise delete
+  and re-tag (`git tag -d vX.Y.Z`, and `git push origin :refs/tags/vX.Y.Z` if
+  it was pushed).
 - **npm 2FA**: `npm publish` stops with `EOTP` (one-time password via browser).
   The agent cannot complete it — the USER runs the final `npm publish`.
 - **PowerShell 5.1**: no `&&` chaining; `npm pack --dry-run` prints its file
