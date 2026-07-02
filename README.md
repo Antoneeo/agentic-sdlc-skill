@@ -8,7 +8,7 @@
 - **Vision-guided governance**: Standalone projects use `ai_docs/vision/`; Hybrid projects use devPNT `M-VISION` as the milestone north star.
 - **Standalone complete**: works fully with local `ai_docs/` without requiring devPNT.
 - **devPNT symbiosis**: when devPNT is available, Master Plan, Action Plan, M-VISION, and governed artifacts become the authoritative planning layer.
-- **Installed support files**: Claude, Codex, and Gemini receive the full skill folder, including `templates.md`, `guides.md`, `ENFORCEMENT.md`, and `scripts/sdlc_check.py`.
+- **Installed support files**: Claude, Codex, and Gemini receive the full skill folder, including `templates.md`, `guides.md`, `tdd.md`, `debugging.md`, `elicitation.md`, `review.md`, `ENFORCEMENT.md`, and `scripts/sdlc_check.py`.
 - **Mechanical checks**: optional validator for document structure, generated feature history, stale audit areas, and protected-path gates.
 
 ## Installation
@@ -45,6 +45,10 @@ skills/agentic-sdlc-skill/
 ├── SKILL.md
 ├── templates.md
 ├── guides.md
+├── tdd.md
+├── debugging.md
+├── elicitation.md
+├── review.md
 ├── ENFORCEMENT.md
 └── scripts/
     └── sdlc_check.py
