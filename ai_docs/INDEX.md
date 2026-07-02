@@ -13,24 +13,31 @@ not manifested here.
 | `vision/features/VISION_agentic_sdlc_vnext.md` | CURRENT | Feature vision for the vNext evolution (triage, support files, mechanical validation, devPNT symbiosis) delivered in 1.5.0/1.6.0. |
 | `vision/features/VISION_vision_governance.md` | CURRENT | Feature vision for the Vision governance layer (ai_docs/vision/, Vision Gate) delivered in 1.4.0. |
 | `vision/principles.md` | DRAFT | - **Vision before solution**: clarify intended benefit and non-goals before choosing implementation details. |
-| `vision/project_vision.md` | DRAFT | - Agentic SDLC must help AI coding agents deliver software changes that remain aligned with the project's long-term intent, not only with the latest local re... |
+| `vision/project_vision.md` | APPROVED | (by Antonio Pinto, 2026-07-02) |
 | `vision/roadmap.md` | DRAFT | \| Milestone \| Expected Benefit \| Priority \| Success Signal \| Status \| |
 | `vision/roadmap_evoluzione_agenti.md` | DRAFT | Roadmap della milestone di evoluzione — subagent operativi, guide operative/KB agente, eliminazione conflitti di convivenza con devPNT e posizionamento open-... |
 | `vision/roadmap_evoluzione_agenti_v1.md` | SUPERSEDED | "Roadmap di evoluzione di agentic-sdlc: esecuzione a subagent operativi e strato di documentazione per la formazione degli agenti. Input per la prossima mile... |
+
+## reference/
+
+| Document | Status | Description |
+|---|---|---|
+| `reference/GUIDE_release.md` | CURRENT | How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish. |
 
 ## functional/
 
 | Document | Status | Description |
 |---|---|---|
-| `functional/architecture_overview.md` | CURRENT | devPNT-generated functional overview of the skill package architecture. Snapshot 2026-06-13; regenerate via devPNT after structural changes. |
-| `functional/data_entities.md` | DEPRECATED | devPNT-generated data-entity doc. Snapshot 2026-05-10, predates the 1.5/1.6 restructuring: regenerate before trusting. |
-| `functional/entry_points.md` | DEPRECATED | devPNT-generated entry-point doc. Snapshot 2026-05-10, predates the 1.5/1.6 restructuring: regenerate before trusting. |
-| `functional/external_interfaces.md` | CURRENT | devPNT-generated map of the package's external interfaces. Snapshot 2026-06-13; regenerate via devPNT after structural changes. |
-| `functional/feature_flows.md` | DEPRECATED | devPNT-generated feature-flow doc. Snapshot 2026-05-10, predates the 1.5/1.6 restructuring: regenerate before trusting. |
+| `functional/architecture_overview.md` | CURRENT | devPNT-generated functional overview of the skill package architecture. Snapshot 2026-07-02; regenerate via devPNT after structural changes. |
+| `functional/data_entities.md` | CURRENT | devPNT-generated data-entity doc. Snapshot 2026-07-02; regenerate via devPNT after structural changes. |
+| `functional/entry_points.md` | CURRENT | devPNT-generated entry-point doc. Snapshot 2026-07-02; regenerate via devPNT after structural changes. |
+| `functional/external_interfaces.md` | CURRENT | devPNT-generated map of the package's external interfaces. Snapshot 2026-07-02; regenerate via devPNT after structural changes. |
+| `functional/feature_flows.md` | CURRENT | devPNT-generated feature-flow doc. Snapshot 2026-07-02; regenerate via devPNT after structural changes. |
 
 ## strategic/
 
 | Document | Status | Description |
 |---|---|---|
 | `strategic/architecture.md` | CURRENT | Stack, package structure and architectural patterns of the skill repository. |
+| `strategic/capabilities_and_positioning.md` | CURRENT | Honest catalog of agentic-sdlc's current advantages (explained), parity points, and positioning vs superpowers (through v6.0.x). Feeds the four-layer product... |
 | `strategic/existing_features.md` | CURRENT | Concise catalog of the skill's existing features. |

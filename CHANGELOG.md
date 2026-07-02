@@ -2,6 +2,19 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.8.0] - 2026-07-02 (Feature B unit 1: operative guides, project scope)
+### Added
+- **Operative guides** (`ai_docs/reference/GUIDE_[topic].md`): a durable, source-faithful layer distilled from USER-PROVIDED indications — the capability neither agentic-sdlc nor superpowers had. New support file `guides.md` (pipeline: topic decomposition → user confirmation → verbatim snapshot in `reference/.sources/` with SHA-256 → source-anchored extraction → per-section fidelity markers `[source: …]` / `[not covered by source]`); guide template with provenance frontmatter (`source`, `source_version`, `distilled_from`, `source_hash`) in `templates.md`; short "Operative Guides" section in `SKILL.md`.
+- **Generated guide router** `ai_docs/reference/INDEX.md` (emitted by `sdlc_check.py index`, alignment-checked by `validate`): path, status, when-to-consult line and provenance summary per guide — the pointer target for the devPNT Hybrid bridge.
+- **Mechanical fidelity controls** in `sdlc_check.py`: provenance-key and per-section marker checks (warn; fails CI under `--strict`); `distilled_from` path confinement — absolute paths, `..` and symlink escapes rejected, fail-closed (ERROR); guide freshness in `stale` — recorded `source_hash` vs current snapshot, flagged in EVERY mode including `--hybrid` (guides are filesystem-first even in Hybrid).
+
+### Changed
+- `stale --hybrid` no longer returns unconditionally 0: it still skips audit-plan staleness (delegated to devPNT/KL) but now checks guide-source drift.
+- `list_canonical_docs` skips dot-subdirectories of canonical dirs (e.g. `reference/.sources/`): snapshot files are no longer swept into the manifest. Projects that kept `.md` files under dot-subdirs of canonical dirs will see them leave `INDEX.md` (more correct).
+
+### Process note
+- First live run of **model-per-dispatch**: implementation dispatched to an economy-tier subagent working from the accepted E-TDD shadow as a self-contained brief; independent deep code review passed first round with zero blocking findings. Governance: M-VISION → D-UC → P-TM → E-ISP → E-TDD, all through independent review gates (devPNT Hybrid).
+
 ## [1.7.0] - 2026-07-02 (Phases 0-1 of the evolution roadmap)
 ### Changed (breaking-soft)
 - **English is now the canonical language of the skill**: `SKILL.md`, `templates.md`, `ENFORCEMENT.md`, validator messages, generated indexes and the project protocol are in English. New ANALYSIS documents use English frontmatter keys (`status`, `level`, `start_date`, `end_date`) and English section headings. **Existing projects keep working**: the validator silently accepts the deprecated Italian keys (`stato`, `livello`, `data_inizio`, `data_fine`) and Italian headings.
