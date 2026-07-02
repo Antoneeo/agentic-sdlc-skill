@@ -22,6 +22,23 @@ guide with no `distilled_from` is not this pipeline's output.
 
 ## 2. Pipeline
 
+0. **Search before creating (DRY — one CURRENT guide per topic).** Before
+   proposing anything, read `ai_docs/reference/INDEX.md` and grep
+   `reference/GUIDE_*.md` for topic overlap with the new material. Never end
+   up with two CURRENT guides on the same topic. On overlap, pick by
+   provenance:
+   - **Same source, evolved** → UPDATE the existing guide in place: new
+     snapshot, new `source_hash`, same file (history lives in git).
+   - **Different source replacing the old one** → NEW guide + mark the old
+     one `status: SUPERSEDED` (its provenance chain must stay honest — do not
+     graft a new source onto a guide distilled from another).
+   - **Different source, partial overlap** → flag it to the user explicitly:
+     the current frontmatter binds ONE source per guide (`distilled_from`/
+     `source_hash` are singular), so a clean multi-source merge is not yet
+     supported — regenerate from the prevailing source and mark what the
+     merge drops, or keep the topics separate if they truly are.
+   Semantic overlap is NOT mechanically detectable: this step is agent
+   discipline plus the human reviewing the router — say what you found.
 1. **Decompose into PREPARATION units — and weigh the fragmentation risk.**
    A guide's goal is to PREPARE an agent for a situation: everything that
    situation needs must arrive in ONE guide. The risk is asymmetric — extra
