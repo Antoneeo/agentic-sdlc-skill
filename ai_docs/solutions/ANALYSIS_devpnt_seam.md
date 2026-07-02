@@ -67,3 +67,10 @@ regressions from the Phase 0 battery re-run.
   SHADOW_* naming, shadow-before-implementation, closure gate), §8 checklist items
   0/13/14. devPNT repo left UNCOMMITTED by design (dirty tree with user's own work).
   devPNT server-side features F1-F8 remain roadmap items, not part of this change.
+- 2026-07-02 (follow-up): review gates in the devPNT doctrine generalized for
+  client-agnosticism (Codex, Gemini/Antigravity): model names (Opus/Sonnet, which
+  predated this work) replaced by capability TIERS (deep/light); tier->model binding
+  moved to the client's reviewer definitions; invocation expressed as a realization
+  ladder (native subagent -> server-side review tool [roadmap F6] -> declared
+  self-pass). The Claude Code subagent files keep their model frontmatter - that is
+  the right place for the binding.
