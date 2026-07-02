@@ -5,13 +5,15 @@ Agent: Claude (Fable, orchestrator) + economy-tier implementer
 
 ## Active features
 - M1 Feature B (devPNT-governed, PROGRESS): unit 1 (project-scope guides) DONE —
-  implemented, 9/9 battery green, deep code review PASS, ADR accepted.
+  implemented, 9/9 battery green, deep code review PASS, ADR accepted,
+  **released as v1.8.0 (npm + tag, 2026-07-02)**. Release fixed a packaging gap:
+  guides.md was missing from package.json `files` (would not have shipped).
   Unit 2 (agent-global KB: --root, overrides:, precedence) NOT started.
 - devPNT docs: milestone_vision (v1.1), d_uc, p_tm, e_isp_u1, e_tdd_u1 (LATEST v1.2), adr accepted.
 - Local: SHADOW_e_tdd_operative_guides_u1_v1.2.md is the implementation spec mirror.
 
 ## Next step
-Unit 2 E-ISP (agent KB) — or release 1.8.0 of unit 1 first.
+Unit 2 E-ISP (agent KB).
 
 ## Session notes
 - project_vision.md APPROVED (Antonio, 2026-07-02); roadmap/principles still DRAFT.

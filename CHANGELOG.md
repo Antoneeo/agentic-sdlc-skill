@@ -2,7 +2,7 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
-## [Unreleased - 1.8.0] (Feature B unit 1: operative guides, project scope)
+## [1.8.0] - 2026-07-02 (Feature B unit 1: operative guides, project scope)
 ### Added
 - **Operative guides** (`ai_docs/reference/GUIDE_[topic].md`): a durable, source-faithful layer distilled from USER-PROVIDED indications — the capability neither agentic-sdlc nor superpowers had. New support file `guides.md` (pipeline: topic decomposition → user confirmation → verbatim snapshot in `reference/.sources/` with SHA-256 → source-anchored extraction → per-section fidelity markers `[source: …]` / `[not covered by source]`); guide template with provenance frontmatter (`source`, `source_version`, `distilled_from`, `source_hash`) in `templates.md`; short "Operative Guides" section in `SKILL.md`.
 - **Generated guide router** `ai_docs/reference/INDEX.md` (emitted by `sdlc_check.py index`, alignment-checked by `validate`): path, status, when-to-consult line and provenance summary per guide — the pointer target for the devPNT Hybrid bridge.
