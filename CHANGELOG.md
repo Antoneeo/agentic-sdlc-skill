@@ -2,6 +2,16 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.11.0] - 2026-07-03 (M4: Consolidation & Proactive Activation — self-activating, self-consulting, self-testing skill)
+### Added
+- **SessionStart orientation hook** (`sdlc_check.py orient`): emits a bounded, repo-sourced orientation (README + INDEX + guide router + handoff + Rule-Zero triage) at session start. Zero-execution, **fail-OPEN** (a missing/empty `ai_docs/` never blocks the session), size-capped. Manual per-client wiring in `ENFORCEMENT.md` §4; `--hybrid` points at the devPNT bootstrap instead of duplicating plan/KL. `test_session_start.py` (9 cases).
+- **Guide-layer consumption** (closes the write-only gap — Layer D "point to them"): a **consult trigger** (before operative L2/L3 work, targeted router match, L1 exempt, never blanket) and a **proactive-creation trigger** (propose a guide after user-indication-governed reusable work; never silent, never from model knowledge). Mechanics in `guides.md` §0/§1; hooked from `SKILL.md` Operative Guides + Phase 4/5; reconciled with subagent dispatch in `dispatch.md`.
+- **Worktree/branch hygiene** in the closure discipline (`SKILL.md` Phase 4 isolate-on-branch / Phase 5 merge-decision + cleanup).
+- **Skill eval harness** (dev-only, not shipped): `test_skill_invariants.py` is the deterministic static release gate (`python -m unittest discover -s scripts -p "test_*.py"` — asserts the skill's own doctrine invariants: triggers/hook/worktree present and wired, indexes idempotent, support pointers resolve; zero LLM/network/subprocess). Opt-in behavioral corpus `evals/scenarios/` + `run_behavioral.py` (non-CI, never gates). `ENFORCEMENT.md` §5.
+
+### Process note
+- Full governance per unit: M-VISION v2.1 (revised — added the guide-consumption unit) → D-UC + P-TM → per-unit E-ISP (deep review) + E-TDD (light review) → implement → §4.6 code review. The independent-review gate caught real defects at design time (incomplete eval invariant set, the M3↔M4 dispatch interaction, a REPO path off-by-one, a P-TM overclaim of unbuilt guards). Battery 51/51 green. ADR `adr_2026-07-03_skill_eval_harness`; KL architecture v1.4 + principles v1.2.
+
 ## [1.10.0] - 2026-07-03 (M3: Subagent Execution / Feature A — opt-in executable plan)
 ### Added
 - **`dispatch.md`**: subagent-execution doctrine (opt-in for L3). The dispatch loop — validate the plan → per-task brief → economy-tier implementer → one-shot review → ledger — with client-relative model tiers (no provider names), one-shot review slots (no iterative loops), degradation to same-session where subagents do not exist, and guides injected by pointer (never pasted).

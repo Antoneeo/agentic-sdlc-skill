@@ -17,6 +17,26 @@ when a task needs detail. Two levels, both produced by this pipeline:
 A guide that restates the source at length is as wrong as a fragmented one:
 completeness is guaranteed by the book level, economy by the synthesis level.
 
+## 0. Consuming a guide (consult before acting)
+
+Guides only pay off if they reach the work they govern. **Before operative work,
+proportional to triage** — L1 is exempt; engaged for L2/L3 — ask: *does a guide
+already cover how to do this well?*
+
+- **Scan the router, not the guides.** Read the when-to-consult descriptions in
+  the guide router `ai_docs/reference/INDEX.md` **and** the agent-KB router
+  `~/.agentic-sdlc/ai_docs/reference/INDEX.md` (if present). Match by topic.
+- **On a match, read that guide's synthesis whole** before acting (the snapshot
+  stays on demand via the section markers). No match → proceed normally.
+- **Targeted match, never blanket.** Open only the guide whose description fits
+  the task — never load every guide, which would reintroduce the exact token
+  cost the "point to them" model exists to avoid. The two-level model (compact
+  synthesis / verbatim snapshot) already bounds a single guide's cost.
+- **Under subagent dispatch** the consult happens at plan-authoring time (the
+  orchestrator populates each task's `guides` field); a context-free subagent
+  reads the pointers it was handed and does not run its own router lookup. See
+  `dispatch.md`.
+
 ## 1. When to trigger
 
 Trigger test is origin + purpose, not content taxonomy (no "is this technical
@@ -33,6 +53,20 @@ this is not a guide; answer normally, do not create a file.
 Never manufacture a guide from model knowledge. If the user asks for "a guide
 on X" without handing over source material, ask for the source first — a
 guide with no `distilled_from` is not this pipeline's output.
+
+### Proactive trigger (after reusable success)
+
+The trigger above is reactive (the user hands material over). It has a proactive
+twin: **after completing work that was governed by user-provided indications and
+is plausibly reusable** — it would prepare a future task — **PROPOSE** distilling
+a guide.
+
+- It is a **proposal to the user**, routed into this same pipeline (§2 onward):
+  the user confirms topic/scope before any file is written.
+- **Never a silent write, never from model knowledge.** If the work was not
+  governed by user-provided material there is nothing to distill — do not invent
+  a guide from general knowledge (the `distilled_from` fidelity constraint, §3,
+  is absolute). This adds a moment to PROPOSE, not a new writer.
 
 ## 2. Pipeline
 

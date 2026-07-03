@@ -33,6 +33,14 @@ without an E-ISP.
    - Write `{status, verify_result, timestamp}` back to the ledger. The
      validator never writes the ledger — single-writer, orchestrator-owned.
 
+**Guide consumption under dispatch.** Selecting each task's `guides` field IS the
+consult trigger (`guides.md` §0) applied at plan-authoring time: the orchestrator
+runs the router lookup (project router `ai_docs/reference/INDEX.md` + the agent-KB
+router) when populating `guides`. A dispatched context-free subagent does **NOT**
+run its own router consult — it reads the guide pointers handed to it in the
+brief. (Proactive guide-creation stays at closure — the same broad final pass
+below — so it needs no separate dispatch hook.)
+
 ## Model tiers (client-relative, no provider names)
 
 - Default dispatch: **economy** implementer tier.

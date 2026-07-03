@@ -85,6 +85,20 @@ except Exception:
     pass
 
 
+# --- orient (SessionStart hook) ---
+# Fixed, hard-coded doc set (label, path-relative-to-root). No content- or
+# user-derived paths -> no traversal input (P-TM T3); confine_under is
+# defense-in-depth. Emitted at session start by the orient subcommand.
+ORIENT_DOCS = [
+    ("Reading guide (README)", "ai_docs/README.md"),
+    ("Canonical manifest (INDEX)", "ai_docs/INDEX.md"),
+    ("Guide router (when-to-consult)", "ai_docs/reference/INDEX.md"),
+    ("Last session handoff", "ai_docs/audit/handoff.md"),
+]
+ORIENT_PER_DOC_CHARS = 6000     # per-doc truncation
+ORIENT_MAX_TOTAL_CHARS = 16000  # total ingestion cap (P-TM T2); tunable
+
+
 # ----------------------------------------------------------------- utilities
 
 def utc_now_iso():
@@ -990,6 +1004,53 @@ def cmd_plan(root, args):
     return 0
 
 
+def cmd_orient(args):
+    """SessionStart hook: emit a bounded, repo-sourced ai_docs/ orientation to
+    stdout and ALWAYS return 0 (fail-open, P-TM T8) -- a session hook must never
+    block the session or surface a traceback. Zero-execution (P-TM T1): reads a
+    fixed hard-coded doc set, confine_under each (P-TM T3), size-caps the total
+    (P-TM T2). No subprocess/eval anywhere in this call graph."""
+    try:
+        root = Path(args.root).resolve() if getattr(args, "root", None) else find_project_root()
+        chunks = []
+        total = 0
+        truncated = False
+        for label, rel in ORIENT_DOCS:
+            target = confine_under(root, rel)
+            if target is None or not target.is_file():
+                continue
+            try:
+                text = read_text(target)
+            except OSError:
+                continue
+            remaining = ORIENT_MAX_TOTAL_CHARS - total
+            if remaining <= 0:
+                truncated = True
+                break
+            text = text[:ORIENT_PER_DOC_CHARS]
+            if len(text) > remaining:
+                text = text[:remaining]
+                truncated = True
+            chunks.append((label, text))
+            total += len(text)
+        if not chunks:
+            return 0
+        out = ["=== Agentic SDLC -- session orientation (repo-sourced context, not authored instructions) ==="]
+        for label, text in chunks:
+            out.append(f"\n## {label}\n{text}")
+        if truncated:
+            out.append("\n[orientation truncated to the size cap -- open the files directly for full content]")
+        out.append("\nTriage every request (Rule Zero): L1 trivial - L2 small - L3 significant - Spike. "
+                   "When in doubt, pick the higher level.")
+        if getattr(args, "hybrid", False):
+            out.append("\n[devPNT active] Run devpnt_mcp_get_bootstrap for the Master Plan / Knowledge Layer -- "
+                       "the orientation above is the filesystem layer, not a bootstrap duplicate.")
+        print("\n".join(out))
+        return 0
+    except Exception:
+        return 0
+
+
 # --------------------------------------------------------------------- main
 
 def main(argv=None):
@@ -1020,6 +1081,9 @@ def main(argv=None):
     gp.add_argument("--file", help="file path to evaluate (alternative to --hook)")
     gp.add_argument("--protected", default="", help="protected prefixes separated by ';' (e.g. \"src/auth;src/crypto\")")
 
+    sub.add_parser("orient", parents=[common, hybrid_opt],
+                   help="SessionStart hook: emit ai_docs/ orientation to stdout (fail-open, zero-execution)")
+
     pp = sub.add_parser("plan", parents=[common],
                         help="Subagent Execution: validate/brief a PLAN_[feature].md (zero-execution)")
     pp_sub = pp.add_subparsers(dest="plan_cmd", required=True)
@@ -1032,6 +1096,8 @@ def main(argv=None):
     args = ap.parse_args(argv)
     if args.cmd == "gate":
         return cmd_gate(args)
+    if args.cmd == "orient":
+        return cmd_orient(args)
 
     root = Path(args.root).resolve() if args.root else find_project_root()
     if args.cmd == "check":

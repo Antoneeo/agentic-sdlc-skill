@@ -1,9 +1,9 @@
 <!-- devpnt:generated
-  date: 2026-07-03T04:08:05
+  date: 2026-07-03T13:45:18
   generator: functional_docs_generator v1.0
   sources: ai_docs, scripts
   model: GoogleGemini/gemini-flash-lite-latest
-  summary_hash: b761048527d0ff6a
+  summary_hash: 8a24a29e6215324c
 -->
 
 ## Model Context Protocol (MCP)
@@ -20,8 +20,8 @@
 - Message Format: WebSocket frames
 - Module: ai_docs/functional/external_interfaces.md
 
-## Standard I/O (stdio)
-- Name: Stdio Hook
+## Standard Input/Output (Stdio)
+- Name: Stdio Interface
 - Direction: bidirectional
 - Authentication: none
 - Message Format: stdio
