@@ -26,3 +26,4 @@ logs/
 .devpnt/patch_history.json
 .claude
 gunicorn.ctl
+docs/
