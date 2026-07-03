@@ -117,6 +117,7 @@ const protocolFiles = {
   claude: 'CLAUDE.md',
   gemini: 'GEMINI.md',
   codex: 'AGENTS.md',
+  antigravity: 'AGENTS.md', // Antigravity CLI reads AGENTS.md; single protocolContent reused.
 };
 
 for (const client of CLIENTS) {

@@ -2,6 +2,18 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.12.0] - 2026-07-03 (Client Roster: Google Antigravity 2.0 as a first-class client)
+### Added
+- **Google Antigravity 2.0 support** in the install engine. The runtime skill now lands where all three Antigravity products (desktop, the `agy` CLI, the agentic IDE) discover global agent skills: `~/.gemini/config/skills/agentic-sdlc/`. `agentic-sdlc-init` writes the Antigravity project pointer to `AGENTS.md` (the Antigravity CLI surface), reusing the single `protocolContent` — no per-client drift.
+- **Shared-home collision resolved** (`~/.gemini`). Antigravity's global skills root lives UNDER `~/.gemini`, the home the legacy `gemini` client claims. A new distinct `antigravity` CLIENTS entry de-collides via two backward-compatible registry generalizations: an optional `skillsSubdir` (`config/skills`) on `skillTarget`, and an optional `homeMarker` (`~/.gemini/config/skills`) on `clientDetected` so Antigravity is detected only by its own skills dir, the `agy` CLI, or `ANTIGRAVITY_HOME` — never on bare `~/.gemini`. The existing three clients omit both fields and are byte-identical (no regression). See ADR `adr_2026-07-03_antigravity_gemini_home_collision`.
+- **Node test battery** `scripts/test_clients.js` (dev-only, NOT shipped — excluded from the `package.json` `files` allowlist, which is now an explicit per-file list of the four lifecycle scripts). 8 cases covering the P-TM threats: T1 shared-home double-install (bare `~/.gemini` → gemini TRUE / antigravity FALSE), T2 distinct skill-target + install/uninstall round-trip, T3 detection matrix (marker OR env OR CLI), T7 the three existing clients unchanged.
+
+### Changed
+- `package.json` `files` allowlist: the wholesale `"scripts"` directory entry is replaced by the explicit four shipped lifecycle scripts (`lib.js`, `init.js`, `postinstall.js`, `preuninstall.js`), so the dev-only `test_clients.js` is never packaged (the same dev-only precedent as the Python `test_*.py` batteries).
+
+### Process note
+- Full Hybrid governance (devPNT): M-VISION → D-UC → P-TM → E-ISP → E-TDD → ADR, all governed. Implemented against the accepted **E-TDD** `e_tdd_antigravity_client` v1.0 (shadow exported to `ai_docs/solutions/` before coding). TDD: detection/target logic tests-first (RED→GREEN); prose/doc edits exempt (recorded). `postinstall.js`/`preuninstall.js` unchanged (pure registry consumers). Node battery 8/8 + skill eval battery 51/51 green; `check --hybrid` CLEAN. Owner inputs resolved in round 2: CLI binary `agy`, env override `ANTIGRAVITY_HOME`, Antigravity-specific reload string. The repo doc `ai_docs/solutions/antigravity_skills_guide.md` (plugin/mcp_config model) is superseded by the accepted skills-model decision (E-ISP/ADR).
+
 ## [1.11.0] - 2026-07-03 (M4: Consolidation & Proactive Activation — self-activating, self-consulting, self-testing skill)
 ### Added
 - **SessionStart orientation hook** (`sdlc_check.py orient`): emits a bounded, repo-sourced orientation (README + INDEX + guide router + handoff + Rule-Zero triage) at session start. Zero-execution, **fail-OPEN** (a missing/empty `ai_docs/` never blocks the session), size-capped. Manual per-client wiring in `ENFORCEMENT.md` §4; `--hybrid` points at the devPNT bootstrap instead of duplicating plan/KL. `test_session_start.py` (9 cases).

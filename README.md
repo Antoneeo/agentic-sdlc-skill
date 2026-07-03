@@ -1,6 +1,6 @@
-# Agentic SDLC Skill for Claude Code, Gemini CLI & Codex
+# Agentic SDLC Skill for Claude Code, Gemini CLI, Google Antigravity & Codex
 
-`agentic-sdlc` is a Documentation-First SDLC protocol for AI coding agents. It supports Claude Code, Codex, Gemini CLI, Cursor/Windsurf-style project instructions, and optional devPNT governance.
+`agentic-sdlc` is a Documentation-First SDLC protocol for AI coding agents. It supports Claude Code, Codex, Gemini CLI, Google Antigravity 2.0, Cursor/Windsurf-style project instructions, and optional devPNT governance.
 
 ## Key Features
 
@@ -8,7 +8,7 @@
 - **Vision-guided governance**: Standalone projects use `ai_docs/vision/`; Hybrid projects use devPNT `M-VISION` as the milestone north star.
 - **Standalone complete**: works fully with local `ai_docs/` without requiring devPNT.
 - **devPNT symbiosis**: when devPNT is available, Master Plan, Action Plan, M-VISION, and governed artifacts become the authoritative planning layer.
-- **Installed support files**: Claude, Codex, and Gemini receive the full skill folder, including `templates.md`, `guides.md`, `tdd.md`, `debugging.md`, `elicitation.md`, `review.md`, `dispatch.md`, `ENFORCEMENT.md`, and `scripts/sdlc_check.py`; an agent-global KB at `~/.agentic-sdlc` shares the same engine cross-project.
+- **Installed support files**: Claude, Codex, Gemini, and Google Antigravity receive the full skill folder, including `templates.md`, `guides.md`, `tdd.md`, `debugging.md`, `elicitation.md`, `review.md`, `dispatch.md`, `ENFORCEMENT.md`, and `scripts/sdlc_check.py`; an agent-global KB at `~/.agentic-sdlc` shares the same engine cross-project.
 - **Mechanical checks**: optional validator for document structure, generated feature history, stale audit areas, and protected-path gates.
 
 ## Installation
@@ -25,6 +25,7 @@ The installer copies `skills/agentic-sdlc-skill/` recursively into native skill 
 - Claude Code: `~/.claude/skills/agentic-sdlc/`
 - Codex: `~/.codex/skills/agentic-sdlc/`
 - Gemini CLI: `~/.gemini/skills/agentic-sdlc/`
+- Google Antigravity: `~/.gemini/config/skills/agentic-sdlc/` (detected distinctly from Gemini CLI; override the home with `ANTIGRAVITY_HOME`)
 
 Restart the relevant agent, or reload skills where the CLI supports it.
 
@@ -34,7 +35,7 @@ The global package also exposes:
 agentic-sdlc-init
 ```
 
-Run it inside a project to create `ai_docs/`, Vision documents, strategic docs, audit plan, and agent protocol files (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursorrules`).
+Run it inside a project to create `ai_docs/`, Vision documents, strategic docs, audit plan, and agent protocol files (`AGENTS.md` — also the Antigravity CLI surface, `CLAUDE.md`, `GEMINI.md`, `.cursorrules`).
 
 ## Runtime Shape
 

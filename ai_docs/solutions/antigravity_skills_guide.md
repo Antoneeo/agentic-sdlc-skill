@@ -1,3 +1,5 @@
+> **SUPERSEDED (2026-07-03).** This document asserts a *plugin / `mcp_config.json`* packaging model as "authoritative". For the npm skill's Antigravity 2.0 client support, that model is **superseded** by the accepted **skills model** decision: the runtime skill installs to the global skills scope `~/.gemini/config/skills/agentic-sdlc/` and the project pointer is `AGENTS.md`. The load-bearing decisions are the accepted **E-ISP** `e_isp_antigravity_client` (recommended solution D-A) and **ADR** `adr_2026-07-03_antigravity_gemini_home_collision` in devPNT. This file is retained for historical context only; do not treat its plugin/mcp_config guidance as current.
+
 # Guide: Creating Skills and MCP Integration in Antigravity 2.0
 
 This guide explains the authoritative architecture and conventions for creating **Agent Skills** and integrating **Model Context Protocol (MCP)** servers in the **Antigravity 2.0** environment.
