@@ -2,7 +2,7 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
-## [Unreleased - 1.9.0] (M2: execution disciplines Tier-1)
+## [1.9.0] - 2026-07-03 (M2 execution disciplines + Feature B unit 2 agent KB)
 ### Added
 - `tdd.md`: TDD discipline (RED/GREEN/REFACTOR, increment rule, AAA test shape, documented exemptions) — the L2/L3 default for implementation work.
 - `debugging.md`: systematic debugging method (reproduce, isolate, root cause, fix, regression test, collateral check) with circuit-breaker integration.
