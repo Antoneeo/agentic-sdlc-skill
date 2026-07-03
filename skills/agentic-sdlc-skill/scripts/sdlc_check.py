@@ -59,6 +59,9 @@ GUIDE_MARKER_RE = re.compile(r"\[(?:source:[^\]]+|not covered by source)\]")
 # AGENTIC_SDLC_KB_ROOT env var is a TEST/CI seam only (scenario battery must
 # not touch the real user KB); the documented product path is fixed.
 DEFAULT_KB_ROOT = Path(os.environ.get("AGENTIC_SDLC_KB_ROOT", "")) if os.environ.get("AGENTIC_SDLC_KB_ROOT") else Path.home() / ".agentic-sdlc"
+# Subagent Execution (Feature A): a PLAN_[feature].md task must carry these keys,
+# plus at least one of paths/produces (checked separately in cmd_plan).
+PLAN_TASK_REQUIRED = ("id", "title", "verify")
 
 # Deprecated Italian frontmatter keys, mapped to the canonical English ones.
 LEGACY_KEYS = {"stato": "status", "livello": "level",
@@ -104,6 +107,25 @@ def require_ai_docs(root, command):
               "Run agentic-sdlc-init first, or pass --root <project_root>.")
         return False
     return True
+
+
+def confine_under(base, rel):
+    """Fail-closed path confinement: resolve `rel` under `base` and require the
+    result to stay inside `base`. Returns None (reject) if `rel` is absolute,
+    contains a '..' part, or resolves outside `base` (including an OSError
+    during resolution, e.g. an unresolvable/reparse-point path on Windows).
+    Single source for path confinement (T2/T3): reused by check_kb_collisions'
+    `overrides:` check and cmd_validate's `distilled_from` check, and by the
+    new `plan` command's paths/consumes/produces/guides confinement."""
+    p = Path(rel)
+    if p.is_absolute() or ".." in p.parts:
+        return None
+    try:
+        t = (base / rel).resolve()
+        t.relative_to(base.resolve())
+        return t
+    except (ValueError, OSError):
+        return None
 
 
 def read_text(path):
@@ -407,15 +429,10 @@ def check_kb_collisions(root, project_guides, errors, warnings):
         ov = (meta.get("overrides") or "").strip()
         if ov:
             # T6: untrusted cross-root pointer — distilled_from parity, fail closed
-            ovp = Path(ov)
-            if ovp.is_absolute() or ".." in ovp.parts:
-                errors.append(f"{rel}: overrides '{ov}' is absolute or contains '..' — rejected (fail closed)")
-                continue
-            try:
-                target = (kb_ref / ov).resolve()
-                target.relative_to(kb_ref.resolve())
-            except (ValueError, OSError):
-                errors.append(f"{rel}: overrides '{ov}' escapes the KB reference dir — rejected (fail closed)")
+            target = confine_under(kb_ref, ov)
+            if target is None:
+                errors.append(f"{rel}: overrides '{ov}' is absolute, contains '..', or escapes the KB "
+                              "reference dir — rejected (fail closed)")
                 continue
             if not target.is_file():
                 warnings.append(f"{rel}: overrides target '{ov}' not found in KB ({kb_ref})")
@@ -572,15 +589,9 @@ def cmd_validate(root, strict=False):
                             + "; ".join(unmarked[:5]))
         # (c) distilled_from confinement — fail closed (P-TM T6, distilled_from vector)
         df = meta.get("distilled_from", "")
-        if df:
-            if Path(df).is_absolute() or ".." in Path(df).parts:
-                errors.append(f"{rel}: distilled_from '{df}' is absolute or escapes the project (..): rejected")
-            else:
-                target = (root / df).resolve()
-                try:
-                    target.relative_to(root.resolve())
-                except ValueError:
-                    errors.append(f"{rel}: distilled_from '{df}' resolves outside the project root: rejected")
+        if df and confine_under(root, df) is None:
+            errors.append(f"{rel}: distilled_from '{df}' is absolute, contains '..', or resolves "
+                          "outside the project root: rejected")
     check_kb_collisions(root, guides, errors, warnings)
     # guide-router alignment (mirror of the root-manifest check)
     gidx = root / "ai_docs" / "reference" / "INDEX.md"
@@ -806,6 +817,179 @@ def cmd_gate(args):
     return 2
 
 
+# --------------------------------------------------------------------- plan
+# Subagent Execution (Feature A). Zero-execution surface: this section and
+# everything it calls MUST NOT spawn a process (no subprocess/os.system/eval/
+# exec, no git_* helper). It validates a PLAN_[feature].md and prints a task
+# brief as text; the orchestrator (dispatch.md) is the sole executor.
+
+_PLAN_JSON_RE = re.compile(r"```json\s*\n(.*?)```", re.DOTALL)
+
+
+def extract_plan_json(text):
+    """Extract the first fenced ```json block from a PLAN_[feature].md body.
+    Returns (data, "") on success, or (None, reason) on any failure. Never
+    raises: a malformed or missing block is a validation failure, not a crash."""
+    m = _PLAN_JSON_RE.search(text or "")
+    if not m:
+        return None, "no fenced ```json block found in the plan file"
+    try:
+        data = json.loads(m.group(1))
+    except (ValueError, TypeError) as e:
+        return None, f"malformed JSON in the plan block: {e}"
+    if not isinstance(data, dict):
+        return None, "plan JSON block must be a JSON object"
+    return data, ""
+
+
+def load_ledger(path):
+    """Read the sidecar ledger {"<task_id>": {"status", "verify_result",
+    "timestamp"}}. Absent file -> ({}, ""). Malformed/unreadable -> ({}, reason).
+    Never raises, never hangs: the ledger is untrusted state read on every call."""
+    if not path.is_file():
+        return {}, ""
+    try:
+        raw = read_text(path)
+        data = json.loads(raw)
+    except (ValueError, TypeError, OSError) as e:
+        return {}, f"ledger '{path}' unreadable/malformed, treating as empty: {e}"
+    if not isinstance(data, dict):
+        return {}, f"ledger '{path}' is not a JSON object, treating as empty"
+    return data, ""
+
+
+def _confine_or_reject(base, rel, label, rel_label, errors):
+    t = confine_under(base, rel)
+    if t is None:
+        errors.append(f"{rel_label}: {label} '{rel}' is absolute, contains '..', or escapes "
+                      f"'{base}' — rejected (fail closed)")
+    return t
+
+
+def _validate_plan_tasks(root, data, rel_label, errors, warnings):
+    """Shared core of `plan validate`/`plan brief`: schema + confinement checks.
+    Returns the task list (possibly empty) on success; errors/warnings are
+    appended in place. Callers decide the exit code."""
+    tasks = data.get("tasks")
+    if not isinstance(tasks, list) or not tasks:
+        errors.append(f"{rel_label}: 'tasks' must be a non-empty JSON array")
+        return []
+    ref_dir = root / "ai_docs" / "reference"
+    kb_ref = DEFAULT_KB_ROOT / "ai_docs" / "reference"
+    seen_ids = set()
+    for i, task in enumerate(tasks):
+        loc = f"{rel_label}: task[{i}]"
+        if not isinstance(task, dict):
+            errors.append(f"{loc}: not a JSON object")
+            continue
+        missing = [k for k in PLAN_TASK_REQUIRED if not task.get(k)]
+        if missing:
+            errors.append(f"{loc}: missing required field(s): {', '.join(missing)}")
+        if not task.get("paths") and not task.get("produces"):
+            errors.append(f"{loc}: must declare at least one of 'paths'/'produces'")
+        tid = task.get("id")
+        if tid:
+            if tid in seen_ids:
+                errors.append(f"{loc}: duplicate task id '{tid}'")
+            seen_ids.add(tid)
+        for key in ("paths", "consumes", "produces"):
+            for p in (task.get(key) or []):
+                _confine_or_reject(root, p, key, loc, errors)
+        for g in (task.get("guides") or []):
+            in_project = confine_under(ref_dir, g)
+            in_kb = confine_under(kb_ref, g)
+            if in_project is None and in_kb is None:
+                errors.append(f"{loc}: guide '{g}' is not confined under the project reference "
+                              f"dir ({ref_dir}) or the agent KB reference dir ({kb_ref}) — rejected")
+    return tasks
+
+
+def cmd_plan(root, args):
+    """Zero-execution: validates/briefs a PLAN_[feature].md. Never spawns a
+    process, never calls a git_* helper, never runs the opaque `verify` text —
+    it is printed, not executed."""
+    plan_path = Path(args.file)
+    if not plan_path.is_absolute():
+        plan_path = root / plan_path
+    if not plan_path.is_file():
+        sys.stderr.write(f"[plan] plan file not found: {plan_path}\n")
+        return 2
+    rel_label = str(plan_path)
+    data, reason = extract_plan_json(read_text(plan_path))
+    if data is None:
+        sys.stderr.write(f"[plan] {rel_label}: {reason}\n")
+        return 2
+
+    errors, warnings = [], []
+    tasks = _validate_plan_tasks(root, data, rel_label, errors, warnings)
+
+    ledger_path = plan_path.with_name(plan_path.stem + ".ledger.json")
+    ledger, ledger_reason = load_ledger(ledger_path)
+    if ledger_reason:
+        warnings.append(ledger_reason)
+    if not errors:
+        task_ids = {t.get("id") for t in tasks if isinstance(t, dict)}
+        for lid in ledger:
+            if lid not in task_ids:
+                warnings.append(f"ledger id '{lid}' not found in {rel_label}: orphaned entry (not fatal)")
+
+    for w in warnings:
+        sys.stderr.write(f"[warn] {w}\n")
+    for e in errors:
+        sys.stderr.write(f"[ERROR] {e}\n")
+
+    if args.plan_cmd == "validate":
+        if errors:
+            sys.stderr.write(f"\n[plan] validate: {len(errors)} errors, {len(warnings)} warnings.\n")
+            return 2
+        print(f"[ok] {rel_label}: plan valid ({len(tasks)} task(s), {len(warnings)} warning(s)).")
+        return 0
+
+    # brief
+    if errors:
+        sys.stderr.write(f"\n[plan] brief: plan is invalid, refusing to brief ({len(errors)} errors).\n")
+        return 2
+    target = None
+    for t in tasks:
+        if isinstance(t, dict) and t.get("id") == args.task:
+            target = t
+            break
+    if target is None:
+        sys.stderr.write(f"[plan] brief: task id '{args.task}' not found in {rel_label}\n")
+        return 2
+
+    print(f"# Task: {target.get('id')} — {target.get('title', '')}")
+    print()
+    print("## Task block")
+    print(json.dumps(target, indent=2))
+    print()
+    print("## Produces of prior-order tasks (interfaces)")
+    prior_produces = []
+    for t in tasks:
+        if not isinstance(t, dict):
+            continue
+        if t.get("id") == target.get("id"):
+            break
+        prior_produces.extend(t.get("produces") or [])
+    if prior_produces:
+        for p in prior_produces:
+            print(f"- {p}")
+    else:
+        print("(none)")
+    print()
+    print("## Guide pointers (paths, not content)")
+    guides = target.get("guides") or []
+    if guides:
+        for g in guides:
+            print(f"- {g}")
+    else:
+        print("(none)")
+    print()
+    print("## Verify (opaque text — orchestrator runs this out of band, NOT executed here)")
+    print(target.get("verify", ""))
+    return 0
+
+
 # --------------------------------------------------------------------- main
 
 def main(argv=None):
@@ -836,6 +1020,15 @@ def main(argv=None):
     gp.add_argument("--file", help="file path to evaluate (alternative to --hook)")
     gp.add_argument("--protected", default="", help="protected prefixes separated by ';' (e.g. \"src/auth;src/crypto\")")
 
+    pp = sub.add_parser("plan", parents=[common],
+                        help="Subagent Execution: validate/brief a PLAN_[feature].md (zero-execution)")
+    pp_sub = pp.add_subparsers(dest="plan_cmd", required=True)
+    pv = pp_sub.add_parser("validate", help="schema + confinement + ledger cross-check (exit 2 on error)")
+    pv.add_argument("file", help="path to the PLAN_[feature].md file")
+    pb = pp_sub.add_parser("brief", help="print a task's brief to stdout (verify text is NOT executed)")
+    pb.add_argument("file", help="path to the PLAN_[feature].md file")
+    pb.add_argument("--task", required=True, help="task id to brief")
+
     args = ap.parse_args(argv)
     if args.cmd == "gate":
         return cmd_gate(args)
@@ -851,6 +1044,8 @@ def main(argv=None):
         return cmd_stale(root, hybrid=args.hybrid)
     if args.cmd == "mark":
         return cmd_mark(root, args.paths)
+    if args.cmd == "plan":
+        return cmd_plan(root, args)
     return 0
 
 

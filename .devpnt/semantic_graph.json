@@ -1447,6 +1447,40 @@
       }
     },
     {
+      "ref": "file:ai_docs/solutions/SHADOW_e_tdd_agent_kb_u2_v1.0.md",
+      "kind": "file",
+      "path": "ai_docs/solutions/SHADOW_e_tdd_agent_kb_u2_v1.0.md",
+      "name": "SHADOW_e_tdd_agent_kb_u2_v1.0.md",
+      "language": null,
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:ai_docs/solutions/SHADOW_e_tdd_execution_disciplines_v1.0.md",
+      "kind": "file",
+      "path": "ai_docs/solutions/SHADOW_e_tdd_execution_disciplines_v1.0.md",
+      "name": "SHADOW_e_tdd_execution_disciplines_v1.0.md",
+      "language": null,
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
       "ref": "file:ai_docs/solutions/SHADOW_e_tdd_operative_guides_u1_v1.2.md",
       "kind": "file",
       "path": "ai_docs/solutions/SHADOW_e_tdd_operative_guides_u1_v1.2.md",
@@ -2314,10 +2348,61 @@
       }
     },
     {
+      "ref": "file:skills/agentic-sdlc-skill/debugging.md",
+      "kind": "file",
+      "path": "skills/agentic-sdlc-skill/debugging.md",
+      "name": "debugging.md",
+      "language": null,
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:skills/agentic-sdlc-skill/elicitation.md",
+      "kind": "file",
+      "path": "skills/agentic-sdlc-skill/elicitation.md",
+      "name": "elicitation.md",
+      "language": null,
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
       "ref": "file:skills/agentic-sdlc-skill/guides.md",
       "kind": "file",
       "path": "skills/agentic-sdlc-skill/guides.md",
       "name": "guides.md",
+      "language": null,
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:skills/agentic-sdlc-skill/review.md",
+      "kind": "file",
+      "path": "skills/agentic-sdlc-skill/review.md",
+      "name": "review.md",
       "language": null,
       "source_kind": "summary_pipeline",
       "provenance": "summary_pipeline",
@@ -2336,6 +2421,23 @@
       "path": "skills/agentic-sdlc-skill/scripts/sdlc_check.py",
       "name": "sdlc_check.py",
       "language": "python",
+      "source_kind": "summary_pipeline",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "source_kind": "summary_pipeline",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "file:skills/agentic-sdlc-skill/tdd.md",
+      "kind": "file",
+      "path": "skills/agentic-sdlc-skill/tdd.md",
+      "name": "tdd.md",
+      "language": null,
       "source_kind": "summary_pipeline",
       "provenance": "summary_pipeline",
       "confidence": 1.0,
@@ -4420,7 +4522,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 390,
+        "line": 426,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4437,7 +4539,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 246,
+        "line": 250,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4454,7 +4556,24 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 353,
+        "line": 357,
+        "bases": [],
+        "source_kind": "symbol_index"
+      }
+    },
+    {
+      "ref": "python_symbol:skills/agentic-sdlc-skill/scripts/sdlc_check.py:check_kb_collisions",
+      "kind": "python_symbol",
+      "path": "skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "name": "check_kb_collisions",
+      "language": "python",
+      "source_kind": "symbol_index",
+      "provenance": "symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "symbol_type": "function",
+        "line": 394,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4471,7 +4590,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 717,
+        "line": 754,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4488,7 +4607,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 729,
+        "line": 766,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4505,7 +4624,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 408,
+        "line": 444,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4522,7 +4641,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 677,
+        "line": 714,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4539,7 +4658,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "method",
-        "line": 693,
+        "line": 730,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4556,7 +4675,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 606,
+        "line": 643,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4573,7 +4692,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 438,
+        "line": 474,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4590,7 +4709,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 275,
+        "line": 279,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4607,7 +4726,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 87,
+        "line": 91,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4624,7 +4743,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 198,
+        "line": 202,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4641,7 +4760,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 227,
+        "line": 231,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4658,7 +4777,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 216,
+        "line": 220,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4675,7 +4794,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 207,
+        "line": 211,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4692,7 +4811,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 176,
+        "line": 180,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4709,7 +4828,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 434,
+        "line": 470,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4726,7 +4845,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 154,
+        "line": 158,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4743,7 +4862,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 186,
+        "line": 190,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4760,7 +4879,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 161,
+        "line": 165,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4777,7 +4896,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 335,
+        "line": 339,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4794,7 +4913,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 377,
+        "line": 381,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4811,7 +4930,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 137,
+        "line": 141,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4828,7 +4947,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 774,
+        "line": 811,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4845,7 +4964,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 133,
+        "line": 137,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4862,7 +4981,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 583,
+        "line": 620,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4879,7 +4998,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 121,
+        "line": 125,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4896,7 +5015,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 105,
+        "line": 109,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4913,7 +5032,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 95,
+        "line": 99,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4930,7 +5049,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 111,
+        "line": 115,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -4947,7 +5066,7 @@
       "is_static_confirmed": true,
       "metadata": {
         "symbol_type": "function",
-        "line": 83,
+        "line": 87,
         "bases": [],
         "source_kind": "symbol_index"
       }
@@ -5103,10 +5222,40 @@
       }
     },
     {
+      "ref": "python_symbol_name:(kb_ref / ov).resolve",
+      "kind": "python_symbol",
+      "path": null,
+      "name": "(kb_ref / ov).resolve",
+      "language": "python",
+      "source_kind": "symbol_index",
+      "provenance": "symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "symbol_type": "unresolved",
+        "source_kind": "symbol_index"
+      }
+    },
+    {
       "ref": "python_symbol_name:(meta.get('description', '') or '-').replace",
       "kind": "python_symbol",
       "path": null,
       "name": "(meta.get('description', '') or '-').replace",
+      "language": "python",
+      "source_kind": "symbol_index",
+      "provenance": "symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "symbol_type": "unresolved",
+        "source_kind": "symbol_index"
+      }
+    },
+    {
+      "ref": "python_symbol_name:(meta.get('overrides') or '').strip",
+      "kind": "python_symbol",
+      "path": null,
+      "name": "(meta.get('overrides') or '').strip",
       "language": "python",
       "source_kind": "symbol_index",
       "provenance": "symbol_index",
@@ -5227,6 +5376,21 @@
       "kind": "python_symbol",
       "path": null,
       "name": "CANONICAL_STATES",
+      "language": "python",
+      "source_kind": "symbol_index",
+      "provenance": "symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "symbol_type": "unresolved",
+        "source_kind": "symbol_index"
+      }
+    },
+    {
+      "ref": "python_symbol_name:DEFAULT_KB_ROOT",
+      "kind": "python_symbol",
+      "path": null,
+      "name": "DEFAULT_KB_ROOT",
       "language": "python",
       "source_kind": "symbol_index",
       "provenance": "symbol_index",
@@ -5418,6 +5582,21 @@
       }
     },
     {
+      "ref": "python_symbol_name:OSError",
+      "kind": "python_symbol",
+      "path": null,
+      "name": "OSError",
+      "language": "python",
+      "source_kind": "symbol_index",
+      "provenance": "symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "symbol_type": "unresolved",
+        "source_kind": "symbol_index"
+      }
+    },
+    {
       "ref": "python_symbol_name:Path",
       "kind": "python_symbol",
       "path": null,
@@ -5512,6 +5691,21 @@
       "kind": "python_symbol",
       "path": null,
       "name": "Path(start or os.getcwd()).resolve",
+      "language": "python",
+      "source_kind": "symbol_index",
+      "provenance": "symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "symbol_type": "unresolved",
+        "source_kind": "symbol_index"
+      }
+    },
+    {
+      "ref": "python_symbol_name:Path.home",
+      "kind": "python_symbol",
+      "path": null,
+      "name": "Path.home",
       "language": "python",
       "source_kind": "symbol_index",
       "provenance": "symbol_index",
@@ -7488,6 +7682,96 @@
       }
     },
     {
+      "ref": "python_symbol_name:kb_names",
+      "kind": "python_symbol",
+      "path": null,
+      "name": "kb_names",
+      "language": "python",
+      "source_kind": "symbol_index",
+      "provenance": "symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "symbol_type": "unresolved",
+        "source_kind": "symbol_index"
+      }
+    },
+    {
+      "ref": "python_symbol_name:kb_ref",
+      "kind": "python_symbol",
+      "path": null,
+      "name": "kb_ref",
+      "language": "python",
+      "source_kind": "symbol_index",
+      "provenance": "symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "symbol_type": "unresolved",
+        "source_kind": "symbol_index"
+      }
+    },
+    {
+      "ref": "python_symbol_name:kb_ref.is_dir",
+      "kind": "python_symbol",
+      "path": null,
+      "name": "kb_ref.is_dir",
+      "language": "python",
+      "source_kind": "symbol_index",
+      "provenance": "symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "symbol_type": "unresolved",
+        "source_kind": "symbol_index"
+      }
+    },
+    {
+      "ref": "python_symbol_name:kb_ref.resolve",
+      "kind": "python_symbol",
+      "path": null,
+      "name": "kb_ref.resolve",
+      "language": "python",
+      "source_kind": "symbol_index",
+      "provenance": "symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "symbol_type": "unresolved",
+        "source_kind": "symbol_index"
+      }
+    },
+    {
+      "ref": "python_symbol_name:kb_root",
+      "kind": "python_symbol",
+      "path": null,
+      "name": "kb_root",
+      "language": "python",
+      "source_kind": "symbol_index",
+      "provenance": "symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "symbol_type": "unresolved",
+        "source_kind": "symbol_index"
+      }
+    },
+    {
+      "ref": "python_symbol_name:kb_root.resolve",
+      "kind": "python_symbol",
+      "path": null,
+      "name": "kb_root.resolve",
+      "language": "python",
+      "source_kind": "symbol_index",
+      "provenance": "symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "symbol_type": "unresolved",
+        "source_kind": "symbol_index"
+      }
+    },
+    {
       "ref": "python_symbol_name:key",
       "kind": "python_symbol",
       "path": null,
@@ -8103,6 +8387,36 @@
       }
     },
     {
+      "ref": "python_symbol_name:os.environ",
+      "kind": "python_symbol",
+      "path": null,
+      "name": "os.environ",
+      "language": "python",
+      "source_kind": "symbol_index",
+      "provenance": "symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "symbol_type": "unresolved",
+        "source_kind": "symbol_index"
+      }
+    },
+    {
+      "ref": "python_symbol_name:os.environ.get",
+      "kind": "python_symbol",
+      "path": null,
+      "name": "os.environ.get",
+      "language": "python",
+      "source_kind": "symbol_index",
+      "provenance": "symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "symbol_type": "unresolved",
+        "source_kind": "symbol_index"
+      }
+    },
+    {
       "ref": "python_symbol_name:os.getcwd",
       "kind": "python_symbol",
       "path": null,
@@ -8227,6 +8541,66 @@
       "kind": "python_symbol",
       "path": null,
       "name": "out.append",
+      "language": "python",
+      "source_kind": "symbol_index",
+      "provenance": "symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "symbol_type": "unresolved",
+        "source_kind": "symbol_index"
+      }
+    },
+    {
+      "ref": "python_symbol_name:ov",
+      "kind": "python_symbol",
+      "path": null,
+      "name": "ov",
+      "language": "python",
+      "source_kind": "symbol_index",
+      "provenance": "symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "symbol_type": "unresolved",
+        "source_kind": "symbol_index"
+      }
+    },
+    {
+      "ref": "python_symbol_name:ovp",
+      "kind": "python_symbol",
+      "path": null,
+      "name": "ovp",
+      "language": "python",
+      "source_kind": "symbol_index",
+      "provenance": "symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "symbol_type": "unresolved",
+        "source_kind": "symbol_index"
+      }
+    },
+    {
+      "ref": "python_symbol_name:ovp.is_absolute",
+      "kind": "python_symbol",
+      "path": null,
+      "name": "ovp.is_absolute",
+      "language": "python",
+      "source_kind": "symbol_index",
+      "provenance": "symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "symbol_type": "unresolved",
+        "source_kind": "symbol_index"
+      }
+    },
+    {
+      "ref": "python_symbol_name:ovp.parts",
+      "kind": "python_symbol",
+      "path": null,
+      "name": "ovp.parts",
       "language": "python",
       "source_kind": "symbol_index",
       "provenance": "symbol_index",
@@ -8587,6 +8961,21 @@
       "kind": "python_symbol",
       "path": null,
       "name": "print",
+      "language": "python",
+      "source_kind": "symbol_index",
+      "provenance": "symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "symbol_type": "unresolved",
+        "source_kind": "symbol_index"
+      }
+    },
+    {
+      "ref": "python_symbol_name:project_guides",
+      "kind": "python_symbol",
+      "path": null,
+      "name": "project_guides",
       "language": "python",
       "source_kind": "symbol_index",
       "provenance": "symbol_index",
@@ -11548,8 +11937,8 @@
         "summary_kind": "file_summary",
         "target_path": ".gitignore",
         "source_path": ".devpnt/cache/descriptions/6f0987a35359b4c31b4b23dc22caa3fd4e6912f0f3e706ac0070ad3bf3d12d02.desc",
-        "content_excerpt": "- Purpose: Defines version control exclusion patterns to prevent sensitive, ephemeral, and generated files from entering the repository.\n- Key Components: \n    - Configuration and secrets: `config.json`, `config.ini`, `.claude`.\n    - Local environments and caches: `venv/`, `__pycache__/`, `.devpnt/`.\n    - Persistent application state: `chat_app.db`, `uploads/`, `static/uploads/`.\n    - Runtime a",
-        "content_hash": "c700ca9ac06273b3d5c8fe6a730213cf88c189a10e07a2845c26216b0ad85ada",
+        "content_excerpt": "- Purpose: Defines version control ignore rules to prevent tracking sensitive, build-generated, environment-specific, and temporary data.\n- Key Components:\n    - Environment Files: Excludes local virtual environments (`venv/`) and development IDE settings (`.vscode/`).\n    - Artifacts & Logs: Ignores execution binaries, SQLite temp files, test coverage reports, and application logs.\n    - Sensitiv",
+        "content_hash": "23705250d59579b99fd0b4fec1e1738aab4c0d3dc2fde72478bcddec840d5f57",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -11611,8 +12000,8 @@
         "summary_kind": "file_summary",
         "target_path": "CHANGELOG.md",
         "source_path": ".devpnt/cache/descriptions/bd8b99064c9f5ad70645b9b0e4fced7e17b16dad56555288c1a5a00367f4f15b.desc",
-        "content_excerpt": "- Purpose: Documents the historical evolution, feature releases, and bug fixes for the `agentic-sdlc` skill, tracking its transition from a standalone documentation-first protocol to a hybrid-governance tool for agentic SDLC.\n- Key Components: \n    - **Version Sections**: Chronological records of features, breaking changes, and critical fixes.\n    - **Feature Mapping**: Tracks milestones like \"Ope",
-        "content_hash": "19a6b27b8693dc14fe0f98183a83d2227c55c663b42a52917698de97ba5d9774",
+        "content_excerpt": "- Purpose: Records the chronological evolution, feature additions, and technical maintenance of the Agentic SDLC Skill.\n- Key Components: \n    - Versioned Release Blocks: Track atomic changes, fixes, and architectural evolutions in the skill.\n    - Operative Guides Tracking: Documents the lifecycle of source-faithful guides, provenance hashing, and metadata controls.\n    - CLI/Lifecycle History: D",
+        "content_hash": "dc31e8b07af11d3cbdaecae1cdd5d99f440643ab25a7250f254889312a29ca9d",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -11674,8 +12063,8 @@
         "summary_kind": "file_summary",
         "target_path": "README.md",
         "source_path": ".devpnt/cache/descriptions/1f4ef81722cbcc63ab5e426c1b7e11b7964e18990ade2d86ee08a17b246342a4.desc",
-        "content_excerpt": "- Purpose: Serves as the configuration, installation, and architectural reference for the `agentic-sdlc` documentation-first protocol for AI coding agents.\n- Key Components:\n    - `SKILL.md`: Primary entry point for AI agent interaction.\n    - `sdlc_check.py`: Validator script for enforcing documentation structure and project governance.\n    - `templates.md`/`guides.md`: Standardized structural in",
-        "content_hash": "c7aacabe7aa559f4552a4339a781d4414a7ba5d1ae44cdcf09b6d26b82650a4d",
+        "content_excerpt": "- Purpose: Provides a standardized documentation-first SDLC protocol and governance framework for AI coding agents.\n- Key Components:\n    - `SKILL.md`: Primary entry point for AI agent interaction and protocol enforcement.\n    - `sdlc_check.py`: Validation script for document structure, history tracking, and path security.\n    - Documentation Suite: Includes `templates.md`, `tdd.md`, and `ENFORCEM",
+        "content_hash": "6ff166aa7f823df46f8de6dfb1081381ca0b2522196a3f8ad25ec2431584acf5",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -11842,8 +12231,8 @@
         "summary_kind": "file_summary",
         "target_path": "ai_docs/audit/handoff.md",
         "source_path": ".devpnt/cache/descriptions/1a9e0b779075cbe4d6515a54822e7367e6d9591b7b1512ce40acdea00ef3c2ee.desc",
-        "content_excerpt": "- Purpose: Serves as a technical handoff record for the devPNT project, documenting release status, active feature progress, and operational constraints.\n- Key Components:\n    - v1.8.1 Release: Finalized patch for LF-normalized hashing and packaging integrity.\n    - GUIDE_release.md: Formalized procedural documentation for deployment and tagging.\n    - M1 Feature B: Tracks progress of project-scop",
-        "content_hash": "17b8210539c6d07c19d8776fed4eff375e21ffabded00cc82bd32b38c105fcec",
+        "content_excerpt": "- Purpose: Provides a comprehensive audit trail and handoff document for v1.9.0, detailing completed milestones and procedural requirements for the next development phase.\n\n- Key Components:\n    - Release Summary: Documents technical achievements (Feature B, M2 disciplines) and deployment state (npm/Git tags).\n    - M3 Roadmap: Outlines the transition to Subagent Execution (Feature A) using an est",
+        "content_hash": "131e48170f71106d8df74d70a8daf4424c27f40e12634a8e5fa98b6d053b87ec",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -11863,8 +12252,8 @@
         "summary_kind": "file_summary",
         "target_path": "ai_docs/audit/reviews/REVIEW_LOG.md",
         "source_path": ".devpnt/cache/descriptions/adfd6b4a6c34cdd51fee0a857759b5ca0eb67b291d740c7e4c995ca900dbd056.desc",
-        "content_excerpt": "- Purpose: Acts as the central ledger for independent review-gate outcomes to ensure auditability and quality control for tech artifacts and codebase changes.\n- Key Components: \n    - Review Log Table: Tracks quantitative metrics (findings, revisions, verdicts) per artifact to measure process efficacy.\n    - Review Notes: Qualitative narrative logs detailing specific failure modes, edge cases (e.g",
-        "content_hash": "068d4b960f6fa788b10286f9edd008e7e6b691c7b85110495b3f8e9f1162d1c1",
+        "content_excerpt": "- Purpose: Tracks the status, quality metrics, and resolution history of independent review gates for technical artifacts and code implementations.\n- Key Components: \n    - Review Ledger (Table): Maintains the canonical history of gates, including tier, reviewer identity, finding counts, and final verdicts.\n    - Review Notes (Section): Provides qualitative technical post-mortems on failed gates, ",
+        "content_hash": "cb4560a68356500bc0ca25adae843d36f40473a50f3392b43a135388a86942c7",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -12117,6 +12506,48 @@
         "source_path": ".devpnt/cache/descriptions/22f8c5da48e81b18e88628e492693df413b649883ea63dad77c442d9e3a1878e.desc",
         "content_excerpt": "- Purpose: Defines the architectural and procedural governance framework for aligning agentic development with project-level vision.\n- Key Components:\n    - `Vision Gate`: Mandates vision alignment check during feature lifecycle stages.\n    - `Reference Templates`: Updates `analysis_template.md` and introduces new vision-specific documentation templates.\n    - `Initialization Scripts`: Modifies `s",
         "content_hash": "04db8643860d666f75e95bcd32575d15f0f4bb1e3d8d90936e895ebfa08524dd",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:ai_docs/solutions/SHADOW_e_tdd_agent_kb_u2_v1.0.md",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/8f512ad54cd14241111e03f388e626f6e473b4fa79b5da7e9527fc60c363395c.desc",
+      "name": "File summary: ai_docs/solutions/SHADOW_e_tdd_agent_kb_u2_v1.0.md",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "ai_docs/solutions/SHADOW_e_tdd_agent_kb_u2_v1.0.md",
+        "source_path": ".devpnt/cache/descriptions/8f512ad54cd14241111e03f388e626f6e473b4fa79b5da7e9527fc60c363395c.desc",
+        "content_excerpt": "- Purpose: Implements an agent-global knowledge base (KB) at `~/.agentic-sdlc/` to share documentation across projects, utilizing project-wins precedence with collision detection.\n- Key Components:\n    - `check_kb_collisions()`: Validates guide paths for naming conflicts, enforces strict path confinement, and manages the `overrides` metadata field.\n    - `DEFAULT_KB_ROOT`: Constant defining the fi",
+        "content_hash": "f9772545aae9de670cfe48a20140501704fc63ebfcdb695356b607e53f6a9e1c",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:ai_docs/solutions/SHADOW_e_tdd_execution_disciplines_v1.0.md",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/4b8972a241d2fbbe94e6cc393a88a71b3a42ba9a22eda60959644ab9c9b34082.desc",
+      "name": "File summary: ai_docs/solutions/SHADOW_e_tdd_execution_disciplines_v1.0.md",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "ai_docs/solutions/SHADOW_e_tdd_execution_disciplines_v1.0.md",
+        "source_path": ".devpnt/cache/descriptions/4b8972a241d2fbbe94e6cc393a88a71b3a42ba9a22eda60959644ab9c9b34082.desc",
+        "content_excerpt": "- Purpose: Defines and integrates four TDD/SDLC execution discipline modules into the `SKILL.md` workflow to standardize development behavior.\n- Key Components:\n    - `tdd.md`: Codifies Red/Green/Refactor cycles, AAA test structure, and non-test exemption logging.\n    - `debugging.md`: Specifies systematic isolation, root-cause identification, and circuit-breaker protocols.\n    - `elicitation.md`:",
+        "content_hash": "73aba849f834aded541b6c99a79c4f90e4b14dd7548e498010e94619c46a7473",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -12409,8 +12840,8 @@
         "summary_kind": "file_summary",
         "target_path": "docs/functional/architecture_overview.md",
         "source_path": ".devpnt/cache/descriptions/595014a22416916fc94b94c6276263c01d8308342baf97e7ce8b4d337c691531.desc",
-        "content_excerpt": "- Purpose: Serves as the high-level architectural map and boundary definition for the agentic-sdlc-v2 ecosystem.\n- Key Components:\n    - `agentic-sdlc-v2`: Defines meta-level governance and behavioral policies.\n    - `ai_docs`: Centralizes the documentation hierarchy, audit, and strategic knowledge.\n    - `scripts`: Serves as the lifecycle engine for bootstrapping and synchronization.\n    - `sdlc-",
-        "content_hash": "942d5402acb9ad802a73db05ff8b3c0c55a5c65e21a0f35a7ad4db2d3c0f99af",
+        "content_excerpt": "- Purpose: Provides the authoritative architectural blueprint and organizational taxonomy for the Agentic SDLC methodology.\n- Key Components: \n    - `agentic-sdlc-v2`: Defines meta-level governance and schema constraints.\n    - `ai_docs`: Acts as the centralized governance hierarchy for documentation and compliance.\n    - `skills/agentic-sdlc-skill`: Implements the executable protocols for documen",
+        "content_hash": "7821f2db9c637cbadb58b7dabb9dec2d1508df66d451441f5491461faef50a53",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -12472,8 +12903,8 @@
         "summary_kind": "file_summary",
         "target_path": "docs/functional/external_interfaces.md",
         "source_path": ".devpnt/cache/descriptions/c45de023b379b730ef7e3eec0a4989597770f6b551a0e0971920ea73606d5a4d.desc",
-        "content_excerpt": "- Purpose: Defines the architectural contract and communication protocols for external system integrations.\n- Key Components:\n  - MCP: Implements bidirectional JSON-RPC for context-aware model interaction.\n  - SSE: Manages outbound push notifications via WebSocket frames.\n  - CLI: Handles inbound stdio-based command processing.\n  - HTTP Server: Provides RESTful bidirectional communication.\n  - Bac",
-        "content_hash": "e50f6b2bdfcda783a5a87652272d08aac2943a73e08b4dd7a48d4842b7b4ce57",
+        "content_excerpt": "- Purpose: Defines the primary communication protocols and interface specifications for system external integration.\n- Key Components: \n    - MCP (Model Context Protocol): Enables bidirectional JSON-RPC communication for AI context exchange.\n    - SSE (Server-Sent Events): Facilitates outbound data streaming via WebSocket frames.\n    - stdio Interface: Provides standard input/output hooks for bidi",
+        "content_hash": "e6e2ad6c50a8d6d0d61a7ac0c6f52181e938ea5e8f5c3d52ba427edb32ddc092",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -12598,8 +13029,8 @@
         "summary_kind": "file_summary",
         "target_path": "gemini-extension.json",
         "source_path": ".devpnt/cache/descriptions/0d23f49c3a6d5a7278bc606b05a1dfb51550aa146cb3d96b6c690f6b2d5c7e21.desc",
-        "content_excerpt": "- Purpose: Defines the metadata and identity configuration for the agentic-sdlc-skill Gemini extension.\n- Key Components:\n    - name: Identifies the extension as 'agentic-sdlc-skill' within the Gemini ecosystem.\n    - version: Tracks the release state (1.8.1) for deployment and compatibility.\n    - description: Outlines the functional scope, focusing on documentation-first workflows and Vision gov",
-        "content_hash": "4f371e7944050f1f0c3f260adb24e6de405153422b396ed1e884f1825d713374",
+        "content_excerpt": "- Purpose: Defines the metadata and identity configuration for the Agentic SDLC extension.\n- Key Components: \n    - `name`: Identifies the skill as `agentic-sdlc-skill` within the registry.\n    - `version`: Tracks the release state (1.9.0) for dependency management and compatibility.\n    - `description`: Outlines the functional scope, including documentation-first SDLC, vision governance, and opti",
+        "content_hash": "cb30c044f75d01e4f7741bfbf04c5743f8731c520cf585f0353247145825b1e2",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -12640,8 +13071,8 @@
         "summary_kind": "file_summary",
         "target_path": "package.json",
         "source_path": ".devpnt/cache/descriptions/4526cbd581aca12fc61751479efb45635ad08b5d71ab96f02fd0f8cea2c99c25.desc",
-        "content_excerpt": "- Purpose: Provides a documentation-first SDLC governance protocol and toolset for AI coding assistants like Claude Code and Gemini CLI.\n- Key Components:\n    - `agentic-sdlc-init`: CLI entry point for initializing the protocol.\n    - `agentic-sdlc-install-skill`: Automates the integration and installation of the SDLC framework.\n    - `sdlc_check.py`: Python-based logic for automated risk triage a",
-        "content_hash": "f245e148209a009e52891e98bd3d2646a875608eb77414fe502a2529fb36242c",
+        "content_excerpt": "- Purpose: Defines the metadata, executable entry points, and distribution manifest for an AI-agent SDLC protocol package.\n- Key Components:\n  - `bin`: Exposes `agentic-sdlc-init` and `agentic-sdlc-install-skill` as CLI tools.\n  - `scripts`: Manages lifecycle hooks for installation and uninstallation.\n  - `files`: Specifies the inclusion of SDLC documentation, templates, and Python enforcement scr",
+        "content_hash": "b77bd41555f6833024c970bc1050a0af73467bd510a809f9c2338f372f1fc953",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13102,8 +13533,50 @@
         "summary_kind": "file_summary",
         "target_path": "skills/agentic-sdlc-skill/SKILL.md",
         "source_path": ".devpnt/cache/descriptions/106275d57fb4e0abab29cbe431b619e54aa927a6f271be81e54b45574062f5b5.desc",
-        "content_excerpt": "- Purpose: Defines a documentation-first SDLC protocol that balances rigorous planning with risk-proportional triage, supporting both standalone operation and symbiosis with devPNT.\n- Key Components:\n    - `sdlc_check.py`: Mechanical validator for indexing, stale-check, and gating of documentation.\n    - `templates.md`: Canonical structures for Vision, Analysis, Spike, and audit documentation.\n   ",
-        "content_hash": "d26f0376056500122731e811ccac2587ba088d3e88d99f077635214630b7c7ed",
+        "content_excerpt": "- Purpose: Defines a documentation-first SDLC protocol that mandates risk-proportional triage and maintains architectural coherence through structured documentation.\n- Key Components:\n    - Triage Logic (L1-L3): Classifies requests by risk, determining required documentation depth and verification rigor.\n    - Vision Gate: Ensures operational changes align with project-specific vision, roadmap, an",
+        "content_hash": "5bdc089d3d5ae1f8fd495c2075b82828d393b0dbe7e1bdd51b2966a66ca2f4bb",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:skills/agentic-sdlc-skill/debugging.md",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/91772224ae69ec9b6816f608228f7d808281a700b495cd20ee6f92923ea4d1c7.desc",
+      "name": "File summary: skills/agentic-sdlc-skill/debugging.md",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "skills/agentic-sdlc-skill/debugging.md",
+        "source_path": ".devpnt/cache/descriptions/91772224ae69ec9b6816f608228f7d808281a700b495cd20ee6f92923ea4d1c7.desc",
+        "content_excerpt": "- Purpose: Defines the mandatory, structured protocol for resolving L2/L3 software defects to prevent symptomatic patching.\n- Key Components:\n    - Reproduction/Isolation: Requires deterministic triggers and minimal test cases before analysis.\n    - Root Cause Analysis: Mandates a formal statement of the execution mechanism before applying any fix.\n    - Regression Testing: Requires verifying test",
+        "content_hash": "eed07d6bf4e1b1d7309634c779433b537bbec01c6b938d776ca15137c6399d96",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:skills/agentic-sdlc-skill/elicitation.md",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/4d7030d684b43108465980379b907f39906f87c6959e002377a20c12fccd5b3d.desc",
+      "name": "File summary: skills/agentic-sdlc-skill/elicitation.md",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "skills/agentic-sdlc-skill/elicitation.md",
+        "source_path": ".devpnt/cache/descriptions/4d7030d684b43108465980379b907f39906f87c6959e002377a20c12fccd5b3d.desc",
+        "content_excerpt": "- Purpose: Defines the protocol for requirements gathering in the Agentic SDLC to ensure project scope and objectives are finalized before technical design begins.\n- Key Components:\n    - Skip Logic: Evaluates if existing project documentation (Vision/M-VISION) renders elicitation redundant.\n    - Question Framework: Mandates a single, structured inquiry covering goal, scope, constraints, and acce",
+        "content_hash": "6894026ca6aa4ed8ea3d239cbd442081e847fccfbbfdd51e34e20275a3a771c9",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13123,8 +13596,29 @@
         "summary_kind": "file_summary",
         "target_path": "skills/agentic-sdlc-skill/guides.md",
         "source_path": ".devpnt/cache/descriptions/a67a051ad7602a5b22e56907cde8735c8e81dd710eef7f1b12a51fa370122bf5.desc",
-        "content_excerpt": "- Purpose: Defines the protocol for generating and maintaining \"Operative Guides\"—a two-tier documentation system linking dense syntheses to verbatim source snapshots for AI agent governance.\n- Key Components: \n    - Synthesis/Snapshot Model: Separates core principles (guide) from exhaustive context (snapshot).\n    - Lifecycle Management: Defines rules for creating, superseding, and updating guide",
-        "content_hash": "c0417cc4285b8bd20f88cfde8a2409f3a5c73079ec234969d351f5ad3ae78c91",
+        "content_excerpt": "- Purpose: Defines the architectural pipeline and fidelity standards for distilling operative knowledge from source documents into agent-ready guides.\n- Key Components:\n    - **Snapshotting**: Extracts verbatim source content into version-tracked files with immutable SHA-256 hashes.\n    - **Synthesis**: Transforms dense technical documents into compact, actionable \"guides\" that emphasize core prin",
+        "content_hash": "dbfb22178497c6d57ca6df0150c5bd87c4f55b873e181f61969b01fb9dec6d3a",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:skills/agentic-sdlc-skill/review.md",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/f40bbf559f3d1c5391b62f03f1e4414b053fbb87b6b746c16ddee5d1c78bbdb0.desc",
+      "name": "File summary: skills/agentic-sdlc-skill/review.md",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "skills/agentic-sdlc-skill/review.md",
+        "source_path": ".devpnt/cache/descriptions/f40bbf559f3d1c5391b62f03f1e4414b053fbb87b6b746c16ddee5d1c78bbdb0.desc",
+        "content_excerpt": "- Purpose: Defines the standardized protocol for requesting, performing, and resolving code reviews within the agentic SDLC workflow.\n- Key Components:\n    - **Requesting**: Mandates provision of scope, authoritative design artifacts, and explicit diffs to minimize cognitive load.\n    - **Receiving**: Requires itemized resolution of findings and explicit justification for disagreements to prevent ",
+        "content_hash": "78522bb88aedebd8ba5ee5c2e2779f9e56dc2947edeeee97ef4933569bb05426",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13144,8 +13638,29 @@
         "summary_kind": "file_summary",
         "target_path": "skills/agentic-sdlc-skill/scripts/sdlc_check.py",
         "source_path": ".devpnt/cache/descriptions/7e942b9f87c223da5bd7cae4bd75bfad27fac02f8eb043b9ceb4fa7e20654ca3.desc",
-        "content_excerpt": "=== FILE SUMMARY (static) ===\nPath: skills/agentic-sdlc-skill/scripts/sdlc_check.py | ~821 LOC | complexity: 193 | big: extract_doc_meta(~58L), cmd_validate(~141L), cmd_stale(~69L)\n\nROLE: Mechanical validator for the Agentic SDLC skill. Commands: check single closure gate: validate + stale in one command (exit 1 if either fails) validate verify t…\n\nPUBLIC API\n- func utc_now_iso()\n- func find_proje",
-        "content_hash": "64bc7e4bd5ccb35e9e98f0ac2e615db8281318b135a20991a6f24980e062fcbb",
+        "content_excerpt": "=== FILE SUMMARY (static) ===\nPath: skills/agentic-sdlc-skill/scripts/sdlc_check.py | ~858 LOC | complexity: 205 | big: extract_doc_meta(~58L), cmd_validate(~142L), cmd_stale(~69L)\n\nROLE: Mechanical validator for the Agentic SDLC skill. Commands: check single closure gate: validate + stale in one command (exit 1 if either fails) validate verify t…\n\nPUBLIC API\n- func utc_now_iso()\n- func find_proje",
+        "content_hash": "7f4f25f8b3cf8b567c2b4bace80ba031023eee0fe30198d9fa6d31a985b02871",
+        "provenance": "summary_pipeline",
+        "confidence": 1.0,
+        "is_static_confirmed": true
+      }
+    },
+    {
+      "ref": "summary:file:skills/agentic-sdlc-skill/tdd.md",
+      "kind": "summary",
+      "path": ".devpnt/cache/descriptions/7bec3bf2dae1833effa4753c83e62ab197b6cc4fbf63f65aff0e823646fae000.desc",
+      "name": "File summary: skills/agentic-sdlc-skill/tdd.md",
+      "language": null,
+      "source_kind": "semantic_graph",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "summary_kind": "file_summary",
+        "target_path": "skills/agentic-sdlc-skill/tdd.md",
+        "source_path": ".devpnt/cache/descriptions/7bec3bf2dae1833effa4753c83e62ab197b6cc4fbf63f65aff0e823646fae000.desc",
+        "content_excerpt": "- Purpose: Defines the mandated Test-Driven Development (TDD) workflow and quality standards for L2/L3 implementation tasks.\n- Key Components:\n    - RED-GREEN-REFACTOR cycle: Strictly enforced iterative development sequence.\n    - Increment Rule: Restricts test scope to one behavioral unit per loop.\n    - AAA Pattern: Formalizes Arrange-Act-Assert test structure for readability.\n    - Exemption Po",
+        "content_hash": "dbdddcbf78e7ecc759d1c4c5c60a63b945963da0297fe9440d1acd782847d96f",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13165,8 +13680,8 @@
         "summary_kind": "file_summary",
         "target_path": "skills/agentic-sdlc-skill/templates.md",
         "source_path": ".devpnt/cache/descriptions/5a26d349c8c88a209f5e9c2fb3866a176260eb361ce55c13d305951dda91e9b7.desc",
-        "content_excerpt": "- Purpose: Defines the standardized Markdown templates and structural conventions for the `ai_docs/` repository, ensuring consistency in agent-driven SDLC documentation.\n- Key Components:\n    - Canonical Header: Mandatory frontmatter for metadata, status tracking, and agent freshness signals.\n    - Reference Guides: Patterns for synthesizing user-provided input into operative guides with fidelity ",
-        "content_hash": "2768b75197c9c9cbfdb4d7db8df1ff1aad0b15554008505ea3d26b96001ade8f",
+        "content_excerpt": "- Purpose: Defines the standardized Markdown templates and documentation structure for the Agentic SDLC system.\n- Key Components:\n    - **Canonical Header**: Mandatory frontmatter (description, status) for index generation and freshness tracking.\n    - **Guide Template**: Operative synthesis template for external source material, including fidelity markers (`[source]`).\n    - **Analysis Template**",
+        "content_hash": "1b8561d351b2c485e8e70c10e248cb8e9ac67e030176341d6144c9f0b5b83205",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13186,8 +13701,8 @@
         "summary_kind": "folder_summary",
         "target_path": ".",
         "source_path": ".workdir/ai_summaries/_folder-summary.ai.txt",
-        "content_excerpt": "The root directory acts as the control plane for the `agentic-sdlc-v2` ecosystem, orchestrating a documentation-first governance framework. It manages lifecycle automation through specialized scripts, defines agent behavioral policies via markdown protocols, and houses modular skill sets for SDLC enforcement. The architecture forces a strict coupling between codebase changes and synchronized docum",
-        "content_hash": "8115e94859d3505f43e12173c0bd3dfc76819807446978ec5be50d82d9ccc182",
+        "content_excerpt": "The root directory functions as the central orchestration hub for the `agentic-sdlc` ecosystem, providing the configuration and scaffolding necessary to enforce \"documentation-first\" development. It integrates governance policies (`.cursorrules`, `CLAUDE.md`), lifecycle automation scripts (`scripts/`), and knowledge registries (`ai_docs/`) into a unified workspace. This structure manages multi-age",
+        "content_hash": "9e8adafe74f389fda8e860f11315ed696a10914af76c3e8f858ca12c115a31db",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13208,7 +13723,7 @@
         "target_path": ".claude",
         "source_path": ".workdir/ai_summaries/.claude/_folder-summary.ai.txt",
         "content_excerpt": "The `.claude` directory functions as the root configuration and workspace orchestration hub for agentic SDLC operations. It isolates environmental contexts through dedicated worktrees while enforcing security boundaries for local execution via a centralized policy file. This structure enables modular, multi-tenant development workflows where agent capabilities and lifecycle scripts are governed by",
-        "content_hash": "2c8df759ef1b714fbb0499ee852acdf6e69ce0c9e78ba10d39b17b82f4111273",
+        "content_hash": "81a90417e06acd212f6f14c1ae6b7843f11b2351eb66f272a595c6b652eaeb06",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13229,7 +13744,7 @@
         "target_path": ".claude/worktrees",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/_folder-summary.ai.txt",
         "content_excerpt": "The `.claude/worktrees` directory serves as a high-level container for isolated, environment-specific agentic workspaces. It acts as an orchestrator for multiple \"Documentation-First\" SDLC project instances. Each subdirectory (worktree) functions as a standalone development environment, mapping specific agentic skills, governance templates, and lifecycle scripts to distinct project lifecycles. It ",
-        "content_hash": "696fc48148cbc8bf5a763550afcafad67ff2b4825cc78d266bc0627763f9d76c",
+        "content_hash": "69beedc10322ef465cf39ccc0f433aaaffc7c3a821be4c95de3630f0c41d7f29",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13250,7 +13765,7 @@
         "target_path": ".claude/worktrees/practical-matsumoto-afba2c",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/practical-matsumoto-afba2c/_folder-summary.ai.txt",
         "content_excerpt": "The workspace is a structured Gemini CLI extension designed for a \"Documentation-First\" SDLC. It provides a modular plugin architecture where `skills/` contain agentic logic, `references/` supply governance templates, and `scripts/` automate environment lifecycle management. This architecture enforces strict audit-then-execute workflows, consuming documentation as the source of truth to drive down",
-        "content_hash": "06fc2c52834f2ab46f752d5e1a9eba904e1c25065d8bd8882db4f4dd3fd20e17",
+        "content_hash": "42095e0b55bbf767a34ad765904cec7472202d0e6ffdfe0174d48dc46ef78d8f",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13271,7 +13786,7 @@
         "target_path": ".claude/worktrees/practical-matsumoto-afba2c/docs",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/practical-matsumoto-afba2c/docs/_folder-summary.ai.txt",
         "content_excerpt": "The `docs/` directory serves as the root container for project-level documentation, acting as the centralized repository for architectural specifications and operational standards. It serves as the primary reference point for developers and automated systems to maintain consistency across the codebase. By isolating documentation from runtime logic, it ensures that high-level system maps and domain",
-        "content_hash": "dafa4748ef0ea34ba0be8c91e9df091a66eade95c0c527b7be1ca4699fa76fac",
+        "content_hash": "856d56d80d8ff2118484ed313ca4fdcc97c35b2a3e3d9b3b8965d319dac34d42",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13292,7 +13807,7 @@
         "target_path": ".claude/worktrees/practical-matsumoto-afba2c/docs/functional",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/practical-matsumoto-afba2c/docs/functional/_folder-summary.ai.txt",
         "content_excerpt": "The `docs/functional` directory acts as the canonical documentation registry for the project's architectural, data, and procedural standards. It provides a static, high-level map of system interfaces, execution entry points, and domain schemas. This directory serves developers and automated agents as a \"source of truth\" to ensure consistent implementation across decoupled modules and to prevent cr",
-        "content_hash": "6a92fad2e975c9d01bf2a1b3b39c78e2b21dea85a4aa98a6a986ec86a8225ce2",
+        "content_hash": "465a130e2bf4abf215dc95f915c06dc1dcf6a7dbd5ae63b37867fa56c0af7630",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13313,7 +13828,7 @@
         "target_path": ".claude/worktrees/practical-matsumoto-afba2c/examples",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/practical-matsumoto-afba2c/examples/_folder-summary.ai.txt",
         "content_excerpt": "The `examples/` directory serves as the top-level container for project demonstrations and auxiliary guidance. It currently acts as a wrapper for the `docs/` subdirectory, which houses the project's foundational documentation and architectural specifications. This structure centralizes knowledge to ensure developers can access design standards and feature history without navigating implementation ",
-        "content_hash": "1eebb85d18f21e112b10f4559e288a6ae791b6a5951e173f1dc5ed9ef0c3aafc",
+        "content_hash": "fb98040427768c1a9a762eb016a5db8cd875635730a00437f29546b5a918b82e",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13334,7 +13849,7 @@
         "target_path": ".claude/worktrees/practical-matsumoto-afba2c/examples/docs",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/practical-matsumoto-afba2c/examples/docs/_folder-summary.ai.txt",
         "content_excerpt": "This directory serves as the documentation hub for the project, enforcing a \"Documentation-First\" SDLC. It provides the architectural blueprint, feature registry, and historical audit logs necessary for maintaining project alignment. The directory acts as the single source of truth for design patterns, while the `solutions/` subdirectory provides detailed technical specs and implementation constra",
-        "content_hash": "bbcf5a5e1d4e9faf2968e434d928b6c4e5efa0a0f661744843d5361e6467db07",
+        "content_hash": "e593dd53a24c886944fb8a5ff82397b14c7a2feef6bf1088b7b11c9eec7a8d0b",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13355,7 +13870,7 @@
         "target_path": ".claude/worktrees/practical-matsumoto-afba2c/examples/docs/solutions",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/practical-matsumoto-afba2c/examples/docs/solutions/_folder-summary.ai.txt",
         "content_excerpt": "This directory functions as a documentation repository for architectural solutions and implementation roadmaps. It specifically houses technical specs for utility tools, serving as a blueprint for developers building standalone, cross-functional applications. The content bridges the gap between high-level functional requirements and technical implementation constraints for environment-specific dep",
-        "content_hash": "aa011d763f9e954699bcc9bb4bc0dbc34e3c9f5b0c099323ef9616fa6bf3e357",
+        "content_hash": "cda01fdee44bbd4123d1144b308f0231d9dfd7915ea5809dc337dbd8676da58a",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13376,7 +13891,7 @@
         "target_path": ".claude/worktrees/practical-matsumoto-afba2c/references",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/practical-matsumoto-afba2c/references/_folder-summary.ai.txt",
         "content_excerpt": "The `/references` directory acts as a foundational knowledge repository for the engineering team, containing standardized Markdown templates to enforce consistency across technical documentation. It provides structural scaffolds for architecture design, feature analysis, and lifecycle tracking. These templates are consumed during the development lifecycle to ensure documentation alignment, facilit",
-        "content_hash": "366e297f92ccd73d470d93d0ff06ac3a4d9b74b9910f2bfa8fc7ca9498b22feb",
+        "content_hash": "cd68e398ea58ec37f00a0086a5290be3cf4c9ddf9216e870454427e79d045345",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13397,7 +13912,7 @@
         "target_path": ".claude/worktrees/practical-matsumoto-afba2c/scripts",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/practical-matsumoto-afba2c/scripts/_folder-summary.ai.txt",
         "content_excerpt": "The `/scripts` directory provides lifecycle automation for the \"Agentic SDLC\" workspace. It handles environment bootstrapping, tool discovery, and the injection of \"Documentation-First\" system prompts. These scripts are consumed primarily during local environment setup to ensure standardized AI-agent behavior across different developer systems, enforcing rigorous planning and auditing phases befor",
-        "content_hash": "0bd416677619ec732894cce021b397e022e772badf294daadebb576d6cb996de",
+        "content_hash": "0ae7e5b725d2e579f56b63fa8c800ca53c7e8f1a8ab797df059b0eb7940482ea",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13418,7 +13933,7 @@
         "target_path": ".claude/worktrees/practical-matsumoto-afba2c/skills",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/practical-matsumoto-afba2c/skills/_folder-summary.ai.txt",
         "content_excerpt": "The `skills/` directory serves as a centralized plugin container for the project's agentic capabilities. It abstracts specialized operational domains into modular units, allowing the system to consume external logic for lifecycle management and environment interaction. This architecture decouples core system execution from specific workflow implementations, enabling independent scaling and mainten",
-        "content_hash": "a9339ef6b0d16835e64cb17f4a87abf794d2811343a4936194911185753b003f",
+        "content_hash": "3a9a8176dcb26ad3ee0585ec3a56297b45c0ae4cf5ef5cc68557364731fe23b2",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13439,7 +13954,7 @@
         "target_path": ".claude/worktrees/practical-matsumoto-afba2c/skills/agentic-sdlc-skill",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/practical-matsumoto-afba2c/skills/agentic-sdlc-skill/_folder-summary.ai.txt",
         "content_excerpt": "The `agentic-sdlc-skill` directory acts as the architectural foundation for a \"Documentation-First\" software development lifecycle. It enforces rigorous technical governance by mirroring database-like state into human-readable Markdown files. This skill consumes environment capabilities (via `devPNT` or filesystem) to orchestrate a transition from documentation (D-UC, P-TM) to actionable code, ens",
-        "content_hash": "5d75de96e4e1a61a96152d6cdfb527eccdcb264445a7030b9dd171f7ece8d19c",
+        "content_hash": "6741da3bcd7dcb584edab53ae0927600ce696a051353e2e594ab0d5ddc9f7296",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13460,7 +13975,7 @@
         "target_path": ".claude/worktrees/romantic-pascal-8d15af",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/romantic-pascal-8d15af/_folder-summary.ai.txt",
         "content_excerpt": "This workspace defines the `agentic-sdlc-skill` environment, orchestrating a \"Documentation-First\" lifecycle for AI agents. It integrates automated scaffolding, governance manifests, and cross-platform CLI extensions (Claude/Gemini/Codex). The architecture separates static policy configurations (in `.claude/` and `references/`) from active lifecycle scripts (`scripts/`) and modular agent capabilit",
-        "content_hash": "e8b8837da6a7797494bd2f590ef749e95fe0f77b1028171e37794e35c6db95f1",
+        "content_hash": "6a69a2ea919bd0df5557396d5802115ee08f5a0cf3b29159a1523bfbab19a8d0",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13481,7 +13996,7 @@
         "target_path": ".claude/worktrees/romantic-pascal-8d15af/.claude",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/romantic-pascal-8d15af/.claude/_folder-summary.ai.txt",
         "content_excerpt": "This directory serves as the workspace-specific configuration layer for the agentic-sdlc-skill environment. It acts as a security gatekeeper, defining the boundaries and execution capabilities for autonomous processes within the current worktree. By centralizing local security policies, it ensures that workspace interactions remain sandboxed to authorized command sets, preventing unauthorized syst",
-        "content_hash": "578a9800a537190fa90016d6a03d568aa0fd14349b7fac916fe7dcc1af85d9e3",
+        "content_hash": "410fb2ecb93da13ccda2f472493e092874ffe67bb5e821379da7d2bf731eb2c4",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13502,7 +14017,7 @@
         "target_path": ".claude/worktrees/romantic-pascal-8d15af/docs",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/romantic-pascal-8d15af/docs/_folder-summary.ai.txt",
         "content_excerpt": "The `docs` directory serves as the root container for the project’s static architectural documentation. It centralizes high-level system definitions, domain schemas, and procedural protocols to decouple conceptual design from implementation. This directory acts as the reference layer for developers to understand workspace boundaries, integration contracts, and core execution lifecycles without req",
-        "content_hash": "48b818c954bb1d47afcee6e9017d54102b48fa21c87f7d1f721289413ab12821",
+        "content_hash": "35e2db315dca075c199e009945f009128848baea1234ce9edec39ec60e845997",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13523,7 +14038,7 @@
         "target_path": ".claude/worktrees/romantic-pascal-8d15af/docs/functional",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/romantic-pascal-8d15af/docs/functional/_folder-summary.ai.txt",
         "content_excerpt": "This directory serves as the centralized functional documentation hub for the project. It acts as the single source of truth for architectural boundaries, domain schemas, and system execution protocols. By decoupling documentation from implementation, it provides developers with a clear reference for workspace initialization, request lifecycles, and entity relationships without direct runtime depe",
-        "content_hash": "161c78679a5ffc0c5660274b963acb508f847018ff8fad11900433cfa10ccef2",
+        "content_hash": "08d2339ca8dd5d4f3c91521cac0cce7195bc864a95ec34cec0141966aba92dcb",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13544,7 +14059,7 @@
         "target_path": ".claude/worktrees/romantic-pascal-8d15af/examples",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/romantic-pascal-8d15af/examples/_folder-summary.ai.txt",
         "content_excerpt": "The `examples/` directory serves as an organizational container for project demonstrations and auxiliary guidance. It functions as the root for supplementary material, isolating instructional content from the core codebase. Currently, it acts as a host for the `docs/` subdirectory, which encapsulates the project's documentation-first governance and architectural standards. This structure allows de",
-        "content_hash": "9de64d9430e5cdc14df82cca82c3aab0c56623cd10b0a5dd4e6a097e6ed8ce10",
+        "content_hash": "fcfdedbd37c132b04db2bf1fa5886f9fc2891ad267cf578fd0a80ee7acf72c31",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13565,7 +14080,7 @@
         "target_path": ".claude/worktrees/romantic-pascal-8d15af/examples/docs",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/romantic-pascal-8d15af/examples/docs/_folder-summary.ai.txt",
         "content_excerpt": "This directory serves as the documentation foundation for the repository, defining the \"Documentation-First\" SDLC and the Gemini-powered agentic workflow. It acts as the central registry for project standards, feature tracking, and technical governance. Developers and the Gemini CLI consume these files to maintain structural integrity, while the `solutions/` sub-directory contains domain-specific ",
-        "content_hash": "3cbed4ea25db735921e79e95e15111cb94f1664010294461699baebc62712cc8",
+        "content_hash": "ac3c11295d23380e93713bb3c766124bc1d0bb03464dc8514b7d28d48cb4ac08",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13586,7 +14101,7 @@
         "target_path": ".claude/worktrees/romantic-pascal-8d15af/examples/docs/solutions",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/romantic-pascal-8d15af/examples/docs/solutions/_folder-summary.ai.txt",
         "content_excerpt": "This directory serves as the documentation hub for the architectural blueprint of a portable Windows CLI PDF extraction tool. It acts as a single-source reference for development requirements, outlining the integration between standard text extraction pipelines and AI-assisted OCR fallbacks. It is intended for developers implementing or maintaining the tool's core logic and binary packaging proces",
-        "content_hash": "e2002b2d7a391bc9b5a4e2c99f3a7ccd6d7b72ee7b5e8e3e87b4c7dca3ced104",
+        "content_hash": "ba1a9dff6c1a159cb716b6acc3e5dfaddc113b5ab91993b27ed8f5e8d491a08a",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13607,7 +14122,7 @@
         "target_path": ".claude/worktrees/romantic-pascal-8d15af/references",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/romantic-pascal-8d15af/references/_folder-summary.ai.txt",
         "content_excerpt": "The `/references` directory acts as a foundational knowledge repository, centralizing standardized Markdown templates for project governance and technical documentation. It provides the mandatory schemas required for architectural blueprinting, feature lifecycle tracking, and impact assessments. By enforcing uniform structures across the codebase, these artifacts reduce onboarding friction and ens",
-        "content_hash": "bc106fbf9374e59f32801fb182137383b6dbca440c6a079dd3c8c1cc8b589d50",
+        "content_hash": "18654af8f7f3cc540eecbb8e436ee0e82587c2faa68d8efec2f49cb5ff052e1d",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13628,7 +14143,7 @@
         "target_path": ".claude/worktrees/romantic-pascal-8d15af/scripts",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/romantic-pascal-8d15af/scripts/_folder-summary.ai.txt",
         "content_excerpt": "The `scripts` directory provides lifecycle management and environment scaffolding for the \"Agentic SDLC\" toolset. It contains Node.js scripts designed to automate the integration of AI agent behavior into local development environments. These scripts enforce consistent documentation-first workflows, manage the deployment of skill assets to Claude CLI directories, and ensure clean uninstallation, a",
-        "content_hash": "c309360080cd01b87010449ba25eef2e1cd7ad71cb8dcda8c8792fdf9ebb073e",
+        "content_hash": "076e681202f29bd2f0449300dde089fd238d25ef3783f37abea471874ec36bb3",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13649,7 +14164,7 @@
         "target_path": ".claude/worktrees/romantic-pascal-8d15af/sdlc-test-project",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/romantic-pascal-8d15af/sdlc-test-project/_folder-summary.ai.txt",
         "content_excerpt": "This directory establishes a \"Documentation-as-Code\" governance framework for the SDLC. It coordinates between passive documentation artifacts (`ai_docs`), automated lifecycle triggers (`.codex`), and procedural instruction sets (`.cursorrules`, `CLAUDE.md`, `GEMINI.md`). The system ensures architectural alignment by gating development tasks behind mandatory planning, auditing, and synchronization",
-        "content_hash": "f13349e08bdd6db121981a6449c189962d95a448a4e320d438f739a029d4f640",
+        "content_hash": "d2defa3694ab3df5aaf16c7589f2336cfa7fbc7440bd7564097d59ad7176b2a0",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13670,7 +14185,7 @@
         "target_path": ".claude/worktrees/romantic-pascal-8d15af/sdlc-test-project/.codex",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/romantic-pascal-8d15af/sdlc-test-project/.codex/_folder-summary.ai.txt",
         "content_excerpt": "The `.codex` directory serves as the root for Governance-as-Code enforcement within the SDLC. It houses a single configuration file that acts as an automated gatekeeper, mandating documentation and auditing requirements before developer operations begin. It functions as an environmental trigger, integrating strictly with the session startup lifecycle to ensure architectural compliance prior to any",
-        "content_hash": "3982ca7b75eef2f7ffd66f6d9d83de2d564e2438f4e8127c8c61fc369fd4aaba",
+        "content_hash": "a223bd81815058b63614f98f043ef316e6f54a9914fc18c4f90e1864f86d4479",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13691,7 +14206,7 @@
         "target_path": ".claude/worktrees/romantic-pascal-8d15af/sdlc-test-project/ai_docs",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/romantic-pascal-8d15af/sdlc-test-project/ai_docs/_folder-summary.ai.txt",
         "content_excerpt": "The `ai_docs` directory serves as the project's documentation root, housing high-level governance, audit tracking, and strategic SDLC artifacts. It acts as an auxiliary knowledge layer that defines architectural constraints and historical status for the functional codebase. Managed primarily by developers and project stakeholders, these files provide the static metadata necessary to align implemen",
-        "content_hash": "a595b15bc19cd0c4cf7b97558dbd7001eaa1cc2811ee0b73619cb75f243bc8e4",
+        "content_hash": "21711128095dd4322742f94511109fd24bc6e3b6be843322f23ad03fd0700218",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13712,7 +14227,7 @@
         "target_path": ".claude/worktrees/romantic-pascal-8d15af/sdlc-test-project/ai_docs/audit",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/romantic-pascal-8d15af/sdlc-test-project/ai_docs/audit/_folder-summary.ai.txt",
         "content_excerpt": "The `ai_docs/audit` directory acts as the central repository for human-governed security and compliance tracking. It houses the documentation schema necessary to monitor the audit lifecycle of project components. Rather than executing automated security enforcement, it functions as a lightweight, static registry that maps file and directory paths to specific audit statuses, facilitating manual ove",
-        "content_hash": "c6e1d1ec4a254d7d1eee750281749529229a94ce8eb2c9928b7332ce367d3b6a",
+        "content_hash": "4f4742f74ab60c51b2fa7dcf7e7b33f2e9d8899b93d2e8803852d7ec225eee1e",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13733,7 +14248,7 @@
         "target_path": ".claude/worktrees/romantic-pascal-8d15af/sdlc-test-project/ai_docs/strategic",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/romantic-pascal-8d15af/sdlc-test-project/ai_docs/strategic/_folder-summary.ai.txt",
         "content_excerpt": "The `ai_docs/strategic` directory functions as the central knowledge repository for project governance and SDLC tracking. It maintains the high-level technical baseline, current feature inventory, and historical audit logs. These markdown documents serve as the source of truth for architectural standards and lifecycle status, providing developers and stakeholders with a bird's-eye view of project ",
-        "content_hash": "c5db531cc9079c9decdeb8e780e6454395130d15184e14278749c0df44adf238",
+        "content_hash": "719a706c634d925f10a8fefcb6d3d2bf5a619d6ba325034222dd4cdcbf4c5d15",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13754,7 +14269,7 @@
         "target_path": ".claude/worktrees/romantic-pascal-8d15af/skills",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/romantic-pascal-8d15af/skills/_folder-summary.ai.txt",
         "content_excerpt": "The `skills` directory acts as a container for modular agent capabilities, currently housing the `agentic-sdlc-skill`. This directory serves as the root for specialized operational logic that extends the agent's core functionality, enabling it to govern technical workflows, enforce architectural standards, and manage state transitions via structured documentation. It is designed for extensibility,",
-        "content_hash": "c25dce425d5a2e9e7a6f1008531a6d24248151ff39224964fa870b401b68c7fa",
+        "content_hash": "ddf2e1b5f6d62979a554db699e9cbfbec4f8ecf0569bb1f948262ac964cf56cf",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13775,7 +14290,7 @@
         "target_path": ".claude/worktrees/romantic-pascal-8d15af/skills/agentic-sdlc-skill",
         "source_path": ".workdir/ai_summaries/.claude/worktrees/romantic-pascal-8d15af/skills/agentic-sdlc-skill/_folder-summary.ai.txt",
         "content_excerpt": "The `agentic-sdlc-skill` directory establishes a protocol-driven framework for \"Documentation-First\" software development. It functions as a governance layer that mandates structured technical artifacts before code implementation, ensuring LLM agents maintain architectural consistency. The skill orchestrates the entire development lifecycle, bridging high-level planning with executable code while ",
-        "content_hash": "2caa72efd216b5352fc491fac48c52da15ec9f70af24f309768c17831a02fec5",
+        "content_hash": "ae5003d9e010b87e78a590664ecc9185abe5c1257f2d8ce07f2c187fee076f7d",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13858,8 +14373,8 @@
         "summary_kind": "folder_summary",
         "target_path": "ai_docs",
         "source_path": ".workdir/ai_summaries/ai_docs/_folder-summary.ai.txt",
-        "content_excerpt": "The `ai_docs` directory is the centralized governance, documentation, and compliance root for the `agentic-sdlc-v2` ecosystem. It functions as a structured hierarchy of meta-knowledge, spanning high-level strategic vision to granular, auto-generated technical specifications. This directory is consumed by developers and AI-agents to ensure repository alignment, architectural compliance, and automat",
-        "content_hash": "d707e75360699d5cc4745ec11bd5110bc0c5e8572afb865f425badf096429e37",
+        "content_excerpt": "The `ai_docs/` directory serves as the centralized knowledge and governance registry for the `agentic-sdlc` ecosystem. It structures documentation into six functional domains—ranging from high-level `vision` and `strategic` governance to low-level `functional` schemas and `audit` trails. This directory acts as the canonical source of truth for both human developers and automated tooling, ensuring ",
+        "content_hash": "e7799abc362fce783c95826c1e84725c12d5b19f762ad6f3c415e099eee2b01c",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13879,8 +14394,8 @@
         "summary_kind": "folder_summary",
         "target_path": "ai_docs/audit",
         "source_path": ".workdir/ai_summaries/ai_docs/audit/_folder-summary.ai.txt",
-        "content_excerpt": "The `ai_docs/audit` directory acts as the centralized governance and tracking hub for the repository's compliance and release lifecycle. It aggregates historical audit data, architectural status tracking, and operational handoff documentation. This directory provides engineering stakeholders with traceability across the artifact lifecycle and ensures synchronization between ongoing audit initiativ",
-        "content_hash": "229a338738180f5944d8acb5a7de338a119a2bd656f7d8f42d53ea9c00d217e2",
+        "content_excerpt": "The `ai_docs/audit` directory acts as the governance and compliance hub for the SDLC. It tracks the lifecycle of codebase audits, release milestones, and gated review procedures. By aggregating documentation from the `reviews/` sub-directory with high-level planning and handoff artifacts, it provides a unified audit trail that bridges technical implementation with organizational compliance protoco",
+        "content_hash": "71aa2fc4da4683b0b1807827599dc5815bb7db5c57a7fc9bb9bbdf225ac4cb2f",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13900,8 +14415,8 @@
         "summary_kind": "folder_summary",
         "target_path": "ai_docs/audit/reviews",
         "source_path": ".workdir/ai_summaries/ai_docs/audit/reviews/_folder-summary.ai.txt",
-        "content_excerpt": "The `ai_docs/audit/reviews` directory functions as the centralized audit-trail repository for the system's quality assurance pipeline. It captures the outcomes of independent review-gate processes, aggregating both quantitative performance metrics and qualitative narrative data for every audited artifact. This directory serves as a diagnostic feedback loop for engineering stakeholders, ensuring tr",
-        "content_hash": "e379a12ad0af8ba26fd667686ceb626dc7c02a6f007a79198589ad75a817ff5a",
+        "content_excerpt": "The `ai_docs/audit/reviews` directory serves as the centralized audit trail for the SDLC review process. It acts as an enforcement mechanism for the \"Model-per-dispatch\" pattern, capturing the lifecycle of technical artifact and code reviews. This repository ensures compliance with SDLC §4.5 and §4.6 protocols, providing a bridge between design documentation, implementation, and security threat-mo",
+        "content_hash": "4023ff474a0a563879bf45e04b91f4588cdd28a38536d00b6fe1292178f4ebe2",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13922,7 +14437,7 @@
         "target_path": "ai_docs/functional",
         "source_path": ".workdir/ai_summaries/ai_docs/functional/_folder-summary.ai.txt",
         "content_excerpt": "The `ai_docs/functional` directory serves as the static, authoritative documentation layer for the `agentic-sdlc-v2` framework. It provides a source-of-truth registry for architectural boundaries, data schemas, system entry points, integration protocols, and operational workflows. These documents are primarily auto-generated by the `devPNT` engine to mirror codebase state, acting as a structural m",
-        "content_hash": "b286df7c89994d27a15bc9c5408b33c80b518d24cd31813223d30e7cf13d4647",
+        "content_hash": "bb8ff9917591d8e1c22f2926ac41e9a417001d461faaf8c42d7f684daf7e188c",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13943,7 +14458,7 @@
         "target_path": "ai_docs/reference",
         "source_path": ".workdir/ai_summaries/ai_docs/reference/_folder-summary.ai.txt",
         "content_excerpt": "The `ai_docs/reference` directory acts as the central registry and procedural hub for the `@antoneeo/agentic-sdlc-skill` project. It maintains high-level operational documentation, including release runbooks and automated indexing. By bridging static reference guides with the logic in `.sources`, this directory ensures that repository metadata and deployment protocols remain synchronized and disco",
-        "content_hash": "b58750c4aaa30dab3e4ee30d6b4b2aa027a587bfe1262d63fa6791802450bcb5",
+        "content_hash": "b53a1ae29a7ad66a453bb5e53dc7dd0b83f953d1f53cc78f6d6f7558e0138f9e",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13964,7 +14479,7 @@
         "target_path": "ai_docs/reference/.sources",
         "source_path": ".workdir/ai_summaries/ai_docs/reference/.sources/_folder-summary.ai.txt",
         "content_excerpt": "The `ai_docs/reference/.sources` directory acts as the definitive procedural repository for the `@antoneeo/agentic-sdlc-skill` package. It contains the master release runbook, which governs the synchronization between package metadata, versioning, and git state. This directory serves as the source-of-truth for automated guidance tools, ensuring human-in-the-loop compliance before production deploy",
-        "content_hash": "f5b8699889019cc86054d44cf7e7fdddee2a647091d0c4f8e2ebbf6264386abe",
+        "content_hash": "929c342ba6ef7a2f9d3a1f95470fe5ec3d96aa2ea9bfec79b7f880ec8cac4c0e",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -13984,8 +14499,8 @@
         "summary_kind": "folder_summary",
         "target_path": "ai_docs/solutions",
         "source_path": ".workdir/ai_summaries/ai_docs/solutions/_folder-summary.ai.txt",
-        "content_excerpt": "The `ai_docs/solutions` directory serves as the centralized repository for high-level architectural specifications, governance protocols, and implementation roadmaps for the Agentic SDLC and Antigravity plugin ecosystem. It acts as the \"source of truth\" for cross-module integration logic, aligning development workflows with vision-first enforcement and hybrid governance models. These documents coo",
-        "content_hash": "7f12cf72db921d619fa0e6d67c1826acc747962b722e1ea1eb5f779b980b8c7c",
+        "content_excerpt": "The `ai_docs/solutions` directory functions as the architectural and procedural repository for the `agentic-sdlc` ecosystem. It contains design specifications, governance policies, and integration contracts that orchestrate how agentic skills interact with external systems like devPNT and local project environments. These documents serve as the source of truth for plugin standards, state managemen",
+        "content_hash": "f9113ebad29fa976ae555c246ae15281f4bd62b2a36d94eaeaaa50cb40d587bd",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -14006,7 +14521,7 @@
         "target_path": "ai_docs/strategic",
         "source_path": ".workdir/ai_summaries/ai_docs/strategic/_folder-summary.ai.txt",
         "content_excerpt": "The `ai_docs/strategic` directory functions as the project’s governance and architectural knowledge base. It maintains the single source of truth for the `agentic-sdlc` lifecycle, codifying the project’s high-level strategy, feature roadmap, and historical audit logs. These markdown documents bridge the gap between abstract project vision and concrete implementation, serving as the central referen",
-        "content_hash": "f62ad70722b6ed717a261516111baec23f2b87e394351244800766815e00f66f",
+        "content_hash": "a60bbea56ac547a5286a964da4ea2612cdf5fa7b0123dd86cede7e0bd8c24a30",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -14027,7 +14542,7 @@
         "target_path": "ai_docs/vision",
         "source_path": ".workdir/ai_summaries/ai_docs/vision/_folder-summary.ai.txt",
         "content_excerpt": "The `ai_docs/vision` directory serves as the strategic root for the Agentic SDLC methodology. It orchestrates the alignment of AI-driven coding agents with long-term project intent by providing the definitive architectural roadmap, governance protocols, and guiding principles. This layer is consumed by development teams to maintain consistency across standalone and hybrid execution environments, a",
-        "content_hash": "f77e55e671a3f8cfd0e1bbf62af851db00d70db02c8229bfa86e4329b3d4f79c",
+        "content_hash": "f941f938718fd3a78259a6017962283434cb0660c77fee2143b85906dcf233eb",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -14048,7 +14563,7 @@
         "target_path": "ai_docs/vision/features",
         "source_path": ".workdir/ai_summaries/ai_docs/vision/features/_folder-summary.ai.txt",
         "content_excerpt": "The `ai_docs/vision/features` directory acts as the architectural policy and strategic roadmap layer for the Vision system. It centralizes the definition of agentic behaviors, governance protocols, and integration patterns required for AI-driven software development. By establishing these standards, it ensures consistent execution across both standalone local environments and hybrid devPNT-integra",
-        "content_hash": "2b5587cd1bc2f3280ed09c7c2c2d7ecf2cf9e704108710a6dd72ba52fdbdeaec",
+        "content_hash": "c7c3aeea65cfd6c6def73795c44799febbc7fe42ff3f77e4e71a90b121cf6d8b",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -14068,8 +14583,8 @@
         "summary_kind": "folder_summary",
         "target_path": "docs",
         "source_path": ".workdir/ai_summaries/docs/_folder-summary.ai.txt",
-        "content_excerpt": "The `docs` directory acts as the central knowledge repository for the `agentic-sdlc-v2` ecosystem. It contains architectural specifications and functional references necessary for maintaining system integrity. By isolating technical documentation from source code, it provides developers with a clear mapping of system boundaries, interfaces, and data schemas, serving as the primary reference for bo",
-        "content_hash": "fad16d122ab7a75cfe360d492ccaf0af6a0b45f2b8ed0c1e309ba2b02cd5d8d2",
+        "content_excerpt": "The `docs/` directory acts as the root container for the project’s documentation, housing structured operational and architectural knowledge. It establishes the \"documentation-as-code\" layer, ensuring developers have a centralized reference for system governance and runtime configurations. By delegating specific technical content to sub-directories like `functional/`, the structure separates high-",
+        "content_hash": "a029b24011adad0edcdc9429c2d9aa0d0d0570ca92c58aeace3e3a76f89e8290",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -14089,8 +14604,8 @@
         "summary_kind": "folder_summary",
         "target_path": "docs/functional",
         "source_path": ".workdir/ai_summaries/docs/functional/_folder-summary.ai.txt",
-        "content_excerpt": "The `docs/functional` directory serves as the canonical technical reference for the `agentic-sdlc-v2` ecosystem. It contains static documentation defining architectural boundaries, data models, entry points, communication protocols, and execution workflows. These files function as a \"single source of truth\" for developers to understand system structure and interface contracts without navigating de",
-        "content_hash": "7b324e409a089e02f8c6de394da2d6b025916e8ed80b66c0bb8aa8d96dfa0d58",
+        "content_excerpt": "The `docs/functional` directory serves as the centralized repository for the project's architectural and operational blueprints. It maintains the \"documentation-first\" governance model, providing static references that map system structure, data schemas, and runtime interfaces. These files act as the source of truth for developers to understand entity relationships, execution entry points, and end",
+        "content_hash": "a2c4c678bbb1b53e2ef1740a54418718cb6b794bffa18e9c8ba5e9e46ca7b022",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -14111,7 +14626,7 @@
         "target_path": "examples",
         "source_path": ".workdir/ai_summaries/examples/_folder-summary.ai.txt",
         "content_excerpt": "The `examples/` directory serves as the root container for pedagogical resources and project-specific documentation artifacts. It acts as the primary access point for developers to understand architectural guidelines and reference implementation patterns. By centralizing these assets, the directory maintains clear separation between project meta-governance and the functional codebase, facilitating",
-        "content_hash": "34c1e1f7526c65fc2212dc378831c1b5c5fb682399a32ff95a1da7043d71d280",
+        "content_hash": "889c34a60bada6a974050e9b8a6c432d8f00523498426a7f1bea524e486d7fc8",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -14132,7 +14647,7 @@
         "target_path": "examples/docs",
         "source_path": ".workdir/ai_summaries/examples/docs/_folder-summary.ai.txt",
         "content_excerpt": "The `examples/docs` directory serves as the project’s central documentation repository, housing architectural standards and historical feature tracking. It provides the source of truth for the \"Documentation-First\" development protocol, ensuring the SDLC remains traceable. Developers consume these files to align on technical stack, testing standards, and development milestones, while the `solution",
-        "content_hash": "2e3cc2e539c15d619b05a5aab3b635e181ca692ab1b1620a4bc206288f14e209",
+        "content_hash": "09bc752449a0d89a7df3d44650004a8451d78c66af799d35f5500e212d63f149",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -14153,7 +14668,7 @@
         "target_path": "examples/docs/solutions",
         "source_path": ".workdir/ai_summaries/examples/docs/solutions/_folder-summary.ai.txt",
         "content_excerpt": "The `examples/docs/solutions` directory serves as a centralized knowledge base for high-level technical architecture and implementation roadmaps. It bridges the gap between conceptual design and executable implementation by documenting system requirements, dependency management, and build strategies. Developers and architects consume these documents to understand the \"why\" and \"how\" behind specifi",
-        "content_hash": "95ddb49d00019e62f5ef624b5e96b7f0530ed5dead33ac2a18abe81c17ff566a",
+        "content_hash": "b4f49673cd388daab0037cca1df001cdf4fa4c1abea14f3d4e022ff7c1025e64",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -14195,7 +14710,7 @@
         "target_path": "scripts",
         "source_path": ".workdir/ai_summaries/scripts/_folder-summary.ai.txt",
         "content_excerpt": "The `scripts/` directory acts as the lifecycle management engine for the Agentic SDLC, orchestrating project bootstrapping and cross-environment tool synchronization. It consumes local templates and configuration constants to maintain project structure, while producing automated file-system state changes in target development environments. The directory acts as the bridge between package installat",
-        "content_hash": "323dd77092097bf7c6bdc3c11c784b288718fdb99811b7e701da3bf0b2f57778",
+        "content_hash": "0fc57ec946342a0289933147f85df51e0c36e7770be2dfd5a4573b4e9d712fb8",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -14216,7 +14731,7 @@
         "target_path": "sdlc-test-project",
         "source_path": ".workdir/ai_summaries/sdlc-test-project/_folder-summary.ai.txt",
         "content_excerpt": "The `sdlc-test-project` root acts as a meta-governance layer, standardizing AI agent behavior through rigid, documentation-first protocols. It enforces a strict state machine for development (Audit → Analysis → Dev/Test → Closing), ensuring all code changes are anchored to persistent documentation. The structure decouples procedural compliance from feature logic, requiring that documentation and s",
-        "content_hash": "412c79a5afa3b379a87f3fa2c10de7eebff1ae3f15cc220c4451ce87aeeb89af",
+        "content_hash": "ce21c1e1cdabc03f53fe13bb3e7d58a79779c7fbbcbd110231d98d4d5df6377d",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -14237,7 +14752,7 @@
         "target_path": "sdlc-test-project/.codex",
         "source_path": ".workdir/ai_summaries/sdlc-test-project/.codex/_folder-summary.ai.txt",
         "content_excerpt": "The `sdlc-test-project/.codex` directory serves as the control plane for enforcing organizational SDLC protocols. It acts as an external configuration layer that intercepts agent session initialization to inject mandatory behavioral guardrails. By decoupling procedural compliance from core application logic, it ensures that all development activities adhere to a strict \"Documentation-First\" workfl",
-        "content_hash": "4d92e76a2074745451396d51dd7e2707f5962eb3b5910b63aaacf843b9eb5836",
+        "content_hash": "d06950ed47a320ff88863f4270a983d8aa7e5e689b81b5513dabc05af519a5b4",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -14258,7 +14773,7 @@
         "target_path": "sdlc-test-project/ai_docs",
         "source_path": ".workdir/ai_summaries/sdlc-test-project/ai_docs/_folder-summary.ai.txt",
         "content_excerpt": "The `sdlc-test-project/ai_docs` directory acts as the centralized documentation layer for project governance, security auditing, and technical strategy. It organizes high-level architectural knowledge, historical feature tracking, and compliance roadmaps into distinct functional silos. This directory serves as a static knowledge base for developers to maintain alignment on project standards withou",
-        "content_hash": "55a09efc0681126abdd5d96b61e247cb0076fe759df5ab6b9e3dcede53b106cb",
+        "content_hash": "e8bb94cd72e2b0c9203cb8aed54a11e61ff6599a72298e835552125e83804dc9",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -14279,7 +14794,7 @@
         "target_path": "sdlc-test-project/ai_docs/audit",
         "source_path": ".workdir/ai_summaries/sdlc-test-project/ai_docs/audit/_folder-summary.ai.txt",
         "content_excerpt": "The `sdlc-test-project/ai_docs/audit` directory serves as the centralized tracking hub for codebase health and security verification. It functions as a documentation layer for project maintainers to record audit progress, findings, and remediation status. By providing a structured registry, it ensures transparency during manual code review cycles and allows team members to coordinate auditing task",
-        "content_hash": "7a070e4c1a9d562714fef3e5efcbffca81b29b398d5a6b885feef60ebe943a91",
+        "content_hash": "5b591bccacaed481abc048e1d832708b716ec28e5d3a140d4b2ef23753c561c0",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -14300,7 +14815,7 @@
         "target_path": "sdlc-test-project/ai_docs/solutions",
         "source_path": ".workdir/ai_summaries/sdlc-test-project/ai_docs/solutions/_folder-summary.ai.txt",
         "content_excerpt": "The `sdlc-test-project/ai_docs/solutions` directory is currently an unpopulated path within the documentation architecture. It is designed to serve as a repository for technical solution patterns or AI-generated implementation blueprints. As of the current state, it is inactive and does not contribute to the production build or documentation lifecycle.",
-        "content_hash": "183ada23dc5685fe9485282058fc748566f2d3306ae38135ad0a4c99fedb8162",
+        "content_hash": "a8ecdb21aac3efc343713279a34fb9339d486a27a151e48c71e6ffa5e9eff8f9",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -14321,7 +14836,7 @@
         "target_path": "sdlc-test-project/ai_docs/strategic",
         "source_path": ".workdir/ai_summaries/sdlc-test-project/ai_docs/strategic/_folder-summary.ai.txt",
         "content_excerpt": "The `sdlc-test-project/ai_docs/strategic` directory functions as the documentation repository for the project’s high-level technical governance. It provides a skeletal framework for defining architectural standards, cataloging current capabilities, and maintaining a historical ledger of feature development. These documents act as a single source of truth for design patterns and milestone tracking,",
-        "content_hash": "2440b494297869e2e27a73a5834091f15e95ca006be06cc831a25b7303516b44",
+        "content_hash": "ea72b848040b1867f08c07102f826e503fb295f6c3f5a649d24e55b4db04d104",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -14341,8 +14856,8 @@
         "summary_kind": "folder_summary",
         "target_path": "skills",
         "source_path": ".workdir/ai_summaries/skills/_folder-summary.ai.txt",
-        "content_excerpt": "The `skills` directory serves as the root container for agent-executable protocols and domain-specific tooling. It acts as a modular library of \"skills\"—defined as cohesive sets of logic and documentation—that extend agent capabilities in software engineering tasks. This directory is consumed by the broader agentic framework to enforce architectural standards, automate lifecycle procedures, and ma",
-        "content_hash": "098034ddbf6eaf26afc4627975f9cfbb30fc7323efb540db420e2cf405a66b87",
+        "content_excerpt": "The `skills` directory serves as the root container for specialized agentic capabilities. It currently acts as a single-node hierarchy housing the `agentic-sdlc-skill`, which encapsulates the project's procedural governance and development lifecycle framework. This structure is designed to isolate domain-specific expertise from core orchestration, ensuring that SDLC protocols remain decoupled from",
+        "content_hash": "0946330ebde0c493a14b316ef01a807517e5ab482bfd2bae699b94d114c0b3a6",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -14362,8 +14877,8 @@
         "summary_kind": "folder_summary",
         "target_path": "skills/agentic-sdlc-skill",
         "source_path": ".workdir/ai_summaries/skills/agentic-sdlc-skill/_folder-summary.ai.txt",
-        "content_excerpt": "The `skills/agentic-sdlc-skill` directory provides a documentation-first SDLC protocol and the necessary CLI tooling to enforce it. It defines a \"Guardrail\" and \"Shadow\" architecture where developers and agents interact with structured templates (`templates.md`) and operative guides (`guides.md`). The `scripts/` directory serves as the technical enforcement layer, ensuring documentation integrity,",
-        "content_hash": "d81fc932bbafd0f3d041f05ebc249630385449772151046ce287862dd7b8973d",
+        "content_excerpt": "The `skills/agentic-sdlc-skill` directory defines the governance and procedural framework for agentic development. It provides a \"documentation-first\" SDLC where lifecycle states, quality gates, and technical protocols are enforced via mandatory templates and mechanical validation. The architecture separates process definitions (procedural markdown) from the execution engine (`scripts/`), ensuring",
+        "content_hash": "29afd2922ea3b3a8346406bed767a6bbd4392d5872f1c80a9a4867a088c2add3",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -14383,8 +14898,8 @@
         "summary_kind": "folder_summary",
         "target_path": "skills/agentic-sdlc-skill/scripts",
         "source_path": ".workdir/ai_summaries/skills/agentic-sdlc-skill/scripts/_folder-summary.ai.txt",
-        "content_excerpt": "The `scripts/` directory functions as the command-line control plane for the Agentic SDLC skill. It provides the authoritative validation, indexing, and gating mechanisms required to maintain documentation integrity within the `ai_docs/` structure. The contained `sdlc_check.py` script serves as both an orchestration layer for developers and a programmatic gatekeeper for automated agents, ensuring ",
-        "content_hash": "4ff4b659e8319079729cc42d817c6806684d295f113e3a8625fe8b6499be4118",
+        "content_excerpt": "The `skills/agentic-sdlc-skill/scripts` directory acts as the mechanical enforcement engine for the Agentic SDLC framework. It serves as the bridge between filesystem state and architectural governance, ensuring documentation coherence and enforcing gating policies. It is consumed by CI/CD pipelines and local development hooks to validate `ai_docs/` structure, track feature drift, and prevent unau",
+        "content_hash": "95fb76dafcc08145247dde18fbb2a5b146f0476ddfd6d8757a5bda272ab44775",
         "provenance": "summary_pipeline",
         "confidence": 1.0,
         "is_static_confirmed": true
@@ -14400,7 +14915,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 413
+        "line": 449
       }
     },
     {
@@ -14411,7 +14926,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 808
+        "line": 845
       }
     },
     {
@@ -14422,7 +14937,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 804
+        "line": 841
       }
     },
     {
@@ -14433,7 +14948,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 812
+        "line": 849
       }
     },
     {
@@ -14444,7 +14959,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 816
+        "line": 853
       }
     },
     {
@@ -14455,7 +14970,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 702
+        "line": 739
       }
     },
     {
@@ -14466,7 +14981,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 721
+        "line": 758
       }
     },
     {
@@ -14477,7 +14992,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 719
+        "line": 756
       }
     },
     {
@@ -14488,7 +15003,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 742
+        "line": 779
       }
     },
     {
@@ -14499,7 +15014,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 634
+        "line": 671
       }
     },
     {
@@ -14510,7 +15025,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 646
+        "line": 683
       }
     },
     {
@@ -14521,7 +15036,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 684
+        "line": 721
       }
     },
     {
@@ -14532,7 +15047,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 656
+        "line": 693
       }
     },
     {
@@ -14543,7 +15058,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 248
+        "line": 252
       }
     },
     {
@@ -14554,7 +15069,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 172
+        "line": 176
       }
     },
     {
@@ -14565,7 +15080,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 821
+        "line": 858
       }
     },
     {
@@ -14576,7 +15091,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 498
+        "line": 534
       }
     },
     {
@@ -14587,7 +15102,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 629
+        "line": 666
       }
     },
     {
@@ -14598,7 +15113,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 652
+        "line": 689
       }
     },
     {
@@ -14609,7 +15124,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 108
+        "line": 112
       }
     },
     {
@@ -14620,7 +15135,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 684
+        "line": 721
       }
     },
     {
@@ -14631,7 +15146,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 425
+        "line": 461
       }
     },
     {
@@ -14642,7 +15157,18 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 418
+        "line": 454
+      }
+    },
+    {
+      "type": "calls",
+      "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "to_ref": "python_symbol:skills/agentic-sdlc-skill/scripts/sdlc_check.py:check_kb_collisions",
+      "provenance": "python_symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "line": 584
       }
     },
     {
@@ -14653,7 +15179,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 349
+        "line": 353
       }
     },
     {
@@ -14664,7 +15190,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 682
+        "line": 719
       }
     },
     {
@@ -14675,7 +15201,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 758
+        "line": 795
       }
     },
     {
@@ -14686,7 +15212,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 487
+        "line": 523
       }
     },
     {
@@ -14697,7 +15223,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 170
+        "line": 174
       }
     },
     {
@@ -14708,7 +15234,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 354
+        "line": 358
       }
     },
     {
@@ -14719,7 +15245,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 399
+        "line": 405
       }
     },
     {
@@ -14730,7 +15256,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 409
+        "line": 445
       }
     },
     {
@@ -14741,7 +15267,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 619
+        "line": 656
       }
     },
     {
@@ -14752,7 +15278,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 265
+        "line": 269
       }
     },
     {
@@ -14763,7 +15289,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 529
+        "line": 565
       }
     },
     {
@@ -14774,7 +15300,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 479
+        "line": 515
       }
     },
     {
@@ -14785,7 +15311,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 536
+        "line": 572
       }
     },
     {
@@ -14796,7 +15322,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 134
+        "line": 138
       }
     },
     {
@@ -14807,7 +15333,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 374
+        "line": 378
       }
     },
     {
@@ -14818,7 +15344,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 400
+        "line": 436
       }
     },
     {
@@ -14829,7 +15355,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 750
+        "line": 787
       }
     },
     {
@@ -14840,7 +15366,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 565
+        "line": 602
       }
     },
     {
@@ -14851,7 +15377,18 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 372
+        "line": 376
+      }
+    },
+    {
+      "type": "calls",
+      "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "to_ref": "python_symbol_name:(kb_ref / ov).resolve",
+      "provenance": "python_symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "line": 415
       }
     },
     {
@@ -14862,7 +15399,18 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 402
+        "line": 438
+      }
+    },
+    {
+      "type": "calls",
+      "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "to_ref": "python_symbol_name:(meta.get('overrides') or '').strip",
+      "provenance": "python_symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "line": 407
       }
     },
     {
@@ -14873,7 +15421,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 403
+        "line": 439
       }
     },
     {
@@ -14884,7 +15432,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 90
+        "line": 94
       }
     },
     {
@@ -14895,7 +15443,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 737
+        "line": 774
       }
     },
     {
@@ -14906,7 +15454,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 98
+        "line": 102
       }
     },
     {
@@ -14917,7 +15465,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 543
+        "line": 579
       }
     },
     {
@@ -14928,7 +15476,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 699
+        "line": 736
       }
     },
     {
@@ -14939,7 +15487,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 489
+        "line": 525
       }
     },
     {
@@ -14950,7 +15498,18 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 515
+        "line": 551
+      }
+    },
+    {
+      "type": "calls",
+      "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "to_ref": "python_symbol_name:DEFAULT_KB_ROOT",
+      "provenance": "python_symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "line": 396
       }
     },
     {
@@ -14961,7 +15520,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 77
+        "line": 81
       }
     },
     {
@@ -14972,7 +15531,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 347
+        "line": 351
       }
     },
     {
@@ -14983,7 +15542,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 391
+        "line": 427
       }
     },
     {
@@ -14994,7 +15553,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 533
+        "line": 569
       }
     },
     {
@@ -15005,7 +15564,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 533
+        "line": 569
       }
     },
     {
@@ -15016,7 +15575,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 527
+        "line": 563
       }
     },
     {
@@ -15027,7 +15586,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 259
+        "line": 263
       }
     },
     {
@@ -15038,7 +15597,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 148
+        "line": 152
       }
     },
     {
@@ -15049,7 +15608,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 148
+        "line": 152
       }
     },
     {
@@ -15060,7 +15619,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 339
+        "line": 343
       }
     },
     {
@@ -15071,7 +15630,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 355
+        "line": 359
       }
     },
     {
@@ -15082,7 +15641,18 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 658
+        "line": 695
+      }
+    },
+    {
+      "type": "calls",
+      "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "to_ref": "python_symbol_name:OSError",
+      "provenance": "python_symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "line": 401
       }
     },
     {
@@ -15093,7 +15663,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 88
+        "line": 61
       }
     },
     {
@@ -15104,7 +15674,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 742
+        "line": 779
       }
     },
     {
@@ -15115,7 +15685,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 540
+        "line": 576
       }
     },
     {
@@ -15126,7 +15696,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 540
+        "line": 576
       }
     },
     {
@@ -15137,7 +15707,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 744
+        "line": 781
       }
     },
     {
@@ -15148,7 +15718,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 744
+        "line": 781
       }
     },
     {
@@ -15159,7 +15729,18 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 88
+        "line": 92
+      }
+    },
+    {
+      "type": "calls",
+      "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "to_ref": "python_symbol_name:Path.home",
+      "provenance": "python_symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "line": 61
       }
     },
     {
@@ -15170,7 +15751,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 487
+        "line": 523
       }
     },
     {
@@ -15181,7 +15762,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 191
+        "line": 195
       }
     },
     {
@@ -15192,7 +15773,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 485
+        "line": 521
       }
     },
     {
@@ -15203,7 +15784,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 478
+        "line": 514
       }
     },
     {
@@ -15214,7 +15795,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 450
+        "line": 486
       }
     },
     {
@@ -15225,7 +15806,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 129
+        "line": 133
       }
     },
     {
@@ -15236,7 +15817,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 315
+        "line": 319
       }
     },
     {
@@ -15247,7 +15828,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 315
+        "line": 319
       }
     },
     {
@@ -15258,7 +15839,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 306
+        "line": 310
       }
     },
     {
@@ -15269,7 +15850,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 306
+        "line": 310
       }
     },
     {
@@ -15280,7 +15861,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 820
+        "line": 857
       }
     },
     {
@@ -15291,7 +15872,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 435
+        "line": 471
       }
     },
     {
@@ -15302,7 +15883,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 566
+        "line": 603
       }
     },
     {
@@ -15313,7 +15894,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 340
+        "line": 344
       }
     },
     {
@@ -15324,7 +15905,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 441
+        "line": 477
       }
     },
     {
@@ -15335,7 +15916,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 435
+        "line": 471
       }
     },
     {
@@ -15346,7 +15927,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 465
+        "line": 501
       }
     },
     {
@@ -15357,7 +15938,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 183
+        "line": 187
       }
     },
     {
@@ -15368,7 +15949,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 789
+        "line": 826
       }
     },
     {
@@ -15379,7 +15960,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 789
+        "line": 826
       }
     },
     {
@@ -15390,7 +15971,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 802
+        "line": 839
       }
     },
     {
@@ -15401,7 +15982,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 705
+        "line": 742
       }
     },
     {
@@ -15412,7 +15993,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 705
+        "line": 742
       }
     },
     {
@@ -15423,7 +16004,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 775
+        "line": 812
       }
     },
     {
@@ -15434,7 +16015,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 775
+        "line": 812
       }
     },
     {
@@ -15445,7 +16026,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 730
+        "line": 767
       }
     },
     {
@@ -15456,7 +16037,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 803
+        "line": 840
       }
     },
     {
@@ -15467,7 +16048,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 730
+        "line": 767
       }
     },
     {
@@ -15478,7 +16059,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 731
+        "line": 768
       }
     },
     {
@@ -15489,7 +16070,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 758
+        "line": 795
       }
     },
     {
@@ -15500,7 +16081,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 816
+        "line": 853
       }
     },
     {
@@ -15511,7 +16092,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 750
+        "line": 787
       }
     },
     {
@@ -15522,7 +16103,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 742
+        "line": 779
       }
     },
     {
@@ -15533,7 +16114,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 808
+        "line": 845
       }
     },
     {
@@ -15544,7 +16125,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 802
+        "line": 839
       }
     },
     {
@@ -15555,7 +16136,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 341
+        "line": 345
       }
     },
     {
@@ -15566,7 +16147,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 341
+        "line": 345
       }
     },
     {
@@ -15577,7 +16158,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 343
+        "line": 347
       }
     },
     {
@@ -15588,7 +16169,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 296
+        "line": 300
       }
     },
     {
@@ -15599,7 +16180,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 222
+        "line": 226
       }
     },
     {
@@ -15610,7 +16191,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 364
+        "line": 368
       }
     },
     {
@@ -15621,7 +16202,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 366
+        "line": 370
       }
     },
     {
@@ -15632,7 +16213,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 364
+        "line": 368
       }
     },
     {
@@ -15643,7 +16224,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 364
+        "line": 368
       }
     },
     {
@@ -15654,7 +16235,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 700
+        "line": 737
       }
     },
     {
@@ -15665,7 +16246,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 700
+        "line": 737
       }
     },
     {
@@ -15676,7 +16257,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 591
+        "line": 628
       }
     },
     {
@@ -15687,7 +16268,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 591
+        "line": 628
       }
     },
     {
@@ -15698,7 +16279,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 149
+        "line": 153
       }
     },
     {
@@ -15709,7 +16290,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 519
+        "line": 555
       }
     },
     {
@@ -15720,7 +16301,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 519
+        "line": 555
       }
     },
     {
@@ -15731,7 +16312,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 592
+        "line": 629
       }
     },
     {
@@ -15742,7 +16323,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 594
+        "line": 631
       }
     },
     {
@@ -15753,7 +16334,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 599
+        "line": 636
       }
     },
     {
@@ -15764,7 +16345,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 239
+        "line": 243
       }
     },
     {
@@ -15775,7 +16356,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 659
+        "line": 696
       }
     },
     {
@@ -15786,7 +16367,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 99
+        "line": 103
       }
     },
     {
@@ -15797,7 +16378,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 776
+        "line": 813
       }
     },
     {
@@ -15808,7 +16389,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 776
+        "line": 813
       }
     },
     {
@@ -15819,7 +16400,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 89
+        "line": 93
       }
     },
     {
@@ -15830,7 +16411,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 89
+        "line": 93
       }
     },
     {
@@ -15841,7 +16422,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 191
+        "line": 195
       }
     },
     {
@@ -15852,7 +16433,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 191
+        "line": 195
       }
     },
     {
@@ -15863,7 +16444,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 84
+        "line": 88
       }
     },
     {
@@ -15874,7 +16455,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 125
+        "line": 129
       }
     },
     {
@@ -15885,7 +16466,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 657
+        "line": 694
       }
     },
     {
@@ -15896,7 +16477,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 84
+        "line": 88
       }
     },
     {
@@ -15907,7 +16488,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 84
+        "line": 88
       }
     },
     {
@@ -15918,7 +16499,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 564
+        "line": 601
       }
     },
     {
@@ -15929,7 +16510,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 564
+        "line": 601
       }
     },
     {
@@ -15940,7 +16521,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 312
+        "line": 316
       }
     },
     {
@@ -15951,7 +16532,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 331
+        "line": 335
       }
     },
     {
@@ -15962,7 +16543,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 539
+        "line": 575
       }
     },
     {
@@ -15973,7 +16554,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 191
+        "line": 195
       }
     },
     {
@@ -15984,7 +16565,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 193
+        "line": 197
       }
     },
     {
@@ -15995,7 +16576,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 705
+        "line": 742
       }
     },
     {
@@ -16006,7 +16587,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 363
+        "line": 367
       }
     },
     {
@@ -16017,7 +16598,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 620
+        "line": 657
       }
     },
     {
@@ -16028,7 +16609,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 620
+        "line": 657
       }
     },
     {
@@ -16039,7 +16620,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 126
+        "line": 130
       }
     },
     {
@@ -16050,7 +16631,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 127
+        "line": 131
       }
     },
     {
@@ -16061,7 +16642,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 126
+        "line": 130
       }
     },
     {
@@ -16072,7 +16653,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 574
+        "line": 611
       }
     },
     {
@@ -16083,7 +16664,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 490
+        "line": 526
       }
     },
     {
@@ -16094,7 +16675,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 588
+        "line": 625
       }
     },
     {
@@ -16105,7 +16686,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 458
+        "line": 412
       }
     },
     {
@@ -16116,7 +16697,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 458
+        "line": 412
       }
     },
     {
@@ -16127,7 +16708,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 701
+        "line": 738
       }
     },
     {
@@ -16138,7 +16719,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 452
+        "line": 488
       }
     },
     {
@@ -16149,7 +16730,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 452
+        "line": 488
       }
     },
     {
@@ -16160,7 +16741,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 712
+        "line": 749
       }
     },
     {
@@ -16171,7 +16752,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 712
+        "line": 749
       }
     },
     {
@@ -16182,7 +16763,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 713
+        "line": 750
       }
     },
     {
@@ -16193,7 +16774,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 471
+        "line": 507
       }
     },
     {
@@ -16204,7 +16785,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 740
+        "line": 777
       }
     },
     {
@@ -16215,7 +16796,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 192
+        "line": 196
       }
     },
     {
@@ -16226,7 +16807,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 158
+        "line": 162
       }
     },
     {
@@ -16237,7 +16818,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 158
+        "line": 162
       }
     },
     {
@@ -16248,7 +16829,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 158
+        "line": 162
       }
     },
     {
@@ -16259,7 +16840,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 657
+        "line": 694
       }
     },
     {
@@ -16270,7 +16851,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 659
+        "line": 696
       }
     },
     {
@@ -16281,7 +16862,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 657
+        "line": 694
       }
     },
     {
@@ -16292,7 +16873,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 657
+        "line": 694
       }
     },
     {
@@ -16303,7 +16884,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 425
+        "line": 461
       }
     },
     {
@@ -16314,7 +16895,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 427
+        "line": 463
       }
     },
     {
@@ -16325,7 +16906,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 425
+        "line": 461
       }
     },
     {
@@ -16336,7 +16917,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 798
+        "line": 835
       }
     },
     {
@@ -16347,7 +16928,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 798
+        "line": 835
       }
     },
     {
@@ -16358,7 +16939,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 424
+        "line": 460
       }
     },
     {
@@ -16369,7 +16950,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 117
+        "line": 121
       }
     },
     {
@@ -16380,7 +16961,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 118
+        "line": 122
       }
     },
     {
@@ -16391,7 +16972,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 117
+        "line": 121
       }
     },
     {
@@ -16402,7 +16983,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 558
+        "line": 595
       }
     },
     {
@@ -16413,7 +16994,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 558
+        "line": 595
       }
     },
     {
@@ -16424,7 +17005,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 116
+        "line": 120
       }
     },
     {
@@ -16435,7 +17016,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 116
+        "line": 120
       }
     },
     {
@@ -16446,7 +17027,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 456
+        "line": 492
       }
     },
     {
@@ -16457,7 +17038,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 412
+        "line": 448
       }
     },
     {
@@ -16468,7 +17049,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 496
+        "line": 532
       }
     },
     {
@@ -16479,7 +17060,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 412
+        "line": 448
       }
     },
     {
@@ -16490,7 +17071,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 412
+        "line": 448
       }
     },
     {
@@ -16501,7 +17082,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 413
+        "line": 449
       }
     },
     {
@@ -16512,7 +17093,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 626
+        "line": 663
       }
     },
     {
@@ -16523,7 +17104,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 783
+        "line": 820
       }
     },
     {
@@ -16534,7 +17115,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 783
+        "line": 820
       }
     },
     {
@@ -16545,7 +17126,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 290
+        "line": 294
       }
     },
     {
@@ -16556,7 +17137,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 710
+        "line": 747
       }
     },
     {
@@ -16567,7 +17148,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 490
+        "line": 526
       }
     },
     {
@@ -16578,7 +17159,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 736
+        "line": 773
       }
     },
     {
@@ -16589,7 +17170,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 736
+        "line": 773
       }
     },
     {
@@ -16600,7 +17181,73 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 527
+        "line": 563
+      }
+    },
+    {
+      "type": "calls",
+      "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "to_ref": "python_symbol_name:kb_names",
+      "provenance": "python_symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "line": 422
+      }
+    },
+    {
+      "type": "calls",
+      "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "to_ref": "python_symbol_name:kb_ref",
+      "provenance": "python_symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "line": 403
+      }
+    },
+    {
+      "type": "calls",
+      "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "to_ref": "python_symbol_name:kb_ref.is_dir",
+      "provenance": "python_symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "line": 403
+      }
+    },
+    {
+      "type": "calls",
+      "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "to_ref": "python_symbol_name:kb_ref.resolve",
+      "provenance": "python_symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "line": 416
+      }
+    },
+    {
+      "type": "calls",
+      "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "to_ref": "python_symbol_name:kb_root",
+      "provenance": "python_symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "line": 397
+      }
+    },
+    {
+      "type": "calls",
+      "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "to_ref": "python_symbol_name:kb_root.resolve",
+      "provenance": "python_symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "line": 399
       }
     },
     {
@@ -16611,7 +17258,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 699
+        "line": 736
       }
     },
     {
@@ -16622,7 +17269,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 234
+        "line": 238
       }
     },
     {
@@ -16633,7 +17280,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 234
+        "line": 238
       }
     },
     {
@@ -16644,7 +17291,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 149
+        "line": 153
       }
     },
     {
@@ -16655,7 +17302,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 289
+        "line": 293
       }
     },
     {
@@ -16666,7 +17313,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 485
+        "line": 521
       }
     },
     {
@@ -16677,7 +17324,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 485
+        "line": 521
       }
     },
     {
@@ -16688,7 +17335,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 134
+        "line": 138
       }
     },
     {
@@ -16699,7 +17346,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 134
+        "line": 138
       }
     },
     {
@@ -16710,7 +17357,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 142
+        "line": 146
       }
     },
     {
@@ -16721,7 +17368,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 589
+        "line": 626
       }
     },
     {
@@ -16732,7 +17379,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 591
+        "line": 628
       }
     },
     {
@@ -16743,7 +17390,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 591
+        "line": 628
       }
     },
     {
@@ -16754,7 +17401,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 139
+        "line": 143
       }
     },
     {
@@ -16765,7 +17412,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 265
+        "line": 269
       }
     },
     {
@@ -16776,7 +17423,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 139
+        "line": 143
       }
     },
     {
@@ -16787,7 +17434,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 290
+        "line": 294
       }
     },
     {
@@ -16798,7 +17445,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 89
+        "line": 93
       }
     },
     {
@@ -16809,7 +17456,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 145
+        "line": 149
       }
     },
     {
@@ -16820,7 +17467,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 322
+        "line": 326
       }
     },
     {
@@ -16831,7 +17478,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 146
+        "line": 150
       }
     },
     {
@@ -16842,7 +17489,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 146
+        "line": 150
       }
     },
     {
@@ -16853,7 +17500,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 146
+        "line": 150
       }
     },
     {
@@ -16864,7 +17511,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 308
+        "line": 312
       }
     },
     {
@@ -16875,7 +17522,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 146
+        "line": 150
       }
     },
     {
@@ -16886,7 +17533,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 418
+        "line": 454
       }
     },
     {
@@ -16897,7 +17544,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 505
+        "line": 541
       }
     },
     {
@@ -16908,7 +17555,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 418
+        "line": 454
       }
     },
     {
@@ -16919,7 +17566,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 709
+        "line": 746
       }
     },
     {
@@ -16930,7 +17577,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 140
+        "line": 144
       }
     },
     {
@@ -16941,7 +17588,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 250
+        "line": 254
       }
     },
     {
@@ -16952,7 +17599,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 303
+        "line": 307
       }
     },
     {
@@ -16963,7 +17610,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 332
+        "line": 336
       }
     },
     {
@@ -16974,7 +17621,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 289
+        "line": 293
       }
     },
     {
@@ -16985,7 +17632,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 528
+        "line": 564
       }
     },
     {
@@ -16996,7 +17643,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 796
+        "line": 833
       }
     },
     {
@@ -17007,7 +17654,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 796
+        "line": 833
       }
     },
     {
@@ -17018,7 +17665,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 658
+        "line": 695
       }
     },
     {
@@ -17029,7 +17676,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 193
+        "line": 197
       }
     },
     {
@@ -17040,7 +17687,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 694
+        "line": 731
       }
     },
     {
@@ -17051,7 +17698,29 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 88
+        "line": 61
+      }
+    },
+    {
+      "type": "calls",
+      "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "to_ref": "python_symbol_name:os.environ",
+      "provenance": "python_symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "line": 61
+      }
+    },
+    {
+      "type": "calls",
+      "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "to_ref": "python_symbol_name:os.environ.get",
+      "provenance": "python_symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "line": 61
       }
     },
     {
@@ -17062,7 +17731,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 88
+        "line": 92
       }
     },
     {
@@ -17073,7 +17742,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 518
+        "line": 554
       }
     },
     {
@@ -17084,7 +17753,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 518
+        "line": 554
       }
     },
     {
@@ -17095,7 +17764,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 190
+        "line": 194
       }
     },
     {
@@ -17106,7 +17775,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 521
+        "line": 557
       }
     },
     {
@@ -17117,7 +17786,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 520
+        "line": 556
       }
     },
     {
@@ -17128,7 +17797,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 520
+        "line": 556
       }
     },
     {
@@ -17139,7 +17808,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 166
+        "line": 170
       }
     },
     {
@@ -17150,7 +17819,51 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 172
+        "line": 176
+      }
+    },
+    {
+      "type": "calls",
+      "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "to_ref": "python_symbol_name:ov",
+      "provenance": "python_symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "line": 408
+      }
+    },
+    {
+      "type": "calls",
+      "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "to_ref": "python_symbol_name:ovp",
+      "provenance": "python_symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "line": 411
+      }
+    },
+    {
+      "type": "calls",
+      "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "to_ref": "python_symbol_name:ovp.is_absolute",
+      "provenance": "python_symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "line": 411
+      }
+    },
+    {
+      "type": "calls",
+      "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "to_ref": "python_symbol_name:ovp.parts",
+      "provenance": "python_symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "line": 411
       }
     },
     {
@@ -17161,7 +17874,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 90
+        "line": 94
       }
     },
     {
@@ -17172,7 +17885,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 183
+        "line": 187
       }
     },
     {
@@ -17183,7 +17896,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 183
+        "line": 187
       }
     },
     {
@@ -17194,7 +17907,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 344
+        "line": 348
       }
     },
     {
@@ -17205,7 +17918,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 349
+        "line": 353
       }
     },
     {
@@ -17216,7 +17929,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 344
+        "line": 348
       }
     },
     {
@@ -17227,7 +17940,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 385
+        "line": 389
       }
     },
     {
@@ -17238,7 +17951,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 251
+        "line": 255
       }
     },
     {
@@ -17249,7 +17962,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 251
+        "line": 255
       }
     },
     {
@@ -17260,7 +17973,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 749
+        "line": 786
       }
     },
     {
@@ -17271,7 +17984,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 749
+        "line": 786
       }
     },
     {
@@ -17282,7 +17995,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 749
+        "line": 786
       }
     },
     {
@@ -17293,7 +18006,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 345
+        "line": 349
       }
     },
     {
@@ -17304,7 +18017,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 345
+        "line": 349
       }
     },
     {
@@ -17315,7 +18028,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 108
+        "line": 112
       }
     },
     {
@@ -17326,7 +18039,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 158
+        "line": 162
       }
     },
     {
@@ -17337,7 +18050,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 158
+        "line": 162
       }
     },
     {
@@ -17348,7 +18061,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 117
+        "line": 121
       }
     },
     {
@@ -17359,7 +18072,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 117
+        "line": 121
       }
     },
     {
@@ -17370,7 +18083,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 301
+        "line": 305
       }
     },
     {
@@ -17381,7 +18094,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 682
+        "line": 719
       }
     },
     {
@@ -17392,7 +18105,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 737
+        "line": 774
       }
     },
     {
@@ -17403,7 +18116,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 737
+        "line": 774
       }
     },
     {
@@ -17414,7 +18127,18 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 99
+        "line": 103
+      }
+    },
+    {
+      "type": "calls",
+      "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "to_ref": "python_symbol_name:project_guides",
+      "provenance": "python_symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {
+        "line": 406
       }
     },
     {
@@ -17425,7 +18149,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 751
+        "line": 788
       }
     },
     {
@@ -17436,7 +18160,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 202
+        "line": 206
       }
     },
     {
@@ -17447,7 +18171,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 202
+        "line": 206
       }
     },
     {
@@ -17458,7 +18182,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 202
+        "line": 206
       }
     },
     {
@@ -17469,7 +18193,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 234
+        "line": 238
       }
     },
     {
@@ -17480,7 +18204,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 202
+        "line": 206
       }
     },
     {
@@ -17491,7 +18215,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 237
+        "line": 241
       }
     },
     {
@@ -17502,7 +18226,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 237
+        "line": 241
       }
     },
     {
@@ -17513,7 +18237,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 238
+        "line": 242
       }
     },
     {
@@ -17524,7 +18248,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 238
+        "line": 242
       }
     },
     {
@@ -17535,7 +18259,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 685
+        "line": 722
       }
     },
     {
@@ -17546,7 +18270,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 685
+        "line": 722
       }
     },
     {
@@ -17557,7 +18281,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 289
+        "line": 293
       }
     },
     {
@@ -17568,7 +18292,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 682
+        "line": 719
       }
     },
     {
@@ -17579,7 +18303,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 682
+        "line": 719
       }
     },
     {
@@ -17590,7 +18314,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 682
+        "line": 719
       }
     },
     {
@@ -17601,7 +18325,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 628
+        "line": 665
       }
     },
     {
@@ -17612,7 +18336,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 722
+        "line": 759
       }
     },
     {
@@ -17623,7 +18347,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 722
+        "line": 759
       }
     },
     {
@@ -17645,7 +18369,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 270
+        "line": 274
       }
     },
     {
@@ -17656,7 +18380,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 532
+        "line": 568
       }
     },
     {
@@ -17678,7 +18402,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 645
+        "line": 682
       }
     },
     {
@@ -17689,7 +18413,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 144
+        "line": 148
       }
     },
     {
@@ -17700,7 +18424,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 456
+        "line": 492
       }
     },
     {
@@ -17711,7 +18435,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 532
+        "line": 568
       }
     },
     {
@@ -17722,7 +18446,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 329
+        "line": 333
       }
     },
     {
@@ -17733,7 +18457,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 329
+        "line": 333
       }
     },
     {
@@ -17744,7 +18468,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 455
+        "line": 491
       }
     },
     {
@@ -17755,7 +18479,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 612
+        "line": 649
       }
     },
     {
@@ -17766,7 +18490,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 230
+        "line": 234
       }
     },
     {
@@ -17777,7 +18501,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 383
+        "line": 387
       }
     },
     {
@@ -17788,7 +18512,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 381
+        "line": 385
       }
     },
     {
@@ -17799,7 +18523,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 220
+        "line": 224
       }
     },
     {
@@ -17810,7 +18534,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 646
+        "line": 683
       }
     },
     {
@@ -17821,7 +18545,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 364
+        "line": 368
       }
     },
     {
@@ -17832,7 +18556,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 747
+        "line": 784
       }
     },
     {
@@ -17843,7 +18567,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 345
+        "line": 349
       }
     },
     {
@@ -17854,7 +18578,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 219
+        "line": 223
       }
     },
     {
@@ -17865,7 +18589,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 219
+        "line": 223
       }
     },
     {
@@ -17876,7 +18600,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 647
+        "line": 684
       }
     },
     {
@@ -17887,7 +18611,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 323
+        "line": 327
       }
     },
     {
@@ -17898,7 +18622,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 98
+        "line": 102
       }
     },
     {
@@ -17909,7 +18633,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 545
+        "line": 399
       }
     },
     {
@@ -17920,7 +18644,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 637
+        "line": 674
       }
     },
     {
@@ -17931,7 +18655,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 249
+        "line": 253
       }
     },
     {
@@ -17942,7 +18666,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 249
+        "line": 253
       }
     },
     {
@@ -17953,7 +18677,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 258
+        "line": 262
       }
     },
     {
@@ -17964,7 +18688,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 134
+        "line": 138
       }
     },
     {
@@ -17975,7 +18699,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 318
+        "line": 322
       }
     },
     {
@@ -17986,7 +18710,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 318
+        "line": 322
       }
     },
     {
@@ -17997,7 +18721,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 533
+        "line": 569
       }
     },
     {
@@ -18008,7 +18732,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 533
+        "line": 569
       }
     },
     {
@@ -18019,7 +18743,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 315
+        "line": 319
       }
     },
     {
@@ -18030,7 +18754,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 134
+        "line": 138
       }
     },
     {
@@ -18041,7 +18765,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 134
+        "line": 138
       }
     },
     {
@@ -18052,7 +18776,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 322
+        "line": 326
       }
     },
     {
@@ -18063,7 +18787,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 533
+        "line": 569
       }
     },
     {
@@ -18074,7 +18798,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 473
+        "line": 509
       }
     },
     {
@@ -18085,7 +18809,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 239
+        "line": 243
       }
     },
     {
@@ -18096,7 +18820,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 165
+        "line": 169
       }
     },
     {
@@ -18107,7 +18831,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 167
+        "line": 171
       }
     },
     {
@@ -18118,7 +18842,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 165
+        "line": 169
       }
     },
     {
@@ -18129,7 +18853,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 167
+        "line": 171
       }
     },
     {
@@ -18140,7 +18864,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 615
+        "line": 652
       }
     },
     {
@@ -18151,7 +18875,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 615
+        "line": 652
       }
     },
     {
@@ -18162,7 +18886,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 661
+        "line": 698
       }
     },
     {
@@ -18173,7 +18897,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 661
+        "line": 698
       }
     },
     {
@@ -18184,7 +18908,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 565
+        "line": 602
       }
     },
     {
@@ -18195,7 +18919,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 88
+        "line": 92
       }
     },
     {
@@ -18206,7 +18930,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 304
+        "line": 308
       }
     },
     {
@@ -18217,7 +18941,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 201
+        "line": 205
       }
     },
     {
@@ -18228,7 +18952,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 744
+        "line": 781
       }
     },
     {
@@ -18239,7 +18963,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 659
+        "line": 696
       }
     },
     {
@@ -18250,7 +18974,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 442
+        "line": 478
       }
     },
     {
@@ -18261,7 +18985,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 779
+        "line": 816
       }
     },
     {
@@ -18272,7 +18996,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 779
+        "line": 816
       }
     },
     {
@@ -18283,7 +19007,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 790
+        "line": 827
       }
     },
     {
@@ -18294,7 +19018,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 790
+        "line": 827
       }
     },
     {
@@ -18305,7 +19029,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 200
+        "line": 204
       }
     },
     {
@@ -18316,7 +19040,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 200
+        "line": 204
       }
     },
     {
@@ -18327,7 +19051,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 517
+        "line": 553
       }
     },
     {
@@ -18338,7 +19062,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 75
+        "line": 79
       }
     },
     {
@@ -18349,7 +19073,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 821
+        "line": 858
       }
     },
     {
@@ -18360,7 +19084,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 76
+        "line": 80
       }
     },
     {
@@ -18371,7 +19095,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 76
+        "line": 80
       }
     },
     {
@@ -18382,7 +19106,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 761
+        "line": 798
       }
     },
     {
@@ -18393,7 +19117,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 735
+        "line": 772
       }
     },
     {
@@ -18404,7 +19128,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 735
+        "line": 772
       }
     },
     {
@@ -18415,7 +19139,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 735
+        "line": 772
       }
     },
     {
@@ -18426,7 +19150,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 735
+        "line": 772
       }
     },
     {
@@ -18437,7 +19161,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 75
+        "line": 79
       }
     },
     {
@@ -18448,7 +19172,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 75
+        "line": 79
       }
     },
     {
@@ -18459,7 +19183,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 187
+        "line": 191
       }
     },
     {
@@ -18470,7 +19194,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 641
+        "line": 678
       }
     },
     {
@@ -18481,7 +19205,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 187
+        "line": 191
       }
     },
     {
@@ -18492,7 +19216,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 545
+        "line": 416
       }
     },
     {
@@ -18503,7 +19227,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 169
+        "line": 173
       }
     },
     {
@@ -18514,7 +19238,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 531
+        "line": 567
       }
     },
     {
@@ -18525,7 +19249,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 169
+        "line": 173
       }
     },
     {
@@ -18547,7 +19271,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 84
+        "line": 88
       }
     },
     {
@@ -18558,7 +19282,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 84
+        "line": 88
       }
     },
     {
@@ -18569,7 +19293,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 295
+        "line": 299
       }
     },
     {
@@ -18580,7 +19304,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 366
+        "line": 370
       }
     },
     {
@@ -18591,7 +19315,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 653
+        "line": 690
       }
     },
     {
@@ -18602,7 +19326,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 534
+        "line": 570
       }
     },
     {
@@ -18613,7 +19337,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 645
+        "line": 682
       }
     },
     {
@@ -18624,7 +19348,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 684
+        "line": 721
       }
     },
     {
@@ -18635,7 +19359,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 122
+        "line": 126
       }
     },
     {
@@ -18646,7 +19370,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 125
+        "line": 129
       }
     },
     {
@@ -18657,7 +19381,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 125
+        "line": 129
       }
     },
     {
@@ -18668,7 +19392,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 572
+        "line": 609
       }
     },
     {
@@ -18679,7 +19403,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 453
+        "line": 421
       }
     },
     {
@@ -18690,7 +19414,7 @@
       "confidence": 1.0,
       "is_static_confirmed": true,
       "metadata": {
-        "line": 453
+        "line": 421
       }
     },
     {
@@ -19631,6 +20355,24 @@
     },
     {
       "type": "contains_summary_of",
+      "from_ref": "summary:file:ai_docs/solutions/SHADOW_e_tdd_agent_kb_u2_v1.0.md",
+      "to_ref": "file:ai_docs/solutions/SHADOW_e_tdd_agent_kb_u2_v1.0.md",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:file:ai_docs/solutions/SHADOW_e_tdd_execution_disciplines_v1.0.md",
+      "to_ref": "file:ai_docs/solutions/SHADOW_e_tdd_execution_disciplines_v1.0.md",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
       "from_ref": "summary:file:ai_docs/solutions/SHADOW_e_tdd_operative_guides_u1_v1.2.md",
       "to_ref": "file:ai_docs/solutions/SHADOW_e_tdd_operative_guides_u1_v1.2.md",
       "provenance": "summary_pipeline",
@@ -20054,6 +20796,24 @@
     },
     {
       "type": "contains_summary_of",
+      "from_ref": "summary:file:skills/agentic-sdlc-skill/debugging.md",
+      "to_ref": "file:skills/agentic-sdlc-skill/debugging.md",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:file:skills/agentic-sdlc-skill/elicitation.md",
+      "to_ref": "file:skills/agentic-sdlc-skill/elicitation.md",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
       "from_ref": "summary:file:skills/agentic-sdlc-skill/guides.md",
       "to_ref": "file:skills/agentic-sdlc-skill/guides.md",
       "provenance": "summary_pipeline",
@@ -20063,8 +20823,26 @@
     },
     {
       "type": "contains_summary_of",
+      "from_ref": "summary:file:skills/agentic-sdlc-skill/review.md",
+      "to_ref": "file:skills/agentic-sdlc-skill/review.md",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
       "from_ref": "summary:file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
       "to_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "provenance": "summary_pipeline",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "contains_summary_of",
+      "from_ref": "summary:file:skills/agentic-sdlc-skill/tdd.md",
+      "to_ref": "file:skills/agentic-sdlc-skill/tdd.md",
       "provenance": "summary_pipeline",
       "confidence": 1.0,
       "is_static_confirmed": true,
@@ -20794,6 +21572,15 @@
       "type": "defines",
       "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
       "to_ref": "python_symbol:skills/agentic-sdlc-skill/scripts/sdlc_check.py:build_manifest",
+      "provenance": "python_symbol_index",
+      "confidence": 1.0,
+      "is_static_confirmed": true,
+      "metadata": {}
+    },
+    {
+      "type": "defines",
+      "from_ref": "file:skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "to_ref": "python_symbol:skills/agentic-sdlc-skill/scripts/sdlc_check.py:check_kb_collisions",
       "provenance": "python_symbol_index",
       "confidence": 1.0,
       "is_static_confirmed": true,

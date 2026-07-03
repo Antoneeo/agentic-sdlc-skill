@@ -2,6 +2,20 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.10.0] - 2026-07-03 (M3: Subagent Execution / Feature A — opt-in executable plan)
+### Added
+- **`dispatch.md`**: subagent-execution doctrine (opt-in for L3). The dispatch loop — validate the plan → per-task brief → economy-tier implementer → one-shot review → ledger — with client-relative model tiers (no provider names), one-shot review slots (no iterative loops), degradation to same-session where subagents do not exist, and guides injected by pointer (never pasted).
+- **`sdlc_check.py plan` subcommand**: `plan validate` (schema check of the executable plan, fail-closed path/guide confinement, sidecar-ledger cross-check — "no valid plan, no dispatch") and `plan brief --task <id>` (emits, to stdout, the task + prior-task interfaces + guide pointers). The validator is **zero-execution**: a task's `verify` command is emitted as text, never run.
+- **Executable-plan template** (`ai_docs/solutions/PLAN_[feature].md`) in `templates.md`: Markdown frontmatter (`status`, `derived-from`) + a fenced `json` task array + the sidecar `PLAN_[feature].ledger.json` shape (`task_id -> {status, verify_result, timestamp}`, git-tracked, survives compaction).
+- **`SKILL.md` §4** opt-in subagent-execution hook + the Hybrid `derived-from` seam (the plan is derived from the accepted E-TDD, never independently authored).
+- `test_plan.py`: stdlib-`unittest` battery for the `plan` subcommand (32 cases: schema, confinement, ledger, fail-fast JSON, zero-execution poka-yoke).
+
+### Changed
+- **`confine_under(base, rel)` extracted** in `sdlc_check.py`: the fail-closed path-confinement pattern (absolute/`..`/resolve-escape → reject), previously inlined twice (the `overrides:` and `distilled_from` checks), is now a single helper reused by both plus the new plan-path / guide-pointer confinement. Behavior-preserving (catches `(ValueError, OSError)`).
+
+### Process note
+- 4th live **model-per-dispatch** run (economy implementer from the E-TDD shadow, battery 32/32, deep code review PASS zero BLOCK). Governance: M-VISION → D-UC → P-TM → E-ISP → E-TDD, all through the independent review gate — which killed 3 real BLOCKs at design time (T1 subprocess-invariant misstatement, a missing impacted file, a `confine_under` OSError-crash regression). ADR `adr_2026-07-03_executable_plan_json_in_md`.
+
 ## [1.9.0] - 2026-07-03 (M2 execution disciplines + Feature B unit 2 agent KB)
 ### Added
 - `tdd.md`: TDD discipline (RED/GREEN/REFACTOR, increment rule, AAA test shape, documented exemptions) — the L2/L3 default for implementation work.
