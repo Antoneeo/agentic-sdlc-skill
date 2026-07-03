@@ -189,6 +189,54 @@ Allowed frontmatter states: `PLANNED` | `IN_PROGRESS` | `COMPLETED` | `CANCELLED
 <!-- max 1 page. Spike code is NOT mergeable: for production reclassify L2/L3. -->
 ```
 
+## ai_docs/solutions/PLAN_[feature].md
+
+Opt-in, L3 only (see `dispatch.md`): the executable task list an orchestrator
+drives through subagents. It is `derived-from` the accepted E-TDD (Hybrid) or
+the ANALYSIS Action Plan (Standalone) — never independently authored. The
+validator gate is `sdlc_check.py plan validate PLAN_[feature].md` ("no valid
+plan, no dispatch").
+
+````markdown
+---
+status: DRAFT
+derived-from: e_tdd_[feature] vX.Y
+---
+# Plan: [Feature]
+
+```json
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Add the confine_under helper",
+      "paths": ["skills/agentic-sdlc-skill/scripts/sdlc_check.py"],
+      "consumes": [],
+      "produces": ["skills/agentic-sdlc-skill/scripts/sdlc_check.py#confine_under"],
+      "verify": "python skills/agentic-sdlc-skill/scripts/test_plan.py",
+      "guides": ["GUIDE_python_style.md"]
+    }
+  ]
+}
+```
+````
+
+Task fields: `id`/`title`/`verify` are required; at least one of `paths`/
+`produces` is required. `paths` are files the task touches; `consumes`/
+`produces` declare interfaces between tasks (what an earlier task hands to a
+later one); `guides` are pointers (paths, not pasted content) into
+`ai_docs/reference/` or the agent-global KB. All path-shaped fields are
+confined fail-closed under the project root (or the reference/KB root for
+`guides`) — an absolute path or a `..` escape is rejected. `verify` is opaque
+text: the validator only prints it (`plan brief`), never runs it — the
+orchestrator executes it out of band.
+
+Sidecar ledger `ai_docs/solutions/PLAN_[feature].ledger.json` (orchestrator-
+owned, validator-read-only): `{ "<task_id>": {"status": "done", "verify_result":
+"pass", "timestamp": "2026-07-03T00:00:00Z"} }`. Only the exact `status: done`
+sentinel skips re-dispatch; any other value (or a missing `status`) is treated
+as pending. A ledger id absent from the plan is a non-fatal orphan warning.
+
 ## ai_docs/audit/audit_plan.md (Standalone mode only)
 
 The `Reference` field (git hash or ISO UTC timestamp) is managed by `sdlc_check.py mark` — do not fill it by hand. Freshness is verified with `sdlc_check.py stale`.

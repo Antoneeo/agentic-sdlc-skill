@@ -198,6 +198,7 @@ Hybrid L3:
 - For bugs (L2/L3), follow the systematic debugging method in `debugging.md`.
 - Circuit breaker: after 3 consecutive runs without progress on the tests, stop, switch to the systematic method in `debugging.md`, and ask for instructions if still stuck.
 - Update the ANALYSIS Diary or the Action Plan when you complete milestones, hit blockers or change decisions.
+- **Opt-in subagent execution**: for an L3 with an approved design, the orchestrator MAY execute the work via subagents per `dispatch.md`, gated by `sdlc_check.py plan validate` ("no valid plan, no dispatch"); default stays same-session. Hybrid: the executable `PLAN_[feature].md` is `derived-from` the accepted E-TDD, never independently authored.
 
 ### 5. Closure
 
