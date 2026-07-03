@@ -37,6 +37,10 @@ All three, in the same commit:
   only at release time.
 - Verify with `npm pack --dry-run --json`: every expected file listed;
   `__pycache__` and `.sources/` snapshots NOT listed.
+- The skill eval harness is **dev-only** and must NOT ship: `test_*.py` (the
+  battery) and the whole `evals/` dir guard the skill's development, they are
+  not runtime files. They are absent from `package.json` `files`; confirm the
+  `npm pack --dry-run --json` listing does not contain them.
 
 ## README alignment
 
@@ -56,6 +60,13 @@ Run before any commit/tag/publish:
    boilerplate vision docs are expected).
 3. Closure gate on the repo itself:
    `sdlc_check.py check --hybrid --root <repo>` → CLEAN.
+4. Skill eval battery (the deterministic release gate, ENFORCEMENT §5):
+   `python -m unittest discover -s skills/agentic-sdlc-skill/scripts -p "test_*.py"`
+   → all green. It aggregates `test_plan.py` + `test_session_start.py` +
+   `test_skill_invariants.py` and asserts the skill's own doctrine invariants
+   (triggers/hook/worktree present and wired, indexes idempotent, support
+   pointers resolve). A failing eval blocks the release. If `test_indexes_idempotent`
+   fails, run `sdlc_check.py index` and re-run.
 
 After publish: `npm view @antoneeo/agentic-sdlc-skill version` must return the
 new version.

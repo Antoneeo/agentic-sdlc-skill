@@ -156,6 +156,7 @@ gate) instead of requiring an IN_PROGRESS ANALYSIS.
 
 - Read `ai_docs/audit/handoff.md` if it exists; if its Date/Branch are inconsistent, treat it as history.
 - Read `ai_docs/README.md` (curated must-reads) and `ai_docs/INDEX.md` (generated manifest of all canonical docs) to know what exists before exploring the code. `solutions/` and `audit/` are not indexed per file: search them with glob/grep.
+- Optional: a SessionStart hook (`ENFORCEMENT.md` §4) can emit this orientation automatically at session start (README + INDEX + guide router + handoff + triage reminder); when it is not wired, do these reads manually as above. The hook is a convenience, never a requirement — it introduces no Python dependency for the process itself and fails open (a missing/empty `ai_docs/` never blocks the session).
 - If `ai_docs/` is missing or incomplete, create the structure and minimal documents by analyzing the project in batches.
 - In Standalone use `ai_docs/audit/audit_plan.md` for mapping and state.
 - In Hybrid prefer the devPNT/KL mapping when available; do not duplicate plan governance.
@@ -192,8 +193,10 @@ Hybrid L3:
 ### 4. Development and Testing
 
 - Implement only after the documentation gate required by the level.
+- Isolate the work: run an L3 change on its own branch. In Hybrid, prefer a git worktree from the start — a running devPNT server locks `.devpnt/*.db` and blocks in-place branch switches/merges in the primary worktree.
 - Modify surgically, consistently with the plan.
 - Implementation work follows the TDD discipline in `tdd.md` (RED/GREEN/REFACTOR — the L2/L3 default; record the reason when it does not apply).
+- Before implementing (L2/L3; L1 exempt), **consult the guide router** for a guide covering the task and read it first — the consult trigger (`guides.md` §0, summarized under `## Operative Guides`). A targeted description match, not a blanket read.
 - If the environment does not allow automated tests, declare the alternative verification and the reason.
 - For bugs (L2/L3), follow the systematic debugging method in `debugging.md`.
 - Circuit breaker: after 3 consecutive runs without progress on the tests, stop, switch to the systematic method in `debugging.md`, and ask for instructions if still stuck.
@@ -205,6 +208,7 @@ Hybrid L3:
 - Run the relevant tests/lint/smoke checks.
 - For the review itself follow `review.md` (requesting and receiving findings) — the single definition, intended for reuse by the Hybrid review gates (devPNT-side wiring out of this unit's scope).
 - Verify alignment with the local Vision or the devPNT M-VISION.
+- If the work was governed by user-provided indications and is reusable, **PROPOSE distilling a guide** (proactive trigger, `guides.md` §1) — a proposal for the user, never a silent write, never from model knowledge.
 - Update only the documents actually impacted.
 - **Aligned indexes (Poka-Yoke)**: if you created, moved or removed canonical documents (`vision/`, `reference/`, `architecture/`, `functional/`, `strategic/`):
   - regenerate the manifest with `sdlc_check.py index` (writes `ai_docs/INDEX.md`) — never write it by hand;
@@ -216,6 +220,7 @@ Hybrid L3:
 - In Hybrid propose ADR/KL updates when there were architectural decisions.
 - In Standalone, if the project adopts `sdlc_check.py`, run `python <skill_dir>/scripts/sdlc_check.py check --root <project_root>` or the equivalent local copy.
 - Updated documents must travel in the same commit/PR as the code they describe.
+- **Branch/worktree hygiene**: an L3 ran on its own branch (Phase 4) — close it with an explicit merge decision (merge, keep open, or discard) and clean up the branch/worktree; never leave orphan branches. In Hybrid, the running devPNT server locks `.devpnt/*.db`, so the merge is done from a separate git worktree or via a ref-only push, never an in-place branch switch in the primary worktree.
 
 ## ai_docs documents: two indexes + lifecycle
 
@@ -244,6 +249,11 @@ Legacy note: the validator also accepts the deprecated Italian frontmatter keys 
 
 ## Operative Guides
 
+Guides are **consulted, created, and proposed** — three moments; the mechanics live once in `guides.md`:
+- **Consult (before acting):** before operative L2/L3 work (L1 exempt), check the guide router for a guide covering the task and read the match first — a targeted description match, never a blanket read. → `guides.md` §0.
+- **Create (from user indications):** the origin+purpose test below.
+- **Propose proactively (after success):** after reusable, user-indication-governed work, PROPOSE distilling a guide — a proposal, never a silent write, never from model knowledge. → `guides.md` §1.
+
 Trigger test: the user hands over indications to follow (origin = user, not model
 knowledge) meant to govern how the agent operates (purpose = operative), not just
 inform an answer. Both hold → distill into `ai_docs/reference/GUIDE_[topic].md`.
@@ -265,6 +275,7 @@ regenerate with `sdlc_check.py index`.
 The prompt is not enforcement. When the project needs repeatable guarantees:
 - read `ENFORCEMENT.md`;
 - use `scripts/sdlc_check.py validate --strict` in CI;
-- use `scripts/sdlc_check.py gate` only for security-critical directories, not for the whole repository.
+- use `scripts/sdlc_check.py gate` only for security-critical directories, not for the whole repository;
+- (skill development) the self-eval battery `python -m unittest discover -s scripts -p "test_*.py"` guards the skill's own doctrine invariants and is the deterministic release gate — see `ENFORCEMENT.md` §5.
 
 The validator is a support, not a universal prerequisite: the skill must stay usable in environments without Python or hooks, declaring what it cannot verify automatically.

@@ -54,3 +54,55 @@ Semantics: exit code 2 + message on stderr ⇒ the write is blocked and the mess
 - `ai_docs/`, `tests/` and `test/` are always excluded from blocking.
 - The hook assumes the working directory is the project root (standard behavior of Claude Code hooks).
 - **Hybrid/devPNT projects**: add `--hybrid` to the gate command. Governed designs live in the devPNT DB, so the gate also unlocks when an approved E-TDD shadow (`ai_docs/solutions/SHADOW_*tdd*.md`, exported before implementation — see the SKILL.md shadow discipline) is present. Without the flag the gate would block legitimate governed work. The flag is deliberately explicit: never auto-detected.
+
+## 4. SessionStart hook (orientation, optional)
+
+Emits the `ai_docs/` orientation — reading guide (`README.md`), manifest (`INDEX.md`), guide router (`reference/INDEX.md`) and last `handoff.md` — plus the Rule-Zero triage reminder to stdout at session start, so the agent begins already oriented instead of reading them only if it remembers to. It is **fail-open**: a missing, unreadable or oversized doc is skipped, the output is size-capped, and it always exits 0 — a broken or empty `ai_docs/` never blocks the session. It is **zero-execution** (it reads and prints, never runs anything) and opt-in.
+
+Wire it via each client's SessionStart mechanism — the same command everywhere (add `--hybrid` on devPNT/Hybrid projects):
+
+Claude Code — in the project's `.claude/settings.json`:
+
+```json
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"C:\\Users\\<user>\\.claude\\skills\\agentic-sdlc\\scripts\\sdlc_check.py\" orient"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+Codex — in `.codex/hooks.json`, the same `SessionStart` → `{"type":"command","command":"… orient"}` shape (this replaces the legacy static-echo protocol some fixtures still carry).
+
+Gemini CLI — wire the same command into its startup-hook mechanism if present; otherwise the step simply degrades to the manual Phase-1 reads (no capability lost).
+
+**Usage notes:**
+- The hook assumes the working directory is the project root (standard Claude Code hook behavior); it also accepts `--root <path>`.
+- **Hybrid/devPNT projects**: add `--hybrid` — the hook then appends a one-line pointer to run `devpnt_mcp_get_bootstrap` for the Master Plan / Knowledge Layer and does not replicate them; the filesystem orientation (router + handoff + README) still emits.
+- Like the CI gate (§2), if you copied `sdlc_check.py` into the repo, the hook references that copy — keep it current when you update the skill.
+
+## 5. Skill eval battery (release gate)
+
+The skill self-tests its own doctrine invariants. Two layers over one scenario corpus:
+
+**Static battery — the deterministic release gate.** Run before any publish:
+
+```
+python -m unittest discover -s skills/agentic-sdlc-skill/scripts -p "test_*.py"
+```
+
+It aggregates the three test files (`test_plan.py` + `test_session_start.py` + `test_skill_invariants.py`) and asserts the skill's invariants: the M4 triggers/hook/worktree doctrine is present and wired, support-file pointers resolve, and the generated indexes are idempotent. A non-zero exit **blocks the release** — a failing eval is always a real regression, never flakiness: the battery is stdlib-only, makes no model/network/subprocess call (deterministic by construction). If `test_indexes_idempotent` fails, run `sdlc_check.py index` and re-run.
+
+**Behavioral corpus — opt-in, non-CI.** `evals/scenarios/*.md` (declarative, model-neutral) + `evals/run_behavioral.py` seed a fixture and print a prompt + pass criteria for a human/agent to run and self-assess. Because live adherence is nondeterministic, this layer **never gates** — it is the reproducible way to check that, e.g., the consult trigger actually fires on a seeded repo (the "demonstrably" artifact).
+
+**Optional CI** (same shape as §2, not mandatory): add a `run:` step invoking the `unittest discover` command above.
+
+**T10 note:** if you copied `sdlc_check.py` and the `test_*.py` battery into the repo for CI, that copy is authoritative — keep it current when you update the skill.
