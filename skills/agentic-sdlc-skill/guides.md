@@ -39,8 +39,11 @@ guide with no `distilled_from` is not this pipeline's output.
 0. **Search before creating (DRY — one CURRENT guide per topic).** Before
    proposing anything, read `ai_docs/reference/INDEX.md` and grep
    `reference/GUIDE_*.md` for topic overlap with the new material. Never end
-   up with two CURRENT guides on the same topic. On overlap, pick by
-   provenance:
+   up with two CURRENT guides on the same topic. Search BOTH routers: project
+   `ai_docs/reference/INDEX.md` AND the agent KB router
+   `~/.agentic-sdlc/ai_docs/reference/INDEX.md` (if present) — one CURRENT
+   guide per topic PER SCOPE; a project guide on a KB topic requires the
+   explicit `overrides:` declaration. On overlap, pick by provenance:
    - **Same source, evolved** → UPDATE the existing guide in place: new
      snapshot, new `source_hash`, same file (history lives in git).
    - **Different source replacing the old one** → NEW guide + mark the old
@@ -75,8 +78,13 @@ guide with no `distilled_from` is not this pipeline's output.
    - Heterogeneous sources (unrelated policies handed over together) are the
      legitimate split case; a single coherent document about one subsystem
      almost never is.
-2. **User confirms** the topic decomposition — including the declared
-   fragmentation-risk assessment — before any file is written.
+   - **Also decide SCOPE per proposed guide**: project-scope
+     (`ai_docs/reference/`) or agent-scope (`~/.agentic-sdlc/ai_docs/reference/`,
+     governs the agent across ALL projects; origin+purpose test unchanged,
+     scope is a LOCATION decision by the user, never a content taxonomy; KB
+     created lazily with `.sources/` on the first agent-scope guide).
+2. **User confirms** the topic decomposition — including the fragmentation-risk
+   assessment and scope decision — before any file is written.
 3. **Snapshot each source verbatim** into
    `ai_docs/reference/.sources/<slug>-<hash8>.md`:
    - `slug` derives from the topic (lowercase, hyphenated).
@@ -158,3 +166,5 @@ state it explicitly when handing off a newly created guide.
   compares each guide's recorded `source_hash` against the live snapshot file
   and reports `[stale]` when they diverge — that is the signal to regenerate,
   not a manual freshness check.
+- **Agent-global KB guides** use the same pipeline and validator via
+  `--root ~/.agentic-sdlc`; freshness via the same `stale` engine.

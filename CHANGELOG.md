@@ -2,6 +2,15 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.9.0] - 2026-07-03 (M2 execution disciplines + Feature B unit 2 agent KB)
+### Added
+- `tdd.md`: TDD discipline (RED/GREEN/REFACTOR, increment rule, AAA test shape, documented exemptions) — the L2/L3 default for implementation work.
+- `debugging.md`: systematic debugging method (reproduce, isolate, root cause, fix, regression test, collateral check) with circuit-breaker integration.
+- `elicitation.md`: spec elicitation round (goal/benefit, scope boundaries, non-goals, constraints, acceptance signals) run before drafting the analysis in phase 3.
+- `review.md`: single definition of requesting, receiving, and performing code review, reused by the Hybrid review gates.
+- `SKILL.md` wiring: pointers to the four new files added at phase 3 (elicitation), phase 4 (TDD, debugging, circuit breaker), and phase 5 (review).
+- Agent-global KB (fixed root, project-wins precedence, `overrides:` with fail-closed confinement, collision warnings).
+
 ## [1.8.1] - 2026-07-02
 ### Fixed
 - **Guide freshness hash is now line-ending independent**: `sha256_file` in `sdlc_check.py` normalizes CRLF → LF before hashing. Previously the raw-byte hash made a fresh Windows checkout with `core.autocrlf=true` rewrite `.sources/` snapshots and flag every guide `[stale]` (false positive). Backward compatible: recorded hashes were computed on LF content, and normalization maps CRLF copies back to the same digest. (Edge case: a hash recorded pre-1.8.1 on a snapshot that genuinely contained CRLF bytes will flag `[stale]` once — regenerate the hash.)

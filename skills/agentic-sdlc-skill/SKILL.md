@@ -176,6 +176,8 @@ Hybrid:
 
 ### 3. Request Analysis
 
+For any L3, run the spec elicitation round in `elicitation.md` BEFORE drafting the analysis (skip path inside — one-line note when the spec is already complete).
+
 Standalone L3:
 - Before creating a new `ANALYSIS_[feature].md`, search `ai_docs/solutions/` with glob/grep for an existing analysis on the same topic: if there is one, update it instead of duplicating it.
 - Create or update `ai_docs/solutions/ANALYSIS_[feature].md`.
@@ -191,14 +193,16 @@ Hybrid L3:
 
 - Implement only after the documentation gate required by the level.
 - Modify surgically, consistently with the plan.
-- Write or update relevant automated tests; use AAA for unit tests when applicable.
+- Implementation work follows the TDD discipline in `tdd.md` (RED/GREEN/REFACTOR — the L2/L3 default; record the reason when it does not apply).
 - If the environment does not allow automated tests, declare the alternative verification and the reason.
-- Circuit breaker: after 3 consecutive runs without progress on the tests, stop and ask for instructions.
+- For bugs (L2/L3), follow the systematic debugging method in `debugging.md`.
+- Circuit breaker: after 3 consecutive runs without progress on the tests, stop, switch to the systematic method in `debugging.md`, and ask for instructions if still stuck.
 - Update the ANALYSIS Diary or the Action Plan when you complete milestones, hit blockers or change decisions.
 
 ### 5. Closure
 
 - Run the relevant tests/lint/smoke checks.
+- For the review itself follow `review.md` (requesting and receiving findings) — the single definition, intended for reuse by the Hybrid review gates (devPNT-side wiring out of this unit's scope).
 - Verify alignment with the local Vision or the devPNT M-VISION.
 - Update only the documents actually impacted.
 - **Aligned indexes (Poka-Yoke)**: if you created, moved or removed canonical documents (`vision/`, `reference/`, `architecture/`, `functional/`, `strategic/`):
@@ -252,6 +256,8 @@ forbidden. Full pipeline, DRY rule, snapshotting and maintenance: `guides.md`.
 
 `ai_docs/reference/INDEX.md` is generated (the guide router) — never edit by hand,
 regenerate with `sdlc_check.py index`.
+
+**Agent-global KB.** A second, cross-project guide root lives at the fixed path `~/.agentic-sdlc/` (same `ai_docs/` structure, same validator/router/freshness engine via `sdlc_check.py --root ~/.agentic-sdlc`). Project guides win on topic collision; a project guide that overrides a KB guide MUST declare `overrides: GUIDE_<topic>.md` — the validator warns on undeclared collisions (error under `--strict`) and fail-closes on an `overrides:` value that escapes the KB. Discovery is this paragraph: agents and subagents reach KB guides by path, exactly like project guides.
 
 ## Mechanical Enforcement
 
