@@ -27,19 +27,27 @@ Agent: Claude (Fable/Opus, orchestrator) + economy-tier implementer
   bootstrap table prefers new path with legacy fallback. TDD 89/89 green.
 
 ## Next step
-**M3 — Subagent Execution (Feature A)**: BLOCKED in the Master Plan, has an
-M-VISION (milestone_vision_subagent_execution) — read/approve it via the Vision
-Gate before any artifacts. This is the executable-plan + dispatch-loop + ledger
-milestone (roadmap Fase 4). Fresh full L3 chain.
+**M3 — Subagent Execution (Feature A)**. BLOCKED in the Master Plan, has an
+M-VISION (`milestone_vision_subagent_execution`). START HERE: bootstrap devPNT,
+then read that M-VISION and run the Vision Gate (verify/approve) BEFORE any
+artifact. Then the full L3 chain: D-UC → P-TM → E-ISP → E-TDD → shadow →
+economy implementer → deep code review → closure/release, each through the
+independent review gate (the pattern this whole session ran, 3× clean).
+Scope (roadmap Fase 4): executable plan in `solutions/` with schema (exact
+paths, consumes/produces, verify command) + `sdlc_check.py plan` subcommand
+(no valid plan → no dispatch) + mechanical per-task brief emission; in Hybrid
+`derived-from: e_tdd vX.Y`, never independently authored. M3 builds ON the
+now-shipped M2 disciplines (review/TDD) and Feature B guides/KB — that is the
+infrastructure that makes dispatched subagents reliable.
+Before deep M3 design: project summary is STALE (regenerate via
+generate_ai_summary — not needed for the Vision Gate itself).
 
-## Pending devPNT closures (need server reopened)
-These were proposed but the session ended with devPNT closed for the release
-merge — resolve in the Proposals tab or re-propose next session:
-- M1.A6/A7/A8 → DONE; M1.A9 → ON_HOLD→DONE (unit 2 shipped).
-- M2.A6 (closure) → ON_HOLD→DONE (released).
-- M1 and M2 master nodes → DONE (both milestones complete on release).
-- KL architecture v1.2 (agent-KB section), KL principles v1.1 (M2 disciplines
-  line) — proposed post-implementation per the KL update protocol.
+## devPNT plan state (as of session end, 2026-07-03)
+All M1 + M2 nodes DONE. Closure proposals for M1.A9, M2.A6 (→DONE) and the M1,
+M2 master nodes (→DONE, cascade) were sent to the Proposals tab at session end
+— if still pending when you start, accept them (or they are already DONE).
+KL architecture v1.2 + principles v1.1 already ACCEPTED and active (visible in
+bootstrap). Master Plan after acceptance: M1 DONE, M2 DONE, M3/M4 BLOCKED.
 
 ## Session notes
 - project_vision.md APPROVED; roadmap/principles still DRAFT.
