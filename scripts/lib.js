@@ -39,6 +39,27 @@ const CLIENTS = [
     envVar: 'CODEX_HOME',
     reload: 'Restart Codex to load it. Invoke it as "$agentic-sdlc" or by asking for Agentic SDLC.',
   },
+  {
+    // Google Antigravity 2.0 discovers global agent skills under
+    // ~/.gemini/config/skills/ -- the SAME home the legacy Gemini CLI claims.
+    // To avoid a shared-home double-install (P-TM T1), this entry sets:
+    //  - skillsSubdir 'config/skills': distinct target from gemini's ~/.gemini/skills
+    //  - homeMarker on ~/.gemini/config/skills: detection never fires on bare
+    //    ~/.gemini (which every Antigravity user has); only the Antigravity skills
+    //    dir, the `agy` CLI, or ANTIGRAVITY_HOME count as "Antigravity installed".
+    key: 'antigravity',
+    label: 'Google Antigravity',
+    cmd: 'agy',
+    home: process.env.ANTIGRAVITY_HOME || path.join(os.homedir(), '.gemini'),
+    envVar: 'ANTIGRAVITY_HOME',
+    skillsSubdir: 'config/skills',
+    homeMarker: path.join(
+      process.env.ANTIGRAVITY_HOME || path.join(os.homedir(), '.gemini'),
+      'config',
+      'skills',
+    ),
+    reload: 'Restart Antigravity, or run "agy skills reload", to load it. Invoke by asking for Agentic SDLC.',
+  },
 ];
 
 function commandExists(cmd) {
@@ -51,13 +72,22 @@ function commandExists(cmd) {
 }
 
 function clientDetected(client) {
+  // An entry may override the fs-existence probe with a `homeMarker` (a more
+  // specific path than the bare home) so two clients sharing a home dir do not
+  // both fire on its mere existence. Entries without a marker check `home`
+  // exactly as before (backward-compatible).
+  const homePathToCheck = client.homeMarker || client.home;
   return commandExists(client.cmd)
     || Boolean(process.env[client.envVar])
-    || fs.existsSync(client.home);
+    || fs.existsSync(homePathToCheck);
 }
 
 function skillTarget(client) {
-  return path.join(client.home, 'skills', 'agentic-sdlc');
+  // An entry may override the default `skills` sub-path with `skillsSubdir`
+  // (split on '/' to keep cross-platform path.join correctness). Entries
+  // without it resolve to <home>/skills/agentic-sdlc exactly as before.
+  const subdir = client.skillsSubdir ? client.skillsSubdir.split('/') : ['skills'];
+  return path.join(client.home, ...subdir, 'agentic-sdlc');
 }
 
 function copyRecursive(src, dest) {

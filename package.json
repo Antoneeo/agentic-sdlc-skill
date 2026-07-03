@@ -1,7 +1,7 @@
 {
   "name": "@antoneeo/agentic-sdlc-skill",
-  "version": "1.11.0",
-  "description": "Documentation-First SDLC protocol for Claude Code, Gemini CLI and Codex with risk triage, Vision governance, installed support files and optional devPNT integration.",
+  "version": "1.12.0",
+  "description": "Documentation-First SDLC protocol for Claude Code, Gemini CLI, Google Antigravity and Codex with risk triage, Vision governance, installed support files and optional devPNT integration.",
   "keywords": [
     "claude-code",
     "claude-skill",
@@ -38,6 +38,9 @@
     "gemini-extension.json",
     "README.md",
     "CHANGELOG.md",
-    "scripts"
+    "scripts/lib.js",
+    "scripts/init.js",
+    "scripts/postinstall.js",
+    "scripts/preuninstall.js"
   ]
 }
