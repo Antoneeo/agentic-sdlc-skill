@@ -183,6 +183,7 @@ Standalone L3:
 - Before creating a new `ANALYSIS_[feature].md`, search `ai_docs/solutions/` with glob/grep for an existing analysis on the same topic: if there is one, update it instead of duplicating it.
 - Create or update `ai_docs/solutions/ANALYSIS_[feature].md`.
 - Minimum sections: Objective, Feature Vision (or Vision Alignment), Impact, Security and Threat Model, Action Plan, Test Strategy, Diary/Current State.
+- Build the Impact/solution **on** the Vision, the use-cases/user-needs and the Security & Threat Model — read and trace to them first, and state the trace (which use-case / threat / benefit each part serves) so the closure review (`review.md`) can verify conformance. Do not draft the Impact in isolation.
 - For features spanning multiple milestones or multiple analyses, also create `ai_docs/vision/features/VISION_[feature].md`.
 
 Hybrid L3:

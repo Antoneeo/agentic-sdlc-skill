@@ -2,6 +2,15 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.13.0] - 2026-07-05 (M2 amendment: review reads AND proves Vision + Use-Cases + Threat Model)
+### Changed
+- **Review discipline hardened (M2.A7).** `review.md` now, for an impact/solution-analysis / design review: (a) §Requesting takes the **Vision + use-cases/user-needs + threat model** as explicit inputs the reviewer checks the artifact *against* (Hybrid: M-VISION/D-UC/P-TM; Standalone: the ANALYSIS Vision-Alignment / Use-Cases / Threat-Model sections); (b) §Reviewing requires the reviewer OUTPUT to carry a **conformance/traceability statement** — each Vision benefit / use-case / threat mapped to where the artifact satisfies it, or a finding — and a PASS is **not valid on "found nothing"**. Scoped to analysis/design reviews (plain code reviews stay findings-only → honors the "no enforcement theater" Non-Goal); it is the reviewer-side twin of the existing §Receiving anti-silent-drop rule.
+- **`SKILL.md` §3 Request Analysis**: an authoring rule — build + trace the Impact/solution ON the Vision, use-cases and threat model (so the closure review can verify conformance); a pointer to `review.md`, no restatement.
+- **`templates.md`**: the ANALYSIS template gains a `## Use Cases / User Needs` section — the Standalone home for what Hybrid keeps in `D-UC`, giving the coverage-check a real target. Validator-inert (ANALYSIS_SECTIONS permits extra sections); the `Minimum sections` floor is deliberately left unchanged.
+
+### Process note
+Governed M2 amendment (Hybrid). E-ISP `e_isp_review_input_hardening` v2.0 (deep review, 3 rounds — round-1 BLOCK caught that the "use-case coverage" check had no Standalone home; v2.0 added the output-evidence half) + E-TDD v1.0 (light review, conformance statement 8/8) + §4.6 code review (PASS, zero BLOCK — self-caught + reverted a Minimum-sections regression before review). Doc-only: `check --hybrid` CLEAN, eval battery 51/51, shadow exported. The Hybrid mirror in the devPNT doctrine §4.5 + `devpnt-tech-reviewer` output format is a separate devPNT-project follow-up.
+
 ## [1.12.0] - 2026-07-03 (Client Roster: Google Antigravity 2.0 as a first-class client)
 ### Added
 - **Google Antigravity 2.0 support** in the install engine. The runtime skill now lands where all three Antigravity products (desktop, the `agy` CLI, the agentic IDE) discover global agent skills: `~/.gemini/config/skills/agentic-sdlc/`. `agentic-sdlc-init` writes the Antigravity project pointer to `AGENTS.md` (the Antigravity CLI surface), reusing the single `protocolContent` — no per-client drift.

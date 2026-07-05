@@ -154,6 +154,11 @@ end_date:
      VISION_[feature].md is created only if the feature spans multiple
      ANALYSIS documents or multiple milestones. -->
 
+## Use Cases / User Needs
+<!-- who needs this and why: the concrete use-cases / user-needs the change serves
+     (the Standalone home for what Hybrid keeps in D-UC). Derived from the elicitation
+     round; the Impact below must cover each, and the closure review checks coverage. -->
+
 ## Impact
 <!-- existing files touched, APIs/contracts, performance, new dependencies -->
 

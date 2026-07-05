@@ -14,6 +14,13 @@ When you hand work to a reviewer (human or agent), give them:
 - **The authoritative design artifact**: the ANALYSIS, E-TDD, or equivalent
   the change was built against — not a paraphrase of it.
 - **The actual diff**: the real changed files, not a description of them.
+- **For an impact/solution-analysis review, the constraints it derives from**:
+  the **Vision** (Hybrid: the `M-VISION`; Standalone: `project_vision.md`/`roadmap.md`
+  + the ANALYSIS Vision-Alignment), the **use-cases / user-needs** (Hybrid: `D-UC`;
+  Standalone: the ANALYSIS `## Use Cases / User Needs`), and the **threat model**
+  (Hybrid: `P-TM`; Standalone: the ANALYSIS `## Security and Threat Model`). Hand these
+  *in addition to* the design artifact — the reviewer checks the artifact **against**
+  them, not only for internal consistency.
 
 Never ask a reviewer to "review my session" or "review what I just did"
 without the artifacts above — that forces them to reconstruct scope from
@@ -45,6 +52,15 @@ When you are the reviewer:
   do not soften a real correctness or security issue to a nit.
 - No praise padding. A review reports problems and their fixes, not a
   summary of what looks fine.
+- **Conformance statement (impact/solution-analysis & design reviews only — not a
+  plain code-diff review).** When the artifact under review carries Vision / use-case
+  / threat-model constraints, your output MUST map each constraint to its evidence: for
+  every use-case/user-need, every threat, and every applicable Vision benefit/Non-Goal,
+  state WHERE the artifact satisfies it (section or `file:line`) or raise it as a
+  finding. A PASS/approve is **not valid on "found nothing"** — the conformance
+  statement is the proof the check ran; an unfalsifiable "I checked" is the review
+  theater this discipline exists to prevent (the reviewer-side twin of §Receiving's
+  silent-drop rule). Plain code reviews stay findings-only.
 
 ## Anti-patterns
 

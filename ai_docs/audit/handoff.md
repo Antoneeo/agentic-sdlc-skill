@@ -1,9 +1,13 @@
 # Handoff
-Date: 2026-07-03 (UTC)
+Date: 2026-07-05 (UTC)
 Branch: main
-Agent: Claude (Opus, orchestrator) — same-session implementation on main (owner's choice); implementation review via an independent fresh-context subagent
+Agent: Claude (Opus, orchestrator) — same-session doc-only implementation; independent §4.5 design reviews + §4.6 code review via fresh-context subagents
 
-## State: Antigravity 2.0 client unit BUILT + reviewed, NOT yet released; devPNT milestone promotion PENDING owner GUI approval
+## State: M2.A7 (review-input hardening) IMPLEMENTED + reviewed; 1.13.0 staged NOT released; devPNT plan-DONE proposals + Phase-2 devPNT mirror PENDING
+**M2 amendment — review reads AND proves Vision + Use-Cases + Threat Model** (node M2.A7 under the already-DONE M2 milestone — a governed amendment, not a new milestone). `review.md`: for an analysis/design review, §Requesting now takes **Vision + use-cases/user-needs + threat model** as explicit inputs, and §Reviewing requires the reviewer OUTPUT to carry a **conformance/traceability statement** (each constraint → satisfied+where | finding; PASS invalid on "found nothing"; scoped — plain code reviews stay findings-only). `SKILL.md §3`: author-trace rule. `templates.md` ANALYSIS: `## Use Cases / User Needs` section (the Standalone UC home; Minimum-sections floor left unchanged). Governed full Hybrid: E-ISP `e_isp_review_input_hardening` v2.0 (deep, 3 rounds — round-1 BLOCK caught the missing Standalone UC home; v2.0 added the output-evidence half at the owner's steer) + E-TDD v1.0 (light) + §4.6 code review PASS (self-caught + reverted a Minimum-sections regression). `check --hybrid` CLEAN, eval battery 51/51, shadow `SHADOW_e_tdd_review_input_hardening_v1.0.md` exported. **Pending for the owner:** (a) accept the M2.A7→DONE + M2→DONE plan proposals in the GUI; (b) the **1.13.0 release** — bump staged as `[Unreleased - 1.13.0]` in CHANGELOG; per `GUIDE_release`: triple-bump → verification battery → `git_push_tag.bat` → merge → `npm publish` (owner 2FA); (c) **Phase 2 — the devPNT-project mirror**: the same discipline in `devPNT/agent/core/mcp_system_prompt.md` §4.5 + the `devpnt-tech-reviewer` output format, done through devPNT's own governance + `setup_mcp.bat` redeploy (NEVER hand-edit the deployed `~/.claude` copies — see the earlier reverted mistake). No git commit/push this session.
+
+---
+### Prior session history: Antigravity 2.0 client (released as v1.12.0)
 **Client Roster — Google Antigravity 2.0 support** (a NEW milestone beyond M4): the install engine now serves Antigravity. Implementation + tests + docs + closure done and `check --hybrid` CLEAN. Two things remain for the owner: (a) approve the devPNT proposals in the GUI (M-VISION promotion → Master Plan milestone → Action Plan node), (b) the release (version bump is staged in the working tree at 1.12.0; publish is the owner's 2FA step). No git commit/push was made this session.
 
 ## What was built (Antigravity client)
