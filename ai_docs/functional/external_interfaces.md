@@ -1,28 +1,42 @@
 <!-- devpnt:generated
-  date: 2026-07-03T13:45:18
+  date: 2026-07-08T11:36:16
   generator: functional_docs_generator v1.0
-  sources: ai_docs, scripts
+  sources: ai_docs
   model: GoogleGemini/gemini-flash-lite-latest
-  summary_hash: 8a24a29e6215324c
+  summary_hash: 52a1bf1145267a4e
 -->
 
-## Model Context Protocol (MCP)
-- Name: MCP Interface
+## MCP (Model Context Protocol)
+- Name: Model Context Protocol
 - Direction: bidirectional
 - Authentication: none
 - Message Format: JSON-RPC
-- Module: ai_docs/functional/external_interfaces.md
+- Module: functional/external_interfaces.md
 
-## Server-Sent Events (SSE)
-- Name: SSE Interface
+## SSE (Server-Sent Events)
+- Name: Server-Sent Events Transport
 - Direction: outbound
 - Authentication: none
-- Message Format: WebSocket frames
-- Module: ai_docs/functional/external_interfaces.md
+- Message Format: JSON-RPC / SSE
+- Module: functional/external_interfaces.md
 
-## Standard Input/Output (Stdio)
-- Name: Stdio Interface
+## Stdio Transport
+- Name: Standard I/O Communication
 - Direction: bidirectional
 - Authentication: none
 - Message Format: stdio
-- Module: ai_docs/functional/external_interfaces.md
+- Module: functional/external_interfaces.md
+
+## npm Registry Interface
+- Name: npm Registry API
+- Direction: outbound
+- Authentication: 2FA/Token
+- Message Format: REST
+- Module: reference/GUIDE_release.md
+
+## Git Versioning Interface
+- Name: Git Remote Protocol
+- Direction: outbound
+- Authentication: SSH/HTTPS
+- Message Format: binary
+- Module: reference/GUIDE_release.md

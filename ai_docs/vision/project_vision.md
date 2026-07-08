@@ -10,10 +10,10 @@ Agentic SDLC must be the **best-in-class** methodology skill for AI coding agent
 - **C — Where superpowers is heading, matched or leapfrogged.** Its 6.0.x frontier (per-task interface contracts, durable progress ledger, one-shot two-verdict review, model-per-dispatch, and the Global Constraints block) — we match the execution ergonomics and **leapfrog** the Global Constraints idea: they copy project rules verbatim into every plan; we maintain them once as versioned, source-faithful guides and point to them.
 - **D — What nobody has.** Operative guides from user indications + an agent-level knowledge base (Feature B). The original layer; its milestone lodestar is the accepted `milestone_vision_operative_guides`.
 
-## Target Users
-- Developers using AI agents for feature development, audits, refactors, and maintenance.
-- Teams needing explicit-but-proportional governance across Claude Code, Gemini/Antigravity, Codex, Cursor and similar.
-- Users who want a free complete methodology, with the option to "go serious" via the devPNT paid amplifier (open-core).
+## Actors
+- **Solo developer using an AI agent** — ship features/audits/refactors without losing the thread; good UX = proportional ceremony (L1 stays one step, L3 earns the full gate) and never re-explaining the project across sessions.
+- **Team lead needing governance** — keep many agents/clients aligned to one intent across Claude Code, Gemini/Antigravity, Codex, Cursor; good UX = one process, one source of truth, strategic drift visible before merge.
+- **Open-core adopter** — start free and Standalone, "go serious" via the devPNT paid amplifier only when it pays off; good UX = zero capability loss without devPNT, a clean upgrade path with it.
 
 ## Goals
 - Compose A+B+C+D into one process without denaturing the Documentation-First identity — every addition inherits `ai_docs/` frontmatter, manifest and lifecycle; nothing becomes a tool on the side.

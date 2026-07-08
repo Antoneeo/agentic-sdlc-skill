@@ -5,10 +5,14 @@
 ## Key Features
 
 - **Risk-proportional workflow**: L1/L2/L3/Spike triage avoids heavyweight process for trivial work.
-- **Vision-guided governance**: Standalone projects use `ai_docs/vision/`; Hybrid projects use devPNT `M-VISION` as the milestone north star.
+- **Vision-guided governance**: Standalone projects use `ai_docs/vision/`; Hybrid projects use devPNT `M-VISION` as the milestone north star. The Vision names its **Actors** — the cast a feature serves, one light line each — so UX is designed for concrete roles, not an implicit "user".
+- **Execution disciplines**: explicit TDD (RED/GREEN/REFACTOR), systematic debugging, an L3 spec-elicitation round, and a single code-review definition wired into the workflow phases.
+- **Operative guides + agent-global KB**: distil user-provided indications into source-faithful `ai_docs/reference/GUIDE_*.md` — consulted before operative work, proposed after reusable work — shared cross-project via `~/.agentic-sdlc`.
+- **Opt-in subagent execution**: an approved design projects into a validated executable plan an orchestrator can drive through subagents.
+- **Self-activating**: a SessionStart hook emits repo-sourced orientation; a deterministic self-eval battery guards the skill's own doctrine as the release gate.
 - **Standalone complete**: works fully with local `ai_docs/` without requiring devPNT.
-- **devPNT symbiosis**: when devPNT is available, Master Plan, Action Plan, M-VISION, and governed artifacts become the authoritative planning layer.
-- **Installed support files**: Claude, Codex, Gemini, and Google Antigravity receive the full skill folder, including `templates.md`, `guides.md`, `tdd.md`, `debugging.md`, `elicitation.md`, `review.md`, `dispatch.md`, `ENFORCEMENT.md`, and `scripts/sdlc_check.py`; an agent-global KB at `~/.agentic-sdlc` shares the same engine cross-project.
+- **devPNT symbiosis**: when devPNT is available, Master Plan, Action Plan, M-VISION, and governed artifacts become the authoritative planning layer, with independent fresh-context reviews of technical artifacts and diffs.
+- **Installed support files**: Claude, Codex, Gemini, and Google Antigravity receive the full skill folder, including `templates.md`, `guides.md`, `tdd.md`, `debugging.md`, `elicitation.md`, `review.md`, `dispatch.md`, `ENFORCEMENT.md`, and `scripts/sdlc_check.py`.
 - **Mechanical checks**: optional validator for document structure, generated feature history, stale audit areas, and protected-path gates.
 
 ## Installation

@@ -15,8 +15,9 @@ When you hand work to a reviewer (human or agent), give them:
   the change was built against — not a paraphrase of it.
 - **The actual diff**: the real changed files, not a description of them.
 - **For an impact/solution-analysis review, the constraints it derives from**:
-  the **Vision** (Hybrid: the `M-VISION`; Standalone: `project_vision.md`/`roadmap.md`
-  + the ANALYSIS Vision-Alignment), the **use-cases / user-needs** (Hybrid: `D-UC`;
+  the **Vision**, including its `## Actors` (Hybrid: the `M-VISION`; Standalone:
+  `project_vision.md`/`roadmap.md` + the ANALYSIS Vision-Alignment), the
+  **use-cases / user-needs** (Hybrid: `D-UC`;
   Standalone: the ANALYSIS `## Use Cases / User Needs`), and the **threat model**
   (Hybrid: `P-TM`; Standalone: the ANALYSIS `## Security and Threat Model`). Hand these
   *in addition to* the design artifact — the reviewer checks the artifact **against**
@@ -55,9 +56,10 @@ When you are the reviewer:
 - **Conformance statement (impact/solution-analysis & design reviews only — not a
   plain code-diff review).** When the artifact under review carries Vision / use-case
   / threat-model constraints, your output MUST map each constraint to its evidence: for
-  every use-case/user-need, every threat, and every applicable Vision benefit/Non-Goal,
-  state WHERE the artifact satisfies it (section or `file:line`) or raise it as a
-  finding. A PASS/approve is **not valid on "found nothing"** — the conformance
+  every use-case/user-need (and the Actor it serves — a use-case with no defined Actor,
+  or an Actor UX expectation the solution does not meet, is a finding), every threat, and
+  every applicable Vision benefit/Non-Goal, state WHERE the artifact satisfies it (section
+  or `file:line`) or raise it as a finding. A PASS/approve is **not valid on "found nothing"** — the conformance
   statement is the proof the check ran; an unfalsifiable "I checked" is the review
   theater this discipline exists to prevent (the reviewer-side twin of §Receiving's
   silent-drop rule). Plain code reviews stay findings-only.

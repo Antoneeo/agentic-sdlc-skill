@@ -87,7 +87,12 @@ Status: DRAFT
      or APPROVED (by <who>, <date>) — only after the user's explicit confirmation -->
 
 ## North Star
-## Target Users
+## Actors
+<!-- the cast this product serves. One light line per actor:
+     **Role** — primary goal; good UX = what a good experience means to them.
+     Define each actor ONCE here; use-cases (Standalone) / D-UC (Hybrid) reference
+     them by role and never re-describe who they are (anti-DRY). Actors characterize
+     the intended UX; keep it proportional — a role list, not persona research. -->
 ## Core Problem
 ## Goals
 ## Non-Goals
@@ -122,7 +127,11 @@ Only for features spanning multiple ANALYSIS documents or multiple milestones: o
 
 ## Problem
 ## Expected Benefit
-## Users or Stakeholders
+## Actors
+<!-- the cast this feature serves — usually a subset/refinement of the project
+     Actors, or a distinct feature-local cast for internal-tooling work. One light
+     line each: **Role** — primary goal; good UX = what good feels like.
+     Referenced by the use-cases, not re-described in them. -->
 ## Success Signals
 ## Non-Goals / Out of Scope
 ## Related Constraints and Principles
@@ -149,15 +158,18 @@ end_date:
 ## Feature Vision
 <!-- expected benefit and problem solved; alignment with the project vision
      (cite the document and its DRAFT/APPROVED state); non-goals/out-of-scope
-     for this feature; success signals; stakeholders only if not obvious.
+     for this feature; success signals; the Actors this feature serves (name them,
+     or point to the project Vision's ## Actors — do not re-describe them here).
      This is the single home of the feature vision: the separate file
      VISION_[feature].md is created only if the feature spans multiple
      ANALYSIS documents or multiple milestones. -->
 
 ## Use Cases / User Needs
 <!-- who needs this and why: the concrete use-cases / user-needs the change serves
-     (the Standalone home for what Hybrid keeps in D-UC). Derived from the elicitation
-     round; the Impact below must cover each, and the closure review checks coverage. -->
+     (the Standalone home for what Hybrid keeps in D-UC). Each use-case NAMES the
+     Actor it serves (defined in the Vision's ## Actors) — actor = who they are,
+     use-case = what they do. Derived from the elicitation round; the Impact below
+     must cover each, and the closure review checks coverage + actor UX fit. -->
 
 ## Impact
 <!-- existing files touched, APIs/contracts, performance, new dependencies -->
