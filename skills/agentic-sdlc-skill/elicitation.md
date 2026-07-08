@@ -14,13 +14,17 @@ Ask ONE structured set of questions, not a drip of follow-ups. Keep each
 question short and numbered; offer concrete options where a real choice
 exists (this narrows the reply and speeds up the round). Cover:
 
-1. **Goal / benefit** — what problem this closes, for whom, and why now.
-2. **Scope boundaries** — what is explicitly included in this unit of work.
-3. **Non-goals** — what is explicitly excluded, so scope does not silently
+1. **Goal / benefit** — what problem this closes and why now.
+2. **Actors** — who interacts with this: their role, primary goal, and what
+   "good UX" means to them. These become the Vision's `## Actors`; each
+   use-case below attaches to one (actor = who they are, use-case = what
+   they do). Skip only when an approved Vision already names them.
+3. **Scope boundaries** — what is explicitly included in this unit of work.
+4. **Non-goals** — what is explicitly excluded, so scope does not silently
    creep in later.
-4. **Constraints** — technical, compatibility, and security constraints that
+5. **Constraints** — technical, compatibility, and security constraints that
    bound the solution space.
-5. **Acceptance signals** — how you and the user will both recognize the
+6. **Acceptance signals** — how you and the user will both recognize the
    work is done and correct.
 
 ## Reflect

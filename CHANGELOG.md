@@ -2,6 +2,17 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.14.0] - 2026-07-08 (M6: Vision Actors — a characterized cast in the Vision)
+### Changed
+- **Vision defines Actors.** The Vision templates replace the flat `## Target Users` / `## Users or Stakeholders` with a first-class `## Actors` element: one light line per actor — **Role** — primary goal; good UX = what a good experience means to them. An Actor is defined ONCE in the Vision (project or feature) and REFERENCED by each use-case / `D-UC` (actor = who they are, use-case = what they do) — anti-DRY, and enough to design the intended UX for concrete roles instead of an implicit "user". A feature may declare its own feature-local cast for internal-tooling work.
+- **`elicitation.md`**: the L3 elicitation round gains an explicit **Actors** question (role, primary goal, UX expectation); "for whom" is folded into it.
+- **`SKILL.md`**: the "Protect the Vision" value now names the actors + the UX they expect; the §3 Request-Analysis trace includes the actor each part serves.
+- **`review.md`**: the conformance set gains one rule — a use-case with no defined Actor, or an unmet Actor UX expectation, is a finding.
+- **README** Key Features refreshed to cover the delivered M1–M6 capabilities (execution disciplines, operative guides + agent-KB, opt-in subagent execution, self-activation, and Actors).
+
+### Process note
+Governed Hybrid (devPNT re-pointed at this project): M-VISION `milestone_vision_vision_actors` v1.0 → milestone M6 → ADR `adr_2026-07-08_vision_actors` (Light record; the reviewed `ANALYSIS_vision_actors.md` is the design detail). The devPNT M-VISION doctrine mirror (`mcp_system_prompt.md` §4.2 — the M-VISION gains an Actors element, added to the Vision-Alignment re-read + the amendment hard-stop) is a devPNT-source edit pending `setup_mcp.bat` redeploy. Independent fresh-context reviews PASS (ANALYSIS diff: 2 WARN fixed, incl. the change satisfying its own new rule; ADR light: 0 BLOCK). Doc-only: `check --hybrid` CLEAN, eval battery 51/51. No new shipped support files (allowlist unchanged).
+
 ## [1.13.0] - 2026-07-05 (M2 amendment: review reads AND proves Vision + Use-Cases + Threat Model)
 ### Changed
 - **Review discipline hardened (M2.A7).** `review.md` now, for an impact/solution-analysis / design review: (a) §Requesting takes the **Vision + use-cases/user-needs + threat model** as explicit inputs the reviewer checks the artifact *against* (Hybrid: M-VISION/D-UC/P-TM; Standalone: the ANALYSIS Vision-Alignment / Use-Cases / Threat-Model sections); (b) §Reviewing requires the reviewer OUTPUT to carry a **conformance/traceability statement** — each Vision benefit / use-case / threat mapped to where the artifact satisfies it, or a finding — and a PASS is **not valid on "found nothing"**. Scoped to analysis/design reviews (plain code reviews stay findings-only → honors the "no enforcement theater" Non-Goal); it is the reviewer-side twin of the existing §Receiving anti-silent-drop rule.
