@@ -17,6 +17,14 @@ when a task needs detail. Two levels, both produced by this pipeline:
 A guide that restates the source at length is as wrong as a fragmented one:
 completeness is guaranteed by the book level, economy by the synthesis level.
 
+**Two source kinds.** A guide's `source_kind` is either `document` (the default —
+distilled from USER-PROVIDED indications; operative, "how to act") or `code`
+(distilled from the project's own code; a comprehension map of a complex component,
+"how it works"). Both are **source-faithful and snapshot-anchored** — the machinery
+below (snapshot, `source_hash`, fidelity markers, router, `stale`) is identical; only
+what is gathered into `.sources/` differs (a handed document vs verbatim code
+excerpts). Where a rule applies to only one kind, it says so.
+
 ## 0. Consuming a guide (consult before acting)
 
 Guides only pay off if they reach the work they govern. **Before operative work,
@@ -68,6 +76,34 @@ a guide.
   a guide from general knowledge (the `distilled_from` fidelity constraint, §3,
   is absolute). This adds a moment to PROPOSE, not a new writer.
 
+### Comprehension trigger (code source, autonomous — a duty, not a proposal)
+
+The two triggers above are for `source_kind: document` (the user hands material
+over). There is a third, for `source_kind: code`: while doing L2/L3 work, when you
+recognize that a component / feature / abstraction layer is **high-complexity** and
+no CURRENT guide already covers it, it is your **duty to WRITE a comprehension
+guide** — autonomously, no proposal, no human gate. The next session (or another
+agent) must not have to re-derive the model you just paid to build, and then break
+the component from partial understanding.
+
+- **Why autonomous is allowed here** (it is NOT for `document` guides): a
+  comprehension guide is **additive, code-anchored and reversible** (git). It changes
+  no code, plan or governed artifact — so the skill-wide "propose, never a silent
+  write" rule is relaxed for THIS kind only. The anti-hallucination floor still holds:
+  §3 fidelity is absolute — every claim traces to a verbatim code excerpt in the
+  snapshot, never to your assumption about what the code does.
+- **Recognize "high-complexity" by concrete signals** (any strong combination, not a
+  vibe): you had to trace one behavior across several files/modules (summaries were
+  not enough); high fan-in / large blast radius (many consumers); non-obvious control
+  or data flow (state machine, async/eventing, DI/plugin indirection, metaprogramming,
+  cross-cutting invariants); the area was already broken once — or **repeatedly
+  across sessions** — from partial understanding (handoff / diary / git shows it);
+  the "why" is not reconstructable from a single file.
+- **Guard-rails (autonomous is not unconstrained).** Search first (§2.0 — one CURRENT
+  guide per topic, both routers). Honor the fidelity floor (§3). RECOMMEND the
+  independent guide-vs-source review (§5) — it matters more here, since no human gated
+  creation. Announce the autonomous write in the closure / handoff so it is visible.
+
 ## 2. Pipeline
 
 0. **Search before creating (DRY — one CURRENT guide per topic).** Before
@@ -118,7 +154,10 @@ a guide.
      scope is a LOCATION decision by the user, never a content taxonomy; KB
      created lazily with `.sources/` on the first agent-scope guide).
 2. **User confirms** the topic decomposition — including the fragmentation-risk
-   assessment and scope decision — before any file is written.
+   assessment and scope decision — before any file is written. **`source_kind: code`
+   skips this gate**: the comprehension guide is written autonomously (§1
+   comprehension trigger). Still run the fragmentation/scope judgement yourself — just
+   do not block on confirmation.
 3. **Snapshot each source verbatim** into
    `ai_docs/reference/.sources/<slug>-<hash8>.md`:
    - `slug` derives from the topic (lowercase, hyphenated).
@@ -134,6 +173,13 @@ a guide.
      normalized hash stays stable either way).
    - The snapshot is verbatim: no paraphrasing, no reformatting beyond what is
      needed to save it as markdown.
+   - **For `source_kind: code`** the snapshot is the verbatim CODE EXCERPTS the guide
+     explains — the specific functions / classes / regions of the real files, each
+     labelled with its `path:symbol` (or `path:startLine-endLine`) — assembled into
+     the one `.sources/<slug>-<hash8>.md` and hashed identically. Copy the code
+     verbatim (no paraphrase); include ONLY the regions the guide covers, not whole
+     files, so `stale` tracks the code that matters. `distilled_from` records those
+     code paths.
 4. **Source-anchored SYNTHESIS (not restatement).** Select and compress what
    the source says into the operative essence — decision rules, invariants,
    the "where people go wrong" list — and POINT INTO the snapshot for the
@@ -145,9 +191,11 @@ a guide.
    summarize-and-expand, forbidden). A guide approaching the source's own
    length is a paraphrase, not a synthesis — wrong output.
 5. **Render per template** (`templates.md` → `## ai_docs/reference/GUIDE_[topic].md`):
-   frontmatter with `source`, `distilled_from`, `source_hash` (the snapshot's
-   SHA-256, matching what you just computed), optional `source_version`; body
-   sections chosen from the repertoire, each with a fidelity marker.
+   frontmatter with `source_kind` (`document` | `code`), `source`, `distilled_from`,
+   `source_hash` (the snapshot's SHA-256, matching what you just computed), optional
+   `source_version`; body sections chosen from the repertoire (a `code` guide uses the
+   comprehension repertoire — how it works / control & data flow / invariants / where
+   it breaks), each with a fidelity marker.
    **Write for the two-level read**: the guide (synthesis) is small enough to
    be read WHOLE before acting; the snapshot (book) is where size lives and
    where readers grep/partial-read on demand, following the section markers.
@@ -160,6 +208,11 @@ a guide.
    `ai_docs/reference/INDEX.md` (the guide router) regenerate.
 
 ## 3. Fidelity rules (mandatory, the D5 constraint)
+
+"The source" below means the SNAPSHOT — a handed document for `source_kind: document`,
+verbatim code excerpts for `source_kind: code`. The constraint is identical for both:
+never from UNVERIFIED knowledge. A code guide's every claim traces to the actual code
+in the snapshot, never to your assumption about what the code does.
 
 - Only what the source supports goes in the guide. If the source is silent on
   something a reader might expect, mark the section `[not covered by source]`
@@ -200,5 +253,10 @@ state it explicitly when handing off a newly created guide.
   compares each guide's recorded `source_hash` against the live snapshot file
   and reports `[stale]` when they diverge — that is the signal to regenerate,
   not a manual freshness check.
+- **`source_kind: code` freshness**: `stale` works unchanged (the code-excerpt
+  snapshot drifts when the code changes → regenerate). ADDITIONALLY, when you modify
+  the code a comprehension guide describes, refresh that guide in the SAME closure
+  (docs travel with the code) — do not wait for `stale` to catch it. A stale
+  comprehension guide is a confident-wrong map, worse than none.
 - **Agent-global KB guides** use the same pipeline and validator via
   `--root ~/.agentic-sdlc`; freshness via the same `stale` engine.

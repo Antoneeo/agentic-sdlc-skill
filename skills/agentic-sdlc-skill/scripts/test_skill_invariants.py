@@ -59,6 +59,18 @@ class SkillInvariants(unittest.TestCase):
     def test_dispatch_guide_note(self):
         self.assertIn("Guide consumption under dispatch", read("dispatch.md"))
 
+    def test_comprehension_guide_wiring(self):
+        """Code-comprehension guides (source_kind: code) are wired end to end:
+        the autonomous trigger in guides.md, the SKILL.md moment + Write-Triggers
+        row, and the template field."""
+        guides = read("guides.md")
+        self.assertIn("Comprehension trigger", guides)
+        self.assertIn("source_kind", guides)
+        skill = read("SKILL.md")
+        self.assertIn("source_kind: code", skill)
+        self.assertIn("Comprehend (code, autonomous)", skill)
+        self.assertIn("source_kind", read("templates.md"))
+
     def test_skill_worktree_hygiene(self):
         t = read("SKILL.md")
         self.assertIn("Isolate the work", t)

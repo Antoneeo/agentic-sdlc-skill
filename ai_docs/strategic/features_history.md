@@ -7,3 +7,4 @@
 | F-002 | Agentic SDLC vNext | L3 | COMPLETED | 2026-06-13 | 2026-06-13 | solutions/ANALYSIS_agentic_sdlc_vnext.md |
 | F-003 | devPNT Seam (coexistence contract) | L3 | COMPLETED | 2026-07-02 | 2026-07-02 | solutions/ANALYSIS_devpnt_seam.md |
 | F-014 | Vision Actors | L3 | COMPLETED | 2026-07-08 | 2026-07-08 | solutions/ANALYSIS_vision_actors.md |
+| F-015 | Code-Comprehension Guides | L3 | IN_PROGRESS | 2026-07-19 |  | solutions/ANALYSIS_comprehension_guides.md |

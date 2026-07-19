@@ -2,6 +2,24 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.15.0] - 2026-07-19 (Write Triggers + Code-Comprehension Guides)
+### Added
+- **Code-comprehension guides (`source_kind: code`)** — a new guide kind the agent writes **autonomously** (a duty, no proposal) when it recognizes a high-complexity component / feature / abstraction layer with no CURRENT guide: a source-faithful map of how the thing works, so the next session starts with the model instead of re-deriving it and breaking the component from partial understanding. Reuses the ENTIRE guide machinery (snapshot + `source_hash` + `stale` + router + fidelity markers) — the source is verbatim CODE EXCERPTS in `.sources/` instead of a handed document; `sdlc_check.py` is unchanged. The skill-wide "propose, never a silent write" rule is relaxed for THIS kind only (additive, code-anchored, reversible); the anti-hallucination floor holds — every claim traces to a code excerpt. Triggered by concrete signals (high comprehension cost, high fan-in, non-obvious flow, prior / repeated-across-sessions breakage from partial understanding, non-local rationale) and by **chronic fragility** (a component breaking repeatedly across sessions → write the guide AND escalate a refactor as its own L3; stop patching). Touches `guides.md` §1–§6, `SKILL.md` (4th "Comprehend" moment + Write-Triggers `code` row + consult wording), `templates.md` (`source_kind` + comprehension repertoire), `debugging.md` (capture-the-model + chronic-fragility). Positioned under Vision **Layer A** (Documentation-First lifecycle applied to code understanding), distinct from Layer D's user-indication operative guides.
+- **`SKILL.md` §Write Triggers** — a mechanical document→trigger→phase table, symmetric to Rule Zero: triage decides IF documentation is due, this table decides WHICH document each event produces. One event, one destination; create-or-update, never duplicate. It is the authoritative write index; the workflow phases point to it.
+
+### Changed
+- **Bootstrap set made explicit (Phase 1)** — the named doc set (`README.md`, the three Vision docs as DRAFT, `strategic/architecture.md`, `strategic/existing_features.md`, Standalone `audit/audit_plan.md`, then regenerate `INDEX.md`) replaces the vague "minimal documents".
+- **`handoff.md` write trigger + session-end rule** — mandatory at every L3 closure, and when a session ends with an ANALYSIS still IN_PROGRESS; the Phase-4 Diary trigger now names "session ends with work unfinished". Mirrored in `templates.md`.
+- **`VISION_[feature].md` retroactive trigger** — fires when creating the SECOND `ANALYSIS_*` on the same theme (no foresight required).
+- **ADR trigger unified** across Standalone (`architecture/`) and Hybrid (devPNT DB); no decision, no ADR.
+- **`features_history.md` regime** pinned to `sdlc_check.py index` (prose discipline only without Python).
+- **"Understand before acting"** now names cross-session source-memory rot — re-read a component you think you remember; trust the code (and its comprehension guide), not memory.
+- **SKILL.md thesis line** — the skill's one-line "why": prevent *myopia* (acting from partial understanding).
+- **Blast-radius enumeration is an authoring duty (Phase 3)** — mechanically enumerate every consumer of a signature-changed / multi-caller symbol up front with the symbol-graph, not as a review finding; `debugging.md` root-cause traces callers the same way (not text search).
+
+### Process note
+Doc-only: no `sdlc_check.py` or packaging change; validator behavior untouched (the packaged file allowlist is unchanged). Standalone L3 (devPNT off this session — locked on another project). Governed by `ai_docs/solutions/ANALYSIS_comprehension_guides.md` (F-015), Vision decision **B** (comprehension homed under Layer A, Layer D's differentiator untouched). Validated by TWO independent blind comprehension tests (fresh agent, skill-only, no hints): the new trigger is discoverable + correct, and the adversarial (refuses a general-knowledge guide) and autonomy-boundary (the autonomy relaxation does not leak to refactors or operative guides) probes pass; 6 findings surfaced across the two rounds and all fixed. Eval battery 52/52 green; `validate` 0 errors.
+
 ## [1.14.0] - 2026-07-08 (M6: Vision Actors — a characterized cast in the Vision)
 ### Changed
 - **Vision defines Actors.** The Vision templates replace the flat `## Target Users` / `## Users or Stakeholders` with a first-class `## Actors` element: one light line per actor — **Role** — primary goal; good UX = what a good experience means to them. An Actor is defined ONCE in the Vision (project or feature) and REFERENCED by each use-case / `D-UC` (actor = who they are, use-case = what they do) — anti-DRY, and enough to design the intended UX for concrete roles instead of an implicit "user". A feature may declare its own feature-local cast for internal-tooling work.
