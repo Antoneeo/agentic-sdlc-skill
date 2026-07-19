@@ -7,6 +7,8 @@ copyright: (c) 2026 Antonio Pinto
 
 # Agentic SDLC
 
+**Why this skill exists:** to prevent *myopia* — acting from partial understanding, where a change breaks what it did not account for and hard-won knowledge evaporates between sessions. Triage, the Vision Gate, the documentation lifecycle and comprehension guides are all one defense against that.
+
 This skill guides software development with a Documentation-First process proportional to risk. It must work fully even without devPNT. When devPNT is available and configured for the current project, the skill works in symbiosis with its governance: M-VISION, Master Plan, Action Plan and versioned artifacts become the authoritative frame for milestones and implementation.
 
 Support files in the skill directory:
@@ -19,7 +21,7 @@ Read these files only when needed. `SKILL.md` is the operating contract; the sup
 
 ## Technical Values
 
-- **Understand before acting:** do not modify code without understanding root cause, constraints and current shape.
+- **Understand before acting:** do not modify code without understanding root cause, constraints and current shape — including re-reading a component you think you remember, because your model of it rots between sessions; trust the code (and its comprehension guide), not memory.
 - **Preserve architectural coherence:** respect existing layers, responsibilities, naming, patterns and conventions.
 - **Apply DRY and simplicity:** do not duplicate logic or knowledge; abstract only when it reduces real complexity.
 - **Preserve quality:** every change must maintain or improve stability, testability and maintainability.
@@ -36,7 +38,7 @@ Always classify the request before choosing the process. Declare the chosen leve
 | Level | Criteria | Required process |
 |---|---|---|
 | **L1 - Trivial** | About 10 lines in 1-2 files; no API, dependency or new-behavior change; typos or fixes restoring already-expected behavior | Implement. Run relevant existing tests. No new documents. |
-| **L2 - Small** | Clear root cause; at most 3 files; no new dependency or public API; low risk | Mini-analysis in the message: objective, impact, security, tests. Tests mandatory. No new document, except updating an existing analysis/handoff if useful. |
+| **L2 - Small** | Clear root cause; at most 3 files; no new dependency or public API; low risk | Mini-analysis in the message: objective, impact, security, tests. Tests mandatory. No new document, except updating an existing analysis on the same topic, or the handoff (see Write Triggers). |
 | **L3 - Significant** | More than 3 files, APIs/contracts, new dependency, user-visible behavior, security-sensitive area, architectural change or non-obvious design | Full workflow: Vision Gate, analysis, plan, implementation, tests, closure. |
 | **Spike** | Time-boxed exploration to reduce uncertainty | Code not mergeable into main. Outcome in `ai_docs/solutions/SPIKE_[topic].md`. For production, reclassify as L2 or L3. |
 
@@ -45,6 +47,24 @@ Cross-cutting rules:
 - If a bigger impact emerges during L1/L2 work, stop, reclassify and declare it.
 - When in doubt, pick the higher level.
 - The full audit does not start for L1/L2 unless explicitly requested.
+
+## Write Triggers
+
+Triage decides IF documentation is due; this table decides WHICH document each event produces, and when. **One event, one destination:** when the trigger fires and the document does not exist, create it; when it exists, update it — never duplicate it. This table is the authoritative write index — the workflow phases carry the surrounding procedure and point here for the trigger.
+
+| Document | Write trigger | Phase |
+|---|---|---|
+| `solutions/ANALYSIS_[feature].md` | Every L3, after elicitation and before any code. On topic match with an existing analysis, update that one instead of a new file. | 3 |
+| `solutions/SPIKE_[topic].md` | Closing any Spike — including a failed one (a negative outcome is still an outcome). | — |
+| `vision/features/VISION_[feature].md` | Feature known multi-milestone at analysis time, OR the retroactive trigger: you are about to create the SECOND `ANALYSIS_*` on the same theme — extract the shared feature vision first, then let both analyses reference it. | 3 |
+| `audit/handoff.md` | Mandatory at every L3 closure, and at session end when an ANALYSIS is still IN_PROGRESS (even without closure); discretionary after an L2 when useful. Refresh Date / Branch / active features / next step; ≤ 20 lines. | 5 / session end |
+| `audit/audit_plan.md` (Standalone) | Bootstrap, and whenever a mapped area changes state (`sdlc_check.py mark` records the reference — git hash, else UTC timestamp). | 1 |
+| `reference/GUIDE_[topic].md` (`source_kind: document`) | Origin+purpose test (`guides.md`), or a proactive proposal the user accepted. Propose, never a silent write, never from model knowledge. | 4 / 5 |
+| `reference/GUIDE_[topic].md` (`source_kind: code`) | Recognized high-complexity component/feature/layer with no CURRENT guide — including one that breaks repeatedly across sessions → **duty to write autonomously** (no proposal; additive, code-anchored, reversible). Fidelity floor: every claim traces to a code excerpt. Signals + guard-rails: `guides.md` §1. | any |
+| ADR — `architecture/` (Standalone) or devPNT DB (Hybrid) | An architectural decision was taken (new pattern, layer or contract change, structural dependency): record it at closure, before DONE. No decision, no ADR. | 5 |
+| `strategic/architecture.md`, `strategic/existing_features.md` | Bootstrap; update at closure when the stack or the feature catalog actually changed. | 1 / 5 |
+| `vision/project_vision.md`, `roadmap.md`, `principles.md` | Bootstrap, as `Status: DRAFT`; promoted to APPROVED only by explicit user confirmation. | 1 / 2 |
+| `INDEX.md`, `reference/INDEX.md`, `strategic/features_history.md` | Never by hand: regenerated by `sdlc_check.py index` at closure when canonical docs or guides changed (prose discipline where the validator is not adopted). | 5 |
 
 ## Operating Modes
 
@@ -56,7 +76,7 @@ Source of truth:
 - Vision: `ai_docs/vision/project_vision.md`, `roadmap.md`, `principles.md`.
 - Features/analyses: `ai_docs/solutions/ANALYSIS_[feature].md`.
 - Audit/handoff: `ai_docs/audit/`.
-- Feature history: `ai_docs/strategic/features_history.md`, manual or generated by the validator, depending on the structure the project adopts.
+- Feature history: `ai_docs/strategic/features_history.md` — generated by `sdlc_check.py index` (kept by hand as a prose discipline only in environments without Python).
 
 Standalone mode is not reduced: it must handle audits, features, significant bugs, tests, handoffs and closure without devPNT.
 
@@ -157,7 +177,7 @@ gate) instead of requiring an IN_PROGRESS ANALYSIS.
 - Read `ai_docs/audit/handoff.md` if it exists; if its Date/Branch are inconsistent, treat it as history.
 - Read `ai_docs/README.md` (curated must-reads) and `ai_docs/INDEX.md` (generated manifest of all canonical docs) to know what exists before exploring the code. `solutions/` and `audit/` are not indexed per file: search them with glob/grep.
 - Optional: a SessionStart hook (`ENFORCEMENT.md` §4) can emit this orientation automatically at session start (README + INDEX + guide router + handoff + triage reminder); when it is not wired, do these reads manually as above. The hook is a convenience, never a requirement — it introduces no Python dependency for the process itself and fails open (a missing/empty `ai_docs/` never blocks the session).
-- If `ai_docs/` is missing or incomplete, create the structure and minimal documents by analyzing the project in batches.
+- If `ai_docs/` is missing or incomplete, create the structure and the **bootstrap set** by analyzing the project in batches: `README.md`, the three `vision/` docs (`Status: DRAFT`), `strategic/architecture.md`, `strategic/existing_features.md` and — Standalone — `audit/audit_plan.md`; then regenerate `INDEX.md`. Nothing else is mandatory at bootstrap (per-document triggers: Write Triggers).
 - In Standalone use `ai_docs/audit/audit_plan.md` for mapping and state.
 - In Hybrid prefer the devPNT/KL mapping when available; do not duplicate plan governance.
 - For detailed templates use `templates.md`.
@@ -179,12 +199,14 @@ Hybrid:
 
 For any L3, run the spec elicitation round in `elicitation.md` BEFORE drafting the analysis (skip path inside — one-line note when the spec is already complete).
 
+**Blast-radius enumeration is an authoring duty, not a review finding.** Before writing the Impact (the list of what changes), for every symbol whose signature you change, thread a new field through, or that has more than one caller: mechanically enumerate EVERY consumer with the best symbol-graph tool your toolchain offers — an LSP/IDE call hierarchy or a find-usages / call-graph capability — with `grep` only as a last-resort fallback, and list the full set in the Impact. Anchor to symbol identity, not line numbers (they rot). This is deterministic and cheap: doing it up-front collapses the review into one pass, instead of the reviewer returning "you missed a consumer" one round at a time. Leaving completeness to the closure review is the myopia failure this whole workflow exists to prevent.
+
 Standalone L3:
 - Before creating a new `ANALYSIS_[feature].md`, search `ai_docs/solutions/` with glob/grep for an existing analysis on the same topic: if there is one, update it instead of duplicating it.
 - Create or update `ai_docs/solutions/ANALYSIS_[feature].md`.
 - Minimum sections: Objective, Feature Vision (or Vision Alignment), Impact, Security and Threat Model, Action Plan, Test Strategy, Diary/Current State.
 - Build the Impact/solution **on** the Vision, the use-cases/user-needs and the Security & Threat Model — read and trace to them first, and state the trace (which actor / use-case / threat / benefit each part serves) so the closure review (`review.md`) can verify conformance. Do not draft the Impact in isolation.
-- For features spanning multiple milestones or multiple analyses, also create `ai_docs/vision/features/VISION_[feature].md`.
+- For a feature known to span multiple milestones, also create `ai_docs/vision/features/VISION_[feature].md`; the retroactive case (extract it when the SECOND `ANALYSIS_*` on a theme appears) is in Write Triggers.
 
 Hybrid L3:
 - Restore the Master Plan, Action Plan and linked documents.
@@ -197,11 +219,11 @@ Hybrid L3:
 - Isolate the work: run an L3 change on its own branch. In Hybrid, prefer a git worktree from the start — a running devPNT server locks `.devpnt/*.db` and blocks in-place branch switches/merges in the primary worktree.
 - Modify surgically, consistently with the plan.
 - Implementation work follows the TDD discipline in `tdd.md` (RED/GREEN/REFACTOR — the L2/L3 default; record the reason when it does not apply).
-- Before implementing (L2/L3; L1 exempt), **consult the guide router** for a guide covering the task and read it first — the consult trigger (`guides.md` §0, summarized under `## Operative Guides`). A targeted description match, not a blanket read.
+- Before implementing (L2/L3; L1 exempt), **consult the guide router** for a guide covering the task — operative, or a comprehension map of the component you are about to touch — and read it first (the consult trigger, `guides.md` §0, summarized under `## Operative Guides`). A targeted description match, not a blanket read.
 - If the environment does not allow automated tests, declare the alternative verification and the reason.
 - For bugs (L2/L3), follow the systematic debugging method in `debugging.md`.
-- Circuit breaker: after 3 consecutive runs without progress on the tests, stop, switch to the systematic method in `debugging.md`, and ask for instructions if still stuck.
-- Update the ANALYSIS Diary or the Action Plan when you complete milestones, hit blockers or change decisions.
+- Circuit breaker: after 3 consecutive runs without progress on the tests, stop, switch to the systematic method in `debugging.md`, and ask for instructions if still stuck. `debugging.md` also covers **chronic fragility** — a component that breaks repeatedly across sessions is a comprehension + complexity signal (write the `source_kind: code` guide AND escalate a refactor), not a fourth patch.
+- Update the ANALYSIS Diary or the Action Plan when you complete milestones, hit blockers, change decisions, or a session ends with work unfinished.
 - **Opt-in subagent execution**: for an L3 with an approved design, the orchestrator MAY execute the work via subagents per `dispatch.md`, gated by `sdlc_check.py plan validate` ("no valid plan, no dispatch"); default stays same-session. Hybrid: the executable `PLAN_[feature].md` is `derived-from` the accepted E-TDD, never independently authored.
 
 ### 5. Closure
@@ -211,6 +233,7 @@ Hybrid L3:
 - Verify alignment with the local Vision or the devPNT M-VISION.
 - If the work was governed by user-provided indications and is reusable, **PROPOSE distilling a guide** (proactive trigger, `guides.md` §1) — a proposal for the user, never a silent write, never from model knowledge.
 - Update only the documents actually impacted.
+- **Update `audit/handoff.md`** — mandatory at every L3 closure (Date, Branch, active features, next step; ≤ 20 lines). The session-end rule and the L2 case: Write Triggers.
 - **Aligned indexes (Poka-Yoke)**: if you created, moved or removed canonical documents (`vision/`, `reference/`, `architecture/`, `functional/`, `strategic/`):
   - regenerate the manifest with `sdlc_check.py index` (writes `ai_docs/INDEX.md`) — never write it by hand;
   - if the document is a must-read, add/update its line in the curated `README.md`;
@@ -218,7 +241,7 @@ Hybrid L3:
   - if you created a new canonical subdirectory, give it a purpose in `README.md`.
   A canonical doc that is unindexed or lacks `status` = dirty closure (`sdlc_check.py check` fails/warns). Do not declare DONE until it is clean. Details: section "ai_docs documents".
   - guides created or changed: `sdlc_check.py index` regenerates BOTH manifests (`ai_docs/INDEX.md` and the guide router `ai_docs/reference/INDEX.md`) in one run.
-- In Hybrid propose ADR/KL updates when there were architectural decisions.
+- If an architectural decision was taken (new pattern, layer or contract change, structural dependency), record an ADR before DONE — Standalone in `architecture/`, Hybrid propose the ADR/KL update in the devPNT DB. No decision, no ADR (Write Triggers).
 - In Standalone, if the project adopts `sdlc_check.py`, run `python <skill_dir>/scripts/sdlc_check.py check --root <project_root>` or the equivalent local copy.
 - Updated documents must travel in the same commit/PR as the code they describe.
 - **Branch/worktree hygiene**: an L3 ran on its own branch (Phase 4) — close it with an explicit merge decision (merge, keep open, or discard) and clean up the branch/worktree; never leave orphan branches. In Hybrid, the running devPNT server locks `.devpnt/*.db`, so the merge is done from a separate git worktree or via a ref-only push, never an in-place branch switch in the primary worktree.
@@ -250,10 +273,11 @@ Legacy note: the validator also accepts the deprecated Italian frontmatter keys 
 
 ## Operative Guides
 
-Guides are **consulted, created, and proposed** — three moments; the mechanics live once in `guides.md`:
+Guides are **consulted, created, proposed, and (for code) authored for comprehension** — four moments; the mechanics live once in `guides.md`. Two source kinds: `document` (user indications, operative) and `code` (a comprehension map of a complex component):
 - **Consult (before acting):** before operative L2/L3 work (L1 exempt), check the guide router for a guide covering the task and read the match first — a targeted description match, never a blanket read. → `guides.md` §0.
-- **Create (from user indications):** the origin+purpose test below.
+- **Create (from user indications):** the origin+purpose test below (`source_kind: document`).
 - **Propose proactively (after success):** after reusable, user-indication-governed work, PROPOSE distilling a guide — a proposal, never a silent write, never from model knowledge. → `guides.md` §1.
+- **Comprehend (code, autonomous):** when a component/feature/layer is high-complexity and no CURRENT guide covers it, it is your DUTY to WRITE a `source_kind: code` comprehension guide autonomously — no proposal (additive, code-anchored, reversible); every claim traces to a code excerpt. Signals + guard-rails: `guides.md` §1.
 
 Trigger test: the user hands over indications to follow (origin = user, not model
 knowledge) meant to govern how the agent operates (purpose = operative), not just

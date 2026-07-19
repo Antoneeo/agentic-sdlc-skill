@@ -1,15 +1,19 @@
 # Handoff
-Date: 2026-07-08 (UTC)
+Date: 2026-07-19 (UTC)
 Branch: main
-Agent: Claude (Opus, orchestrator) — Hybrid; independent fresh-context reviews (ANALYSIS diff + ADR)
+Agent: Claude (Opus, orchestrator) — Standalone (devPNT off — locked on another project)
 
-## State: M6 Vision Actors — DONE; committed + tagged v1.14.0 (npm publish = owner 2FA)
-Characterized `## Actors` added to the Vision (skill Vision templates + elicitation + "Protect the Vision" value + review conformance set; devPNT M-VISION §4.2 mirror). Actor = one light line (role — primary goal — good UX), defined ONCE in the Vision, referenced by use-cases/`D-UC` (anti-DRY). Detail: `solutions/ANALYSIS_vision_actors.md` (Diary). Governed Hybrid: M-VISION `milestone_vision_vision_actors` v1.0 → milestone **M6 (DONE)** → ADR `adr_2026-07-08_vision_actors` → KL `adr_digest` v1.1 — all accepted. Reviews PASS (ANALYSIS diff 2 WARN fixed; ADR light 0 BLOCK). `check --hybrid` CLEAN; eval 51/51. Release battery green (npm pack 18 files, zero dev-only leak, v1.14.0). README Key Features refreshed (M1–M6 + Actors).
+## State: v1.15.0 prepared, NOT yet committed/published
+Two features bundled, doc-only, in the working tree:
+1. **Write Triggers** — `SKILL.md` §Write Triggers, a document→trigger→phase table symmetric to Rule Zero (write-side twin of triage); de-duped so the table is the authoritative home and phases point to it. + bootstrap-set/handoff/VISION-retroactive/ADR/features_history sharpenings.
+2. **Code-Comprehension Guides (F-015)** — new `source_kind: code` guide kind, written autonomously (duty, no proposal) for high-complexity components so understanding survives across sessions; reuses the whole guide machinery (source = verbatim code excerpts), `sdlc_check.py` untouched. Vision decision **B** (Layer A; Layer D untouched). Detail: `solutions/ANALYSIS_comprehension_guides.md` (Diary).
+
+Validated by TWO independent blind comprehension tests (fresh agent, skill-only): trigger discoverable + correct; adversarial + autonomy-boundary probes pass; 6 findings all fixed. **Eval battery 52/52, `validate` 0 errors.** Version bumped in `package.json` + `gemini-extension.json`; README Key Features + CHANGELOG updated.
 
 ## Pending owner
-1. **npm publish** — v1.14.0 committed + tagged + pushed; `npm publish` is the 2FA step (EOTP). Verify after: `npm view @antoneeo/agentic-sdlc-skill version` → 1.14.0.
-2. **devPNT redeploy** `setup_mcp.bat` — pushes the `mcp_system_prompt.md` §4.2 Actors edit to the deployed `~/.claude/CLAUDE.md` (SOURCE edited; never hand-edit the deployed copy). Also commit the devPNT repo (`D:\SoftwareDev\devPNT`, `agent/core/mcp_system_prompt.md`).
-3. KL `adr_digest` still missing 3 earlier ADRs (M3/M4/M5) — v1.1 note flags it; backfill offered, not done.
+1. **Commit + tag** v1.15.0 (both features travel together), then **`npm publish`** (2FA/EOTP). Verify: `npm view @antoneeo/agentic-sdlc-skill version` → 1.15.0. Suggest `npm pack --dry-run` first (confirm allowlist unchanged, no dev-only leak).
+2. **Delete `proposed-agentic-modified/`** — the Write-Triggers proposal, fully absorbed.
+3. **#8 dogfood** (optional) — write one real `source_kind: code` guide (writer-side proof: validator accepts + router lists); ANALYSIS stays IN_PROGRESS until then.
 
 ## Session notes
-devPNT server locks `.devpnt/*.db` (commit on main OK; branch-crossing needs a worktree). CRLF churn → `git diff --ignore-all-space`. The release commit bundles devPNT session churn (`.devpnt/*`, regenerated functional docs) per convention.
+Repo files are CRLF; edits applied as content-delta (no whole-file churn). Packaged allowlist unchanged (tests/`ai_docs/` not shipped). devPNT untouched this session.

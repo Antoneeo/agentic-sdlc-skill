@@ -22,7 +22,10 @@ When a doc replaces another: the new one declares `supersedes:`, the old one swi
 
 ## ai_docs/reference/GUIDE_[topic].md
 
-Operative guide distilled from USER-PROVIDED indications (never from model knowledge).
+A guide is either OPERATIVE (`source_kind: document` — distilled from USER-PROVIDED
+indications, "how to act") or a COMPREHENSION map (`source_kind: code` — distilled from
+the project's own code, "how a complex component works"). Never from model knowledge:
+every claim traces to the snapshot (a handed document, or verbatim code excerpts).
 The guide is a SYNTHESIS — the compact training a reader takes in whole before acting;
 the verbatim snapshot in `ai_docs/reference/.sources/<slug>-<hash8>.md` is the book,
 reached on demand. `source_hash` is the snapshot's SHA-256. Every `##` section carries
@@ -36,7 +39,8 @@ the source's own length is a paraphrase, not a synthesis.
 ---
 description: One line, ≤160 chars — when to consult this guide.
 status: CURRENT
-source: Human-readable name of what the user provided.
+source_kind: document         # document (user indications, operative) | code (comprehension map)
+source: Human-readable name of what the user provided (or the component, for source_kind: code).
 source_version: v1.2          # optional — only when the origin is versioned
 distilled_from: ai_docs/reference/.sources/topic-a1b2c3d4.md
 source_hash: <sha256 of the snapshot file>
@@ -56,8 +60,12 @@ overrides: GUIDE_topic.md   # optional — only for a project guide overriding a
 <!-- the user's material does not address this: do not invent. -->
 ```
 
-Section repertoire (pick what the source supports): How to do X / How to verify /
-What NOT to do / What to watch out for / Core principles / When this applies.
+Section repertoire (pick what the source supports):
+- **`document` (operative):** How to do X / How to verify / What NOT to do / What to
+  watch out for / Core principles / When this applies.
+- **`code` (comprehension):** How it works / Control & data flow / Key invariants /
+  Extension points / Where it breaks (failure modes) / Why it is shaped this way.
+  Every marker points into the code-excerpt snapshot: `[source: <slug>-<hash8>.md#path:symbol]`.
 
 ## ai_docs/README.md
 
@@ -272,6 +280,8 @@ States: PENDING (to analyze) | ANALYZED (analyzed, with reference) | SKIPPED (wi
 ## ai_docs/audit/handoff.md
 
 Just a pointer, ≤ 20 lines. The detail lives in the Diary of each ANALYSIS.
+
+Written at every L3 closure AND at session end with work still IN_PROGRESS (see SKILL.md, Write Triggers).
 
 ```markdown
 # Handoff

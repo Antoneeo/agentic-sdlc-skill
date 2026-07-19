@@ -4,10 +4,10 @@
 
 ## Key Features
 
-- **Risk-proportional workflow**: L1/L2/L3/Spike triage avoids heavyweight process for trivial work.
+- **Risk-proportional workflow**: L1/L2/L3/Spike triage avoids heavyweight process for trivial work, with a symmetric **Write Triggers** table mapping each event to the document it produces (one event, one destination).
 - **Vision-guided governance**: Standalone projects use `ai_docs/vision/`; Hybrid projects use devPNT `M-VISION` as the milestone north star. The Vision names its **Actors** — the cast a feature serves, one light line each — so UX is designed for concrete roles, not an implicit "user".
 - **Execution disciplines**: explicit TDD (RED/GREEN/REFACTOR), systematic debugging, an L3 spec-elicitation round, and a single code-review definition wired into the workflow phases.
-- **Operative guides + agent-global KB**: distil user-provided indications into source-faithful `ai_docs/reference/GUIDE_*.md` — consulted before operative work, proposed after reusable work — shared cross-project via `~/.agentic-sdlc`.
+- **Operative + comprehension guides + agent-global KB**: distil user-provided indications into source-faithful operative `GUIDE_*.md` (`source_kind: document`), and let the agent autonomously author **code-comprehension guides** (`source_kind: code`) for complex components — a source-faithful mental-model map that survives across sessions, so the next session doesn't re-derive and break the component from partial understanding. Consulted before work; shared cross-project via `~/.agentic-sdlc`.
 - **Opt-in subagent execution**: an approved design projects into a validated executable plan an orchestrator can drive through subagents.
 - **Self-activating**: a SessionStart hook emits repo-sourced orientation; a deterministic self-eval battery guards the skill's own doctrine as the release gate.
 - **Standalone complete**: works fully with local `ai_docs/` without requiring devPNT.
