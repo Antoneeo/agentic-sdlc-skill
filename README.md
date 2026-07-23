@@ -16,8 +16,20 @@ The agent asks the user only for facts the user uniquely owns (product, price, b
 
 ```bash
 npm i -g @antoneeo/mkt-agentic-sdlc-skill
-mkt-sdlc-install-skill   # copies the skill into every detected AI client
 ```
+
+That's it — the skill is copied into every detected AI client automatically
+(the package's `postinstall` runs the installer). Restart the agent to load it.
+
+**If your npm blocks install scripts** (`--ignore-scripts`, some CI/pnpm setups),
+run the installer manually:
+
+```bash
+npx mkt-sdlc-install-skill
+```
+
+> The `mkt-sdlc-install-skill` command is only on your PATH after a **global**
+> (`-g`) install. After a local `npm i`, invoke it via `npx` as above.
 
 Initialize a project:
 

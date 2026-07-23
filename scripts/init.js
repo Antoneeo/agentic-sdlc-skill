@@ -51,7 +51,8 @@ Deliverables ship only after \`python <skill_dir>/scripts/mkt_check.py check\` i
 CLEAN (where the validator is adopted) and the CMO review passed.
 
 If the mkt-agentic-sdlc skill is not available in this client, ask the user to install it:
-\`npm i -g @antoneeo/mkt-agentic-sdlc-skill && mkt-sdlc-install-skill\`
+\`npm i -g @antoneeo/mkt-agentic-sdlc-skill\` (the skill installs automatically;
+if npm blocks scripts, run \`npx mkt-sdlc-install-skill\`).
 `;
 
 console.log('🚀 Initializing Marketing Agentic SDLC workflow...');
