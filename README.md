@@ -12,7 +12,7 @@
 - **Self-activating**: a SessionStart hook emits repo-sourced orientation; a deterministic self-eval battery guards the skill's own doctrine as the release gate.
 - **Standalone complete**: works fully with local `ai_docs/` without requiring devPNT.
 - **devPNT symbiosis**: when devPNT is available, Master Plan, Action Plan, M-VISION, and governed artifacts become the authoritative planning layer, with independent fresh-context reviews of technical artifacts and diffs.
-- **Installed support files**: Claude, Codex, Gemini, and Google Antigravity receive the full skill folder, including `templates.md`, `guides.md`, `tdd.md`, `debugging.md`, `elicitation.md`, `review.md`, `dispatch.md`, `ENFORCEMENT.md`, and `scripts/sdlc_check.py`.
+- **Installed support files**: Claude, Codex, Gemini, and Google Antigravity receive the full skill folder, including `templates.md`, `guides.md`, `vision.md`, `tdd.md`, `debugging.md`, `elicitation.md`, `review.md`, `dispatch.md`, `ENFORCEMENT.md`, and `scripts/sdlc_check.py`.
 - **Mechanical checks**: optional validator for document structure, generated feature history, stale audit areas, and protected-path gates.
 
 ## Installation
@@ -50,6 +50,7 @@ skills/agentic-sdlc-skill/
 ├── SKILL.md
 ├── templates.md
 ├── guides.md
+├── vision.md
 ├── tdd.md
 ├── debugging.md
 ├── elicitation.md

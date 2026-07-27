@@ -1,19 +1,40 @@
 # Handoff
-Date: 2026-07-19 (UTC)
-Branch: main
-Agent: Claude (Opus, orchestrator) — Standalone (devPNT off — locked on another project)
+Date: 2026-07-27 (UTC)
+Branch: feat/guide-activation
+Agent: Claude (orchestrator) — Standalone (devPNT off)
 
-## State: v1.15.0 prepared, NOT yet committed/published
-Two features bundled, doc-only, in the working tree:
-1. **Write Triggers** — `SKILL.md` §Write Triggers, a document→trigger→phase table symmetric to Rule Zero (write-side twin of triage); de-duped so the table is the authoritative home and phases point to it. + bootstrap-set/handoff/VISION-retroactive/ADR/features_history sharpenings.
-2. **Code-Comprehension Guides (F-015)** — new `source_kind: code` guide kind, written autonomously (duty, no proposal) for high-complexity components so understanding survives across sessions; reuses the whole guide machinery (source = verbatim code excerpts), `sdlc_check.py` untouched. Vision decision **B** (Layer A; Layer D untouched). Detail: `solutions/ANALYSIS_comprehension_guides.md` (Diary).
+## State: v1.16.0 released from this branch (commit + tag), npm publish pending
 
-Validated by TWO independent blind comprehension tests (fresh agent, skill-only): trigger discoverable + correct; adversarial + autonomy-boundary probes pass; 6 findings all fixed. **Eval battery 52/52, `validate` 0 errors.** Version bumped in `package.json` + `gemini-extension.json`; README Key Features + CHANGELOG updated.
+Three features, one release:
+1. **F-016 Guide Activation** — Rule Zero declares the router verdict with the triage
+   level (L2/L3/Spike; L1 exempt); guide router in Phase 1 mandatory reads; `orient`
+   hook recommended default + wired here; `source_kind: code` trigger phase `any` → `4/5`
+   with Phase-5 Comprehension checkpoint. ADR:
+   `architecture/ADR_2026-07-27_declared_router_verdict.md`.
+2. **F-017 Vision Clarity** — six blind rounds (no repo access) took the Vision from
+   undecidable (metering admissible on literal text — the M89 hole) to **v6 APPROVED**.
+   Evidence + standing battery (21 fixtures): `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`.
+3. **F-018 Verifiable Vision** — new skill file `vision.md`, anchored by the owner's
+   definition: *the benefit to be obtained, leaving the most degrees of freedom
+   possible — binds nothing that does not obstruct it*. Deletion test decides WHICH
+   rules exist; nine properties decide HOW to write one that holds. Wired from Vision
+   Gate, Write Triggers, template, `elicitation.md`; in the package allowlist.
+
+Battery **57/57**, `check --hybrid` CLEAN, `validate` 0 errors / 4 baseline warnings.
+`review.md` threat-model bullet merged (duplication removed, design-review rationale kept).
 
 ## Pending owner
-1. **Commit + tag** v1.15.0 (both features travel together), then **`npm publish`** (2FA/EOTP). Verify: `npm view @antoneeo/agentic-sdlc-skill version` → 1.15.0. Suggest `npm pack --dry-run` first (confirm allowlist unchanged, no dev-only leak).
-2. **Delete `proposed-agentic-modified/`** — the Write-Triggers proposal, fully absorbed.
-3. **#8 dogfood** (optional) — write one real `source_kind: code` guide (writer-side proof: validator accepts + router lists); ANALYSIS stays IN_PROGRESS until then.
+1. **Merge to main** — GitHub web PR (no `gh` on this machine) or authorized direct push.
+2. **`npm publish`** (2FA/EOTP) from a clean checkout. Verify:
+   `npm view @antoneeo/agentic-sdlc-skill version` → 1.16.0.
+   `npm pack --dry-run` re-check: `vision.md` in, eval harness (`test_*.py`, `evals/`) out.
+
+## Next step
+F-018's success signal is unproven until a Vision drafted from scratch under `vision.md`
+survives its first blind round with judgement findings only. On any future Vision edit,
+re-run the standing battery (end of round-6 section in the review evidence) — the re-run
+is the ratchet.
 
 ## Session notes
-Repo files are CRLF; edits applied as content-delta (no whole-file churn). Packaged allowlist unchanged (tests/`ai_docs/` not shipped). devPNT untouched this session.
+Repo is CRLF; edits applied as content-delta. `scripts/` audit area re-analyzed in a
+parallel session (installer roster documented in `strategic/architecture.md`).

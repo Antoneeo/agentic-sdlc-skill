@@ -14,7 +14,11 @@ Ask ONE structured set of questions, not a drip of follow-ups. Keep each
 question short and numbered; offer concrete options where a real choice
 exists (this narrows the reply and speeds up the round). Cover:
 
-1. **Goal / benefit** — what problem this closes and why now.
+1. **Goal / benefit** — what problem this closes and why now. The answer must
+   name what the actor *obtains*, not a mechanism: "a dashboard" is not an
+   answer to "never lose the thread" — ask again until it is a benefit
+   (`vision.md`: the Vision is the distilled benefit; solutions and preferences
+   are what gets filtered out).
 2. **Actors** — who interacts with this: their role, primary goal, and what
    "good UX" means to them. These become the Vision's `## Actors`; each
    use-case below attaches to one (actor = who they are, use-case = what

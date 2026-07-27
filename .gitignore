@@ -24,6 +24,7 @@ partial_project_archive_tui.txt
 .workdir
 logs/
 .devpnt/patch_history.json
-.claude
+.claude/*
+!.claude/settings.json
 gunicorn.ctl
 docs/

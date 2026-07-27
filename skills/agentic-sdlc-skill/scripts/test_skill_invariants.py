@@ -46,6 +46,61 @@ class SkillInvariants(unittest.TestCase):
         self.assertIn("consult the guide router", t)
         self.assertIn("Consult (before acting)", t)
 
+    def test_rule_zero_declares_router_verdict(self):
+        """F-016 move A: the consult lives on the ALWAYS-executed path. Rule Zero
+        makes the router lookup a DECLARED output, so 'did not look' is
+        distinguishable from 'looked, no match'. L1 stays exempt."""
+        t = read("SKILL.md")
+        self.assertIn("router verdict", t)
+        self.assertIn("router: no match", t)
+        head = t.split("## Write Triggers")[0]
+        self.assertIn("router verdict", head,
+                      "the router verdict must be declared in Rule Zero, "
+                      "not only later in the workflow")
+
+    def test_phase1_reads_guide_router(self):
+        """F-016 move B: Phase 1 (the only always-run read step) reads the guide
+        router, not just README + INDEX."""
+        t = read("SKILL.md")
+        self.assertIn("`ai_docs/reference/INDEX.md` (the guide router)", t)
+        self.assertIn("reference/INDEX.md", read("templates.md"),
+                      "the README template must seed the router as a must-read")
+
+    def test_code_guide_trigger_has_a_phase(self):
+        """F-016 move D: the source_kind: code Write-Triggers row must name a real
+        phase. Phase 'any' is nobody's phase -- the duty then never fires."""
+        t = read("SKILL.md")
+        row = [ln for ln in t.splitlines()
+               if "`source_kind: code`" in ln and ln.lstrip().startswith("|")]
+        self.assertTrue(row, "Write-Triggers row for source_kind: code missing")
+        self.assertNotIn("| any |", row[0])
+        self.assertIn("Comprehension checkpoint", t)
+
+    def test_enforcement_hook_is_recommended_default(self):
+        """F-016 move C: the orient hook is the only non-prompt backstop -- it is
+        a recommended default, no longer merely optional."""
+        t = read("ENFORCEMENT.md")
+        self.assertIn("recommended default", t)
+        self.assertNotIn("## 4. SessionStart hook (orientation, optional)", t)
+
+    def test_vision_discipline_wired(self):
+        """F-018: a Vision is a gate, and the discipline that makes it verifiable
+        by a cold reader is single-sourced in vision.md and reachable from the
+        Vision Gate phase, the Write-Triggers row and the template."""
+        v = read("vision.md")
+        for anchor in ("## What a Vision IS", "deletion test",
+                       "## 1. The nine properties", "## 4. Minimum operable sections",
+                       "## 6. The blind check"):
+            self.assertIn(anchor, v, f"vision.md missing {anchor}")
+        self.assertIn("benefit", read("elicitation.md"),
+                      "elicitation must ask for the benefit, not accept a mechanism")
+        skill = read("SKILL.md")
+        self.assertIn("blind check", skill,
+                      "the Vision Gate must route promotion through the blind check")
+        self.assertIn("vision.md", skill)
+        self.assertIn("vision.md", read("templates.md"),
+                      "the Vision template must point at the drafting discipline")
+
     def test_skill_proactive_trigger(self):
         t = read("SKILL.md")
         self.assertIn("PROPOSE distilling a guide", t)

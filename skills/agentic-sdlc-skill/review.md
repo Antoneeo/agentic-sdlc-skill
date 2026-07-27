@@ -22,6 +22,14 @@ When you hand work to a reviewer (human or agent), give them:
   (Hybrid: `P-TM`; Standalone: the ANALYSIS `## Security and Threat Model`). Hand these
   *in addition to* the design artifact — the reviewer checks the artifact **against**
   them, not only for internal consistency.
+- **For a design review, the threat model too** (same sources as above). Why this
+  one and not the whole set: file coverage crosses the impact-analysis→design hop on
+  a mechanical gate (every impacted file needs a design block), so a dropped file is
+  caught; **threats have no such gate** — a threat answered in the impact analysis
+  can silently fail to become a security requirement in the design, and the later
+  code review only verifies the requirements that are there, never the ones that
+  should have been. The design reviewer checks that every threat surface the change
+  touches has a matching security requirement.
 
 Never ask a reviewer to "review my session" or "review what I just did"
 without the artifacts above — that forces them to reconstruct scope from
