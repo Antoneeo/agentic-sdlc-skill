@@ -8,7 +8,7 @@ Must-reads for this repository, in order. The full manifest of canonical docs is
 3. `strategic/capabilities_and_positioning.md` — what agentic-sdlc already does better, parity, and positioning vs superpowers.
 4. `vision/roadmap_evoluzione_agenti.md` — the active evolution roadmap (subagents, operative guides, devPNT seam).
 5. `strategic/architecture.md` — how the package is built.
-6. `audit/handoff.md` — where work stopped last session (if present).
+6. `audit/handoff.md` — the workstream registry: what is open, on which branch, where each stopped (per-feature resume details in `audit/HANDOFF_[feature].md`).
 
 Directory purposes: `vision/` (project direction and feature visions),
 `strategic/` (architecture and feature catalog), `architecture/` (ADRs — why a

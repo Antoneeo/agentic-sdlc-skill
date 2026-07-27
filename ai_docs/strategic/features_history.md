@@ -11,3 +11,4 @@
 | F-016 | Guide Activation (consult on the mandatory path) | L3 | COMPLETED | 2026-07-27 | 2026-07-27 | solutions/ANALYSIS_guide_activation.md |
 | F-017 | Vision Clarity (cold-readable, decidable Vision) | L3 | COMPLETED | 2026-07-27 | 2026-07-27 | solutions/ANALYSIS_vision_clarity.md |
 | F-018 | Verifiable Vision (the drafting discipline) | L3 | COMPLETED | 2026-07-27 | 2026-07-27 | solutions/ANALYSIS_verifiable_vision.md |
+| F-019 | Parallel Handoff (workstream registry + per-feature resume files) | L3 | COMPLETED | 2026-07-27 | 2026-07-27 | solutions/ANALYSIS_parallel_handoff.md |

@@ -83,6 +83,22 @@ class SkillInvariants(unittest.TestCase):
         self.assertIn("recommended default", t)
         self.assertNotIn("## 4. SessionStart hook (orientation, optional)", t)
 
+    def test_parallel_handoff_wired(self):
+        """F-019: the handoff is a workstream REGISTRY (one row per open
+        workstream, parallel-safe), with volatile resume logistics in ephemeral
+        HANDOFF_[feature].md files deleted at closure. Durable narrative stays in
+        the ANALYSIS Diary (DRY)."""
+        skill = read("SKILL.md")
+        self.assertIn("HANDOFF_[feature].md", skill)
+        self.assertIn("workstream registry", skill)
+        tpl = read("templates.md")
+        self.assertIn("HANDOFF_[feature].md", tpl)
+        self.assertIn("resume logistics", tpl,
+                      "the Diary/logistics boundary must be stated in the template")
+        # a shipped format change without a migration clause strands existing projects
+        self.assertIn("pre-1.17", skill)
+        self.assertIn("pre-1.17", tpl)
+
     def test_vision_discipline_wired(self):
         """F-018: a Vision is a gate, and the discipline that makes it verifiable
         by a cold reader is single-sourced in vision.md and reachable from the

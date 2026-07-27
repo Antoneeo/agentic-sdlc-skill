@@ -336,26 +336,61 @@ States: PENDING (to analyze) | ANALYZED (analyzed, with reference) | SKIPPED (wi
 | vendor/ | SKIPPED | - | vendored code |
 ```
 
-## ai_docs/audit/handoff.md
+## ai_docs/audit/handoff.md — the workstream registry
 
-Just a pointer, ≤ 20 lines. The detail lives in the Diary of each ANALYSIS.
+One row per OPEN workstream, ≤ 20 lines. **Parallel-safe by construction**: closing
+one milestone removes one row and never touches another's resume point — the defect
+this replaces was a single narrative slot where the last session to close overwrote
+everyone else's handoff. It is an **inventory for lookup** (like the generated
+manifest), not a work board: no assignment, no due dates, no execution ordering.
 
-Written at every L3 closure AND at session end with work still IN_PROGRESS (see SKILL.md, Write Triggers).
+Updated at every L3 closure (row removed) AND at session end with work still
+IN_PROGRESS (row refreshed) — see Write Triggers.
+
+**Coming from a pre-1.17 project** (narrative handoff with `## Active features` /
+`## Next step` / `## Session notes`): nothing is broken and nothing is urgent — the
+validator only checks the `Date:` header and its age, and the orientation hook reads
+the file verbatim. Read it as a one-row registry, and convert it the next time the
+write trigger fires: each `## Active features` bullet becomes a row, `## Next step`
+becomes that row's next step, `## Session notes` becomes `## Project-wide notes`.
+Migrating a repository that is not being worked on buys nothing.
 
 ```markdown
-# Handoff
+# Handoff — workstream registry
 Date: 2026-06-11 (UTC)
-Branch: feature/sso-login
-Agent: Claude
 
-## Active features
-- F-001 — see solutions/ANALYSIS_login_sso.md (Diary section)
+| Workstream | Level | Branch | Status | Since | Next step | Details |
+|---|---|---|---|---|---|---|
+| F-001 SSO login | L3 | feature/sso-login | PROGRESS | 2026-06-10 | wire callback tests | HANDOFF_login_sso.md · ANALYSIS_login_sso.md |
+| F-002 Audit refresh | L3 | feature/audit | PAUSED | 2026-06-02 | resume at Phase 4 | ANALYSIS_audit_refresh.md (no volatile state) |
 
-## Next step
-<!-- one line -->
+## Project-wide notes
+<!-- one or two lines: release pending, environment quirks that affect everyone -->
+```
 
-## Session notes
-<!-- visions read this session? drafts to have validated? -->
+## ai_docs/audit/HANDOFF_[feature].md — volatile resume logistics (ephemeral)
+
+**Resume logistics ONLY; the ANALYSIS Diary keeps the durable narrative (DRY).**
+The boundary: Diary = what happened and why (decisions, state of the work — survives
+forever); this file = how to pick the work back up (branch/worktree, uncommitted
+state, environment notes, the next concrete command — worthless once resumed).
+Created only when a session pauses the feature WITH volatile state to record;
+**DELETED at the feature's closure**, in the same step that flips the ANALYSIS to
+COMPLETED — anything in it worth keeping was in the wrong file.
+
+```markdown
+# HANDOFF: [feature] (ephemeral — deleted at closure)
+Updated: 2026-06-11 (UTC)
+Branch: feature/sso-login (worktree ../wt-sso)
+
+## Resume state
+<!-- uncommitted files, half-run migrations, env vars, running services -->
+
+## Next command
+<!-- the literal next thing to run or edit -->
+
+## Watch out
+<!-- traps discovered this session that bite on resume (locks, CRLF, flaky test) -->
 ```
 
 ## ai_docs/strategic/architecture.md and existing_features.md
