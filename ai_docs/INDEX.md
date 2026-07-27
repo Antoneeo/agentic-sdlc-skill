@@ -13,7 +13,7 @@ not manifested here.
 | `vision/features/VISION_agentic_sdlc_vnext.md` | CURRENT | Feature vision for the vNext evolution (triage, support files, mechanical validation, devPNT symbiosis) delivered in 1.5.0/1.6.0. |
 | `vision/features/VISION_vision_governance.md` | CURRENT | Feature vision for the Vision governance layer (ai_docs/vision/, Vision Gate) delivered in 1.4.0. |
 | `vision/principles.md` | DRAFT | - **Vision before solution**: clarify intended benefit and non-goals before choosing implementation details. |
-| `vision/project_vision.md` | APPROVED | (by Antonio Pinto, 2026-07-02) |
+| `vision/project_vision.md` | APPROVED | (by Antonio Pinto, 2026-07-27) |
 | `vision/roadmap.md` | DRAFT | \| Milestone \| Expected Benefit \| Priority \| Success Signal \| Status \| |
 | `vision/roadmap_evoluzione_agenti.md` | DRAFT | Roadmap della milestone di evoluzione — subagent operativi, guide operative/KB agente, eliminazione conflitti di convivenza con devPNT e posizionamento open-... |
 | `vision/roadmap_evoluzione_agenti_v1.md` | SUPERSEDED | "Roadmap di evoluzione di agentic-sdlc: esecuzione a subagent operativi e strato di documentazione per la formazione degli agenti. Input per la prossima mile... |
@@ -23,6 +23,12 @@ not manifested here.
 | Document | Status | Description |
 |---|---|---|
 | `reference/GUIDE_release.md` | CURRENT | How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish. |
+
+## architecture/
+
+| Document | Status | Description |
+|---|---|---|
+| `architecture/ADR_2026-07-27_declared_router_verdict.md` | CURRENT | Why the guide consult is enforced as a declared output in Rule Zero rather than by another restatement or a hard write-gate. |
 
 ## functional/
 
@@ -39,6 +45,6 @@ not manifested here.
 | Document | Status | Description |
 |---|---|---|
 | `strategic/architecture.md` | CURRENT | Stack, package structure and architectural patterns of the skill repository. |
-| `strategic/capabilities_and_positioning.md` | CURRENT | Honest catalog of agentic-sdlc's current advantages (explained), parity points, and positioning vs superpowers (through v6.0.x). Feeds the four-layer product... |
+| `strategic/capabilities_and_positioning.md` | CURRENT | Honest catalog of agentic-sdlc's current advantages (explained), parity points, and positioning vs superpowers (through v6.0.x). Owns the four-layer (A/B/C/D... |
 | `strategic/existing_features.md` | CURRENT | Concise catalog of the skill's existing features. |
 | `strategic/process_agentic_sdlc_devpnt.md` | CURRENT | The joint agentic-sdlc × devPNT governance process — pipeline, documents, human vs agent reviews, mandatory checks, and why it works. Read to understand how... |

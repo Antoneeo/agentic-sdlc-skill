@@ -38,7 +38,9 @@ consult trigger (`guides.md` §0) applied at plan-authoring time: the orchestrat
 runs the router lookup (project router `ai_docs/reference/INDEX.md` + the agent-KB
 router) when populating `guides`. A dispatched context-free subagent does **NOT**
 run its own router consult — it reads the guide pointers handed to it in the
-brief. (Proactive guide-creation stays at closure — the same broad final pass
+brief. The router verdict (Rule Zero) is therefore declared ONCE, by the
+orchestrator, when it authors the plan; a dispatched subagent does not declare
+one. (Proactive guide-creation stays at closure — the same broad final pass
 below — so it needs no separate dispatch hook.)
 
 ## Model tiers (client-relative, no provider names)

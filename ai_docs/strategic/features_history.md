@@ -8,3 +8,6 @@
 | F-003 | devPNT Seam (coexistence contract) | L3 | COMPLETED | 2026-07-02 | 2026-07-02 | solutions/ANALYSIS_devpnt_seam.md |
 | F-014 | Vision Actors | L3 | COMPLETED | 2026-07-08 | 2026-07-08 | solutions/ANALYSIS_vision_actors.md |
 | F-015 | Code-Comprehension Guides | L3 | IN_PROGRESS | 2026-07-19 |  | solutions/ANALYSIS_comprehension_guides.md |
+| F-016 | Guide Activation (consult on the mandatory path) | L3 | COMPLETED | 2026-07-27 | 2026-07-27 | solutions/ANALYSIS_guide_activation.md |
+| F-017 | Vision Clarity (cold-readable, decidable Vision) | L3 | COMPLETED | 2026-07-27 | 2026-07-27 | solutions/ANALYSIS_vision_clarity.md |
+| F-018 | Verifiable Vision (the drafting discipline) | L3 | COMPLETED | 2026-07-27 | 2026-07-27 | solutions/ANALYSIS_verifiable_vision.md |

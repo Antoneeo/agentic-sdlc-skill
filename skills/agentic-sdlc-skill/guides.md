@@ -40,6 +40,18 @@ already cover how to do this well?*
   the task — never load every guide, which would reintroduce the exact token
   cost the "point to them" model exists to avoid. The two-level model (compact
   synthesis / verbatim snapshot) already bounds a single guide's cost.
+- **Declare the router verdict.** The lookup result travels with the triage
+  level (`SKILL.md` Rule Zero) as one line — `router: no match`, or
+  `router: GUIDE_x.md → read`. This is what makes the consult reliable: an
+  undeclared lookup is indistinguishable from a skipped one, to the user, to a
+  later reviewer, and to you in the next session. Declaring `no match` on a repo
+  with no matching guide is the correct, expected output — not noise.
+- **Never fake the verdict.** `no match` means the router was read and nothing
+  fitted. A verdict that is always `no match` certifies a lookup that did not
+  happen and is worse than silence; a verdict listing the catalogue means the
+  match was not targeted (T7). Two guides are legitimate only when they cover
+  distinct concerns — typically an operative guide plus the comprehension map of
+  the component being touched; three is a smell, not a thorough lookup.
 - **Under subagent dispatch** the consult happens at plan-authoring time (the
   orchestrator populates each task's `guides` field); a context-free subagent
   reads the pointers it was handed and does not run its own router lookup. See
@@ -103,6 +115,11 @@ the component from partial understanding.
   guide per topic, both routers). Honor the fidelity floor (§3). RECOMMEND the
   independent guide-vs-source review (§5) — it matters more here, since no human gated
   creation. Announce the autonomous write in the closure / handoff so it is visible.
+- **When it fires.** As soon as you recognize the signal, during the work. The
+  Phase-5 **Comprehension checkpoint** (`SKILL.md` §5) is the backstop that asks the
+  question out loud before closure — a safety net for a signal you noticed and did not
+  act on, never a licence to defer. Writing it at closure is still far better than not
+  writing it: the model you built is complete now and gone next session.
 
 ## 2. Pipeline
 

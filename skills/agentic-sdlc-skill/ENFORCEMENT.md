@@ -55,9 +55,11 @@ Semantics: exit code 2 + message on stderr ⇒ the write is blocked and the mess
 - The hook assumes the working directory is the project root (standard behavior of Claude Code hooks).
 - **Hybrid/devPNT projects**: add `--hybrid` to the gate command. Governed designs live in the devPNT DB, so the gate also unlocks when an approved E-TDD shadow (`ai_docs/solutions/SHADOW_*tdd*.md`, exported before implementation — see the SKILL.md shadow discipline) is present. Without the flag the gate would block legitimate governed work. The flag is deliberately explicit: never auto-detected.
 
-## 4. SessionStart hook (orientation, optional)
+## 4. SessionStart hook (orientation, recommended default)
 
-Emits the `ai_docs/` orientation — reading guide (`README.md`), manifest (`INDEX.md`), guide router (`reference/INDEX.md`) and last `handoff.md` — plus the Rule-Zero triage reminder to stdout at session start, so the agent begins already oriented instead of reading them only if it remembers to. It is **fail-open**: a missing, unreadable or oversized doc is skipped, the output is size-capped, and it always exits 0 — a broken or empty `ai_docs/` never blocks the session. It is **zero-execution** (it reads and prints, never runs anything) and opt-in.
+Emits the `ai_docs/` orientation — reading guide (`README.md`), manifest (`INDEX.md`), guide router (`reference/INDEX.md`) and last `handoff.md` — plus the Rule-Zero triage reminder to stdout at session start, so the agent begins already oriented instead of reading them only if it remembers to. It is **fail-open**: a missing, unreadable or oversized doc is skipped, the output is size-capped, and it always exits 0 — a broken or empty `ai_docs/` never blocks the session. It is **zero-execution** (it reads and prints, never runs anything).
+
+**Wire it on every project that has `ai_docs/` and a Python interpreter.** It was opt-in until v1.16.0 and the field result was the defect this level exists to prevent: the guide router stayed unread unless the user asked for it by hand, so guides were written and never consulted. Prompt-level placement (Rule Zero declares the router verdict; Phase 1 reads the router) carries the process on its own — this hook is the backstop that survives long contexts, compaction and a session that never enters Phase 1 explicitly. Skip it only where Python is unavailable, and know what you are trading.
 
 Wire it via each client's SessionStart mechanism — the same command everywhere (add `--hybrid` on devPNT/Hybrid projects):
 

@@ -1,10 +1,12 @@
 ---
-description: Honest catalog of agentic-sdlc's current advantages (explained), parity points, and positioning vs superpowers (through v6.0.x). Feeds the four-layer product vision.
+description: Honest catalog of agentic-sdlc's current advantages (explained), parity points, and positioning vs superpowers (through v6.0.x). Owns the four-layer (A/B/C/D) map — a dated snapshot, kept out of the Vision on purpose.
 status: CURRENT
 ---
 # Capabilities & Positioning
 
 Companion to `ai_docs/vision/project_vision.md`. Layer **A** (what agentic-sdlc already does, explained), the honest **parity** line, and the **B/C** map against superpowers (recon 2026-07-02, superpowers v6.0.3). Rule of the doc: parity is called parity; an advantage must be evidenced.
+
+**This file is the home of the A/B/C/D layer map.** It used to be restated in the Vision; a blind-reviewer check (2026-07-27, `ai_docs/solutions/ANALYSIS_vision_clarity.md`) showed that pinning the Vision to a competitor's version line made it rot silently and undecidable to a cold reader. The comparison lives here, dated and revisable, and the Vision states the product in its own terms. Every claim below is a **snapshot** against superpowers v6.0.3, recon 2026-07-02 — re-date it when you re-check it; do not let it read as timeless.
 
 ## A — Current advantages of agentic-sdlc (explained)
 

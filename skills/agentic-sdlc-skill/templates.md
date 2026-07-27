@@ -77,9 +77,10 @@ Curated must-read index, by hand (it is NOT the generated manifest). Created at 
 Must-reads for this project, in order. The full manifest of canonical docs is
 `INDEX.md` (generated — regenerate with `sdlc_check.py index`, never edit by hand).
 
-1. `vision/project_vision.md` — why the project exists (check its Status first).
-2. `strategic/architecture.md` — how it is built.
-3. `audit/handoff.md` — where work stopped last session (if present).
+1. `reference/INDEX.md` — the guide router: which guide already governs the work you are about to do (generated).
+2. `vision/project_vision.md` — why the project exists (check its Status first).
+3. `strategic/architecture.md` — how it is built.
+4. `audit/handoff.md` — where work stopped last session (if present).
 
 Directory purposes: `vision/` (project direction), `strategic/` (architecture and
 feature catalog), `reference/` (operative guides), `solutions/` (per-feature
@@ -88,23 +89,81 @@ analyses, discovery-by-grep), `audit/` (audit plan and handoff).
 
 ## ai_docs/vision/project_vision.md
 
+A Vision states **the benefit to be obtained while leaving the most degrees of
+freedom possible** — it binds nothing that does not obstruct that benefit (the
+deletion test, `vision.md` §What-a-Vision-IS). It is *applied* as a **gate**: a
+cold reader must be able to rule ACCEPT or REJECT on a proposed change, quoting
+one line, without asking anyone anything. Write it against `vision.md` §1–§4 from
+the first draft — the properties that make a rule survive a motivated reader are
+cheap to apply while writing and expensive to retrofit. `vision.md` §6 is the
+blind check that gates promotion to APPROVED.
+
+Sections below marked **[gate]** are load-bearing for that ruling; the others are
+orientation for humans. Keep the human ones — just know which is which.
+
 ```markdown
 # Project Vision
 Status: DRAFT
 <!-- Status: DRAFT (reconstructed by the agent, NOT a gating authority)
-     or APPROVED (by <who>, <date>) — only after the user's explicit confirmation -->
+     or APPROVED (by <who>, <date>) — only after the user's explicit confirmation
+     AND the blind check in vision.md §6. -->
 
 ## North Star
-## Actors
-<!-- the cast this product serves. One light line per actor:
-     **Role** — primary goal; good UX = what a good experience means to them.
-     Define each actor ONCE here; use-cases (Standalone) / D-UC (Hybrid) reference
-     them by role and never re-describe who they are (anti-DRY). Actors characterize
-     the intended UX; keep it proportional — a role list, not persona research. -->
+<!-- [gate, partly] The BENEFIT to be obtained — what the actor gets, never the
+     mechanism, and never by comparison to another product (a comparative
+     definition rots silently when the comparison target moves). Concrete enough
+     that an obstacle to it is recognizable: that is what makes every Non-Goal
+     below derivable and refutable. Also restate here any boundary a ruling
+     depends on but that is defined elsewhere: risk tiers, lifecycle states,
+     scale levels. Routing the reader to another file breaks the cold-read
+     premise. -->
 ## Core Problem
+<!-- Human orientation: what goes wrong without this product. Carries no gate
+     weight unless the admission test names it. -->
+## Actors
+<!-- [gate] the cast this product serves. One light line per actor:
+     **Role** — primary goal; good UX = what a good experience means to them.
+     The "good UX =" clauses are admissible work, not decoration — say so in the
+     admission test. Define each actor ONCE here; use-cases (Standalone) / D-UC
+     (Hybrid) reference them by role and never re-describe them (anti-DRY).
+     Proportional: a role list, not persona research. -->
 ## Goals
+<!-- [gate — the ACCEPT side] Each with a baseline and headroom, so "advances this"
+     has meaning. A goal phrased as an already-true state cannot be advanced.
+     Include the recurring legitimate work explicitly (packaging and installation,
+     the product's own tests, reducing what the agent must read, one more client) —
+     otherwise your own test rejects the maintenance the product needs. -->
+## Invariants
+<!-- [gate] The promises that outrank everything: what the user is guaranteed, what
+     the architecture must always be true of. State each as ONE decision question
+     with BOTH branches answered, plus an anti-laundering clause naming the
+     re-descriptions you expect. Omit the section if the product has none. -->
 ## Non-Goals
+<!-- [gate — the REJECT side; this is your ENTIRE rejection surface]
+     Derive every rule by the deletion test: remove it — if the benefit is still
+     reachable, the rule does not belong (it spends a degree of freedom on
+     nothing); if not, keep it and name the obstacle it removes. Constraints
+     accumulate as work reveals obstacles — an almost-empty first draft is
+     correct, not incomplete.
+     Open with a supremacy clause: what these bind (all layers, tiers, paid
+     components, future components), and that packaging or naming is irrelevant.
+     Each rule: an observable property of the artifact (never intent or a promise),
+     a closed enumeration with a closure rule, the near-miss verbs, an IN and an OUT
+     example on the same axis, and its exception attached in the same bullet.
+     Nothing here that cannot be violated by a proposed change — a rule about this
+     document's own prose can never fire, and wastes a slot. -->
+## The admission test
+<!-- [gate] One sentence naming EXACTLY which sections are positive sources and
+     EXACTLY which are prohibitions. State what the test does NOT govern (defect
+     fixes, performance, maintenance) and give that exemption its own anti-abuse
+     clause. State the default for anything unreached, per path. -->
 ## Success Signals
+<!-- [gate] Each checkable against a NAMED artifact or command by someone who was
+     not here. Not "we are the best" — a file, a command, a battery, and what the
+     result must be. -->
+## Where the rest lives
+<!-- Pointers, so an absence reads as intentional rather than as a gap. Competitive
+     positioning goes here as a dated snapshot, never in the Vision body. -->
 ```
 
 ## ai_docs/vision/roadmap.md
