@@ -72,6 +72,11 @@ LEGACY_KEYS = {"stato": "status", "livello": "level",
 # in-flight analysis from before the pass existed never nags (same lazy-convert
 # doctrine as the pre-1.17 narrative handoff).
 ARCHITECT_PASS_EPOCH = "2026-07-28"
+# Design-review gate (F-021): an L3 started on/after this date owes a REVIEW_LOG
+# row. Same grandfathering discipline as the pass above -- never nag work that
+# predates the rule.
+DESIGN_REVIEW_EPOCH = "2026-07-28"
+REVIEW_LOG_REL = "ai_docs/audit/reviews/REVIEW_LOG.md"
 # Component Map 'Where' refs: a dotted token counts as a path only with one of
 # these suffixes. Deliberately a closed list -- a generic ".\w{1,5}$" turns
 # `app.core`, `OrderStore.save` and `1.18.0` into "the map is rotting".
@@ -552,6 +557,41 @@ def has_section(text, aliases):
     return any(a in text for a in aliases)
 
 
+def design_review_due(meta):
+    """True when an L3 ANALYSIS owes a design-review row (review.md moment 1):
+    implementation has started or finished, and it began on/after the gate
+    shipped. PLANNED is exempt -- the review is due at the END of Phase 3, so an
+    analysis still being drafted is not late."""
+    if meta.get("level", "").upper() != "L3":
+        return False
+    if meta.get("status") not in ("IN_PROGRESS", "COMPLETED"):
+        return False
+    started = parse_iso((meta.get("start_date") or "").strip().strip("'\""))
+    return started is not None and started >= parse_iso(DESIGN_REVIEW_EPOCH)
+
+
+def review_logged(root, analysis_name):
+    """True when REVIEW_LOG.md carries a design-moment row naming this ANALYSIS.
+    The filename matches anywhere in the row (loose on purpose: a freshness
+    signal must not turn a formatting slip into a false 'you skipped the
+    review'), but the moment is read from the `tier` COLUMN -- the schema
+    reserves it for exactly this, and matching 'design' anywhere in the row let
+    a CLOSURE row saying 'conformance to the design' satisfy the check."""
+    log = root / REVIEW_LOG_REL
+    if not log.is_file():
+        return False
+    stem = analysis_name[:-3] if analysis_name.endswith(".md") else analysis_name
+    for line in read_text(log).splitlines():
+        line = line.strip()
+        if not line.startswith("|") or stem not in line:
+            continue
+        cells = [c.strip() for c in line.strip("|").split("|")]
+        # schema: | date | doc_key | tier | reviewer | raised | real | verdict | rounds |
+        if len(cells) >= 3 and re.match(r"design\b", cells[2], re.I):
+            return True
+    return False
+
+
 def has_ledger_heading(text):
     """True when a REAL '## Capability Ledger' heading exists: fenced code
     blocks are removed first, then HTML comments. An unterminated '<!--' only
@@ -715,7 +755,7 @@ def check_component_map(root, text, advisories):
                           "as `path/to/file#Symbol`")
 
 
-def cmd_validate(root, strict=False):
+def cmd_validate(root, strict=False, hybrid=False):
     # advisories: architect-pass freshness signals. Reported, never escalated by
     # --strict -- the accepted ceremony budget (project_vision.md "no ceremony
     # ratchet") was a warning, and a warning that reddens CI is a gate.
@@ -788,6 +828,14 @@ def cmd_validate(root, strict=False):
                               "doing the work it triggers")
         # comment-stripped, anchored: a '<!-- TODO: the ## Capability Ledger -->'
         # must not read as the section being present
+        # Hybrid: the design lives in devPNT and its §4.5 gate owns this slot
+        # (SKILL.md ownership matrix: "run ONE of them, never both"), and its log
+        # rows are keyed on e_isp_/e_tdd_ doc_keys, not on this filename -- so
+        # firing here would be a permanent, unfixable false positive.
+        if not hybrid and design_review_due(meta) and not review_logged(root, p.name):
+            advisories.append(f"{rel}: L3 in implementation with no design-review row in "
+                              f"{REVIEW_LOG_REL} -- the design was reviewed by nobody but its "
+                              "author before code was written (review.md moment 1)")
         if ledger_due(meta) and not has_ledger_heading(text):
             advisories.append(f"{rel}: L3 without '## Capability Ledger' -- the architect pass "
                               "left no record (architect.md); run it before the Impact")
@@ -1086,7 +1134,7 @@ def cmd_mark(root, paths):
 
 def cmd_check(root, strict=False, hybrid=False):
     print("===== validate =====")
-    rc_v = cmd_validate(root, strict=strict)
+    rc_v = cmd_validate(root, strict=strict, hybrid=hybrid)
     print("\n===== stale =====")
     rc_s = cmd_stale(root, hybrid=hybrid)
     print(f"\ncheck: {'CLEAN' if not (rc_v or rc_s) else 'NOT CLEAN'} "
@@ -1380,7 +1428,8 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("check", parents=[common, strict_opt, hybrid_opt],
                    help="closure gate: validate + stale in one command")
-    sub.add_parser("validate", parents=[common, strict_opt], help="verify ai_docs/ coherence")
+    sub.add_parser("validate", parents=[common, strict_opt, hybrid_opt],
+                   help="verify ai_docs/ coherence")
     sub.add_parser("index", parents=[common], help="regenerate features_history.md + ai_docs/INDEX.md")
     sub.add_parser("stale", parents=[common, hybrid_opt], help="areas modified after the last analysis")
     mp = sub.add_parser("mark", parents=[common], help="record paths as ANALYZED")
@@ -1412,7 +1461,7 @@ def main(argv=None):
     if args.cmd == "check":
         return cmd_check(root, strict=args.strict, hybrid=args.hybrid)
     if args.cmd == "validate":
-        return cmd_validate(root, strict=args.strict)
+        return cmd_validate(root, strict=args.strict, hybrid=args.hybrid)
     if args.cmd == "index":
         return cmd_index(root)
     if args.cmd == "stale":

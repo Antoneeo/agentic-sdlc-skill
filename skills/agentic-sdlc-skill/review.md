@@ -1,10 +1,62 @@
-# Code Review Discipline
+# Review Discipline
 
-Applies at closure of L2/L3 work, and to any independent review slot in this
-skill or in a connected governance layer — devPNT's §4.5/§4.6 review gates,
-and any future review step added to the workflow. This is the single
-definition of how to request, receive, and perform a review; other places
-that need review behavior point here instead of restating it (DRY).
+The single definition of how to request, receive, and perform a review. Other
+places that need review behavior point here instead of restating it (DRY) —
+including devPNT's §4.5/§4.6 gates and any future review step.
+
+## When a review is due
+
+Two moments, and they review different things:
+
+| # | Moment | Object | Level |
+|---|---|---|---|
+| **1. Design review** | End of Phase 3 — **before any implementation** | the ANALYSIS (Standalone) / the `E-ISP`+`E-TDD` (Hybrid) | L3 |
+| **1b. Late arrival** | Work that became L3 *after* code existed — an L1/L2 reclassified mid-flight, or a design increment on a feature already implemented — runs moment 1 **now**, before any further implementation, logged `design (late)` | same | L3 |
+| **2. Closure review** | Phase 5, before DONE | the actual diff, against that approved design | L2 / L3 |
+
+**Why the design review is its own moment, and not a nicety.** The closure review
+can only tell you the code matches the design; it cannot tell you the design was
+wrong. An omission in the design — an impacted file nobody listed, a threat with no
+answering requirement, a capability ruled EXISTS on an assumption — is *cheapest*
+to fix before code exists and most expensive after. And the author cannot catch it:
+a self-review runs in the context that produced the omission and is structurally
+blind to it, which is why independence, not effort, is what this gate buys.
+
+**Independence, best realization the client supports** — declare which one you used:
+
+1. **A fresh subagent** (Claude Code's Task tool, or the equivalent facility) with
+   its own context, given the artifacts below and nothing from this conversation.
+2. **A one-shot run of the client itself** (`gemini -p "…"`, `codex exec "…"`) with
+   a SELF-CONTAINED prompt — the reviewer session has no other context, which is
+   exactly what makes it independent.
+3. **A declared self-pass** — a separate, explicitly adversarial pass by you,
+   against the same checklist. **Rung 3 is illegitimate wherever rung 1 or 2
+   exists**: on a client with a subagent facility or a one-shot CLI, descending to
+   it is choosing zero independence, which is the one thing this gate buys. When
+   you do use it, the log row must carry *why* — `self-pass (declared; no subagent
+   facility on this client)` — not merely that you did. A rung named without its
+   reason is indistinguishable from a rung chosen for convenience.
+
+Rung 3 stays in the ladder deliberately: it is what keeps the methodology
+completable with no network, no account and no subagent facility. It is a floor,
+never a default.
+
+Use a different model from the author's where the client allows it.
+
+**Rounds are capped at 3.** FAIL → revise → re-review. If findings still stand
+after the third, stop and surface them to the user with the artifact — a gate that
+can block forever gets removed. **Log one row per completed review, PASS or FAIL**
+— a FAIL surfaced to the user is the highest-value outcome the gate produces, and
+logging only passes would erase exactly that evidence. The row goes in
+`ai_docs/audit/reviews/REVIEW_LOG.md` (create it if absent — `templates.md`):
+`| date | doc_key | tier | reviewer | findings_raised | findings_real | verdict | revise_rounds |`,
+with `tier` = `design` or `closure` in Standalone. One schema for both modes: a
+Hybrid project's devPNT gates write to the same file.
+The log is how the gate's value is measured over time; skipping it makes the gate
+unfalsifiable, the same defect as an unnamed EXISTS or a faked router verdict.
+
+**The reviewer is read-only and advisory.** It never edits, never commits, never
+marks anything DONE, and a PASS is not an approval to merge — the human owns that.
 
 ## Requesting
 
@@ -13,7 +65,9 @@ When you hand work to a reviewer (human or agent), give them:
 - **Scope**: what changed and why, in one or two lines.
 - **The authoritative design artifact**: the ANALYSIS, E-TDD, or equivalent
   the change was built against — not a paraphrase of it.
-- **The actual diff**: the real changed files, not a description of them.
+- **The actual diff**: the real changed files, not a description of them. (For a
+  **design** review there is no diff yet — that is the point; hand the artifact
+  plus the constraints below, and say the object under review is the design.)
 - **For an impact/solution-analysis review, the constraints it derives from**:
   the **Vision**, including its `## Actors` (Hybrid: the `M-VISION`; Standalone:
   `project_vision.md`/`roadmap.md` + the ANALYSIS Vision-Alignment), the

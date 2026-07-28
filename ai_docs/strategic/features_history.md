@@ -13,3 +13,4 @@
 | F-018 | Verifiable Vision (the drafting discipline) | L3 | COMPLETED | 2026-07-27 | 2026-07-27 | solutions/ANALYSIS_verifiable_vision.md |
 | F-019 | Parallel Handoff (workstream registry + per-feature resume files) | L3 | COMPLETED | 2026-07-27 | 2026-07-27 | solutions/ANALYSIS_parallel_handoff.md |
 | F-020 | Architect Pass (capabilities before files) | L3 | COMPLETED | 2026-07-28 | 2026-07-28 | solutions/ANALYSIS_architect_pass.md |
+| F-021 | Design Review Gate (Standalone) | L3 | COMPLETED | 2026-07-28 | 2026-07-28 | solutions/ANALYSIS_design_review_gate.md |

@@ -387,6 +387,37 @@ Date: 2026-06-11 (UTC)
 <!-- one or two lines: release pending, environment quirks that affect everyone -->
 ```
 
+## ai_docs/audit/reviews/REVIEW_LOG.md
+
+One row per completed review (`review.md` §When a review is due). Append-only; it
+is the record that the gate ran and what it was worth. **One schema for both
+modes** — a Hybrid project's devPNT gates write to this same file, so Standalone
+adds values to the existing columns rather than a second table.
+
+```markdown
+# Independent Review Log
+
+| date | doc_key | tier | reviewer | findings_raised | findings_real | verdict | revise_rounds |
+|---|---|---|---|---|---|---|---|
+| 2026-06-11 | ANALYSIS_login_sso.md | design | subagent (opus, fresh ctx) | 4 | 3 | PASS | 2 |
+| 2026-06-12 | diff feature/sso-login | closure | self-pass (declared; no subagent facility) | 2 | 2 | PASS | 1 |
+
+## Notes
+<!-- One short paragraph per review that found something worth remembering: what
+     the findings actually were, and what changed because of them. The table
+     answers "was it reviewed and by what"; this answers "what did it find" —
+     which is where `review.md`'s per-finding outcomes live. Omit for a clean
+     review; a row with 0 findings needs no note. -->
+```
+
+`tier` is the moment plus, in Hybrid, the reviewer weight: `design` / `closure`
+(Standalone), `deep` / `light` / `code` / `guide` (devPNT gates). `reviewer`
+records the realization actually used — fresh subagent, one-shot client run, or a
+**declared** self-pass. Writing `self-pass` where independence was unavailable is
+honest; writing nothing, or implying independence you did not have, is the failure
+this column exists to prevent. `findings_real` is how many raised findings survived
+triage: over time it is the only evidence of whether the gate earns its cost.
+
 ## ai_docs/audit/HANDOFF_[feature].md — volatile resume logistics (ephemeral)
 
 **Resume logistics ONLY; the ANALYSIS Diary keeps the durable narrative (DRY).**
