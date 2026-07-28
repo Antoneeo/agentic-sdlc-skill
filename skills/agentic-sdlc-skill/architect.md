@@ -19,8 +19,11 @@ tenant". A capability is a verb over a domain noun. It names no file, no class a
 no library: **that** is the decoupling. Files come later, in the Impact.
 
 Two or three capabilities is a normal feature. When the list has one obvious entry
-and it plainly exists, say so in one line and move on — this pass is a question to
-answer, not a form to fill.
+and it plainly exists, say so in one line **under the `## Capability Ledger`
+heading, still naming the component and where it lives**, and move on — this pass
+is a question to answer, not a form to fill. The heading is what makes a cheap
+answer distinguishable from a skipped pass; a bare "everything already exists"
+names nothing and is the **Paper ledger** anti-pattern, not the licence.
 
 ## 2. Rule each capability against the platform
 
@@ -28,9 +31,9 @@ One verdict per capability:
 
 | Verdict | Meaning | What the row must carry |
 |---|---|---|
-| **EXISTS** | a component already owns this capability and covers the need | the component and where it lives (path / symbol) |
+| **EXISTS** | a component already owns this capability and covers the need | the component, where it lives (path / symbol), and the one guarantee you re-read it to confirm |
 | **INADEQUATE** | a component owns it but does not cover the need | the same, plus the gap in one line |
-| **MISSING** | no component owns it | what you searched to conclude that |
+| **MISSING** | no component owns it | the terms you searched, the tool, and the areas covered |
 
 Read the **`## Component Map`** in `strategic/architecture.md` first — the project's
 inventory of what owns which capability, kept so this pass does not re-derive the
@@ -43,13 +46,20 @@ a miss means you pay full price. Reading a row does not excuse you from checking
 that it is still true — the map is the index, the code is the evidence.
 
 **Its silence is unread, not empty.** The map covers only the areas `audit/
-audit_plan.md` marks ANALYZED. In an area still PENDING — or SKIPPED, or absent from
-the plan entirely — **the map can never ground a MISSING verdict.** Nothing there
-has been looked at yet, and "the inventory does not mention it" is the reasoning
-that builds a second copy of a component that already exists. Search it with the
-symbol-graph tool (`grep` as a fallback), and a MISSING you reach that way carries
-what you searched: the terms, the tool, the areas covered. An unfalsifiable MISSING
-is the same defect as an EXISTS with no symbol named.
+audit_plan.md` marks ANALYZED — and that state is a claim someone made, not a fact
+the tooling verified: marking asserts *the area was read closely enough to name the
+capabilities it owns*, so an area marked after two greps is a false ANALYZED and
+the person who wrote it owns the duplicate that follows. In an area still PENDING —
+or SKIPPED, or absent from the plan entirely — **the map can never ground a MISSING
+verdict.** Nothing there has been looked at yet, and "the inventory does not mention
+it" is the reasoning that builds a second copy of a component that already exists.
+
+Search it with the symbol-graph tool (`grep` as a fallback). **The floor for a
+MISSING**: the domain noun, at least two plausible synonyms for it, and the verb —
+run across every area the audit plan lists, not only the ones you expect it in.
+Stop when those terms are exhausted, and record what you ran. A MISSING reached in
+an area that is still PENDING is *provisional* and says so in the row. An
+unfalsifiable MISSING is the same defect as an EXISTS with no symbol named.
 
 **Understanding is never deferred; only WRITING the map is.** You may leave the rest
 of the repository unmapped and grow the inventory feature by feature — you may not
@@ -71,7 +81,11 @@ is one consumer, never the owner.**
 
 The test is mechanical: write the contract — what it does, what it takes, what it
 guarantees — *without naming the feature*. If you cannot, the contract is
-feature-shaped, and the second consumer will force it open.
+feature-shaped, and the second consumer will force it open. **Renaming the
+feature's nouns is not stating the contract in the component's vocabulary**:
+`store(ConfirmationPayload) -> id` described as "stores records by id" still fails.
+The question the wording cannot dodge — *would a second plausible consumer have to
+change this signature?* If yes it is feature-shaped, however it is phrased.
 
 The opposite error is equally real: this is not a licence to build a framework.
 Build for the need you have, at the size you need. What the rule constrains is the
@@ -84,7 +98,12 @@ A capability that needs building becomes **its own ANALYSIS, its own branch and 
 own closure** when ANY of these holds:
 
 - it will have more than one consumer, now or in the declared roadmap;
-- it is independently mergeable and testable without the feature;
+- **it delivers value merged alone** — a consumer other than this feature could
+  adopt it as-is, today. (Not merely "buildable and testable on its own": §3
+  already requires that of every component, so reading it that way would make the
+  default branch below unreachable and put every five-line helper through its own
+  L3.) IN: an order store two roadmap features already need. OUT: an id formatter
+  with one consumer and no second taker;
 - it carries its own risk surface: security, a public contract, a data model, or a
   new dependency.
 
@@ -138,10 +157,15 @@ learned about is one the next feature rules MISSING and builds a second time. Th
 trigger is the component's birth, not a stack change (Write Triggers).
 
 **So does a component you merely discovered.** When the pass searches an unmapped
-area and finds an existing owner, write that row too, and `sdlc_check.py mark` the
-area you covered. The map then grows by the feature that needed the knowledge
-instead of by an up-front sweep — the understanding was paid for either way, and
-this is the step that stops the next session paying for it again.
+area and finds an existing owner, write that row too, then `sdlc_check.py mark` the
+area you covered — **in that order, and never the mark without the rows.** Marking
+an area ANALYZED while its owners stay unwritten is the worst of both states: the
+area now looks read, so the map's silence there becomes groundable, and the next
+feature rules MISSING and builds a duplicate — lawfully. What a mark asserts is
+exactly this: *the area was read closely enough to name the capabilities it owns.*
+The map then grows by the feature that needed the knowledge instead of by an
+up-front sweep — the understanding was paid for either way, and this is the step
+that stops the next session paying for it again.
 
 Hybrid: the ledger goes in the `E-ISP`, above its Impacted Components map. A
 capability split out as its own unit of change gets its own `E-ISP`/`E-TDD`, and the
@@ -150,16 +174,24 @@ feature's `E-ISP` names it as a dependency.
 ## Mechanical backstops
 
 Prose is not enforcement; these are the checks that notice when the pass did not
-run or its output rotted (`sdlc_check.py`, warnings — never a gate):
+run or its output rotted. Both are **advisories** — printed as `[note]`, never
+counted as warnings, and never failing a build, **not even under `--strict`**. That
+is deliberate: the ceremony budget accepted for this pass was a signal, and a
+warning that reddens a pipeline is a gate under another name.
 
-- **Skipped pass**: `validate` warns when an ACTIVE (PLANNED/IN_PROGRESS) L3
-  ANALYSIS started on/after 2026-07-28 lacks `## Capability Ledger`. Closed
-  history and analyses born before the pass existed never nag — the same
-  lazy-convert doctrine as the pre-1.17 handoff.
+- **Skipped pass**: `validate` notes an L3 ANALYSIS started on/after 2026-07-28
+  that lacks `## Capability Ledger`. Grandfathered by `start_date` alone —
+  analyses born before the pass existed never nag — and deliberately NOT by
+  status: closure flips the ANALYSIS to COMPLETED *before* `check` runs, so a
+  status filter would silence the backstop at the exact moment the process
+  mandates the validator.
 - **Rotting map**: `validate` resolves every path-shaped ref in the Component
   Map's `Where` column — a path that no longer exists, or a `#symbol` no longer
-  present in the file, is flagged. This is the map's equivalent of the guides'
-  `source_hash`: freshness detected, not trusted.
+  present as a whole word in the file, is flagged; so is a map whose rows carry
+  no checkable path at all (an inert check reported as a clean one is the same
+  defect as an unread map reported as empty). This is the map's equivalent of the
+  guides' `source_hash`, with the same honest limit: it proves the ref resolves,
+  never that the row still describes the component correctly.
 - **Adherence** (non-gating, `evals/`): `architect_rules_before_impact.md` runs
   the pass cold; `unmapped_never_grounds_missing.md` sets the brownfield trap —
   an existing component in a PENDING area, where ruling MISSING from the map's

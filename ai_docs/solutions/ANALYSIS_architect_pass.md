@@ -38,9 +38,13 @@ explicitly. Cost = one pass before the Impact + one ANALYSIS section + one suppo
 file read only when the trigger fires. **Accepted by Antonio Pinto, 2026-07-28**,
 with the pass scoped to L3 (L1/L2 unaffected).
 
-Non-goals: no validator rule on consumer projects (a warning on every existing
-ANALYSIS is the nagging the Vision forbids); no new document type — the ledger is a
-section, and a split-out component reuses the ANALYSIS that already exists.
+Non-goals: no new document type — the ledger is a section, and a split-out component
+reuses the ANALYSIS that already exists. **Amended 2026-07-28**: the elicitation
+round also chose "no validator rule on consumer projects"; the owner later
+instructed the opposite (4th increment). What shipped keeps that non-goal's *spirit*
+and drops its letter — the checks are **advisories** (`[note]`, never counted as
+warnings, inert under `--strict`, so they cannot redden a pipeline) and are
+grandfathered by `start_date`, so no pre-existing ANALYSIS is ever nagged.
 
 ## Use Cases / User Needs
 
@@ -84,12 +88,18 @@ the contract-vocabulary rule, the split rule, and the anti-patterns.* Consumers:
 | `skills/agentic-sdlc-skill/scripts/test_skill_invariants.py` | MODIFY | `test_architect_pass_wired`; `architect.md` added to the expected support-file list |
 | `package.json` | MODIFY | `files` allowlist — an unshipped support file is a dangling pointer for every installed consumer |
 | `ai_docs/strategic/architecture.md` | MODIFY | dogfood: this repo's own `## Component Map`, 7 rows |
+| `skills/agentic-sdlc-skill/scripts/sdlc_check.py` | MODIFY | 4th increment: `ledger_due()`, `check_component_map()`, `_map_refs()`, the `advisories` bucket in `cmd_validate` |
+| `skills/agentic-sdlc-skill/evals/scenarios/architect_rules_before_impact.md` | ADD | adherence: the pass run cold |
+| `skills/agentic-sdlc-skill/evals/scenarios/unmapped_never_grounds_missing.md` | ADD | adherence: the brownfield trap |
+| `README.md`, `gemini-extension.json` | MODIFY | support-file bullet + Runtime Shape tree; release version point |
+| `ai_docs/audit/audit_plan.md` | MODIFY | `mark` reference for the re-analyzed skill dir |
 | `CHANGELOG.md`, `ai_docs/strategic/existing_features.md`, `ai_docs/audit/handoff.md` | MODIFY | closure |
 
 Second increment (Component Map) touches the same five skill files plus
 `strategic/architecture.md`: template section, Write-Triggers row keyed on the
-component's birth, `architect.md` §2 read-first + the closure loop, the `review.md`
-finding, and `test_component_map_wired`.
+component's birth **and on discovery**, `architect.md` §2 read-first + the closure
+loop, the `review.md` finding, and `test_component_map_wired`. Third and fourth add
+the brownfield rules and the mechanical backstops in the table above.
 
 Blast radius: `architect.md` is a new leaf with no consumers but the three pointers
 above. The only signature-shaped change is the `expected` list inside
@@ -97,10 +107,29 @@ above. The only signature-shaped change is the `expected` list inside
 
 ## Security and Threat Model
 
-Surfaces touched: **filesystem** only, and only the skill's own Markdown plus one
-stdlib test. No external input parsing, no authN/authZ, no crypto, no network, no
-personal data. The validator is untouched, so no new path handling enters
-`sdlc_check.py`.
+Surfaces touched: **filesystem** and **parsing of document-supplied paths**. No
+authN/authZ, no crypto, no network, no personal data.
+
+The 4th increment puts new path handling into `sdlc_check.py`, so the surface is
+real: `check_component_map()` reads refs out of `strategic/architecture.md` — a file
+any contributor edits — then resolves them, may expand them with `root.glob()`, and
+reads every matched file. Threats and mitigations:
+
+- **T1 traversal via a crafted ref** (`../../etc/passwd`, absolute, drive-relative):
+  `confine_under(root, ...)` fail-closed before any filesystem touch; glob
+  metacharacters are neutralized for the confinement test so a pattern cannot slip
+  past it. Covered by `test_component_map_rot_detected`.
+- **T2 resource exhaustion via a wide glob** (`**/*`): bounded in practice — the
+  check only reads files when the ref carries a `#symbol`, and `read_text` is the
+  same bounded reader the validator already uses everywhere. Accepted risk: a
+  deliberately pathological ref in your own repository's own architecture doc is
+  self-inflicted, and the check is advisory (it cannot fail a build).
+- **T3 false confidence**: the check proves a ref resolves, never that the row
+  describes the component correctly — stated in `architect.md` beside the check,
+  the same honest limit the guides' `source_hash` carries.
+
+The two eval scenarios add no runtime surface: `run_behavioral.py` seeds a temp
+fixture, makes no model call, no network request, and spawns no process.
 
 Process threat (the one that matters here): **T1 — ceremony ratchet.** A mandatory
 pass at L3 that fires on trivial-shaped L3s becomes the cost the Vision forbids.
@@ -129,10 +158,18 @@ requiring a named path/symbol per verdict and by the review clause.
       incremental licence; `review.md` unfalsifiable-MISSING finding;
       `test_unmapped_never_grounds_missing`. Battery 61/61
 - [x] **4th increment — mechanical backstops** (the two self-review reserves,
-      owner: attack now): `ledger_due()` + validate warning (skipped pass,
+      owner: attack now): `ledger_due()` + validate advisory (skipped pass,
       epoch-grandfathered); `check_component_map()` (map anti-rot, the
       `source_hash` equivalent); 2 behavioral scenarios; `architect.md`
       §Mechanical backstops; 3 new invariants. Battery 64/64
+- [x] **5th increment — independent review dispositions** (2 reviewers, fresh
+      context, read-only; both returned FAIL): 5 blockers and the substantive
+      warnings fixed — discovered-component trigger, status filter dropped,
+      advisory bucket, glob/header/word-boundary/Windows/URL fixes in the rot
+      check, `parse_iso` gating, split-rule bullet 2, contract re-description
+      clause, MISSING search floor, one-line licence, Hybrid home, Coverage as
+      pointer, ANALYSIS Impact/Security/Test-Strategy corrected, 4 weak tests
+      repaired. Battery 65/65
 
 ## Test Strategy
 
@@ -142,8 +179,14 @@ The deterministic gate is the existing static battery
 consumer: `architect.md` carries its anchors, `SKILL.md` invokes it in phase 3 and
 lists it, `templates.md` carries the section, `review.md` carries the clause. The
 orphan check in `test_support_files_wired` already fails a support file that exists
-without a pointer. No behavioral eval scenario: the pass is authoring discipline,
-not a triggered lookup like the guide router.
+without a pointer.
+
+**Amended (4th increment)**: the static battery proves the doctrine is *wired*, never
+that an agent *executes* it, so two behavioral scenarios join the non-gating eval
+layer — `architect_rules_before_impact` and `unmapped_never_grounds_missing` (the
+latter seeds a real trap: an existing `RateLimiter` in a PENDING area). They are
+parsed and their criteria checked for substance by `test_architect_scenarios_present`;
+they never gate, because model adherence is nondeterministic.
 
 ## Diary / Current State
 
@@ -231,3 +274,49 @@ not a triggered lookup like the guide router.
   works: it immediately caught a rotten ref in THIS repo's own map
   (`evals/run_behavioral.py` written unqualified — resolved nowhere). Battery
   64/64; validate on this repo: same 4 pre-existing warnings, no new noise.
+- **2026-07-28 — 5th increment: independent review, both reviewers FAIL.** Owner
+  asked for an independent review before publishing. Two read-only reviewers, fresh
+  context, separate lenses (conformance+correctness; adversarial Vision+doctrine).
+  Five blockers, all real, all fixed:
+  1. **The backstop could never fire.** `ledger_due` required PLANNED/IN_PROGRESS,
+     but closure flips the ANALYSIS to COMPLETED *before* `check` runs — the check
+     was silent at the only moment the process mandates the validator. Status filter
+     dropped; `start_date` is the sole guard, which is what grandfathering needed
+     anyway. The old invariant had locked the defect in, so it was inverted.
+  2. **A DISCOVERED component had no write trigger.** `architect.md` mandated
+     writing the row; `SKILL.md` (the authoritative write index) and `review.md`
+     fired on *birth* only. Following the shipped rules: mark the area ANALYZED,
+     leave the map silent, and the next feature lawfully rules MISSING and builds a
+     duplicate — the exact failure the 3rd increment exists to prevent, reachable
+     by obedience. Trigger and finding both extended; `architect.md` now forbids
+     the mark without the rows and states what a mark asserts.
+  3. **"Never a gate" was false.** `--strict` escalates warnings to exit 1 and
+     `ENFORCEMENT.md` recommends it in CI, so the ledger check was a blocking gate
+     on consumer pipelines — a cost the ceremony-budget acceptance never named
+     (`project_vision.md`: "Omission resolves against the proposal"). Fixed by
+     honoring the accepted budget rather than expanding it: a third severity,
+     **advisories**, printed as `[note]`, never counted as warnings, inert under
+     `--strict`. New invariant asserts a missing ledger cannot fail `--strict`.
+  4. **Literal brackets read as globs** — `app/[id]/page.tsx` (Next.js) reported as
+     rot on any consumer project. Literal existence is now tried first.
+  5. **The rot check was inert in silence** — `Where` taken as the last column
+     (any extra column disarmed it), refs without `/` skipped (9 of this repo's own
+     18 refs unchecked), Windows separators skipped, substring symbol match passing
+     `#Notif` against `Notifier`. All fixed, plus a notice when a map has rows but
+     no checkable ref: an inert check reported as a clean one is the same defect as
+     an unread map reported as empty.
+  Doctrine hardening from the adversarial lens: §4's split bullet 2 was unreachable
+  (§3 mandates the property it used as a trigger, so every component earned its own
+  L3) — resharpened to "delivers value merged alone" with an IN/OUT pair; the
+  contract test gained its re-description clause (paraphrase defeated it); the
+  MISSING search gained a floor and a stopping rule; the one-line licence now says
+  the answer still lives under the heading, naming the component; `SKILL.md` phase 3
+  no longer states the Standalone home unconditionally, and declares the Hybrid
+  coverage asymmetry; the duplicated `Coverage:` list became a pointer to
+  `audit_plan.md` (a cache with no invalidation is a defect, not a convenience).
+  Dogfood failures the reviewers caught in this very document, now fixed: the Impact
+  table omitted six touched files while the doctrine it ships requires every ledger
+  row to land there; `## Security and Threat Model` still claimed "the validator is
+  untouched" after 65 lines of new path handling; `## Test Strategy` still claimed
+  "no behavioral eval scenario"; the superseded elicitation non-goal was left
+  standing with the reversal only in the Diary. Battery 65/65.

@@ -137,8 +137,10 @@ class SkillInvariants(unittest.TestCase):
                         phase3.index("Blast-radius enumeration"),
                         "the architect pass precedes the blast radius: "
                         "capabilities are ruled before files are listed")
-        self.assertIn("Capability Ledger", skill,
-                      "the ledger must be an L3 minimum section")
+        minsec = skill.split("Minimum sections:")[1].splitlines()[0]
+        self.assertIn("Capability Ledger", minsec,
+                      "the ledger must be named on the L3 minimum-sections line "
+                      "itself, not merely somewhere in the file")
         tpl = read("templates.md")
         self.assertIn("## Capability Ledger", tpl)
         self.assertLess(tpl.index("## Capability Ledger"),
@@ -164,13 +166,19 @@ class SkillInvariants(unittest.TestCase):
         rows = [ln for ln in skill.splitlines()
                 if "Component Map" in ln and ln.lstrip().startswith("|")]
         self.assertTrue(rows, "Write-Triggers row for the Component Map missing")
-        self.assertNotIn("| 1 / 5 |", rows[0],
-                         "the map has its own component-birth trigger, not the "
-                         "bootstrap/stack-change one it would hide behind")
+        self.assertIn("BORN", rows[0],
+                      "the trigger must key on the component's birth, not on a "
+                      "stack change the birth would never fire")
+        self.assertIn("DISCOVERED", rows[0],
+                      "a component the pass merely FINDS must also land in the "
+                      "map: marking the area ANALYZED while the map stays silent "
+                      "lets the next feature rule it MISSING and build it twice")
+        self.assertIn("DISCOVERED", read("review.md"),
+                      "the discovered-component duty needs its mirror finding")
         # dogfood: this repo's own architecture doc carries a real map
-        arch = sc.read_text(REPO / "ai_docs" / "strategic" / "architecture.md")
-        if arch:
-            self.assertIn("## Component Map", arch)
+        arch_p = REPO / "ai_docs" / "strategic" / "architecture.md"
+        if arch_p.is_file():
+            self.assertIn("## Component Map", sc.read_text(arch_p))
 
     def test_unmapped_never_grounds_missing(self):
         """F-020c: on a project the methodology just arrived in, the map is nearly
@@ -198,6 +206,34 @@ class SkillInvariants(unittest.TestCase):
         self.assertIn("unread, not empty", read("templates.md"),
                       "the map template must declare its own coverage limit")
 
+    def test_backstops_are_advisory_not_a_gate(self):
+        """F-020e: the accepted ceremony budget was a SIGNAL. --strict turns
+        warnings into exit 1 and ENFORCEMENT recommends it in CI, so routing the
+        architect-pass checks through `warnings` would ship a blocking gate the
+        owner never accepted. They must be advisories, inert under --strict."""
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            sol = root / "ai_docs" / "solutions"
+            sol.mkdir(parents=True)
+            vis = root / "ai_docs" / "vision"
+            vis.mkdir()
+            for name in sc.VISION_FILES:
+                (vis / name).write_text(f"# {name}\nStatus: APPROVED (by owner)\n",
+                                        encoding="utf-8")
+            (sol / "ANALYSIS_x.md").write_text(
+                "---\nid: F-1\nfeature: X\nstatus: COMPLETED\nlevel: L3\n"
+                "start_date: 2026-08-01\nend_date: 2026-08-02\n---\n"
+                "# X\n## Objective\no\n## Feature Vision\nv\n## Impact\ni\n"
+                "## Security and Threat Model\ns\n## Action Plan\n- [x] a\n"
+                "## Test Strategy\nt\n## Diary\nd\n", encoding="utf-8")
+            sc.cmd_index(root)  # generated indexes present: isolate the advisory
+            self.assertEqual(sc.cmd_validate(root, strict=True), 0,
+                             "a missing Capability Ledger must not fail --strict: "
+                             "an advisory that reddens CI is a gate under another name")
+        a = read("architect.md")
+        self.assertIn("not even under `--strict`", a,
+                      "the doctrine must state the escalation honestly")
+
     def test_ledger_due_gating(self):
         """F-020d: the ledger warning fires ONLY for active L3 analyses born
         after the pass shipped. Closed history and pre-pass in-flight work
@@ -205,13 +241,23 @@ class SkillInvariants(unittest.TestCase):
         due = {"level": "L3", "status": "IN_PROGRESS", "start_date": "2026-07-28"}
         self.assertTrue(sc.ledger_due(due))
         self.assertTrue(sc.ledger_due({**due, "status": "PLANNED"}))
-        self.assertFalse(sc.ledger_due({**due, "status": "COMPLETED"}),
-                         "closed history must never nag")
+        self.assertTrue(sc.ledger_due({**due, "status": "COMPLETED"}),
+                        "status must NOT gate: closure flips the ANALYSIS to "
+                        "COMPLETED before `check` runs, so a status filter "
+                        "silences the backstop at the only mandated moment")
         self.assertFalse(sc.ledger_due({**due, "start_date": "2026-07-19"}),
-                         "pre-pass in-flight work is grandfathered")
+                         "pre-pass work is grandfathered -- by date, the only guard")
         self.assertFalse(sc.ledger_due({**due, "level": "L2"}),
                          "the pass is L3-only")
+        self.assertFalse(sc.ledger_due({**due, "level": ""}))
+        # malformed / quoted / unpadded dates must not silently decide the gate
         self.assertFalse(sc.ledger_due({**due, "start_date": ""}))
+        self.assertFalse(sc.ledger_due({**due, "start_date": "28/07/2026"}),
+                         "a non-ISO date must not fire on a lexicographic compare")
+        self.assertTrue(sc.ledger_due({**due, "start_date": "'2026-08-01'"}),
+                        "a YAML-quoted date must not grandfather forever")
+        self.assertFalse(sc.ledger_due({**due, "start_date": "2026-7-01"}),
+                         "an unpadded pre-epoch date must not read as post-epoch")
 
     def test_component_map_rot_detected(self):
         """F-020d: a map row whose 'Where' ref no longer resolves, or whose
@@ -223,13 +269,14 @@ class SkillInvariants(unittest.TestCase):
             (root / "src" / "core.py").write_text(
                 "class Notifier:\n    pass\n", encoding="utf-8")
             def warns(where):
+                """Rot findings only -- the 'inert map' notice is asserted apart."""
                 text = ("## Component Map\n\n"
                         "| Component | Capability it owns | Contract | Where |\n"
                         "|---|---|---|---|\n"
                         f"| Notifier | notify | fire-and-forget | {where} |\n")
                 w = []
                 sc.check_component_map(root, text, w)
-                return w
+                return [m for m in w if "no checkable path" not in m]
             self.assertEqual(warns("`src/core.py#Notifier`"), [],
                              "a healthy row must stay silent")
             self.assertTrue(warns("`src/gone.py#Notifier`"),
@@ -242,19 +289,59 @@ class SkillInvariants(unittest.TestCase):
                             "an escaping ref is rejected, fail-closed")
             self.assertEqual(warns("`src/*.py#Notifier`"), [],
                              "glob refs resolve too")
+            self.assertEqual(warns("`src\\core.py#Notifier`"), [],
+                             "a Windows-separator ref must be normalized, "
+                             "not silently skipped as uncheckable")
+            self.assertTrue(warns("`src/core.py#Notif`"),
+                            "substring symbol matching is a false PASS: the "
+                            "match must be on a word boundary")
+            self.assertEqual(warns("`https://example.com/core.py`"), [],
+                             "a URL is not a repo path")
+            self.assertTrue(warns("`core.md#X`"),
+                            "an unqualified file-shaped ref must warn, not be "
+                            "skipped -- that skip left 9 of this repo's own "
+                            "18 refs unchecked")
+            # a literal bracket in a path (Next.js dynamic route) is not a glob
+            (root / "app").mkdir()
+            (root / "app" / "[id].tsx").write_text("export const Page = 1\n",
+                                                   encoding="utf-8")
+            self.assertEqual(warns("`app/[id].tsx#Page`"), [],
+                             "a literal-bracket path that exists must not be "
+                             "reported as rot via glob interpretation")
+            # inert-check detection: rows present, no checkable ref anywhere
+            inert = ("## Component Map\n\n| Component | Capability | Contract | Where |\n"
+                     "|---|---|---|---|\n| Notifier | notify | fire | see the code |\n")
+            w = []
+            sc.check_component_map(root, inert, w)
+            self.assertTrue(w, "a map whose rows carry no checkable path is an "
+                               "inert check reported as a clean one")
+            # the 'Where' column is located by header, not assumed last
+            five = ("## Component Map\n\n"
+                    "| Component | Capability | Contract | Where | Owner |\n"
+                    "|---|---|---|---|---|\n"
+                    "| Notifier | notify | fire | `src/gone.py` | team |\n")
+            w = []
+            sc.check_component_map(root, five, w)
+            self.assertTrue(w, "a map with extra columns must still be checked")
 
     def test_architect_scenarios_present(self):
         """F-020d: the pass's execution is exercised by the behavioral layer --
         one scenario for running the pass at all, one for the brownfield trap
         (map silence must not ground a MISSING)."""
+        sys.path.insert(0, str(SKILL_DIR / "evals"))
+        import run_behavioral as rb  # noqa: E402
         sdir = SKILL_DIR / "evals" / "scenarios"
-        for name in ("architect_rules_before_impact.md",
-                     "unmapped_never_grounds_missing.md"):
+        for name, must in (("architect_rules_before_impact.md", "Capability Ledger"),
+                           ("unmapped_never_grounds_missing.md", "Component Map")):
             p = sdir / name
             self.assertTrue(p.is_file(), f"scenario missing: {name}")
-            t = p.read_text(encoding="utf-8")
-            for req in ("## Setup", "## Prompt", "## Pass criteria"):
-                self.assertIn(req, t, f"{name} missing {req}")
+            s = rb.load_scenario(str(p))   # parses, or the driver exits non-zero
+            self.assertTrue(s["expected"], f"{name}: empty 'expected'")
+            crit = [ln for ln in s["pass_criteria"].splitlines() if ln.strip().startswith("-")]
+            self.assertGreaterEqual(len(crit), 3,
+                                    f"{name}: pass criteria gutted to {len(crit)} bullet(s)")
+            self.assertIn(must, s["pass_criteria"],
+                          f"{name} must assert on {must}, or it tests nothing about the pass")
 
     def test_skill_proactive_trigger(self):
         t = read("SKILL.md")

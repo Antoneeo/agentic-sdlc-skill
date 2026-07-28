@@ -433,9 +433,10 @@ status: CURRENT
      why the next feature rules the same capability MISSING a second time and
      builds it again. -->
 
-Coverage: the areas `audit/audit_plan.md` marks ANALYZED — currently `<list, or
-"none: the map is new">`. Outside them this map is **unread, not empty**: it can
-never ground a MISSING verdict, and the code is searched instead (`architect.md` §2).
+Coverage: whatever `audit/audit_plan.md` marks ANALYZED — **read it, do not trust a
+list restated here** (a hand-copied list is a cache with no invalidation). Outside
+those areas this map is **unread, not empty**: it can never ground a MISSING
+verdict, and the code is searched instead (`architect.md` §2).
 
 | Component | Capability it owns | Contract | Where |
 |---|---|---|---|
