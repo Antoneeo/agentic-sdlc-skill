@@ -385,7 +385,11 @@ def extract_doc_meta(path):
                 s = s.split("-->", 1)[1].strip()
                 if not s:
                     continue
-            if not s or s.startswith("#") or _META_LINE.match(s):
+            # a table row or a bare bullet is not a description: the manifest is
+            # the first thing an agent reads to orient, and '| Milestone | ... |'
+            # in that column is a row carrying no information
+            if (not s or s.startswith("#") or s.startswith("|") or s.startswith("---")
+                    or re.match(r"^[-*+]\s", s) or _META_LINE.match(s)):
                 continue
             if s.startswith(">"):
                 s = s.lstrip(">").strip()
@@ -548,6 +552,18 @@ def has_section(text, aliases):
     return any(a in text for a in aliases)
 
 
+def has_ledger_heading(text):
+    """True when a REAL '## Capability Ledger' heading exists: fenced code
+    blocks are removed first, then HTML comments. An unterminated '<!--' only
+    opens a comment at the start of a line -- nuking to EOF on an inline
+    mention (or an unclosed example inside a fence) made a document that
+    HAS its ledger get told it has none."""
+    stripped = re.sub(r"^(```|~~~).*?^\1", "", text, flags=re.M | re.S)
+    stripped = re.sub(r"<!--.*?-->", "", stripped, flags=re.S)
+    stripped = re.sub(r"^[ \t]*<!--(?!.*?-->).*\Z", "", stripped, flags=re.M | re.S)
+    return bool(re.search(r"^##[ \t]+Capability Ledger[ \t]*$", stripped, re.M))
+
+
 def ledger_due(meta):
     """True when an ANALYSIS owes a '## Capability Ledger' (architect.md):
     an L3 started on/after the day the pass shipped. Grandfathered by
@@ -610,15 +626,18 @@ def _map_refs(where):
         path_part = path_part.replace("\\", "/").strip()
         if not path_part or "://" in path_part:
             continue  # a URL is not a repo path
-        # A slash-less token counts only if it looks like a FILENAME: known
-        # suffix AND a stem that is not a Capitalized prose word. Without the
-        # second half, `Next.js`, `Node.js`, `Vue.js` and `OrderStore.save` all
-        # report "the map is rotting" -- a false rot teaches readers to ignore
-        # the channel, which is worse than the rot.
-        stem = path_part.rsplit("/", 1)[-1].rsplit(".", 1)[0]
+        # A slash-less token counts only if it looks like a FILENAME. The one
+        # real false-positive class is `Next.js` / `Node.js` / `Vue.js`: a
+        # CamelCase stem with a `.js` tail is a framework name, not a file.
+        # The exclusion is scoped to that suffix ON PURPOSE -- a blanket
+        # CamelCase rule would silence `App.tsx`, `Program.cs`, `Main.java`,
+        # which are exactly what React/C#/Java projects put in a Where cell.
+        stem, _, suffix = path_part.rsplit("/", 1)[-1].rpartition(".")
+        framework_name = (suffix.lower() == "js"
+                          and bool(re.fullmatch(r"[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]*)*", stem)))
         looks_like_path = "/" in path_part or (
             bool(re.search(r"\.(" + "|".join(FILE_SUFFIXES) + r")$", path_part, re.I))
-            and not re.fullmatch(r"[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]*)*", stem))
+            and not framework_name)
         if looks_like_path:
             out.append((ref, path_part, symbol.strip()))
     return out
@@ -631,8 +650,7 @@ def check_component_map(root, text, advisories):
     in a matched file. This is the map's equivalent of the guides' source_hash.
     ADVISORY: a freshness signal, never a gate -- not even under --strict (the
     accepted ceremony budget was a warning, not a blocked pipeline)."""
-    m = re.search(r"^#{2,3}\s+Component Map\b.*?$(.*?)(?=^#{1,3}\s+\S|\Z)",
-                  text, re.M | re.S | re.I)
+    m = MAP_SECTION_RE.search(text)   # one regex for both checks: they cannot drift
     if not m:
         return
     rows = [ln.strip() for ln in m.group(1).splitlines() if ln.strip().startswith("|")]
@@ -770,11 +788,7 @@ def cmd_validate(root, strict=False):
                               "doing the work it triggers")
         # comment-stripped, anchored: a '<!-- TODO: the ## Capability Ledger -->'
         # must not read as the section being present
-        # strip terminated AND unterminated comments: '<!-- TODO: the
-        # ## Capability Ledger' with no closing marker was still counting
-        if ledger_due(meta) and not re.search(
-                r"^##[ \t]+Capability Ledger[ \t]*$",
-                re.sub(r"<!--(?:.*?-->|.*\Z)", "", text, flags=re.S), re.M):
+        if ledger_due(meta) and not has_ledger_heading(text):
             advisories.append(f"{rel}: L3 without '## Capability Ledger' -- the architect pass "
                               "left no record (architect.md); run it before the Impact")
 
@@ -826,8 +840,12 @@ def cmd_validate(root, strict=False):
                     continue
                 if confine_under(root, prow["path"]) is None:
                     continue                     # stale already rejects these
-                area = prow["path"].replace("\\", "/").strip("/").lstrip(".").strip("/")
-                if not area:
+                if re.search(r"owns no component", prow.get("note", ""), re.I):
+                    continue                     # declared, not forgotten: the opt-out
+                area = prow["path"].replace("\\", "/").strip("/")
+                if area.startswith("./"):
+                    area = area[2:]
+                if area in ("", "."):
                     continue                     # the whole root: every row is inside it
                 if not (root / area).exists():
                     continue                     # gone from disk: not a mapping gap
@@ -860,13 +878,20 @@ def cmd_validate(root, strict=False):
     check_kb_collisions(root, guides, errors, warnings)
     # guide-router alignment (mirror of the root-manifest check)
     gidx = root / "ai_docs" / "reference" / "INDEX.md"
-    if not gidx.is_file():
+    if not gidx.is_file() and not guides:
+        # zero guides: the stub is a convenience for the mandatory Rule Zero read
         advisories.append("ai_docs/reference/INDEX.md missing: Rule Zero requires reading the "
                           "guide router and forbids faking its verdict, so the router exists "
                           "even with zero guides -- run 'sdlc_check.py index'")
     if guides:
         if not gidx.is_file():
-            pass  # already advised above
+            # guides EXIST and the router does not: the agent's mandatory lookup
+            # finds nothing and legally declares 'absent', so the guide that
+            # governs the work is never consulted. An absent router must not be
+            # graded below a merely stale one.
+            errors.append("ai_docs/reference/INDEX.md missing while GUIDE_*.md files exist: "
+                          "the router is the only thing that routes work to them -- "
+                          "run 'sdlc_check.py index'")
         elif norm_text(read_text(gidx)) != norm_text(build_guide_index(root)):
             errors.append("ai_docs/reference/INDEX.md not aligned with the guides: run 'sdlc_check.py index'")
 

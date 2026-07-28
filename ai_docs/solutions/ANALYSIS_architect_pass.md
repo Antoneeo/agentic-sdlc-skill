@@ -187,6 +187,11 @@ requiring a named path/symbol per verdict and by the review clause.
       manifest; CamelCase prose no longer reported as rot; `mark` validates all
       paths before printing; gate message names the real remedy; unattended
       elicitation path. Battery 73/73
+- [x] **8th increment — 4th round (narrow verification)**: 1 BLOCK (my own F4 fix
+      had downgraded a real error to an advisory), the documented `owns no
+      component` opt-out that was never implemented, a heading-strip that nuked
+      to EOF, a CamelCase exclusion far wider than its defect, and an invariant
+      of mine that was green on broken code. All fixed. Battery 73/73
 
 ## Test Strategy
 
@@ -418,3 +423,40 @@ they never gate, because model adherence is nondeterministic.
   task's size, because the incremental licence covers the audit map and pointedly
   not the Vision. Not fixed here: it is a Vision-level scope decision for the
   owner, recorded as the top open item. Battery 73/73.
+- **2026-07-28 — 8th increment: fourth round, narrow by design.** Scope declared
+  up front: verify the 3rd round's dispositions and hunt regressions in the code
+  it introduced — no re-reading of doctrine, no new philosophy. Nine fixes
+  verified by execution; eight landed. **The BLOCK was mine**: the router-stub fix
+  replaced `if guides and not router: ERROR` with an unconditional advisory, so a
+  project that HAS guides but lost its router (gitignored, dropped by a merge)
+  reported CLEAN — the agent's mandatory lookup finds nothing, legally declares
+  `router: absent`, and the guide governing the work is never consulted. An absent
+  router was graded *below* a merely stale one. Restored as an error when guides
+  exist; the advisory now covers only the zero-guide case.
+  Three more of my own defects, all the same shape — **a fix whose blast radius I
+  did not measure**: (a) the advisory told users to write `owns no component` in
+  the audit-plan Notes column, and nothing read that column — a documented escape
+  hatch that was fiction, which is exactly the "trains readers to ignore the
+  channel" failure the surrounding code exists to avoid; now implemented. (b) The
+  unterminated-comment strip nuked to end-of-file, so an ANALYSIS that merely
+  *mentions* `<!--` inline, or shows an unclosed example in a fenced block, was
+  told it had no Capability Ledger when it plainly did; heading detection moved
+  into `has_ledger_heading()` which strips fences first and only opens an
+  unterminated comment at line start. (c) The CamelCase exclusion I added to stop
+  `Next.js` being reported as rot silenced 22 of 39 probed filenames — `App.tsx`,
+  `Program.cs`, `Main.java`, `Cargo.toml`: precisely what React/C#/Java projects
+  put in a `Where` cell. Narrowed to the one real class, a CamelCase stem with a
+  `.js` tail.
+  **And an invariant of mine was theater**: `test_ledger_backstop_bypasses_closed`
+  asserted `cmd_validate(...) == 0`, but advisories never move the exit code — the
+  reviewer replayed the fixture against the PRE-fix module and it passed. The test
+  now asserts on `has_ledger_heading()` directly, including the two false-positive
+  cases. Also: the manifest description fallback emitted markdown table rows
+  (`| Milestone | Expected Benefit |`) as descriptions; table rows and bare
+  bullets are skipped now. Battery 73/73, fresh project `--strict` rc=0.
+  Deferred, recorded not silently dropped: `functional/*` docs lack `status:` so
+  this repo cannot pass its own `--strict` recipe (pre-existing, devPNT-generated);
+  an escaped `|` in a Where cell still shifts columns in `map_where_refs`; and the
+  two `vision/` docs would read better in the manifest with real `description:`
+  frontmatter — but one of them is the APPROVED Vision, and editing it to improve
+  a manifest row is not proportionate to the gain.

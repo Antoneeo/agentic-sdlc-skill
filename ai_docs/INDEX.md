@@ -12,9 +12,9 @@ not manifested here.
 |---|---|---|
 | `vision/features/VISION_agentic_sdlc_vnext.md` | CURRENT | Feature vision for the vNext evolution (triage, support files, mechanical validation, devPNT symbiosis) delivered in 1.5.0/1.6.0. |
 | `vision/features/VISION_vision_governance.md` | CURRENT | Feature vision for the Vision governance layer (ai_docs/vision/, Vision Gate) delivered in 1.4.0. |
-| `vision/principles.md` | DRAFT | - **Vision before solution**: clarify intended benefit and non-goals before choosing implementation details. |
+| `vision/principles.md` | DRAFT | Vision Principles |
 | `vision/project_vision.md` | APPROVED | (by Antonio Pinto, 2026-07-27) |
-| `vision/roadmap.md` | DRAFT | \| Milestone \| Expected Benefit \| Priority \| Success Signal \| Status \| |
+| `vision/roadmap.md` | DRAFT | Vision Roadmap |
 | `vision/roadmap_evoluzione_agenti.md` | DRAFT | Roadmap della milestone di evoluzione — subagent operativi, guide operative/KB agente, eliminazione conflitti di convivenza con devPNT e posizionamento open-... |
 | `vision/roadmap_evoluzione_agenti_v1.md` | SUPERSEDED | "Roadmap di evoluzione di agentic-sdlc: esecuzione a subagent operativi e strato di documentazione per la formazione degli agenti. Input per la prossima mile... |
 
@@ -34,10 +34,10 @@ not manifested here.
 
 | Document | Status | Description |
 |---|---|---|
-| `functional/architecture_overview.md` | - | \| Subsystem \| Role \| Key Responsibilities \| |
+| `functional/architecture_overview.md` | - | (none) |
 | `functional/data_entities.md` | CURRENT | devPNT-generated data-entity doc. Snapshot 2026-07-02; regenerate via devPNT after structural changes. |
 | `functional/entry_points.md` | CURRENT | devPNT-generated entry-point doc. Snapshot 2026-07-02; regenerate via devPNT after structural changes. |
-| `functional/external_interfaces.md` | - | - Name: Model Context Protocol |
+| `functional/external_interfaces.md` | - | external_interfaces |
 | `functional/feature_flows.md` | CURRENT | devPNT-generated feature-flow doc. Snapshot 2026-07-02; regenerate via devPNT after structural changes. |
 
 ## strategic/
