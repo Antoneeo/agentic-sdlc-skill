@@ -410,8 +410,10 @@ adds values to the existing columns rather than a second table.
      review; a row with 0 findings needs no note. -->
 ```
 
-`tier` is the moment plus, in Hybrid, the reviewer weight: `design` / `closure`
-(Standalone), `deep` / `light` / `code` / `guide` (devPNT gates). `reviewer`
+`tier` is the moment plus, in Hybrid, the reviewer weight: `design`, `design (late)`
+and `closure` (Standalone); `deep`, `light`, `code`, `guide`, `vision` (devPNT gates
+and the Vision blind check). The validator reads this column by its header name, so
+extra or reordered columns are fine — but the header must say `tier`. `reviewer`
 records the realization actually used — fresh subagent, one-shot client run, or a
 **declared** self-pass. Writing `self-pass` where independence was unavailable is
 honest; writing nothing, or implying independence you did not have, is the failure

@@ -12,7 +12,7 @@ Two moments, and they review different things:
 |---|---|---|---|
 | **1. Design review** | End of Phase 3 — **before any implementation** | the ANALYSIS (Standalone) / the `E-ISP`+`E-TDD` (Hybrid) | L3 |
 | **1b. Late arrival** | Work that became L3 *after* code existed — an L1/L2 reclassified mid-flight, or a design increment on a feature already implemented — runs moment 1 **now**, before any further implementation, logged `design (late)` | same | L3 |
-| **2. Closure review** | Phase 5, before DONE | the actual diff, against that approved design | L2 / L3 |
+| **2. Closure review** | Phase 5, before DONE | the actual diff, against that approved design | L2 / L3 — the L2 row is optional |
 
 **Why the design review is its own moment, and not a nicety.** The closure review
 can only tell you the code matches the design; it cannot tell you the design was
