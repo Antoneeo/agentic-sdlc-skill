@@ -170,6 +170,13 @@ requiring a named path/symbol per verdict and by the review clause.
       clause, MISSING search floor, one-line licence, Hybrid home, Coverage as
       pointer, ANALYSIS Impact/Security/Test-Strategy corrected, 4 weak tests
       repaired. Battery 65/65
+- [x] **6th increment — 2nd review round** (verifier: all 5 blockers confirmed
+      fixed by execution; cold adversary: 2 new blockers): audit-plan path
+      confinement in `stale`/`mark` + seeder writes `.`; review.md ledger clause
+      made unconditional at L3; closed suffix list (no false rot on prose);
+      day-zero advisory removed; heading match case-insensitive; header-required
+      + ragged-row reporting; two backstop bypasses closed; `mark`-counter-check
+      advisory; split bullet 2 and the MISSING floor rewritten. Battery 69/69
 
 ## Test Strategy
 
@@ -320,3 +327,37 @@ they never gate, because model adherence is nondeterministic.
   untouched" after 65 lines of new path handling; `## Test Strategy` still claimed
   "no behavioral eval scenario"; the superseded elicitation non-goal was left
   standing with the reversal only in the Diary. Battery 65/65.
+- **2026-07-28 — 6th increment: second review round.** Asked for before publishing,
+  scoped differently on purpose: a **verifier** (given the round-1 findings, told to
+  prove each fix by execution and hunt regressions in the never-reviewed new code)
+  and a **cold adversary** (no knowledge of round 1, so it could not inherit the
+  anchoring). Verifier: PASS — all five blockers genuinely fixed, every behavioral
+  claim reproduced on fixtures. Cold adversary: FAIL, two new blockers, both real:
+  1. **The closure gate crashed and walked the whole drive.** `cmd_stale`/`cmd_mark`
+     never ran audit-plan paths through `confine_under` — the one place that walks
+     the filesystem was the one place without the guard every other path input has.
+     `init.js` seeded `| / | PENDING |`; mark it and `root / "/"` is the drive, so
+     `check` scanned `C:\` and died on `relative_to`. A `../escape` row walked
+     outside the project. Pre-existing, but this release is what made
+     `audit_plan.md` load-bearing (it is now what converts map silence into a
+     groundable MISSING), so it became a blocker. Fixed on both commands + the
+     seeder + a `relative_to` guard, with a regression test using both hostile rows.
+  2. **A check that could not fire.** `SKILL.md` declared the review clause the sole
+     Hybrid check that the pass ran, while the clause read "when the artifact
+     carries one" — precisely what a skipped pass does not produce. Now
+     unconditional at L3: an artifact with NO ledger is itself a finding.
+  Round-2 warnings also fixed: false rot on prose (`app.core`, `OrderStore.save`,
+  `1.18.0` — a generic `\.\w{1,5}$` was too greedy; now a closed suffix list),
+  the day-zero advisory on a freshly seeded project (worst kind: it trains readers
+  to ignore the channel), a case-sensitive heading match that silently disabled both
+  the check and its own inertness notice, headerless/ragged tables reported as
+  clean, and two zero-cost bypasses of the ledger backstop (delete `level:`; hide
+  the heading in an HTML comment). Added the counter-check the brownfield rule was
+  missing: an area marked ANALYZED that owns no Component Map row — `mark` is one
+  cheap command and it is what makes the map's silence groundable, so the claim
+  needed a check. Doctrine: split bullet 2 was still a restatement of bullet 1
+  (now: ships on its own cadence, before the feature); the MISSING floor was
+  unexecutable — it prescribed a symbol-graph tool for a query that tool cannot
+  take, and quantified over "areas the audit plan lists", which is one row on a
+  fresh project (now: text-search first, symbol-graph to confirm, triage as the
+  stopping rule, provisional MISSING in PENDING areas). Battery 69/69.

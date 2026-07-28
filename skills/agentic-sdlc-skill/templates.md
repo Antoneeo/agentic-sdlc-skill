@@ -244,12 +244,17 @@ end_date:
      domain noun, naming no file. Verdict EXISTS (name the component and where) /
      INADEQUATE (same, plus the gap) / MISSING (say what you searched). Every
      INADEQUATE or MISSING row becomes a component with its own contract, stated
-     without naming this feature, and lands in the Impact below. A question, not a
-     form: when every capability plainly exists, one line answers it. -->
+     without naming this feature, and lands in the Impact below. Evidence is what
+     makes a verdict falsifiable: for EXISTS/INADEQUATE the one guarantee you
+     re-read to confirm it; for MISSING the terms, the tool and the areas searched
+     (and say "provisional" when the area is still PENDING in the audit plan).
+     A question, not a form: when every capability plainly exists, one line under
+     this heading answers it — still naming the component and where it lives. -->
 
-| Capability | Verdict | Component / gap |
-|---|---|---|
-| ... | EXISTS | `path/to/module.py#Symbol` |
+| Capability | Verdict | Component / gap | Evidence |
+|---|---|---|---|
+| persist an order | EXISTS | `path/to/store.py#OrderStore` | re-read `save()`: durable, returns the id |
+| notify the customer | MISSING | — | grep notify/alert/dispatch + send, over src/ and legacy/; no owner |
 
 ## Impact
 <!-- existing files touched, APIs/contracts, performance, new dependencies.
@@ -440,7 +445,11 @@ verdict, and the code is searched instead (`architect.md` §2).
 
 | Component | Capability it owns | Contract | Where |
 |---|---|---|---|
-| ... | ... | ... | `path#symbol` |
+| ... | ... | ... | ... |
+
+<!-- Where is `path/to/file.py#Symbol`. Leave the placeholder row untouched until
+     the map has a real component: the validator skips an all-`...` row, so a
+     freshly seeded project is never nagged about a table nobody has filled in. -->
 
 ## Architectural Patterns
 ```

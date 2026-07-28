@@ -73,6 +73,13 @@ LEGACY_KEYS = {"stato": "status", "livello": "level",
 # doctrine as the pre-1.17 narrative handoff).
 ARCHITECT_PASS_EPOCH = "2026-07-28"
 LEDGER_SECTION = ("## Capability Ledger",)
+# Component Map 'Where' refs: a dotted token counts as a path only with one of
+# these suffixes. Deliberately a closed list -- a generic ".\w{1,5}$" turns
+# `app.core`, `OrderStore.save` and `1.18.0` into "the map is rotting".
+FILE_SUFFIXES = ("md", "py", "js", "mjs", "cjs", "ts", "tsx", "jsx", "json", "yaml",
+                 "yml", "toml", "ini", "cfg", "sh", "bat", "ps1", "go", "rs", "java",
+                 "kt", "rb", "php", "cs", "swift", "c", "h", "cpp", "hpp", "sql",
+                 "css", "scss", "html", "vue", "svelte", "tf", "proto", "txt")
 
 # ANALYSIS sections: (canonical English heading, legacy Italian heading).
 SECURITY_SECTION = ("## Security", "## Sicurezza")
@@ -520,21 +527,27 @@ def ledger_due(meta):
     nag projects the pass never reached)."""
     if meta.get("level", "").upper() != "L3":
         return False
+    if meta.get("status") == "CANCELLED":
+        return False   # abandoned work has no legitimate way to satisfy this
     started = parse_iso((meta.get("start_date") or "").strip().strip("'\""))
     return started is not None and started >= parse_iso(ARCHITECT_PASS_EPOCH)
 
 
 def _map_refs(where):
-    """Backticked refs in a 'Where' cell that look like a file path: contains a
-    separator, or ends in an extension. Windows separators normalized. Anything
-    else in that cell is prose, not a ref."""
+    """Backticked refs in a 'Where' cell that are file paths: they contain a
+    separator, or end in a KNOWN source-file suffix. Windows separators are
+    normalized. Everything else in that cell is prose and must stay silent --
+    a false 'the map is rotting' teaches readers to ignore the output, which is
+    worse than the rot. `app.core`, `OrderStore.save` and `1.18.0` are prose."""
     out = []
     for ref in re.findall(r"`([^`]+)`", where):
         path_part, _, symbol = ref.partition("#")
         path_part = path_part.replace("\\", "/").strip()
         if not path_part or "://" in path_part:
             continue  # a URL is not a repo path
-        if "/" in path_part or re.search(r"\.[A-Za-z0-9]{1,5}$", path_part):
+        looks_like_path = "/" in path_part or bool(
+            re.search(r"\.(" + "|".join(FILE_SUFFIXES) + r")$", path_part, re.I))
+        if looks_like_path:
             out.append((ref, path_part, symbol.strip()))
     return out
 
@@ -546,23 +559,30 @@ def check_component_map(root, text, advisories):
     in a matched file. This is the map's equivalent of the guides' source_hash.
     ADVISORY: a freshness signal, never a gate -- not even under --strict (the
     accepted ceremony budget was a warning, not a blocked pipeline)."""
-    m = re.search(r"^## Component Map\s*$(.*?)(?=^#{1,2} |\Z)", text, re.M | re.S)
+    m = re.search(r"^#{2,3}\s+Component Map\b.*?$(.*?)(?=^#{1,3}\s+\S|\Z)",
+                  text, re.M | re.S | re.I)
     if not m:
         return
     rows = [ln.strip() for ln in m.group(1).splitlines() if ln.strip().startswith("|")]
-    where_idx, checked = None, 0
+    where_idx, header_cells, checked, data_rows, ragged = None, 0, 0, 0, 0
     for row in rows:
         cells = [c.strip() for c in row.strip("|").split("|")]
         if len(cells) < 2 or not cells[0] or set(cells[0]) <= {"-", ":"}:
             continue
-        if where_idx is None:  # first non-separator row is the header
+        if where_idx is None:  # the first non-separator row is the header
             lowered = [c.lower() for c in cells]
-            where_idx = lowered.index("where") if "where" in lowered else len(cells) - 1
-            if "where" in lowered:
-                continue
-        if cells[0].lower() == "component":
+            if "where" not in lowered:
+                advisories.append("strategic/architecture.md: Component Map has no 'Where' "
+                                  "column in its header -- the anti-rot check cannot run; "
+                                  "give the table a Where column of `path/to/file#Symbol` refs")
+                return
+            where_idx, header_cells = lowered.index("where"), len(cells)
             continue
-        if where_idx >= len(cells):
+        if all(c in ("", "...", "…") for c in cells):
+            continue                      # untouched template placeholder row
+        data_rows += 1
+        if len(cells) != header_cells:    # ragged: never silently unchecked
+            ragged += 1
             continue
         component, where = cells[0], cells[where_idx]
         for ref, path_part, symbol in _map_refs(where):
@@ -593,7 +613,13 @@ def check_component_map(root, text, advisories):
                     advisories.append(f"strategic/architecture.md: Component Map row '{component}': "
                                       f"symbol '{symbol}' not found in '{path_part}' -- renamed or "
                                       "removed, update the row")
-    if rows and not checked:
+    if ragged:
+        advisories.append(f"strategic/architecture.md: Component Map has {ragged} row(s) whose "
+                          "column count differs from the header -- unchecked; an escaped '|' in "
+                          "a cell shifts the columns")
+    if data_rows and not checked and not ragged:
+        # only once the map claims real components: a freshly seeded project
+        # carries the template placeholder and must NOT be nagged on day zero
         advisories.append("strategic/architecture.md: Component Map has rows but no checkable "
                           "path in its 'Where' column -- the anti-rot check is inert; write refs "
                           "as `path/to/file#Symbol`")
@@ -656,7 +682,14 @@ def cmd_validate(root, strict=False):
         for en, it in ANALYSIS_SECTIONS:
             if not has_section(text, (en, it)):
                 warnings.append(f"{rel}: section '{en}' missing")
-        if ledger_due(meta) and not has_section(text, LEDGER_SECTION):
+        if not level:
+            warnings.append(f"{rel}: 'level' missing (L1/L2/L3/Spike) -- risk-proportional "
+                            "checks cannot apply, and dropping the line is cheaper than "
+                            "doing the work it triggers")
+        # comment-stripped, anchored: a '<!-- TODO: the ## Capability Ledger -->'
+        # must not read as the section being present
+        if ledger_due(meta) and not re.search(
+                r"^## Capability Ledger\s*$", re.sub(r"<!--.*?-->", "", text, flags=re.S), re.M):
             advisories.append(f"{rel}: L3 without '## Capability Ledger' -- the architect pass "
                               "left no record (architect.md); run it before the Impact")
 
@@ -694,7 +727,29 @@ def cmd_validate(root, strict=False):
     # Component Map anti-rot (architect.md): rows must still resolve on disk
     arch = ai / "strategic" / "architecture.md"
     if arch.is_file():
-        check_component_map(root, read_text(arch), advisories)
+        arch_text = read_text(arch)
+        check_component_map(root, arch_text, advisories)
+        # the missing half of the loop: `mark` asserts an area was read closely
+        # enough to name its capability owners, and nothing verified that claim.
+        # An ANALYZED area with no map row is how the brownfield guard is
+        # disarmed -- the area looks read, so the map's silence becomes groundable.
+        _, _, plan_rows = parse_audit_plan(root)
+        if plan_rows and "## Component Map" in arch_text.replace("### ", "## "):
+            mapped = [p.replace("\\", "/").lstrip("./")
+                      for p in re.findall(r"`([^`]+)`", arch_text) if "/" in p]
+            for prow in plan_rows:
+                if prow["status"] != "ANALYZED":
+                    continue
+                area = prow["path"].replace("\\", "/").strip("/").lstrip(".")
+                if not area:
+                    continue   # the whole root: every row is inside it
+                if not any(mp.startswith(area.strip("/") + "/") or mp == area
+                           for mp in mapped):
+                    advisories.append(
+                        f"strategic/architecture.md: '{prow['path']}' is ANALYZED in the audit "
+                        "plan but owns no Component Map row -- marking asserts the area was read "
+                        "closely enough to name what it owns, and the map's silence there is now "
+                        "groundable for a MISSING verdict (architect.md)")
 
     # Guide checks (ai_docs/reference/GUIDE_*.md): structure only — freshness is stale's job
     guides = list_guides(root)
@@ -812,7 +867,15 @@ def cmd_stale(root, hybrid=False):
         if row["status"] != "ANALYZED":
             continue
         rel, ref = row["path"], row["ref"]
-        target = root / rel
+        # Confine BEFORE touching the filesystem: audit_plan.md is document
+        # content, so an absolute row ('/'), a drive-relative one or a '..'
+        # escape would otherwise walk outside the project (P-TM T2/T3). A bare
+        # '/' is the row init.js used to seed, and `root / "/"` is the drive.
+        target = confine_under(root, rel)
+        if target is None:
+            print(f"[warn]  {rel}: path is absolute, contains '..', or resolves outside "
+                  "the project root: rejected (use a project-relative path, '.' for the root)")
+            continue
         if not target.exists():
             print(f"[warn]  {rel}: path does not exist")
             continue
@@ -831,7 +894,11 @@ def cmd_stale(root, hybrid=False):
             for fp in iter_files(target):
                 mtime = datetime.fromtimestamp(fp.stat().st_mtime, tz=timezone.utc)
                 if mtime > ts + MTIME_GRACE:
-                    changed.append(str(fp.relative_to(root)).replace("\\", "/"))
+                    try:
+                        name = str(fp.relative_to(root)).replace("\\", "/")
+                    except ValueError:   # symlink out of the tree: report absolute, never crash
+                        name = str(fp)
+                    changed.append(name)
         if changed:
             stale.append((rel, changed))
 
@@ -870,8 +937,14 @@ def cmd_mark(root, paths):
 
     appended = []
     for raw in paths:
-        key = raw.replace("\\", "/").rstrip("/")
-        display = key + ("/" if (root / key).is_dir() else "")
+        key = raw.replace("\\", "/").rstrip("/") or "."
+        # fail closed at the point of WRITING the row, so an out-of-tree area
+        # can never enter the plan and make `stale` walk outside the project
+        if confine_under(root, key) is None:
+            print(f"[ERROR] {raw}: absolute, '..'-escaping, or outside the project root: "
+                  "refusing to mark (use a project-relative path, '.' for the root)")
+            return 1
+        display = key + ("/" if (root / key).is_dir() and key != "." else "")
         existing = by_path.get(key)
         if existing:
             lines[existing["line"]] = row_text(existing["path"], existing["note"])

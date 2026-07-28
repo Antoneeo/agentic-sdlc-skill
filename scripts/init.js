@@ -67,7 +67,9 @@ function initialAuditPlan() {
   const lines = tpl.split('\n');
   const sepIdx = lines.findIndex((l) => /^\|[-\s|:]+\|$/.test(l.trim()));
   if (sepIdx === -1) return tpl; // unexpected shape: keep the template as-is
-  return lines.slice(0, sepIdx + 1).join('\n') + '\n| / | PENDING | - | Initial analysis |\n';
+  // '.' (the project root), never '/': an absolute row makes `stale` walk the
+  // whole drive once the area is marked ANALYZED.
+  return lines.slice(0, sepIdx + 1).join('\n') + '\n| . | PENDING | - | Initial analysis |\n';
 }
 
 let seedFiles;
