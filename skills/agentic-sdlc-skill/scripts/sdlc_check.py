@@ -67,6 +67,13 @@ PLAN_TASK_REQUIRED = ("id", "title", "verify")
 LEGACY_KEYS = {"stato": "status", "livello": "level",
                "data_inizio": "start_date", "data_fine": "end_date"}
 
+# Architect pass (F-020): the Capability Ledger is due for ACTIVE L3 analyses
+# born on/after the day the pass shipped. Grandfathering by start_date -- an
+# in-flight analysis from before the pass existed never nags (same lazy-convert
+# doctrine as the pre-1.17 narrative handoff).
+ARCHITECT_PASS_EPOCH = "2026-07-28"
+LEDGER_SECTION = ("## Capability Ledger",)
+
 # ANALYSIS sections: (canonical English heading, legacy Italian heading).
 SECURITY_SECTION = ("## Security", "## Sicurezza")
 ANALYSIS_SECTIONS = (
@@ -502,6 +509,56 @@ def has_section(text, aliases):
     return any(a in text for a in aliases)
 
 
+def ledger_due(meta):
+    """True when an ANALYSIS owes a '## Capability Ledger' (architect.md):
+    L3, still ACTIVE (PLANNED/IN_PROGRESS -- closed history never nags), and
+    started on/after the pass shipped (ISO dates compare lexicographically)."""
+    return (meta.get("level", "").upper() == "L3"
+            and meta.get("status") in ("PLANNED", "IN_PROGRESS")
+            and (meta.get("start_date") or "") >= ARCHITECT_PASS_EPOCH)
+
+
+def check_component_map(root, text, warnings):
+    """Anti-rot for the '## Component Map' of strategic/architecture.md
+    (architect.md): every backticked, slash-containing ref in the 'Where'
+    column must still resolve on disk, and its '#symbol' part must still
+    appear in a matched file. A row whose ref is gone is exactly the rot the
+    guides catch with source_hash -- the map had no equivalent. Warnings only:
+    a freshness signal, never a gate."""
+    m = re.search(r"^## Component Map\s*$(.*?)(?=^## |\Z)", text, re.M | re.S)
+    if not m:
+        return
+    rows = [ln.strip() for ln in m.group(1).splitlines() if ln.strip().startswith("|")]
+    for row in rows:
+        cells = [c.strip() for c in row.strip("|").split("|")]
+        if len(cells) < 4 or cells[0] in ("Component", "") or set(cells[0]) <= {"-", ":"}:
+            continue
+        component, where = cells[0], cells[-1]
+        for ref in re.findall(r"`([^`]+)`", where):
+            path_part, _, symbol = ref.partition("#")
+            if "/" not in path_part:
+                continue  # unqualified name or prose backtick: not a checkable ref
+            if confine_under(root, path_part.replace("*", "x").replace("?", "x")) is None:
+                warnings.append(f"strategic/architecture.md: Component Map row '{component}': "
+                                f"ref '{ref}' escapes the project root: rejected")
+                continue
+            try:
+                matches = (list(root.glob(path_part)) if any(c in path_part for c in "*?[")
+                           else ([root / path_part] if (root / path_part).exists() else []))
+            except (ValueError, OSError):
+                matches = []
+            if not matches:
+                warnings.append(f"strategic/architecture.md: Component Map row '{component}': "
+                                f"'{path_part}' no longer exists -- the map is rotting, "
+                                "update the row or drop it")
+                continue
+            files = [f for f in matches if f.is_file()]
+            if symbol and files and not any(symbol in read_text(f) for f in files):
+                warnings.append(f"strategic/architecture.md: Component Map row '{component}': "
+                                f"symbol '{symbol}' not found in '{path_part}' -- renamed or "
+                                "removed, update the row")
+
+
 def cmd_validate(root, strict=False):
     errors, warnings = [], []
     ai = root / "ai_docs"
@@ -556,6 +613,9 @@ def cmd_validate(root, strict=False):
         for en, it in ANALYSIS_SECTIONS:
             if not has_section(text, (en, it)):
                 warnings.append(f"{rel}: section '{en}' missing")
+        if ledger_due(meta) and not has_section(text, LEDGER_SECTION):
+            warnings.append(f"{rel}: active L3 without '## Capability Ledger' -- the architect "
+                            "pass left no record (architect.md); run it before the Impact")
 
     # Generated index aligned
     hist = ai / "strategic" / "features_history.md"
@@ -587,6 +647,11 @@ def cmd_validate(root, strict=False):
                 if (other == supersedes or other.endswith("/" + supersedes)
                         or os.path.basename(other) == base) and ost == "CURRENT":
                     warnings.append(f"{other}: still CURRENT but superseded by {rel} (set status: SUPERSEDED)")
+
+    # Component Map anti-rot (architect.md): rows must still resolve on disk
+    arch = ai / "strategic" / "architecture.md"
+    if arch.is_file():
+        check_component_map(root, read_text(arch), warnings)
 
     # Guide checks (ai_docs/reference/GUIDE_*.md): structure only — freshness is stale's job
     guides = list_guides(root)

@@ -1,5 +1,5 @@
 ---
-description: Stack, package structure and architectural patterns of the skill repository.
+description: Stack, package structure, component map and architectural patterns of the skill repository.
 status: CURRENT
 ---
 # Project Architecture
@@ -19,6 +19,28 @@ status: CURRENT
 - `ai_docs/strategic/`: Architecture, existing feature catalog, and feature history.
 - `ai_docs/audit/`: Audit plan and session handoff state.
 - `ai_docs/solutions/`: Feature analysis documents.
+
+## Component Map
+
+The inventory the architect pass reads before searching the code (`architect.md` §2).
+One row per component that owns a capability; a row is added or corrected in the same
+closure that builds — or merely discovers — a component. Directories are not
+components: those are in `## Directory Structure` above.
+
+Coverage: the areas `audit/audit_plan.md` marks ANALYZED — `skills/agentic-sdlc-skill/`
+and `scripts/`. Outside them (`examples/` is still PENDING) this map is **unread, not
+empty**: it can never ground a MISSING verdict, and the code is searched instead
+(`architect.md` §2).
+
+| Component | Capability it owns | Contract | Where |
+|---|---|---|---|
+| Client roster | Know which AI clients exist, where each keeps skills, and which are installed on this machine | One `CLIENTS` entry per client is the only source of truth; detection, install, uninstall and protocol-pointer writing all iterate it, so they cannot disagree. Clients sharing a home dir disambiguate with `skillsSubdir`/`homeMarker`, never with a caller-side special case | `scripts/lib.js#CLIENTS` |
+| Project seeder | Turn an empty repository into a governed one | Creates the `ai_docs/` layout, the per-client protocol pointer and the generated `INDEX.md`; extracts every document body from the template source rather than carrying its own copies | `scripts/init.js` (bin `agentic-sdlc-init`) |
+| Skill deployer | Put the runtime skill folder where each detected client will load it, and take it back out | Copies to every client the roster detects; the npm `files` allowlist bounds what can be copied — an unlisted support file cannot reach a consumer | `scripts/postinstall.js`, `scripts/preuninstall.js` |
+| Template source | Single home for every document body the methodology writes | One fenced block per document; the seeder extracts them. Two copies drift, so there is one | `skills/agentic-sdlc-skill/templates.md` |
+| Doctrine | State the process an agent follows: triage, phases, write triggers, gates | `SKILL.md` is the contract and the only always-loaded file; each discipline is one support file, invoked by pointer, read only when its trigger fires | `skills/agentic-sdlc-skill/SKILL.md` + `architect.md`, `guides.md`, `vision.md`, `tdd.md`, `debugging.md`, `elicitation.md`, `review.md`, `dispatch.md` |
+| Validator | Answer mechanically whether `ai_docs/` is well-formed, current and complete | Stdlib-only, no network, no LLM; `check`/`validate`/`index`/`stale`/`mark`/`gate`/`plan`/`orient`. Generated indexes are rebuilt, never hand-edited, so they cannot drift | `skills/agentic-sdlc-skill/scripts/sdlc_check.py` |
+| Invariant battery | Fail the build when the skill's own doctrine stops being wired | Static, zero-LLM, zero-network, zero-subprocess — a failing test is always a real regression, never flakiness. Dev-only: deliberately outside the package allowlist | `skills/agentic-sdlc-skill/scripts/test_*.py`, `skills/agentic-sdlc-skill/evals/run_behavioral.py` |
 
 ## Patterns
 - Documentation-first workflow.

@@ -238,8 +238,22 @@ end_date:
      use-case = what they do. Derived from the elicitation round; the Impact below
      must cover each, and the closure review checks coverage + actor UX fit. -->
 
+## Capability Ledger
+<!-- the architect pass (`architect.md`), run BEFORE the Impact below. One row per
+     capability the feature requires the system to be able to DO — a verb over a
+     domain noun, naming no file. Verdict EXISTS (name the component and where) /
+     INADEQUATE (same, plus the gap) / MISSING (say what you searched). Every
+     INADEQUATE or MISSING row becomes a component with its own contract, stated
+     without naming this feature, and lands in the Impact below. A question, not a
+     form: when every capability plainly exists, one line answers it. -->
+
+| Capability | Verdict | Component / gap |
+|---|---|---|
+| ... | EXISTS | `path/to/module.py#Symbol` |
+
 ## Impact
-<!-- existing files touched, APIs/contracts, performance, new dependencies -->
+<!-- existing files touched, APIs/contracts, performance, new dependencies.
+     Derived from the ledger above: every INADEQUATE/MISSING row appears here. -->
 
 ## Security and Threat Model
 <!-- ALWAYS mandatory, also in Standalone.
@@ -399,12 +413,34 @@ Canonical docs: they open with the header (`description:`/`status:`) so they ent
 
 ```markdown
 ---
-description: Stack, directory structure and architectural patterns of the project.
+description: Stack, directory structure, component map and architectural patterns of the project.
 status: CURRENT
 ---
 # Project Architecture
 ## Technology Stack
 ## Directory Structure
+## Component Map
+<!-- The inventory the architect pass reads BEFORE searching the code
+     (`architect.md` §2). One row per component that OWNS a capability:
+     Capability = what it lets the system DO (a verb over a domain noun, naming
+     no file). Contract = what it guarantees its consumers, in one line, stated
+     without naming any single consumer. Where = a path, or `path#symbol` when
+     the component is smaller than its file.
+     Seeded at bootstrap; a row is added or corrected in the SAME closure that
+     builds — or merely discovers — a component, and the area is marked ANALYZED.
+     A directory is not a component: rows name what owns a capability, not where
+     files sit (that is ## Directory Structure above). An absent or stale map is
+     why the next feature rules the same capability MISSING a second time and
+     builds it again. -->
+
+Coverage: the areas `audit/audit_plan.md` marks ANALYZED — currently `<list, or
+"none: the map is new">`. Outside them this map is **unread, not empty**: it can
+never ground a MISSING verdict, and the code is searched instead (`architect.md` §2).
+
+| Component | Capability it owns | Contract | Where |
+|---|---|---|---|
+| ... | ... | ... | `path#symbol` |
+
 ## Architectural Patterns
 ```
 
