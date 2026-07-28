@@ -67,6 +67,7 @@ Triage decides IF documentation is due; this table decides WHICH document each e
 | `audit/audit_plan.md` (Standalone) | Bootstrap, and whenever a mapped area changes state (`sdlc_check.py mark` records the reference — git hash, else UTC timestamp). | 1 |
 | `reference/GUIDE_[topic].md` (`source_kind: document`) | Origin+purpose test (`guides.md`), or a proactive proposal the user accepted. Propose, never a silent write, never from model knowledge. | 4 / 5 |
 | `reference/GUIDE_[topic].md` (`source_kind: code`) | Recognized high-complexity component/feature/layer with no CURRENT guide — including one that breaks repeatedly across sessions → **duty to write autonomously** (no proposal; additive, code-anchored, reversible). Fidelity floor: every claim traces to a code excerpt. Signals + guard-rails: `guides.md` §1. Write it as soon as you recognize the signal; the Phase-5 Comprehension checkpoint is the backstop that asks the question, never the only moment it may fire. | 4 / 5 |
+| `audit/reviews/REVIEW_LOG.md` | One row per completed review, PASS or FAIL — design (Phase 3) and closure (Phase 5), L3; L2 closure rows optional. Schema and column meanings: `templates.md` (one table for both modes — devPNT's gates write here too). An unlogged review is unfalsifiable, exactly like an undeclared router verdict. | 3 / 5 |
 | ADR — `architecture/` (Standalone) or devPNT DB (Hybrid) | An architectural decision was taken (new pattern, layer or contract change, structural dependency): record it at closure, before DONE. No decision, no ADR. | 5 |
 | `strategic/architecture.md`, `strategic/existing_features.md` | Bootstrap; update at closure when the stack or the feature catalog actually changed. | 1 / 5 |
 | `strategic/architecture.md` — `## Component Map` | A component was BORN, its contract changed, **or the pass DISCOVERED an existing one while searching an unmapped area** — the same closure adds or corrects its row (`architect.md`). Keyed on the component, not on the stack: a new component is not a stack change, and a discovered one is how an area gets marked ANALYZED while the map stays silent about what lives there — after which the next feature may lawfully rule it MISSING and build it twice. | 5 |
@@ -125,6 +126,9 @@ process; it never replaces it.
 | Feature state | ANALYSIS frontmatter `status` | Action Plan node status | mapping table below; at closure both must move together |
 | ADR | `architecture/` (canonical dir) | devPNT DB (`adr_YYYY-MM-DD_slug`) | optional filesystem shadow `SHADOW_adr_*` exported at closure for grep-ability |
 | Audit / freshness | `audit/audit_plan.md` + `stale`/`mark` | devPNT KL coverage + summary status | run `check --hybrid` (skips audit-plan staleness) |
+| Design review (pre-implementation) | `review.md` moment 1, on the ANALYSIS | devPNT §4.5 gate on `E-ISP`/`E-TDD` | same slot, richer backend — run ONE of them, never both |
+| *(mode is per unit of change, not per project)* | a Hybrid-capable project may work one feature Standalone: the slot follows the ARTIFACT the design lives in, and the mode is declared in that artifact. `validate --hybrid` suppresses the Standalone design-review backstop, since devPNT owns the slot there | | |
+| Review log | `audit/reviews/REVIEW_LOG.md` | devPNT `REVIEW_LOG.md` (same path) | always filesystem |
 | Operative guides | `ai_docs/reference/` | `ai_docs/reference/` — **filesystem-first even in Hybrid** | devPNT bootstrap may point at their index; it never copies their content |
 | Handoff | `audit/handoff.md` | `audit/handoff.md` | always filesystem |
 
@@ -219,6 +223,8 @@ Standalone L3:
 - Minimum sections: Objective, Feature Vision (or Vision Alignment), Use Cases / User Needs, Capability Ledger, Impact, Security and Threat Model, Action Plan, Test Strategy, Diary/Current State. (`review.md` makes an uncovered use-case a finding, so an ANALYSIS without that section fails its own closure review.)
 - Build the Impact/solution **on** the Vision, the use-cases/user-needs and the Security & Threat Model — read and trace to them first, and state the trace (which actor / use-case / threat / benefit each part serves) so the closure review (`review.md`) can verify conformance. Do not draft the Impact in isolation.
 - For a feature known to span multiple milestones, also create `ai_docs/vision/features/VISION_[feature].md`; the retroactive case (extract it when the SECOND `ANALYSIS_*` on a theme appears) is in Write Triggers.
+
+**Design review gate — the design is reviewed BEFORE any code (L3).** Close Phase 3 by handing the finished ANALYSIS to an *independent* reviewer: the procedure, the independence ladder, the round cap and the log row are `review.md` §When a review is due, moment 1 — follow it there, it is not restated here. Why the moment exists: the closure review can prove the code matches the design, never that the design was right, and the author is structurally blind to what their own design omitted. In Hybrid this slot belongs to devPNT's §4.5 gate on the `E-ISP`/`E-TDD` — run one, never both.
 
 Hybrid L3:
 - Restore the Master Plan, Action Plan and linked documents.

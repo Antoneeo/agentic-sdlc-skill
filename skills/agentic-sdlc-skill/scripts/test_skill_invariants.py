@@ -318,6 +318,59 @@ class SkillInvariants(unittest.TestCase):
         self.assertIn("router: absent", read("guides.md"),
                       "a third legal verdict is needed for a genuinely missing router")
 
+    def test_design_review_gate_wired(self):
+        """F-021: in Standalone the ANALYSIS was reviewed only as an INPUT to the
+        closure review -- i.e. after the code existed. The design gate fires at
+        the END of Phase 3, before implementation, and is logged."""
+        r = read("review.md")
+        for anchor in ("## When a review is due", "Design review", "Closure review",
+                       "declared self-pass", "capped at 3", "REVIEW_LOG.md"):
+            self.assertIn(anchor, r, f"review.md missing {anchor}")
+        skill = read("SKILL.md")
+        self.assertIn("Design review gate", skill)
+        p3 = skill.index("### 3. Request Analysis")
+        p4 = skill.index("### 4. Development and Testing")
+        self.assertTrue(p3 < skill.index("Design review gate") < p4,
+                        "the gate must sit at the END of Phase 3, before Phase 4 -- "
+                        "a design review after implementation is the closure review")
+        self.assertTrue([ln for ln in skill.splitlines()
+                         if "REVIEW_LOG.md" in ln and ln.lstrip().startswith("|")],
+                        "Write-Triggers row for the review log missing")
+        self.assertIn("REVIEW_LOG.md", read("templates.md"))
+        # behavior: the backstop nags only where it should
+        due = {"level": "L3", "status": "IN_PROGRESS", "start_date": "2026-07-28"}
+        self.assertTrue(sc.design_review_due(due))
+        self.assertTrue(sc.design_review_due({**due, "status": "COMPLETED"}))
+        self.assertFalse(sc.design_review_due({**due, "status": "PLANNED"}),
+                         "the review is due at the END of Phase 3: a design still "
+                         "being drafted is not late")
+        self.assertFalse(sc.design_review_due({**due, "level": "L2"}))
+        self.assertFalse(sc.design_review_due({**due, "start_date": "2026-07-01"}),
+                         "work predating the gate is grandfathered")
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "ai_docs" / "audit" / "reviews").mkdir(parents=True)
+            self.assertFalse(sc.review_logged(root, "ANALYSIS_x.md"),
+                             "no log file -> not logged")
+            (root / sc.REVIEW_LOG_REL).write_text(
+                "| date | doc_key | tier | reviewer | r | r | verdict | n |\n"
+                "|---|---|---|---|---|---|---|---|\n"
+                "| 2026-07-28 | ANALYSIS_x.md | design | subagent | 3 | 3 | PASS | 1 |\n"
+                # a CLOSURE row that says 'design' in its reviewer cell: the
+                # fixture that made the old whole-row match pass vacuously
+                "| 2026-07-28 | ANALYSIS_y.md + diff | closure | subagent - "
+                "conformance to the design | 1 | 1 | PASS | 1 |\n"
+                "| 2026-07-28 | ANALYSIS_w.md | design (late) | self-pass "
+                "(declared; no subagent facility) | 2 | 2 | FAIL | 1 |\n",
+                encoding="utf-8")
+            self.assertTrue(sc.review_logged(root, "ANALYSIS_x.md"))
+            self.assertFalse(sc.review_logged(root, "ANALYSIS_y.md"),
+                             "a closure row is not a design review, even when the "
+                             "word 'design' appears elsewhere in it")
+            self.assertTrue(sc.review_logged(root, "ANALYSIS_w.md"),
+                            "'design (late)' is a design review, and a FAIL row counts")
+            self.assertFalse(sc.review_logged(root, "ANALYSIS_z.md"))
+
     def test_audit_plan_paths_confined(self):
         """R2 BLOCK-1: audit_plan.md is document content, so `stale`/`mark` must
         confine its paths BEFORE walking. An absolute row ('/' -- what init.js
