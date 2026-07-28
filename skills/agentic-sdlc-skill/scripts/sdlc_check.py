@@ -511,56 +511,99 @@ def has_section(text, aliases):
 
 def ledger_due(meta):
     """True when an ANALYSIS owes a '## Capability Ledger' (architect.md):
-    L3, still ACTIVE (PLANNED/IN_PROGRESS -- closed history never nags), and
-    started on/after the pass shipped (ISO dates compare lexicographically)."""
-    return (meta.get("level", "").upper() == "L3"
-            and meta.get("status") in ("PLANNED", "IN_PROGRESS")
-            and (meta.get("start_date") or "") >= ARCHITECT_PASS_EPOCH)
+    an L3 started on/after the day the pass shipped. Grandfathered by
+    start_date ALONE -- deliberately NOT by status: closure flips the ANALYSIS
+    to COMPLETED before `check` runs (SKILL.md phase 5), so a status filter
+    would silence the backstop at the only moment the process mandates the
+    validator. A malformed/absent start_date is not due (fail-open: cmd_validate
+    already errors on a missing one, and guessing an epoch from garbage would
+    nag projects the pass never reached)."""
+    if meta.get("level", "").upper() != "L3":
+        return False
+    started = parse_iso((meta.get("start_date") or "").strip().strip("'\""))
+    return started is not None and started >= parse_iso(ARCHITECT_PASS_EPOCH)
 
 
-def check_component_map(root, text, warnings):
+def _map_refs(where):
+    """Backticked refs in a 'Where' cell that look like a file path: contains a
+    separator, or ends in an extension. Windows separators normalized. Anything
+    else in that cell is prose, not a ref."""
+    out = []
+    for ref in re.findall(r"`([^`]+)`", where):
+        path_part, _, symbol = ref.partition("#")
+        path_part = path_part.replace("\\", "/").strip()
+        if not path_part or "://" in path_part:
+            continue  # a URL is not a repo path
+        if "/" in path_part or re.search(r"\.[A-Za-z0-9]{1,5}$", path_part):
+            out.append((ref, path_part, symbol.strip()))
+    return out
+
+
+def check_component_map(root, text, advisories):
     """Anti-rot for the '## Component Map' of strategic/architecture.md
-    (architect.md): every backticked, slash-containing ref in the 'Where'
-    column must still resolve on disk, and its '#symbol' part must still
-    appear in a matched file. A row whose ref is gone is exactly the rot the
-    guides catch with source_hash -- the map had no equivalent. Warnings only:
-    a freshness signal, never a gate."""
-    m = re.search(r"^## Component Map\s*$(.*?)(?=^## |\Z)", text, re.M | re.S)
+    (architect.md): every path-shaped backticked ref in the 'Where' column must
+    still resolve on disk, and its '#symbol' must still appear as a whole word
+    in a matched file. This is the map's equivalent of the guides' source_hash.
+    ADVISORY: a freshness signal, never a gate -- not even under --strict (the
+    accepted ceremony budget was a warning, not a blocked pipeline)."""
+    m = re.search(r"^## Component Map\s*$(.*?)(?=^#{1,2} |\Z)", text, re.M | re.S)
     if not m:
         return
     rows = [ln.strip() for ln in m.group(1).splitlines() if ln.strip().startswith("|")]
+    where_idx, checked = None, 0
     for row in rows:
         cells = [c.strip() for c in row.strip("|").split("|")]
-        if len(cells) < 4 or cells[0] in ("Component", "") or set(cells[0]) <= {"-", ":"}:
+        if len(cells) < 2 or not cells[0] or set(cells[0]) <= {"-", ":"}:
             continue
-        component, where = cells[0], cells[-1]
-        for ref in re.findall(r"`([^`]+)`", where):
-            path_part, _, symbol = ref.partition("#")
-            if "/" not in path_part:
-                continue  # unqualified name or prose backtick: not a checkable ref
-            if confine_under(root, path_part.replace("*", "x").replace("?", "x")) is None:
-                warnings.append(f"strategic/architecture.md: Component Map row '{component}': "
-                                f"ref '{ref}' escapes the project root: rejected")
+        if where_idx is None:  # first non-separator row is the header
+            lowered = [c.lower() for c in cells]
+            where_idx = lowered.index("where") if "where" in lowered else len(cells) - 1
+            if "where" in lowered:
                 continue
+        if cells[0].lower() == "component":
+            continue
+        if where_idx >= len(cells):
+            continue
+        component, where = cells[0], cells[where_idx]
+        for ref, path_part, symbol in _map_refs(where):
+            checked += 1
+            if confine_under(root, re.sub(r"[*?\[\]]", "x", path_part)) is None:
+                advisories.append(f"strategic/architecture.md: Component Map row '{component}': "
+                                  f"ref '{ref}' escapes the project root: rejected")
+                continue
+            target = root / path_part
             try:
-                matches = (list(root.glob(path_part)) if any(c in path_part for c in "*?[")
-                           else ([root / path_part] if (root / path_part).exists() else []))
+                if target.exists():          # literal first: `app/[id]/page.tsx` is a real path
+                    matches = [target]
+                elif any(c in path_part for c in "*?["):
+                    matches = list(root.glob(path_part))
+                else:
+                    matches = []
             except (ValueError, OSError):
                 matches = []
             if not matches:
-                warnings.append(f"strategic/architecture.md: Component Map row '{component}': "
-                                f"'{path_part}' no longer exists -- the map is rotting, "
-                                "update the row or drop it")
+                advisories.append(f"strategic/architecture.md: Component Map row '{component}': "
+                                  f"'{path_part}' no longer exists -- the map is rotting, "
+                                  "update the row or drop it")
                 continue
             files = [f for f in matches if f.is_file()]
-            if symbol and files and not any(symbol in read_text(f) for f in files):
-                warnings.append(f"strategic/architecture.md: Component Map row '{component}': "
-                                f"symbol '{symbol}' not found in '{path_part}' -- renamed or "
-                                "removed, update the row")
+            if symbol and files:
+                word = re.compile(r"(?<![A-Za-z0-9_])" + re.escape(symbol) + r"(?![A-Za-z0-9_])")
+                if not any(word.search(read_text(f)) for f in files):
+                    advisories.append(f"strategic/architecture.md: Component Map row '{component}': "
+                                      f"symbol '{symbol}' not found in '{path_part}' -- renamed or "
+                                      "removed, update the row")
+    if rows and not checked:
+        advisories.append("strategic/architecture.md: Component Map has rows but no checkable "
+                          "path in its 'Where' column -- the anti-rot check is inert; write refs "
+                          "as `path/to/file#Symbol`")
 
 
 def cmd_validate(root, strict=False):
-    errors, warnings = [], []
+    # advisories: architect-pass freshness signals. Reported, never escalated by
+    # --strict -- the accepted ceremony budget (project_vision.md "no ceremony
+    # ratchet") was a warning, and a warning that reddens CI is a gate.
+    errors, warnings, advisories = [], [], []
     ai = root / "ai_docs"
     if not ai.is_dir():
         if strict:
@@ -614,8 +657,8 @@ def cmd_validate(root, strict=False):
             if not has_section(text, (en, it)):
                 warnings.append(f"{rel}: section '{en}' missing")
         if ledger_due(meta) and not has_section(text, LEDGER_SECTION):
-            warnings.append(f"{rel}: active L3 without '## Capability Ledger' -- the architect "
-                            "pass left no record (architect.md); run it before the Impact")
+            advisories.append(f"{rel}: L3 without '## Capability Ledger' -- the architect pass "
+                              "left no record (architect.md); run it before the Impact")
 
     # Generated index aligned
     hist = ai / "strategic" / "features_history.md"
@@ -651,7 +694,7 @@ def cmd_validate(root, strict=False):
     # Component Map anti-rot (architect.md): rows must still resolve on disk
     arch = ai / "strategic" / "architecture.md"
     if arch.is_file():
-        check_component_map(root, read_text(arch), warnings)
+        check_component_map(root, read_text(arch), advisories)
 
     # Guide checks (ai_docs/reference/GUIDE_*.md): structure only — freshness is stale's job
     guides = list_guides(root)
@@ -695,11 +738,16 @@ def cmd_validate(root, strict=False):
             except ValueError:
                 warnings.append("audit/handoff.md: date not parseable")
 
+    for a in advisories:
+        print(f"[note]  {a}")
     for w in warnings:
         print(f"[warn]  {w}")
     for e in errors:
         print(f"[ERROR] {e}")
-    print(f"\nValidation: {len(errors)} errors, {len(warnings)} warnings.")
+    print(f"\nValidation: {len(errors)} errors, {len(warnings)} warnings, "
+          f"{len(advisories)} advisories.")
+    if advisories:
+        print("[note] advisories are freshness signals: never fail a build, not even --strict.")
     if strict and warnings and not errors:
         print("[strict] warnings are failures in --strict mode.")
     return 1 if errors or (strict and warnings) else 0

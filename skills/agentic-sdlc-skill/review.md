@@ -79,12 +79,14 @@ When you are the reviewer:
   MISSING, not built, and absorbed by quietly reshaping the feature — that is a
   scope change owed to the user, not a design detail. An EXISTS row with no named
   path or symbol is itself a finding. A capability built in this change and absent
-  from the `## Component Map` (`strategic/architecture.md`) is a finding too: the
-  next feature reads that map, rules the same capability MISSING, and builds it
-  again. And a **MISSING row in an area `audit/audit_plan.md` does not mark
-  ANALYZED, with no searches named**, is the finding that matters most on a project
-  the methodology arrived in recently — an unread map reported as an empty one is
-  how a duplicate of the existing codebase gets designed.
+  from the `## Component Map` (`strategic/architecture.md`) is a finding too — and
+  so is **a component the pass merely DISCOVERED and did not write**, especially
+  when the change marks that area ANALYZED: the area now looks read, the map is
+  still silent, and the next feature may lawfully rule the capability MISSING and
+  build it twice. And a **MISSING row in an area `audit/audit_plan.md` does not
+  mark ANALYZED, with no searches named**, is the finding that matters most on a
+  project the methodology arrived in recently — an unread map reported as an empty
+  one is how a duplicate of the existing codebase gets designed.
 
 ## Anti-patterns
 
