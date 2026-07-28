@@ -177,6 +177,16 @@ requiring a named path/symbol per verdict and by the review clause.
       day-zero advisory removed; heading match case-insensitive; header-required
       + ragged-row reporting; two backstop bypasses closed; `mark`-counter-check
       advisory; split bullet 2 and the MISSING floor rewritten. Battery 69/69
+- [x] **7th increment — 3rd review round** (code-delta reviewer + a COLD
+      end-to-end usage trial on a 25-file brownfield fixture, a lens never run
+      before): `map_where_refs()` scopes the harvest to the map's Where column
+      (the convergent BLOCK); `level`-missing and DRAFT-vision demoted to
+      advisories (`--strict` CI was red on bootstrap); router stub written with
+      zero guides + a third legal verdict; `Use Cases / User Needs` added to the
+      L3 minimum sections; multi-line HTML comments no longer leak into the
+      manifest; CamelCase prose no longer reported as rot; `mark` validates all
+      paths before printing; gate message names the real remedy; unattended
+      elicitation path. Battery 73/73
 
 ## Test Strategy
 
@@ -361,3 +371,50 @@ they never gate, because model adherence is nondeterministic.
   take, and quantified over "areas the audit plan lists", which is one row on a
   fresh project (now: text-search first, symbol-graph to confirm, triage as the
   stopping rule, provisional MISSING in PENDING areas). Battery 69/69.
+- **2026-07-28 — 7th increment: third round, and the lens that had never been
+  used.** Two reviewers again, but one of them did something nobody had done:
+  **actually used the methodology**, cold, on a 25-file brownfield fixture with
+  two components deliberately hidden behind unhelpful names. Static review had
+  run three times; usage had run zero times, and it found a different class of
+  defect entirely.
+  **The convergent BLOCK** (both reviewers, independently): the "mark nobody paid
+  for" check harvested backticked refs from the WHOLE `architecture.md`, and the
+  canonical template puts `## Directory Structure` — full of backticked paths —
+  directly above the Component Map. So the only automated guard that a mark
+  asserted something real was **inert on every project that filled in the shipped
+  template**. `map_where_refs()` now parses the map's `Where` column only.
+  **The other BLOCKs, all from the usage trial:** the guide router is a mandatory
+  Rule Zero read whose verdict may not be faked, but `index` refused to write it
+  with zero guides and `init.js` never created it — so the required declaration
+  was **unsatisfiable on every project's first day** (now: an empty stub is
+  written, plus a third legal verdict `router: absent`); `SKILL.md`'s L3 minimum
+  sections omitted `## Use Cases / User Needs`, which `review.md` makes a finding
+  — an ANALYSIS could pass `check` CLEAN and fail its own closure review; and the
+  `level`-missing guard I added in the 6th increment shipped as a **warning**,
+  which `--strict` escalates to exit 1 — the exact defect the advisories bucket
+  was invented for, reintroduced by me one round later, this time reddening CI on
+  every pre-1.18 analysis. Demoted to an advisory and epoch-gated. The same fix
+  applies to bootstrap DRAFT visions: the skill *mandates* DRAFT, so `--strict`
+  was red on every freshly bootstrapped project until a human ran the blind check
+  — teams delete the CI step rather than block on it.
+  Also fixed: multi-line HTML comments leaked into the generated manifest (the
+  vision row read `... -->`, and the manifest is what every future agent reads to
+  orient); `Next.js`/`Node.js`/`OrderStore.save` were reported as rotting paths;
+  `mark` printed `[ok] ... ANALYZED` for paths it then discarded; the gate message
+  told the author to do what they had just done instead of naming the one-line
+  remedy; and `elicitation.md` gained the unattended path the trial had to
+  improvise (declared assumptions + BLOCKED, never a silent guess).
+  **What the trial says worked** (recorded so it is not refactored away): the
+  "noun + at least TWO synonyms + verb" clause is load-bearing — the domain noun
+  alone returned **zero hits** for both hidden components, and the synonym clause
+  found both; "silence is unread, not empty" made a confident MISSING
+  *doctrinally unavailable* on a virgin repo; and the ledger's Evidence column
+  turned a lookup into comprehension — re-reading the found component surfaced a
+  4×-per-worker defect that no file-level impact analysis would have asked about,
+  which the Silent-degradation rule then routed to the user as a scope decision.
+  **The honest negative**: the trial ruled ceremony proportional at the feature
+  level and **not** proportional at the arrival level — the first L3 in any repo
+  pays a full product-Vision authoring round (~1,000 words) regardless of the
+  task's size, because the incremental licence covers the audit map and pointedly
+  not the Vision. Not fixed here: it is a Vision-level scope decision for the
+  owner, recorded as the top open item. Battery 73/73.

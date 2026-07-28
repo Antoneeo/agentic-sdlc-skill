@@ -8,6 +8,13 @@ user requirements already answer goal, scope, and constraints — skip the
 round and add a one-line note in the analysis stating why it was skipped.
 Do not run the round as a formality when the answers are already on record.
 
+Unattended path: when the user is not reachable (a scheduled or autonomous run,
+and a bootstrap Vision is `DRAFT` by mandate, so the skip path above cannot
+apply on a project's first L3), do not stall and do not invent consensus. Write
+the six answers as **declared assumptions** in `## Objective`, mark the ANALYSIS
+`BLOCKED on the user`, and stop before implementation. An assumption on the
+record is reviewable; a guess folded silently into a design is not.
+
 ## The round
 
 Ask ONE structured set of questions, not a drip of follow-ups. Keep each

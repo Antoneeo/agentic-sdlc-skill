@@ -46,6 +46,14 @@ already cover how to do this well?*
   undeclared lookup is indistinguishable from a skipped one, to the user, to a
   later reviewer, and to you in the next session. Declaring `no match` on a repo
   with no matching guide is the correct, expected output — not noise.
+- **Three legal verdicts, not two.** `GUIDE_x.md → read`, `no match` (the router
+  was read; nothing fitted — including a project whose router is an empty stub,
+  which is the normal state before the first guide exists), and
+  `router: absent (no router file)` for the case where `ai_docs/reference/INDEX.md`
+  does not exist at all. That third value exists so the honest answer is always
+  available: a required declaration with no truthful value gets faked or dropped,
+  and it takes the rest of Rule Zero with it. Regenerate the router
+  (`sdlc_check.py index`) when you report `absent`.
 - **Never fake the verdict.** `no match` means the router was read and nothing
   fitted. A verdict that is always `no match` certifies a lookup that did not
   happen and is worse than silence; a verdict listing the catalogue means the
