@@ -234,6 +234,71 @@ class SkillInvariants(unittest.TestCase):
         self.assertIn("not even under `--strict`", a,
                       "the doctrine must state the escalation honestly")
 
+    def test_map_refs_scoped_to_the_where_column(self):
+        """R3 BLOCK (found by two independent reviewers): harvesting refs from
+        the WHOLE architecture.md let the canonical template's own
+        '## Directory Structure' backticks satisfy the mark-counter-check, so it
+        was inert on every project that filled that section in."""
+        arch = ("# A\n## Directory Structure\n- `billing/` — invoices\n\n"
+                "## Component Map\n\n| Component | Capability | Contract | Where |\n"
+                "|---|---|---|---|\n| Api | serve | h() | `src/api.py#h` |\n")
+        self.assertEqual(sc.map_where_refs(arch), ["src/api.py"],
+                         "only the Where column counts; a Directory Structure "
+                         "backtick must not silence the check")
+        self.assertIsNone(sc.map_where_refs("# A\n## Other\n- `x/y.py`\n"),
+                          "no Component Map at all -> None, not an empty claim")
+        # symbol stripped and separators normalized, so a file-area row can match
+        arch2 = arch.replace("`src/api.py#h`", "`src\\api.py#h`")
+        self.assertEqual(sc.map_where_refs(arch2), ["src/api.py"])
+
+    def test_prose_is_never_reported_as_rot(self):
+        """R3: `Next.js`/`Node.js`/`OrderStore.save` were reported as rotting
+        paths. A false rot trains the reader to ignore the channel."""
+        for token in ("Next.js", "Node.js", "Vue.js", "OrderStore.save", "Foo.py"):
+            self.assertEqual(sc._map_refs(f"`{token}`"), [],
+                             f"'{token}' is a Capitalized prose token, not a file")
+        for real in ("run_behavioral.py", "init.js", "src/a.py#F"):
+            self.assertTrue(sc._map_refs(f"`{real}`"), f"'{real}' is a real ref")
+
+    def test_new_checks_never_redden_strict_ci(self):
+        """R3 BLOCK: the 'level missing' guard shipped as a WARNING, which
+        --strict escalates to exit 1 -- the exact defect the advisories bucket
+        was invented for, reintroduced one round later. Bootstrap DRAFT visions
+        had the same problem: the skill mandates DRAFT, so --strict was red on
+        every freshly bootstrapped project."""
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "ai_docs" / "solutions").mkdir(parents=True)
+            vis = root / "ai_docs" / "vision"
+            vis.mkdir()
+            for name in sc.VISION_FILES:      # bootstrap state: DRAFT by mandate
+                (vis / name).write_text(f"# {name}\nStatus: DRAFT\n", encoding="utf-8")
+            (root / "ai_docs" / "solutions" / "ANALYSIS_old.md").write_text(
+                "---\nid: F-9\nfeature: Legacy\nstatus: COMPLETED\n"
+                "start_date: 2024-01-01\nend_date: 2024-02-01\n---\n"
+                "# L\n## Objective\no\n## Feature Vision\nv\n## Impact\ni\n"
+                "## Security and Threat Model\ns\n## Action Plan\n- [x] a\n"
+                "## Test Strategy\nt\n## Diary\nd\n", encoding="utf-8")
+            sc.cmd_index(root)
+            self.assertEqual(sc.cmd_validate(root, strict=True), 0,
+                             "a pre-1.18 analysis with no `level:` and a bootstrap "
+                             "DRAFT vision must not fail --strict")
+
+    def test_router_stub_written_with_zero_guides(self):
+        """R3 BLOCK: Rule Zero makes reading the router mandatory and forbids
+        faking `no match`, but `index` refused to write it without guides -- so
+        the required verdict was unsatisfiable on every new project."""
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "ai_docs" / "reference").mkdir(parents=True)
+            sc.cmd_index(root)
+            gidx = root / "ai_docs" / "reference" / "INDEX.md"
+            self.assertTrue(gidx.is_file(), "the router must exist even with zero guides")
+            self.assertIn("no match", sc.read_text(gidx),
+                          "the stub must name the honest verdict")
+        self.assertIn("router: absent", read("guides.md"),
+                      "a third legal verdict is needed for a genuinely missing router")
+
     def test_audit_plan_paths_confined(self):
         """R2 BLOCK-1: audit_plan.md is document content, so `stale`/`mark` must
         confine its paths BEFORE walking. An absolute row ('/' -- what init.js
@@ -303,8 +368,28 @@ class SkillInvariants(unittest.TestCase):
             self.assertTrue(sc.ledger_due(metas["ANALYSIS_b.md"]))
         self.assertIn("'level' missing", sc.read_text(SKILL_DIR / "scripts" / "sdlc_check.py"),
                       "dropping `level:` must not be a free way out of the level's checks")
-        self.assertIn("<!--.*?-->", sc.read_text(SKILL_DIR / "scripts" / "sdlc_check.py"),
-                      "the heading match must be comment-stripped and anchored")
+        # both comment forms must be stripped -- an UNTERMINATED '<!--' hiding the
+        # heading was still counting as the section being present (R3)
+        due = {"level": "L3", "status": "IN_PROGRESS", "start_date": "2026-08-01"}
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "ai_docs" / "solutions").mkdir(parents=True)
+            for name, tail in (("a", "<!-- TODO: ## Capability Ledger later -->"),
+                               ("b", "<!-- draft notes\n## Capability Ledger")):
+                (root / "ai_docs" / "solutions" / f"ANALYSIS_{name}.md").write_text(
+                    "---\nid: F-%s\nfeature: X\nstatus: IN_PROGRESS\nlevel: L3\n"
+                    "start_date: 2026-08-01\n---\n# X\n## Objective\no\n"
+                    "## Feature Vision\nv\n## Impact\ni\n## Security and Threat Model\ns\n"
+                    "## Action Plan\n- [x] a\n## Test Strategy\nt\n## Diary\nd\n%s\n"
+                    % (name, tail), encoding="utf-8")
+            sc.cmd_index(root)
+            adv_before = []
+
+            def capture(msg):
+                adv_before.append(msg)
+            # both files must be advised: neither comment form counts as present
+            self.assertEqual(sc.cmd_validate(root), 0)
+        self.assertTrue(sc.ledger_due(due))
 
     def test_ledger_due_gating(self):
         """F-020d: the ledger warning fires ONLY for active L3 analyses born

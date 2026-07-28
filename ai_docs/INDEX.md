@@ -34,10 +34,10 @@ not manifested here.
 
 | Document | Status | Description |
 |---|---|---|
-| `functional/architecture_overview.md` | - | generator: functional_docs_generator v1.0 |
+| `functional/architecture_overview.md` | - | \| Subsystem \| Role \| Key Responsibilities \| |
 | `functional/data_entities.md` | CURRENT | devPNT-generated data-entity doc. Snapshot 2026-07-02; regenerate via devPNT after structural changes. |
 | `functional/entry_points.md` | CURRENT | devPNT-generated entry-point doc. Snapshot 2026-07-02; regenerate via devPNT after structural changes. |
-| `functional/external_interfaces.md` | - | generator: functional_docs_generator v1.0 |
+| `functional/external_interfaces.md` | - | - Name: Model Context Protocol |
 | `functional/feature_flows.md` | CURRENT | devPNT-generated feature-flow doc. Snapshot 2026-07-02; regenerate via devPNT after structural changes. |
 
 ## strategic/

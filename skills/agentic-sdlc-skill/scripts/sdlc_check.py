@@ -72,7 +72,6 @@ LEGACY_KEYS = {"stato": "status", "livello": "level",
 # in-flight analysis from before the pass existed never nags (same lazy-convert
 # doctrine as the pre-1.17 narrative handoff).
 ARCHITECT_PASS_EPOCH = "2026-07-28"
-LEDGER_SECTION = ("## Capability Ledger",)
 # Component Map 'Where' refs: a dotted token counts as a path only with one of
 # these suffixes. Deliberately a closed list -- a generic ".\w{1,5}$" turns
 # `app.core`, `OrderStore.save` and `1.18.0` into "the map is rotting".
@@ -364,9 +363,29 @@ def extract_doc_meta(path):
 
     desc = meta.get("description", "")
     if not desc:
+        in_comment = False
         for line in body:
             s = line.strip()
-            if not s or s.startswith("#") or s.startswith("<!--") or _META_LINE.match(s):
+            # track HTML-comment state across lines: skipping only the OPENING
+            # line made line 2 of a multi-line comment the manifest description
+            # (the shipped vision template opens with a 3-line comment, so the
+            # most-read row of the manifest read '... -->')
+            if in_comment:
+                if "-->" in s:
+                    in_comment = False
+                    s = s.split("-->", 1)[1].strip()
+                    if not s:
+                        continue
+                else:
+                    continue
+            elif s.startswith("<!--"):
+                if "-->" not in s:
+                    in_comment = True
+                    continue
+                s = s.split("-->", 1)[1].strip()
+                if not s:
+                    continue
+            if not s or s.startswith("#") or _META_LINE.match(s):
                 continue
             if s.startswith(">"):
                 s = s.lstrip(">").strip()
@@ -505,8 +524,21 @@ def cmd_index(root):
     if guides:
         gidx.write_text(build_guide_index(root), encoding="utf-8")
         print(f"[ok] guide router regenerated: {gidx}")
-    elif gidx.is_file():
-        print(f"[warn]  {gidx} exists but no GUIDE_*.md found: stale router, remove or add guides")
+    else:
+        # An EMPTY router still gets written: Rule Zero makes reading it a
+        # mandatory, declared step, and `no match` may not be faked. Without the
+        # stub, the required verdict is unsatisfiable on every new project --
+        # and a rule that cannot be obeyed on first contact gets discarded.
+        gidx.parent.mkdir(parents=True, exist_ok=True)
+        gidx.write_text(GUIDE_INDEX_HEADER + "\n# Operative guides (generated router)\n\n"
+                        "No guides in this project yet. This file exists so the Rule Zero "
+                        "router lookup has something to read: the honest verdict here is "
+                        "`router: no match`.\n\n"
+                        "A guide is written when the user hands over indications to follow "
+                        "(`source_kind: document`), or when a high-complexity component needs "
+                        "a comprehension map (`source_kind: code`) -- see `guides.md`.\n",
+                        encoding="utf-8")
+        print(f"[ok] guide router regenerated (empty stub): {gidx}")
     return 0
 
 
@@ -533,6 +565,39 @@ def ledger_due(meta):
     return started is not None and started >= parse_iso(ARCHITECT_PASS_EPOCH)
 
 
+MAP_SECTION_RE = re.compile(r"^#{2,3}[ \t]+Component Map\b.*?$(.*?)(?=^#{1,3}[ \t]+\S|\Z)",
+                            re.M | re.S | re.I)
+
+
+def map_where_refs(arch_text):
+    """Normalized, symbol-stripped paths from the Component Map's 'Where' column
+    ONLY -- never from the whole document. Harvesting the whole file let the
+    canonical template's own '## Directory Structure' backticks satisfy the check
+    and silently disable it on every project that fills that section in.
+    Returns None when the document has no Component Map at all."""
+    m = MAP_SECTION_RE.search(arch_text)
+    if not m:
+        return None
+    refs, where_idx = [], None
+    for ln in m.group(1).splitlines():
+        ln = ln.strip()
+        if not ln.startswith("|"):
+            continue
+        cells = [c.strip() for c in ln.strip("|").split("|")]
+        if len(cells) < 2 or not cells[0] or set(cells[0]) <= {"-", ":"}:
+            continue
+        if where_idx is None:
+            lowered = [c.lower() for c in cells]
+            if "where" not in lowered:
+                return []          # no Where column: nothing is mapped
+            where_idx = lowered.index("where")
+            continue
+        if where_idx < len(cells):
+            for _ref, path_part, _sym in _map_refs(cells[where_idx]):
+                refs.append(path_part.lstrip("./").strip("/"))
+    return refs
+
+
 def _map_refs(where):
     """Backticked refs in a 'Where' cell that are file paths: they contain a
     separator, or end in a KNOWN source-file suffix. Windows separators are
@@ -545,8 +610,15 @@ def _map_refs(where):
         path_part = path_part.replace("\\", "/").strip()
         if not path_part or "://" in path_part:
             continue  # a URL is not a repo path
-        looks_like_path = "/" in path_part or bool(
-            re.search(r"\.(" + "|".join(FILE_SUFFIXES) + r")$", path_part, re.I))
+        # A slash-less token counts only if it looks like a FILENAME: known
+        # suffix AND a stem that is not a Capitalized prose word. Without the
+        # second half, `Next.js`, `Node.js`, `Vue.js` and `OrderStore.save` all
+        # report "the map is rotting" -- a false rot teaches readers to ignore
+        # the channel, which is worse than the rot.
+        stem = path_part.rsplit("/", 1)[-1].rsplit(".", 1)[0]
+        looks_like_path = "/" in path_part or (
+            bool(re.search(r"\.(" + "|".join(FILE_SUFFIXES) + r")$", path_part, re.I))
+            and not re.fullmatch(r"[A-Z][a-z0-9]+(?:[A-Z][a-z0-9]*)*", stem))
         if looks_like_path:
             out.append((ref, path_part, symbol.strip()))
     return out
@@ -650,7 +722,12 @@ def cmd_validate(root, strict=False):
         if not m:
             errors.append(f"vision/{name}: missing 'Status: DRAFT|APPROVED' in the first lines")
         elif m.group(1) == "DRAFT":
-            warnings.append(f"vision/{name} is DRAFT: not a gating authority, have the user validate it")
+            # advisory, not a warning: bootstrap MANDATES DRAFT, so a warning here
+            # makes `validate --strict` red on every freshly bootstrapped project
+            # until a human runs the blind check -- and teams delete the CI step
+            # rather than block on it. DRAFT is a state, not a defect.
+            advisories.append(f"vision/{name} is DRAFT: not a gating authority, "
+                              "have the user validate it")
 
     # ANALYSIS: frontmatter and mandatory sections
     seen_ids = {}
@@ -682,14 +759,22 @@ def cmd_validate(root, strict=False):
         for en, it in ANALYSIS_SECTIONS:
             if not has_section(text, (en, it)):
                 warnings.append(f"{rel}: section '{en}' missing")
-        if not level:
-            warnings.append(f"{rel}: 'level' missing (L1/L2/L3/Spike) -- risk-proportional "
-                            "checks cannot apply, and dropping the line is cheaper than "
-                            "doing the work it triggers")
+        if not level and (parse_iso((meta.get("start_date") or "").strip().strip("'\"")) or
+                          parse_iso("1970-01-01")) >= parse_iso(ARCHITECT_PASS_EPOCH):
+            # advisory + epoch-gated, exactly like the check it guards: a warning
+            # here would redden --strict CI on every pre-1.18 analysis that never
+            # carried the optional field. (Same defect the advisories bucket was
+            # invented to prevent -- reintroduced once, caught in review.)
+            advisories.append(f"{rel}: 'level' missing (L1/L2/L3/Spike) -- risk-proportional "
+                              "checks cannot apply, and dropping the line is cheaper than "
+                              "doing the work it triggers")
         # comment-stripped, anchored: a '<!-- TODO: the ## Capability Ledger -->'
         # must not read as the section being present
+        # strip terminated AND unterminated comments: '<!-- TODO: the
+        # ## Capability Ledger' with no closing marker was still counting
         if ledger_due(meta) and not re.search(
-                r"^## Capability Ledger\s*$", re.sub(r"<!--.*?-->", "", text, flags=re.S), re.M):
+                r"^##[ \t]+Capability Ledger[ \t]*$",
+                re.sub(r"<!--(?:.*?-->|.*\Z)", "", text, flags=re.S), re.M):
             advisories.append(f"{rel}: L3 without '## Capability Ledger' -- the architect pass "
                               "left no record (architect.md); run it before the Impact")
 
@@ -734,22 +819,25 @@ def cmd_validate(root, strict=False):
         # An ANALYZED area with no map row is how the brownfield guard is
         # disarmed -- the area looks read, so the map's silence becomes groundable.
         _, _, plan_rows = parse_audit_plan(root)
-        if plan_rows and "## Component Map" in arch_text.replace("### ", "## "):
-            mapped = [p.replace("\\", "/").lstrip("./")
-                      for p in re.findall(r"`([^`]+)`", arch_text) if "/" in p]
+        mapped = map_where_refs(arch_text)
+        if plan_rows and mapped is not None:
             for prow in plan_rows:
                 if prow["status"] != "ANALYZED":
                     continue
-                area = prow["path"].replace("\\", "/").strip("/").lstrip(".")
+                if confine_under(root, prow["path"]) is None:
+                    continue                     # stale already rejects these
+                area = prow["path"].replace("\\", "/").strip("/").lstrip(".").strip("/")
                 if not area:
-                    continue   # the whole root: every row is inside it
-                if not any(mp.startswith(area.strip("/") + "/") or mp == area
-                           for mp in mapped):
+                    continue                     # the whole root: every row is inside it
+                if not (root / area).exists():
+                    continue                     # gone from disk: not a mapping gap
+                if not any(mp == area or mp.startswith(area + "/") for mp in mapped):
                     advisories.append(
                         f"strategic/architecture.md: '{prow['path']}' is ANALYZED in the audit "
                         "plan but owns no Component Map row -- marking asserts the area was read "
                         "closely enough to name what it owns, and the map's silence there is now "
-                        "groundable for a MISSING verdict (architect.md)")
+                        "groundable for a MISSING verdict (architect.md). If it genuinely owns no "
+                        "component, say so in the audit plan's Notes column: 'owns no component'")
 
     # Guide checks (ai_docs/reference/GUIDE_*.md): structure only — freshness is stale's job
     guides = list_guides(root)
@@ -772,9 +860,13 @@ def cmd_validate(root, strict=False):
     check_kb_collisions(root, guides, errors, warnings)
     # guide-router alignment (mirror of the root-manifest check)
     gidx = root / "ai_docs" / "reference" / "INDEX.md"
+    if not gidx.is_file():
+        advisories.append("ai_docs/reference/INDEX.md missing: Rule Zero requires reading the "
+                          "guide router and forbids faking its verdict, so the router exists "
+                          "even with zero guides -- run 'sdlc_check.py index'")
     if guides:
         if not gidx.is_file():
-            errors.append("ai_docs/reference/INDEX.md missing: run 'sdlc_check.py index'")
+            pass  # already advised above
         elif norm_text(read_text(gidx)) != norm_text(build_guide_index(root)):
             errors.append("ai_docs/reference/INDEX.md not aligned with the guides: run 'sdlc_check.py index'")
 
@@ -935,15 +1027,20 @@ def cmd_mark(root, paths):
     def row_text(path, note):
         return f"| {path} | ANALYZED | {ref} | {note} |"
 
-    appended = []
+    # validate EVERY path before printing or mutating anything: a rejection
+    # after an '[ok] ... added as ANALYZED' line is a lie the agent will act on
+    keys = []
     for raw in paths:
         key = raw.replace("\\", "/").rstrip("/") or "."
-        # fail closed at the point of WRITING the row, so an out-of-tree area
-        # can never enter the plan and make `stale` walk outside the project
         if confine_under(root, key) is None:
             print(f"[ERROR] {raw}: absolute, '..'-escaping, or outside the project root: "
-                  "refusing to mark (use a project-relative path, '.' for the root)")
+                  "refusing to mark (use a project-relative path, '.' for the root). "
+                  "Nothing was written.")
             return 1
+        keys.append(key)
+
+    appended = []
+    for key in keys:
         display = key + ("/" if (root / key).is_dir() and key != "." else "")
         existing = by_path.get(key)
         if existing:
@@ -1013,7 +1110,8 @@ def cmd_gate(args):
         return 2
     sys.stderr.write(
         f"[sdlc gate] '{rel}' is on a protected path but no ANALYSIS_*.md is IN_PROGRESS. "
-        "Create or reactivate the analysis (agentic-sdlc Phase 3) before modifying this file.\n")
+        "If your analysis already exists, set its frontmatter to 'status: IN_PROGRESS' "
+        "(that flip is what opens the gate); otherwise write it first (Phase 3).\n")
     return 2
 
 
