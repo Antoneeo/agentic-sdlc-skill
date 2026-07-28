@@ -44,7 +44,7 @@ not manifested here.
 
 | Document | Status | Description |
 |---|---|---|
-| `strategic/architecture.md` | CURRENT | Stack, package structure and architectural patterns of the skill repository. |
+| `strategic/architecture.md` | CURRENT | Stack, package structure, component map and architectural patterns of the skill repository. |
 | `strategic/capabilities_and_positioning.md` | CURRENT | Honest catalog of agentic-sdlc's current advantages (explained), parity points, and positioning vs superpowers (through v6.0.x). Owns the four-layer (A/B/C/D... |
 | `strategic/existing_features.md` | CURRENT | Concise catalog of the skill's existing features. |
 | `strategic/process_agentic_sdlc_devpnt.md` | CURRENT | The joint agentic-sdlc × devPNT governance process — pipeline, documents, human vs agent reviews, mandatory checks, and why it works. Read to understand how... |

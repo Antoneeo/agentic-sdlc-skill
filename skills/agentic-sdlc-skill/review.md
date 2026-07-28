@@ -71,6 +71,20 @@ When you are the reviewer:
   statement is the proof the check ran; an unfalsifiable "I checked" is the review
   theater this discipline exists to prevent (the reviewer-side twin of §Receiving's
   silent-drop rule). Plain code reviews stay findings-only.
+- **Capability Ledger (same reviews, when the artifact carries one).** Map each
+  ledger row to where the design or diff realizes it. Three findings live here and
+  nowhere else (`architect.md`): a capability ruled MISSING but implemented inside
+  the feature's code path, with no component owning it; a component whose contract
+  names the feature (a second consumer would force it open); and a capability ruled
+  MISSING, not built, and absorbed by quietly reshaping the feature — that is a
+  scope change owed to the user, not a design detail. An EXISTS row with no named
+  path or symbol is itself a finding. A capability built in this change and absent
+  from the `## Component Map` (`strategic/architecture.md`) is a finding too: the
+  next feature reads that map, rules the same capability MISSING, and builds it
+  again. And a **MISSING row in an area `audit/audit_plan.md` does not mark
+  ANALYZED, with no searches named**, is the finding that matters most on a project
+  the methodology arrived in recently — an unread map reported as an empty one is
+  how a duplicate of the existing codebase gets designed.
 
 ## Anti-patterns
 
