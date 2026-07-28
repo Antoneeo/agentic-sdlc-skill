@@ -247,6 +247,9 @@ class SkillInvariants(unittest.TestCase):
                          "backtick must not silence the check")
         self.assertIsNone(sc.map_where_refs("# A\n## Other\n- `x/y.py`\n"),
                           "no Component Map at all -> None, not an empty claim")
+        self.assertEqual(sc.map_where_refs(
+            "## Component Map\n\n| Component | Capability |\n|---|---|\n| A | b |\n"), [],
+            "a map with no Where column maps nothing -> [], not None")
         # symbol stripped and separators normalized, so a file-area row can match
         arch2 = arch.replace("`src/api.py#h`", "`src\\api.py#h`")
         self.assertEqual(sc.map_where_refs(arch2), ["src/api.py"])
@@ -254,11 +257,16 @@ class SkillInvariants(unittest.TestCase):
     def test_prose_is_never_reported_as_rot(self):
         """R3: `Next.js`/`Node.js`/`OrderStore.save` were reported as rotting
         paths. A false rot trains the reader to ignore the channel."""
-        for token in ("Next.js", "Node.js", "Vue.js", "OrderStore.save", "Foo.py"):
+        for token in ("Next.js", "Node.js", "Vue.js", "React.js",
+                      "OrderStore.save", "app.core", "1.18.0"):
             self.assertEqual(sc._map_refs(f"`{token}`"), [],
-                             f"'{token}' is a Capitalized prose token, not a file")
-        for real in ("run_behavioral.py", "init.js", "src/a.py#F"):
-            self.assertTrue(sc._map_refs(f"`{real}`"), f"'{real}' is a real ref")
+                             f"'{token}' is prose, not a file ref")
+        # the exclusion is scoped to the .js framework-name case ONLY: a blanket
+        # CamelCase rule silences exactly what React/C#/Java projects map
+        for real in ("run_behavioral.py", "init.js", "src/a.py#F", "README.md",
+                     "App.tsx", "Program.cs", "Main.java", "Cargo.toml"):
+            self.assertTrue(sc._map_refs(f"`{real}`"),
+                            f"'{real}' is a real ref and must stay checked")
 
     def test_new_checks_never_redden_strict_ci(self):
         """R3 BLOCK: the 'level missing' guard shipped as a WARNING, which
@@ -296,6 +304,17 @@ class SkillInvariants(unittest.TestCase):
             self.assertTrue(gidx.is_file(), "the router must exist even with zero guides")
             self.assertIn("no match", sc.read_text(gidx),
                           "the stub must name the honest verdict")
+            # ...but with guides PRESENT a missing router is still an ERROR: the
+            # agent's mandatory lookup would find nothing and legally declare
+            # 'absent', so the guide governing the work is never consulted
+            (root / "ai_docs" / "reference" / "GUIDE_x.md").write_text(
+                "---\ndescription: when to do x\nstatus: CURRENT\nsource_kind: document\n"
+                "source: s\ndistilled_from: ai_docs/reference/.sources/x.md\n"
+                "source_hash: abc\n---\n# Guide: X\n## How to do X\n[source: x.md#a]\ndo x\n",
+                encoding="utf-8")
+            gidx.unlink()
+            self.assertEqual(sc.cmd_validate(root), 1,
+                             "guides without a router must be an ERROR, not an advisory")
         self.assertIn("router: absent", read("guides.md"),
                       "a third legal verdict is needed for a genuinely missing router")
 
@@ -368,28 +387,24 @@ class SkillInvariants(unittest.TestCase):
             self.assertTrue(sc.ledger_due(metas["ANALYSIS_b.md"]))
         self.assertIn("'level' missing", sc.read_text(SKILL_DIR / "scripts" / "sdlc_check.py"),
                       "dropping `level:` must not be a free way out of the level's checks")
-        # both comment forms must be stripped -- an UNTERMINATED '<!--' hiding the
-        # heading was still counting as the section being present (R3)
-        due = {"level": "L3", "status": "IN_PROGRESS", "start_date": "2026-08-01"}
-        with tempfile.TemporaryDirectory() as d:
-            root = Path(d)
-            (root / "ai_docs" / "solutions").mkdir(parents=True)
-            for name, tail in (("a", "<!-- TODO: ## Capability Ledger later -->"),
-                               ("b", "<!-- draft notes\n## Capability Ledger")):
-                (root / "ai_docs" / "solutions" / f"ANALYSIS_{name}.md").write_text(
-                    "---\nid: F-%s\nfeature: X\nstatus: IN_PROGRESS\nlevel: L3\n"
-                    "start_date: 2026-08-01\n---\n# X\n## Objective\no\n"
-                    "## Feature Vision\nv\n## Impact\ni\n## Security and Threat Model\ns\n"
-                    "## Action Plan\n- [x] a\n## Test Strategy\nt\n## Diary\nd\n%s\n"
-                    % (name, tail), encoding="utf-8")
-            sc.cmd_index(root)
-            adv_before = []
-
-            def capture(msg):
-                adv_before.append(msg)
-            # both files must be advised: neither comment form counts as present
-            self.assertEqual(sc.cmd_validate(root), 0)
-        self.assertTrue(sc.ledger_due(due))
+        # Heading detection, asserted on the FUNCTION (advisories never move the
+        # exit code, so a test that only checks rc is green on broken code -- the
+        # previous version of this test was exactly that theater).
+        body = "# X\n## Objective\no\n"
+        self.assertTrue(sc.has_ledger_heading(body + "## Capability Ledger\n| a |\n"))
+        self.assertFalse(sc.has_ledger_heading(body + "<!-- ## Capability Ledger -->\n"),
+                         "a commented-out heading is not a ledger")
+        self.assertFalse(sc.has_ledger_heading(body + "<!-- draft\n## Capability Ledger\n"),
+                         "an UNTERMINATED comment must not hide the heading either")
+        # ...but an unterminated marker must not nuke a REAL ledger that follows
+        self.assertTrue(sc.has_ledger_heading(
+            body + "we write `<!--` inline here\n\n## Capability Ledger\n| a |\n"),
+            "an inline '<!--' mention must not swallow the rest of the document")
+        self.assertTrue(sc.has_ledger_heading(
+            body + "```\n<!-- unclosed example\n```\n\n## Capability Ledger\n| a |\n"),
+            "an unclosed comment inside a fenced block is an EXAMPLE, not a comment")
+        self.assertFalse(sc.has_ledger_heading(body + "### Capability Ledger\n"),
+                         "the section is '##', anchored")
 
     def test_ledger_due_gating(self):
         """F-020d: the ledger warning fires ONLY for active L3 analyses born
