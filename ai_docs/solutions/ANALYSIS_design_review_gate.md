@@ -52,12 +52,22 @@ L3 only:
    with evidence. On this feature's own evidence base that averaged ~10 findings
    per review.
 5. **One log row** per completed review, PASS or FAIL.
-6. **~90 words** added to the always-loaded `SKILL.md` (down from ~180 after the
-   review's DRY finding) — the Vision counts what the agent must read as cost.
+6. **255 words** added to the always-loaded `SKILL.md` — the Phase-3 gate
+   paragraph (103), the Write-Triggers row (56) and three ownership-matrix rows
+   (96). Measured, not estimated: `git diff 94b9bd9..9aa6a06 -- SKILL.md`, added
+   lines only. The Vision counts what the agent must read as cost, and this is the
+   one item in the list that is a number rather than a step.
 
 L1 and L2 are untouched, mechanically (`design_review_due` returns False for any
-non-L3). **Accepted by Antonio Pinto, 2026-07-28**, against this complete
-statement.
+non-L3).
+
+**Acceptance history, kept because the mistake is the point.** The first statement
+listed 3 items; the design review found 6 and the acceptance was re-obtained. The
+*closure* review then found item 6 itself understated by 183% — "~90 words" counted
+only the Phase-3 paragraph and ignored the Write-Triggers and ownership-matrix rows,
+which are equally always-loaded. Twice, on the same feature, the disclosure was
+written from what felt like the change rather than from what was measured. **Accepted
+by Antonio Pinto, 2026-07-28**, against the measured figures above.
 
 **Ruling against the other binding Non-Goal ("Not a work-management system"):**
 `REVIEW_LOG.md` carries `date` and `reviewer`, and "who did it" is an enumerated
@@ -103,7 +113,8 @@ answers whether one exists.* Consumers: `cmd_validate`.
 | `skills/agentic-sdlc-skill/templates.md` | MODIFY | `REVIEW_LOG.md` template on the existing schema |
 | `skills/agentic-sdlc-skill/scripts/sdlc_check.py` | MODIFY | `DESIGN_REVIEW_EPOCH`, `REVIEW_LOG_REL`, `design_review_due()`, `review_logged()`, one advisory |
 | `skills/agentic-sdlc-skill/scripts/test_skill_invariants.py` | MODIFY | `test_design_review_gate_wired` |
-| `ai_docs/audit/reviews/REVIEW_LOG.md` | MODIFY | dogfood: the 7 F-020 reviews recorded |
+| `ai_docs/audit/reviews/REVIEW_LOG.md` | MODIFY | dogfood: the 7 F-020 reviews + this feature's own two, with their `## Notes` |
+| `ai_docs/audit/audit_plan.md` | MODIFY | `mark` reference for the re-analyzed skill dir |
 | `package.json`, `gemini-extension.json`, `CHANGELOG.md`, `ai_docs/audit/handoff.md` | MODIFY | release 1.19.0 + closure |
 
 Blast radius: `design_review_due`/`review_logged` are new leaves with one caller
@@ -130,7 +141,10 @@ personal data.
   projects the ownership matrix directs away from this gate.
   **Residual, named rather than claimed away:** a deleted or rotated log, and a
   renamed ANALYSIS, both re-raise the advisory with no way to clear it except
-  writing a row for a review nobody can now verify. Clear it with an explicit
+  writing a row for a review nobody can now verify. (A third case — a log whose
+  columns are reordered or carry an extra leading column — was found by the closure
+  review and *closed* rather than accepted: the `tier` column is located by its
+  header name, falling back to position only when no header row exists.) Clear it with an explicit
   `| … | design | (log rotated YYYY-MM-DD) | …` row — honest bookkeeping beats a
   fabricated review. Related limit: `review_logged` is satisfied for the lifetime
   of a filename, so a long-lived ANALYSIS reopened for a later increment owes,
@@ -208,3 +222,29 @@ PLANNED exempt, pre-epoch grandfathered, L2 exempt, a logged design row silences
   Not adopted: keying the backstop per-increment. The doctrine handles it (moment
   1b) and a per-increment mechanical rule needs state the log does not carry;
   recorded as a named limit in T2 instead of an invented mechanism.
+- **2026-07-28 — closure review on the diff (moment 2): FAIL, 1 BLOCK.** The
+  ceremony cost was **still wrong** — item 6 said "~90 words" of always-loaded
+  `SKILL.md` and the measured figure is **255**: the count had included the Phase-3
+  paragraph and silently omitted the Write-Triggers row and three ownership-matrix
+  rows, which the agent loads just as unconditionally. Twice on one feature the
+  disclosure was written from what felt like the change instead of from
+  `git diff | wc -w`. Restated and re-accepted; the acceptance history is kept in
+  the budget section because the pattern is more instructive than the number.
+  Warnings closed in the same pass: **the hybrid fix had zero test coverage** — the
+  reviewer proved it by mutation, reverting each of the three forwarding lines and
+  then deleting the advisory outright, all four shipping green; `test_design_review
+  _advisory_end_to_end` now exercises `cmd_validate`/`cmd_check` directly and all
+  four mutations are caught (re-run to confirm, not assumed). `review_logged` read
+  the `tier` column positionally, so a log with an extra leading column produced a
+  permanent unclearable false positive — it now finds the column by header — and it
+  matched the filename as a bare substring, so `ANALYSIS_vision_clarity` would have
+  satisfied `ANALYSIS_vision`'s gate; word-boundary now. `SKILL.md`'s Write-Triggers
+  row still restated three things `review.md` owns and had **already drifted on one
+  of them** (L2 closure rows) in the same commit that fixed the DRY violation —
+  reduced to a pointer. And the eight log rows this feature appended carried no
+  `## Notes`, the very mechanism it shipped to answer "what did it find"; written.
+  **Accepted as a true positive, not fixed:** `validate` on this repo flags
+  `ANALYSIS_architect_pass.md` as an L3 with no design-review row. That is correct —
+  F-020's seven reviews were all at closure, which is precisely the gap F-021
+  exists to close. The flagship repo ships with one honest advisory rather than a
+  back-dated row.

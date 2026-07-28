@@ -581,13 +581,25 @@ def review_logged(root, analysis_name):
     if not log.is_file():
         return False
     stem = analysis_name[:-3] if analysis_name.endswith(".md") else analysis_name
+    # match the filename on a word boundary: a plain substring lets a longer
+    # sibling (ANALYSIS_vision_clarity) satisfy a shorter one (ANALYSIS_vision)
+    name_re = re.compile(r"(?<![\w-])" + re.escape(stem) + r"(?![\w-])")
+    tier_idx = None
     for line in read_text(log).splitlines():
         line = line.strip()
-        if not line.startswith("|") or stem not in line:
+        if not line.startswith("|"):
             continue
         cells = [c.strip() for c in line.strip("|").split("|")]
+        if tier_idx is None:
+            lowered = [c.lower() for c in cells]
+            if "tier" in lowered:          # header found: trust it over position
+                tier_idx = lowered.index("tier")
+                continue
+        if not name_re.search(line):
+            continue
         # schema: | date | doc_key | tier | reviewer | raised | real | verdict | rounds |
-        if len(cells) >= 3 and re.match(r"design\b", cells[2], re.I):
+        idx = tier_idx if tier_idx is not None else 2
+        if len(cells) > idx and re.match(r"design\b", cells[idx], re.I):
             return True
     return False
 

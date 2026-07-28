@@ -8,6 +8,8 @@ Stdlib only, zero-LLM, zero-network, zero-subprocess -- a failing eval is always
 a real regression, never flakiness (P-TM T9). Runs as part of
 `python -m unittest discover -s scripts -p "test_*.py"`.
 """
+import contextlib
+import io
 import os
 import re
 import sys
@@ -370,6 +372,65 @@ class SkillInvariants(unittest.TestCase):
             self.assertTrue(sc.review_logged(root, "ANALYSIS_w.md"),
                             "'design (late)' is a design review, and a FAIL row counts")
             self.assertFalse(sc.review_logged(root, "ANALYSIS_z.md"))
+            # a longer sibling must not satisfy a shorter name's gate
+            self.assertFalse(sc.review_logged(root, "ANALYSIS_"),
+                             "substring matching lets a sibling ANALYSIS pass")
+            # the tier column is located by header, not assumed at index 2
+            (root / sc.REVIEW_LOG_REL).write_text(
+                "| # | date | doc_key | tier | reviewer | r | v | n |\n"
+                "|---|---|---|---|---|---|---|---|\n"
+                "| 1 | 2026-07-28 | ANALYSIS_x.md | design | subagent | 1 | PASS | 1 |\n",
+                encoding="utf-8")
+            self.assertTrue(sc.review_logged(root, "ANALYSIS_x.md"),
+                            "an extra leading column must not produce a permanent, "
+                            "unclearable 'you skipped the review'")
+
+    def test_design_review_advisory_end_to_end(self):
+        """F-021 closure review F2: the unit tests never exercised cmd_validate,
+        so a reviewer's mutation run showed the advisory could be DELETED and the
+        battery stayed green. This asserts the wiring itself: it fires, --hybrid
+        suppresses it (devPNT owns that slot), and it never moves an exit code."""
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "ai_docs" / "solutions").mkdir(parents=True)
+            vis = root / "ai_docs" / "vision"
+            vis.mkdir()
+            for name in sc.VISION_FILES:   # otherwise --strict fails on unrelated warnings
+                (vis / name).write_text(f"# {name}\nStatus: APPROVED (by owner)\n",
+                                        encoding="utf-8")
+            (root / "ai_docs" / "solutions" / "ANALYSIS_f.md").write_text(
+                "---\nid: F-1\nfeature: F\nstatus: IN_PROGRESS\nlevel: L3\n"
+                "start_date: 2026-08-01\n---\n# F\n## Objective\no\n"
+                "## Feature Vision\nv\n## Capability Ledger\n| a |\n## Impact\ni\n"
+                "## Security and Threat Model\ns\n## Action Plan\n- [ ] a\n"
+                "## Test Strategy\nt\n## Diary\nd\n", encoding="utf-8")
+            sc.cmd_index(root)
+
+            def out(**kw):
+                buf = io.StringIO()
+                with contextlib.redirect_stdout(buf):
+                    rc = sc.cmd_validate(root, **kw)
+                return rc, buf.getvalue()
+
+            rc, text = out()
+            self.assertIn("no design-review row", text,
+                          "the advisory must fire on an L3 in implementation")
+            self.assertEqual(rc, 0, "advisories never move the exit code")
+            rc, text = out(hybrid=True)
+            self.assertNotIn("no design-review row", text,
+                             "--hybrid: devPNT's gate owns the slot, so firing here "
+                             "is a permanent unfixable false positive")
+            rc, text = out(strict=True)
+            self.assertNotIn("no design-review row", text.split("Validation:")[1],
+                             "summary sanity")
+            self.assertEqual(rc, 0, "--strict must not escalate this advisory")
+            # cmd_check must FORWARD hybrid: reverting that forwarding was one of
+            # the four mutations that shipped green
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                sc.cmd_check(root, hybrid=True)
+            self.assertNotIn("no design-review row", buf.getvalue(),
+                             "cmd_check must pass hybrid through to cmd_validate")
 
     def test_audit_plan_paths_confined(self):
         """R2 BLOCK-1: audit_plan.md is document content, so `stale`/`mark` must
