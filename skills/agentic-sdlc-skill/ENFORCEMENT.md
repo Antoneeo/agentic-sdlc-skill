@@ -93,6 +93,8 @@ Gemini CLI — wire the same command into its startup-hook mechanism if present;
 
 ## 5. Skill eval battery (release gate)
 
+**Skill development only.** `test_*.py` and `evals/` are deliberately absent from the npm `files` allowlist — they never reach an installed consumer, so this section applies to whoever builds the skill, not to a project that uses it. (Consumers get `sdlc_check.py`; §1–§4 are theirs.)
+
 The skill self-tests its own doctrine invariants. Two layers over one scenario corpus:
 
 **Static battery — the deterministic release gate.** Run before any publish:

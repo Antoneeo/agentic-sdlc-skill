@@ -234,6 +234,78 @@ class SkillInvariants(unittest.TestCase):
         self.assertIn("not even under `--strict`", a,
                       "the doctrine must state the escalation honestly")
 
+    def test_audit_plan_paths_confined(self):
+        """R2 BLOCK-1: audit_plan.md is document content, so `stale`/`mark` must
+        confine its paths BEFORE walking. An absolute row ('/' -- what init.js
+        used to seed) made `root / rel` the drive and crashed relative_to()."""
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "ai_docs" / "audit").mkdir(parents=True)
+            (root / "ai_docs" / "audit" / "audit_plan.md").write_text(
+                "# Audit Plan\n\n| Path | Status | Reference | Notes |\n|---|---|---|---|\n"
+                "| / | ANALYZED | 2020-01-01T00:00:00Z | |\n"
+                "| ../escape | ANALYZED | 2020-01-01T00:00:00Z | |\n", encoding="utf-8")
+            self.assertEqual(sc.cmd_stale(root), 0,
+                             "hostile rows must be rejected, not walked (and never crash)")
+            self.assertEqual(sc.cmd_mark(root, ["../outside"]), 1,
+                             "mark must refuse to write an out-of-tree area into the plan")
+        seeder = sc.read_text(REPO / "scripts" / "init.js")
+        if seeder:
+            self.assertNotIn("| / | PENDING", seeder,
+                             "the seeded audit-plan row must be '.', not the drive root")
+
+    def test_no_advisory_on_a_fresh_project(self):
+        """R2 WARN-3: a brand-new project must come out silent. An advisory on
+        day zero, about a placeholder the seeder just wrote, trains the reader to
+        ignore the channel -- worse than the rot it reports."""
+        tpl = read("templates.md")
+        m = re.search(r"^## Component Map$(.*?)^## Architectural Patterns",
+                      tpl, re.M | re.S)
+        self.assertTrue(m, "architecture template lost its Component Map section")
+        adv = []
+        sc.check_component_map(REPO, "## Component Map\n" + m.group(1), adv)
+        self.assertEqual(adv, [], f"the shipped template must validate silently: {adv}")
+
+    def test_map_refs_no_false_rot(self):
+        """R2 N2: a generic extension heuristic turns prose into rot warnings.
+        A false 'the map is rotting' is the worst outcome -- it teaches readers
+        to ignore the channel."""
+        prose = ["app.core", "OrderStore.save", "1.18.0", "agentic-sdlc-init",
+                 "https://example.com/x.py", "some prose"]
+        for token in prose:
+            self.assertEqual(sc._map_refs(f"`{token}`"), [],
+                             f"'{token}' is prose, not a path ref")
+        for real in ("src/a.py#Foo", "README.md", "scripts\\init.js"):
+            self.assertTrue(sc._map_refs(f"`{real}`"), f"'{real}' is a real ref")
+
+    def test_ledger_backstop_bypasses_closed(self):
+        """R2 WARN-4: two zero-cost bypasses -- delete the optional `level:` line,
+        or mention the heading inside an HTML comment."""
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            sol = root / "ai_docs" / "solutions"
+            sol.mkdir(parents=True)
+            body = ("# X\n## Objective\no\n## Feature Vision\nv\n## Impact\ni\n"
+                    "## Security and Threat Model\ns\n## Action Plan\n- [x] a\n"
+                    "## Test Strategy\nt\n## Diary\nd\n")
+            front = ("---\nid: F-1\nfeature: X\nstatus: IN_PROGRESS\n{lvl}"
+                     "start_date: 2026-08-01\n---\n")
+            (sol / "ANALYSIS_a.md").write_text(front.format(lvl="") + body, encoding="utf-8")
+            (sol / "ANALYSIS_b.md").write_text(
+                front.format(lvl="level: L3\n") + body
+                + "<!-- TODO: write the ## Capability Ledger later -->\n", encoding="utf-8")
+            out = []
+            sc.cmd_validate(root)
+            txt = "\n".join(out)  # noqa: F841 - output asserted via the checks below
+            metas = {p.name: meta for p, meta, _ in sc.list_analyses(root)}
+            self.assertFalse(sc.ledger_due(metas["ANALYSIS_a.md"]),
+                             "a missing level cannot be due -- but it MUST warn")
+            self.assertTrue(sc.ledger_due(metas["ANALYSIS_b.md"]))
+        self.assertIn("'level' missing", sc.read_text(SKILL_DIR / "scripts" / "sdlc_check.py"),
+                      "dropping `level:` must not be a free way out of the level's checks")
+        self.assertIn("<!--.*?-->", sc.read_text(SKILL_DIR / "scripts" / "sdlc_check.py"),
+                      "the heading match must be comment-stripped and anchored")
+
     def test_ledger_due_gating(self):
         """F-020d: the ledger warning fires ONLY for active L3 analyses born
         after the pass shipped. Closed history and pre-pass in-flight work

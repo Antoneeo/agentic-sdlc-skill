@@ -54,12 +54,17 @@ or SKIPPED, or absent from the plan entirely — **the map can never ground a MI
 verdict.** Nothing there has been looked at yet, and "the inventory does not mention
 it" is the reasoning that builds a second copy of a component that already exists.
 
-Search it with the symbol-graph tool (`grep` as a fallback). **The floor for a
-MISSING**: the domain noun, at least two plausible synonyms for it, and the verb —
-run across every area the audit plan lists, not only the ones you expect it in.
-Stop when those terms are exhausted, and record what you ran. A MISSING reached in
-an area that is still PENDING is *provisional* and says so in the row. An
-unfalsifiable MISSING is the same defect as an EXISTS with no symbol named.
+**Searching for an owner** is text search first, symbol-graph second — in that
+order, because you are looking for a name you do not know yet, and a call-hierarchy
+tool needs a resolved symbol as *input*. Grep the repository (minus SKIPPED areas)
+for the domain noun, at least two plausible synonyms, and the verb; then use the
+symbol-graph tool to confirm or dismiss the candidates the search surfaced.
+
+**The floor for a MISSING** is about triage, not term count: every hit that lands in
+an unmapped area gets opened, or the MISSING is **provisional** and says so in its
+row. Record what you ran — terms, tool, areas — and stop when the terms are
+exhausted and no candidate remains unopened. A provisional MISSING is honest and
+cheap; an unfalsifiable one is the same defect as an EXISTS with no symbol named.
 
 **Understanding is never deferred; only WRITING the map is.** You may leave the rest
 of the repository unmapped and grow the inventory feature by feature — you may not
@@ -98,12 +103,12 @@ A capability that needs building becomes **its own ANALYSIS, its own branch and 
 own closure** when ANY of these holds:
 
 - it will have more than one consumer, now or in the declared roadmap;
-- **it delivers value merged alone** — a consumer other than this feature could
-  adopt it as-is, today. (Not merely "buildable and testable on its own": §3
-  already requires that of every component, so reading it that way would make the
-  default branch below unreachable and put every five-line helper through its own
-  L3.) IN: an order store two roadmap features already need. OUT: an id formatter
-  with one consumer and no second taker;
+- **it can ship before this feature does** — merged and adopted on its own cadence,
+  with the feature still unfinished. (Not "buildable and testable on its own": §3
+  requires that of every component, so reading it that way makes the default branch
+  below unreachable and puts every five-line helper through its own L3.) IN: a
+  storage layer another team can adopt next sprint while this feature is still in
+  design. OUT: a helper nobody can use until the feature that motivated it lands;
 - it carries its own risk surface: security, a public contract, a data model, or a
   new dependency.
 
@@ -188,14 +193,20 @@ warning that reddens a pipeline is a gate under another name.
 - **Rotting map**: `validate` resolves every path-shaped ref in the Component
   Map's `Where` column — a path that no longer exists, or a `#symbol` no longer
   present as a whole word in the file, is flagged; so is a map whose rows carry
-  no checkable path at all (an inert check reported as a clean one is the same
-  defect as an unread map reported as empty). This is the map's equivalent of the
-  guides' `source_hash`, with the same honest limit: it proves the ref resolves,
-  never that the row still describes the component correctly.
-- **Adherence** (non-gating, `evals/`): `architect_rules_before_impact.md` runs
-  the pass cold; `unmapped_never_grounds_missing.md` sets the brownfield trap —
-  an existing component in a PENDING area, where ruling MISSING from the map's
-  silence is the failure.
+  no checkable path at all, or whose header has no `Where` column (an inert check
+  reported as a clean one is the same defect as an unread map reported as empty).
+  This is the map's equivalent of the guides' `source_hash`, with the same honest
+  limit: it proves the ref resolves, never that the row still describes the
+  component correctly.
+- **A mark nobody paid for**: `validate` notes an area the audit plan marks
+  ANALYZED that owns no Component Map row. Marking is one cheap command and it is
+  what converts the map's silence into a groundable MISSING — so this is the other
+  half of the loop, the check that a mark asserted something real.
+- **Adherence** (non-gating, **skill development only** — `evals/` is not shipped
+  in the installed package): `architect_rules_before_impact.md` runs the pass
+  cold; `unmapped_never_grounds_missing.md` sets the brownfield trap — an existing
+  component in a PENDING area, where ruling MISSING from the map's silence is the
+  failure.
 
 ## Below L3
 

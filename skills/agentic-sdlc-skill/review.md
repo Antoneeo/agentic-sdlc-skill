@@ -71,7 +71,12 @@ When you are the reviewer:
   statement is the proof the check ran; an unfalsifiable "I checked" is the review
   theater this discipline exists to prevent (the reviewer-side twin of §Receiving's
   silent-drop rule). Plain code reviews stay findings-only.
-- **Capability Ledger (same reviews, when the artifact carries one).** Map each
+- **Capability Ledger (same reviews).** **An L3 impact/solution analysis or design
+  that carries NO Capability Ledger is itself a finding** — the architect pass left
+  no record, and "the artifact does not have one" is what a skipped pass looks like,
+  not a reason to skip the check. (This half is load-bearing in Hybrid, where the
+  validator backstop reads Standalone ANALYSIS files only and this clause is the
+  sole check that the pass ran.) When the ledger is there, map each
   ledger row to where the design or diff realizes it. Three findings live here and
   nowhere else (`architect.md`): a capability ruled MISSING but implemented inside
   the feature's code path, with no component owning it; a component whose contract
