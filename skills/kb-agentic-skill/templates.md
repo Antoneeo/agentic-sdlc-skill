@@ -1,4 +1,4 @@
-# Document templates — Agentic SDLC
+# Document templates — KB Agentic
 
 General rules:
 - Concise documents: ≤ ~80 lines each (handoff ≤ 20). If a document grows beyond that, split it, do not inflate it.

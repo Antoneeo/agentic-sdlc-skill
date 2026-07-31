@@ -1,6 +1,5 @@
-// Shared helpers for the Agentic SDLC npm scripts (init / postinstall / preuninstall).
-// Single source for client detection and skill-target paths: init and postinstall
-// must never disagree on what "Claude Code is installed" means.
+// Shared helpers for the KB Agentic npm scripts (init / postinstall / preuninstall).
+// Single source for client detection and skill-target paths.
 
 const fs = require('fs');
 const path = require('path');
@@ -8,12 +7,9 @@ const os = require('os');
 const { execSync } = require('child_process');
 
 const PACKAGE_ROOT = path.resolve(__dirname, '..');
-const SKILL_SOURCE = path.join(PACKAGE_ROOT, 'skills', 'agentic-sdlc-skill');
+const SKILL_SOURCE = path.join(PACKAGE_ROOT, 'skills', 'kb-agentic-skill');
 const TEMPLATES_PATH = path.join(SKILL_SOURCE, 'templates.md');
 
-// One entry per supported AI client. `home` may be overridden by an env var
-// (Claude Desktop / portable installs); presence of the home dir counts as
-// detection even when the CLI is not on PATH.
 const CLIENTS = [
   {
     key: 'claude',
@@ -21,7 +17,7 @@ const CLIENTS = [
     cmd: 'claude',
     home: process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude'),
     envVar: 'CLAUDE_CONFIG_DIR',
-    reload: 'Restart Claude Code to load it. Invoke via Skill tool as "agentic-sdlc".',
+    reload: 'Restart Claude Code to load it. Invoke via Skill tool as "kb-agentic".',
   },
   {
     key: 'gemini',
@@ -37,16 +33,9 @@ const CLIENTS = [
     cmd: 'codex',
     home: process.env.CODEX_HOME || path.join(os.homedir(), '.codex'),
     envVar: 'CODEX_HOME',
-    reload: 'Restart Codex to load it. Invoke it as "$agentic-sdlc" or by asking for Agentic SDLC.',
+    reload: 'Restart Codex to load it. Invoke it as "$kb-agentic" or by asking for KB Agentic.',
   },
   {
-    // Google Antigravity 2.0 discovers global agent skills under
-    // ~/.gemini/config/skills/ -- the SAME home the legacy Gemini CLI claims.
-    // To avoid a shared-home double-install (P-TM T1), this entry sets:
-    //  - skillsSubdir 'config/skills': distinct target from gemini's ~/.gemini/skills
-    //  - homeMarker on ~/.gemini/config/skills: detection never fires on bare
-    //    ~/.gemini (which every Antigravity user has); only the Antigravity skills
-    //    dir, the `agy` CLI, or ANTIGRAVITY_HOME count as "Antigravity installed".
     key: 'antigravity',
     label: 'Google Antigravity',
     cmd: 'agy',
@@ -58,7 +47,7 @@ const CLIENTS = [
       'config',
       'skills',
     ),
-    reload: 'Restart Antigravity, or run "agy skills reload", to load it. Invoke by asking for Agentic SDLC.',
+    reload: 'Restart Antigravity, or run "agy skills reload", to load it. Invoke by asking for KB Agentic.',
   },
 ];
 
@@ -72,10 +61,6 @@ function commandExists(cmd) {
 }
 
 function clientDetected(client) {
-  // An entry may override the fs-existence probe with a `homeMarker` (a more
-  // specific path than the bare home) so two clients sharing a home dir do not
-  // both fire on its mere existence. Entries without a marker check `home`
-  // exactly as before (backward-compatible).
   const homePathToCheck = client.homeMarker || client.home;
   return commandExists(client.cmd)
     || Boolean(process.env[client.envVar])
@@ -83,11 +68,8 @@ function clientDetected(client) {
 }
 
 function skillTarget(client) {
-  // An entry may override the default `skills` sub-path with `skillsSubdir`
-  // (split on '/' to keep cross-platform path.join correctness). Entries
-  // without it resolve to <home>/skills/agentic-sdlc exactly as before.
   const subdir = client.skillsSubdir ? client.skillsSubdir.split('/') : ['skills'];
-  return path.join(client.home, ...subdir, 'agentic-sdlc');
+  return path.join(client.home, ...subdir, 'kb-agentic');
 }
 
 function copyRecursive(src, dest) {
@@ -95,7 +77,6 @@ function copyRecursive(src, dest) {
     fs.cpSync(src, dest, { recursive: true, force: true });
     return;
   }
-  // Fallback for Node < 16.7
   if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
   for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
     const s = path.join(src, entry.name);
@@ -105,11 +86,6 @@ function copyRecursive(src, dest) {
   }
 }
 
-/**
- * Parse templates.md into { headingText: [fencedBlock, ...] }.
- * Templates are single-sourced there: the init script must extract them
- * instead of carrying its own inline copies (which historically drifted).
- */
 function loadTemplates() {
   const text = fs.readFileSync(TEMPLATES_PATH, 'utf8');
   const lines = text.split(/\r?\n/);
@@ -137,11 +113,6 @@ function loadTemplates() {
   return sections;
 }
 
-/**
- * Return the Nth fenced block of the section whose heading contains `needle`.
- * Throws with a clear message when missing: writing a wrong or empty
- * boilerplate silently would be worse than failing the init.
- */
 function templateFor(sections, needle, index = 0) {
   const heading = Object.keys(sections).find((h) => h.includes(needle));
   const blocks = heading ? sections[heading] : undefined;
