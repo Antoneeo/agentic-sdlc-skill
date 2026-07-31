@@ -499,7 +499,8 @@ class SkillInvariants(unittest.TestCase):
             self.assertFalse(sc.ledger_due(metas["ANALYSIS_a.md"]),
                              "a missing level cannot be due -- but it MUST warn")
             self.assertTrue(sc.ledger_due(metas["ANALYSIS_b.md"]))
-        self.assertIn("'level' missing", sc.read_text(SKILL_DIR / "scripts" / "sdlc_check.py"),
+        # The behaviour lives in the shared core; the entry point is thin by design.
+        self.assertIn("'level' missing", sc.read_text(SKILL_DIR / "scripts" / "sdlc_core.py"),
                       "dropping `level:` must not be a free way out of the level's checks")
         # Heading detection, asserted on the FUNCTION (advisories never move the
         # exit code, so a test that only checks rc is green on broken code -- the
@@ -697,6 +698,57 @@ class SkillInvariants(unittest.TestCase):
             self.assertEqual(sc.norm_text(sc.build_guide_index(REPO)),
                              sc.norm_text(sc.read_text(gidx)),
                              "reference/INDEX.md stale: run sdlc_check.py index")
+
+    # --- TS9 (static half): the domain router is internally consistent --------
+    # The router is doctrine: no code executes it, so nothing but this test stands
+    # between a self-contradicting table and an agent following it.
+
+    def _router_rows(self):
+        rows = []
+        for line in read("routing.md").splitlines():
+            cells = [c.strip() for c in line.strip().strip("|").split("|")]
+            if len(cells) == 5 and not set("".join(cells)) <= set("-: "):
+                rows.append(cells)
+        return [r for r in rows if r[0] not in ("Request",)]
+
+    def test_router_is_reached_only_from_the_level_test_and_only_with_a_sibling(self):
+        skill = read("SKILL.md")
+        self.assertIn("routing.md", skill, "the router must be reachable from the contract")
+        self.assertRegex(skill, r"L1 never reaches it",
+                         "an L1 that pays for routing is the ceremony budget broken")
+        routing = read("routing.md")
+        self.assertIn("fail open", routing.lower(),
+                      "detection that cannot answer must not block the work")
+
+    def test_every_code_branch_row_evaluates_every_step(self):
+        for row in self._router_rows():
+            request, s1, s2, s3, lens = row
+            if s1 != "code":
+                continue  # decided at step 1: later steps are correctly never reached
+            self.assertTrue(s2 and s2 != "—", f"row '{request}' skips step 2")
+            self.assertTrue(s3 and s3 != "—", f"row '{request}' skips step 3")
+            self.assertIn(lens.strip("*").lower(), ("code", "knowledge"),
+                          f"row '{request}' leaves the code branch to a lens it cannot reach")
+
+    def test_at_least_one_row_turns_on_step_three(self):
+        self.assertTrue(
+            any("build-consumed" in r[3].lower() for r in self._router_rows()),
+            "a step no worked example exercises is a step nobody will run",
+        )
+
+    def test_the_reverse_pair_routes_differently(self):
+        """The pair that made step 2 necessary: same fidelity, different deliverable."""
+        rows = {r[0]: r[4].strip("*").lower() for r in self._router_rows()}
+        guide = next((v for k, v in rows.items() if "comprehension guide" in k), None)
+        customer = next((v for k, v in rows.items() if "customers' admins" in k), None)
+        self.assertEqual(guide, "code")
+        self.assertEqual(customer, "knowledge")
+
+    def test_every_domain_has_a_risk_slot(self):
+        """The slot is translated per domain, never dropped -- asserted on the data."""
+        for name, rules in sc.DOMAINS.items():
+            self.assertTrue(rules["risk_section"], f"{name} has no risk section")
+            self.assertTrue(rules["risk_label"].startswith("## "), f"{name}'s label is not a heading")
 
     def test_behavioral_driver_no_llm(self):
         """Mechanized T4: the behavioral driver must never call a model,

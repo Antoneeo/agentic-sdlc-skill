@@ -132,6 +132,57 @@ class GoldenRegression(unittest.TestCase):
                          "no artifact in the corpus writes `domain:`, so no column may be emitted")
 
 
+class CopiedFileRecipe(unittest.TestCase):
+    """TS12 -- the ENFORCEMENT.md §2 CI recipe, executed as documented.
+
+    The recipe is a promise to every team that put the validator in its pipeline.
+    Splitting the validator in two could break it silently; this runs it."""
+
+    def _run(self, tools, corpus):
+        return subprocess.run(
+            [sys.executable, str(Path(tools) / "sdlc_check.py"), "validate", "--root", str(corpus)],
+            capture_output=True, text=True, encoding="utf-8", errors="replace",
+        )
+
+    def test_both_files_copied_behaves_like_the_installed_validator(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            corpus = Path(tmp) / "project"
+            materialize(corpus)
+            tools = Path(tmp) / "tools"
+            tools.mkdir()
+            for name in ("sdlc_check.py", "sdlc_core.py"):
+                shutil.copy2(HERE / name, tools / name)
+            copied = self._run(tools, corpus)
+            in_place = subprocess.run(
+                [sys.executable, str(HERE / "sdlc_check.py"), "validate", "--root", str(corpus)],
+                capture_output=True, text=True, encoding="utf-8", errors="replace",
+            )
+            self.assertEqual(copied.returncode, in_place.returncode)
+            self.assertEqual(normalize(copied.stdout, corpus), normalize(in_place.stdout, corpus))
+
+    def test_copying_only_the_entry_point_fails_loudly(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            corpus = Path(tmp) / "project"
+            materialize(corpus)
+            tools = Path(tmp) / "tools"
+            tools.mkdir()
+            shutil.copy2(HERE / "sdlc_check.py", tools / "sdlc_check.py")  # the core left behind
+            proc = self._run(tools, corpus)
+            self.assertNotEqual(proc.returncode, 0, "a half-copied validator must never be green")
+            self.assertIn("sdlc_core.py", proc.stderr)
+
+    def test_the_core_alone_is_runnable(self):
+        """Stated in ENFORCEMENT §2, so it is asserted rather than assumed."""
+        with tempfile.TemporaryDirectory() as tmp:
+            corpus = Path(tmp) / "project"
+            materialize(corpus)
+            proc = subprocess.run(
+                [sys.executable, str(HERE / "sdlc_core.py"), "validate", "--root", str(corpus)],
+                capture_output=True, text=True, encoding="utf-8", errors="replace",
+            )
+            self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--update-baseline", action="store_true",

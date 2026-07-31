@@ -137,6 +137,29 @@ function clientByKey(lib, key) {
   return c;
 }
 
+// --- T4/TS7 (file-list half): what the package actually ships ---------------
+// Run in EVERY phase that edits `files[]`, not only at release: an unlisted
+// support file reaches no consumer, and a listed-but-absent one breaks the pack.
+test('TS7 package files[] lists exactly the shipped skill files, and they all exist', () => {
+  const pkgRoot = path.resolve(__dirname, '..');
+  const pkg = JSON.parse(fs.readFileSync(path.join(pkgRoot, 'package.json'), 'utf8'));
+  for (const rel of pkg.files) {
+    assert.ok(fs.existsSync(path.join(pkgRoot, rel)), `files[] lists a missing path: ${rel}`);
+  }
+  // The validator ships as two files since the multi-domain core: shipping the
+  // entry point without the core would fail at import on every consumer.
+  for (const rel of ['skills/agentic-sdlc-skill/scripts/sdlc_check.py',
+                     'skills/agentic-sdlc-skill/scripts/sdlc_core.py',
+                     'skills/agentic-sdlc-skill/routing.md']) {
+    assert.ok(pkg.files.includes(rel), `files[] must list ${rel}`);
+  }
+  // Dev-only assets must never reach a consumer.
+  for (const rel of pkg.files) {
+    assert.ok(!/scripts\/test_|\/evals\/|\/fixtures\//.test(rel),
+      `files[] must not ship dev-only assets: ${rel}`);
+  }
+});
+
 // --- T7: existing three clients unchanged (skill-target byte-equal) ---------
 test('T7 skillTarget unchanged for claude/gemini/codex (default skills subdir)', () => {
   const fakeHome = path.join(os.tmpdir(), 'agy-test-home-fixed');

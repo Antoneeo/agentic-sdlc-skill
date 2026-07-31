@@ -392,11 +392,17 @@ surface.
       prefixes); `init.js` sibling path additive + create-only, `test_clients.js` TS11
       (3 cases, 11/11 green); Component Map rows (Doctrine, Template source, Project
       seeder) + C5 under `## Patterns`; ADR; both indexes regenerated. Batteries 75/75.
-- [ ] **P2 — Core + rule sets.** `sdlc_core.py` (sections-data ×3, check registry,
-      project-default resolution, per-domain ids, syntactic column predicate);
-      code+knowledge check implementations; battery split against the measured 13-test
-      set; TS1 fixture + baseline **before the first edit**; `ENFORCEMENT.md` recipe +
-      TS12; `files[]` + packed assertion. **TS1 green before anything else proceeds.**
+- [x] **P2 — Core + rule sets.** TS1 corpus + baseline captured from the pre-change
+      validator and committed BEFORE the first edit (`25a2367`), then green through
+      every step after it. `sdlc_core.py` carries the spine (sections-data ×3, check
+      registry, project-level default resolution, per-domain ids, syntactic column
+      predicate, `section_body`); `sdlc_check.py` is the thin code entry point and
+      implements `code.threat_model` + `knowledge.sources`; `test_domain_rules.py`
+      (TS2/TS3/TS4/TS10/TS13, 16 cases); TS9's static half in the invariant battery and
+      its behavioural half in `evals/scenarios/domain_router_verdicts.md`;
+      `ENFORCEMENT.md` recipe rewritten + TS12; `files[]` + TS7's file-list half in the
+      node battery. **102 python + 12 node, green.** Battery profile split deferred to
+      P3 (see the Diary).
 - [ ] **P2b — Root parameter.** Own impact map. Prerequisite of P4 and C7.
 - [ ] **P3 — kb on the core.** Overlay rebuilt; `review.md` split; kb gate green; core
       hash checkpoint in the Diary.
@@ -488,8 +494,36 @@ who did nothing are not paying for this refactor.
   written by another lens already existed. TS11's three cases assert precisely that:
   the seed, the create-only survival of an edited default, silence when no sibling is
   installed, and the untouched sentinel pointer when one is.
-- **Open:** nothing blocking. P2 next, and it starts with TS1: capture the golden
-  fixture and the baseline from the **pre-change** validator BEFORE the first edit to
-  `sdlc_check.py` — after the first edit the baseline is worthless.
-- **Next step:** P2. Before P2b, its own impact map (the 49 root occurrences are
-  sampled here, not enumerated).
+- **2026-07-31 — P2 shipped.** The order was the point: the golden corpus and its
+  baseline were captured from the **pre-change** validator and committed on their own
+  (`25a2367`) before `sdlc_check.py` was touched, so every later step had something
+  real to be measured against. The split itself is a `git mv` — `sdlc_check.py` became
+  `sdlc_core.py` and a new thin entry point took the old name — which keeps the history
+  on the code and makes the diff readable. TS1 stayed byte-identical through it.
+  Four deviations from the P2 impact table, all deliberate:
+  (a) **The battery profile split moves to P3.** Only two assertions actually broke,
+  and both were pointing at the wrong module rather than at the wrong behaviour: an
+  invariant reading the validator's source (now `sdlc_core.py`) and a spy patched on
+  the entry point's re-export instead of on the core that resolves it — the second
+  would have passed on broken code, which is why it was fixed rather than relaxed. The
+  shared-vs-profile structure has no consumer until kb's overlay runs the battery, so
+  it lands with kb.
+  (b) **TS12 lives in `test_golden_regression.py`**, not in the invariant battery: it
+  must spawn the validator as documented, and the invariant battery's guarantee is that
+  it never does. `ENFORCEMENT.md` §5 claimed the whole battery was subprocess-free — a
+  claim this feature would have made false, so it was corrected rather than left to rot.
+  (c) **The Component Map's Validator row became two rows** (core + entry point): one
+  row cannot state a contract that is now split, and the split is exactly what a reader
+  needs to know before copying the file into CI.
+  (d) **`.gitattributes` gained a fixtures rule.** The corpus and the baseline are
+  compared byte for byte; a checkout that rewrote their line endings would fail TS1 for
+  a reason that has nothing to do with the validator.
+  Two portable checks ship: `code.threat_model` and `knowledge.sources`. Both add
+  findings only — TS13 asserts an imported check cannot change the owning domain's
+  error/warning contract, and that a check this distribution does not carry warns
+  visibly instead of passing.
+- **Open:** nothing blocking. P2b next and it owes its own impact map: the 49 root
+  occurrences in the core are sampled in this document, not enumerated, and
+  `test_session_start.py` enters the radius there (it reads `ORIENT_DOCS` directly and
+  carries eight hard-coded `ai_docs/` seeds).
+- **Next step:** P2b — root parameter, own impact map first.

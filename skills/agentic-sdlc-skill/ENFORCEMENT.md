@@ -14,15 +14,17 @@ python "<skill_dir>/scripts/sdlc_check.py" check
 
 ## 2. Check in CI (recommended for teams)
 
-Copy `scripts/sdlc_check.py` into the repository (e.g. `tools/sdlc_check.py`) and add to the pipeline:
+Copy **both** validator files into the repository — `scripts/sdlc_check.py` (the entry point) **and** `scripts/sdlc_core.py` (the shared core it imports) — keeping them side by side, e.g. `tools/sdlc_check.py` + `tools/sdlc_core.py`. Then add to the pipeline:
 
 ```
 python tools/sdlc_check.py validate --strict
 ```
 
+The validator ships as two files: the core carries the behaviour and is identical in every distribution of the family, the entry point names the domain. Copying only `sdlc_check.py` fails immediately with a message saying so — loudly, never as a silently green pipeline. (Copying `sdlc_core.py` alone also works: `python tools/sdlc_core.py validate --strict` behaves identically, defaulting to the code domain.)
+
 Effect: an unregenerated index, invalid frontmatter, a missing security section or incoherent states **block the pipeline** instead of relying on the agent's memory. `--strict` also fails on warnings and on a missing `ai_docs/`, so a wrong working directory cannot produce a green pipeline. This works because documents travel in the same PR as the code (Phase 5 rule).
 
-Note: the copy in the repo is the authoritative one for CI; update it when you update the skill.
+Note: the copy in the repo is the authoritative one for CI; update it when you update the skill — both files, together.
 
 ## 3. PreToolUse hook (gate on writes)
 
@@ -89,11 +91,11 @@ Gemini CLI — wire the same command into its startup-hook mechanism if present;
 **Usage notes:**
 - The hook assumes the working directory is the project root (standard Claude Code hook behavior); it also accepts `--root <path>`.
 - **Hybrid/devPNT projects**: add `--hybrid` — the hook then appends a one-line pointer to run `devpnt_mcp_get_bootstrap` for the Master Plan / Knowledge Layer and does not replicate them; the filesystem orientation (router + handoff + README) still emits.
-- Like the CI gate (§2), if you copied `sdlc_check.py` into the repo, the hook references that copy — keep it current when you update the skill.
+- Like the CI gate (§2), if you copied the validator into the repo, the hook references that copy — keep both files current when you update the skill.
 
 ## 5. Skill eval battery (release gate)
 
-**Skill development only.** `test_*.py` and `evals/` are deliberately absent from the npm `files` allowlist — they never reach an installed consumer, so this section applies to whoever builds the skill, not to a project that uses it. (Consumers get `sdlc_check.py`; §1–§4 are theirs.)
+**Skill development only.** `test_*.py` and `evals/` are deliberately absent from the npm `files` allowlist — they never reach an installed consumer, so this section applies to whoever builds the skill, not to a project that uses it. (Consumers get `sdlc_check.py` + `sdlc_core.py`; §1–§4 are theirs.)
 
 The skill self-tests its own doctrine invariants. Two layers over one scenario corpus:
 
@@ -103,10 +105,10 @@ The skill self-tests its own doctrine invariants. Two layers over one scenario c
 python -m unittest discover -s skills/agentic-sdlc-skill/scripts -p "test_*.py"
 ```
 
-It aggregates the three test files (`test_plan.py` + `test_session_start.py` + `test_skill_invariants.py`) and asserts the skill's invariants: the M4 triggers/hook/worktree doctrine is present and wired, support-file pointers resolve, and the generated indexes are idempotent. A non-zero exit **blocks the release** — a failing eval is always a real regression, never flakiness: the battery is stdlib-only, makes no model/network/subprocess call (deterministic by construction). If `test_indexes_idempotent` fails, run `sdlc_check.py index` and re-run.
+It aggregates the test files (`test_plan.py` + `test_session_start.py` + `test_skill_invariants.py` + `test_domain_rules.py` + `test_golden_regression.py`) and asserts the skill's invariants: the M4 triggers/hook/worktree doctrine is present and wired, support-file pointers resolve, and the generated indexes are idempotent. A non-zero exit **blocks the release** — a failing eval is always a real regression, never flakiness: the battery is stdlib-only and makes no model or network call. One test does spawn a subprocess — `test_golden_regression.py` runs the shipped validator over a frozen corpus, which is the only way to compare what a user actually sees; it is local, offline and deterministic. If `test_indexes_idempotent` fails, run `sdlc_check.py index` and re-run. If `test_golden_regression` fails, the validator's behaviour on an unchanged project changed: treat that as a regression until someone declares it intended.
 
 **Behavioral corpus — opt-in, non-CI.** `evals/scenarios/*.md` (declarative, model-neutral) + `evals/run_behavioral.py` seed a fixture and print a prompt + pass criteria for a human/agent to run and self-assess. Because live adherence is nondeterministic, this layer **never gates** — it is the reproducible way to check that, e.g., the consult trigger actually fires on a seeded repo (the "demonstrably" artifact).
 
 **Optional CI** (same shape as §2, not mandatory): add a `run:` step invoking the `unittest discover` command above.
 
-**T10 note:** if you copied `sdlc_check.py` and the `test_*.py` battery into the repo for CI, that copy is authoritative — keep it current when you update the skill.
+**T10 note:** if you copied the validator (both files) and the `test_*.py` battery into the repo for CI, that copy is authoritative — keep it current when you update the skill.
