@@ -14,5 +14,5 @@
 | F-019 | Parallel Handoff (workstream registry + per-feature resume files) | L3 | COMPLETED | 2026-07-27 | 2026-07-27 | solutions/ANALYSIS_parallel_handoff.md |
 | F-020 | Architect Pass (capabilities before files) | L3 | COMPLETED | 2026-07-28 | 2026-07-28 | solutions/ANALYSIS_architect_pass.md |
 | F-021 | Design Review Gate (Standalone) | L3 | COMPLETED | 2026-07-28 | 2026-07-28 | solutions/ANALYSIS_design_review_gate.md |
-| F-022 | Multi-Domain Core (one spine, three domain skills) | L3 | PLANNED | 2026-07-31 |  | solutions/ANALYSIS_multi_domain_core.md |
+| F-022 | Multi-Domain Core (one spine, three domain skills) | L3 | IN_PROGRESS | 2026-07-31 |  | solutions/ANALYSIS_multi_domain_core.md |
 | F-023 | Vision Shape Rules (rules defined by function, not by form) | L3 | PLANNED | 2026-07-31 |  | solutions/ANALYSIS_vision_shape_rules.md |

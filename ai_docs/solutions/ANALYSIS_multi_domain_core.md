@@ -1,7 +1,7 @@
 ---
 id: F-022
 feature: Multi-Domain Core (one spine, three domain skills)
-status: PLANNED
+status: IN_PROGRESS
 level: L3
 start_date: 2026-07-31
 end_date:
@@ -385,11 +385,13 @@ surface.
 - [x] **P0 — Safety.** kb work committed (`77ce756`) and bundled; single-machine
       retention risk assessed and **accepted by the owner, 2026-07-31**. Remaining
       before any repository action: confirm mkt's clone retains 3 commits + 2 tags.
-- [ ] **P1 — Contract.** Blind check on the v7 Vision text (both sections), owner
-      promotes or reverts; `routing.md` (C0+C3) + pointer and trigger line;
-      `review.md` C4(b) clause; templates (`domain:`, `checks:`, `default_domain:`,
-      id prefix); `init.js` + `test_clients.js`; `package.json` `files[]`; Component
-      Map row edits; both generated indexes; ADR.
+- [x] **P1 — Contract.** Vision v7 blind-checked and APPROVED; `routing.md` (C0+C3)
+      written and listed in `files[]`, reached from `SKILL.md` by a listing line and a
+      Rule-Zero cross-cutting bullet (which also carries C5); `review.md` restated-fact
+      clause; templates (`domain:`, `checks:`, `default_domain:`, `F-`/`K-`/`M-` id
+      prefixes); `init.js` sibling path additive + create-only, `test_clients.js` TS11
+      (3 cases, 11/11 green); Component Map rows (Doctrine, Template source, Project
+      seeder) + C5 under `## Patterns`; ADR; both indexes regenerated. Batteries 75/75.
 - [ ] **P2 — Core + rule sets.** `sdlc_core.py` (sections-data ×3, check registry,
       project-default resolution, per-domain ids, syntactic column predicate);
       code+knowledge check implementations; battery split against the measured 13-test
@@ -471,7 +473,23 @@ who did nothing are not paying for this refactor.
   self-referential Goal 7), both fixed before promotion. **P1's Vision item is therefore
   closed**: the amendment is approved and binding, and the residual Vision defects are
   F-023's, not this feature's.
-- **Open:** nothing blocking. P0 closed (owner accepted the retention residual); P1's
-  Vision item closed by the v7 promotion. P1 is execution.
-- **Next step:** P1. Before P2b, its own impact map (the 49 root occurrences are
+- **2026-07-31 — P1 shipped.** All rows of the P1 impact table are done, with two
+  deliberate deviations, both recorded rather than silently absorbed:
+  (a) the **Validator row** of the Component Map was left untouched — in P1 the
+  validator does not read `domain:`/`checks:`/`default_domain:` at all, so noting them
+  there would describe behaviour that does not exist yet; it moves with the core in P2,
+  where that row is already in the impact table.
+  (b) `init.js` seeds `default_domain: code` **through the template block**, not
+  through new code: `templateFor` already extracts the README body from
+  `templates.md`, so the frontmatter arrives with it and `writeIfNotExists` stays
+  exactly as it was (T1). The only new behaviour in `init.js` is the sibling path.
+  The sibling note is `AGENTIC_MULTI_LENS.md` — additive, not auto-loaded by any
+  client, and it carries the code ladder for hand-merging only when a protocol pointer
+  written by another lens already existed. TS11's three cases assert precisely that:
+  the seed, the create-only survival of an edited default, silence when no sibling is
+  installed, and the untouched sentinel pointer when one is.
+- **Open:** nothing blocking. P2 next, and it starts with TS1: capture the golden
+  fixture and the baseline from the **pre-change** validator BEFORE the first edit to
+  `sdlc_check.py` — after the first edit the baseline is worthless.
+- **Next step:** P2. Before P2b, its own impact map (the 49 root occurrences are
   sampled here, not enumerated).

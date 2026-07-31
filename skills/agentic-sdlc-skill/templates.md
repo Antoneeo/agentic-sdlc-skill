@@ -14,11 +14,14 @@ Every durable canonical document opens with this frontmatter: it feeds the gener
 description: One line — what the document is and when to read it.
 status: CURRENT              # CURRENT | SUPERSEDED | DRAFT | DEPRECATED
 supersedes: old_doc.md       # only if it replaces another canonical doc
+domain: code                 # optional — code | knowledge | marketing; omit in a single-domain project
 ---
 # Document Title
 ```
 
 When a doc replaces another: the new one declares `supersedes:`, the old one switches to `status: SUPERSEDED` (it stays as history, do not delete it). `sdlc_check.py validate` warns if `status` is missing or if a superseded doc is still `CURRENT`.
+
+**`domain:` — write it only when it says something.** It names the domain whose fidelity discipline the document was written under, and it *records* an answer the work already has; it never decides one. Omit it and the project default applies (`default_domain:` in `ai_docs/README.md`, absent → `code`), so a single-domain project never writes the field at all. Documents under `vision/` sit above the split and take no `domain:`. In a mixed project, a wrong or forgotten field surfaces as a validation error on the missing mandatory risk section — never as a silent pass.
 
 ## ai_docs/reference/GUIDE_[topic].md
 
@@ -72,6 +75,9 @@ Section repertoire (pick what the source supports):
 Curated must-read index, by hand (it is NOT the generated manifest). Created at init, updated rarely, only for real must-reads.
 
 ```markdown
+---
+default_domain: code
+---
 # ai_docs — reading guide
 
 Must-reads for this project, in order. The full manifest of canonical docs is
@@ -86,6 +92,8 @@ Directory purposes: `vision/` (project direction), `strategic/` (architecture an
 feature catalog), `reference/` (operative guides), `solutions/` (per-feature
 analyses, discovery-by-grep), `audit/` (audit plan and handoff).
 ```
+
+`default_domain:` is the project's answer for every document that does not declare its own `domain:`. Whichever lens's `init` created the project seeds it; a later init never overwrites it, and an absent line resolves to `code` — so every project created before this field existed keeps behaving exactly as it did. It is written once, at project level, precisely so that the same tree gets **the same verdict from every installed lens**.
 
 ## ai_docs/vision/project_vision.md
 
@@ -208,6 +216,8 @@ Only for features spanning multiple ANALYSIS documents or multiple milestones: o
 
 The frontmatter is the source of truth for the feature state (the `features_history.md` index is generated from it).
 
+`domain:` and `checks:` are optional and only earn their place in a project where more than one lens is installed (see the canonical-header note above for how an omitted `domain:` resolves). `checks:` names **portable checks** imported from another domain — e.g. `domain: knowledge` with `checks: [marketing.funnel]`. An imported check can only ADD findings, never relax what the owning domain requires, so importing one is always safe; naming a check this installation does not carry produces a visible warning, never a silent pass. `id:` is unique **within a domain**, and its prefix says which: `F-` code, `K-` knowledge, `M-` marketing. Projects that predate the prefixes keep their `F-` ids — uniqueness was already scoped to the one domain they have.
+
 ```markdown
 ---
 id: F-001
@@ -216,6 +226,8 @@ status: PLANNED
 level: L3
 start_date: 2026-06-11
 end_date:
+domain: code                    # optional — code | knowledge | marketing
+checks: [marketing.funnel]      # optional — extra portable checks to run on this document
 ---
 # Feature Analysis: [Name]
 
