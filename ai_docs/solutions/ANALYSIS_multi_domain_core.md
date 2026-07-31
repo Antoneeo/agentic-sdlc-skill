@@ -374,7 +374,7 @@ becomes domain-resolved).
 | T2 | Domain-resolving the mandatory risk check silently disables it. | Resolution is **project-level and deterministic** (C1): same answer from every entry point — the round-3 counter-case (two lenses, two verdicts on one file) is structurally closed. Absent everything → `code`, asserted by TS2. Each rule set names its own risk section (C2); TS4 asserts the **positive** case (a knowledge/marketing analysis missing *its* risk section errors). TS1 catches any change on existing artifacts. Imported checks are monotonic — they can add findings, never relax the owner's requirements. |
 | T3 | Cross-domain retrieval returns the wrong document. | C5 naming; the syntactic, tree-determined domain column in `features_history.md`. Unreached surfaces are the declared residuals above, severity stated honestly (the guide router is the mandatory-path one). |
 | T4 | Publishing ships the wrong content. | `files[]` stays an explicit per-file allowlist, **updated in the same phase that adds each file** (P1 `routing.md`, P2/P3/P4 `sdlc_core.py`); packed-file assertion joins the P2 gate; full TS7 at P7. |
-| T5 | Consolidation loses history. | mkt: `git subtree`, archive only after merge. kb: preserved by the verified bundle; **P0 stays open until the bundle leaves this machine**. The deleted GitHub remote was empty; the local work is the only copy. |
+| T5 | Consolidation loses history. | mkt: `git subtree`, archive only after merge. kb: preserved by a verified bundle plus commit `77ce756`; the single-machine retention residual was assessed and **accepted by the owner (2026-07-31)** — recorded because an accepted risk is a decision, not an oversight. The deleted GitHub remote was empty; that fact says nothing about the local work, and the two must not be conflated. |
 | T6 | Drift guard bypassed. | Guard fails CI over a named core file present in every distribution; per-file manifest; P3→P5 window declared with per-file hash checkpoints. |
 
 No new external input parsed; no authN/authZ, cryptography, network or personal-data
@@ -382,8 +382,9 @@ surface.
 
 ## Action Plan
 
-- [ ] **P0 — Safety.** OPEN until the kb bundle is copied off this machine. Confirm
-      mkt's clone retains 3 commits + 2 tags before any repository action.
+- [x] **P0 — Safety.** kb work committed (`77ce756`) and bundled; single-machine
+      retention risk assessed and **accepted by the owner, 2026-07-31**. Remaining
+      before any repository action: confirm mkt's clone retains 3 commits + 2 tags.
 - [ ] **P1 — Contract.** Blind check on the v7 Vision text (both sections), owner
       promotes or reverts; `routing.md` (C0+C3) + pointer and trigger line;
       `review.md` C4(b) clause; templates (`domain:`, `checks:`, `default_domain:`,
@@ -470,6 +471,7 @@ who did nothing are not paying for this refactor.
   self-referential Goal 7), both fixed before promotion. **P1's Vision item is therefore
   closed**: the amendment is approved and binding, and the residual Vision defects are
   F-023's, not this feature's.
-- **Open:** P0 (bundle off-machine); then P1, whose Vision item is now done.
+- **Open:** nothing blocking. P0 closed (owner accepted the retention residual); P1's
+  Vision item closed by the v7 promotion. P1 is execution.
 - **Next step:** P1. Before P2b, its own impact map (the 49 root occurrences are
   sampled here, not enumerated).
