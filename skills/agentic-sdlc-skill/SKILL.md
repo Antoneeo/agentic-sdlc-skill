@@ -16,6 +16,7 @@ Support files in the skill directory:
 - `architect.md`: the architect pass — do the components and services this feature needs already exist? Run at L3 before drafting the Impact.
 - `guides.md`: pipeline for distilling user-provided indications into `ai_docs/reference/GUIDE_[topic].md`.
 - `vision.md`: how to write a Vision a cold reviewer can actually apply — the properties that make a rule hold, the minimum operable sections, and the blind check run before promoting one to APPROVED.
+- `routing.md`: which lens owns this unit of work. Read ONLY when a sibling lens skill is installed alongside this one; a single-lens install never reads it.
 - `scripts/sdlc_check.py`: mechanical validator for `ai_docs/` (`check`, `validate`, `index`, `stale`, `mark`, `gate`, `plan`, `orient`).
 - `ENFORCEMENT.md`: optional setup for CI and hooks.
 
@@ -47,6 +48,7 @@ Always classify the request before choosing the process. Declare the chosen leve
 | **Spike** | Time-boxed exploration to reduce uncertainty | Code not mergeable into main. Outcome in `ai_docs/solutions/SPIKE_[topic].md`. For production, reclassify as L2 or L3. |
 
 Cross-cutting rules:
+- **Domain routing (multi-lens installs only).** After the level is set, and only when a sibling lens skill of this family is installed (`kb-agentic`, `mkt-agentic-sdlc`), run the router in `routing.md` for every L2, L3 and Spike: it decides which lens's method and validation rules govern this unit of work. L1 never reaches it, and a single-lens install never reads the file — detection fails open. In such a project, never refer to a document whose meaning differs by lens ("threat model", "vision", `principles.md`, `handoff.md`) by its bare name: qualify it with its domain, or name its path.
 - Parsing of external input, authN/authZ, cryptography, networking, personal data and filesystem access are security-sensitive: never L1.
 - If a bigger impact emerges during L1/L2 work, stop, reclassify and declare it.
 - When in doubt, pick the higher level.

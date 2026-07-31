@@ -35,6 +35,7 @@
     "skills/agentic-sdlc-skill/elicitation.md",
     "skills/agentic-sdlc-skill/review.md",
     "skills/agentic-sdlc-skill/dispatch.md",
+    "skills/agentic-sdlc-skill/routing.md",
     "skills/agentic-sdlc-skill/ENFORCEMENT.md",
     "skills/agentic-sdlc-skill/scripts/sdlc_check.py",
     "gemini-extension.json",

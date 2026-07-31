@@ -125,6 +125,15 @@ When you are the reviewer:
   statement is the proof the check ran; an unfalsifiable "I checked" is the review
   theater this discipline exists to prevent (the reviewer-side twin of §Receiving's
   silent-drop rule). Plain code reviews stay findings-only.
+- **Restated facts (cite, never copy).** Every governance slot has ONE owning document
+  per project. A fact restated in the artifact under review when another document owns
+  it is a **finding**: the fix is a citation naming the owner, not a better copy. This
+  binds the conformance statement too — where a constraint is satisfied by another
+  document, name that document as the evidence instead of repeating what it says. Two
+  copies of one fact diverge at the first edit, and the reader then has no way to tell
+  which one is current. The rule bites hardest across domains, where the same slot
+  ("threat model", "vision", "handoff") carries a different meaning under each lens and
+  a copy looks like an independent second source.
 - **Capability Ledger (same reviews).** **An L3 impact/solution analysis or design
   that carries NO Capability Ledger is itself a finding** — the architect pass left
   no record, and "the artifact does not have one" is what a skipped pass looks like,

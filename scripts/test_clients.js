@@ -26,6 +26,77 @@ const { execFileSync } = require('child_process');
 const LIB_PATH = require.resolve('./lib');
 const POSTINSTALL = path.join(__dirname, 'postinstall.js');
 const PREUNINSTALL = path.join(__dirname, 'preuninstall.js');
+const INIT = path.join(__dirname, 'init.js');
+
+// --- TS11 helpers: run init.js in a throwaway project dir with a stubbed home.
+// `siblingDirs` are created under <home>/.claude/skills/ so the sibling-lens probe
+// sees exactly what the test intends, independent of what is installed for real.
+function runInit(projectDir, { siblingDirs = [] } = {}) {
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-init-home-'));
+  const claudeHome = path.join(home, '.claude');
+  fs.mkdirSync(path.join(claudeHome, 'skills'), { recursive: true });
+  for (const d of siblingDirs) fs.mkdirSync(path.join(claudeHome, 'skills', d), { recursive: true });
+  const env = { ...process.env, HOME: home, USERPROFILE: home, CLAUDE_CONFIG_DIR: claudeHome };
+  delete env.GEMINI_HOME;
+  delete env.CODEX_HOME;
+  delete env.ANTIGRAVITY_HOME;
+  try {
+    execFileSync(process.execPath, [INIT], { cwd: projectDir, env, stdio: 'ignore' });
+  } finally {
+    fs.rmSync(home, { recursive: true, force: true });
+  }
+}
+
+// --- TS11: init seeds default_domain once, stays create-only, sibling path additive ---
+test('TS11 init seeds default_domain in ai_docs/README.md and never overwrites it', () => {
+  const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-init-proj-'));
+  try {
+    runInit(proj);
+    const readme = path.join(proj, 'ai_docs', 'README.md');
+    const first = fs.readFileSync(readme, 'utf8');
+    assert.match(first, /^---\r?\ndefault_domain: code\r?\n---/,
+      'README frontmatter must open with default_domain: code');
+
+    // A project that edited its own default must survive a second init (create-only).
+    fs.writeFileSync(readme, first.replace('default_domain: code', 'default_domain: knowledge'), 'utf8');
+    runInit(proj);
+    assert.match(fs.readFileSync(readme, 'utf8'), /default_domain: knowledge/,
+      'a second init must not overwrite an existing README (T1: create-only)');
+  } finally {
+    fs.rmSync(proj, { recursive: true, force: true });
+  }
+});
+
+test('TS11 no sibling lens installed: no multi-lens note is written', () => {
+  const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-init-solo-'));
+  try {
+    runInit(proj);
+    assert.ok(!fs.existsSync(path.join(proj, 'AGENTIC_MULTI_LENS.md')),
+      'single-lens install must cost nothing: no note, no ceremony');
+  } finally {
+    fs.rmSync(proj, { recursive: true, force: true });
+  }
+});
+
+test('TS11 sibling lens installed: the note is additive and the protocol pointer is untouched', () => {
+  const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-init-multi-'));
+  try {
+    // A protocol pointer written by the OTHER lens's init, carrying its own ladder.
+    const sentinel = '# Written by the knowledge lens — do not touch\n';
+    fs.writeFileSync(path.join(proj, 'CLAUDE.md'), sentinel, 'utf8');
+
+    runInit(proj, { siblingDirs: ['kb-agentic'] });
+
+    assert.strictEqual(fs.readFileSync(path.join(proj, 'CLAUDE.md'), 'utf8'), sentinel,
+      'init must never overwrite a user/sibling-authored protocol pointer (T1)');
+    const note = fs.readFileSync(path.join(proj, 'AGENTIC_MULTI_LENS.md'), 'utf8');
+    assert.match(note, /kb-agentic/, 'the note names the detected sibling');
+    assert.match(note, /routing\.md/, 'the note points at the domain router');
+    assert.match(note, /Merge step owed/, 'a pre-existing pointer means a merge is owed');
+  } finally {
+    fs.rmSync(proj, { recursive: true, force: true });
+  }
+});
 
 // Load a fresh copy of lib.js under a given env override. lib.js reads env +
 // os.homedir() at require time, so we clear the require cache and (optionally)
