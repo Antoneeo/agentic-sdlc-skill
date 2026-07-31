@@ -26,6 +26,7 @@ from types import SimpleNamespace
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import sdlc_check as sc  # noqa: E402
+import sdlc_core  # noqa: E402  the module that OWNS the behaviour under test
 
 
 def orient_args(root=None, hybrid=False):
@@ -144,17 +145,20 @@ class OrientTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             seed(d, "ai_docs/README.md", "README-BODY")
             calls = []
-            real = sc.confine_under
+            # Patched on the CORE, not on the entry point: cmd_orient resolves
+            # confine_under in the module that defines it, so patching the thin
+            # re-export would spy on nothing and the test would pass on broken code.
+            real = sdlc_core.confine_under
 
             def spy(base, rel):
                 calls.append(rel)
                 return real(base, rel)
 
-            sc.confine_under = spy
+            sdlc_core.confine_under = spy
             try:
                 rc, _ = run_orient(root=d)
             finally:
-                sc.confine_under = real
+                sdlc_core.confine_under = real
             self.assertEqual(rc, 0)
             self.assertEqual(calls, [rel for _, rel in sc.ORIENT_DOCS])
 
