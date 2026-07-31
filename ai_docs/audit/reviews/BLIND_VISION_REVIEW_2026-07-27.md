@@ -481,3 +481,379 @@ Accept-side: additional AI client · validator bug fix · generated glossary · 
 multi-person approval with audit trail · token-cost reduction · second package manager ·
 a new triage level.
 
+## Round 7 — 2026-07-31, the v7 amendment (gate lens, 8-item battery)
+
+First blind round run on an **amendment** rather than a promotion, and the first whose
+subject changed shape: the North Star went from describing one skill to describing a
+family built from one shared core (F-022). Verdict **PASS — conditional**, 9 findings,
+4 successful rewords. All eight battery items ruled correctly, including the
+class-vs-instance attack that defeated an earlier version — but it survived only on
+the head phrase "the product as a whole", with the stale singular appositive beside it
+as the foothold.
+
+**The result worth carrying forward: an amendment is under-propagated by default.**
+Changing the subject from an instance to a class left four operative sentences speaking
+of the instance. Three of the four successful rewords existed *only* in that gap — they
+were not defects of the original drafting. The amendment strengthened the North Star's
+statement and weakened the Non-Goals' grip, because the Non-Goals had been drafted
+against a singular subject and were not re-read against the new one. **Any future
+amendment re-reads every prohibition against the amended subject before it ships.**
+
+### New standing fixtures (all four reworded attacks — keep in every future battery)
+
+1. **Aggregation board dressed as an operative guide.** A "Project Model Guide" whose
+   body is one row per document carrying only fields the Vision admits (own lifecycle
+   state, own declared progress), in the manifest's own order, with no sorting,
+   grouping or filtering, and named as distilled from the ANALYSIS documents it
+   describes. Introduces no forbidden *key* and performs no presentation transform; the
+   readiness capability arrives via Ctrl-F. **Defeated the closure as written** — it
+   banned keys and transforms, never aggregation. Closed in v7 (collection into a
+   single surface is itself the forbidden capability). *Class: assembling permitted
+   parts into the prohibited whole.*
+2. **Ceremony ratchet through an undefined L1.** A non-code sibling declares — truthfully
+   — that its domain contains no L1, because L1 is defined in lines and files; the only
+   unconditional rule ("a trivial change stays one step") then has no domain of
+   application, and the budget half is satisfied by two sentences of disclosure. Closed
+   in v7 (each sibling restates the boundaries in its own units). *Class: a definition
+   stated in one domain's units becomes inapplicable when the subject widens.*
+3. **Fork by carve-out rather than by rename.** A `sec-agentic` sibling that renames
+   nothing but subtracts a scope the parent already governs ("security-sensitive work
+   is never L1"), with nothing requiring the same change to remove it there — two triage
+   authorities over one kind of work. Closed in v7. *Class: a prohibition written around
+   a single verb of misconduct ("merely renames") misses the adjacent verb.*
+4. **Non-Goal escaped by deixis.** Ship the sibling from its own repository and vendor a
+   competitor-format importer there: the prohibition and its mechanical test both said
+   "here" / "this repository", which lost its unique referent the moment the product
+   became a family. Closed in v7. *Class: a rule indexed to a location rather than to
+   the product.*
+
+### The anatomy, restated by this round
+
+> Everything that defeated the attacker defines the forbidden thing by **the question it
+> answers**, **the counterfactual it satisfies**, or **the evasion it forecloses** — all
+> properties the proposer does not control. Everything that got through defines by
+> **shape**: a presentation transform, an appositive enumeration, a deictic location, a
+> single verb of misconduct. **Shape is exactly what a proposer controls, so a
+> shape-based rule is a specification for its own bypass.**
+
+Undefeated again, and why: the closed-by-intent key clause (closes by the question the
+artifact answers, then voids rename/re-present/relocate in one line); the paid-layer
+clause (names the evasion instead of defining the category); "omission resolves against
+the proposal" (inverts the burden of proof, so the attacker must state the fact that
+convicts them); the anti-laundering clause on the exemption; "an accepted change never
+silently falsifies this document" (which is what forced this very amendment into the
+open); and Non-Goal 3's third-party counterfactual — whose *logic* held and whose
+*deixis* did not.
+
+### Refused this round, still open
+
+- **Unscoped default-deny.** "Anything this document does not reach is out until it
+  does", read literally, rejects accept-side proposals on any topic the Vision does not
+  address — packaging, repository topology, distribution — making the gate reject-only
+  in under-specified territory. Proposed fix: scope it to "anything that adds or changes
+  what the product does". Not adopted in v7: it is pre-existing, it did not bite any
+  battery item, and narrowing an admission rule deserves its own round.
+- **"Plan" carries three incompatible senses** — forbidden work-ordering, the mandatory
+  L3 gate step, and a knowledge sibling's deliverable — with nothing distinguishing
+  them. Proposed fix: "a plan that sequences the steps of one change is intent and is
+  in; a plan that sequences or assigns work across changes, documents or people is a
+  record of work and is out." Pre-existing; carried forward.
+
+## Round 8 — 2026-07-31, confirming round on the round-7 fixes
+
+Verdict **FAIL**. The four round-7 fixtures were re-thrown at the corrected text and
+**all four got through again**, two of them as restatements of the very idea the fix
+had closed. Seven new classes on top. This is the pattern `vision.md` §7 names as the
+specific waste to avoid, and it produced the session's most useful result:
+
+> **The round-7 fixes were all defined by shape, and shape is what the proposer
+> controls.** Closing a wording closes one instance of a class.
+
+### How each round-7 fix was defeated
+
+1. **Aggregation → derivation.** R7 closed *collecting stored state into one surface*.
+   R8 stores nothing: an **operative guide** recording a standing user instruction —
+   *"when I ask where to resume, read the manifest and each document's frontmatter and
+   tell me which to open first"* — derives the forbidden answer on demand and writes it
+   nowhere. The vehicle is blessed by name in the North Star, so the document supplied
+   the laundering mechanism. *The prohibition's subject was three storage/presentation
+   forms; the capability was never in the storage.*
+2. **Empty L1 → shrunken L1.** R7 required each sibling to *name* a non-empty L1. R8
+   names one — truthfully — so narrow (typography only) that the domain's commonest
+   small edit, correcting a wrong date, is L2 and pays a written analysis. *The bound
+   party was left writing the binding.* Second half: L1's ceremony is *"one step"*, a
+   count, so arbitrary cost rides inside the permitted step.
+3. **Carve-out → nominal removal, and the wrong vehicle entirely.** R7 required the
+   same change to remove the carved-out work from the parent. R8 removes it *nominally*
+   — the review discipline is in the shared core, so it returns to the parent the moment
+   the sibling ships. Worse variant: ship the second triage authority as a **devPNT
+   feature**, which the rule never reaches because the rule was anchored to the *sibling
+   form*. *Removal was tested for occurrence, not for effect; the harm was named as
+   rationale, and rationale does not bind.*
+4. **Deixis → no file at all.** R7 replaced "here" with "any repository we ship from".
+   R8 deletes the file: a guide instructing the agent to infer a competitor's export
+   format at read time passes the mechanical test — no file changes when they release —
+   while delivering exactly the interoperability the rule forbids. Two further escapes
+   in the same rule: the class *"a tool we compete with or borrow from"* is
+   self-declared, so it never attaches to issue trackers (which the Non-Goals forswear
+   *being*); and an adapter generated into the user's own repository is by definition
+   not in a repository we ship from.
+
+### New classes (kept as fixtures)
+
+- **Two conflicting defaults.** *"Anything this document does not reach is out"* vs
+  admit-on-advance. Every attack passes under one and fails under the other — and so do
+  the consolidation and a knowledge sibling. The gate is simultaneously bypassable and
+  reject-only depending on which sentence is reached for. **Critical.**
+- **Admit narrow, grow by maintenance.** Admission runs once; the next quarter's
+  extension enters as *"maintaining a capability the product already has"*, which is
+  exempt. **There is no re-admission on scope growth: every sibling is a beachhead.**
+- **The exemption is self-declared with one closed door** — only "a fix to something
+  that should never have shipped" is foreclosed; "improving performance" and
+  "maintaining a capability" are unbounded.
+- **Any stated fact neutralized by bundling its amendment** — the amendment has no gate
+  of its own, so it can ride along with the capability it authorises.
+- **Core-multiplied ceremony** — cost is counted per change, not per domain that pays it.
+- **Unverifiable grounds** — admission may rest on a Goal or Success Signal, and the
+  applicable extract carries neither; assertion cannot be checked.
+- **Actor `Good UX =` clauses as a universal solvent** — broad enough that every attack
+  above qualified on one, honestly.
+
+### Disposition
+
+Fixed in v7 (by function, not by wording): the sibling admissibility gate **removed**
+from the North Star; *one triage authority per kind of work* added as a Non-Goal,
+vehicle-independent and effect-tested; work-management restated by the question
+answered, closing derivation and shipped procedures; the competitor rule restated as a
+counterfactual over behaviour with an objective class test; each sibling's L1 boundary
+ruled by the owner and required to cover its domain's commonest small change, with L1's
+step limited to checks that predate the boundary.
+
+Carried to `solutions/ANALYSIS_vision_shape_rules.md` (F-023): the two conflicting
+defaults, re-admission on scope growth, the self-declared exemption, the ungated
+amendment, disclosure-by-enumeration, and the fifteen residual shape-defined rules the
+reviewer enumerated. Not fixed here on purpose — they predate the family, and rewriting
+half an approved Vision inside a consolidation feature would put that rewrite beyond
+the reach of its own gate.
+
+## Round 9 — 2026-07-31, the function-restated rules under attack (round cap)
+
+Verdict **FAIL**, 16 findings, 10 residual shape rules. **But the controls were
+stopped**: every attack that won rounds 7 and 8 — the manifest-order view, the
+derivation guide, the empty L1, the carve-out with nominal removal, the devPNT-shipped
+second authority, the different repository, the deleted file with infer-at-read-time —
+now fails against the named line. The restatement worked where it was applied. The new
+landings are at **new** shapes, three of which the restatement itself introduced.
+
+**Author error, recorded so the log is not trusted wrongly:** finding N1 ("the gate
+cites `## Goals`, `## Success Signals` and `## The user's guarantee`, none present") is
+**invalid**. Those sections exist in the document; the excerpt pasted to the blind
+reviewer omitted them. The battery must paste the whole gate or state what it omits —
+a reviewer who cannot open files cannot distinguish an absent section from an
+un-pasted one. Downstream, the "UNDECIDABLE" ruling on the portable-checks proposal
+rests partly on N1 and is weaker than it reads.
+
+### The anatomy, third statement — now precise enough to author against
+
+> Everything that held **quantifies over effects in the delivered system and puts the
+> burden on the proposer**. Everything that fell **indexes by authorship, by artifact
+> identity, by output vocabulary, by counterparty category, by a moment in time, or by
+> a single exemplar**.
+
+Undefeated, with the property that saved each:
+- **the coupling counterfactual** — quantifies over an observable dependency of
+  behaviour on an external party's choices, so it is *closed under change of
+  representation*: file, adapter, generated artifact, prose procedure and
+  infer-at-read-time all fail it identically, because it never says where coupling lives;
+- **"any path — including the shared core — still returns that work to it"** —
+  quantifies over *paths in the delivered system* rather than declared structure, so
+  nominal removal, indirection and re-export are all reachability-preserving; paired
+  with "two authorities that agree today are still two", which refuses a present
+  behavioural coincidence as a structural guarantee;
+- **"a cost that varies but is never zero"** — a numeric invariant on the *outcome*,
+  so no small addition survives; it fell only because the invariant is pinned to a set
+  (L1) whose *membership* stayed mutable — the attack moves work out instead of cost in;
+- **"omission resolves against the proposal"** — reallocates the burden of proof, so
+  attacking past it requires asserting a falsehood, a categorically detectable act.
+
+### New fixtures (keep)
+
+- **A3 — the user's own standing instruction.** Non-Goal 1 is scoped by *authorship*
+  ("anything **we** ship, generate or instruct"). A user-authored `GUIDE_working_order.md`
+  recording "refresh payments, then auth; never start an analysis while one is
+  IN_PROGRESS" answers the forbidden question in every session — and the product ships
+  only the citation discipline that makes it inherited. *Class: a rule restated by the
+  question answered, then re-indexed by who authored the answer.*
+- **A4 — ship the prohibited view as the manifest.** The consequence forbids collecting
+  per-document state into one surface; the next sentence permits exactly that under the
+  name "manifest". The differentiator reduces to what the artifact is called.
+- **B2 — one inhabitant satisfies L1.** "The change that domain performs most often" is
+  a single-exemplar test, not a coverage test: keep that one change in L1 and route the
+  rest out by category ("work touching a source cited by a guide is never L1"), copying
+  the document's own approved never-L1 move.
+- **B3 — grandfather the check by sequencing.** "Checks the domain already ran before
+  that boundary was drawn" is time-indexed: ship the check first as "improving a
+  validator" (exempt), define the boundary after.
+- **B4 — the budget has no running total.** Per-proposal disclosure is individually
+  admissible forever; the aggregate is the ratchet the heading forbids, and nothing
+  ever counts the sum.
+- **C2 — overlap by artifact, not by scope.** Siblings are individuated by fidelity
+  discipline; "kind of work" is never defined. A guide recording a user's standing
+  instruction is simultaneously a code-domain guide and a user-supplied document, so
+  two admissible siblings rule the same change.
+- **C3 — rule in a different vocabulary.** Non-Goal 2 asks whether two things could rule
+  a change *to different levels*; an authority emitting a non-level verdict (which skill
+  owns it, which artifacts are required) escapes.
+- **D2 — the AI-client carve-out** is a counterparty category with no counterfactual and
+  no depth bound: a rival that also ships as a client is exempt, and the exemption
+  reaches past the loader interface it was justified by.
+- **D3 — the standards-body indirection.** The counterfactual names *their release*; a
+  format donated to a spec body they steer changes without their release changing.
+
+### Disposition
+
+Fixed in v7: the sibling sentence's "and nothing else" enumeration, which literally
+forbade the portable-check import designed in F-022 — now "only what its own fidelity
+discipline requires… a document owned by one domain may import another's checks;
+importing can only add findings, never relax what its owner requires."
+
+Everything else → **F-023**. The amendment under review — that the product ships as a
+family of skills from one shared core — was **never attacked in three rounds**; every
+landing was against a prohibition, and all but two predate the family.
+
+## Round 9-bis — the same round, re-run on the COMPLETE gate
+
+**Round 9 was run on a broken instrument and is VOID.** The excerpt pasted to the
+reviewer omitted `## Goals`, `## The user's guarantee` and `## Success Signals` — half
+the veto limb of the admission test. Nine attacks were scored as landing against a
+half-gate. **Rule for every future battery: paste the whole gate, or state exactly what
+is omitted. A reviewer who cannot open files cannot distinguish an absent section from
+an un-pasted one, and will report the second as the first.**
+
+Re-run verdict: **FAIL — 7 of the 9 survived the complete text.** So the instrument
+error had cost little: A3 (user-authored ordering guide) and A4 (readiness surface
+shipped as a second manifest) are genuinely stopped by wording that was present all
+along. The other seven stand.
+
+### The finding the earlier runs could not see, because the gate was not in the room
+
+**The amendment made the North Star declare a family the admission test cannot admit.**
+All six Goals, all three Actors and all six Success Signals were stated at
+software-methodology altitude. The test admits only what *"advances at least one Goal,
+Actor commitment or Success Signal"*, and the clarification is explicit that a
+well-formed proposal moving none of them is scope creep. A knowledge sibling therefore
+ruled **REJECT** — the document's own flagship expansion, refused by its own gate.
+Author's defect, introduced by the amendment: the *description* of what ships was
+changed and the *gate* was left unable to admit it.
+
+Fixed in v7 (this is the amendment's missing half, not F-023 scope): a seventh Goal —
+carrying the spine into a domain the family does not yet reach advances the family —
+and a fourth Actor, **Practitioner in a non-code domain**, whose Good UX names the
+real commitment (same levels and gates, restated in their own units, never asked for an
+artifact that only makes sense for code). Also fixed: **every document has exactly one
+owning domain**, with the tie-break stated (the owner is the domain whose fidelity
+discipline names the source the document was written from) — the earlier text
+presupposed ownership without ever assigning it, so Non-Goal 2 resolved a two-claim
+artifact by *rejecting the sibling* instead of by naming the owner.
+
+**Untested:** those three fixes have not been through a blind round. The accept-side
+item they exist to flip (a knowledge sibling: REJECT → ADMIT) is F-023's first battery
+item.
+
+### New fixtures from the complete-gate run (keep)
+
+- **A5 — the document mandates what it forbids.** Success Signal 3 requires
+  `sdlc_check.py stale` to flag guides whose source moved: a cross-change, generated,
+  filtered list of non-current documents. Non-Goal 1 forbids exactly that
+  ("sorting and filtering nothing, is still out"; "reorganized… to answer what to do
+  next"), and the admission test is *conjunctive*, so advancing a Signal cannot license
+  a Non-Goal violation. The missing principle: a **per-document verdict** (permitted,
+  however delivered) versus a **cross-document selection** (banned). The document draws
+  that line by field enumeration and ordering — shape.
+- **N1 — the guarantee's dividing line is anchored to hardware, not data.** *"Could a
+  single user get this from their own data **on their own machine**?"* — so implement a
+  single-user outcome only against compute too large for a laptop and the whole clause
+  switches off. The enumerated bullet is phrased data-side ("an outcome the user's own
+  data can give them"); the paragraph the document calls "the dividing line" is phrased
+  machine-side. The attack lives in that seam. **The guarantee's largest hole, and it
+  had never been attacked before this run.**
+- **N2 — gate by proxy through the client.** The effect-definition of charge closes at
+  *"anything else the user must give, accept or obtain **from us**"*, and the
+  no-network bullet's own parenthetical declares client choice out of scope. Ship a
+  skill capability that depends on a client-provided hosted feature: the account is the
+  client's, and no clause reaches it.
+- **N3 — rank objects that are not documents.** The banned question enumerates
+  *"documents or units of work"*. A board ranking signals, subsystems, areas or risks
+  answers what to do next and is not reached.
+- **N5 — required reading is outside the budget.** The budget counts *"artifact, field
+  or check"*; two thousand words added to the always-loaded core add none of the three,
+  while Goal 4 explicitly calls loaded instructions part of the price — and the core is
+  *"authored once and distributed into each"*, so one unbudgeted edit lands on every
+  sibling's L1.
+- **N6 — no Signal checks the guarantee.** The Signals are the document's stated
+  mechanism for being checkable by a stranger; the strongest-drafted section of the
+  document is its least observable.
+
+### The anatomy, confirmed against the complete text
+
+Undefeated, and the property that saved each: Non-Goal 1's core sentence
+(*question-anchored, realization-quantified, storage-neutral* — every form-shift died on
+one clause); the admission test's **conjunction** (*no balancing*: a benefit can never
+purchase a prohibition — which is why A5 surfaces as a contradiction rather than a
+licence); *omission resolves against the proposal* (*the default on missing information
+is failure, applied to the escape hatch too*); the guarantee's effect-definition plus
+its anti-bundling worked example (*defined by what the user loses, closed under
+repackaging* — it fails only where its antecedent is hardware rather than data);
+Non-Goal 2's failure-state test (*names the outcome to prevent, pre-closes the delivery
+paths*); Non-Goal 4's counterfactual (*behavioural and simulable, location quantified
+away* — it fails only where it stops being behavioural and names a counterparty).
+
+## Round 10 — 2026-07-31, narrow: the three clauses that made the family admissible
+
+Five questions, no re-attack of the rest. **The two that mattered came out right**, and
+that is what promoted v7:
+
+- **A knowledge sibling now rules ADMIT on its merits** (Goal 7's advancement half;
+  Actor 4 names its domain verbatim, which also clears the *"anything this document does
+  not reach is out until it does"* backstop). Its nearest miss — the word "plans"
+  against Non-Goal 1 — is refused *before* Non-Goal 1 has to act, by Goal 7's own
+  *"adding no capability the family lacks"*: the family's "plan" is the in-change plan,
+  so a work-record plan is a capability it lacks.
+- **`pm-agentic` is still refused, three times over**, so opening the door to the family
+  did not open it to work management. Notably Goal 7 refuses it on its own terms, by the
+  same clause.
+
+Two BLOCKs inside the new clauses, both fixed the same day:
+
+- **Ownership was capturable.** *"declared in its own frontmatter … where two domains
+  could each claim a document, the owner is the one whose fidelity discipline names the
+  source"* — the tie-break sat in **third position**, reached only when nothing was
+  declared. So a sibling could instruct its agent to write `owning_domain:` on documents
+  another domain governs and never reach the test the sentence exists to run. The import
+  guard (*"importing … can never relax what its owner requires"*) is vacuous against
+  this: it binds **importers**, and the attack changes *who the owner is*. Fixed: the
+  criterion decides, frontmatter records, a contradicting declaration is void, and
+  changing a document's owner is itself a change to what the product does. *Class: a
+  test placed after the thing it was meant to test.*
+- **Goal 7 was self-referential.** *"advancing the family is advancing this Goal"* made
+  the family's **size** the moved thing — contradicting the admission test's own
+  *"ask what changes for the reader or the user"*, and converting the document's named
+  paradigm of scope creep into an advancement. Demonstrated with three siblings
+  (`research-`, `note-`, `email-agentic`), each clearing Goal 7 word for word while
+  degrading Goals 4 and 6. Fixed: what moves is the practitioner's work, and a proposal
+  must name the practitioner and what they do today without the sibling. *Class: a Goal
+  whose measure is its own satisfaction.*
+
+Also fixed: *"an artifact that only makes sense for code"* was the **only** normative
+phrase in the additions shipping without a test attached — every comparable line in this
+document carries one — and it functioned as unlimited removal credit for the ceremony
+budget. Now: *an artifact only makes sense for code when a practitioner in that domain
+cannot name what it would be faithful to.* And a new sibling's own L2/L3 artifacts are
+declared that domain's ceremony, not a charge against another domain's budget — an
+ambiguity on which two competent reviewers could have ruled the knowledge sibling
+oppositely.
+
+**Standing lesson for this battery, from round 9's void run:** paste the whole gate, or
+state exactly what is omitted. A reviewer who cannot open files reports an un-pasted
+section as an absent one, and nine attacks were scored against half a veto limb.
+

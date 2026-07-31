@@ -13,7 +13,7 @@ not manifested here.
 | `vision/features/VISION_agentic_sdlc_vnext.md` | CURRENT | Feature vision for the vNext evolution (triage, support files, mechanical validation, devPNT symbiosis) delivered in 1.5.0/1.6.0. |
 | `vision/features/VISION_vision_governance.md` | CURRENT | Feature vision for the Vision governance layer (ai_docs/vision/, Vision Gate) delivered in 1.4.0. |
 | `vision/principles.md` | DRAFT | Vision Principles |
-| `vision/project_vision.md` | APPROVED | (by Antonio Pinto, 2026-07-27) |
+| `vision/project_vision.md` | APPROVED | (by Antonio Pinto — v6 2026-07-27, **v7 amendment 2026-07-31**) |
 | `vision/roadmap.md` | DRAFT | Vision Roadmap |
 | `vision/roadmap_evoluzione_agenti.md` | DRAFT | Roadmap della milestone di evoluzione — subagent operativi, guide operative/KB agente, eliminazione conflitti di convivenza con devPNT e posizionamento open-... |
 | `vision/roadmap_evoluzione_agenti_v1.md` | SUPERSEDED | "Roadmap di evoluzione di agentic-sdlc: esecuzione a subagent operativi e strato di documentazione per la formazione degli agenti. Input per la prossima mile... |
