@@ -3,3 +3,8 @@
 # LF-normalized content, so source_hash survives CRLF checkouts even without
 # this rule — it remains as defense in depth for byte-level fidelity.
 ai_docs/reference/.sources/** -text
+
+# The TS1 golden corpus and its baseline are compared byte for byte: a checkout
+# that rewrote their line endings would fail the test for a reason that has
+# nothing to do with the validator's behaviour.
+skills/agentic-sdlc-skill/scripts/fixtures/** -text
