@@ -22,7 +22,7 @@ function installSkill(client) {
   }
 }
 
-console.log('\n--- Agentic SDLC Skill Discovery ---');
+console.log('\n--- KB Agentic Skill Discovery ---');
 
 let detected = false;
 for (const client of CLIENTS) {
@@ -37,6 +37,6 @@ if (!detected) {
   console.log('ℹ️  No specific AI CLI detected globally, but you can still use the skill.');
 }
 
-console.log('\nTo initialize a project with the SDLC protocol, run:');
-console.log('👉 npx agentic-sdlc-init');
+console.log('\nTo initialize a project with the KB Agentic protocol, run:');
+console.log('👉 npx kb-agentic-init');
 console.log('------------------------------------\n');
