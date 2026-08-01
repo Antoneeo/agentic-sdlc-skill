@@ -329,10 +329,10 @@ derived-from: e_tdd_[feature] vX.Y
     {
       "id": "T1",
       "title": "Add the confine_under helper",
-      "paths": ["skills/agentic-sdlc-skill/scripts/sdlc_check.py"],
+      "paths": ["skills/kb-agentic-skill/scripts/sdlc_check.py"],
       "consumes": [],
-      "produces": ["skills/agentic-sdlc-skill/scripts/sdlc_check.py#confine_under"],
-      "verify": "python skills/agentic-sdlc-skill/scripts/test_plan.py",
+      "produces": ["skills/kb-agentic-skill/scripts/sdlc_check.py#confine_under"],
+      "verify": "python skills/kb-agentic-skill/scripts/test_plan.py",
       "guides": ["GUIDE_python_style.md"]
     }
   ]

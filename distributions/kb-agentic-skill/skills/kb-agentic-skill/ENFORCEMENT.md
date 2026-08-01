@@ -111,7 +111,7 @@ The skill self-tests its own doctrine invariants. Two layers over one scenario c
 **Static battery — the deterministic release gate.** Run before any publish:
 
 ```
-python -m unittest discover -s skills/agentic-sdlc-skill/scripts -p "test_*.py"
+python -m unittest discover -s skills/kb-agentic-skill/scripts -p "test_*.py"
 ```
 
 It aggregates the three test files (`test_plan.py` + `test_session_start.py` + `test_skill_invariants.py`) and asserts the skill's invariants: the M4 triggers/hook/worktree doctrine is present and wired, support-file pointers resolve, and the generated indexes are idempotent. A non-zero exit **blocks the release** — a failing eval is always a real regression, never flakiness: the battery is stdlib-only, makes no model/network/subprocess call (deterministic by construction). If `test_indexes_idempotent` fails, run `sdlc_check.py index` and re-run.

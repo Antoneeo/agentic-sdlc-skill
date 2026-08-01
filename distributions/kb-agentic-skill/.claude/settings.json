@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python \"skills/agentic-sdlc-skill/scripts/sdlc_check.py\" orient",
+            "command": "python \"skills/kb-agentic-skill/scripts/sdlc_check.py\" orient",
             "timeout": 10,
             "statusMessage": "Loading ai_docs orientation..."
           }

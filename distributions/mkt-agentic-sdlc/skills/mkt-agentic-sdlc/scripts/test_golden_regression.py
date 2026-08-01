@@ -104,7 +104,7 @@ class GoldenRegression(unittest.TestCase):
     def test_every_shipped_subcommand_is_covered(self):
         """A subcommand missing from COMMANDS is a subcommand nothing protects."""
         src = VALIDATOR.read_text(encoding="utf-8")
-        declared = re.search(r'choices=\[([^\]]+)\]', src)
+        declared = re.search(r'OVERLAY_COMMANDS = \(([^)]+)\)', src)
         self.assertTrue(declared, "could not read the subcommand list from mkt_check.py")
         names = {n.strip().strip('"\'') for n in declared.group(1).split(",") if n.strip()}
         covered = {argv[0] for _, argv in COMMANDS}

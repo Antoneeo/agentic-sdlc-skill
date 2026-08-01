@@ -18,7 +18,7 @@ From the overlay (unchanged behaviour, unchanged exit codes):
   index    [--root R]              (re)generate INDEX.md
 
 From the shared core (new to this distribution):
-  stale / mark / gate / orient / plan   -- the spine commands, identical everywhere
+  stale / mark / gate / orient / plan / migrate   -- the spine commands, identical everywhere
 
 Both files must sit in the same directory. Copying only this one fails at import,
 loudly, which is the intended failure.
@@ -74,8 +74,10 @@ sdlc_core.set_profile(
     design_gate_between=("### 6. Strategy", "### 8. Action"),
 )
 
-# Handed straight to the shared core: one implementation, three distributions.
-SPINE_COMMANDS = ("stale", "mark", "gate", "orient", "plan")
+# The subcommands this overlay implements itself. Anything else on the command
+# line is handed straight to the shared core, so a spine command this file never
+# heard of (as `migrate` once was) cannot be silently dropped by a stale list here.
+OVERLAY_COMMANDS = ("check", "validate", "ledger", "budget", "funnel", "trace", "index")
 
 CANONICAL_DIRS = ("vision", "strategy", "tactics", "deliverables")
 VALID_STATUS = ("CURRENT", "SUPERSEDED", "DRAFT", "DEPRECATED")
@@ -617,15 +619,15 @@ def _check_funnel(rel, meta, text):
 
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
-    # Spine commands are the core's, identical in every distribution: hand them over
-    # untouched rather than reimplementing them here, which is how the three
-    # validators diverged in the first place.
-    if argv and argv[0] in SPINE_COMMANDS:
+    # Spine commands are the core's, identical in every distribution: hand over
+    # every subcommand this overlay does not explicitly intercept, untouched,
+    # rather than keeping a hand-copied list of spine names here -- which is how
+    # `migrate` got dropped while SKILL.md kept promising it.
+    if argv and not argv[0].startswith("-") and argv[0] not in OVERLAY_COMMANDS:
         return sdlc_core.main(argv)
 
     parser = argparse.ArgumentParser(prog="mkt_check.py", description=__doc__)
-    parser.add_argument("command", choices=["check", "validate", "ledger",
-                                            "budget", "funnel", "trace", "index"])
+    parser.add_argument("command", choices=list(OVERLAY_COMMANDS))
     parser.add_argument("file", nargs="?", default=None,
                         help="optional target file for budget/funnel")
     parser.add_argument("--root", default=None, help="project root (contains the docs root)")
