@@ -263,10 +263,22 @@ end_date:
 <!-- existing files touched, APIs/contracts, performance, new dependencies.
      Derived from the ledger above: every INADEQUATE/MISSING row appears here. -->
 
-## Security and Threat Model
-<!-- ALWAYS mandatory, also in Standalone.
-     Surfaces touched: external input, authN/authZ, cryptography, network, personal data, filesystem.
-     Main threats and mitigations. "No security impact" must be justified, not declared. -->
+## Sources and Verification
+<!-- ALWAYS mandatory, also in Standalone. This is the knowledge domain's account of
+     what could go wrong, and it is the risk slot the validator requires here — the
+     code domain's `## Security and Threat Model` belongs to a different lens and is
+     not what this one owes.
+     One row per source the unit rests on: path (or URL) + locator, its provenance
+     (GIVEN handed over / ELICITED said by the user / DERIVED synthesised / RULING a
+     user decision), and HOW it was verified — cross-checked against another source,
+     confirmed by the user, or left CONTESTED.
+     A distillation whose origin cannot be reopened is model knowledge, not knowledge
+     work. If something could not be confirmed, say so explicitly: that is a state the
+     document may be in; silence is not. -->
+
+| Source | Locator | Provenance | Verification |
+|---|---|---|---|
+| corpus/given/contract-9a1f2b7c.pdf | p.17 | GIVEN | cross-checked against the signed schedule |
 
 ## Action Plan
 - [ ] ...

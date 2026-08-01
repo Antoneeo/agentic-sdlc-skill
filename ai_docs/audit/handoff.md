@@ -10,6 +10,8 @@ Date: 2026-08-01 (UTC)
 
 | F-023 Vision Shape Rules | L3 | feat/multi-domain-core | PLANNED | 2026-07-31 | split out of F-022's blind rounds: rules defined by shape rather than by function. Start with the two conflicting defaults for unreached proposals — every other ruling is operator-dependent until it is fixed | ANALYSIS_vision_shape_rules.md · battery in audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md Round 8 |
 
+| F-024 kb Knowledge Method | L3 | feat/kb-knowledge-method | IN_PROGRESS | 2026-08-01 | **the release gate — F-022 stays HELD until this is effective.** Design elicited with the owner and attacked by three independent reviewers before any code; the architecture survived, the schema was rewritten around a claim ledger. Two units: (1) method + storage — the three method files, node/corpus templates, SKILL.md wiring; (2) the `topics/INDEX.md` emitter and `graph` checks on kb's entry point, never on the shared spine. Owner-supplied corpus is the acceptance bar. Next: design review gate on the ANALYSIS, then Unit 1 | ANALYSIS_kb_knowledge_method.md (Diary) |
+
 ## Project-wide notes
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision battery:
 `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md` (re-run on every Vision edit).

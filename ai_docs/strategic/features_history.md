@@ -16,3 +16,5 @@
 | F-021 | Design Review Gate (Standalone) | L3 | COMPLETED | 2026-07-28 | 2026-07-28 | solutions/ANALYSIS_design_review_gate.md |
 | F-022 | Multi-Domain Core (one spine, three domain skills) | L3 | IN_PROGRESS | 2026-07-31 |  | solutions/ANALYSIS_multi_domain_core.md |
 | F-023 | Vision Shape Rules (rules defined by function, not by form) | L3 | PLANNED | 2026-07-31 |  | solutions/ANALYSIS_vision_shape_rules.md |
+| F-024 | kb Knowledge Method (the topic graph over a governed corpus) | L3 | IN_PROGRESS | 2026-08-01 |  | solutions/ANALYSIS_kb_knowledge_method.md |
+| F-025 | Claim Ledger (assertions with provenance, and what happens when two disagree) | L3 | PLANNED | 2026-08-01 |  | solutions/ANALYSIS_claim_ledger.md |
