@@ -18,4 +18,4 @@
 | F-023 | Vision Shape Rules (rules defined by function, not by form) | L3 | PLANNED | 2026-07-31 |  | solutions/ANALYSIS_vision_shape_rules.md |
 | F-024 | kb Knowledge Method (the topic graph over a governed corpus) | L3 | COMPLETED | 2026-08-01 | 2026-08-01 | solutions/ANALYSIS_kb_knowledge_method.md |
 | F-025 | Claim Ledger (assertions with provenance; conflicts held open, never auto-resolved) | L3 | COMPLETED | 2026-08-01 | 2026-08-01 | solutions/ANALYSIS_claim_ledger.md |
-| F-026 | Question discipline (when a question to the user is legal) | L3 | IN_PROGRESS | 2026-08-01 |  | solutions/ANALYSIS_question_discipline.md |
+| F-026 | Question discipline (when a question to the user is legal) | L3 | COMPLETED | 2026-08-01 | 2026-08-01 | solutions/ANALYSIS_question_discipline.md |

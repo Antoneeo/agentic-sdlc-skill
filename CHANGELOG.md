@@ -36,6 +36,17 @@ promise.
 - The drift guard (`shared_files.py`, `test_drift.py`): the spine is authored once
   and copied verbatim, and a forgotten copy now fails a test instead of reaching a
   user.
+- **The question discipline** (`elicitation.md`, reachable from Rule Zero): a
+  question to the user is legal only if you searched first and name the search
+  **with what it returned**, and the question names the decision or fact blocked
+  without the answer. Generic confirmations ("shall I proceed?") and
+  preference-fishing are never legal — and reversibility is not a licence to stop
+  asking about a choice the user owns. The default is non-blocking: declare the
+  assumption in the artifact, with its source and the alternative it excludes,
+  and batch the open points. Blocking is for forks where any assumption wastes
+  the work, approvals the doctrine reserves to the user, and the stops the
+  doctrine itself mandates. Applies at every level; `agentic-sdlc` only — the
+  siblings adopt it separately.
 
 ### Changed
 - The validator ships as **two files**: `sdlc_core.py` (the shared spine) and the
