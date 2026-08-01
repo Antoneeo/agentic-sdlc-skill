@@ -218,6 +218,67 @@ PORTABLE_CHECKS = {}
 _ENTRY_POINT = {"domain": DEFAULT_DOMAIN, "provides": ()}
 
 
+# --- distribution profile ----------------------------------------------------
+# Each distribution declares what it carries. The battery reads this instead of
+# assuming the code overlay, which is what lets one shared battery run in three
+# distributions without either failing on files a domain legitimately does not have
+# or quietly excusing a domain from doctrine it owes.
+#
+# REQUIRED_CAPABILITIES is the spine: process discipline that is domain-neutral, so
+# no distribution may drop it. A profile missing one fails a shared test -- editing
+# your own profile is therefore NOT a way out of the doctrine, only a way to declare
+# an overlay you genuinely do not have.
+REQUIRED_CAPABILITIES = frozenset({
+    "triage",              # Rule Zero, with the router verdict as a declared output
+    "write_triggers",      # one event, one destination
+    "workstream_registry", # audit/handoff.md as a parallel-safe registry
+    "vision_gate",         # DRAFT informs, APPROVED binds, blind check before promotion
+    "design_review_gate",  # a design reviewed by somebody other than its author
+    "guide_router",        # the mandatory pre-work lookup
+    "worktree_hygiene",    # isolate the work
+})
+# Optional overlays: real capabilities that a domain may legitimately not have.
+# Listed here so "this distribution does not claim it" is a visible decision.
+OPTIONAL_CAPABILITIES = frozenset({
+    "architect_pass",         # does the component already exist? (code overlay)
+    "taxonomy_pass",          # do the categories/topics already exist? (knowledge overlay)
+    "comprehension_guides",   # source_kind: code maps of complex components
+    "tdd",                    # test-first discipline
+    "subagent_dispatch",      # opt-in PLAN_[feature].md execution
+    "legacy_narrative_handoff",  # published before the registry format: owes a migration clause
+})
+# `unit_noun` is vocabulary, not structure: the code domain works on a "feature",
+# the knowledge domain on a "topic". The shared battery asserts the SHAPE
+# (HANDOFF_[<unit>].md) and reads the word from here, so a domain keeps its own
+# language without either weakening the assertion or forking the test.
+# `phases` are the SKILL.md workflow headings, in order. The battery asserts that a
+# gate sits between two of them; the headings themselves are each domain's wording.
+_PROFILE = {
+    "skill_name": "agentic-sdlc",
+    "unit_noun": "feature",
+    "support_files": (),
+    "capabilities": frozenset(),
+    "phases": (),
+}
+
+
+def set_profile(skill_name, support_files=(), capabilities=(), unit_noun="feature",
+                phases=()):
+    _PROFILE.update(skill_name=skill_name,
+                    unit_noun=unit_noun,
+                    support_files=tuple(support_files),
+                    capabilities=frozenset(capabilities),
+                    phases=tuple(phases))
+
+
+def profile():
+    return dict(_PROFILE)
+
+
+def has_capability(name):
+    return name in _PROFILE["capabilities"]
+
+
 def portable_check(name):
     """Register a portable check. The callable takes (rel, meta, text) and returns
     a list of (severity, message) with severity in {'error', 'warning', 'advisory'}."""
@@ -1655,6 +1716,53 @@ def cmd_orient(args):
         return 0
     except Exception:
         return 0
+
+
+# --- portable checks carried by the core ------------------------------------
+# Portable means portable: a check that any distribution may expose lives HERE, so
+# three copies of the same twenty lines cannot drift apart. What a distribution
+# actually offers is its `provides` declaration, not what it happens to have copied.
+# Domain-specific machinery (mkt's budget and funnel arithmetic) stays in its own
+# entry point -- that is the line between portable and proprietary.
+# Opt-in per document via `checks:`. They may only ADD findings: a document that
+# imports one still owes its own domain everything it owed before, so importing a
+# check can never be a way to be validated less.
+
+@portable_check("code.threat_model")
+def _code_threat_model(rel, meta, text):
+    """The security section names a real surface, or justifies claiming none."""
+    section = section_body(text, ("## Security and Threat Model", "## Security"))
+    if section is None:
+        return []  # the owning domain already reports a missing section; no double finding
+    surfaces = ("external input", "authn", "authz", "auth", "crypto", "network",
+                "personal data", "filesystem", "supply chain")
+    low = section.lower()
+    if any(s in low for s in surfaces):
+        return []
+    if "no security impact" in low or "no new security" in low:
+        if len(section.split()) < 15:
+            return [("warning", "'no security impact' is declared, not justified: "
+                                "say which surfaces you checked and why none is touched")]
+        return []
+    return [("warning", "no security surface named (external input, authN/authZ, crypto, "
+                        "network, personal data, filesystem, supply chain) and no justified "
+                        "claim that none is touched")]
+
+
+@portable_check("knowledge.sources")
+def _knowledge_sources(rel, meta, text):
+    """A knowledge artifact says what it was written from AND how that was verified."""
+    section = section_body(text, ("## Sources and Verification",))
+    if section is None:
+        return []
+    findings = []
+    if not re.search(r"(?m)^\s*[-*|]|\bhttps?://|\.(?:md|pdf|docx?|csv|xlsx?)\b", section):
+        findings.append(("warning", "no source is named: a distillation whose origin cannot "
+                                    "be reopened is model knowledge, not knowledge work"))
+    if not re.search(r"verif|cross-check|checked against|confirmed", section, re.I):
+        findings.append(("warning", "sources are listed but not verified: say how each was "
+                                    "confirmed, or mark explicitly what could not be"))
+    return findings
 
 
 # --------------------------------------------------------------------- main

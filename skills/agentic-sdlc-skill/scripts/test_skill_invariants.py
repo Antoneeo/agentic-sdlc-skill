@@ -31,6 +31,58 @@ def read(rel):
     return sc.read_text(SKILL_DIR / rel)
 
 
+def requires(capability):
+    """Guard a PROFILE-specific assertion.
+
+    Only OPTIONAL capabilities can be skipped: `test_profile_declares_every_spine_
+    capability` refuses a profile that drops a spine one, so editing your own profile
+    is never a way out of the doctrine -- only a way to declare an overlay this
+    distribution genuinely does not have. A skip here is a declared decision, visible
+    in one line of the entry point, not a silently absent test.
+    """
+    def decorate(fn):
+        return unittest.skipUnless(
+            sc.has_capability(capability),
+            f"{sc.profile()['skill_name']} does not claim the '{capability}' overlay",
+        )(fn)
+    return decorate
+
+
+class SharedProfileInvariants(unittest.TestCase):
+    """Run identically in every distribution: the profile itself is the subject."""
+
+    def test_profile_declares_every_spine_capability(self):
+        missing = sc.REQUIRED_CAPABILITIES - sc.profile()["capabilities"]
+        self.assertEqual(missing, set(),
+                         "a distribution may not drop spine doctrine by editing its own "
+                         f"profile; missing: {sorted(missing)}")
+
+    def test_profile_claims_no_unknown_capability(self):
+        known = sc.REQUIRED_CAPABILITIES | sc.OPTIONAL_CAPABILITIES
+        unknown = sc.profile()["capabilities"] - known
+        self.assertEqual(unknown, set(),
+                         f"unknown capability claimed: {sorted(unknown)} -- add it to "
+                         "OPTIONAL_CAPABILITIES in the core, so every distribution sees it")
+
+    def test_every_declared_support_file_exists(self):
+        for rel in sc.profile()["support_files"]:
+            self.assertTrue((SKILL_DIR / rel).is_file(),
+                            f"profile declares {rel}, which is not on disk")
+
+    def test_every_support_file_on_disk_is_declared(self):
+        """The other direction: an undeclared file is doctrine nothing points at."""
+        declared = set(sc.profile()["support_files"]) | {"SKILL.md"}
+        on_disk = {p.name for p in SKILL_DIR.glob("*.md")}
+        self.assertEqual(on_disk - declared, set(),
+                         "support files exist but are not in the profile: either wire them "
+                         "or delete them")
+
+    def test_the_skill_name_matches_the_manifest(self):
+        head = read("SKILL.md").split("---")[1]
+        self.assertIn(f"name: {sc.profile()['skill_name']}", head,
+                      "the profile and SKILL.md disagree about which skill this is")
+
+
 class SkillInvariants(unittest.TestCase):
 
     def test_orient_registered(self):
@@ -68,6 +120,7 @@ class SkillInvariants(unittest.TestCase):
         self.assertIn("reference/INDEX.md", read("templates.md"),
                       "the README template must seed the router as a must-read")
 
+    @requires("comprehension_guides")
     def test_code_guide_trigger_has_a_phase(self):
         """F-016 move D: the source_kind: code Write-Triggers row must name a real
         phase. Phase 'any' is nobody's phase -- the duty then never fires."""
@@ -90,16 +143,19 @@ class SkillInvariants(unittest.TestCase):
         workstream, parallel-safe), with volatile resume logistics in ephemeral
         HANDOFF_[feature].md files deleted at closure. Durable narrative stays in
         the ANALYSIS Diary (DRY)."""
+        unit = sc.profile()["unit_noun"]
         skill = read("SKILL.md")
-        self.assertIn("HANDOFF_[feature].md", skill)
+        self.assertIn(f"HANDOFF_[{unit}].md", skill)
         self.assertIn("workstream registry", skill)
         tpl = read("templates.md")
-        self.assertIn("HANDOFF_[feature].md", tpl)
+        self.assertIn(f"HANDOFF_[{unit}].md", tpl)
         self.assertIn("resume logistics", tpl,
                       "the Diary/logistics boundary must be stated in the template")
-        # a shipped format change without a migration clause strands existing projects
-        self.assertIn("pre-1.17", skill)
-        self.assertIn("pre-1.17", tpl)
+        # A shipped format change without a migration clause strands existing projects
+        # -- but only a distribution that HAS shipped one owes the clause.
+        if sc.has_capability("legacy_narrative_handoff"):
+            self.assertIn("pre-1.17", skill)
+            self.assertIn("pre-1.17", tpl)
 
     def test_vision_discipline_wired(self):
         """F-018: a Vision is a gate, and the discipline that makes it verifiable
@@ -119,6 +175,7 @@ class SkillInvariants(unittest.TestCase):
         self.assertIn("vision.md", read("templates.md"),
                       "the Vision template must point at the drafting discipline")
 
+    @requires("architect_pass")
     def test_architect_pass_wired(self):
         """F-020: the architect pass runs at L3 between elicitation and the
         Impact -- capabilities ruled against the platform before files are
@@ -152,6 +209,7 @@ class SkillInvariants(unittest.TestCase):
                       "the closure review must map the ledger, or the pass is "
                       "authored and never checked")
 
+    @requires("architect_pass")
     def test_component_map_wired(self):
         """F-020b: the pass is only repeatable across sessions if what gets built
         lands in a durable inventory. The Component Map is that inventory, and its
@@ -182,6 +240,7 @@ class SkillInvariants(unittest.TestCase):
         if arch_p.is_file():
             self.assertIn("## Component Map", sc.read_text(arch_p))
 
+    @requires("architect_pass")
     def test_unmapped_never_grounds_missing(self):
         """F-020c: on a project the methodology just arrived in, the map is nearly
         all silence. Silence is UNREAD, not EMPTY -- reading it as empty designs a
@@ -208,6 +267,7 @@ class SkillInvariants(unittest.TestCase):
         self.assertIn("unread, not empty", read("templates.md"),
                       "the map template must declare its own coverage limit")
 
+    @requires("architect_pass")
     def test_backstops_are_advisory_not_a_gate(self):
         """F-020e: the accepted ceremony budget was a SIGNAL. --strict turns
         warnings into exit 1 and ENFORCEMENT recommends it in CI, so routing the
@@ -330,8 +390,8 @@ class SkillInvariants(unittest.TestCase):
             self.assertIn(anchor, r, f"review.md missing {anchor}")
         skill = read("SKILL.md")
         self.assertIn("Design review gate", skill)
-        p3 = skill.index("### 3. Request Analysis")
-        p4 = skill.index("### 4. Development and Testing")
+        p3 = skill.index(sc.profile()["phases"][2])
+        p4 = skill.index(sc.profile()["phases"][3])
         self.assertTrue(p3 < skill.index("Design review gate") < p4,
                         "the gate must sit at the END of Phase 3, before Phase 4 -- "
                         "a design review after implementation is the closure review")
@@ -476,6 +536,7 @@ class SkillInvariants(unittest.TestCase):
         for real in ("src/a.py#Foo", "README.md", "scripts\\init.js"):
             self.assertTrue(sc._map_refs(f"`{real}`"), f"'{real}' is a real ref")
 
+    @requires("architect_pass")
     def test_ledger_backstop_bypasses_closed(self):
         """R2 WARN-4: two zero-cost bypasses -- delete the optional `level:` line,
         or mention the heading inside an HTML comment."""
@@ -521,6 +582,7 @@ class SkillInvariants(unittest.TestCase):
         self.assertFalse(sc.has_ledger_heading(body + "### Capability Ledger\n"),
                          "the section is '##', anchored")
 
+    @requires("architect_pass")
     def test_ledger_due_gating(self):
         """F-020d: the ledger warning fires ONLY for active L3 analyses born
         after the pass shipped. Closed history and pre-pass in-flight work
@@ -546,6 +608,7 @@ class SkillInvariants(unittest.TestCase):
         self.assertFalse(sc.ledger_due({**due, "start_date": "2026-7-01"}),
                          "an unpadded pre-epoch date must not read as post-epoch")
 
+    @requires("architect_pass")
     def test_component_map_rot_detected(self):
         """F-020d: a map row whose 'Where' ref no longer resolves, or whose
         #symbol was renamed away, is flagged -- the source_hash equivalent the
@@ -611,6 +674,7 @@ class SkillInvariants(unittest.TestCase):
             sc.check_component_map(root, five, w)
             self.assertTrue(w, "a map with extra columns must still be checked")
 
+    @requires("architect_pass")
     def test_architect_scenarios_present(self):
         """F-020d: the pass's execution is exercised by the behavioral layer --
         one scenario for running the pass at all, one for the brownfield trap
@@ -640,9 +704,11 @@ class SkillInvariants(unittest.TestCase):
         self.assertIn("## 0. Consuming a guide", t)
         self.assertIn("### Proactive trigger", t)
 
+    @requires("subagent_dispatch")
     def test_dispatch_guide_note(self):
         self.assertIn("Guide consumption under dispatch", read("dispatch.md"))
 
+    @requires("comprehension_guides")
     def test_comprehension_guide_wiring(self):
         """Code-comprehension guides (source_kind: code) are wired end to end:
         the autonomous trigger in guides.md, the SKILL.md moment + Write-Triggers
@@ -665,9 +731,8 @@ class SkillInvariants(unittest.TestCase):
         every expected support file exists AND is referenced in SKILL.md, and
         any *.md added beside SKILL.md is also referenced (no silent orphan)."""
         skill_md = read("SKILL.md")
-        expected = ["templates.md", "guides.md", "tdd.md", "debugging.md",
-                    "elicitation.md", "review.md", "dispatch.md",
-                    "architect.md", "ENFORCEMENT.md", "scripts/sdlc_check.py"]
+        expected = list(sc.profile()["support_files"]) + [
+            "scripts/sdlc_check.py", "scripts/sdlc_core.py"]
         for rel in expected:
             self.assertTrue((SKILL_DIR / rel).is_file(),
                             f"expected support file missing: {rel}")
