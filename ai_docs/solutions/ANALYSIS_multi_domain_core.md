@@ -296,14 +296,93 @@ Phases 1, 2 and 3 are file-level concrete and are what this analysis authorises.
 changes no root handling. External consumers: the CLI entry points in `ENFORCEMENT.md`
 (now in the table) and `init.js`; names and exit codes unchanged.
 
-### Phase 2b — Docs root becomes a parameter *(own impact map required)*
+### Phase 2b — Docs root becomes a parameter
 
-Prerequisite of P4 and C7. Known sites: `find_project_root` (`:126-131`),
-`require_ai_docs` (`:134-141`), `list_analyses` (`:221`), `list_canonical_docs`
-(`:419`), `ORIENT_DOCS` (`:110-115`), `build_manifest` (`:435`), `cmd_index`
-(`:517-533`), `parse_audit_plan` (`:990`), `REVIEW_LOG_REL` (`:79`), `cmd_gate`'s
-prefix test (`:1177`), plus `test_session_start.py`. 11 of 49 occurrences named; the
-remainder is P2b's own map. Default stays `ai_docs/`, asserted by TS1.
+Prerequisite of P4 (mkt reads `mkt_docs/`) and of C7 (a migration tool must read both
+roots, or it cannot verify either side). **Why the parameter exists is worth stating,
+because it reads like the opposite of this feature:** `ai_docs/` remains the ONE
+surviving root and the recommended default. The parameter exists so the tools can
+*reach* a legacy root long enough to validate and move it — not to bless a second
+permanent home. That is why `init.js` gains no rename knob (below): handing users a
+way to create new roots would manufacture the fragmentation the feature exists to end.
+
+**Resolution order — explicit beats guessed** (the `--hybrid` precedent):
+1. `--docs-dir NAME` on every subcommand that takes `--root`.
+2. `AGENTIC_SDLC_DOCS_DIR` — CI/test seam only, same status as `AGENTIC_SDLC_KB_ROOT`.
+3. Discovery: walking up from the start path, the first directory matching a known
+   candidate (`ai_docs`, `mkt_docs`).
+4. Default `ai_docs`.
+
+Discovery is evaluated **per directory level**, walking up: the first level carrying
+any candidate decides. A `mkt_docs/` in the working directory therefore wins over an
+`ai_docs/` further up — the nearer root is the one the user is standing in.
+
+**Two candidates at the SAME level → refuse, naming both.** A mid-migration project has
+exactly this shape, and silently picking one would validate half a project and print
+CLEAN. Refusing is the only answer that cannot be mistaken for a verdict. Ambiguity
+across different levels is not ambiguity: the nearer one wins, by the rule above.
+
+The env var is read **per invocation**, not at import. `DEFAULT_KB_ROOT` reads its env
+at import time and that is a known wart: it makes the value untestable without
+reloading the module, and repeating it here would make TS14 impossible to write
+honestly.
+
+**Three constants stop being constants** — named because "derive it" hides a signature
+change:
+- `SKIP_DIRS` (`:48`), consumed at `:366` in the tree walk: becomes a function of the
+  resolved name (`skip_dirs(docs_dir)`), since the docs root must stay excluded from
+  the source walk whatever it is called.
+- `ORIENT_DOCS` (`:227`), consumed at `:1548` **and read directly by
+  `test_session_start.py:163`**: becomes `orient_docs(docs_dir)`. That test asserts the
+  confinement contract by comparing against this constant, so it moves with it.
+- `REVIEW_LOG_REL` (`:89`), used in messages and in the review-log lookup.
+- `find_project_root` (`:242`) returns the root AND the docs dir it matched. Its three
+  call sites are `cmd_gate` (`:1333`), `cmd_orient` (`:1544`) and `main` (`:1633`) —
+  all internal, none in the batteries, so the return-type change is contained. It is
+  still a public name re-exported by `sdlc_check.py`: the change is listed here rather
+  than discovered by a consumer.
+
+**What must NOT follow the parameter.** The agent-global KB store
+(`DEFAULT_KB_ROOT / "ai_docs" / "reference"`, `sdlc_core.py:607` and `:1422`) is
+client-agnostic and shared across lenses: a project renaming its docs root must not
+move it. Asserted by a test, not by care.
+
+**Blast radius — all 50 core occurrences classified** (`grep -c ai_docs sdlc_core.py`
+= 50; each line inspected):
+
+| Class | Count | Lines | Change |
+|---|---|---|---|
+| Path construction | 18 | 170, 246, 254, 255, 338, 355, 551, 593, 599, 652, 658, 664, 925, 1101, 1152, 1421 (+2 KB-root below) | derive from the resolved name |
+| User-visible strings & prefix tests | 12 | 53, 64, 89, 228–231, 570, 1029, 1031, 1104, 1113, 1117, 1338 | derive: a message naming `ai_docs/` on a `mkt_docs/` project is a wrong instruction, and `cmd_gate`'s exempt prefix (`:1338`) would stop exempting the docs tree |
+| Tree-walk exclusion | 1 | 49 (`SKIP_DIRS`) | derive, or `stale` walks the docs root as source and reports every doc as a modified area |
+| **Agent-global KB root** | 2 | 607, 1422 | **unchanged on purpose** |
+| Docstrings / `--help` | 17 | 17, 18, 20, 251, 252, 550, 592, 1081, 1538, 1588, 1592, 1605, 1606, 1616 | say "the docs root (default `ai_docs/`)" |
+
+| Path | Change | Why |
+|---|---|---|
+| `skills/agentic-sdlc-skill/scripts/sdlc_core.py` | MODIFY | the 50 sites above; `find_project_root` returns the root AND the docs dir it matched, so no caller re-derives it |
+| `skills/agentic-sdlc-skill/scripts/sdlc_check.py` | MODIFY | one docstring line |
+| `skills/agentic-sdlc-skill/scripts/test_session_start.py` | MODIFY | 19 sites: it reads `sc.ORIENT_DOCS` directly (`:159`) and seeds eight hard-coded `ai_docs/` paths — the module most coupled to the constant |
+| `skills/agentic-sdlc-skill/scripts/test_skill_invariants.py` | MODIFY | 22 sites (own-repo assertions stay on `ai_docs`; the parameterized ones move) |
+| `skills/agentic-sdlc-skill/scripts/test_plan.py` | MODIFY | 16 sites |
+| `skills/agentic-sdlc-skill/scripts/test_domain_rules.py` | MODIFY | 21 sites |
+| `skills/agentic-sdlc-skill/scripts/test_golden_regression.py` | UNCHANGED | 7 sites, all inside the frozen corpus: TS1's whole job is the default path |
+| `scripts/init.js` | UNCHANGED | 25 sites. Deliberate: see the opening paragraph |
+| `skills/agentic-sdlc-skill/ENFORCEMENT.md` | MODIFY | one line documenting `--docs-dir` on the CI recipe |
+| `ai_docs/strategic/architecture.md` | MODIFY | Validator-core row: the root is resolved, not assumed |
+
+**Tests owed (TS14–TS17), beyond TS1 staying byte-identical:**
+- TS14 resolution order: flag beats env beats discovery beats default; a `mkt_docs`-only
+  tree is found without a flag.
+- TS15 ambiguity: both roots present → non-zero exit, both named, no verdict printed.
+- TS16 isolation: the agent-global KB reference dir is unaffected by `--docs-dir`.
+- TS17 derived surfaces: on a renamed root the generated headers, the `orient` doc set,
+  `REVIEW_LOG_REL`, `SKIP_DIRS` and `cmd_gate`'s exempt prefix all name the resolved
+  root — asserted per surface, because each was a separate hard-coded string.
+
+**New threat.** T7 — *a wrong root silently validates an empty tree and prints CLEAN.*
+Mitigation: `require_ai_docs` keeps failing fast (it exists for this), the two-candidate
+case refuses, and `--strict` still fails on a missing root. TS15 is the proof.
 
 ### Phase 3 — kb overlay rebuilt on the core
 
@@ -375,6 +454,7 @@ becomes domain-resolved).
 | T3 | Cross-domain retrieval returns the wrong document. | C5 naming; the syntactic, tree-determined domain column in `features_history.md`. Unreached surfaces are the declared residuals above, severity stated honestly (the guide router is the mandatory-path one). |
 | T4 | Publishing ships the wrong content. | `files[]` stays an explicit per-file allowlist, **updated in the same phase that adds each file** (P1 `routing.md`, P2/P3/P4 `sdlc_core.py`); packed-file assertion joins the P2 gate; full TS7 at P7. |
 | T5 | Consolidation loses history. | mkt: `git subtree`, archive only after merge. kb: preserved by a verified bundle plus commit `77ce756`; the single-machine retention residual was assessed and **accepted by the owner (2026-07-31)** — recorded because an accepted risk is a decision, not an oversight. The deleted GitHub remote was empty; that fact says nothing about the local work, and the two must not be conflated. |
+| T7 | A wrong docs root silently validates an empty tree and prints CLEAN (P2b). | Resolution is explicit-first (`--docs-dir` > env > discovery > `ai_docs`); `require_ai_docs` keeps failing fast, which is the reason it exists; two candidate roots in one tree refuse with both named rather than picking one; `--strict` still fails on a missing root. TS15 is the proof. The agent-global KB store never follows the parameter (TS16). |
 | T6 | Drift guard bypassed. | Guard fails CI over a named core file present in every distribution; per-file manifest; P3→P5 window declared with per-file hash checkpoints. |
 
 No new external input parsed; no authN/authZ, cryptography, network or personal-data
@@ -433,6 +513,11 @@ is non-gating by design); from P5 on, TS5 as well.
 | TS11 | **`init.js` create-only.** Existing root files never modified; sibling path writes an additive file; `default_domain` seeded once and never overwritten by a second init. | T1, UC5, C1 |
 | TS12 | **Copied-file CI recipe.** The `ENFORCEMENT.md` §2 copy procedure, executed as documented, runs and returns the same exit code as the in-place invocation. | UC5 |
 | TS13 | **Portable checks.** A knowledge-owned doc with `checks: [marketing.ledger]`: the check runs (P4) or warns visibly as unavailable (before P4); imported checks add findings only — a doc failing an imported check while satisfying its owner's sections shows both facts. | UC8, C2 |
+
+| TS14 | **Root resolution order** (P2b). `--docs-dir` beats `AGENTIC_SDLC_DOCS_DIR` beats discovery beats the `ai_docs` default; a `mkt_docs`-only tree is found with no flag. | P2b, C7 |
+| TS15 | **Ambiguous root** (P2b). Both candidate roots in one tree: non-zero exit, both named, no verdict printed — a mid-migration project must not be half-validated and called CLEAN. | T7 |
+| TS16 | **KB isolation** (P2b). The agent-global KB reference dir is unaffected by `--docs-dir`: a project rename never moves a store shared across lenses. | T7 |
+| TS17 | **Derived surfaces** (P2b). On a renamed root, the generated headers, the `orient` doc set, `REVIEW_LOG_REL`, `SKIP_DIRS` and `cmd_gate`'s exempt prefix each name the resolved root — asserted per surface, because each is a separate hard-coded string today. | P2b |
 
 TS1 gates P2 and is the most important test here: it is the only evidence that users
 who did nothing are not paying for this refactor.
