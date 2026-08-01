@@ -67,7 +67,7 @@ sdlc_core.set_profile(
         "triage", "write_triggers", "workstream_registry", "vision_gate",
         "design_review_gate", "guide_router", "worktree_hygiene",
         # marketing overlay
-        "subagent_dispatch",
+        "subagent_dispatch", "question_discipline",
     ),
     # The strategy is reviewed before any tactic is executed: nine phases, but the
     # ordering the gate cares about is the same one every domain owes.
