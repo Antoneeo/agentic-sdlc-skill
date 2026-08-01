@@ -4,6 +4,8 @@ Records each independent-review-gate pass (§4.5 tech artifacts, §4.6 code). Th
 
 | date | doc_key | tier | reviewer | findings_raised | findings_real | verdict | revise_rounds |
 |---|---|---|---|---|---|---|---|
+| 2026-08-01 | F-026 implemented state (round 2) | design | subagent (opus, fresh ctx, read-only) | 2 | 2 | INCOMPLETE (reviewer died on API session limit; no verdict — re-run owed) | 2 |
+| 2026-08-01 | ANALYSIS_question_discipline.md (F-026) | design | subagent (opus, fresh ctx, read-only) | 6 | 6 | FAIL | 1 |
 | 2026-08-01 | F-024 kb knowledge method — design spec (concurrency & failure-modes lens) | design | subagent (opus, fresh ctx, read-only) | 17 | 17 | FAIL | 1 |
 | 2026-08-01 | F-024 kb knowledge method — design spec (knowledge-model lens) | design | subagent (opus, fresh ctx, read-only) | 14 | 14 | FAIL | 1 |
 | 2026-08-01 | F-024 kb knowledge method — design spec (family-fit lens) | design | subagent (opus, fresh ctx, read-only) | 15 | 15 | FAIL | 1 |

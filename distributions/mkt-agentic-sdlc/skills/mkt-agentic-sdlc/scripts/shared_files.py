@@ -61,12 +61,16 @@ SHARED_FILES = (
 #   the entry point (sdlc_check.py / mkt_check.py) -- that IS the domain
 #   the overlay files (architect/tdd/debugging | taxonomy/distillation |
 #     frameworks/research) -- the overlays are supposed to differ
+#   elicitation.md -- the question round is each domain's own (marketing runs
+#     waves, not the six-question spec round); the question DISCIPLINE inside it
+#     is family doctrine carried per-domain until every sibling's file has it,
+#     guarded meanwhile by the capability-gated invariant test
 #   the golden corpus, its baseline AND its harness -- the harness is bound to the
 #     corpus and to the subcommands THIS distribution ships (marketing has ledger,
 #     budget, funnel, trace and no orient), and its whole job is to freeze what this
 #     distribution does. Uniformity there would defeat the purpose
 NOT_SHARED_ON_PURPOSE = (
-    "SKILL.md", "templates.md", "ENFORCEMENT.md",
+    "SKILL.md", "templates.md", "ENFORCEMENT.md", "elicitation.md",
     "scripts/sdlc_check.py", "scripts/mkt_check.py",
     "scripts/test_golden_regression.py",
 )

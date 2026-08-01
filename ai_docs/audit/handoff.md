@@ -12,6 +12,8 @@ Date: 2026-08-01 (UTC)
 
 | Release of the three packages | — | feat/kb-knowledge-method | AWAITING OWNER | 2026-08-01 | **F-024/F-025 CLOSED** (COMPLETED 2026-08-01: method + ledger implemented, three design-gate rounds disposed, acceptance run on the Eclosion corpus CLEAN, the capacity conflict resolved by owner ruling with basis, ADR recorded). The hold on F-022's release was "until kb is effective" — kb now does its job on real documents; **publishing (npm ×3, 2FA) remains the owner's act**. mkt tags v0.2.0/v0.2.1 still live only in the old clone + GitHub | ANALYSIS_kb_knowledge_method.md · ANALYSIS_claim_ledger.md · ADR_2026-08-01_kb_topic_graph_claim_ledger.md |
 
+| F-026 Question Discipline | L3 | claude/agitated-blackburn-62f5cf (worktree, from feat/kb-knowledge-method) | IN_PROGRESS | 2026-08-01 | owner's field defect: agents ask useless questions. Legality test (search first + name the search; name what is blocked) in `elicitation.md`, reachable from Rule Zero; non-blocking default via declared assumptions; blocking form generalized from F-025's escalation rule. Implemented; batteries green. Design review round 1 FAIL (6 findings) → all fixed; **round 2 INCOMPLETE — reviewer died on an API session limit, no verdict**; its 2 findings fixed. Next: re-run round 2 after the limit resets, then owner merge decision; afterwards kb adopts the section inside F-024 and mkt owes the non-blocking default + search-naming + blocking form | ANALYSIS_question_discipline.md |
+
 ## Project-wide notes
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision battery:
 `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md` (re-run on every Vision edit).
