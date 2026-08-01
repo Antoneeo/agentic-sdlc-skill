@@ -11,6 +11,10 @@ capire perché un agente si comporta diversamente in tre progetti.
 esiste (`project_vision.md`).
 **Fonte**: inventario sistematico di ogni file di dottrina delle tre distribuzioni
 (2026-08-01), non memoria di sessione.
+**Documento derivato**: le sue fonti sono `skills/` e `distributions/`. Cambia la
+dottrina → questo documento e il `README.md` della distribuzione toccata sono
+stale finché non li aggiorni; `stale` lo segnala sulle righe corrispondenti di
+`audit/audit_plan.md`, e `mark` è l'ultimo passo della chiusura, mai il primo.
 
 ## L'idea in una riga
 
@@ -28,7 +32,7 @@ gate, il vocabolario, i controlli — discende da quella scelta.
 | **La domanda dell'agente** | "cosa rompe questo cambiamento?" | "cosa sappiamo già, quanto è certo, da dove viene?" | "quale evidenza sostiene questa scelta?" |
 | **Il peccato capitale** | modificare a istinto senza orientarsi | spacciare conoscenza del modello per fonte | inventare un numero |
 | **Slot di rischio (obbligatorio, il validator lo esige)** | `## Security and Threat Model` | `## Sources and Verification` | `## Threat Map / Plan Risks` |
-| **Albero documenti** | `ai_docs/` | `ai_docs/` + `corpus/` + `topics/` | `mkt_docs/` (vision/strategy/tactics/deliverables) |
+| **Albero documenti** | `ai_docs/` | `ai_docs/` + `corpus/` + `topics/` | `mkt_docs/` (vision/strategy/tactics/deliverables) — `ai_docs/` su albero migrato con `migrate` |
 | **File di dottrina propri** | `architect.md`, `tdd.md`, `debugging.md` | `taxonomy.md`, `distillation.md`, `reconciliation.md` | `frameworks.md`, `research.md` |
 | **Comandi validator propri** | (spina, entry sottile) | `graph`, `corpus`, `claim-id` | `ledger`, `budget`, `funnel`, `trace` |
 | **Cosa valida in più** | struttura + Component Map anti-rot | **il grafo e i claim** (span, digest, id, simmetrie, cicli) | **l'aritmetica** (budget ±1%, funnel ±5%, catena obiettivo→tattica→KPI) |
@@ -193,6 +197,14 @@ finale** + `check` CLEAN).
   CAC=Budget/Customers, ±5%, ogni cella ricomputata dalle celle a monte),
   `trace` (ogni tattica serve un obiettivo definito, ogni obiettivo ha un KPI —
   un orfano è un errore), `ledger` (integrità + risoluzione dei riferimenti).
+- **Legge la spina condivisa traducendola** (sezione propria in `SKILL.md`): i file
+  condivisi (`review.md`, `dispatch.md`, `guides.md`) sono scritti nel vocabolario
+  neutro della famiglia, quindi dove dicono `sdlc_check.py` l'agente mkt legge
+  `mkt_check.py`, e dove dicono "Phase 3 / Phase 5 closure" legge fase 6 (review
+  della strategia) e fase 9 (control & packaging) del suo workflow a nove. **Le
+  procedure vincolano come scritte; traducono solo i nomi** — è l'unica lente che
+  ha bisogno di questo strato, perché è l'unica con fasi e docs root propri
+  (`mkt_docs/` di default, `ai_docs/` su albero migrato con `migrate`).
 - **L'Honesty Contract**: rifiuto pre-scritto di promettere risultati di mercato —
   la garanzia è il rigore del processo (zero numeri inventati, coerenza interna,
   misurabilità), mai l'esito.

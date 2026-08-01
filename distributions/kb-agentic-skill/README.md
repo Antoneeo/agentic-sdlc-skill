@@ -1,46 +1,85 @@
 # KB Agentic Skill for Claude Code, Gemini CLI, Google Antigravity & Codex
 
-`kb-agentic` is a Documentation-First & Knowledge-Base protocol for AI agents. It supports Claude Code, Codex, Gemini CLI, Google Antigravity 2.0, Cursor/Windsurf-style project instructions, and optional devPNT governance.
+`kb-agentic` turns an AI agent into the keeper of a second brain built **on the documents you supply** — not on what the model remembers. It supports Claude Code, Codex, Gemini CLI, Google Antigravity 2.0, Cursor/Windsurf-style project instructions, and optional devPNT governance.
 
-## Key Features
+The sibling of [`@antoneeo/agentic-sdlc-skill`](https://www.npmjs.com/package/@antoneeo/agentic-sdlc-skill), transplanted from source code to knowledge: same process, one different fidelity discipline.
 
-- **Risk-proportional knowledge triage**: L1/L2/L3/Spike triage avoids heavyweight process for quick facts, with a symmetric **Write Triggers** table mapping each knowledge event to the document it produces (one event, one destination).
-- **Vision-guided knowledge governance**: Standalone projects use `ai_docs/vision/`; Hybrid projects use devPNT `M-VISION` as the milestone north star.
-- **Taxonomy pass — categories and SOPs before new documents**: at L3, before creating a new document, the topic is checked against existing categories, entities, and SOPs to prevent duplication across `ai_docs/`.
-- **Signal distillation & fact verification**: Contract-first writing and noise elimination to produce high-signal, verifiable documentation.
-- **Knowledge reconciliation**: Systematic process for resolving conflicting notes, updating stale specs, and marking superseded documents (`status: SUPERSEDED`).
-- **Operative guides + agent-global KB**: Distill user-provided indications into source-faithful operative `GUIDE_*.md` (`source_kind: document`).
-- **Installed support files**: Claude, Codex, Gemini, and Google Antigravity receive the full skill folder, including `templates.md`, `taxonomy.md`, `guides.md`, `vision.md`, `distillation.md`, `reconciliation.md`, `elicitation.md`, `review.md`, `dispatch.md`, `ENFORCEMENT.md`, and `scripts/sdlc_check.py`.
-- **Mechanical checks**: Optional validator for document structure, generated feature history, stale audit areas, and protected-path gates.
+## What it does
+
+Two axes are kept apart on purpose — **abstraction** (a topic made of topics: the graph edges) and **certainty** (how strongly the corpus supports a statement: the claim rows).
+
+1. **Intake — the source becomes untouchable.** Every document enters verbatim under `corpus/given/`, content-addressed by a raw-byte digest. A new version is appended with `supersedes:`, never overwritten. Non-text files get a **stored canonical extraction** (`.txt`, registered extractor) — those are the bytes locators point at, so an id stays valid across re-ingestion. Spoken input is a note with `origin: elicited`; a synthesis carries `derived_from:`; your decision carries `basis:`. A note with none of the three is model knowledge dressed as a source, and the validator rejects it.
+
+2. **Extraction — the unit is the claim.** Rows of `id | claim | valid | qty | about | source | prov | state`. The **id hashes the location and the quantity, never the text**, so an LLM rephrasing mints no new identity. The locator (`p=17@412-509`) is verified: the validator opens the extraction and checks the span exists. Validity scopes are half-open ("until March" and "from March" do not conflict). Quantities are typed — mixed kinds or currencies **refuse to sum**. What the source does not assert becomes a `gaps:` line, never a claim.
+
+3. **Placement — five verdicts, after querying the graph.** Descent through the generated index following every parent (polyhierarchy). EXISTS → reconcile; INADEQUATE → child; **MISSING only after the graph was actually asked**; GENERALIZES → escalate (a new root stops at you); UNPLACED → quarantine. Similar-but-maybe-different becomes a sibling **with the distinguishing line written** — if you cannot write it, it is the same concept. Cycles are refused at write time; merged nodes leave a tombstone with `redirect_to:`, never a deletion.
+
+4. **Reconciliation — the machine detects and holds, it never decides.** Five outcomes: new / confirmation (the source is appended to the row — the base strengthens, it does not lengthen) / refinement (the old row goes `SUPERSEDED`, its text intact) / coexistence (disjoint scopes) / conflict → the whole set goes `CONTESTED`, **symmetrically**: flipping one cell by hand fails the check. Only new information resolves it — a later source, or **your ruling with a `basis:`**, the fact you know and the corpus does not. No basis, no ruling: a preference is not a fact. A ruling is challengeable — a later document reopens the case with your basis beside it.
+
+5. **Escalation in one batch at the end of the run**, in legal form (the claims, the reopenable sources, the dates, why the machine cannot decide). Ingestion never stops to interrogate you.
+
+Deliberately absent: any per-node coverage or completion state. `gaps:` says what a node lacks; nothing collects it into a dashboard.
+
+## Key features
+
+- **Risk-proportional triage**: L1/L2/L3/Spike (note → SOP → corpus), so a quick fact never pays for heavyweight process, with a **Write Triggers** table mapping each knowledge event to exactly one destination.
+- **Vision-guided governance**: Standalone projects use `ai_docs/vision/`; Hybrid projects use devPNT `M-VISION` as the milestone north star. `DRAFT` informs, `APPROVED` binds, promotion is the user's alone.
+- **Independent review, twice**: the design before it is implemented, the result before it is declared done — fresh-context subagent > one-shot run > a declared self-pass, 3 rounds max, one log line each, and a PASS is invalid on "found nothing".
+- **Question discipline**: a question is legal only when the agent searched first, names the search with its result, and names the decision it unblocks; otherwise it proceeds on a declared assumption, batched.
+- **Operative guides + agent-global KB**: distil user-provided indications into source-faithful `GUIDE_*.md` (`source_kind: document`) — verbatim snapshot plus hash, so drift is detected mechanically.
+- **Mechanical checks**: `check`, `validate`, `index`, `graph`, `corpus`, `claim-id`, plus the spine's `stale`/`mark`/`gate`/`plan`/`orient`/`migrate`. The graph and corpus checks verify spans against the stored extraction, recompute every id, refuse cycles and unreachable nodes, and enforce `CONTESTED` symmetry.
+- **Installed support files**: Claude, Codex, Gemini and Google Antigravity receive the full skill folder — `SKILL.md`, `templates.md`, `taxonomy.md`, `distillation.md`, `reconciliation.md`, `guides.md`, `vision.md`, `elicitation.md`, `review.md`, `dispatch.md`, `routing.md`, `ENFORCEMENT.md`, and the validator's two files, `scripts/sdlc_check.py` + `scripts/sdlc_core.py` (the core is the family's shared spine — copy both, or neither).
 
 ## Installation
 
-### Via npm
-
 ```bash
 npm install -g @antoneeo/kb-agentic-skill@latest
+```
+
+That is enough — the package's `postinstall` runs the installer. If your npm blocks
+install scripts (`--ignore-scripts`, some CI/pnpm setups), run it by hand:
+
+```bash
 kb-agentic-install-skill
 ```
+
+> The command is on your PATH only after a **global** (`-g`) install; after a local
+> `npm i`, invoke it as `npx kb-agentic-install-skill`.
 
 The installer copies `skills/kb-agentic-skill/` recursively into native skill locations:
 
 - Claude Code: `~/.claude/skills/kb-agentic/`
 - Codex: `~/.codex/skills/kb-agentic/`
 - Gemini CLI: `~/.gemini/skills/kb-agentic/`
-- Google Antigravity: `~/.gemini/config/skills/kb-agentic/`
+- Google Antigravity: `~/.gemini/config/skills/kb-agentic/` (override the home with `ANTIGRAVITY_HOME`)
 
 Restart the relevant agent, or reload skills where the CLI supports it.
 
-The global package also exposes:
+Initialize a project:
 
 ```bash
 kb-agentic-init
 ```
 
-Run it inside a project to create `ai_docs/`, Vision documents, strategic docs, audit plan, and agent protocol files.
+Run it inside a project to create `ai_docs/`, Vision documents, strategic docs, audit plan, and agent protocol files (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursorrules`).
+
+## The family: three lenses, one spine
+
+| Package | Faithful to | Unit of work |
+|---|---|---|
+| [`@antoneeo/agentic-sdlc-skill`](https://www.npmjs.com/package/@antoneeo/agentic-sdlc-skill) | this repository's code | feature |
+| `@antoneeo/kb-agentic-skill` (this one) | the documents you supply | topic |
+| [`@antoneeo/mkt-agentic-sdlc-skill`](https://www.npmjs.com/package/@antoneeo/mkt-agentic-sdlc-skill) | market evidence | engagement |
+
+Triage, the Vision Gate, the review gates, the guide router, question discipline and the validator spine are byte-identical across the three. When two live in the same project, `routing.md` decides which lens owns a given piece of work, and any of the three validators gives the same verdict on the same tree.
+
+## Standalone vs Hybrid
+
+- **Standalone** — `ai_docs/` is the source of truth: vision, topics, corpus, audit, handoff.
+- **Hybrid with devPNT** — devPNT governs `M-VISION`, Master Plan, Action Plan and versioned artifacts; `ai_docs/` stays as readable context, fallback and shadow. Divergence between your request, the local Vision and the M-VISION is surfaced before any work.
 
 ## Created By
 
 Created by **Antonio Pinto** ([GitHub](https://github.com/Antoneeo)).
 
-(c) 2026 Antonio Pinto. All rights reserved.
+MIT (c) 2026 Antonio Pinto.
