@@ -42,6 +42,25 @@ ground a MISSING verdict, and the code is searched instead (`architect.md` §2).
 | Validator entry point | Name the domain this distribution implements and the portable checks it carries | Thin on purpose: no rule lives here, so a domain cannot fork the core by accident. Runnable name and exit codes unchanged for every existing consumer; the core alone is runnable too, and a half-copied validator fails at import rather than passing green | `skills/agentic-sdlc-skill/scripts/sdlc_check.py` |
 | Invariant battery | Fail the build when the skill's own doctrine stops being wired | Static, zero-LLM, zero-network, zero-subprocess — a failing test is always a real regression, never flakiness. Dev-only: deliberately outside the package allowlist | `skills/agentic-sdlc-skill/scripts/test_*.py`, `skills/agentic-sdlc-skill/evals/run_behavioral.py` |
 
+## Distribution layout
+
+One repository, three published packages. The code distribution sits at the repository
+root, because that is where `ai_docs/` — the project's own governance — lives, and
+governance lives once. The other two are self-contained package directories under
+`distributions/`, each with its own `package.json`, `scripts/` and skill folder, so
+`npm publish` works from inside them without a build step.
+
+| Package | Where | Published as |
+|---|---|---|
+| code | repository root | `@antoneeo/agentic-sdlc-skill` |
+| knowledge | `distributions/kb-agentic-skill/` | `@antoneeo/kb-agentic-skill` |
+| marketing | `distributions/mkt-agentic-sdlc/` | `@antoneeo/mkt-agentic-sdlc-skill` |
+
+The two grafted distributions were brought in with `git subtree`, so their history came
+with them. Everything they carried that duplicated this repository's governance — a
+stale copy of `ai_docs/`, protocol pointers, example projects — was removed on arrival:
+keeping it would have been the exact duplication this consolidation exists to end.
+
 ## Patterns
 - Documentation-first workflow.
 - Risk-proportional triage before workflow selection.

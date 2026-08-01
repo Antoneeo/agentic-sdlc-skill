@@ -1,4 +1,0 @@
-# Project Architecture
-
-- Stack:
-- Patterns:

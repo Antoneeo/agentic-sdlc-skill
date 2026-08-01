@@ -72,6 +72,47 @@ NOT_SHARED_ON_PURPOSE = (
 )
 
 
+
+# --- the strong check, available once the distributions live in one repository ---
+# Comparing each copy to a recorded hash catches a local edit. Comparing the copies
+# to EACH OTHER catches the case the manifest cannot: a change applied and recorded
+# in one distribution and simply never carried to the others. The first is a
+# tripwire; this is the actual invariant.
+DISTRIBUTION_SKILL_DIRS = (
+    "skills/agentic-sdlc-skill",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc",
+)
+
+
+def repo_root():
+    """The repository root, if this checkout is the consolidated one."""
+    for parent in SKILL_DIR.parents:
+        if all((parent / d).is_dir() for d in DISTRIBUTION_SKILL_DIRS):
+            return parent
+    return None
+
+
+def cross_distribution_report():
+    """{shared file -> {distribution -> hash}} for every file that is NOT identical.
+
+    Returns ({}, None) when this is not the consolidated checkout: the guard then
+    falls back to the manifest, and says so rather than passing silently.
+    """
+    root = repo_root()
+    if root is None:
+        return {}, None
+    diverged = {}
+    for rel in SHARED_FILES:
+        seen = {}
+        for dist in DISTRIBUTION_SKILL_DIRS:
+            p = root / dist / rel
+            seen[dist] = digest(p) if p.is_file() else None
+        if len(set(seen.values())) > 1:
+            diverged[rel] = seen
+    return diverged, root
+
+
 def digest(path):
     """SHA-256 of the LF-normalized bytes: a CRLF checkout is not divergence."""
     data = path.read_bytes().replace(b"\r\n", b"\n")
@@ -116,12 +157,25 @@ def report():
     return missing, changed
 
 
-if __name__ == "__main__":
+def _cli():
     if "--update" in sys.argv:
         print(f"[ok] shared manifest written: {update()}")
         print("     Now copy every changed shared file to the sibling distributions "
               "and regenerate there too, or their guard will fail.")
-        sys.exit(0)
+        return 0
+    diverged, root = cross_distribution_report()
+    if root is None:
+        print("[note] not the consolidated checkout: comparing against the recorded "
+              "manifest only. The cross-distribution check needs all three side by side.")
+    else:
+        for rel, seen in diverged.items():
+            print(f"[ERROR] shared file differs BETWEEN distributions: {rel}")
+            for dist, h in seen.items():
+                print(f"          {dist}: {h or 'MISSING'}")
+        if diverged:
+            print("\nThe spine is one file. Reconcile the copies, then run --update.")
+            return 1
+
     miss, chg = report()
     for rel in miss:
         print(f"[ERROR] shared file missing: {rel}")
@@ -131,5 +185,12 @@ if __name__ == "__main__":
         print("\nThe spine is authored once and copied verbatim. Either restore the file,\n"
               "or -- if the change is intended -- apply it to EVERY distribution and run\n"
               "`python shared_files.py --update` in each.")
-        sys.exit(1)
-    print(f"[ok] {len(SHARED_FILES)} shared files match the manifest")
+        return 1
+    scope = ("are identical across all three distributions" if root
+             else "match the manifest")
+    print(f"[ok] {len(SHARED_FILES)} shared files {scope}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(_cli())
