@@ -57,21 +57,65 @@ documenti che il prossimo agente a freddo può eseguire.
 ## kb-agentic — la lente della conoscenza
 
 Qui l'agente non scrive software: **costruisce un secondo cervello sui documenti
-che gli dai**. Il flusso di ingestione: intake (originale conservato verbatim,
-content-addressed, con estrazione canonica) → estrazione di **claim** (asserzioni
-falsificabili, ognuna con locator verificabile nel byte esatto della fonte) →
-**taxonomy pass** (collocazione nel grafo dei topic: EXISTS / INADEQUATE /
-MISSING / GENERALIZES / UNPLACED) → **riconciliazione**: conferma rafforza la
-riga, raffinamento la sostituisce, e un conflitto **non viene mai deciso dalla
-macchina** — resta CONTESTED, simmetrico, finché un'informazione nuova (un
-documento più recente, o un tuo ruling con `basis:` — un fatto che conosci, mai
-una preferenza) lo risolve.
+che gli dai**. Il modello poggia su due assi tenuti deliberatamente separati:
+l'**astrazione** (un argomento è composto da altri — vive negli archi del grafo)
+e la **certezza** (quanto il corpus sostiene un'affermazione — vive nelle righe
+di claim). L'algoritmo di ingestione, per stadi:
 
-In pratica: gli chiedi "quanto effort implica questo capitolato?" e lui somma le
-righe `qty` con le fonti accanto; gli dai una specifica nuova e ti dice cosa
-conferma, cosa raffina, cosa contraddice — col conflitto in faccia, mai risolto
-in silenzio. Il validator verifica span, digest, simmetrie e grafo (`graph`,
-`corpus`, `claim-id`).
+**1. Intake — la fonte diventa intoccabile.** Ogni documento entra verbatim in
+`corpus/given/`, content-addressed (il nome porta l'hash raw dei byte); una
+versione nuova è un **append** col sidecar che dichiara `supersedes:`, mai una
+sovrascrittura. I non-testuali (PDF, docx) ricevono l'**estrazione canonica
+conservata** (`.txt` accanto all'originale, estrattore registrato): è a QUEI byte
+che puntano gli offset. Ciò che dici a voce diventa nota `origin: elicited`; una
+sintesi dell'agente dichiara `derived_from:`; una nota senza provenienza è
+"conoscenza del modello travestita da fonte" e il validator la rifiuta.
+
+**2. Estrazione — l'unità è il claim, non il documento.** Da ogni fonte escono
+asserzioni falsificabili ("il prezzo di listino del modulo A è 12.000 EUR"),
+ognuna una riga: `id | claim | valid | qty | about | source | prov | state`.
+L'**id** è l'hash di posizione+quantità — mai del testo, così una riformulazione
+LLM non crea doppioni. Il **locator** (`p=17@412-509`) è verificabile: il
+validator apre l'estrazione conservata e controlla che lo span esista. `valid`
+gestisce i fatti a scadenza (half-open: "fino al 1/3" e "dal 1/3" NON
+confliggono); `qty` tipizza le cifre (effort/costo/durata) così si sommano;
+`about` esprime le relazioni ("depends-on → phase-1").
+
+**3. Collocazione (taxonomy pass) — cinque verdetti.** Il router scende il grafo
+dei topic dall'indice generato (slug, descrizione, parents, sinonimi), seguendo
+OGNI parent (poligerarchia): EXISTS → riconcilia; INADEQUATE → approfondisci o
+figlio; MISSING → crea (ma **solo dopo aver interrogato il grafo** — la mappa non
+letta non giustifica mai un MISSING); GENERALIZES → il concetto sta SOPRA nodi
+esistenti: escalation, il riparenting è un'unità di lavoro, mai un effetto
+collaterale; UNPLACED → quarantena non ordinata. Simile-ma-forse-diverso → nodo
+fratello con la **riga di distinzione scritta**; se non riesci a scriverla, è lo
+stesso concetto. I nodi fusi diventano tombstone (`redirect_to:`), mai cancellati.
+
+**4. Riconciliazione — la macchina rileva e trattiene, mai decide.** Claim nuovo
+contro righe esistenti sullo stesso soggetto: **conferma** → si appende la fonte
+alla riga (mai una seconda riga: la base si rafforza, non si allunga);
+**raffinamento** → riga nuova, la vecchia `SUPERSEDED`; **coesistenza** → scope
+disgiunti, entrambe restano; **conflitto** → TUTTE le righe del set diventano
+`CONTESTED`, simmetriche (il check fallisce se una cella viene girata a mano),
+e **nessuna viene scelta**. Risolve solo informazione nuova: una fonte più
+recente, o un tuo **ruling con `basis:`** — il fatto che conosci e il corpus no.
+Senza basis niente ruling: una preferenza non è un fatto, e un CONTESTED aperto è
+uno stato legittimo e permanente. Un ruling è sfidabile: un documento successivo
+che lo contraddice riapre il caso mostrando il tuo basis accanto.
+
+**5. Escalation — in blocco, mai a raffica.** L'ingestione non si ferma mai a
+farti domande: i conflitti si accumulano e ti arrivano UNA volta, a fine giro,
+ognuno in forma legale (i claim del set, fonti, date, provenienze, e perché la
+macchina non può decidere).
+
+In pratica: gli chiedi "quanto effort implica questo capitolato?" e lui
+seleziona le righe `qty`, normalizza le unità e somma, con le fonti accanto; gli
+dai una specifica nuova e ti dice cosa conferma, cosa raffina, cosa contraddice.
+Provato sul corpus Eclosion: 5 specifiche, 7 topic, 26 claim, e un conflitto
+vero (capacità <100 vs 200–300 utenti concorrenti, stessa data) rilevato,
+trattenuto e risolto da un tuo ruling. Il validator (`graph`, `corpus`,
+`claim-id`) verifica span, digest, id, simmetrie, cicli e raggiungibilità del
+grafo.
 
 ## mkt-agentic-sdlc — la lente del mercato
 
