@@ -7,7 +7,7 @@ Evidence-First marketing planning protocol for AI coding agents (Claude Code, Ge
 Turns an AI agent into a disciplined marketing strategist that produces a professional, professionally-recognized marketing plan (SOSTAC structure) with three engineered guarantees:
 
 1. **Evidence ledger** — every market number is classified FACT / BENCHMARK / ASSUMPTION and carries an `[EV-nn]` reference to its source. No invented numbers.
-2. **Mechanical validator** (`mkt_check.py`) — budget sums, funnel math and the objective→tactic→KPI chain are checked mechanically, not rhetorically.
+2. **Mechanical validator** (`mkt_check.py` + `sdlc_core.py` — the entry point plus the family's shared spine; copy both, or neither) — budget sums (±1%), funnel math recomputed cell by cell (±5%) and the objective→tactic→KPI chain are checked mechanically, not rhetorically: `check`, `validate`, `ledger`, `budget`, `funnel`, `trace`, `index`, plus the spine's `stale`/`mark`/`gate`/`plan`/`orient`/`migrate`.
 3. **Adversarial CMO review** — an independent, fresh-context reviewer attacks the strategy before the user sees it (generic-positioning swap test, untraced claims, orphan tactics).
 
 The agent asks the user only for facts the user uniquely owns (product, price, budget, capacity); everything else — market sizing, competitor analysis, channel benchmarks — is derived from real web research.
@@ -51,6 +51,16 @@ npx mkt-sdlc-init        # creates mkt_docs/ + protocol pointers
 
 - **Standalone** — everything on the filesystem under `mkt_docs/`.
 - **Hybrid with devPNT** — plans and strategy artifacts governed as versioned devPNT documents (MKT-VISION, ICP/Personas, Threat Map, Strategy, Tactical Plan, Measurement Plan), with proposal/approval workflow and independent review gates.
+
+## The family: three lenses, one spine
+
+| Package | Faithful to | Unit of work |
+|---|---|---|
+| [`@antoneeo/agentic-sdlc-skill`](https://www.npmjs.com/package/@antoneeo/agentic-sdlc-skill) | this repository's code | feature |
+| [`@antoneeo/kb-agentic-skill`](https://www.npmjs.com/package/@antoneeo/kb-agentic-skill) | the documents you supply | topic |
+| `@antoneeo/mkt-agentic-sdlc-skill` (this one) | market evidence | engagement |
+
+Triage, the Vision Gate, the review gates, the guide router, question discipline and the validator spine are byte-identical across the three; only the fidelity discipline and the vocabulary change. When two live in the same project, `routing.md` decides which lens owns a given piece of work — with the market-facing override: anything whose purpose is to persuade the market is this lens's, whatever its source.
 
 ## License
 

@@ -13,8 +13,10 @@
 - **Self-activating**: a SessionStart hook emits repo-sourced orientation; a deterministic self-eval battery guards the skill's own doctrine as the release gate.
 - **Standalone complete**: works fully with local `ai_docs/` without requiring devPNT.
 - **devPNT symbiosis**: when devPNT is available, Master Plan, Action Plan, M-VISION, and governed artifacts become the authoritative planning layer, with independent fresh-context reviews of technical artifacts and diffs.
-- **Installed support files**: Claude, Codex, Gemini, and Google Antigravity receive the full skill folder, including `templates.md`, `architect.md`, `guides.md`, `vision.md`, `tdd.md`, `debugging.md`, `elicitation.md`, `review.md`, `dispatch.md`, `ENFORCEMENT.md`, and `scripts/sdlc_check.py`.
-- **Mechanical checks**: optional validator for document structure, generated feature history, stale audit areas, and protected-path gates.
+- **Independent review, twice**: the design is reviewed before it is implemented and the diff before the work is declared done — by somebody other than its author. Three rungs of independence (fresh-context subagent > one-shot run > a declared self-pass, legal only when the first two are unavailable), capped at 3 rounds, one log line per review, and a PASS is invalid on "found nothing" — it must state where each constraint is satisfied.
+- **Question discipline**: a question to the user is legal only when the agent searched first and names the search with its result, and names the decision the answer unblocks. Otherwise it proceeds on a declared assumption — same evidence duty, batched, never a stream of "shall I proceed?".
+- **Installed support files**: Claude, Codex, Gemini, and Google Antigravity receive the full skill folder, including `templates.md`, `architect.md`, `guides.md`, `vision.md`, `tdd.md`, `debugging.md`, `elicitation.md`, `review.md`, `dispatch.md`, `routing.md`, `ENFORCEMENT.md`, and the validator's two files, `scripts/sdlc_check.py` + `scripts/sdlc_core.py`.
+- **Mechanical checks**: optional validator for document structure, generated feature history, stale audit areas, and protected-path gates — `check`, `validate`, `index`, `stale`, `mark`, `gate`, `plan`, `orient`, `migrate`.
 
 ## Installation
 
@@ -22,8 +24,17 @@
 
 ```bash
 npm install -g @antoneeo/agentic-sdlc-skill@latest
+```
+
+That is enough — the package's `postinstall` runs the installer. If your npm blocks
+install scripts (`--ignore-scripts`, some CI/pnpm setups), run it by hand:
+
+```bash
 agentic-sdlc-install-skill
 ```
+
+> The command is on your PATH only after a **global** (`-g`) install; after a local
+> `npm i`, invoke it as `npx agentic-sdlc-install-skill`.
 
 The installer copies `skills/agentic-sdlc-skill/` recursively into native skill locations:
 
@@ -58,12 +69,28 @@ skills/agentic-sdlc-skill/
 ├── elicitation.md
 ├── review.md
 ├── dispatch.md
+├── routing.md
 ├── ENFORCEMENT.md
 └── scripts/
-    └── sdlc_check.py
+    ├── sdlc_check.py
+    └── sdlc_core.py
 ```
 
 `SKILL.md` is the entrypoint. Supporting files are loaded or executed only when the agent needs them.
+
+The validator is **two files**: `sdlc_core.py` is the family's shared spine, `sdlc_check.py` is this lens's entry point. Copy both, or neither — the entry point is useless alone.
+
+## The family: three lenses, one spine
+
+Same process, three fidelity disciplines — what the agent's assertions must be faithful to:
+
+| Package | Faithful to | Unit of work | Own doctrine |
+|---|---|---|---|
+| [`@antoneeo/agentic-sdlc-skill`](https://www.npmjs.com/package/@antoneeo/agentic-sdlc-skill) | this repository's code | feature | `architect.md`, `tdd.md`, `debugging.md` |
+| [`@antoneeo/kb-agentic-skill`](https://www.npmjs.com/package/@antoneeo/kb-agentic-skill) | the documents you supply | topic | `taxonomy.md`, `distillation.md`, `reconciliation.md` |
+| [`@antoneeo/mkt-agentic-sdlc-skill`](https://www.npmjs.com/package/@antoneeo/mkt-agentic-sdlc-skill) | market evidence | engagement | `frameworks.md`, `research.md` |
+
+Triage, the Vision Gate, the review gates, the guide router, question discipline and the validator spine are byte-identical across the three. Install only the one you need; when two live in the same project, `routing.md` decides which lens owns a given piece of work and any of the three validators gives the same verdict on the same tree.
 
 ## Standalone vs Hybrid
 
@@ -92,4 +119,4 @@ For native Gemini Agent Skills, the npm installer now copies the skill folder in
 
 Created by **Antonio Pinto** ([GitHub](https://github.com/Antoneeo)).
 
-(c) 2026 Antonio Pinto. All rights reserved.
+MIT (c) 2026 Antonio Pinto.
