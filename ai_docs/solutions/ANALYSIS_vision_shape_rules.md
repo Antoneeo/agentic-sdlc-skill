@@ -197,9 +197,27 @@ The Vision has no mechanical validator, so its tests are the batteries:
   owner-acceptance disclosure path restored; Provenance dated correctly and
   superseded-draft narrations marked as not-current-text. **All ten fixes applied
   same-day.**
-- **Open before promotion:** C5 — the fifteen residual shape rules (Round 9 lists
-  them; three named worst: the manifest carve-out — now partly addressed by the F8
-  discriminator — the ceremony-form enumeration, the "advances a Goal" test). Round
-  9's warning applies: fixes introduce new shapes, so C5 is a careful pass. Then a
-  confirming blind round on the fixed text (the Round-8 lesson: fixes written
-  against seen attacks fall to rewords), and the owner's promotion decision.
+- **2026-08-01 — C5 SUPERSEDED by owner ruling; the mechanism replaces the surface.**
+  The owner rejected the trajectory ("stiamo curando la superficie e perdendo di
+  vista la sostanza") and demanded the key that makes the problem IMPOSSIBLE, not
+  better-worded. The structural defect was never the prose: it was that **the verdict
+  had no memory** — every proposal re-interpreted the text from scratch, so a
+  rejected capability returned reworded and the game restarted. A text defended only
+  by more text cannot converge (Round 9: fixes introduce new shapes — an arms race by
+  construction).
+  The key, recognized from F-025's own design: **case law as data**. `vision/rulings.md`
+  is the precedent ledger — every ruling keyed by the QUESTION the capability answers
+  (paraphrase-invariant identity, the claim-id principle), seeded with the 15
+  verdicts the battery and real history already produced. The admission test now
+  reads "Precedent first": EXISTS → the row's verdict applies, departure needs a
+  written falsifiable distinction line (the kb sibling rule); MISSING → the prose
+  rules once and the verdict becomes a row; double-match → CONTESTED, owner rules
+  with basis. What this makes impossible by structure: the reworded replay (a
+  paraphrase lands on the ruled row); the arms race (a working bypass is a NEW ROW,
+  not a rewrite — the document no longer needs to be perfect); the silent flip (a
+  contradicted precedent is visible by definition). C5's fifteen residual shapes die
+  by substitution: the prose stops being the mechanism, so its residual wording is
+  no longer attack surface. The confirming blind round is likewise replaced: future
+  real cases exercise the ledger, and each becomes a row.
+- **Remaining:** the owner's promotion of v8 (with the ledger wired), which closes
+  this feature.
