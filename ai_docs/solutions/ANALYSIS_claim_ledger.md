@@ -1,6 +1,6 @@
 ---
 id: F-025
-feature: Claim Ledger (assertions with provenance, and what happens when two disagree)
+feature: Claim Ledger (assertions with provenance; conflicts held open, never auto-resolved)
 status: PLANNED
 level: L3
 start_date: 2026-08-01
@@ -11,281 +11,280 @@ end_date:
 ## Objective
 
 Two lenses of the family need the same thing and neither has all of it: a table of
-**individual assertions**, each bound to the source location it came from, each carrying
-how much that source is worth, plus a decision procedure for what happens when two
-assertions about one subject disagree.
+**individual assertions**, each bound to a reopenable source location and a provenance,
+with a stated discipline for what happens when two of them disagree.
 
-- **Marketing has half of it.** `mkt_check.py#load_ledger/run_ledger` reads an evidence
-  ledger keyed `id | claim | class | source`, classifies each row FACT / BENCHMARK /
-  ASSUMPTION with a confidence, and detects duplicate ids and dangling `[EV-nn]`
-  references. It is registered as the portable check `marketing.ledger` and its own
-  docstring offers it "to documents owned by ANOTHER domain". What it has no notion of:
-  a claim that is true only in a window, a claim about a relationship, a quantity that
-  must aggregate, or two claims that contradict.
-- **Knowledge needs all of it** (F-024): a second brain over supplied specifications is
-  exactly a corpus of assertions whose worth differs by where they came from.
-
-Building it twice is the duplication this family exists to end. This analysis defines the
-component once; F-024 is its first full consumer, and marketing's ledger is prior art it
-generalizes rather than replaces.
+- **Marketing has the row shape.** `mkt_check.py#load_ledger/run_ledger` reads
+  `id | claim | class | source` rows, validates class and confidence, and detects
+  duplicate ids and dangling `[EV-nn]` references — registered as the portable check
+  `marketing.ledger`, offered by its own docstring "to documents owned by ANOTHER
+  domain". What it has no notion of: a claim true only in a window, a typed quantity,
+  a relationship, or two rows that contradict each other.
+- **Knowledge needs the rest** (F-024): a second brain over supplied specifications is a
+  corpus of assertions whose worth differs by where they came from, and whose
+  contradictions are the most valuable thing it can surface.
 
 **Contract, stated without naming either consumer:** *hold assertions, each bound to a
-reopenable source location and a provenance; decide mechanically whether two assertions
-are the same, refine one another, hold in disjoint scopes, or conflict; and when they
-conflict, resolve by a stated order or refuse to resolve — never silently.*
+reopenable source location and a provenance; keep every disagreement visible with both
+sides intact until a fact resolves it; and never resolve one silently.*
+
+**The design principle, owner-set (2026-08-01):** the machine **detects and holds**
+conflicts; it never decides them. Resolution comes only from **new information** — a
+newer source, or a fact the practitioner knows that the corpus lacks. A practitioner's
+preference is not a fact: a ruling without stated grounds is rejected exactly as an
+agent synthesis without sources is. An earlier draft carried a ten-cell precedence
+ladder that decided winners automatically; review showed it needed inputs the rows do
+not carry, produced order-dependent outcomes on three-way conflicts, and in one cell
+destroyed evidence. Dropped whole, not repaired — deciding was the defect, not the
+arithmetic.
 
 ## Feature Vision
 
 **Expected benefit.** An answer built from the ledger can be defended: every figure
-traces to a page, and every contradiction is either resolved by a rule the practitioner
-can read or is sitting in front of them unresolved. The alternative — a document-level
-"source list" — cannot do either, because you cannot reconcile documents, only assertions.
+traces to a page, and every contradiction is either resolved by recorded new information
+or is sitting in front of the practitioner, both sides intact. **Alignment**: Goal 7
+admits a sibling only if it adds no capability the family lacks; this component exists to
+prevent a *second* implementation of what marketing already half-owns — the same rule
+applied inward. It also restates the family's standing pairing: **the agent judges, the
+machine verifies** — classification of two claims is judgement; integrity of what was
+classified is arithmetic.
 
-**Alignment.** `project_vision.md` Goal 7 admits a sibling only if it adds **no capability
-the family lacks**. This analysis is the other side of that coin: it prevents a *second*
-implementation of a capability the family already half-has, which is the same rule
-applied inward.
-
-**Non-Goals, all four, run:**
+**Non-Goals, all four run:**
 
 | Non-Goal | Verdict |
 |---|---|
-| *Not a work-management system* | **Satisfied, and it constrains the design.** A claim describes a subject, never a unit of work. No field ranks anything, and **no command aggregates claim state across documents** — the forbidden capability is collection into one surface, so the checks report per-document findings only, exactly like every other validator finding |
-| *No ceremony ratchet* | **Cost declared, acceptance owed.** See the budget below; the removal column is genuinely empty because nothing is being retired, so this falls to the explicit-owner-acceptance branch and is **open** |
-| *One triage authority per kind of work* | **Satisfied.** Reconciliation outcomes classify *assertions*, not work; each consumer's Rule Zero remains the sole triage of what to do about them |
-| *No coupling to another tool's formats* | **Satisfied.** The design converges with nanopublications (assertion + provenance as one atomic unit) and truth-discovery's evidence weighting, and reproduces neither: no external schema, vocabulary or file format is emitted or parsed. If either changes, nothing here changes |
-
-**Ceremony budget.** Lands on **L3 only** for a consumer adopting the ledger. Honest
-accounting of what an **L2** edit pays once the ledger exists: adding one row means
-computing a 12-hex id, which is a hash over two fields the author already has — provided
-by `sdlc_check.py claim-id <path> <locator>` so it is a command, not arithmetic by hand.
-That is the true added cost at L2, and it is stated here rather than claimed to be zero.
-Nothing shipped is removed in exchange. **Owner acceptance of this budget is the open
-item; the proposal does not clear the bar without it.**
+| *Not a work-management system* | **Satisfied.** A claim describes a subject, never a unit of work. Conflict findings are per-document validator findings like any other error; the batch escalation at the end of an ingest presents the conflicts *of that run*, which is reporting a command's own result, not collecting state across documents into a standing surface |
+| *No ceremony ratchet* | **Satisfied at L1 by construction** (owner ruling 2026-08-01): the `id` column is optional when writing by hand — the validator computes and fills it. An L1 note edit pays nothing new. The L3 adoption budget is in F-024, which owns the consumer surface |
+| *One triage authority per kind of work* | **Satisfied.** Classifying two assertions is not triaging work |
+| *No coupling to another tool's formats* | **Satisfied.** Converges with nanopublications (assertion+provenance atomic) and truth discovery (evidence over channel); emits and parses no external format |
 
 ## Use Cases
 
-- **UCL1** — As an author, I record an assertion and later reopen exactly the page it came
-  from, so a challenged figure can be checked in seconds rather than re-read.
-- **UCL2** — As an author, I add a source that says the same thing and the base gets
-  *stronger*, not longer: one row, two sources.
-- **UCL3** — As an author, two sources disagree and I am shown both with their provenance,
-  rather than being handed one of them silently.
-- **UCL4** — As the practitioner, I rule on a contradiction once and am not asked again.
+- **UCL1** — I record an assertion and later reopen exactly the place it came from.
+- **UCL2** — A second source says the same thing and the base gets *stronger*, not longer:
+  one row, two sources.
+- **UCL3** — Two sources disagree and I am shown both, with sources, dates and
+  provenances — never handed one of them silently.
+- **UCL4** — I resolve a contradiction by stating what I know, that fact is recorded, and
+  I am not asked again **unless new information arrives** — in which case the question
+  returns carrying my recorded grounds, so I decide with both in view.
 
 ## Capability Ledger
 
 | Capability | Verdict | Component / gap | Evidence |
 |---|---|---|---|
-| hold rows of claims with id, text and source, and detect duplicate ids and dangling references | **INADEQUATE** | `distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/mkt_check.py#load_ledger`, `#run_ledger`, registered as portable check `marketing.ledger` | re-read `run_ledger`: it validates class ∈ FACT/BENCHMARK/ASSUMPTION, confidence, date, duplicate ids, `[EV-nn]` resolution. **Gap:** no locator inside the source, no validity scope, no typed quantity, no relationship form, and no reconciliation at all — two rows asserting opposite things both pass |
-| parse a markdown table out of a governed document, stdlib only | EXISTS | `mkt_check.py#find_table` | re-read: locates a table by its header cells and returns rows; already the mechanism three marketing checks rest on |
-| address a source file by content and re-hash it | **INADEQUATE** | `sdlc_core.py#sha256_file` + the `.sources/<slug>-<hash8>` convention in `guides.md` | re-read both: the helper and the naming convention exist and are used for guides. **Gap:** `cmd_stale` iterates `list_guides`, which globs `reference/GUIDE_*.md` only, so no shipped detector looks anywhere else. What is reusable is the helper and the convention, not the detector |
-| offer a check written in one lens to documents owned by another | EXISTS | `sdlc_core.py#portable_check` + `declared_checks`/`run_portable_checks` | re-read: a document opts in with `checks:`, findings are added and never authority. This is the seam through which a knowledge ledger check can also serve a marketing document |
-| **decide what two disagreeing claims mean, and act on it** | **MISSING** | — | searched `mkt_check.py` (the only ledger implementation), the spine, and all three overlays for reconcile / conflict / supersede / contested: `mkt_check.py` has none, the spine has none. `templates.md` in kb mentions CONTESTED as a word in a template comment, backed by no procedure. No owner |
+| hold rows of claims with id, source and class; detect duplicate ids and dangling refs | **INADEQUATE** | `mkt_check.py#load_ledger/run_ledger` (portable check `marketing.ledger`) | re-read: validates FACT/BENCHMARK/ASSUMPTION, confidence, duplicate ids, `[EV-nn]` resolution. Gap: no locator, no validity scope, no typed quantity, no relationship form, no conflict state |
+| parse a markdown table, stdlib | **INADEQUATE** | `mkt_check.py#find_table` — the pattern is right, but the function lives in a distribution kb cannot import (`mkt_check.py` is `NOT_SHARED_ON_PURPOSE`, and nothing under `SHARED_FILES` carries it) | the kb entry point carries its own copy of the ~20-line pattern, and the copy is **declared here as a cost**: promoting `find_table` into the spine would be a SHARED change with three-distribution propagation, deliberately not spent for one helper |
+| hash a file and re-verify it | EXISTS | `sdlc_core.py#sha256_file` | re-read: four lines, already the guide-snapshot mechanism |
+| offer a check written in one lens to documents owned by another | EXISTS | `sdlc_core.py#portable_check` + `declared_checks`/`run_portable_checks` | re-read: opt-in via `checks:`, findings never authority — the seam through which a marketing document can later import the claim checks |
+| **hold a disagreement open with both sides intact, resolvable only by recorded new information** | **MISSING** | — | document-level supersession exists (`CANONICAL_STATES` has SUPERSEDED; `mkt_check.py` validates a `supersedes:` field) but nothing anywhere holds two *claims* in conflict: no conflict state, no escalation form, no ruling record. Searched the spine and all three overlays for a claim-level conflict/contested/ruling construct — the words appear only in kb's template comment, backed by no procedure |
 
-The MISSING row is the actual new component. Everything above it is generalization.
+The MISSING row is the new component. Everything above it is generalized or reused.
 
 ## Design
 
 ### The row
 
-A claim table lives under a heading the consumer chooses, with fixed columns:
+A claim table under a `## Claims` heading, fixed columns:
 
 | id | claim | valid | qty | about | source | prov | state |
 |---|---|---|---|---|---|---|---|
-| c7f3a91b0e42 | List price of module A is 12000 EUR | until 2026-03-01 | 12000 EUR cost | - | corpus/given/contract-9a1f2b7c.pdf#p=17 | GIVEN | OK |
+| c7f3a91b0e42 | List price of module A is 12000 EUR | until 2026-03-01 | 12000 EUR cost | - | corpus/given/contract-9a1f2b7c.pdf#p=17@412-509 | GIVEN | OK |
+| 4d20be71c8a9 | List price of module A is 15000 EUR | from 2026-03-01 | 15000 EUR cost | - | corpus/given/amendment-3e8d1a04.pdf#p=2@88-140 | GIVEN | OK |
 
-- **`id`** — first 12 hex of `sha256(source_path + "#" + locator)`, **computed from the
-  location alone, never from the claim text**, and fixed at first insertion. Keying on the
-  text would defeat the purpose: extraction is an LLM pass, so a re-run paraphrases, the
-  hash changes, and the same assertion is inserted twice — which is precisely the
-  duplication the id exists to prevent. Location is stable across re-extraction; wording
-  is not. Consequence, stated because it is a real constraint: **one claim per source
-  location.** A page asserting three things needs three locators (`#p=17a`, `#p=17b`), and
-  the extractor is what makes them distinct.
-- **`claim`** — one falsifiable assertion. "The system is robust" is not a claim; "the
-  retry runs 3 times with backoff" is.
-- **`valid`** — `-`, `from <date>`, `until <date>`, `from X until Y`, or `if <condition>`.
-  **Half-open by definition: `from` is inclusive, `until` is exclusive**, so
-  `until 2026-03-01` and `from 2026-03-01` do **not** overlap — without that rule the two
-  most obvious rows in any corpus produce a spurious conflict on the boundary day. `-`
-  means unbounded. `if <condition>` is free text, so overlap is undecidable: it is treated
-  as **always overlapping**, which sends it to the conflict path rather than letting two
-  conditional claims coexist on an assumption the validator cannot check.
-- **`qty`** — `-`, or `<value> <unit> <kind>` with kind in `effort | cost | duration |
-  count`. Without a unit, "3 weeks" versus "15 days" cannot even be classified as
-  agreement or disagreement, and nothing aggregates.
-- **`about`** — `-`, or `<predicate> -> <target>`. A claim about a relationship belongs to
-  neither endpoint alone; it is stored once, under the document that owns the subject, and
-  the reverse direction is computed.
-- **`source`** — `<path>#<locator>`, locator typed by source class: `p=17` (paged),
-  `L40-52` (line-addressed), `Sheet1!B7` (cell). Corroboration appends further sources
-  after the first, separated by `;`; **the id keeps its originating source**, which is what
-  makes recomputation well-defined on a corroborated row.
-- **`prov`** — `RULING | GIVEN | ELICITED | DERIVED`.
-- **`state`** — `OK`, `CONTESTED <id>`, `SUPERSEDED <id>`, or `CHALLENGED <id>` on a
-  ruling. Per claim, never per document: one disputed date must not condemn a whole file.
+- **`id`** — first 12 hex of `sha256(source_path + "#" + locator)`. **Optional when
+  authoring**: the validator's fill step computes and writes it (the L1 rule). Fixed at
+  first insertion; on a corroborated row it keeps the **first** source entry, which makes
+  recomputation well-defined. The claim text is deliberately excluded — an LLM
+  re-extraction paraphrases, and a text-keyed id would re-insert the same assertion under
+  a new hash.
+- **the locator is deterministic from the document, never invented by the extractor.**
+  Grammar, closed: `p=<n>@<start>-<end>` (page + character offsets in that page's
+  extracted text), `L<a>-<b>` (line-addressed files), `Sheet<s>!<cell>` (spreadsheets).
+  An earlier draft let the extractor mint sub-page labels (`p=17a`); that reintroduced
+  through the locator the same instability the id had just evicted from the text — a
+  second run orders the assertions differently and every label moves. Character offsets
+  are a property of the stored bytes: the same sentence has the same offsets whoever
+  extracts it, however many times. Two independent extractions of one assertion therefore
+  collide on the same id, which is the dedup working.
+- **`valid`** — `-` (unbounded), `from X`, `until X`, `from X until Y`, `if <condition>`.
+  **Half-open: `from` inclusive, `until` exclusive**, so `until 2026-03-01` and
+  `from 2026-03-01` do not overlap — the two most common rows in any commercial corpus
+  must not produce a boundary-day conflict. `if <condition>` is free text and therefore
+  treated as overlapping everything: undecidable coexistence is surfaced, not assumed.
+- **`qty`** — `-`, or `<value> <unit> <kind>`, kind ∈ `effort | cost | duration | count`.
+  `effort`, `duration`, `count` normalise arithmetically (days/weeks/FTE-months to one
+  unit). **`cost` normalises only within one currency**: an offline stdlib validator has
+  no exchange rates, so a mixed-currency comparison refuses rather than inventing one.
+- **`about`** — `-`, or `<predicate> -> <slug>` for a claim about a relationship; stored
+  once under the subject, the reverse direction computed by the consumer's index.
+- **`source`** — `<path>#<locator>`; corroboration appends `; <path>#<locator>` entries.
+  Every path resolves under the docs root and passes `confine_under`. **Every provenance
+  class has a real file**: `GIVEN` points into `corpus/given/`, and `ELICITED`, `DERIVED`
+  and `RULING` point at notes in `corpus/notes/` — a spoken fact is transcribed, a
+  synthesis declares `derived_from:`, a ruling is a note (below). An earlier draft made
+  `source` file-only for GIVEN and left the other three unresolvable, which the "source
+  must resolve" check would have rejected wholesale.
+- **`prov`** — `GIVEN | ELICITED | DERIVED | RULING`. Not a rank. It is **information
+  shown to whoever resolves a conflict**, never an input to an automatic decision.
+- **`state`** — `OK`, `CONTESTED <id>[,<id>…]`, `SUPERSEDED <id>`. Per claim, never per
+  document. `CONTESTED` lists *every* counterpart, so a three-way conflict is one set
+  seen whole, not three pairs evaluated in some order.
 
-### Provenance is a partial order
+### Reconciliation — the agent classifies, the machine verifies
 
-| Provenance | What it is |
-|---|---|
-| `RULING` | a decision the practitioner took on a contradiction. **Pins** the claim |
-| `GIVEN` | an artifact the practitioner handed over |
-| `ELICITED` | the practitioner said it; the agent transcribed it |
-| `DERIVED` | the agent synthesised it; must declare `derived_from` |
-
-`GIVEN` and `ELICITED` are **incomparable on purpose** — a spoken correction may postdate
-a document, or the document may be newer, and only the practitioner knows which. Any
-implementation storing provenance as a rank integer is therefore wrong.
-
-`RULING` exists because without it a resolved conflict re-opens forever: the practitioner
-rules, the ruling is transcribed as an elicited note, and GIVEN-versus-ELICITED escalates
-again on the next run.
-
-### Reconciliation — outcomes
-
-Applied when a new claim addresses a subject an existing row already addresses:
+When a new claim addresses a subject an existing row already addresses, the **agent**
+classifies (this is semantic judgement; no query performs it):
 
 | Outcome | When | Action |
 |---|---|---|
 | **new** | nothing on that subject | insert |
-| **corroboration** | same assertion, different source | append the source to the existing row. **Never a second row** |
-| **refinement** | strictly more precise, not contradictory | replace the text, keep both sources, old text preserved in a `SUPERSEDED` row |
-| **coexistence** | contradictory *only if scopes overlap*, and by the half-open rule they do not | keep both, neither supersedes |
-| **conflict** | contradictory with overlapping scope | the ladder |
+| **corroboration** | same assertion, different source | append the source. **Never a second row** |
+| **refinement** | strictly more precise, not contradictory ("Q1" → "15 March") | new row; old row `SUPERSEDED <new-id>`, text intact |
+| **coexistence** | incompatible only if scopes overlapped, and they do not | both rows stay `OK` |
+| **conflict** | incompatible, scopes overlap | **all** rows in the conflict set marked `CONTESTED` with each other's ids. Nothing is picked |
 
-### The ladder — total by construction
+The **machine** then verifies what was classified — every check a pure function in the
+consumer's entry point:
 
-All ten unordered provenance pairs. A cell that is not listed does not exist.
+- ids recompute from `source#locator` (first entry); mismatch is an error
+- every `source` resolves under the docs root, through `confine_under`, fail closed
+- `DERIVED` without `derived_from:` in its note is an error (laundered synthesis)
+- `RULING` without `basis:` in its note is an error (preference disguised as fact)
+- `CONTESTED`/`SUPERSEDED` ids that resolve to no row are errors (conflict laundering —
+  deleting either side of a recorded disagreement breaks the check, it does not clean up)
+- scope grammar parses; `qty` units parse; table arity is exact (a stray `|` errors, never
+  truncates)
+- advisory, because subject-sameness is judgement: two rows sharing an `owns:` concept,
+  overlapping scopes and different `qty` values are flagged as a probable missed conflict
 
-| Pair | Outcome |
-|---|---|
-| `RULING` × `RULING` | **escalate.** The practitioner has contradicted their own earlier decision; a newer ruling does not silently revoke an older one, because the usual cause is not knowing the first was made |
-| `RULING` × `GIVEN` | the ruling stands; the other row becomes `CHALLENGED`, and is **not** escalated again |
-| `RULING` × `ELICITED` | as above |
-| `RULING` × `DERIVED` | as above |
-| `GIVEN` × `GIVEN` | different dates **and** comparable breadth → newer wins, older `SUPERSEDED` with the reason recorded. Same date, undatable, or **different breadth** → **escalate** (a narrow addendum must not silently override a broad master agreement) |
-| `GIVEN` × `ELICITED` | **escalate** |
-| `GIVEN` × `DERIVED` | GIVEN wins **unless** the derived claim's newest `derived_from` source is newer than the conflicting GIVEN → then **escalate**. Ranking by channel alone would let an unsigned draft from last year silently beat a synthesis of ten signed quotes from this quarter |
-| `ELICITED` × `ELICITED` | different dates → newer wins, older `SUPERSEDED` with the reason. Same date → **escalate** |
-| `ELICITED` × `DERIVED` | ELICITED wins; the derived row is flagged for re-derivation |
-| `DERIVED` × `DERIVED` | **re-derive, do not escalate.** Two agent syntheses disagreeing is an internal inconsistency, not a question for the practitioner: both rows are dropped and derivation re-runs from sources |
+### Conflict resolution — only new information resolves
 
-Escalation marks **both** rows `CONTESTED <other-id>`, keeps both with their sources, and
-surfaces them. It never picks one. Silence is what the absence of this table produces, and
-making it impossible is the point.
+A `CONTESTED` set is resolved in exactly two ways, and both are **new facts entering the
+corpus**, never verdicts:
 
-### What is code and what is prose
+1. **A new source arrives** (a signed amendment, a newer plan). It is ingested normally;
+   the agent re-classifies the set with it in view; what it supersedes is marked, with
+   the superseding id recorded.
+2. **The practitioner records a ruling** — a note in `corpus/notes/` whose mandatory
+   `basis:` states *the fact they know that the corpus lacks* ("client confirmed Q3 by
+   phone on 30 Jul", "doc B is an unsigned draft"). The ruling claim enters the ledger
+   with `prov: RULING` pointing at that note; the losing rows become
+   `SUPERSEDED <ruling-id>`. **No basis, no ruling**: if the practitioner knows nothing
+   new, the set simply stays `CONTESTED` — a legitimate, permanent, honest state.
 
-The distinction matters because a rule no check can verify drifts. These are **pure
-functions**, stdlib, in the consumer's entry point — so the ladder is testable rather than
-merely written down:
+A later source that contradicts a RULING **does resurface** — as a new `CONTESTED` set
+that carries the ruling's `basis:` alongside the new evidence, so the practitioner
+decides with both in view. Rule-once-forever was in the earlier draft and was wrong on
+this corpus's own premise: signed amendments arrive later.
 
-| Function | Answers |
-|---|---|
-| `claim_id(source_path, locator)` | the id, and the `claim-id` command wraps it |
-| `parse_claims(text, heading)` | rows out of the markdown table, on `find_table`'s pattern |
-| `scopes_overlap(a, b)` | half-open date logic; `if` conditions always overlap |
-| `resolve(prov_a, date_a, breadth_a, prov_b, ...)` | one of the ten cells, or `ESCALATE` |
-| `check_ledger(rows)` | duplicate id, malformed locator, id not matching its source, `DERIVED` without `derived_from`, `CONTESTED` pointing at a missing id, quantity with no unit |
-
-What stays prose: *which* rows address the same subject, and whether one refines another.
-That is semantic judgement, and no query decides it. The standing pairing is the family's
-usual one — **the agent judges, the machine verifies afterwards**.
+**The escalation form — a conflict question has a legal shape** (owner requirement,
+2026-08-01: no useless questions). Escalations are **batched at the end of a run**, never
+modal, and each names: the claims in the set, each one's source (reopenable), date and
+provenance, and the one-line reason the machine cannot decide ("same subject, overlapping
+validity, GIVEN vs GIVEN, no newer source"). A question that cannot fill this form is not
+askable — it is the symptom that the answer is in the corpus and was not searched.
 
 ## Impact
 
-Paths relative to `distributions/kb-agentic-skill/skills/kb-agentic-skill/` unless stated.
-
-**No file in `shared_files.py#SHARED_FILES` is touched.** The ledger is implemented in the
-consumer's entry point, which is `NOT_SHARED_ON_PURPOSE`, precisely so a domain's data
-model cannot enter the byte-identical spine.
+Paths relative to `distributions/kb-agentic-skill/skills/kb-agentic-skill/`.
+**No file in `SHARED_FILES` is touched**, and **no new Python module is added**: the npm
+`files` allowlist ships exactly two validator files (`sdlc_check.py`, `sdlc_core.py`),
+`ENFORCEMENT.md` promises "copy both", and `test_golden_regression.py` asserts the
+two-file recipe — so the ledger's functions live **inside the kb entry point**, which is
+`NOT_SHARED_ON_PURPOSE` and already the overlay per `mkt_check.py`'s precedent.
 
 | Path | Change | Responsibility | Why it changes |
 |---|---|---|---|
-| `scripts/claim_ledger.py` | ADD | the five pure functions above | one module, imported by the entry point; separable because a second consumer exists |
-| `scripts/sdlc_check.py` | MODIFY | expose `claim-id`; run `check_ledger` inside the overlay's `check` | the command surface a consumer needs |
-| `scripts/test_claim_ledger.py` | ADD | the battery | a check with no test is a claim |
-| `templates.md` | MODIFY | the claim-table template | authors need the exact column set, or they invent one |
-| `ai_docs/solutions/ANALYSIS_kb_knowledge_method.md` *(repo root)* | MODIFY | names this document as the component it consumes | `architect.md`: the two analyses name each other |
-| `ai_docs/strategic/architecture.md` *(repo root)* | MODIFY | Component Map row for the ledger | a component was born |
+| `scripts/sdlc_check.py` | MODIFY | the ledger section: `parse_claims`, `claim_id`, `scopes_overlap`, `qty_norm`, `check_claims`, the fill step for missing ids, the `claim-id` subcommand | the component's one implementation; a new module would not ship |
+| `scripts/test_claim_ledger.py` | ADD | the battery: pure-function tests | a check with no test is a claim |
+| `scripts/test_golden_regression.py` + `fixtures/golden_baseline.txt` | MODIFY | `claim-id` enters `COMMANDS`; baseline re-recorded, existing lines byte-identical | a command outside `COMMANDS` is a command the harness stopped freezing |
+| `templates.md` | MODIFY | the claim-table template + the ruling-note template (`basis:` mandatory) | authors need the exact shapes |
+| `SKILL.md` | MODIFY | `claim-id` in the command list; Write Trigger rows for claim tables and ruling notes | a destination with no trigger row gets created twice |
+| `ai_docs/audit/handoff.md` *(repo root)* | MODIFY | F-025's own workstream row | Write Trigger: one row per OPEN workstream |
+| `ai_docs/strategic/architecture.md` *(repo root)* | MODIFY | Component Map row | a component was born |
 
-**Not touched, and named so the omission reads as a decision:**
-`distributions/mkt-agentic-sdlc/**` — marketing keeps its evidence ledger unchanged. This
-component generalizes it; **migrating marketing onto it is its own unit of change**, with
-its own golden-transcript risk, and bundling it here would put two independently
-shippable increments in one branch.
+**Sequencing.** The ledger is a *section of the same file* F-024's overlay work modifies,
+so the dependency is declared instead of discovered: **this component's functions and
+battery land first**, in F-024's first implementation step, then F-024's graph consumes
+them — `architect.md` §5 order restored. Marketing's future adoption is out of scope and
+its cost is stated: it would either import across distributions (impossible today) or
+promote the section into the spine (a SHARED change) — a decision for that unit, not this
+one.
 
-**Blast radius.** `claim_ledger.py` is new, so it has no consumers to break. The one
-existing symbol touched is the entry point's `main`, and the addition is a new subcommand
-plus a call inside the overlay's own `check` — no existing subcommand changes behaviour on
-a tree containing no claim table.
+**Blast radius.** New functions and one new subcommand inside `sdlc_check.py`; no
+existing subcommand changes behaviour on a tree with no claim tables (asserted by the
+golden baseline's existing lines). The shared batteries bind `sdlc_core` directly and are
+untouched by construction.
 
 ## Security and Threat Model
 
-Surfaces: **external input parsing** (claim rows are written by an agent reading untrusted
-documents) and **filesystem** (the `source` column is a path a later stage opens).
+Surfaces: **external input parsing** (claim rows derive from untrusted documents) and
+**filesystem** (`source` is a path later stages open). No network, no authN/authZ, no
+crypto beyond hashing.
 
-| # | Threat | Mitigation |
-|---|---|---|
-| TL1 | **Path traversal through the `source` column.** A hostile document yields `source: ../../../../Users/x/.ssh/id_rsa#p=1`, which the checks then open and hash | every `source` path through `confine_under(root, v)` before any open, mirroring the spine's fail-closed guard on `distilled_from`. Tested |
-| TL2 | **Laundered synthesis.** A `DERIVED` row with no `derived_from` is model knowledge entering the ladder with real weight | `check_ledger` errors on it; `DERIVED` loses to `GIVEN` and `ELICITED` in every cell |
-| TL3 | **Forged provenance by hand-editing.** An author edits a claim's `source` to a stronger document while keeping the id | ids are recomputed from `source_path#locator` and compared; a mismatch is an error. This works precisely because the id excludes the text: text may be corrected freely, provenance may not be moved silently |
-| TL4 | **Conflict laundering.** Deleting one side of a contradiction makes the base look consistent | `CONTESTED <id>` pointing at a missing id is an error, so removing one side breaks the check rather than quietly succeeding |
-| TL5 | **Table parsing on adversarial input.** A pipe inside a claim splits a row | cells are stripped and the column count is enforced; a row with the wrong arity is an error, never silently truncated |
-
-No network, no authentication, no cryptography beyond hashing, no personal data held by
-the component itself. "No security impact" is not claimed: TL1 is a genuine traversal
-surface created by putting an untrusted-derived path in a governed file.
+| # | Threat | Mitigation | Test |
+|---|---|---|---|
+| TL1 | path traversal via `source` — a hostile document yields `../../../.ssh/id_rsa#L1-2`, which checks then open and hash | every path through `confine_under(root, v)` before any open; fail closed, the spine's `distilled_from` precedent | TL-T7 |
+| TL2 | laundered synthesis — a DERIVED note with no `derived_from:` enters as if sourced | `check_claims` errors on it; and provenance never auto-decides anything, so a laundered class buys no automatic win | TL-T8 |
+| TL3 | forged provenance — claim text edited, or `source` moved to a stronger document, under a kept id | ids recompute from the first source entry; mismatch errors. Text is free to correct (not keyed); *moving the source* is what breaks the hash | TL-T7 |
+| TL4 | conflict laundering — deleting one side of a disagreement | `CONTESTED`/`SUPERSEDED` referential integrity: a pointer to a missing row is an error | TL-T8 |
+| TL5 | adversarial table cells — a `|` inside a claim splits the row | exact arity enforced; wrong arity errors, never truncates | TL-T9 |
+| TL6 | preference disguised as fact — a ruling with no grounds silently ends a real conflict | `RULING` without `basis:` is an error; the losing rows record the ruling id, so the resolution is reopenable and challengeable | TL-T8 |
 
 ## Action Plan
 
-- [ ] `claim_ledger.py`: the five pure functions
-- [ ] `test_claim_ledger.py`: the ladder cell by cell, scope boundaries, ids, the checks
-- [ ] Wire `claim-id` and `check_ledger` into the kb entry point
-- [ ] Claim-table template
-- [ ] Component Map row; F-024 cross-reference
-- [ ] Closure: `check` CLEAN, drift guard green, three golden transcripts byte-identical
+- [ ] Ledger section in `sdlc_check.py`: `parse_claims`, `claim_id`, `scopes_overlap`,
+      `qty_norm`, `check_claims`, id fill, `claim-id`
+- [ ] `test_claim_ledger.py`
+- [ ] Templates: claim table + ruling note
+- [ ] `SKILL.md` command list + Write Triggers; handoff row; Component Map row
+- [ ] Golden: `claim-id` in `COMMANDS`, baseline re-recorded, existing lines byte-identical
 
 ## Test Strategy
 
+All pure-function calls, stdlib, no network, no LLM, no subprocess.
+
 | Id | Asserts |
 |---|---|
-| TL-T1 | the id is unchanged when the claim text is rewritten, and changes when the locator does — the property the whole idempotency argument rests on |
-| TL-T2 | `until X` and `from X` do **not** overlap; `-` overlaps everything; `if <cond>` overlaps everything |
-| TL-T3 | all ten ladder cells, each with a case that returns the documented outcome |
-| TL-T4 | `RULING × RULING` escalates, and `RULING × GIVEN` does **not** re-escalate — the loop that makes contested queues immortal |
-| TL-T5 | corroboration appends a source and leaves the id and the row count unchanged |
-| TL-T6 | `GIVEN × DERIVED` flips to escalation when the derived source is newer |
-| TL-T7 | recomputation catches a moved `source` (TL3); a traversing path is refused (TL1) |
-| TL-T8 | `DERIVED` without `derived_from` errors (TL2); `CONTESTED` pointing at a missing id errors (TL4) |
-| TL-T9 | a row with the wrong column count errors rather than truncating (TL5) |
-| TL-T10 | quantities in different units of one kind normalise and sum; mismatched kinds refuse |
+| TL-T1 | id unchanged when claim text is rewritten; id changes when the locator does; **two extractions of one sentence at the same offsets yield one id** |
+| TL-T2 | `until X` / `from X` disjoint; `-` overlaps everything; `if` overlaps everything |
+| TL-T3 | a three-way conflict yields one `CONTESTED` set listing all counterpart ids on every row |
+| TL-T4 | a ruling with `basis:` supersedes its set; a ruling note without `basis:` errors; a later conflicting source re-opens as a new set that references the ruling |
+| TL-T5 | corroboration appends a source, id and row count unchanged |
+| TL-T6 | missing-id rows are filled deterministically; a filled table re-fills to byte-identical |
+| TL-T7 | a traversing `source` is refused; a moved `source` under a kept id errors |
+| TL-T8 | `DERIVED` without `derived_from` errors; `RULING` without `basis` errors; dangling `CONTESTED`/`SUPERSEDED` errors |
+| TL-T9 | wrong table arity errors, never truncates |
+| TL-T10 | effort/duration/count normalise and sum; mixed currencies refuse; mismatched kinds refuse |
 | TL-T11 | on a tree with no claim table, every existing subcommand's output is byte-identical to the golden baseline |
-
-Every one is a pure function call: stdlib, no network, no LLM, no subprocess.
 
 ## Sources and Verification
 
-Owning domain is `code` (this project declares no `default_domain`), so the mandatory risk
-slot is `## Security and Threat Model` above; this section is recorded for the claims made
-about other files. `mkt_check.py#load_ledger/run_ledger/find_table` and its
-`marketing.ledger` registration were read in source, as were `sdlc_core.py#sha256_file`,
-`portable_check`, `cmd_stale`/`list_guides`, and `shared_files.py#SHARED_FILES` /
-`NOT_SHARED_ON_PURPOSE`. The nanopublications and truth-discovery convergences were
-confirmed by search and are cited, not reproduced.
+Owning domain is `code` (no `default_domain` declared), so the mandatory risk slot is
+`## Security and Threat Model` above. Claims about other files, verified in source:
+`mkt_check.py#load_ledger/run_ledger/find_table` and the `marketing.ledger` registration;
+`sha256_file`, `portable_check`, `confine_under`, `CANONICAL_STATES` in `sdlc_core.py`;
+the npm `files` allowlist in `distributions/kb-agentic-skill/package.json`; the two-file
+recipe in kb's `ENFORCEMENT.md` and `test_golden_regression.py`. The shared batteries
+import `sdlc_core as sc` directly (checked in all five), which is why the overlay cannot
+shadow what they test. Convergences (nanopublications, truth discovery) cited, not
+reproduced.
 
 ## Diary / Current State
 
-**2026-08-01 — split out of F-024 by its design review.** The reviewer ruled that F-024's
-"hold a claim with its own provenance" MISSING row was wrong — marketing's evidence ledger
-already owns the shape — and that a component with two consumers and its own data model
-owes its own analysis under `architect.md` §4. The chosen cut in F-024 (method+storage /
-index+checks) ran *across* this component rather than around it. Two further repairs the
-same review forced are already in the design above: the id excludes the claim text (keying
-on it defeated the idempotency it was introduced to give), and the ladder is total across
-all ten provenance pairs (three cells, including `RULING × RULING`, were silent).
+**2026-08-01 — extracted by F-024's design review; rewritten after round 2 to the
+owner's design ruling.** Round 2 (two lenses: disposition verifier + cold adversary)
+broke the automatic precedence ladder beyond repair: cells needed absent columns
+(dates, breadth, `derived_from`), symmetric cells had opposite rules, `DERIVED×DERIVED`
+destroyed evidence, three-way conflicts were order-dependent, and `RULING×GIVEN` pinned a
+ruling against the corpus's own premise that amendments arrive later. The owner then set
+the principle this version implements: the machine detects and holds, only new
+information resolves, and a ruling is itself a recorded fact (`basis:`) — never a
+preference. Same round forced: locator by character offsets (the extractor invents
+nothing), every provenance class resolving to a real file, the ledger living inside the
+entry point (the npm allowlist ships exactly two validator files), and `claim-id`
+entering the golden `COMMANDS`.
 
-**Next step:** F-024's revision lands first, since it is what states how the ledger is
-consumed; implementation of this component follows immediately after.
+**Next step:** round 3 of the design gate on this document and F-024 together — the last
+before the cap; open findings, if any, go to the owner.

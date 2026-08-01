@@ -268,17 +268,18 @@ end_date:
      what could go wrong, and it is the risk slot the validator requires here — the
      code domain's `## Security and Threat Model` belongs to a different lens and is
      not what this one owes.
-     One row per source the unit rests on: path (or URL) + locator, its provenance
-     (GIVEN handed over / ELICITED said by the user / DERIVED synthesised / RULING a
-     user decision), and HOW it was verified — cross-checked against another source,
-     confirmed by the user, or left CONTESTED.
+     CITE, do not restate: provenance is owned by the claim rows in `topics/` and by
+     the corpus sidecars. This section names WHICH nodes and sources the unit rests on
+     and how they were verified — it never carries a second copy of their provenance
+     (two provenance tables in one project is the restated-fact finding `review.md`
+     defines).
      A distillation whose origin cannot be reopened is model knowledge, not knowledge
-     work. If something could not be confirmed, say so explicitly: that is a state the
-     document may be in; silence is not. -->
+     work. If something could not be confirmed, say so explicitly — an open CONTESTED
+     set is a state this section may honestly report; silence is not. -->
 
-| Source | Locator | Provenance | Verification |
-|---|---|---|---|
-| corpus/given/contract-9a1f2b7c.pdf | p.17 | GIVEN | cross-checked against the signed schedule |
+Rests on: `topics/pricing.md` (claims c7f3a91b0e42, 4d20be71c8a9 — both GIVEN, verified
+against `corpus/given/contract-9a1f2b7c.pdf` and its superseding amendment). Open
+CONTESTED: none.
 
 ## Action Plan
 - [ ] ...
