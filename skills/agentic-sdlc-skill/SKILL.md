@@ -17,7 +17,7 @@ Support files in the skill directory:
 - `guides.md`: pipeline for distilling user-provided indications into `ai_docs/reference/GUIDE_[topic].md`.
 - `vision.md`: how to write a Vision a cold reviewer can actually apply — the properties that make a rule hold, the minimum operable sections, and the blind check run before promoting one to APPROVED.
 - `routing.md`: which lens owns this unit of work. Read ONLY when a sibling lens skill is installed alongside this one; a single-lens install never reads it.
-- `scripts/sdlc_check.py` + `scripts/sdlc_core.py`: the mechanical validator for the docs root (`check`, `validate`, `index`, `stale`, `mark`, `gate`, `plan`, `orient`). Two files: the core is the family's shared spine, the entry point names this domain. Copy both, or neither.
+- `scripts/sdlc_check.py` + `scripts/sdlc_core.py`: the mechanical validator for the docs root (`check`, `validate`, `index`, `stale`, `mark`, `gate`, `plan`, `orient`, `migrate`). Two files: the core is the family's shared spine, the entry point names this domain. Copy both, or neither.
 - `ENFORCEMENT.md`: optional setup for CI and hooks.
 
 Read these files only when needed. `SKILL.md` is the operating contract; the support files are progressive resources.

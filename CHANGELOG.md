@@ -2,6 +2,51 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.20.0] - 2026-08-01
+
+### One shared core, three lenses
+
+This release is the consolidation: `agentic-sdlc` (code), `kb-agentic` (knowledge)
+and `mkt-agentic-sdlc` (marketing) are now built from ONE spine instead of being
+copies of one another. They can be installed side by side, they share a single
+`ai_docs/` tree, and the agent has a stated test for which one governs a given
+piece of work.
+
+**Nothing changes for an existing project.** No `default_domain` line resolves to
+`code`; no `domain:` field means no new column and no new check; the router is
+never read unless a sibling lens is installed, and never at all on a trivial task.
+A frozen corpus plus a recorded transcript of every command and exit code
+(`test_golden_regression.py`) is what makes that a checkable claim rather than a
+promise.
+
+### Added
+- `routing.md` — the domain router: which lens owns this unit of work. Read only
+  when a sibling lens is installed; fails open to the loaded lens.
+- Optional `domain:` and `checks:` on an artifact, `default_domain:` in the docs
+  root README. All optional; a single-domain project writes none of them.
+- **Portable checks**: a document owned by one domain can import another domain's
+  checks by name. Imported checks may only ADD findings, never relax what the
+  owning domain requires.
+- `migrate` — relocate a documentation root. Dry run by default, refuses a dirty
+  git tree, refuses to overwrite, never deletes, and leaves user-authored protocol
+  pointers untouched (they are reported instead).
+- `--docs-dir` / `AGENTIC_SDLC_DOCS_DIR`: the documentation root is resolved
+  (explicit flag > env > nearest recognized root > `ai_docs`). Two roots side by
+  side refuse rather than half-validate.
+- The drift guard (`shared_files.py`, `test_drift.py`): the spine is authored once
+  and copied verbatim, and a forgotten copy now fails a test instead of reaching a
+  user.
+
+### Changed
+- The validator ships as **two files**: `sdlc_core.py` (the shared spine) and the
+  domain entry point. If you copied it into CI, copy both — `ENFORCEMENT.md` §2 has
+  the recipe, and a half copy fails loudly at import rather than passing green.
+- A review now reports a **restated fact** as a finding: every governance slot has
+  one owning document, and the fix is a citation, not a better copy.
+- The invariant battery is shared across distributions and reads a per-distribution
+  PROFILE. Spine capabilities cannot be dropped by editing a profile; optional
+  overlays are declared in one line.
+
 ## [1.19.0] - 2026-07-28 (Design Review Gate)
 ### Added
 - **The design is reviewed before the code exists (F-021).** In Standalone the ANALYSIS was reviewed only as an *input* to the closure review — that is, after implementation. The Vision's Goal 3 names two moments ("make divergence visible **before** implementation, and again before merge"); only the second was implemented. Hybrid had the first (devPNT §4.5 on `E-ISP`/`E-TDD`); Standalone had nothing. Now `review.md` carries **`## When a review is due`** with both moments — **1. design** (end of Phase 3, before any implementation, L3) and **2. closure** (Phase 5, the diff against that design, L2/L3) — plus **1b. late arrival**, for work that became L3 after code existed (an L1/L2 reclassified mid-flight): run moment 1 now, before any further implementation, logged `design (late)`. The reason the moment is its own gate: *the closure review can prove the code matches the design, never that the design was right* — and the author cannot catch what their own design omitted, which is why the gate buys **independence, not effort**. A three-rung ladder makes that concrete on any client: a fresh subagent, a one-shot CLI run (`gemini -p`, `codex exec`) with a self-contained prompt, or — **only where neither exists** — a declared self-pass whose log row must carry *why* the higher rungs were unavailable. Rung 3 stays deliberately: it is what keeps the methodology completable with no network, no account and no subagent facility. Rounds capped at 3, then the findings go to the user; one row per completed review, **PASS or FAIL**, in `ai_docs/audit/reviews/REVIEW_LOG.md` — one schema for both modes, since devPNT's gates write to the same file. New advisory in `sdlc_check.py` (`design_review_due` + `review_logged`) notices an L3 in implementation with no design row: epoch-grandfathered, PLANNED-exempt (the review is due at the *end* of Phase 3, so a design still being drafted is not late), suppressed under `--hybrid` where devPNT owns the slot, and advisory-only as always.

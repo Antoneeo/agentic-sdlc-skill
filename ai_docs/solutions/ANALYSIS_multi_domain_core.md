@@ -489,14 +489,22 @@ surface.
       `SKIP_DIRS`, `ORIENT_DOCS`, `REVIEW_LOG_REL` and the two generated headers became
       functions of it; ambiguity refuses; the agent-global KB does not follow.
       `test_docs_root.py` (TS14–TS17, 14 cases). 116 python + 12 node, TS1 unchanged.
-- [ ] **P3 — kb on the core.** Overlay rebuilt; `review.md` split; kb gate green; core
-      hash checkpoint in the Diary.
-- [ ] **P4 — mkt convergence.** Own impact map. Marketing checks enter the registry.
-      Checkpoint as P3.
-- [ ] **P5 — Monorepo + drift guard.** Own impact map; evaluates the single-file copy
-      step (UC4 literal).
-- [ ] **P6 — Root migration (C7).** Own impact map.
-- [ ] **P7 — Publish.** Per `GUIDE_release.md`.
+- [x] **P3 — kb on the core.** Overlay rebuilt on the shared spine; the battery became
+      shared + PROFILE-driven (the split deferred from P2, landed where it had a
+      consumer); kb's gate green — 136 tests, 10 declared skips, from 9 failures + 4
+      errors.
+- [x] **P4 — mkt on the core.** `sdlc_core.py` verbatim + `mkt_check.py` as the
+      marketing OVERLAY (not thin: the document model is genuinely this domain's).
+      Golden transcript byte-identical; mkt gains the spine commands, `--docs-dir`,
+      the spine doctrine and portable marketing checks. 148 tests green.
+- [x] **P5 — Drift guard.** `shared_files.py` + `shared_manifest.json` +
+      `test_drift.py`: 15 shared files, LF-normalized hashes, identical manifest in all
+      three. Verified it bites. The monorepo consolidation is NOT done — see Residuals.
+- [x] **P6 — Migration.** `migrate` shipped: dry-run default, refuses a dirty tree,
+      refuses to overwrite, never deletes, never edits user-authored pointers. TS18.
+- [x] **P7 — Publish (prepared).** Versions bumped (1.20.0 / 1.0.0 / 0.3.0),
+      changelogs written, `npm pack --dry-run` correct for all three (22/22/21 files,
+      no dev-only assets). `npm publish` itself needs the owner's 2FA.
 
 Gate between phases: TS1 and the **static** batteries green (the behavioural harness
 is non-gating by design); from P5 on, TS5 as well.
@@ -630,8 +638,41 @@ who did nothing are not paying for this refactor.
   search-and-replace rewrote `kb_root / "ai_docs" / "reference"` — the agent-global
   store — because the pattern matched inside it. It is now a literal with a comment
   saying why, and TS16 asserts it.
-- **Open:** nothing blocking. P3 next: rebuild kb's overlay on the core. Its measured
-  starting point is `Ran 34 tests — FAILED (failures=9, errors=4)`; the battery's
-  shared-vs-profile split, deferred from P2, lands there because that is where it
-  finally has a consumer.
-- **Next step:** P3 — kb on the core.
+- **2026-08-01 — P3 through P7.** The family is built. What each phase actually cost,
+  and what it found:
+  **P3 (kb).** kb was not a skill needing a rebase, it was a skeleton: a byte-copied
+  1489-line validator, a SKILL.md that had lost every doctrine added since it was
+  forked, and a node battery asserting its sibling's identity. Fixing it forced the
+  right shape on the battery — shared tests plus a per-distribution PROFILE. The
+  Poka-Yoke is that spine capabilities cannot be dropped by editing your own profile
+  (a shared test refuses it); only genuine overlays can be declared absent, in one
+  visible line. kb's 10 skips each trace to such a line.
+  **P4 (mkt).** Before touching mkt, its own golden corpus and transcript were captured
+  from the pre-change validator — the same instrument agentic had and mkt did not. It
+  stayed byte-identical throughout. mkt's entry point is deliberately NOT thin: a
+  marketing plan is not a set of ANALYSIS documents, so the document model stays its
+  own and only the spine converges.
+  **P5 (drift guard).** It caught a real divergence on its first run and one on demand:
+  a one-line edit to a copy of the core fails it. The manifest's content is identical
+  in all three distributions, which is what turns a forgotten copy into a diff.
+  **P6 (migrate).** Writing its tests found a design defect: the ambiguous-root guard
+  refused `migrate` — the one command that exists to end the ambiguity. Exempted, with
+  the reason recorded.
+  **P7.** Versions, changelogs and pack lists are ready; publishing needs the owner.
+  Three literals were the recurring disease all the way through — the installed skill
+  directory, the entry-point filename, the docs-root name, the expected default domain.
+  Each is now derived from the manifest or the profile, because a literal in a shared
+  file is precisely how three copies start asserting one distribution's identity.
+- **Open — declared, not hidden:**
+  1. **The monorepo is not built.** The three repositories are still separate; the
+     drift guard is what makes that survivable, and it is a guard, not a merge. The
+     `git subtree` consolidation and anything on GitHub is the owner's to run.
+  2. **`npm publish` ×3 needs the owner's 2FA.** 1.19.0 was already awaiting
+     publication before this work; npm is at 1.17.0.
+  3. **kb ships thin.** Its overlay files (`taxonomy.md` 30 lines, `distillation.md`
+     20, `reconciliation.md` 16) are stubs. Its process spine is now real and tested;
+     its knowledge METHOD is not yet written. Publishing it is a judgement call the
+     owner should make knowingly.
+  4. kb does not claim `comprehension_guides`; mkt does not claim `architect_pass` or
+     `taxonomy_pass`. Declared in each profile.
+- **Next step:** the owner's call on 1, 2 and 3.
