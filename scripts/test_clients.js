@@ -34,6 +34,21 @@ const EXPECTED_DEFAULT_DOMAIN = (() => {
   if (!m) throw new Error('templates.md seeds no default_domain: the README template is incomplete');
   return m[1];
 })();
+// The docs root this distribution seeds, and the validator entry point it ships:
+// both differ per distribution (mkt seeds mkt_docs and ships mkt_check.py), so a
+// shared test must read them rather than name one distribution's answer.
+const DOCS_DIR = (() => {
+  const init = require('fs').readFileSync(require('path').join(__dirname, 'init.js'), 'utf8');
+  const m = init.match(/'(\w*_?docs)\/README\.md'/);
+  return m ? m[1] : 'ai_docs';
+})();
+const ENTRY_POINT_FILE = (() => {
+  const dir = require('path').join(SKILL_SOURCE, 'scripts');
+  for (const n of ['sdlc_check.py', 'mkt_check.py']) {
+    if (require('fs').existsSync(require('path').join(dir, n))) return n;
+  }
+  throw new Error('no validator entry point in ' + dir);
+})();
 const A_SIBLING = (() => {
   const init = require('fs').readFileSync(require('path').join(__dirname, 'init.js'), 'utf8');
   const block = init.match(/SIBLING_LENSES = \{([^}]+)\}/);
@@ -65,11 +80,11 @@ function runInit(projectDir, { siblingDirs = [] } = {}) {
 }
 
 // --- TS11: init seeds default_domain once, stays create-only, sibling path additive ---
-test('TS11 init seeds default_domain in ai_docs/README.md and never overwrites it', () => {
+test('TS11 init seeds default_domain in the docs root README and never overwrites it', () => {
   const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-init-proj-'));
   try {
     runInit(proj);
-    const readme = path.join(proj, 'ai_docs', 'README.md');
+    const readme = path.join(proj, DOCS_DIR, 'README.md');
     const first = fs.readFileSync(readme, 'utf8');
     assert.match(first, new RegExp('^---\r?\ndefault_domain: ' + EXPECTED_DEFAULT_DOMAIN + '\r?\n---'),
       `README frontmatter must open with default_domain: ${EXPECTED_DEFAULT_DOMAIN}`);
@@ -167,7 +182,7 @@ test('TS7 package files[] lists exactly the shipped skill files, and they all ex
   // The validator ships as two files since the multi-domain core: shipping the
   // entry point without the core would fail at import on every consumer.
   const skillDir = path.relative(pkgRoot, require('./lib').SKILL_SOURCE).split(path.sep).join('/');
-  for (const rel of [`${skillDir}/scripts/sdlc_check.py`,
+  for (const rel of [`${skillDir}/scripts/${ENTRY_POINT_FILE}`,
                      `${skillDir}/scripts/sdlc_core.py`,
                      `${skillDir}/routing.md`]) {
     assert.ok(pkg.files.includes(rel), `files[] must list ${rel}`);
