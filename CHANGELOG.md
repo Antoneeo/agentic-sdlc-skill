@@ -2,6 +2,22 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.20.1] - 2026-08-01
+
+### Changed
+- Vision v8 PROMOTED (owner, 2026-08-01): the admission test restated by function,
+  and "Precedent first" - vision/rulings.md, the precedent ledger seeded with
+  fifteen recorded verdicts; a reworded replay lands on the ruled row, a working
+  bypass becomes a new row, a contradicted precedent is visible by definition.
+- Five doctrine drifts fixed across the family (found by a systematic three-way
+  inventory): kb's dangling architect.md pointers repointed to taxonomy.md; the
+  shared review.md capability-pass clause made domain-neutral (all three copies);
+  mkt's SKILL.md stops promising a review battery the shared file never carried
+  (the attack surface lives in frameworks.md); mkt ENFORCEMENT.md describes check
+  truthfully; mkt paths made docs-root-relative with a shared-doctrine reading map.
+- New ai_docs/strategic/skill_family_agent_workflows.md: how an agent works under
+  each lens, written from the full doctrine inventory.
+
 ## [1.20.0] - 2026-08-01
 
 ### One shared core, three lenses
