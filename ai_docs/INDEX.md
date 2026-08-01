@@ -17,6 +17,7 @@ not manifested here.
 | `vision/roadmap.md` | DRAFT | Vision Roadmap |
 | `vision/roadmap_evoluzione_agenti.md` | DRAFT | Roadmap della milestone di evoluzione — subagent operativi, guide operative/KB agente, eliminazione conflitti di convivenza con devPNT e posizionamento open-... |
 | `vision/roadmap_evoluzione_agenti_v1.md` | SUPERSEDED | "Roadmap di evoluzione di agentic-sdlc: esecuzione a subagent operativi e strato di documentazione per la formazione degli agenti. Input per la prossima mile... |
+| `vision/rulings.md` | CURRENT | The admission-test precedent ledger — every ruling ever made, keyed by the question the capability answers. Read BEFORE interpreting the Vision's prose. |
 
 ## reference/
 

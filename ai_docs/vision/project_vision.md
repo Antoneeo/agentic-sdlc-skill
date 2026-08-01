@@ -276,6 +276,15 @@ bind the same way.
 
 ## The admission test
 
+**Precedent first.** Before any prose below is interpreted, the proposal is placed
+against the **rulings ledger** (`vision/rulings.md`): a capability's identity is the
+question it answers, never its vocabulary, so a restatement lands on the row that
+already ruled it. Same question → the row's verdict applies, and departing from it
+requires a written, falsifiable distinction line; genuinely new question → the prose
+below rules once and the verdict becomes a new row; a match to both an ADMIT and a
+REJECT row is CONTESTED and goes to the owner. The prose is the constitution; the
+ledger is the case law; **a working bypass is a new row, not a rewrite**.
+
 **What this test governs**: proposals that add or change *what the product does* —
 including widening what an already-admitted capability governs. **Scope growth is
 re-ruled, not inherited**: a capability that would now reach more work, more people,
