@@ -6,5 +6,5 @@ States: PENDING (to analyze) | ANALYZED (analyzed, with reference) | SKIPPED (wi
 |---|---|---|---|
 | examples/ | PENDING | - | legacy docs/ layout examples, predate the ai_docs structure |
 | sdlc-test-project/ | SKIPPED | - | manual test fixture, not product code |
-| skills/agentic-sdlc-skill/ | ANALYZED | 2026-08-01T02:05:42Z |  |
-| scripts/ | ANALYZED | 2026-08-01T02:05:42Z |  |
+| skills/agentic-sdlc-skill/ | ANALYZED | 2026-08-01T02:16:03Z |  |
+| scripts/ | ANALYZED | 2026-08-01T02:16:03Z |  |

@@ -21,7 +21,8 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-import sdlc_check as sc  # noqa: E402
+import sdlc_core as sc  # noqa: E402  the SHARED core: these assert spine behaviour,
+# not whichever overlay is installed -- an overlay may replace part of the document model
 import sdlc_core  # noqa: E402
 
 SKILL_DIR = Path(__file__).resolve().parent.parent
@@ -110,6 +111,21 @@ def reindex(root):
     with redirect_stdout(buf):
         sc.cmd_index(Path(root))
     return (Path(root) / "ai_docs" / "strategic" / "features_history.md").read_text(encoding="utf-8")
+
+
+def setUpModule():
+    """Pin the docs root for this battery's fixtures.
+
+    The marketing overlay defaults to `mkt_docs`, so a shared battery that builds
+    `ai_docs` fixtures must say which root it means instead of inheriting whichever
+    distribution happens to be installed."""
+    global _SAVED_DOCS_DIR
+    _SAVED_DOCS_DIR = sdlc_core.docs_dir()
+    sdlc_core.set_docs_dir("ai_docs")
+
+
+def tearDownModule():
+    sdlc_core.set_docs_dir(_SAVED_DOCS_DIR)
 
 
 class TS2DefaultResolution(unittest.TestCase):
@@ -255,10 +271,14 @@ class TS13PortableChecks(unittest.TestCase):
     """Composable, opt-in, monotonic — and never silently unavailable."""
 
     def test_unavailable_check_warns_visibly(self):
+        # Whichever namespace THIS distribution does not provide: the point is that an
+        # unavailable check is loud, not that any particular domain is missing.
+        absent = next(n for n in ("marketing", "code", "knowledge")
+                      if n not in sdlc_core._ENTRY_POINT["provides"])
         with tempfile.TemporaryDirectory() as d:
             seed_project(d, readme_default="knowledge")
             write(d, "ai_docs/solutions/ANALYSIS_a.md",
-                  analysis("K-001", "A", KNOWLEDGE_RISK, checks=["marketing.ledger"]))
+                  analysis("K-001", "A", KNOWLEDGE_RISK, checks=[f"{absent}.whatever"]))
             _, out = validate(d)
             self.assertIn("not available in this distribution", out)
             self.assertIn("was NOT checked against it", out)

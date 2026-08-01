@@ -59,9 +59,7 @@ sdlc_core.set_profile(
         "architect_pass", "comprehension_guides", "tdd", "subagent_dispatch",
         "legacy_narrative_handoff",
     ),
-    phases=("### 1. Audit and Alignment", "### 2. Vision Gate",
-            "### 3. Request Analysis", "### 4. Development and Testing",
-            "### 5. Closure"),
+    design_gate_between=("### 3. Request Analysis", "### 4. Development and Testing"),
 )
 
 

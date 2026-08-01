@@ -19,7 +19,10 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-import sdlc_check as sc  # noqa: E402
+import sdlc_core as sc  # noqa: E402  spine behaviour comes from the core
+import entry_point  # noqa: E402
+entry_point.load()  # importing the overlay is what REGISTERS this distribution's profile
+dist = sc            # ...which the core then answers for: one place, whatever the overlay is called
 
 # file sits at skills/agentic-sdlc-skill/scripts/ -> parents[1] = skill dir,
 # parents[3] = repo root where ai_docs/ lives (matches test_plan.py:229).
@@ -29,6 +32,21 @@ REPO = Path(__file__).resolve().parents[3]
 
 def read(rel):
     return sc.read_text(SKILL_DIR / rel)
+
+
+def setUpModule():
+    """Pin the docs root for this battery's fixtures.
+
+    The marketing overlay defaults to `mkt_docs`, so a shared battery that builds
+    `ai_docs` fixtures must say which root it means instead of inheriting whichever
+    distribution happens to be installed."""
+    global _SAVED_DOCS_DIR
+    _SAVED_DOCS_DIR = sc.docs_dir()
+    sc.set_docs_dir("ai_docs")
+
+
+def tearDownModule():
+    sc.set_docs_dir(_SAVED_DOCS_DIR)
 
 
 def requires(capability):
@@ -42,8 +60,8 @@ def requires(capability):
     """
     def decorate(fn):
         return unittest.skipUnless(
-            sc.has_capability(capability),
-            f"{sc.profile()['skill_name']} does not claim the '{capability}' overlay",
+            dist.has_capability(capability),
+            f"{dist.profile()['skill_name']} does not claim the '{capability}' overlay",
         )(fn)
     return decorate
 
@@ -52,26 +70,26 @@ class SharedProfileInvariants(unittest.TestCase):
     """Run identically in every distribution: the profile itself is the subject."""
 
     def test_profile_declares_every_spine_capability(self):
-        missing = sc.REQUIRED_CAPABILITIES - sc.profile()["capabilities"]
+        missing = dist.REQUIRED_CAPABILITIES - dist.profile()["capabilities"]
         self.assertEqual(missing, set(),
                          "a distribution may not drop spine doctrine by editing its own "
                          f"profile; missing: {sorted(missing)}")
 
     def test_profile_claims_no_unknown_capability(self):
-        known = sc.REQUIRED_CAPABILITIES | sc.OPTIONAL_CAPABILITIES
-        unknown = sc.profile()["capabilities"] - known
+        known = dist.REQUIRED_CAPABILITIES | dist.OPTIONAL_CAPABILITIES
+        unknown = dist.profile()["capabilities"] - known
         self.assertEqual(unknown, set(),
                          f"unknown capability claimed: {sorted(unknown)} -- add it to "
                          "OPTIONAL_CAPABILITIES in the core, so every distribution sees it")
 
     def test_every_declared_support_file_exists(self):
-        for rel in sc.profile()["support_files"]:
+        for rel in dist.profile()["support_files"]:
             self.assertTrue((SKILL_DIR / rel).is_file(),
                             f"profile declares {rel}, which is not on disk")
 
     def test_every_support_file_on_disk_is_declared(self):
         """The other direction: an undeclared file is doctrine nothing points at."""
-        declared = set(sc.profile()["support_files"]) | {"SKILL.md"}
+        declared = set(dist.profile()["support_files"]) | {"SKILL.md"}
         on_disk = {p.name for p in SKILL_DIR.glob("*.md")}
         self.assertEqual(on_disk - declared, set(),
                          "support files exist but are not in the profile: either wire them "
@@ -79,7 +97,7 @@ class SharedProfileInvariants(unittest.TestCase):
 
     def test_the_skill_name_matches_the_manifest(self):
         head = read("SKILL.md").split("---")[1]
-        self.assertIn(f"name: {sc.profile()['skill_name']}", head,
+        self.assertIn(f"name: {dist.profile()['skill_name']}", head,
                       "the profile and SKILL.md disagree about which skill this is")
 
 
@@ -143,7 +161,7 @@ class SkillInvariants(unittest.TestCase):
         workstream, parallel-safe), with volatile resume logistics in ephemeral
         HANDOFF_[feature].md files deleted at closure. Durable narrative stays in
         the ANALYSIS Diary (DRY)."""
-        unit = sc.profile()["unit_noun"]
+        unit = dist.profile()["unit_noun"]
         skill = read("SKILL.md")
         self.assertIn(f"HANDOFF_[{unit}].md", skill)
         self.assertIn("workstream registry", skill)
@@ -153,7 +171,7 @@ class SkillInvariants(unittest.TestCase):
                       "the Diary/logistics boundary must be stated in the template")
         # A shipped format change without a migration clause strands existing projects
         # -- but only a distribution that HAS shipped one owes the clause.
-        if sc.has_capability("legacy_narrative_handoff"):
+        if dist.has_capability("legacy_narrative_handoff"):
             self.assertIn("pre-1.17", skill)
             self.assertIn("pre-1.17", tpl)
 
@@ -390,11 +408,12 @@ class SkillInvariants(unittest.TestCase):
             self.assertIn(anchor, r, f"review.md missing {anchor}")
         skill = read("SKILL.md")
         self.assertIn("Design review gate", skill)
-        p3 = skill.index(sc.profile()["phases"][2])
-        p4 = skill.index(sc.profile()["phases"][3])
+        before, after = dist.profile()["design_gate_between"]
+        p3 = skill.index(before)
+        p4 = skill.index(after)
         self.assertTrue(p3 < skill.index("Design review gate") < p4,
-                        "the gate must sit at the END of Phase 3, before Phase 4 -- "
-                        "a design review after implementation is the closure review")
+                        "the gate must sit after the design exists and before the work is "
+                        "executed -- a design review after implementation is the closure review")
         self.assertTrue([ln for ln in skill.splitlines()
                          if "REVIEW_LOG.md" in ln and ln.lstrip().startswith("|")],
                         "Write-Triggers row for the review log missing")
@@ -731,8 +750,11 @@ class SkillInvariants(unittest.TestCase):
         every expected support file exists AND is referenced in SKILL.md, and
         any *.md added beside SKILL.md is also referenced (no silent orphan)."""
         skill_md = read("SKILL.md")
-        expected = list(sc.profile()["support_files"]) + [
-            "scripts/sdlc_check.py", "scripts/sdlc_core.py"]
+        # The entry point's FILENAME differs per distribution (mkt_check.py): derive it,
+        # or this shared test asserts one distribution's identity in all three.
+        entry = Path(entry_point.load().__file__).name
+        expected = list(dist.profile()["support_files"]) + [
+            f"scripts/{entry}", "scripts/sdlc_core.py"]
         for rel in expected:
             self.assertTrue((SKILL_DIR / rel).is_file(),
                             f"expected support file missing: {rel}")
@@ -744,6 +766,8 @@ class SkillInvariants(unittest.TestCase):
             self.assertIn(p.name, skill_md,
                           f"orphan support file (exists, not referenced): {p.name}")
 
+    @unittest.skipUnless((REPO / "ai_docs" / "INDEX.md").is_file(),
+                         "this distribution's repo is not governed by the core document model")
     def test_indexes_idempotent(self):
         """Generated indexes are current: build_* output == on-disk, computed
         WITHOUT writing (never calls cmd_index). A stale index fails here; the
