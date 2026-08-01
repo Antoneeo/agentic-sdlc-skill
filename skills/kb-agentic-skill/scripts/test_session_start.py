@@ -25,7 +25,8 @@ from types import SimpleNamespace
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-import sdlc_check as sc  # noqa: E402
+import sdlc_core as sc  # noqa: E402  the SHARED core: these assert spine behaviour,
+# not whichever overlay is installed -- an overlay may replace part of the document model
 import sdlc_core  # noqa: E402  the module that OWNS the behaviour under test
 
 
@@ -46,6 +47,21 @@ def seed(root, rel, text):
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(text, encoding="utf-8")
     return p
+
+
+def setUpModule():
+    """Pin the docs root for this battery's fixtures.
+
+    The marketing overlay defaults to `mkt_docs`, so a shared battery that builds
+    `ai_docs` fixtures must say which root it means instead of inheriting whichever
+    distribution happens to be installed."""
+    global _SAVED_DOCS_DIR
+    _SAVED_DOCS_DIR = sdlc_core.docs_dir()
+    sdlc_core.set_docs_dir("ai_docs")
+
+
+def tearDownModule():
+    sdlc_core.set_docs_dir(_SAVED_DOCS_DIR)
 
 
 class OrientTests(unittest.TestCase):

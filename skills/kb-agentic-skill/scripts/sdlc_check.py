@@ -66,10 +66,8 @@ sdlc_core.set_profile(
         # knowledge overlay
         "taxonomy_pass", "subagent_dispatch",
     ),
-    phases=("### 1. Audit and Alignment", "### 2. Vision Gate",
-            "### 3. Request Analysis & Taxonomy Pass",
-            "### 4. Knowledge Processing & Distillation",
-            "### 5. Closure & Indexing"),
+    design_gate_between=("### 3. Request Analysis & Taxonomy Pass",
+                         "### 4. Knowledge Processing & Distillation"),
 )
 
 

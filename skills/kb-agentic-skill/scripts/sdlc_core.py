@@ -251,24 +251,26 @@ OPTIONAL_CAPABILITIES = frozenset({
 # the knowledge domain on a "topic". The shared battery asserts the SHAPE
 # (HANDOFF_[<unit>].md) and reads the word from here, so a domain keeps its own
 # language without either weakening the assertion or forking the test.
-# `phases` are the SKILL.md workflow headings, in order. The battery asserts that a
-# gate sits between two of them; the headings themselves are each domain's wording.
+# `design_gate_between` is the pair of SKILL.md headings the design review must sit
+# between: after the design exists, before the work is executed. The headings are each
+# domain's own wording -- the code overlay runs five phases, the marketing overlay nine
+# -- so the battery asserts the ORDER, never a shared phase name.
 _PROFILE = {
     "skill_name": "agentic-sdlc",
     "unit_noun": "feature",
     "support_files": (),
     "capabilities": frozenset(),
-    "phases": (),
+    "design_gate_between": (),
 }
 
 
 def set_profile(skill_name, support_files=(), capabilities=(), unit_noun="feature",
-                phases=()):
+                design_gate_between=()):
     _PROFILE.update(skill_name=skill_name,
                     unit_noun=unit_noun,
                     support_files=tuple(support_files),
                     capabilities=frozenset(capabilities),
-                    phases=tuple(phases))
+                    design_gate_between=tuple(design_gate_between))
 
 
 def profile():
