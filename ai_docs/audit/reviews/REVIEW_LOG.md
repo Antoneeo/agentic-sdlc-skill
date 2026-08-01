@@ -4,6 +4,7 @@ Records each independent-review-gate pass (§4.5 tech artifacts, §4.6 code). Th
 
 | date | doc_key | tier | reviewer | findings_raised | findings_real | verdict | revise_rounds |
 |---|---|---|---|---|---|---|---|
+| 2026-08-01 | project_vision.md v8 draft (F-023 C1-C4+C6; 8 attack classes re-thrown + 6 accept-side + new-class hunt, full text, one-file blind read) | vision | general-purpose (fresh ctx, NO repo access) | 1 BLOCK + 9 MAJOR | 10 | PASS-conditional — zero attacks through, zero verdict flips | 1; all ten fixes applied same-day |
 | 2026-08-01 | F-026 implemented state (round 2, re-run) | design | subagent (opus, fresh ctx, read-only) | 9 | 9 | FAIL → all fixed | 3 |
 | 2026-08-01 | F-026 implemented state (round 2, aborted) | design | subagent (opus, fresh ctx, read-only) | 2 | 2 | INCOMPLETE (reviewer died on API session limit; no verdict — re-run below) | 2 |
 | 2026-08-01 | ANALYSIS_question_discipline.md (F-026) | design | subagent (opus, fresh ctx, read-only) | 6 | 6 | FAIL | 1 |
