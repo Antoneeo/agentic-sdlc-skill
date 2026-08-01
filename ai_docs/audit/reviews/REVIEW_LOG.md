@@ -8,6 +8,8 @@ Records each independent-review-gate pass (§4.5 tech artifacts, §4.6 code). Th
 | 2026-08-01 | F-024 kb knowledge method — design spec (knowledge-model lens) | design | subagent (opus, fresh ctx, read-only) | 14 | 14 | FAIL | 1 |
 | 2026-08-01 | F-024 kb knowledge method — design spec (family-fit lens) | design | subagent (opus, fresh ctx, read-only) | 15 | 15 | FAIL | 1 |
 | 2026-08-01 | ANALYSIS_kb_knowledge_method.md | design | subagent (opus, fresh ctx, read-only) | 24 | 22 | FAIL | 1 |
+| 2026-08-01 | ANALYSIS_kb_knowledge_method.md + ANALYSIS_claim_ledger.md (round 2, cold adversary, no round-1 context) | design | subagent (opus, fresh ctx, read-only) | 17 | 17 | FAIL | 2 |
+| 2026-08-01 | ANALYSIS_kb_knowledge_method.md + ANALYSIS_claim_ledger.md (round 2, disposition verifier) | design | subagent (opus, fresh ctx, read-only) | 23 + 24 dispositions | 23 | FAIL | 2 |
 | 2026-08-01 | ANALYSIS_multi_domain_core.md (P2b impact map) | design | SELF-PASS (declared; independence reduced) | 4 | 3 | PASS | 1 |
 | 2026-07-02 | p_tm_operative_guides | deep | devpnt-tech-reviewer | 7 | 7 | PASS | 2 |
 | 2026-07-02 | e_isp_operative_guides_u1 | deep | devpnt-tech-reviewer | 10 | 10 | PASS | 2 |
