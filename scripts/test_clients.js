@@ -24,6 +24,23 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 
 const LIB_PATH = require.resolve('./lib');
+// Distribution-specific expectations are DERIVED, never written here: three
+// distributions share this file, and a literal is how a copy-fork starts asserting
+// its sibling's identity instead of its own.
+const SKILL_SOURCE = require('./lib').SKILL_SOURCE;
+const EXPECTED_DEFAULT_DOMAIN = (() => {
+  const tpl = require('fs').readFileSync(require('path').join(SKILL_SOURCE, 'templates.md'), 'utf8');
+  const m = tpl.match(/^default_domain:\s*(\S+)/m);
+  if (!m) throw new Error('templates.md seeds no default_domain: the README template is incomplete');
+  return m[1];
+})();
+const A_SIBLING = (() => {
+  const init = require('fs').readFileSync(require('path').join(__dirname, 'init.js'), 'utf8');
+  const block = init.match(/SIBLING_LENSES = \{([^}]+)\}/);
+  if (!block) throw new Error('init.js declares no SIBLING_LENSES');
+  const m = block[1].match(/'([^']+)'\s*:/);
+  return m[1];
+})();
 const POSTINSTALL = path.join(__dirname, 'postinstall.js');
 const PREUNINSTALL = path.join(__dirname, 'preuninstall.js');
 const INIT = path.join(__dirname, 'init.js');
@@ -54,13 +71,14 @@ test('TS11 init seeds default_domain in ai_docs/README.md and never overwrites i
     runInit(proj);
     const readme = path.join(proj, 'ai_docs', 'README.md');
     const first = fs.readFileSync(readme, 'utf8');
-    assert.match(first, /^---\r?\ndefault_domain: code\r?\n---/,
-      'README frontmatter must open with default_domain: code');
+    assert.match(first, new RegExp('^---\r?\ndefault_domain: ' + EXPECTED_DEFAULT_DOMAIN + '\r?\n---'),
+      `README frontmatter must open with default_domain: ${EXPECTED_DEFAULT_DOMAIN}`);
 
     // A project that edited its own default must survive a second init (create-only).
-    fs.writeFileSync(readme, first.replace('default_domain: code', 'default_domain: knowledge'), 'utf8');
+    fs.writeFileSync(readme, first.replace(`default_domain: ${EXPECTED_DEFAULT_DOMAIN}`,
+      'default_domain: edited-by-hand'), 'utf8');
     runInit(proj);
-    assert.match(fs.readFileSync(readme, 'utf8'), /default_domain: knowledge/,
+    assert.match(fs.readFileSync(readme, 'utf8'), /default_domain: edited-by-hand/,
       'a second init must not overwrite an existing README (T1: create-only)');
   } finally {
     fs.rmSync(proj, { recursive: true, force: true });
@@ -85,12 +103,12 @@ test('TS11 sibling lens installed: the note is additive and the protocol pointer
     const sentinel = '# Written by the knowledge lens — do not touch\n';
     fs.writeFileSync(path.join(proj, 'CLAUDE.md'), sentinel, 'utf8');
 
-    runInit(proj, { siblingDirs: ['kb-agentic'] });
+    runInit(proj, { siblingDirs: [A_SIBLING] });
 
     assert.strictEqual(fs.readFileSync(path.join(proj, 'CLAUDE.md'), 'utf8'), sentinel,
       'init must never overwrite a user/sibling-authored protocol pointer (T1)');
     const note = fs.readFileSync(path.join(proj, 'AGENTIC_MULTI_LENS.md'), 'utf8');
-    assert.match(note, /kb-agentic/, 'the note names the detected sibling');
+    assert.match(note, new RegExp(A_SIBLING), 'the note names the detected sibling');
     assert.match(note, /routing\.md/, 'the note points at the domain router');
     assert.match(note, /Merge step owed/, 'a pre-existing pointer means a merge is owed');
   } finally {
@@ -148,9 +166,10 @@ test('TS7 package files[] lists exactly the shipped skill files, and they all ex
   }
   // The validator ships as two files since the multi-domain core: shipping the
   // entry point without the core would fail at import on every consumer.
-  for (const rel of ['skills/agentic-sdlc-skill/scripts/sdlc_check.py',
-                     'skills/agentic-sdlc-skill/scripts/sdlc_core.py',
-                     'skills/agentic-sdlc-skill/routing.md']) {
+  const skillDir = path.relative(pkgRoot, require('./lib').SKILL_SOURCE).split(path.sep).join('/');
+  for (const rel of [`${skillDir}/scripts/sdlc_check.py`,
+                     `${skillDir}/scripts/sdlc_core.py`,
+                     `${skillDir}/routing.md`]) {
     assert.ok(pkg.files.includes(rel), `files[] must list ${rel}`);
   }
   // Dev-only assets must never reach a consumer.
@@ -166,15 +185,15 @@ test('T7 skillTarget unchanged for claude/gemini/codex (default skills subdir)',
   const lib = freshLib({ __homedir: fakeHome });
   assert.strictEqual(
     lib.skillTarget(clientByKey(lib, 'claude')),
-    path.join(fakeHome, '.claude', 'skills', 'agentic-sdlc'),
+    path.join(fakeHome, '.claude', 'skills', lib.INSTALLED_SKILL_NAME),
   );
   assert.strictEqual(
     lib.skillTarget(clientByKey(lib, 'gemini')),
-    path.join(fakeHome, '.gemini', 'skills', 'agentic-sdlc'),
+    path.join(fakeHome, '.gemini', 'skills', lib.INSTALLED_SKILL_NAME),
   );
   assert.strictEqual(
     lib.skillTarget(clientByKey(lib, 'codex')),
-    path.join(fakeHome, '.codex', 'skills', 'agentic-sdlc'),
+    path.join(fakeHome, '.codex', 'skills', lib.INSTALLED_SKILL_NAME),
   );
 });
 
@@ -196,7 +215,7 @@ test('T2 skillTarget(antigravity) === ~/.gemini/config/skills/agentic-sdlc', () 
   assert.strictEqual(anti.skillsSubdir, 'config/skills');
   assert.strictEqual(
     lib.skillTarget(anti),
-    path.join(fakeHome, '.gemini', 'config', 'skills', 'agentic-sdlc'),
+    path.join(fakeHome, '.gemini', 'config', 'skills', lib.INSTALLED_SKILL_NAME),
   );
   // Distinct from the legacy gemini target (T2: no path overlap).
   assert.notStrictEqual(
@@ -318,8 +337,8 @@ test('T2/T7 install then uninstall: antigravity + gemini targets round-trip clea
     delete childEnv.CODEX_HOME;
     delete childEnv.ANTIGRAVITY_HOME;
 
-    const geminiTarget = path.join(tmpHome, '.gemini', 'skills', 'agentic-sdlc');
-    const antiTarget = path.join(tmpHome, '.gemini', 'config', 'skills', 'agentic-sdlc');
+    const geminiTarget = path.join(tmpHome, '.gemini', 'skills', freshLib().INSTALLED_SKILL_NAME);
+    const antiTarget = path.join(tmpHome, '.gemini', 'config', 'skills', freshLib().INSTALLED_SKILL_NAME);
 
     execFileSync(process.execPath, [POSTINSTALL], { env: childEnv, stdio: 'ignore' });
 

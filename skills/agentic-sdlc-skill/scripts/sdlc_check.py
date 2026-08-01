@@ -4,7 +4,7 @@
 
 Thin by design. Every behaviour lives in `sdlc_core.py`, the spine shipped
 verbatim in every distribution of the family; this file only says which domain
-this distribution implements and which portable checks it can run. Command
+this distribution implements and which portable checks it exposes. Command
 names, flags, output and exit codes are unchanged — an existing project sees the
 same tool it always had.
 
@@ -15,7 +15,6 @@ fails at import, loudly and immediately, which is the intended failure.
 Usage is `sdlc_core.py`'s: check / validate / index / stale / mark / gate /
 orient / plan.
 """
-import re
 import sys
 from pathlib import Path
 
@@ -36,55 +35,34 @@ from sdlc_core import *            # noqa: F401,F403
 from sdlc_core import _map_refs    # noqa: F401  underscore helper used by the batteries
 
 # The domain this distribution implements. It does NOT decide any document's
-# owning domain -- that is resolved per project (`default_domain:` in
-# ai_docs/README.md) and per artifact (`domain:`), so the same tree gets the same
-# verdict from every installed distribution. What this constant does decide is
-# which portable checks are available to import by name here.
+# owning domain -- that is resolved per project (`default_domain:` in the docs
+# root's README) and per artifact (`domain:`), so the same tree gets the same
+# verdict from every installed distribution. What it decides is which portable
+# checks a document may import here by name; the rest warn as unavailable.
 DOMAIN = "code"
 
 sdlc_core.set_entry_point(DOMAIN, provides=("code", "knowledge"))
 
-
-# --- portable checks shipped by this distribution ---------------------------
-# Opt-in per document via `checks:`. They may only ADD findings: a document that
-# imports one still owes its own domain everything it owed before, so importing a
-# check can never be a way to be validated less.
-
-@sdlc_core.portable_check("code.threat_model")
-def _code_threat_model(rel, meta, text):
-    """The security section names a real surface, or justifies claiming none."""
-    section = sdlc_core.section_body(text, ("## Security and Threat Model", "## Security"))
-    if section is None:
-        return []  # the owning domain already reports a missing section; no double finding
-    surfaces = ("external input", "authn", "authz", "auth", "crypto", "network",
-                "personal data", "filesystem", "supply chain")
-    low = section.lower()
-    if any(s in low for s in surfaces):
-        return []
-    if "no security impact" in low or "no new security" in low:
-        if len(section.split()) < 15:
-            return [("warning", "'no security impact' is declared, not justified: "
-                                "say which surfaces you checked and why none is touched")]
-        return []
-    return [("warning", "no security surface named (external input, authN/authZ, crypto, "
-                        "network, personal data, filesystem, supply chain) and no justified "
-                        "claim that none is touched")]
-
-
-@sdlc_core.portable_check("knowledge.sources")
-def _knowledge_sources(rel, meta, text):
-    """A knowledge artifact says what it was written from AND how that was verified."""
-    section = sdlc_core.section_body(text, ("## Sources and Verification",))
-    if section is None:
-        return []
-    findings = []
-    if not re.search(r"(?m)^\s*[-*|]|\bhttps?://|\.(?:md|pdf|docx?|csv|xlsx?)\b", section):
-        findings.append(("warning", "no source is named: a distillation whose origin cannot "
-                                    "be reopened is model knowledge, not knowledge work"))
-    if not re.search(r"verif|cross-check|checked against|confirmed", section, re.I):
-        findings.append(("warning", "sources are listed but not verified: say how each was "
-                                    "confirmed, or mark explicitly what could not be"))
-    return findings
+# What this distribution carries. The shared battery reads it; the spine
+# capabilities are not optional, and a shared test refuses a profile that drops one.
+sdlc_core.set_profile(
+    skill_name="agentic-sdlc",
+    unit_noun="feature",
+    support_files=("templates.md", "architect.md", "guides.md", "vision.md", "tdd.md",
+                   "debugging.md", "elicitation.md", "review.md", "dispatch.md",
+                   "routing.md", "ENFORCEMENT.md"),
+    capabilities=(
+        # spine
+        "triage", "write_triggers", "workstream_registry", "vision_gate",
+        "design_review_gate", "guide_router", "worktree_hygiene",
+        # code overlay
+        "architect_pass", "comprehension_guides", "tdd", "subagent_dispatch",
+        "legacy_narrative_handoff",
+    ),
+    phases=("### 1. Audit and Alignment", "### 2. Vision Gate",
+            "### 3. Request Analysis", "### 4. Development and Testing",
+            "### 5. Closure"),
+)
 
 
 def main(argv=None):

@@ -10,6 +10,14 @@ const { execSync } = require('child_process');
 const PACKAGE_ROOT = path.resolve(__dirname, '..');
 const SKILL_SOURCE = path.join(PACKAGE_ROOT, 'skills', 'agentic-sdlc-skill');
 const TEMPLATES_PATH = path.join(SKILL_SOURCE, 'templates.md');
+// The directory name each client loads the skill from. Derived from the manifest,
+// never hard-coded by a consumer: three distributions share these scripts, and a
+// literal here is how a copy-fork starts installing under its sibling's name.
+const INSTALLED_SKILL_NAME = (() => {
+  const m = fs.readFileSync(path.join(SKILL_SOURCE, 'SKILL.md'), 'utf8').match(/^name:\s*(\S+)/m);
+  if (!m) throw new Error(`SKILL.md carries no 'name:' field: ${SKILL_SOURCE}`);
+  return m[1];
+})();
 
 // One entry per supported AI client. `home` may be overridden by an env var
 // (Claude Desktop / portable installs); presence of the home dir counts as
@@ -87,7 +95,7 @@ function skillTarget(client) {
   // (split on '/' to keep cross-platform path.join correctness). Entries
   // without it resolve to <home>/skills/agentic-sdlc exactly as before.
   const subdir = client.skillsSubdir ? client.skillsSubdir.split('/') : ['skills'];
-  return path.join(client.home, ...subdir, 'agentic-sdlc');
+  return path.join(client.home, ...subdir, INSTALLED_SKILL_NAME);
 }
 
 function copyRecursive(src, dest) {
@@ -157,6 +165,7 @@ function templateFor(sections, needle, index = 0) {
 module.exports = {
   PACKAGE_ROOT,
   SKILL_SOURCE,
+  INSTALLED_SKILL_NAME,
   TEMPLATES_PATH,
   CLIENTS,
   commandExists,
