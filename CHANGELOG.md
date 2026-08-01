@@ -2,6 +2,33 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.20.2] - 2026-08-01
+
+### Fixed
+- The published surface now tells the truth. The README's "Installed support files"
+  bullet and Runtime Shape tree omitted `routing.md` and `scripts/sdlc_core.py` —
+  the second half of a two-file validator, so a reader copying the tree got an
+  entry point that cannot import its spine. Install said to run the installer by
+  hand while `postinstall` already does it. The licence line said "All rights
+  reserved" against `"license": "MIT"` in package.json.
+- `gemini-extension.json` was still at 1.19.0: the 1.20.0 and 1.20.1 releases both
+  skipped the third bump point. Same drift fixed in the mkt distribution
+  (0.2.1 against a 0.3.0 package).
+
+### Changed
+- README rewritten for what the family actually is: the review gates, question
+  discipline, the validator's full command set, and the three lenses with their
+  fidelity disciplines and `routing.md`. The kb README described the pre-F-024
+  skill and now describes the shipped one (content-addressed corpus, claim ledger
+  with location-keyed ids and verified spans, five placement verdicts, detect-and-
+  hold reconciliation, rulings with a basis); the mkt README gains the two-file
+  validator note and the family section.
+- `GUIDE_release.md` §README alignment (owner-approved amendment, snapshot first):
+  the step covers all three distributions — each README IS that package's npm page —
+  plus `strategic/skill_family_agent_workflows.md`. `mark` on the `skills/` and
+  `distributions/` audit areas closes the step instead of opening it, so the
+  analysis is never recorded while a derived document still says something else.
+
 ## [1.20.1] - 2026-08-01
 
 ### Changed
