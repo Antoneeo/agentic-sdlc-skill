@@ -354,7 +354,7 @@ class SkillInvariants(unittest.TestCase):
             (root / "ai_docs" / "audit" / "reviews").mkdir(parents=True)
             self.assertFalse(sc.review_logged(root, "ANALYSIS_x.md"),
                              "no log file -> not logged")
-            (root / sc.REVIEW_LOG_REL).write_text(
+            (root / sc.review_log_rel()).write_text(
                 "| date | doc_key | tier | reviewer | r | r | verdict | n |\n"
                 "|---|---|---|---|---|---|---|---|\n"
                 "| 2026-07-28 | ANALYSIS_x.md | design | subagent | 3 | 3 | PASS | 1 |\n"
@@ -376,7 +376,7 @@ class SkillInvariants(unittest.TestCase):
             self.assertFalse(sc.review_logged(root, "ANALYSIS_"),
                              "substring matching lets a sibling ANALYSIS pass")
             # the tier column is located by header, not assumed at index 2
-            (root / sc.REVIEW_LOG_REL).write_text(
+            (root / sc.review_log_rel()).write_text(
                 "| # | date | doc_key | tier | reviewer | r | v | n |\n"
                 "|---|---|---|---|---|---|---|---|\n"
                 "| 1 | 2026-07-28 | ANALYSIS_x.md | design | subagent | 1 | PASS | 1 |\n",

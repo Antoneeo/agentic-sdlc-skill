@@ -483,7 +483,12 @@ surface.
       `ENFORCEMENT.md` recipe rewritten + TS12; `files[]` + TS7's file-list half in the
       node battery. **102 python + 12 node, green.** Battery profile split deferred to
       P3 (see the Diary).
-- [ ] **P2b — Root parameter.** Own impact map. Prerequisite of P4 and C7.
+- [x] **P2b — Root parameter.** Impact map written and self-reviewed first (all 50
+      core sites classified), then implemented: `--docs-dir` / `AGENTIC_SDLC_DOCS_DIR`
+      / per-level discovery / `ai_docs` default; `ai_path()` threads the resolved name;
+      `SKIP_DIRS`, `ORIENT_DOCS`, `REVIEW_LOG_REL` and the two generated headers became
+      functions of it; ambiguity refuses; the agent-global KB does not follow.
+      `test_docs_root.py` (TS14–TS17, 14 cases). 116 python + 12 node, TS1 unchanged.
 - [ ] **P3 — kb on the core.** Overlay rebuilt; `review.md` split; kb gate green; core
       hash checkpoint in the Diary.
 - [ ] **P4 — mkt convergence.** Own impact map. Marketing checks enter the registry.
@@ -607,8 +612,26 @@ who did nothing are not paying for this refactor.
   findings only — TS13 asserts an imported check cannot change the owning domain's
   error/warning contract, and that a check this distribution does not carry warns
   visibly instead of passing.
-- **Open:** nothing blocking. P2b next and it owes its own impact map: the 49 root
-  occurrences in the core are sampled in this document, not enumerated, and
-  `test_session_start.py` enters the radius there (it reads `ORIENT_DOCS` directly and
-  carries eight hard-coded `ai_docs/` seeds).
-- **Next step:** P2b — root parameter, own impact map first.
+- **2026-08-01 — P2b shipped.** The map was written and self-reviewed before any edit,
+  and it paid: the review caught that "derive it from the parameter" was hiding a
+  signature change on three constants and on `find_project_root`, and that discovery
+  ambiguity was under-specified. Implemented as designed. Two things the map got wrong,
+  recorded because a map that is never checked against the outcome is decoration:
+  (a) **it over-predicted the test blast radius.** `test_plan.py`, `test_domain_rules.py`
+  and most of `test_skill_invariants.py` needed no edit at all — their `ai_docs` strings
+  are fixture paths on the default root, and the default is unchanged. Only the two
+  assertions that read the constants directly moved (`ORIENT_DOCS` → `orient_docs()`,
+  `REVIEW_LOG_REL` → `review_log_rel()`).
+  (b) **`find_project_root` kept its return type.** Threading the resolved name through
+  a module-level value set once per invocation (the shape `_ENTRY_POINT` already uses)
+  left every signature in the batteries intact; changing the return type would have
+  bought nothing and broken a re-exported public name.
+  One real bug during the work, caught by TS1 rather than by review: a blind
+  search-and-replace rewrote `kb_root / "ai_docs" / "reference"` — the agent-global
+  store — because the pattern matched inside it. It is now a literal with a comment
+  saying why, and TS16 asserts it.
+- **Open:** nothing blocking. P3 next: rebuild kb's overlay on the core. Its measured
+  starting point is `Ran 34 tests — FAILED (failures=9, errors=4)`; the battery's
+  shared-vs-profile split, deferred from P2, lands there because that is where it
+  finally has a consumer.
+- **Next step:** P3 — kb on the core.

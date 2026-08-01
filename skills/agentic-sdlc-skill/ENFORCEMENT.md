@@ -26,6 +26,8 @@ Effect: an unregenerated index, invalid frontmatter, a missing security section 
 
 Note: the copy in the repo is the authoritative one for CI; update it when you update the skill — both files, together.
 
+**Projects whose docs root is not `ai_docs/`.** Pass `--docs-dir <name>` (e.g. `--docs-dir mkt_docs`) on any subcommand, or set `AGENTIC_SDLC_DOCS_DIR`. Without either, the validator walks up from the working directory and takes the nearest root it recognizes. If it finds two side by side — the shape of a half-finished migration — it refuses and names both rather than validating half a project and printing a verdict. `ai_docs/` remains the default and the recommended root: the parameter exists so a legacy tree can be read and migrated, not so a second one can be kept.
+
 ## 3. PreToolUse hook (gate on writes)
 
 Blocks Edit/Write on protected paths when no `ANALYSIS_*.md` is `IN_PROGRESS`. In the project's `.claude/settings.json`:

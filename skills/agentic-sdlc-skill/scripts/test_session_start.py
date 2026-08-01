@@ -160,7 +160,7 @@ class OrientTests(unittest.TestCase):
             finally:
                 sdlc_core.confine_under = real
             self.assertEqual(rc, 0)
-            self.assertEqual(calls, [rel for _, rel in sc.ORIENT_DOCS])
+            self.assertEqual(calls, [rel for _, rel in sc.orient_docs()])
 
 
 if __name__ == "__main__":
