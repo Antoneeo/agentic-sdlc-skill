@@ -1,0 +1,50 @@
+{
+  "name": "@antoneeo/mkt-agentic-sdlc-skill",
+  "version": "0.3.0",
+  "description": "Evidence-First marketing planning protocol for Claude Code, Gemini CLI, Google Antigravity and Codex: engagement triage, SOSTAC workflow, evidence ledger, mechanical validator and optional devPNT integration.",
+  "keywords": [
+    "claude-code",
+    "claude-skill",
+    "gemini-cli",
+    "skill",
+    "marketing",
+    "marketing-plan",
+    "sostac",
+    "ai-agent"
+  ],
+  "author": "Antonio Pinto (https://github.com/Antoneeo)",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "mkt-sdlc-init": "scripts/init.js",
+    "mkt-sdlc-install-skill": "scripts/postinstall.js"
+  },
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js",
+    "preuninstall": "node scripts/preuninstall.js"
+  },
+  "files": [
+    "skills/mkt-agentic-sdlc/SKILL.md",
+    "skills/mkt-agentic-sdlc/frameworks.md",
+    "skills/mkt-agentic-sdlc/elicitation.md",
+    "skills/mkt-agentic-sdlc/research.md",
+    "skills/mkt-agentic-sdlc/templates.md",
+    "skills/mkt-agentic-sdlc/review.md",
+    "skills/mkt-agentic-sdlc/scripts/sdlc_core.py",
+    "skills/mkt-agentic-sdlc/routing.md",
+    "skills/mkt-agentic-sdlc/guides.md",
+    "skills/mkt-agentic-sdlc/vision.md",
+    "skills/mkt-agentic-sdlc/dispatch.md",
+    "skills/mkt-agentic-sdlc/ENFORCEMENT.md",
+    "skills/mkt-agentic-sdlc/scripts/mkt_check.py",
+    "gemini-extension.json",
+    "README.md",
+    "CHANGELOG.md",
+    "scripts/lib.js",
+    "scripts/init.js",
+    "scripts/postinstall.js",
+    "scripts/preuninstall.js"
+  ]
+}
