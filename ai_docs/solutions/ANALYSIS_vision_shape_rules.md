@@ -1,10 +1,10 @@
 ---
 id: F-023
 feature: Vision Shape Rules (rules defined by function, not by form)
-status: IN_PROGRESS
+status: COMPLETED
 level: L3
 start_date: 2026-07-31
-end_date:
+end_date: 2026-08-01
 ---
 # Feature Analysis: Vision Shape Rules
 
@@ -219,5 +219,6 @@ The Vision has no mechanical validator, so its tests are the batteries:
   by substitution: the prose stops being the mechanism, so its residual wording is
   no longer attack surface. The confirming blind round is likewise replaced: future
   real cases exercise the ledger, and each becomes a row.
-- **Remaining:** the owner's promotion of v8 (with the ledger wired), which closes
-  this feature.
+- **2026-08-01 — v8 PROMOTED by the owner ("promuovi").** Status line APPROVED,
+  Provenance entry written. The feature closes: the admission test rules by
+  function, the rulings ledger rules by precedent, and the binding text is v8.
