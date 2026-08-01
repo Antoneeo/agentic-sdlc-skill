@@ -1,0 +1,4 @@
+# The golden corpus and its baseline are compared byte for byte: a checkout that
+# rewrote their line endings would fail the test for a reason that has nothing to
+# do with the validator behaviour it guards.
+skills/kb-agentic-skill/scripts/fixtures/** -text

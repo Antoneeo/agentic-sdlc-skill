@@ -1,0 +1,50 @@
+{
+  "name": "@antoneeo/kb-agentic-skill",
+  "version": "1.0.0",
+  "description": "Knowledge-Base & Document-First protocol for Claude Code, Gemini CLI, Google Antigravity and Codex with risk triage, Vision governance, signal distillation and optional devPNT integration.",
+  "keywords": [
+    "claude-code",
+    "claude-skill",
+    "gemini-cli",
+    "skill",
+    "knowledge-base",
+    "documentation",
+    "ai-agent"
+  ],
+  "author": "Antonio Pinto (https://github.com/Antoneeo)",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "kb-agentic-init": "scripts/init.js",
+    "kb-agentic-install-skill": "scripts/postinstall.js"
+  },
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js",
+    "preuninstall": "node scripts/preuninstall.js"
+  },
+  "files": [
+    "skills/kb-agentic-skill/SKILL.md",
+    "skills/kb-agentic-skill/templates.md",
+    "skills/kb-agentic-skill/taxonomy.md",
+    "skills/kb-agentic-skill/guides.md",
+    "skills/kb-agentic-skill/vision.md",
+    "skills/kb-agentic-skill/distillation.md",
+    "skills/kb-agentic-skill/reconciliation.md",
+    "skills/kb-agentic-skill/elicitation.md",
+    "skills/kb-agentic-skill/review.md",
+    "skills/kb-agentic-skill/dispatch.md",
+    "skills/kb-agentic-skill/routing.md",
+    "skills/kb-agentic-skill/ENFORCEMENT.md",
+    "skills/kb-agentic-skill/scripts/sdlc_check.py",
+    "skills/kb-agentic-skill/scripts/sdlc_core.py",
+    "gemini-extension.json",
+    "README.md",
+    "CHANGELOG.md",
+    "scripts/lib.js",
+    "scripts/init.js",
+    "scripts/postinstall.js",
+    "scripts/preuninstall.js"
+  ]
+}
