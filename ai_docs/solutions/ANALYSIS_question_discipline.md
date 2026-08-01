@@ -45,16 +45,26 @@ at every phase, discoverable via one cross-cutting line in `SKILL.md`.
 - **Actor 1** ("never re-explaining the project across sessions") — a useless question is
   a forced re-explanation.
 - **Ceremony budget disclosure** (Non-Goal 3 requires it; "omission resolves against the
-  proposal", so the figures are measured, not estimated): `elicitation.md` goes from 60
-  to 129 lines — **+84 / −14, net +69** — of which the discipline section is ~50; one
-  existing anti-pattern bullet ("Asking what the approved vision already answers") is
-  absorbed, the other two are kept verbatim. `SKILL.md` gains **one** bullet under Rule
-  Zero — the only always-read cost; `elicitation.md` itself is read at L3 phase 3, or
-  when an agent is about to ask. **L1 pays nothing**: no step, no field, no check — an
-  L1 that asks nothing never reaches the rule, and one that would ask now asks better.
-  What it removes is user-side: the interruption cost of illegal questions. The added
-  ceremony sits above L1, so Non-Goal 3's budget branch applies — the cost is stated
-  here and the owner accepts it explicitly by merging.
+  proposal", so every figure below is measured, and re-measured after the last edit —
+  the review caught stale numbers twice, which is why the commands are named).
+  `elicitation.md`: **60 → 169 lines**, `git diff --numstat HEAD~1` = **+123 / −14, net
+  +109**, of which `## The question discipline` is **117 lines**. One existing
+  anti-pattern bullet ("Asking what the approved vision already answers") is absorbed;
+  the other two are kept. The section is that long because the review's successful
+  evasions each cost a clause — the search floor, the reversibility fix, the precedence
+  rule, the closed prescribes-list, the waste-test element. `SKILL.md` gains **one**
+  bullet under Rule Zero: **416 characters / 76 words**, and deliberately the *shortest*
+  path to the rule — it cites `elicitation.md` and states the two-condition test, and
+  enumerates nothing, because a second copy of the never-legal forms is what diverged in
+  round 1 (the longest existing cross-cutting bullet is 597 chars, so this one is not
+  the largest thing on the always-read path).
+  **What L1 pays, stated honestly** (Goal 4 counts what the agent must read as real
+  cost, so "L1 pays nothing" would be false): L1 pays **no step, no field, no check, no
+  artifact** — and **76 words of always-read text**. `elicitation.md` itself is read at
+  L3 phase 3, or when an agent is about to ask. What it removes is user-side: the
+  interruption cost of illegal questions, at every level including L1. The added
+  ceremony sits above L1, so Non-Goal 3's budget branch applies — the cost is disclosed
+  here in the figures above, and the owner accepts it explicitly by merging.
 
 ## Use Cases / User Needs
 
@@ -124,9 +134,11 @@ risks instead:
 
 | Risk | Mitigation |
 |---|---|
-| Over-suppression: agent silently guesses a genuinely user-owned call | the "what the user uniquely owns" list keeps intent/priority/approval askable; the waste test makes those blocking; declared assumptions are written in the artifact, so a wrong guess is visible to the design/closure review, never silent |
-| Under-suppression: agent games "I searched" | the question must NAME what was searched — the family's falsifiability pattern (router verdict, EXISTS row): a search not named is indistinguishable from a search not run, and is treated as such |
-| Discipline read as "never ask" | the section opens by naming the round as the planned question cost, and doctrine-reserved approvals stay blocking by design |
+| Over-suppression: agent silently guesses a genuinely user-owned call | the "what the user uniquely owns" list keeps intent/priority/approval askable, and an explicit **precedence rule** makes it win over the never-legal list — without which "it is reversible ⇒ preference-fishing ⇒ never legal" was a one-clause licence for silence (round 2, finding 4). Reversibility is no longer a sufficient condition; equivalence is measured on the benefit |
+| Under-suppression: agent games "I searched" | naming the search is not enough on its own — the question states **terms, tools, areas AND what they returned**, a search whose scope misses the question is not a search, and faking is named as such. The floors are imported from `architect.md`'s provisional-MISSING and `guides.md`'s never-fake-the-verdict, not merely their vocabulary (round 2, finding 2 — the first draft cited the pattern while shipping a weaker rule) |
+| "Assume it" becomes the way to skip the standard | the non-blocking default carries the **same** evidence duty as a question: source (`I take X from Y`), the excluded alternative, and mandatory batch presentation. This is also where the F-025 keep-both-with-sources mechanism actually lands (round 2, finding 3) |
+| Agent calls something a "fork" to force a question it wants to ask | the mandatory form has an element that only case (a) can answer — **why no assumption survives**: what work is discarded if you assume wrong. Without it, case (a) was the one blocking case the form could not falsify (round 2, finding 8) |
+| Discipline read as "never ask" | the section opens by naming the round as the planned question cost; doctrine-reserved approvals and doctrine-mandated stops stay blocking by design, and the prescribes-your-own-hand-over exemption is a **closed two-file list** so a stop cannot escape the form by silence (round 2, finding 5) |
 
 ## Action Plan
 
@@ -165,20 +177,31 @@ Two layers, and the boundary between them is stated because the second cannot ex
   unattended-path justification; understated cost figures; a wrongly-rejected test
   alternative (the `@requires` gate makes the assertion shippable); and the unargued
   shared/per-domain placement.
-- Design review round 2 (same reviewer, on the implemented state): **INCOMPLETE — the
-  reviewer process died on an API session limit before writing a verdict.** Not a PASS,
-  and recorded as such. Two findings it did reach are salvaged from its partial output
-  and both are fixed: (a) the ANALYSIS frontmatter still said `PLANNED` while the code
-  was implemented — SKILL.md phase 4 mandates the `PLANNED → IN_PROGRESS` flip and the
-  handoff row already said IN_PROGRESS, so the two states had diverged; (b) the
-  reserved-blocking clause imposed the four-element form on the doctrine's own mandated
-  stops, where `debugging.md` (minimal reproduction / what was ruled out / best
-  hypothesis) and `review.md` (artifact + open findings) already prescribe a hand-over —
-  two forms over one moment, the duplicate `review.md` §Reviewing forbids, and a stuck
-  agent has no "fork" to name. Fixed by citing the owning file instead of restating it.
-  **Open**: the rest of round 2 never ran. The gate's rule is to surface open state to
-  the human rather than block (`review.md`: a gate that can block forever gets removed),
-  so this is the owner's call at merge — re-run the round after the limit resets.
+- Design review round 2, first attempt: **INCOMPLETE — the reviewer process died on an
+  API session limit before writing a verdict.** Two findings it reached were salvaged and
+  fixed: the ANALYSIS frontmatter still said `PLANNED` while the code was implemented
+  (SKILL.md phase 4 mandates the flip; the handoff row already said IN_PROGRESS, so the
+  two states had diverged), and the reserved-blocking clause imposed the form on top of
+  `debugging.md`'s and `review.md`'s own prescribed hand-overs.
+- Design review round 2, **re-run on the committed state (fresh reviewer, deep tier):
+  FAIL — 4 BLOCK, 5 WARN, all evidenced, all fixed.** The round earned its cost: three of
+  the four BLOCKs were **working evasions**, not formatting. (1) Cost figures wrong again
+  after the round-2a edits — now re-measured with the commands named in the disclosure.
+  (2) The search-naming duty cited `architect.md`/`guides.md` as its standard while
+  shipping neither's floor, so *"I grepped for 'timeout' and it isn't there — which
+  timeout do you want?"* passed both criteria. (3) The non-blocking default — where most
+  traffic goes — carried **no** evidence duty at all, so "declare an assumption" was the
+  way to skip the entire standard; it is also where F-025's keep-both-with-sources
+  mechanism structurally belongs, and the first draft had attached its vocabulary to the
+  blocking branch instead. (4) "Reversible" was a **sufficient** condition for
+  preference-fishing, and nearly everything is reversible under git — a one-clause
+  licence for silence, decided against the intended reading by `vision.md`'s own
+  first-sentence-wins precedence rule. Fixed with a precedence clause. The WARNs closed
+  the prescribes-list gap, added the element that makes the waste test falsifiable, made
+  the Rule Zero bullet a citation rather than a second copy (it had already diverged —
+  it dropped "re-asking the record", the exact form the owner's report named), corrected
+  the L1-pays-nothing claim against Goal 4's reading-cost rule, and made the
+  `shared_files.py` boundary comment true about kb.
 - Repo-level `sdlc_check.py check` reports NOT CLEAN on `stale` — **pre-existing**,
   identical at the parent commit before any edit here (areas `skills/`, `scripts/`,
   `distributions/` unmarked since the consolidation). Not laundered with a `mark` this

@@ -52,7 +52,7 @@ Cross-cutting rules:
 - Parsing of external input, authN/authZ, cryptography, networking, personal data and filesystem access are security-sensitive: never L1.
 - If a bigger impact emerges during L1/L2 work, stop, reclassify and declare it.
 - When in doubt, pick the higher level.
-- A question to the user, at any phase and level, must pass the legality test in `elicitation.md` §The question discipline: search first and name the search; name the decision or fact blocked without the answer. Generic confirmations ("shall I proceed?") and preference-fishing are never legal. Blocking the work is reserved for forks where any assumption would waste it, for the approvals doctrine reserves to the user, and for the stops the doctrine itself mandates (the circuit breaker, the review round cap — each hands over what its own file prescribes) — otherwise proceed under a declared assumption and batch the question with the artifact it touches.
+- **Before asking the user anything — any phase, any level — the question must pass the legality test: search first and name the search with its result; name the decision or fact blocked without the answer.** Blocking the work is the exception, not the default. `elicitation.md` §The question discipline owns the rule and is the only place it is stated — read it before you ask, and do not work from a summary of it.
 - The full audit does not start for L1/L2 unless explicitly requested.
 
 ## Write Triggers

@@ -203,13 +203,31 @@ class SkillInvariants(unittest.TestCase):
         for anchor in ("## The question discipline", "Searched first",
                        "names what is blocked", "Generic confirmation",
                        "Preference-fishing", "Default non-blocking",
-                       "Blocking is reserved"):
+                       "Blocking is reserved", "fake the search",
+                       "the alternative it excludes", "That list is closed",
+                       "why no assumption survives"):
             self.assertIn(anchor, e, f"elicitation.md missing {anchor}")
         skill = read("SKILL.md")
         head = skill.split("## Write Triggers")[0]
         self.assertIn("question discipline", head,
                       "the legality test must be reachable from Rule Zero, "
                       "not only from the phase-3 round")
+        self.assertIn("elicitation.md", head,
+                      "Rule Zero must CITE the owning file, not restate the rule: "
+                      "a second copy diverges at the first edit (review.md "
+                      "§Reviewing, restated facts)")
+        # The bullet may not grow back into a second copy of the rule. The three
+        # never-legal forms and the three blocking cases live in ONE file; a
+        # summary that enumerates them is the divergence this guards.
+        bullet = [ln for ln in head.splitlines()
+                  if "question discipline" in ln or "legality test" in ln]
+        self.assertTrue(bullet, "the Rule Zero bullet is missing")
+        for enumerated in ("Preference-fishing", "Re-asking the record",
+                           "circuit breaker", "round cap"):
+            self.assertNotIn(enumerated, " ".join(bullet),
+                             f"Rule Zero re-enumerates '{enumerated}' instead of "
+                             "citing elicitation.md -- two copies, one of which "
+                             "will go stale")
 
     @requires("architect_pass")
     def test_architect_pass_wired(self):

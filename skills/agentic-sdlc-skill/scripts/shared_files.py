@@ -61,10 +61,16 @@ SHARED_FILES = (
 #   the entry point (sdlc_check.py / mkt_check.py) -- that IS the domain
 #   the overlay files (architect/tdd/debugging | taxonomy/distillation |
 #     frameworks/research) -- the overlays are supposed to differ
-#   elicitation.md -- the question round is each domain's own (marketing runs
-#     waves, not the six-question spec round); the question DISCIPLINE inside it
-#     is family doctrine carried per-domain until every sibling's file has it,
-#     guarded meanwhile by the capability-gated invariant test
+#   elicitation.md -- the question ROUND is each domain's own: marketing runs
+#     question waves, not the six-question spec round, and its copy already
+#     differs. kb's copy, by contrast, was byte-identical to this one until
+#     F-026 added the question discipline here -- so this entry is what MAKES
+#     them diverge, not a record that they already had. Say it plainly: from
+#     here on nothing detects drift between the sdlc and kb copies (the
+#     capability-gated invariant test guards THIS distribution's wiring and
+#     SKIPS in the siblings, so it is not that guard). kb adopts the discipline
+#     inside F-024; mkt owes it too. Until then the divergence is deliberate and
+#     unguarded, which is the cost of keeping the round per-domain
 #   the golden corpus, its baseline AND its harness -- the harness is bound to the
 #     corpus and to the subcommands THIS distribution ships (marketing has ledger,
 #     budget, funnel, trace and no orient), and its whole job is to freeze what this
