@@ -1,5 +1,5 @@
 ---
-description: How the three skills differ in the way an AGENT actually works under each — same spine, three fidelity disciplines. For the owner; body in Italian.
+description: How the three skills differ in the way an AGENT actually works under each — from a full three-way doctrine inventory. For the owner; body in Italian.
 status: CURRENT
 ---
 # La famiglia di skill: come lavora un agente sotto ognuna
@@ -7,167 +7,231 @@ status: CURRENT
 **Per chi**: il proprietario, e chiunque debba scegliere quale skill installare o
 capire perché un agente si comporta diversamente in tre progetti.
 **Risponde a**: "cosa fa *concretamente* di diverso un agente sotto ogni lente".
-**Non risponde a**: come sono impacchettate (architecture.md) o perché la famiglia
-esiste (project_vision.md).
+**Non risponde a**: come sono impacchettate (`architecture.md`) o perché la famiglia
+esiste (`project_vision.md`).
+**Fonte**: inventario sistematico di ogni file di dottrina delle tre distribuzioni
+(2026-08-01), non memoria di sessione.
 
 ## L'idea in una riga
 
-Le tre skill condividono **lo stesso processo** (la spina) e differiscono in **una
-sola cosa fondamentale**: *a che cosa le affermazioni dell'agente devono essere
-fedeli*. Tutto il resto — i documenti che scrive, i controlli che subisce, il
-vocabolario — discende da quella scelta.
+Le tre skill condividono **lo stesso processo** (la spina, byte-identica e vigilata
+dal drift guard) e differiscono in **una sola cosa fondamentale**: *a che cosa le
+affermazioni dell'agente devono essere fedeli*. Tutto il resto — i documenti, i
+gate, il vocabolario, i controlli — discende da quella scelta.
 
 | | agentic-sdlc | kb-agentic | mkt-agentic-sdlc |
 |---|---|---|---|
 | **Fedele a** | il codice di QUESTO repo | i documenti che TU fornisci | l'evidenza di mercato |
 | **Unità di lavoro** | feature (`F-`) | topic (`K-`) | engagement (`E1/E2/E3`) |
-| **La domanda che l'agente si fa** | "cosa rompe questo cambiamento?" | "cosa sappiamo già, quanto è certo, da dove viene?" | "quale evidenza sostiene questa scelta?" |
+| **Triage** | L1 / L2 / L3 / Spike | L1 / L2 / L3 / Spike (grana: nota → SOP → corpus) | E1 / E2 / E3 / Research Spike |
+| **Fasi L3/E3** | 5 (audit → vision → analisi → sviluppo → chiusura) | 5 (+ dentro la 4: l'algoritmo di ingestione) | **9** (spina SOSTAC) |
+| **La domanda dell'agente** | "cosa rompe questo cambiamento?" | "cosa sappiamo già, quanto è certo, da dove viene?" | "quale evidenza sostiene questa scelta?" |
 | **Il peccato capitale** | modificare a istinto senza orientarsi | spacciare conoscenza del modello per fonte | inventare un numero |
-| **Slot di rischio obbligatorio** | `## Security and Threat Model` | `## Sources and Verification` | `## Threat Map / Plan Risks` |
-| **Albero documenti** | `ai_docs/` | `ai_docs/` (+ `corpus/`, `topics/`) | `mkt_docs/` (vision/strategy/tactics/deliverables) |
+| **Slot di rischio (obbligatorio, il validator lo esige)** | `## Security and Threat Model` | `## Sources and Verification` | `## Threat Map / Plan Risks` |
+| **Albero documenti** | `ai_docs/` | `ai_docs/` + `corpus/` + `topics/` | `mkt_docs/` (vision/strategy/tactics/deliverables) |
+| **File di dottrina propri** | `architect.md`, `tdd.md`, `debugging.md` | `taxonomy.md`, `distillation.md`, `reconciliation.md` | `frameworks.md`, `research.md` |
+| **Comandi validator propri** | (spina, entry sottile) | `graph`, `corpus`, `claim-id` | `ledger`, `budget`, `funnel`, `trace` |
+| **Cosa valida in più** | struttura + Component Map anti-rot | **il grafo e i claim** (span, digest, id, simmetrie, cicli) | **l'aritmetica** (budget ±1%, funnel ±5%, catena obiettivo→tattica→KPI) |
 
-## La spina comune (identica, byte per byte)
+## La spina comune (identica byte per byte, su tutte e tre)
 
 Qualunque lente sia attiva, l'agente:
 
-1. **Triaga ogni richiesta** (Rule Zero) e dichiara il livello + il verdetto del
-   guide router — "L2 · router: no match" — così "non ho guardato" è
-   indistinguibile da "ho guardato, niente".
-2. **Consulta prima di creare**: registro dei workstream (`handoff.md`), indici
-   generati, guide operative. Mai due case per lo stesso fatto.
-3. **Passa i gate**: Vision gate per il lavoro significativo; design review
-   indipendente prima di implementare; question discipline per ogni domanda a te
-   (cercato prima + cosa blocca, assunzioni dichiarate in batch, mai "procedo?").
-4. **Chiude meccanicamente**: `sdlc_check.py check` CLEAN, indici rigenerati mai
-   scritti a mano, documenti nello stesso commit del lavoro che descrivono.
+1. **Triaga e dichiara** (Rule Zero): livello + verdetto del guide router in una
+   riga (`Level: L3 · router: no match`) — tre soli verdetti legali, così "non ho
+   guardato" è indistinguibile da "ho guardato, niente" solo se menti per iscritto.
+2. **Si orienta prima di creare**: registro dei workstream (`handoff.md`, una riga
+   per lavoro aperto, ≤20 righe), indici generati (mai scritti a mano — il
+   validator fallisce su uno editato), guide operative con fedeltà alla fonte
+   (snapshot verbatim + hash, `stale` rileva il drift).
+3. **Passa i gate**: Vision gate (DRAFT informa, APPROVED vincola — promozione solo
+   tua, dopo il blind check); **design review indipendente prima di implementare**
+   e closure review prima di dichiarare DONE — scala di indipendenza a 3 pioli
+   (subagent fresco > run one-shot > self-pass dichiarato, illegittimo se esistono
+   i primi due), cap a 3 round poi i findings aperti arrivano a te, una riga di log
+   per ogni review, PASS invalido su "non ho trovato niente" (serve il conformance
+   statement).
+4. **Rispetta la question discipline**: ogni domanda a te è legale solo se (a) ha
+   cercato prima e nomina la ricerca col risultato, e (b) nomina la decisione
+   bloccata. Mai "procedo?", mai pesca di preferenze, mai ri-chiedere il registro.
+   Default non-bloccante: assunzione dichiarata (da cosa è presa + l'alternativa
+   esclusa), presentata in batch.
+5. **Chiude meccanicamente**: `check` CLEAN, documenti nello stesso commit del
+   lavoro, decisione esplicita di merge (mai branch orfani), riga del registro
+   rimossa e HANDOFF volatile cancellato.
+6. **Può delegare** (dispatch opt-in): piano validato o niente dispatch
+   (`plan validate`, confinamento fail-closed), `verify` stampato mai eseguito,
+   escalation di tier solo dopo 2 fail consecutivi.
 
 ## agentic-sdlc — la lente del codice
 
-Il flusso L3 di un agente: elicitazione → **architect pass** (le capability della
-feature giudicate contro la Component Map: EXISTS / INADEQUATE / MISSING — "la
-mappa silenziosa su un'area non letta non giustifica mai un MISSING") → ANALYSIS
-con Impact file-per-file e threat model → **design review gate** (un reviewer che
-non è l'autore, prima di ogni riga di codice) → implementazione con TDD →
-batterie, chiusura, ADR se c'è stata una decisione architetturale.
+Ciò che solo qui l'agente fa:
 
-In pratica: l'agente passa il tempo a **leggere codice prima di toccarlo** (chi
-consuma questo simbolo? esiste già questa logica?) e a lasciare dietro di sé
-documenti che il prossimo agente a freddo può eseguire.
+- **Architect pass prima dell'Impact** (`architect.md`): la feature enunciata come
+  *capability* (verbi su nomi di dominio, zero file), ogni capability giudicata
+  EXISTS / INADEQUATE / MISSING contro la Component Map + una ricerca reale
+  (testo prima, grafo dei simboli poi — cerchi un nome che non conosci ancora).
+  Regola dura: **la mappa silenziosa su un'area non letta non giustifica mai un
+  MISSING** — altrimenti costruisci due volte. Un MISSING scoperto durante un L2 è
+  esso stesso un trigger di escalation.
+- **Blast radius come dovere d'autore**: per ogni simbolo con firma cambiata o >1
+  chiamante, l'elenco COMPLETO dei consumatori (call hierarchy, mai grep),
+  ancorato all'identità del simbolo, scritto nell'Impact — così la review non
+  scopre "manca un consumatore" un round alla volta.
+- **TDD di default** (L2/L3): UN test che fallisce, visto fallire, prima del
+  codice; l'esenzione va scritta nel Diary ("un'esenzione non registrata è
+  indistinguibile dal dimenticarsene").
+- **Debugging col circuit breaker** (`debugging.md`): riproduci → isola → causa
+  radice via grafo dei simboli → fix alla causa → test di regressione *verificato
+  fallire sul codice vecchio*. **3 run consecutivi senza progresso → STOP**, metodo
+  sistematico, poi consegna (riproduzione minima, cosa escluso, ipotesi migliore).
+  Componente che si rompe ripetutamente → mai una quarta patch: guida di
+  comprensione + refactor proposto come L3 a sé.
+- **Guide di comprensione DAL codice**, scritte autonomamente (unico silent-write
+  permesso): snapshot = estratti verbatim etichettati `path:symbol`, ogni claim
+  tracciabile, aggiornate nella stessa chiusura che cambia il codice descritto.
+- **Component Map viva**: riga nuova anche per un componente semplicemente
+  *scoperto* esplorando — e il validator la tiene anti-rot (ogni path/simbolo
+  nella colonna Where deve risolversi).
 
 ## kb-agentic — la lente della conoscenza
 
 Qui l'agente non scrive software: **costruisce un secondo cervello sui documenti
-che gli dai**. Il modello poggia su due assi tenuti deliberatamente separati:
-l'**astrazione** (un argomento è composto da altri — vive negli archi del grafo)
-e la **certezza** (quanto il corpus sostiene un'affermazione — vive nelle righe
-di claim). L'algoritmo di ingestione, per stadi:
+che gli dai**. Due assi tenuti separati: l'**astrazione** (argomento composto da
+argomenti — negli archi del grafo) e la **certezza** (quanto il corpus sostiene
+un'affermazione — nelle righe di claim). L'algoritmo di ingestione:
 
 **1. Intake — la fonte diventa intoccabile.** Ogni documento entra verbatim in
-`corpus/given/`, content-addressed (il nome porta l'hash raw dei byte); una
-versione nuova è un **append** col sidecar che dichiara `supersedes:`, mai una
-sovrascrittura. I non-testuali (PDF, docx) ricevono l'**estrazione canonica
-conservata** (`.txt` accanto all'originale, estrattore registrato): è a QUEI byte
-che puntano gli offset. Ciò che dici a voce diventa nota `origin: elicited`; una
-sintesi dell'agente dichiara `derived_from:`; una nota senza provenienza è
-"conoscenza del modello travestita da fonte" e il validator la rifiuta.
+`corpus/given/`, content-addressed con **hash raw dei byte** (non quello
+LF-normalizzato delle guide: una coppia 0D0A/0A ostile collideerebbe); versione
+nuova = append con `supersedes:` nel sidecar, mai sovrascrittura. I non-testuali
+ricevono l'**estrazione canonica conservata** (`.txt`, pagine separate da
+form-feed, estrattore registrato): è a QUEI byte che puntano gli offset. Parlato →
+nota `origin: elicited`; sintesi → `derived_from:`; ruling → `basis:`. **Una nota
+senza nessuno dei tre è "conoscenza del modello travestita da fonte" e il
+validator la rifiuta.**
 
-**2. Estrazione — l'unità è il claim, non il documento.** Da ogni fonte escono
-asserzioni falsificabili ("il prezzo di listino del modulo A è 12.000 EUR"),
-ognuna una riga: `id | claim | valid | qty | about | source | prov | state`.
-L'**id** è l'hash di posizione+quantità — mai del testo, così una riformulazione
-LLM non crea doppioni. Il **locator** (`p=17@412-509`) è verificabile: il
-validator apre l'estrazione conservata e controlla che lo span esista. `valid`
-gestisce i fatti a scadenza (half-open: "fino al 1/3" e "dal 1/3" NON
-confliggono); `qty` tipizza le cifre (effort/costo/durata) così si sommano;
-`about` esprime le relazioni ("depends-on → phase-1").
+**2. Estrazione — l'unità è il claim.** Righe
+`id | claim | valid | qty | about | source | prov | state`. L'**id** =
+hash(posizione+quantità), **mai del testo** — una riformulazione LLM non conia
+identità nuove. Il **locator** (`p=17@412-509`) è verificato: il validator apre
+l'estrazione e controlla che lo span esista. `valid` half-open ("fino al 1/3" e
+"dal 1/3" NON confliggono); `qty` tipizzata (effort in giorni-persona, costo in
+UNA valuta — misto **rifiuta di sommare**, niente cambi offline); `about` per le
+relazioni. L'estrattore **non inventa nulla**: ciò che la fonte non asserisce
+diventa `gaps:`, mai una riga.
 
-**3. Collocazione (taxonomy pass) — cinque verdetti.** Il router scende il grafo
-dei topic dall'indice generato (slug, descrizione, parents, sinonimi), seguendo
-OGNI parent (poligerarchia): EXISTS → riconcilia; INADEQUATE → approfondisci o
-figlio; MISSING → crea (ma **solo dopo aver interrogato il grafo** — la mappa non
-letta non giustifica mai un MISSING); GENERALIZES → il concetto sta SOPRA nodi
-esistenti: escalation, il riparenting è un'unità di lavoro, mai un effetto
-collaterale; UNPLACED → quarantena non ordinata. Simile-ma-forse-diverso → nodo
-fratello con la **riga di distinzione scritta**; se non riesci a scriverla, è lo
-stesso concetto. I nodi fusi diventano tombstone (`redirect_to:`), mai cancellati.
+**3. Collocazione — cinque verdetti** (`taxonomy.md`): discesa sull'indice
+generato seguendo OGNI parent (poligerarchia), sinonimi nell'indice ("listino"
+trova `pricing`). EXISTS → riconcilia; INADEQUATE → figlio; **MISSING solo dopo
+aver interrogato il grafo**; GENERALIZES → escalation (riparentare è un'unità di
+lavoro; una radice nuova si ferma da te); UNPLACED → quarantena non ordinata.
+Simile-ma-forse-diverso → **fratello con la riga di distinzione scritta**; se non
+riesci a scriverla, è lo stesso concetto. Cicli **rifiutati alla scrittura**
+(risalita antenati); nodi fusi → tombstone con `redirect_to:`, mai cancellati.
 
-**4. Riconciliazione — la macchina rileva e trattiene, mai decide.** Claim nuovo
-contro righe esistenti sullo stesso soggetto: **conferma** → si appende la fonte
-alla riga (mai una seconda riga: la base si rafforza, non si allunga);
-**raffinamento** → riga nuova, la vecchia `SUPERSEDED`; **coesistenza** → scope
-disgiunti, entrambe restano; **conflitto** → TUTTE le righe del set diventano
-`CONTESTED`, simmetriche (il check fallisce se una cella viene girata a mano),
-e **nessuna viene scelta**. Risolve solo informazione nuova: una fonte più
+**4. Riconciliazione — la macchina rileva e trattiene, MAI decide.** Cinque esiti:
+nuovo / **conferma** (fonte appesa alla riga, mai una seconda riga — la base si
+rafforza, non si allunga) / raffinamento (vecchia riga `SUPERSEDED`, testo
+intatto) / coesistenza (scope disgiunti) / **conflitto** → tutto il set
+`CONTESTED`, **simmetrico** (girare una cella a mano fa fallire il check — il
+laundering più economico). Risolve solo **informazione nuova**: una fonte più
 recente, o un tuo **ruling con `basis:`** — il fatto che conosci e il corpus no.
-Senza basis niente ruling: una preferenza non è un fatto, e un CONTESTED aperto è
-uno stato legittimo e permanente. Un ruling è sfidabile: un documento successivo
-che lo contraddice riapre il caso mostrando il tuo basis accanto.
+Senza basis niente ruling (una preferenza non è un fatto). Il ruling supera
+l'intero set, ed è **sfidabile**: un documento successivo riapre il caso col tuo
+basis accanto.
 
-**5. Escalation — in blocco, mai a raffica.** L'ingestione non si ferma mai a
-farti domande: i conflitti si accumulano e ti arrivano UNA volta, a fine giro,
-ognuno in forma legale (i claim del set, fonti, date, provenienze, e perché la
-macchina non può decidere).
+**5. Escalation — in blocco a fine giro**, mai a raffica, ognuna in forma legale
+(claim del set, fonti riapribili, date, provenienze, perché la macchina non può
+decidere). L'ingestione non si ferma mai a farti domande.
 
-In pratica: gli chiedi "quanto effort implica questo capitolato?" e lui
-seleziona le righe `qty`, normalizza le unità e somma, con le fonti accanto; gli
-dai una specifica nuova e ti dice cosa conferma, cosa raffina, cosa contraddice.
-Provato sul corpus Eclosion: 5 specifiche, 7 topic, 26 claim, e un conflitto
-vero (capacità <100 vs 200–300 utenti concorrenti, stessa data) rilevato,
-trattenuto e risolto da un tuo ruling. Il validator (`graph`, `corpus`,
-`claim-id`) verifica span, digest, id, simmetrie, cicli e raggiungibilità del
-grafo.
+Deliberatamente **assente**: qualsiasi stato di copertura per nodo — `gaps:` dice
+cosa manca a QUEL nodo, e niente lo colleziona (il Non-Goal work-management). I
+check emettono findings, mai righe di stato.
+
+Provato sul corpus Eclosion: 5 specifiche, 7 topic, 26 claim, un conflitto vero
+(capacità <100 vs 200–300, stessa data) rilevato, trattenuto, risolto dal tuo
+ruling.
 
 ## mkt-agentic-sdlc — la lente del mercato
 
-Qui la fedeltà è all'**evidenza**: ogni numero che entra in un piano ha una
-classe — `FACT` (detto da te o misurato), `BENCHMARK` (ricercato), `ASSUMPTION`
-(dichiarata, con fonte e alternativa esclusa) — e un riferimento `[EV-nn]` nel
-ledger. L'elicitazione va a **ondate** con la regola cardinale: *chiedere solo
-ciò che possiedi tu in modo esclusivo* (prezzo, margine, budget, red line);
-tutto il resto si ricerca, mai si chiede. Nove fasi SOSTAC: situazione →
-obiettivi → strategia (gate di review) → tattiche → azione → controllo.
+Qui la fedeltà è all'**evidenza**, e l'agente percorre **nove fasi SOSTAC** con
+cinque tipi di gate (Vision, USER, REVIEW, VALIDATOR, FINAL):
 
-In pratica: l'agente intervista, ricerca, scrive strategia e piano — e il
-validator **rifà i conti**: le allocazioni devono sommare al budget (±1%), il
-funnel deve ricomputare (±5%), ogni tattica deve tracciare a un obiettivo e a un
-KPI (`ledger`, `budget`, `funnel`, `trace`).
+intake/triage → discovery (Wave 1) → **ricerca** → analisi della situazione →
+obiettivi (Wave 2, **gate utente**) → strategia (**review gate** + gate utente) →
+tattiche (Wave 3, **gate validator**) → azione → controllo e packaging (**review
+finale** + `check` CLEAN).
+
+- **L'evidence ledger è la spina dorsale**: ogni numero ha una classe — `FACT`
+  (detto da te / dati primari), `BENCHMARK` (**URL reale + data obbligatori** — "vedi
+  VOC.md" è rifiutato dal validator), `ASSUMPTION` (**range obbligatorio**, mai
+  stima puntuale, + confidenza + cosa cambia se è sbagliata) — e un id `[EV-nn]`
+  che il validator risolve su ogni documento. **Nessun numero dalla memoria del
+  modello** — nemmeno se lo asserisci tu senza fonte: diventa FACT tuo, dichiarato.
+  Due fonti indipendenti per ogni numero che guida budget o obiettivi.
+- **Elicitazione a ondate con la regola cardinale**: si chiede solo ciò che
+  possiedi tu (prezzo, margine, budget, capacità, red line, *semi* di competitor);
+  tutto il resto si **ricerca** — chiederti "chi sono i tuoi competitor e come sei
+  posizionato?" è esternalizzarti il lavoro della skill. ≤4 domande per round,
+  linguaggio piano (mai "ICP" — "descrivi il tuo miglior cliente"), e il **"non lo
+  so" pre-autorizzato** dentro le domande numeriche — toglie la pressione a
+  inventare.
+- **Quattro sweep di ricerca obbligatori** (E3): market sizing bottom-up, scan
+  competitor (le LORO parole dal LORO sito, canali osservati, mai lettura del
+  pensiero), voice-of-customer (citazioni verbatim con URL — le persona tracciano
+  qui), benchmark di canale (senza, il funnel è finzione).
+- **Framework come lenti, mai moduli**: SWOT sempre (ogni cella cita `[EV-nn]`);
+  posizionamento alla Dunford con lo **swap test** — sostituisci il nome del
+  competitor top nella frase di posizionamento: se regge ancora, il posizionamento
+  è BOCCIATO; messaging house dove un pilastro senza proof point è uno slogan;
+  split budget 70/20/10 di default, deviazioni argomentate; **kill/scale per
+  canale fissati PRIMA del lancio** — "un piano senza control loop è una brochure"
+  (BLOCK in review).
+- **Il validator rifà i conti sulla prosa**: `budget` (somma allocazioni = totale,
+  ±1%), `funnel` (Clicks=Budget/CPC, Leads=Clicks×CVR, Customers=Leads×Close%,
+  CAC=Budget/Customers, ±5%, ogni cella ricomputata dalle celle a monte),
+  `trace` (ogni tattica serve un obiettivo definito, ogni obiettivo ha un KPI —
+  un orfano è un errore), `ledger` (integrità + risoluzione dei riferimenti).
+- **L'Honesty Contract**: rifiuto pre-scritto di promettere risultati di mercato —
+  la garanzia è il rigore del processo (zero numeri inventati, coerenza interna,
+  misurabilità), mai l'esito.
+- I deliverable parlano **la lingua del mercato target**; la struttura resta
+  templata così il validator può fare il parsing.
 
 ## Dove sono Vision, UC, TM, ISP, TDD? (niente è sparito)
 
-Quei nomi sono il vocabolario **Hybrid** — quando devPNT governa il progetto, sono
-artefatti versionati nel suo DB. In **Standalone** (nessun devPNT) lo stesso
-contenuto esiste, ma vive dentro i documenti filesystem. La skill impone lo stesso
-contenuto in entrambe le forme; cambia solo la casa:
+Quei nomi sono il vocabolario **Hybrid** (devPNT). Ogni lente riempie gli stessi
+slot di governance con la propria carta:
 
-| Contenuto | Standalone (filesystem) | Hybrid (devPNT) |
-|---|---|---|
-| Visione di prodotto | `vision/project_vision.md` | resta il master; la KL vision si rigenera da lui |
-| Visione di milestone (M-VISION) | i milestone di `vision/roadmap.md` | **M-VISION** nel DB |
-| Casi d'uso (D-UC) | `## Use Cases / User Needs` dentro l'ANALYSIS | **D-UC** |
-| Threat model (P-TM) | `## Security and Threat Model` dentro l'ANALYSIS — obbligatoria, il validator la esige | **P-TM** |
-| Impact analysis (E-ISP) | `## Capability Ledger` + `## Impact` dentro l'ANALYSIS (architect pass + mappa file-per-file) | **E-ISP** |
-| Design tecnico (E-TDD) | il corpo di design dell'ANALYSIS + `## Action Plan` | **E-TDD**, con shadow `SHADOW_[doc_key]_vX.Y.md` esportato su filesystem prima di implementare |
-| Piano di test (E-TP) | `## Test Strategy` dentro l'ANALYSIS | **E-TP** |
+| Slot (devPNT) | agentic-sdlc Standalone | kb-agentic Standalone | mkt-agentic-sdlc Standalone |
+|---|---|---|---|
+| M-VISION | milestone di `vision/roadmap.md` | idem | `MKT_VISION.md` (gate di fase 2) |
+| D-UC (casi d'uso) | `## Use Cases` nell'ANALYSIS | idem | `ICP_PERSONAS.md` |
+| P-TM (threat model) | `## Security and Threat Model` | `## Sources and Verification` | `THREAT_MAP.md` |
+| E-ISP (impact/strategia) | `## Capability Ledger` + `## Impact` | idem (taxonomy ledger) | `STRATEGY.md` |
+| E-TDD (design/piano) | corpo di design + `## Action Plan` | idem | `TACTICAL_PLAN.md` |
+| E-TP (test/misura) | `## Test Strategy` | idem | `MEASUREMENT_PLAN.md` |
 
-La regola che li tiene coerenti: **un master solo per artefatto** (la matrice di
-ownership in `SKILL.md`) — in Hybrid il DB vince e lo shadow si rigenera; in
-Standalone l'ANALYSIS è l'autorità. Il design review gate è lo stesso slot nelle
+Regola che li tiene coerenti: **un master solo per artefatto** — in Hybrid il DB
+vince e lo shadow (`SHADOW_[doc_key]_vX.Y.md`) si rigenera; in Standalone il
+documento filesystem è l'autorità. Il design review gate è lo stesso slot nelle
 due forme: si esegue UNA volta, mai due.
 
 ## Quando convivono nello stesso progetto
 
 - **Un solo albero, un solo default**: `default_domain:` nel README della docs
-  root decide la lente di default; ogni artefatto può dichiarare la sua
-  (`domain:`). Qualunque validator della famiglia dà **lo stesso verdetto** sullo
-  stesso albero.
-- **Il router** (`routing.md`, letto solo se c'è una lente sorella installata):
-  per ogni L2/L3 l'agente decide chi possiede l'unità di lavoro col test di
-  fedeltà — *a cosa deve essere fedele questo lavoro?* Codice del repo → code;
-  documenti forniti → kb; evidenza di mercato → mkt. In dubbio, fail-open sulla
-  lente caricata.
-- **DRY fra lenti**: un fatto ha una casa sola; le altre lenti lo **citano, mai
-  lo copiano**. I nomi ambigui per lente ("threat model", "vision") si
-  qualificano sempre col dominio o col percorso.
-- **La spina non diverge per costruzione**: 15 file condivisi byte-identici
-  verificati dal drift guard; i tre validator sono lo stesso `sdlc_core.py` con
-  un entry point per dominio.
+  root; ogni artefatto può dichiarare la sua lente (`domain:`). Qualunque
+  validator della famiglia dà **lo stesso verdetto** sullo stesso albero.
+- **Il router** (`routing.md`, letto solo se c'è una sorella installata): per ogni
+  L2/L3/Spike, il test di fedeltà — *a cosa deve essere fedele questo lavoro?*
+  Con la deroga market-facing: scopo persuasivo verso il mercato → mkt,
+  qualunque sia la fonte. Due fedeltà = due unità di lavoro (regola dello split).
+  In dubbio, fail-open sulla lente caricata. `vision/` sta sopra lo split.
+- **DRY fra lenti**: un fatto ha una casa sola; le altre lo **citano, mai lo
+  copiano** — un fatto ricopiato è un finding di review. I nomi ambigui per lente
+  ("threat model", "vision", `handoff.md`) si qualificano sempre.
+- **La spina non può divergere**: 15 file condivisi byte-identici verificati dal
+  drift guard a ogni build; i check portabili (`marketing.budget` su un documento
+  kb con una tabella di budget, `knowledge.sources` altrove) si importano per
+  nome e **aggiungono findings, mai autorità**.
