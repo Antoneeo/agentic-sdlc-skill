@@ -1,7 +1,7 @@
 ---
 id: F-023
 feature: Vision Shape Rules (rules defined by function, not by form)
-status: PLANNED
+status: IN_PROGRESS
 level: L3
 start_date: 2026-07-31
 end_date:
@@ -167,5 +167,19 @@ The Vision has no mechanical validator, so its tests are the batteries:
   decisive observation is the reviewer's anatomy note, now the organising principle
   here: rules that defeated every attack define by question, counterfactual or
   foreclosed evasion; rules that fell define by shape.
-- **Next step:** C1, because the double default makes every other ruling
-  operator-dependent and would corrupt the battery's own results.
+- **2026-08-01 — C1–C4 + C6 drafted as the v8 amendment** (commit `c750668`), Status
+  line marks it PENDING the blind check; the v7 text binds until promotion. C1 one
+  scoped default (silence in Non-Goal territory is a NO; silence elsewhere is the
+  admission test's question); C2 re-admission on scope growth (purpose/actors/surface);
+  C3 the exemption bounded ("maintaining" = all three unchanged; can-do-something-new =
+  new capability whatever it is called); C4 amendments ruled first and apart, Non-Goals
+  never amendable by a capability proposal; C6 disclosure-by-proximity folded into the
+  disclosure paragraph. **Blind round launched** on the full v8 text (one-file read,
+  nothing omitted — the Round-9 instrument error is the reason the file is complete):
+  8 recorded attack classes re-thrown, 6 accept-side items, new-class hunt, verdict-diff
+  duty (any flip goes to the owner as a decision, per T1).
+- **Open before promotion:** C5 — the fifteen residual shape rules (Round 9 lists them;
+  three named worst: the manifest carve-out, the ceremony-form enumeration, the
+  "advances a Goal" test). Round 9's own warning applies: three new landings were shapes
+  the restatement itself introduced, so C5 is a careful pass, not a sweep. Then the
+  blind verdict, the verdict diff to the owner, and the owner's promotion decision.
