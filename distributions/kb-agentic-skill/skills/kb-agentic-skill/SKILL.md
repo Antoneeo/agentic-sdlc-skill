@@ -13,15 +13,15 @@ This skill guides knowledge management and documentation with a Document-First p
 
 Support files in the skill directory:
 - `templates.md`: templates for Vision, Knowledge ANALYSIS, Research SPIKE, SOP GUIDE, audit plan, and handoff.
-- `taxonomy.md`: the taxonomy pass — do the categories, topics, and SOPs for this subject already exist? Run at L3 before drafting.
+- `taxonomy.md`: placing a claim in the topic graph — descent over the generated index, the five verdicts (EXISTS / INADEQUATE / MISSING / GENERALIZES / UNPLACED), the sibling rule, guarded re-parenting, canonicalization. Run at L3 before drafting.
 - `guides.md`: pipeline for distilling user-provided indications into `ai_docs/reference/GUIDE_[topic].md`.
 - `vision.md`: how to write a Vision a cold reviewer can actually apply — the properties that make a rule hold, the minimum operable sections, and the blind check.
-- `distillation.md`: contract-first signal distillation discipline (symbiosis with `distill`).
-- `reconciliation.md`: systematic procedure for resolving conflicting notes, handling obsolete information, and marking deprecated docs.
+- `distillation.md`: from a source to claim rows — intake (content-addressed originals, stored canonical extraction, every provenance a real file), the claim table, extraction discipline, signal rules (symbiosis with `distill`).
+- `reconciliation.md`: what happens when two claims meet — five outcomes, detect-and-hold (the machine never decides), rulings with mandatory `basis:`, the claim state machine, the batched escalation form.
 - `review.md`: the review discipline — when a review is due, how to request one, how to receive findings, how to review.
 - `dispatch.md`: opt-in subagent execution of an approved plan.
 - `routing.md`: which lens owns this unit of work. Read ONLY when a sibling lens skill is installed alongside this one; a single-lens install never reads it.
-- `scripts/sdlc_check.py` + `scripts/sdlc_core.py`: the mechanical validator for the docs root (`check`, `validate`, `index`, `stale`, `mark`, `gate`, `plan`, `orient`, `migrate`). Two files: the core is the family's shared spine, the entry point names this domain. Copy both, or neither.
+- `scripts/sdlc_check.py` + `scripts/sdlc_core.py`: the mechanical validator for the docs root (`check`, `validate`, `index`, `stale`, `mark`, `gate`, `plan`, `orient`, `migrate`, and the knowledge overlay: `graph`, `corpus`, `claim-id`). Two files: the core is the family's shared spine; the entry point IS the knowledge overlay — the claim ledger and topic-graph checks live inside it, so the core alone runs none of them. Copy both, or neither.
 - `ENFORCEMENT.md`: optional setup for CI and hooks.
 
 Read these files only when needed. `SKILL.md` is the operating contract; the support files are progressive resources.
@@ -51,8 +51,11 @@ Always classify the request before choosing the process. Declare the chosen leve
 Cross-cutting rules:
 - **Domain routing (multi-lens installs only).** After the level is set, and only when a sibling lens skill of this family is installed (`agentic-sdlc`, `mkt-agentic-sdlc`), run the router in `routing.md` for every L2, L3 and Spike: it decides which lens's method and validation rules govern this unit of work. L1 never reaches it, and a single-lens install never reads the file — detection fails open. In such a project, never refer to a document whose meaning differs by lens ("threat model", "vision", `principles.md`, `handoff.md`) by its bare name: qualify it with its domain, or name its path.
 - Personal data, credentials, security-sensitive processes, authN/authZ specs are high-risk: never L1.
+- **Escalation triggers — ANY of these makes it L3, whatever the file count:** the change touches the topic hierarchy (`parents:`, a `GENERALIZES` verdict, a re-parent); it touches more than one node's frontmatter; it creates or supersedes a node other nodes reference. Re-shaping the graph is a unit of change, never a side effect of placing one claim.
+- Adding one claim row to an existing topic is L1: the `id` may be left empty (the validator fills it — `claim-id --fill`), and no check errors on a hand-written row.
 - If a bigger impact emerges during L1/L2 work, stop, reclassify and declare it.
 - When in doubt, pick the higher level.
+- **No useless questions.** A question to the practitioner is legal only in the escalation form (`reconciliation.md` §4): it names the conflicting claims, their sources and dates, and why the machine cannot decide — and escalations are batched at the end of a run, never modal. Generic confirmations ("shall I proceed?") are not questions.
 
 ## Write Triggers
 
@@ -72,7 +75,10 @@ Triage decides IF documentation is due; this table decides WHICH document each e
 | ADR / Decision Log — `architecture/` or devPNT DB | A strategic decision was taken (pattern, policy, structural change): record before DONE. | 5 |
 | `strategic/architecture.md`, `strategic/existing_features.md` | Bootstrap; update at closure when the knowledge catalog actually changed. | 1 / 5 |
 | `vision/project_vision.md`, `roadmap.md`, `principles.md` | Bootstrap as `Status: DRAFT`; promoted to APPROVED only by explicit user confirmation. | 1 / 2 |
-| `INDEX.md`, `reference/INDEX.md` | Regenerated by `sdlc_check.py index` at closure. | 5 |
+| `topics/<slug>.md` | A placement verdict creates it (MISSING/INADEQUATE-child, `taxonomy.md`); reconciliation updates its claim rows. One node per topic — a similar-but-distinct concept is a sibling with `related:` + a written distinction, never a merge and never a duplicate. Merged/renamed nodes become tombstones (`status: SUPERSEDED` + `redirect_to:`), never deleted. | 4 |
+| `corpus/given/*` + sidecar | A source arrives: verbatim copy, content-addressed, sidecar with digest/date/`supersedes:`; non-text originals also get their stored canonical extraction (`distillation.md` §1). Never edited after ingest — the digest check is what enforces it. | 4 |
+| `corpus/notes/*` | Something is said (`origin: elicited`), synthesised (`derived_from:`), or ruled (`basis:`). A note with none of the three is refused by the validator. | 4 / 5 |
+| `INDEX.md`, `reference/INDEX.md`, `topics/INDEX.md`, `corpus/INDEX.md` | Regenerated by `sdlc_check.py index` at closure — never by hand; `validate` fails on a hand-edited one. | 5 |
 
 ## Operating Modes
 

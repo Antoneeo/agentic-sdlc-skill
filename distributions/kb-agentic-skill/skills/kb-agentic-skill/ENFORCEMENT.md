@@ -20,7 +20,14 @@ Copy **both** validator files into the repository — `scripts/sdlc_check.py` (t
 python tools/sdlc_check.py validate --strict
 ```
 
-The validator ships as two files: the core carries the behaviour and is identical in every distribution of the family, the entry point names the domain. Copying only `sdlc_check.py` fails immediately with a message saying so — loudly, never as a silently green pipeline. (Copying `sdlc_core.py` alone also works: `python tools/sdlc_core.py validate --strict` behaves identically, defaulting to the code domain rather than this one.)
+The validator ships as two files: the core carries the family's shared behaviour and is identical in every distribution; the entry point IS the knowledge overlay — since F-024/F-025 it carries the claim ledger and the topic-graph checks. Copying only `sdlc_check.py` fails immediately with a message saying so — loudly, never as a silently green pipeline. Copying `sdlc_core.py` alone still runs, but **no longer behaves identically for kb**: it validates the family surface and runs NONE of the claim or graph checks (`graph`, `corpus`, the claim-table integrity inside `check`), so a kb project whose CI copies one file is green while its knowledge surface is unchecked. Copy both. For a kb project, add the graph step to CI:
+
+```
+python tools/sdlc_check.py graph --root .
+python tools/sdlc_check.py corpus --root .
+```
+
+(Both are no-ops printing `nothing to check` on a tree without `topics/`/`corpus/`, so the step is safe to add unconditionally; `check` already includes them.)
 
 Effect: an unregenerated index, invalid frontmatter, a missing security section or incoherent states **block the pipeline** instead of relying on the agent's memory. `--strict` also fails on warnings and on a missing `ai_docs/`, so a wrong working directory cannot produce a green pipeline. This works because documents travel in the same PR as the code (Phase 5 rule).
 

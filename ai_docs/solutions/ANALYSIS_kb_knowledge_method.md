@@ -348,14 +348,20 @@ threats are owned by F-025 (TL1–TL6) and not restated.
 - [x] Design gate round 1 (FAIL, 14 BLOCK → F-025 extracted) and round 2 (FAIL, two
       lenses → automatic ladder dropped, serial v1, two-file constraint, owner rulings)
 - [ ] Design gate round 3 on the rewritten pair — the last before the cap
-- [ ] F-025 first: ledger section in `sdlc_check.py` + `test_claim_ledger.py`
-- [ ] Templates: node, sidecar, claim table, ruling note; `## Sources and Verification`
-      to citation form
-- [ ] Rewrite `taxonomy.md`, `distillation.md`, `reconciliation.md`
-- [ ] `SKILL.md`: triggers, escalation triggers, commands, batch-escalation rule
-- [ ] Overlay: `graph`, `corpus`, `index`/`validate`/`check` interception; `test_kb_graph.py`
-- [ ] Golden: `COMMANDS` + baseline re-recorded; three batteries; drift guard green
-- [ ] Ingest the owner's real corpus; answer UC2 and UC3 from the graph
+- [x] F-025 first: ledger section in `sdlc_check.py` + `test_claim_ledger.py` (22 tests)
+- [x] Templates: node, sidecar, claim table, ruling note; `## Sources and Verification`
+      in citation form
+- [x] Rewrite `taxonomy.md`, `distillation.md`, `reconciliation.md`
+- [x] `SKILL.md`: triggers, escalation triggers, commands, L1-free rule, no-useless-questions rule
+- [x] Overlay: `graph`, `corpus`, `claim-id`, `index`/`validate`/`check` interception;
+      `test_kb_graph.py` (17 tests)
+- [x] Golden: `COMMANDS` + baseline re-recorded (+9/−0, frozen 1.0 snapshot + containment
+      test); three distribution batteries green; drift guard: 15 shared files identical
+- [x] End-to-end smoke on a mini corpus: graph/corpus/index/validate/check rc 0; UC2 sums
+      by selection; the span check and the digest check each caught a real error on the
+      first attempt
+- [ ] Ingest the owner's real corpus; answer UC2 and UC3 from the graph — **the
+      acceptance bar; needs the owner's documents**
 - [ ] Closure: `check` CLEAN, Component Map, ADR (topic graph + detect-don't-decide)
 
 ## Test Strategy
