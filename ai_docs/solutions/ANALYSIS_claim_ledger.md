@@ -1,10 +1,10 @@
 ---
 id: F-025
 feature: Claim Ledger (assertions with provenance; conflicts held open, never auto-resolved)
-status: PLANNED
+status: COMPLETED
 level: L3
 start_date: 2026-08-01
-end_date:
+end_date: 2026-08-01
 ---
 # Feature Analysis: Claim Ledger
 

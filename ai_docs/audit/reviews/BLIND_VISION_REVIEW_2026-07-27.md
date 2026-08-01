@@ -857,3 +857,70 @@ oppositely.
 state exactly what is omitted. A reviewer who cannot open files reports an un-pasted
 section as an absent one, and nine attacks were scored against half a veto limb.
 
+## Round 11 — 2026-08-01, `vision/roadmap.md` brought current (first run on a document other than the gate)
+
+Subject: the roadmap edit adding the post-Vision-era milestones (Agent Evolution,
+Verifiable Vision, Architect Pass + Design Review Gate, F-022 Multi-Domain Core,
+F-024 kb Knowledge Method). Three sub-rounds, fresh Opus reviewer each, no file
+access; the reviewer received the edited roadmap plus the COMPLETE v7 gate (round-9
+rule honored; sub-round 3 narrowed the paste and declared its omissions, taking one
+CANNOT DECIDE instead of a false ruling — the instrument worked).
+
+**Verdicts: PASS-conditional (5 BLOCK / 7 WARN) → FAIL (6 BLOCK) → PASS-conditional
+(2 BLOCK, both cured in text).** Sub-round 2 reproduced the round-7/8 pattern exactly:
+every sub-round-1 fix worded against the seen attack fell to a one-word reword
+(`document` → `unit of work`; "dependency" → "publication decision"; "estimate" →
+"planning figure"), and one fix opened a hole two clauses away ("assigns no triage
+level" beside "declared with triage" implied the neighbour decides). Sub-round 3
+stopped all six re-thrown attacks on the corrected wording and both controls behaved
+(guide-cap still REJECT, new client still ACCEPT).
+
+**The round's durable finding (reviewer 1, verbatim):** *"the roadmap's danger is
+never that it authorizes something — it is that it supplies vocabulary a careless
+reviewer mistakes for authorization."* A DRAFT satellite document cannot open the
+gate, but it can arm the next proposal with approving vocabulary; the battery
+therefore reaches Vision satellites, not only the gate.
+
+### New standing fixtures (attacks that worked at least once here — keep)
+
+1. **Axis-swap on a disclaimer**: "not consulted to decide which *document* to work on
+   next" → "consulted to decide which *milestone* to resume next". A disclaimer scoped
+   to one noun of the gate's pair (documents / units of work) licenses the other.
+2. **Precedent through a conditional predicate in prose**: "not published *until* X is
+   effective" read back as an already-recorded dependency, then "formalize it as
+   `blocked_by:` — maintenance of a fact the roadmap already records."
+3. **Undisclosed referent on domain figures**: "planning figures (effort, duration,
+   resources)" with no statement of what they attach to — corpus subject (knowledge,
+   in) vs this project's work items (planner, out). Omission must resolve against.
+4. **Fix-induced contrast**: disclaiming a power for component A in the same sentence
+   that mentions component B implies B holds it ("derives no triage level" / "declared
+   with triage").
+5. **Unscoped standing check**: "battery re-run on every Vision edit" makes a one-line
+   typo fix pay an adversarial round — ceremony ratchet at L1 inside a success signal.
+6. **Standing rank column**: a Priority column over rows including open work is a
+   work-item ranking field; a disclaimer that is true only while exactly one row is
+   open ("no ordering among open rows") self-destructs when a second opens. Cure was
+   structural: the column is gone.
+7. **Unscoped "mandatory" paraphrase**: "Architecture, analysis, and tests remain
+   mandatory" restated a level's content more broadly than the gate defines it —
+   a satellite paraphrase can falsify the gate. Cure: restate levels verbatim, never
+   paraphrase.
+
+### Dispositions (every finding answered; refusals recorded)
+
+Fixed in the text: all 5 sub-round-1 BLOCKs, all 6 sub-round-2 BLOCKs, both
+sub-round-3 BLOCKs (Priority column removed; levels note restates the gate verbatim),
+plus WARNs on the Vision-Actors devPNT conjunct (marked amplification), the F-022
+"publishes" ambiguity ("packs and can publish"), the sibling pre-ship boundary
+restatement (added to the F-022 signal), and the kb signal's checkability (named
+checks, acceptance recorded in the kb ANALYSIS Diary).
+Refused, with reason: hash-anchoring the ceremony-budget citation (the ANALYSIS is
+git-versioned; the roadmap is not a guide and carries no hash discipline); per-row
+budget clauses on every historical row (the acceptance records live in the per-feature
+ANALYSIS files the notes already route to). Sub-round-3's CANNOT DECIDE on the sibling
+boundary restatement vs Non-Goal 2 is answered by the full gate (the owning-domain
+rule assigns each change exactly one authority) — an artifact of the narrowed paste,
+not a defect. Open for the owner: an APPROVED gate delegates "milestones and
+sequencing" to a document whose own status is DRAFT, and neither document states what
+a DRAFT delegate binds — this is the promotion question itself.
+
