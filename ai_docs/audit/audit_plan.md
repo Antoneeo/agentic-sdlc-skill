@@ -9,4 +9,4 @@ States: PENDING (to analyze) | ANALYZED (analyzed, with reference) | SKIPPED (wi
 | skills/agentic-sdlc-skill/ | ANALYZED | 10bbaa251c93 |  |
 | scripts/ | ANALYZED | 4dc4a3e395eb |  |
 | distributions/ | ANALYZED | 8ad247c29170 |  |
-| ai_docs/ | ANALYZED | 8168bb8556ec |  |
+| ai_docs/ | SKIPPED | - | the governance tree itself, not an analyzable area: marking it rewrites this file, which sits inside it, so a hash-based row chases its own tail forever. Its freshness is what `check` already verifies directly |
