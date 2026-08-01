@@ -1,5 +1,5 @@
 # Project Vision
-Status: APPROVED (by Antonio Pinto — v6 2026-07-27, **v7 amendment 2026-07-31**; **v8 amendment PENDING the blind check** — F-023, `## The admission test` restated by function: one scoped default, bounded exemption, re-admission on scope growth, amendments ruled apart. The v7 text binds until the v8 battery passes and the owner promotes)
+Status: APPROVED (by Antonio Pinto — v6 2026-07-27, v7 amendment 2026-07-31, **v8 amendment 2026-08-01**)
 
 *Binding authority for the Vision Gate. Provenance and revision history at the end of this document.*
 
@@ -418,6 +418,28 @@ superseded drafts inside the entries below describe text **not in the current
 document** — a cold reader applies what the sections above state, never a rule an
 entry says was once drafted.
 
+- **v8 — 2026-08-01, APPROVED by Antonio Pinto ("promuovi").** F-023. Amends
+  `## The admission test`, restated by function after the owner rejected the
+  surface-hardening trajectory ("stiamo curando la superficie e perdendo di vista la
+  sostanza") and demanded the key that makes the bypass impossible: one default
+  scoped to the prohibitions (the double default gave coin-flip rulings); the
+  maintenance exemption bounded to purpose/actors/surface with the baseline given a
+  locus and the proposer carrying the burden; scope growth re-ruled, never
+  inherited; amendments ruled as their own proposal that must stand with the
+  capability withdrawn, Non-Goals never amendable by a capability proposal;
+  disclosure keyed to what the proposal ships. And the structural change:
+  **"Precedent first" — `vision/rulings.md`, the precedent ledger** seeded with the
+  fifteen verdicts battery rounds and real history already produced, identity keyed
+  on the question a capability answers so a reworded replay lands on the ruled row,
+  a working bypass becomes a new row instead of a rewrite, and a contradicted
+  precedent is visible by definition. Blind round on the full v8 text:
+  PASS-conditional — zero attacks through (8 recorded classes), zero verdict flips,
+  gate not reject-only (6 accept-side ADMIT); 1 BLOCK + 9 MAJOR wording findings,
+  all fixed same-day (the BLOCK: the effect backstop read literally refused every
+  bug fix). C5's residual shape-hardening REFUSED by owner ruling — the prose
+  stopped being the mechanism, so its wording stopped being attack surface.
+  Disposition: `solutions/ANALYSIS_vision_shape_rules.md`; the round:
+  `audit/reviews/REVIEW_LOG.md` 2026-08-01.
 - **v7 — 2026-07-31, APPROVED by Antonio Pinto.** Amends `## North Star`: the product
   ships as a **family of skills built from one shared core**, not as one skill. The
   amendment was owed, not optional — F-022 proposes consolidating three sibling
