@@ -88,6 +88,28 @@ validator **rifà i conti**: le allocazioni devono sommare al budget (±1%), il
 funnel deve ricomputare (±5%), ogni tattica deve tracciare a un obiettivo e a un
 KPI (`ledger`, `budget`, `funnel`, `trace`).
 
+## Dove sono Vision, UC, TM, ISP, TDD? (niente è sparito)
+
+Quei nomi sono il vocabolario **Hybrid** — quando devPNT governa il progetto, sono
+artefatti versionati nel suo DB. In **Standalone** (nessun devPNT) lo stesso
+contenuto esiste, ma vive dentro i documenti filesystem. La skill impone lo stesso
+contenuto in entrambe le forme; cambia solo la casa:
+
+| Contenuto | Standalone (filesystem) | Hybrid (devPNT) |
+|---|---|---|
+| Visione di prodotto | `vision/project_vision.md` | resta il master; la KL vision si rigenera da lui |
+| Visione di milestone (M-VISION) | i milestone di `vision/roadmap.md` | **M-VISION** nel DB |
+| Casi d'uso (D-UC) | `## Use Cases / User Needs` dentro l'ANALYSIS | **D-UC** |
+| Threat model (P-TM) | `## Security and Threat Model` dentro l'ANALYSIS — obbligatoria, il validator la esige | **P-TM** |
+| Impact analysis (E-ISP) | `## Capability Ledger` + `## Impact` dentro l'ANALYSIS (architect pass + mappa file-per-file) | **E-ISP** |
+| Design tecnico (E-TDD) | il corpo di design dell'ANALYSIS + `## Action Plan` | **E-TDD**, con shadow `SHADOW_[doc_key]_vX.Y.md` esportato su filesystem prima di implementare |
+| Piano di test (E-TP) | `## Test Strategy` dentro l'ANALYSIS | **E-TP** |
+
+La regola che li tiene coerenti: **un master solo per artefatto** (la matrice di
+ownership in `SKILL.md`) — in Hybrid il DB vince e lo shadow si rigenera; in
+Standalone l'ANALYSIS è l'autorità. Il design review gate è lo stesso slot nelle
+due forme: si esegue UNA volta, mai due.
+
 ## Quando convivono nello stesso progetto
 
 - **Un solo albero, un solo default**: `default_domain:` nel README della docs
