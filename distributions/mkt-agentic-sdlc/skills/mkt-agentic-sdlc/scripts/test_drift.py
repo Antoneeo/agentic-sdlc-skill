@@ -53,6 +53,18 @@ class DriftGuard(unittest.TestCase):
         for rel in ("scripts/sdlc_check.py", "scripts/mkt_check.py"):
             self.assertNotIn(rel, shared_files.SHARED_FILES)
 
+    def test_the_copies_are_identical_to_each_other(self):
+        """The strong form, available in the consolidated checkout.
+
+        The manifest catches a local edit. THIS catches the case the manifest
+        cannot: a change applied and recorded in one distribution and never carried
+        to the others. It found exactly that on its first run."""
+        diverged, root = shared_files.cross_distribution_report()
+        if root is None:
+            self.skipTest("not the consolidated checkout: only the manifest check applies")
+        self.assertEqual(diverged, {},
+                         "the spine is one file, and these copies are not the same file")
+
     def test_hashing_ignores_line_endings(self):
         """A CRLF checkout is not divergence, and must never be reported as one."""
         import tempfile
