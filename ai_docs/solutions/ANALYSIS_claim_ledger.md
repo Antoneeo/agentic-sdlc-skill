@@ -92,21 +92,31 @@ A claim table under a `## Claims` heading, fixed columns:
 | c7f3a91b0e42 | List price of module A is 12000 EUR | until 2026-03-01 | 12000 EUR cost | - | corpus/given/contract-9a1f2b7c.pdf#p=17@412-509 | GIVEN | OK |
 | 4d20be71c8a9 | List price of module A is 15000 EUR | from 2026-03-01 | 15000 EUR cost | - | corpus/given/amendment-3e8d1a04.pdf#p=2@88-140 | GIVEN | OK |
 
-- **`id`** — first 12 hex of `sha256(source_path + "#" + locator)`. **Optional when
-  authoring**: the validator's fill step computes and writes it (the L1 rule). Fixed at
-  first insertion; on a corroborated row it keeps the **first** source entry, which makes
-  recomputation well-defined. The claim text is deliberately excluded — an LLM
-  re-extraction paraphrases, and a text-keyed id would re-insert the same assertion under
-  a new hash.
-- **the locator is deterministic from the document, never invented by the extractor.**
-  Grammar, closed: `p=<n>@<start>-<end>` (page + character offsets in that page's
-  extracted text), `L<a>-<b>` (line-addressed files), `Sheet<s>!<cell>` (spreadsheets).
-  An earlier draft let the extractor mint sub-page labels (`p=17a`); that reintroduced
-  through the locator the same instability the id had just evicted from the text — a
-  second run orders the assertions differently and every label moves. Character offsets
-  are a property of the stored bytes: the same sentence has the same offsets whoever
-  extracts it, however many times. Two independent extractions of one assertion therefore
-  collide on the same id, which is the dedup working.
+- **`id`** — first 12 hex of `sha256(source_path + "#" + locator + "#" + qty_norm)`,
+  where `qty_norm` is the normalized quantity (`kind:value:unit`) when the row carries
+  one, else empty. **Optional when authoring**: the validator's fill step computes and
+  writes it (the L1 rule). Fixed at first insertion; on a corroborated row it keeps the
+  **first** source entry, which makes recomputation well-defined. The claim text is
+  deliberately excluded — an LLM re-extraction paraphrases, and a text-keyed id would
+  re-insert the same assertion under a new hash. The quantity component exists because
+  one sentence routinely asserts two figures ("costs 12000 EUR and takes 30 days" — two
+  rows, one locator): without it the two rows collide on one id and UC2 under-counts.
+  **Uniqueness scope is global across `topics/`**: one row per id in the whole tree,
+  enforced by a duplicate-id check — which is also what makes `CONTESTED <id>`
+  resolution well-defined wherever the counterpart lives.
+- **the locator addresses a STORED extraction, so it is a fact of bytes the project
+  keeps.** Grammar, closed: `p=<n>@<start>-<end>` (page + character offsets into that
+  page's region of the stored extraction), `L<a>-<b>` (line-addressed files),
+  `Sheet<s>!<cell>` (spreadsheets). For non-text originals (PDF, docx), ingest writes
+  the canonical extraction beside the original — `corpus/given/<slug>-<hash8>.txt`,
+  content-addressed, pages separated by form-feed — and records the extractor id,
+  version and normalization in the sidecar (F-024 storage). Offsets into a stored file
+  are reproducible by construction: a different extractor produces a *new* stored
+  artifact with a new address, detected as such, never a silent re-hash of every id.
+  The stdlib validator can open the extraction and assert the span exists; a human can
+  open it and read the span (UCL1). Two earlier drafts failed here — extractor-minted
+  labels (`p=17a`), then offsets into an extraction nothing pinned; storing the
+  extraction is what turns the offset into a fact.
 - **`valid`** — `-` (unbounded), `from X`, `until X`, `from X until Y`, `if <condition>`.
   **Half-open: `from` inclusive, `until` exclusive**, so `until 2026-03-01` and
   `from 2026-03-01` do not overlap — the two most common rows in any commercial corpus
@@ -139,7 +149,7 @@ classifies (this is semantic judgement; no query performs it):
 | Outcome | When | Action |
 |---|---|---|
 | **new** | nothing on that subject | insert |
-| **corroboration** | same assertion, different source | append the source. **Never a second row** |
+| **corroboration** | same assertion, different source | append the source. **Never a second row** (one exemption: a RULING row *is* a new assertion with a new provenance — see the state table) |
 | **refinement** | strictly more precise, not contradictory ("Q1" → "15 March") | new row; old row `SUPERSEDED <new-id>`, text intact |
 | **coexistence** | incompatible only if scopes overlapped, and they do not | both rows stay `OK` |
 | **conflict** | incompatible, scopes overlap | **all** rows in the conflict set marked `CONTESTED` with each other's ids. Nothing is picked |
@@ -147,16 +157,38 @@ classifies (this is semantic judgement; no query performs it):
 The **machine** then verifies what was classified — every check a pure function in the
 consumer's entry point:
 
-- ids recompute from `source#locator` (first entry); mismatch is an error
-- every `source` resolves under the docs root, through `confine_under`, fail closed
+- ids recompute from `source#locator` (first entry) + `qty_norm`; mismatch is an error;
+  an **empty id is a `[note]` advisory, never an error** — fill-pending, and every other
+  check on the row still runs (this is what keeps L1/L2 free without going inert)
+- **duplicate ids across the whole `topics/` tree are an error** (the uniqueness scope)
+- every `source` resolves under the docs root, through `confine_under`, fail closed; a
+  locator into a stored extraction must address an existing span of that file
 - `DERIVED` without `derived_from:` in its note is an error (laundered synthesis)
 - `RULING` without `basis:` in its note is an error (preference disguised as fact)
-- `CONTESTED`/`SUPERSEDED` ids that resolve to no row are errors (conflict laundering —
-  deleting either side of a recorded disagreement breaks the check, it does not clean up)
-- scope grammar parses; `qty` units parse; table arity is exact (a stray `|` errors, never
-  truncates)
+- `CONTESTED`/`SUPERSEDED` ids that resolve to no row are errors (conflict laundering by
+  deletion)
+- **`CONTESTED` is symmetric — `x ∈ CONTESTED(y) ⟺ y ∈ CONTESTED(x)` — and a
+  `CONTESTED` pointer at a `SUPERSEDED` row is an error.** Without symmetry, editing ONE
+  row's state cell to `OK` makes the disagreement vanish while every other check passes —
+  the cheapest laundering, and the one the component's contract exists to prevent
+- scope grammar parses; `qty` units parse; table arity is exact **in both directions** —
+  a short row and a long row both error, never pad or truncate (the copied `find_table`
+  pattern tolerates a ragged tail; the copy here deliberately does not)
 - advisory, because subject-sameness is judgement: two rows sharing an `owns:` concept,
   overlapping scopes and different `qty` values are flagged as a probable missed conflict
+
+### The state machine — states × events, closed
+
+States: `OK`, `CONTESTED <id>[,…]`, `SUPERSEDED <id>`. Events and transitions:
+
+| Event | Effect on the rows involved |
+|---|---|
+| conflict classified | every member of the set → `CONTESTED` listing all counterparts (symmetry by construction) |
+| ruling recorded | the RULING row enters as the assertion (`OK`); **every** prior member of the set → `SUPERSEDED <ruling-id>`. No member stays `CONTESTED`: the set closes whole |
+| newer source contradicts a RULING | new `CONTESTED` set = {new row, ruling row}; the escalation shows the ruling's `basis:` beside the new evidence |
+| member superseded by refinement | the refining row **inherits the member's `CONTESTED` relations** (the agent re-judges whether the conflict survives the refinement); counterparts' state cells are rewritten to name the new id. A counterpart left pointing at the superseded row is the integrity error above |
+| corroboration of a CONTESTED member | source appended; the set is untouched (more evidence on one side does not resolve — only new *information* does, and the escalation form shows the source counts) |
+| illegal | a row `SUPERSEDED` by a row that does not exist; a set member whose counterpart does not name it back; resolution by anything without a `basis:` or a newer source |
 
 ### Conflict resolution — only new information resolves
 
@@ -169,9 +201,12 @@ corpus**, never verdicts:
 2. **The practitioner records a ruling** — a note in `corpus/notes/` whose mandatory
    `basis:` states *the fact they know that the corpus lacks* ("client confirmed Q3 by
    phone on 30 Jul", "doc B is an unsigned draft"). The ruling claim enters the ledger
-   with `prov: RULING` pointing at that note; the losing rows become
-   `SUPERSEDED <ruling-id>`. **No basis, no ruling**: if the practitioner knows nothing
-   new, the set simply stays `CONTESTED` — a legitimate, permanent, honest state.
+   with `prov: RULING` pointing at that note, and **every prior member of the set —
+   including the one the ruling agrees with — becomes `SUPERSEDED <ruling-id>`**: the
+   ruling row is now the assertion, carrying the basis, and no member lingers
+   `CONTESTED` against rows that no longer contest it. **No basis, no ruling**: if the
+   practitioner knows nothing new, the set simply stays `CONTESTED` — a legitimate,
+   permanent, honest state.
 
 A later source that contradicts a RULING **does resurface** — as a new `CONTESTED` set
 that carries the ruling's `basis:` alongside the new evidence, so the practitioner
@@ -196,7 +231,7 @@ two-file recipe — so the ledger's functions live **inside the kb entry point**
 
 | Path | Change | Responsibility | Why it changes |
 |---|---|---|---|
-| `scripts/sdlc_check.py` | MODIFY | the ledger section: `parse_claims`, `claim_id`, `scopes_overlap`, `qty_norm`, `check_claims`, the fill step for missing ids, the `claim-id` subcommand | the component's one implementation; a new module would not ship |
+| `scripts/sdlc_check.py` | MODIFY | the ledger section: `parse_claims` (exact arity both directions — deliberately NOT the ragged-tail tolerance of the `find_table` pattern it copies), `claim_id`, `scopes_overlap`, `qty_norm`, `check_claims` (incl. symmetry and global duplicate-id), the fill step (`claim-id --fill`, byte-diff confined to id cells; `validate` treats an empty id as a `[note]`, never an error) | the component's one implementation; a new module would not ship |
 | `scripts/test_claim_ledger.py` | ADD | the battery: pure-function tests | a check with no test is a claim |
 | `scripts/test_golden_regression.py` + `fixtures/golden_baseline.txt` | MODIFY | `claim-id` enters `COMMANDS`; baseline re-recorded, existing lines byte-identical | a command outside `COMMANDS` is a command the harness stopped freezing |
 | `templates.md` | MODIFY | the claim-table template + the ruling-note template (`basis:` mandatory) | authors need the exact shapes |
@@ -247,17 +282,18 @@ All pure-function calls, stdlib, no network, no LLM, no subprocess.
 
 | Id | Asserts |
 |---|---|
-| TL-T1 | id unchanged when claim text is rewritten; id changes when the locator does; **two extractions of one sentence at the same offsets yield one id** |
+| TL-T1 | id unchanged when claim text is rewritten; id changes when the locator or the quantity does; two rows at one locator with different `qty` kinds get distinct ids |
 | TL-T2 | `until X` / `from X` disjoint; `-` overlaps everything; `if` overlaps everything |
-| TL-T3 | a three-way conflict yields one `CONTESTED` set listing all counterpart ids on every row |
-| TL-T4 | a ruling with `basis:` supersedes its set; a ruling note without `basis:` errors; a later conflicting source re-opens as a new set that references the ruling |
-| TL-T5 | corroboration appends a source, id and row count unchanged |
-| TL-T6 | missing-id rows are filled deterministically; a filled table re-fills to byte-identical |
-| TL-T7 | a traversing `source` is refused; a moved `source` under a kept id errors |
-| TL-T8 | `DERIVED` without `derived_from` errors; `RULING` without `basis` errors; dangling `CONTESTED`/`SUPERSEDED` errors |
-| TL-T9 | wrong table arity errors, never truncates |
+| TL-T3 | a three-way conflict yields one `CONTESTED` set, symmetric on every row; **a set with one side hand-flipped to `OK` FAILS the check** |
+| TL-T4 | a ruling with `basis:` supersedes **every** member (none stays CONTESTED); a ruling note without `basis:` errors; a later conflicting source re-opens as a new set that carries the ruling's basis |
+| TL-T5 | corroboration appends a source, id and row count unchanged; corroborating a CONTESTED member leaves the set intact |
+| TL-T6 | missing-id rows are filled deterministically; **the byte diff of a fill is confined to id cells**; a filled table re-fills byte-identically |
+| TL-T7 | a traversing `source` is refused; a moved `source` under a kept id errors; a locator addressing a span past the stored extraction's end errors |
+| TL-T8 | `DERIVED` without `derived_from` errors; `RULING` without `basis` errors; dangling `CONTESTED`/`SUPERSEDED` errors; a `CONTESTED` pointer at a `SUPERSEDED` row errors; a duplicate id across two nodes errors |
+| TL-T9 | a short row errors and a long row errors — never padded, never truncated |
 | TL-T10 | effort/duration/count normalise and sum; mixed currencies refuse; mismatched kinds refuse |
-| TL-T11 | on a tree with no claim table, every existing subcommand's output is byte-identical to the golden baseline |
+| TL-T11 | on a tree with no claim table, every existing subcommand's output is byte-identical to the golden baseline — asserted against a **pre-change copy** of the baseline, with the re-recorded one verified additions-only line-for-line |
+| TL-T12 | refinement of a CONTESTED member rewrites the counterparts to the new id; the stale pointer errors |
 
 ## Sources and Verification
 
@@ -286,5 +322,15 @@ nothing), every provenance class resolving to a real file, the ledger living ins
 entry point (the npm allowlist ships exactly two validator files), and `claim-id`
 entering the golden `COMMANDS`.
 
-**Next step:** round 3 of the design gate on this document and F-024 together — the last
-before the cap; open findings, if any, go to the owner.
+**Round 3 (the cap) — FAIL; the v4 above disposes every finding that touched this
+document.** The id gains the quantity component and a global uniqueness scope; locators
+address a stored canonical extraction (F-024 storage) so they are facts of kept bytes,
+machine-verifiable and human-reopenable; the state machine is written out and closed —
+a ruling supersedes its whole set, symmetry is machine-checked, and the one-cell
+laundering flip now fails a test (TL-T3); the fill contract is stated at both ends
+(empty id = advisory; fill byte-diff confined to id cells); the `find_table` copy
+drops the ragged-tail tolerance TL5 forbids. Owner approved proceeding to
+implementation with these incorporated (2026-08-01).
+
+**Next:** implement this component first — the ledger section of kb's `sdlc_check.py`
+plus `test_claim_ledger.py` — then F-024's graph consumes it.

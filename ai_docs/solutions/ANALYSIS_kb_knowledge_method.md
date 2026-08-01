@@ -98,7 +98,10 @@ ai_docs/
   corpus/
     given/                          # originals, verbatim, content-addressed
       contract-9a1f2b7c.pdf
-      contract-9a1f2b7c.pdf.meta.md # sidecar: hash, date, and `supersedes:` linking versions
+      contract-9a1f2b7c.txt         # STORED canonical extraction: pages separated by
+                                    # form-feed; what offset locators address (F-025)
+      contract-9a1f2b7c.pdf.meta.md # sidecar: digest, date, `supersedes:` linking
+                                    # versions, extractor id+version+normalization
     notes/                          # ELICITED transcriptions, DERIVED syntheses (derived_from:),
                                     # RULING notes (basis:) — every provenance resolves to a file
     INDEX.md                        # GENERATED from sidecars + note frontmatter
@@ -107,6 +110,21 @@ ai_docs/
     unplaced.md                     # holding pen; nothing ranks it
     pricing.md
 ```
+
+**The extraction is a stored artifact, not a runtime step.** Offsets are a property of
+the *extracted* text, and extraction differs by extractor — so the extraction is written
+once at ingest, content-addressed beside the original, with the extractor identity
+recorded in the sidecar. Locators address the stored bytes; the stdlib validator opens
+the `.txt` and asserts the span exists; a human opens it and reads the span. A different
+extractor later produces a new stored artifact with a new address — a visible
+supersession, never a silent re-hash of every id.
+
+**Two digests, deliberately.** `given/` binaries are addressed by **raw-byte** sha256
+(`sha256_bytes`, new in the overlay): the spine's `sha256_file` normalizes CRLF→LF —
+right for text guide snapshots, wrong for binaries, where a hostile pair differing only
+in `0D 0A` vs `0A` would collide. Text files (`notes/`, extractions) keep the
+LF-normalized digest so Windows checkouts do not read as drift. The sidecar records
+which digest it carries.
 
 `corpus/`, not `sources/` — `reference/.sources/` already means guide snapshots, and one
 tree must not hold two directories named sources meaning different things.
@@ -148,8 +166,13 @@ status: CURRENT
 - **`owns` grammar**: `<this-slug>/<concept>`, lowercase, `[a-z0-9-]` segments joined by
   one `/`. Not slugs — concept identifiers scoped to the node, so the double-owner check
   compares them exactly. In TK1's confined-field enumeration.
-- **No `coverage:` key** — computed per node at check time (STUB no claims; PARTIAL
-  claims but gaps or a CONTESTED row; FULL otherwise). Never stored, never aggregated.
+- **No coverage state exists — not stored, not computed.** An earlier draft removed the
+  stored key but kept a computed STUB/PARTIAL/FULL per node; the Vision's
+  work-management clause closes exactly that escape ("derived on demand and never
+  written down" makes no difference), and a whole-tree check printing per-node states
+  IS the collected surface. What remains is what the clause admits: `gaps:` declared
+  inside each node, describing that document, read when that node is read. The checks
+  emit **findings only** — errors and warnings — never per-node status lines.
 - **No `refs`/`mentions` keys** — every edge derives from claim rows (`about` targets,
   `[[slug]]` in claim text). `related:` (sibling distinction) is the one hand-written
   link: **one-directional by rule** — only the newer sibling carries it; the reverse
@@ -240,27 +263,37 @@ derived artifact that cannot be verified by regeneration, and a torn one reports
 
 The overlay lives **inside `sdlc_check.py`** (two-file validator: npm allowlist, CI
 recipe and the golden copied-file test all pin it — verified). It intercepts `index`,
-`validate`, `check`; adds `graph`, `corpus`, `claim-id`; forwards
-`stale/mark/gate/orient/plan` to the spine. **Coverage note, stated because it is a real
-gap:** the shared batteries import `sdlc_core as sc` and keep testing the spine's
-`cmd_*` (they cannot be shadowed — verified against all five batteries; an earlier
-draft claimed the opposite); the overlay's reimplemented commands are covered by the new
-kb battery **through `main()`** plus the golden transcript, and TS-K10 asserts exactly
-that path.
+`validate`, `check`; adds `graph`, `corpus`, `claim-id`; and **forwards every spine
+subcommand it does not intercept — by iterating the spine's parser, never a hand-copied
+tuple.** The tuple is how `mkt_check.py` ships broken today: its `SPINE_COMMANDS` omits
+`migrate` while its SKILL.md documents it, and the command dies in argparse (found by
+this review; tracked as its own fix). The intercepted commands resolve the docs root
+through `sdlc_core.resolve_docs_dir` — so `--docs-dir`, the env seam and the
+two-roots-refuse behaviour that `ENFORCEMENT.md` promises "on any subcommand" stay true.
+One golden invocation carries `--docs-dir` to freeze that. `ENFORCEMENT.md`'s
+"core-alone behaves identically" paragraph is rewritten: for kb it no longer does — the
+core alone runs no claim or graph check — and the recipe says so instead of letting CI
+copy one file and go silently green.
 
-Graph checks: broken edge targets; unreachable-from-root; cycles; double owner (exact
-compare on the `owns` grammar, plus a `difflib` near-duplicate warning on
-description/title similarity — it will not catch listino/pricing, it catches
-listino/listini, and the semantic case belongs to the router evals); `FULL` with no
-sources; CONTESTED integrity (F-025); claims on superseded sources (`corpus`).
+**Coverage note, stated because it is a real gap:** the shared batteries (seven; six
+import `sdlc_core as sc` directly, and `test_skill_invariants` loads the entry point
+only to read the profile) keep testing the spine's `cmd_*`, which the overlay cannot
+shadow. The overlay's intercepted commands are covered by the new kb battery **through
+`main()`** plus the golden transcript, and TS-K10 asserts exactly that path.
+
+Graph checks — findings only, never per-node status lines: broken edge targets;
+unreachable-from-root; cycles; double owner (exact compare on the `owns` grammar, plus a
+`difflib` near-duplicate warning on description/title similarity — it will not catch
+listino/pricing, it catches listino/listini, and the semantic case belongs to the router
+evals); CONTESTED integrity incl. symmetry (F-025); claims on superseded sources
+(`corpus`).
 
 ### Where provenance is owned
 
 Claim rows own it. A kb ANALYSIS's `## Sources and Verification` **cites** the nodes and
 sidecars the unit rests on — it does not restate rows (two provenance tables in one
-project is `review.md`'s restated-fact finding). The `templates.md` block is converted to
-this citation form in this feature (it currently mandates a per-source table — the
-repair of the earlier repair, listed in the Impact).
+project is `review.md`'s restated-fact finding). The `templates.md` block was converted
+to this citation form on this branch (commit `0a1bbae`).
 
 ## Impact
 
@@ -277,7 +310,9 @@ stated. **No file in `SHARED_FILES` is touched; no file is added to the npm allo
 | `scripts/sdlc_check.py` | MODIFY | the overlay: F-025's ledger section first, then graph/corpus/index/validate/check interception, `kb_`-prefixed internals for readability | there is no spine seam; two-file constraint |
 | `scripts/test_kb_graph.py` | ADD | graph checks battery, driven through `main()` | the shared batteries cannot cover overlay commands |
 | `scripts/test_golden_regression.py` + `fixtures/golden_baseline.txt` | MODIFY | `graph`, `corpus`, `claim-id` enter `COMMANDS`; baseline re-recorded, existing lines byte-identical | the harness freezes what this distribution ships |
-| `ENFORCEMENT.md` | MODIFY | CI gains the `graph` step; the two-file copy recipe stays true (nothing new to copy) | closure verifiable in CI |
+| `ENFORCEMENT.md` | MODIFY | CI gains the `graph` step; the two-file copy recipe stays true (nothing new to copy); the "core-alone behaves identically" paragraph rewritten to name what the core alone no longer checks | closure verifiable in CI; a CI that copies one file must not go silently green |
+| `evals/scenarios/` | MODIFY | placement and similarity scenarios (the semantic behaviours the battery cannot test); the two shipped scenarios for an `architect_pass` kb does not claim are replaced | the design routes semantic checks here by name |
+| `CHANGELOG.md` | MODIFY | the release entry — this feature is what F-022's release is held for | release discipline |
 | `ai_docs/solutions/ANALYSIS_claim_ledger.md` *(repo root)* | — | the component, named mutually | `architect.md` §4/§5 |
 | `ai_docs/audit/handoff.md` *(repo root)* | MODIFY | F-025 row added (F-024's row exists) | one row per open workstream |
 | `ai_docs/strategic/architecture.md` *(repo root)* | MODIFY | Component Map rows: corpus store, topic graph, claim ledger | components born |
@@ -331,15 +366,15 @@ similarity) go to `evals/scenarios/`, named as such, not faked as unit tests.
 | Id | Asserts |
 |---|---|
 | TS-K1 | a node with two `parents` is reached descending either branch |
-| TS-K2 | edges derive from claim rows; no write to the target node occurs |
-| TS-K3 | `coverage` computed, never stored, never aggregated, absent from the index |
-| TS-K4 | claims on a superseded original are reported; unresolvable `source` errors |
-| TS-K5 | a cycle-closing re-parent is refused; an unreachable node errors |
+| TS-K2 | after deriving edges for a claim whose `about` names node X, X's file bytes are unchanged (reconciliation's own CONTESTED writes are serial and out of scope here) |
+| TS-K3 | the built `topics/INDEX.md` contains no coverage token; no node file carries or gains a `coverage:` key after a full check run |
+| TS-K4 | claims on a superseded original are reported; unresolvable `source` errors; a span past the stored extraction's end errors |
+| TS-K5 | a cycle-closing re-parent is refused (check half); an unreachable node errors |
 | TS-K6 | traversal refused on every TK1 field; `owns` grammar enforced; `unplaced` passes |
-| TS-K7 | with no `topics/`, `index`/`validate`/`check` output is byte-identical to the golden baseline |
+| TS-K7 | with no `topics/`, `index`/`validate`/`check` output is byte-identical to the **pre-change** golden baseline; the re-recorded baseline is additions-only line-for-line |
 | TS-K8 | tombstone resolves; re-placed claim lands on the survivor |
-| TS-K9 | UC2 selection: qty rows selected by node/`about`, normalised, summed with sources; no `parents:` roll-up exists |
-| TS-K10 | the overlay's `index`/`validate`/`check` are what `main()` reaches; the spine's `cmd_*` remain importable and untouched |
+| TS-K9 | for a parent whose child carries a qty row, the UC2 selection for the parent returns only the parent's own rows |
+| TS-K10 | the overlay's `index`/`validate`/`check` are what `main()` reaches; the spine's `cmd_*` remain importable and untouched; every subcommand named in SKILL.md (incl. `migrate`) exits non-2; `--docs-dir` works on an intercepted command |
 | TS-K11 | hand-edited generated indexes fail the overlay's rebuild-and-diff |
 | TS-K12 | router candidate set rebuilt from frontmatter equals the set before a simulated crash |
 
@@ -347,14 +382,18 @@ similarity) go to `evals/scenarios/`, named as such, not faked as unit tests.
 
 Owning domain `code` (no `default_domain`), risk slot above. Verified in source for this
 revision: the npm `files` allowlist (two validator files, nothing else under
-`scripts/`); the golden copied-file recipe and `COMMANDS`; all five shared batteries
-importing `sdlc_core as sc` (the shadowing claim of the earlier draft was false and is
-withdrawn); `dispatch.md` in full (serial loop, ledger-scoped single-writer);
+`scripts/`); the golden copied-file recipe and `COMMANDS`; the seven shared batteries —
+six import `sdlc_core as sc` directly, `test_drift` imports neither, and
+`test_skill_invariants` additionally loads the entry point to read the profile (so the
+overlay cannot shadow what they test, but one shared battery does observe the overlay's
+existence); `dispatch.md` in full (serial loop, ledger-scoped single-writer);
 `_validate_plan_tasks` (no disjointness check); kb's Rule Zero table (corpus ingestion
 is L3; no escalation triggers today); `MANIFEST_DIRS`; `cmd_gate`'s docs-root exemption
 and `cmd_migrate`'s rewrite+`write_bytes` behaviour; `init.js` (bound to
-`kb-agentic-init`, `stdio: 'ignore'`). The `## Non-Goals` clauses quoted from
-`vision/project_vision.md`.
+`kb-agentic-init`, `stdio: 'ignore'` — it observes only the exit code, at project init,
+not npm install); `sha256_file`'s CRLF→LF normalization (why binaries get a raw digest);
+`mkt_check.py`'s live `migrate` drop (why forwarding iterates the parser). The
+`## Non-Goals` clauses quoted from `vision/project_vision.md`.
 
 ## Diary / Current State
 
@@ -375,5 +414,16 @@ open); **L1 stays free** (ids filled by the validator); and **no useless questio
 escalations are batched at run end in a legal form that names the conflicting claims,
 sources, dates and the reason the machine cannot decide.
 
-**Next:** round 3 of the design gate on the pair — the cap; open findings go to the
-owner with the documents.
+**Round 3 (the cap) — FAIL, 6 BLOCK + 6 WARN, all disposed in v4.** The findings were
+presented to the owner with proposed fixes; the owner approved proceeding ("vai",
+2026-08-01) with the fixes incorporated and verified by the implementation battery
+rather than a fourth review round. The six: stored canonical extraction (offsets became
+facts of kept bytes — third and final form of the id-stability defect); qty in the id
+hash + global uniqueness (one span, two figures); the state machine closed (ruling
+supersedes the whole set, symmetry checked, CONTESTED→SUPERSEDED pointers error);
+forward-by-default overlay (mkt's hand-copied tuple ships broken today — chipped as its
+own fix); computed coverage deleted whole (derived-on-demand is still the forbidden
+surface); the id-fill contract (empty id = advisory, fill confined to id cells).
+
+**Next:** implement — F-025's ledger section in `sdlc_check.py` first, then the graph
+overlay; batteries and golden baselines close each step.
