@@ -21,7 +21,7 @@ Support files in the skill directory:
 - `review.md`: the review discipline — when a review is due, how to request one, how to receive findings, how to review.
 - `dispatch.md`: opt-in subagent execution of an approved plan.
 - `routing.md`: which lens owns this unit of work. Read ONLY when a sibling lens skill is installed alongside this one; a single-lens install never reads it.
-- `scripts/sdlc_check.py` + `scripts/sdlc_core.py`: the mechanical validator for the docs root (`check`, `validate`, `index`, `stale`, `mark`, `gate`, `plan`, `orient`). Two files: the core is the family's shared spine, the entry point names this domain. Copy both, or neither.
+- `scripts/sdlc_check.py` + `scripts/sdlc_core.py`: the mechanical validator for the docs root (`check`, `validate`, `index`, `stale`, `mark`, `gate`, `plan`, `orient`, `migrate`). Two files: the core is the family's shared spine, the entry point names this domain. Copy both, or neither.
 - `ENFORCEMENT.md`: optional setup for CI and hooks.
 
 Read these files only when needed. `SKILL.md` is the operating contract; the support files are progressive resources.
