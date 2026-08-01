@@ -54,6 +54,7 @@ Always classify the request before choosing the process. Declare the chosen leve
 | **Research Spike** | Time-boxed market question that reduces uncertainty ("is there demand for X in market Y?") | Outcome in `mkt_docs/spikes/RESEARCH_[topic].md`. Ledger discipline applies. For strategy decisions, feed into E2/E3. |
 
 Cross-cutting rules:
+- Every question to the user passes the legality test of the question discipline (`elicitation.md`): searched first with the search named, and the blocked decision named. The waves are where asking is planned; outside them the test gates each ask.
 - Anything touching pricing strategy, brand repositioning, or a new market entry is never E1: those decisions cascade.
 - If a bigger scope emerges during E1/E2 work (e.g. the campaign reveals there is no positioning), stop, reclassify and declare it.
 - When in doubt, pick the higher level.
