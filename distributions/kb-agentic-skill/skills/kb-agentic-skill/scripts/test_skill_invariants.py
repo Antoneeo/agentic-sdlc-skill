@@ -193,6 +193,24 @@ class SkillInvariants(unittest.TestCase):
         self.assertIn("vision.md", read("templates.md"),
                       "the Vision template must point at the drafting discipline")
 
+    @requires("question_discipline")
+    def test_question_discipline_wired(self):
+        """F-026: a question to the user is legal only if searched-first (search
+        named) and it names the blocked decision. Wired in the file that owns it
+        AND on the always-read path -- a rule only L3-phase-3 readers see never
+        reaches the L1/L2 question."""
+        e = read("elicitation.md")
+        for anchor in ("## The question discipline", "Searched first",
+                       "names what is blocked", "Generic confirmation",
+                       "Preference-fishing", "Default non-blocking",
+                       "Blocking is reserved"):
+            self.assertIn(anchor, e, f"elicitation.md missing {anchor}")
+        skill = read("SKILL.md")
+        head = skill.split("## Write Triggers")[0]
+        self.assertIn("question discipline", head,
+                      "the legality test must be reachable from Rule Zero, "
+                      "not only from the phase-3 round")
+
     @requires("architect_pass")
     def test_architect_pass_wired(self):
         """F-020: the architect pass runs at L3 between elicitation and the

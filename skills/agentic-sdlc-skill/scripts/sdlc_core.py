@@ -246,6 +246,8 @@ OPTIONAL_CAPABILITIES = frozenset({
     "tdd",                    # test-first discipline
     "subagent_dispatch",      # opt-in PLAN_[feature].md execution
     "legacy_narrative_handoff",  # published before the registry format: owes a migration clause
+    "question_discipline",    # when a question to the user is legal (elicitation.md);
+                              # spine candidate once every sibling's elicitation carries it
 })
 # `unit_noun` is vocabulary, not structure: the code domain works on a "feature",
 # the knowledge domain on a "topic". The shared battery asserts the SHAPE
