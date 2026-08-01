@@ -135,19 +135,20 @@ When you are the reviewer:
   ("threat model", "vision", "handoff") carries a different meaning under each lens and
   a copy looks like an independent second source.
 - **Capability Ledger (same reviews).** **An L3 impact/solution analysis or design
-  that carries NO Capability Ledger is itself a finding** — the architect pass left
+  that carries NO Capability Ledger is itself a finding** — the lens's capability
+  pass (`architect.md` in the code lens, `taxonomy.md` in the knowledge lens) left
   no record, and "the artifact does not have one" is what a skipped pass looks like,
   not a reason to skip the check. (This half is load-bearing in Hybrid, where the
   validator backstop reads Standalone ANALYSIS files only and this clause is the
   sole check that the pass ran.) When the ledger is there, map each
   ledger row to where the design or diff realizes it. Three findings live here and
-  nowhere else (`architect.md`): a capability ruled MISSING but implemented inside
+  nowhere else (the capability-pass file named above): a capability ruled MISSING but implemented inside
   the feature's code path, with no component owning it; a component whose contract
   names the feature (a second consumer would force it open); and a capability ruled
   MISSING, not built, and absorbed by quietly reshaping the feature — that is a
   scope change owed to the user, not a design detail. An EXISTS row with no named
   path or symbol is itself a finding. A capability built in this change and absent
-  from the `## Component Map` (`strategic/architecture.md`) is a finding too — and
+  from the `## Component Map` (`strategic/architecture.md`, where the lens keeps one) is a finding too — and
   so is **a component the pass merely DISCOVERED and did not write**, especially
   when the change marks that area ANALYZED: the area now looks read, the map is
   still silent, and the next feature may lawfully rule the capability MISSING and
