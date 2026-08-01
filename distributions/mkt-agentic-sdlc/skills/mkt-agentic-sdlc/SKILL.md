@@ -14,7 +14,7 @@ Support files in the skill directory:
 - `elicitation.md`: the question waves and the only-facts-you-own rule.
 - `research.md`: the research playbook and the evidence ledger discipline.
 - `templates.md`: templates for every artifact and deliverable.
-- `review.md`: the CMO review discipline and the marketing red-flag battery.
+- `review.md`: the family's shared review discipline (independence ladder, rounds, log). The marketing-specific attack surface — swap test, untraced numbers, orphan tactics, missing kill/scale — lives in `frameworks.md`'s falsification rules; the adversarial CMO review applies them through `review.md`'s procedure.
 - `scripts/mkt_check.py` + `scripts/sdlc_core.py`: the mechanical validator (`check`, `validate`, `ledger`, `budget`, `funnel`, `trace`, `index`, plus the spine's `stale`/`mark`/`gate`/`orient`/`plan`/`migrate`). Two files: the core is the family's shared spine, the entry point is this domain's overlay. Copy both, or neither.
 - `ENFORCEMENT.md`: optional setup for CI and hooks.
 
@@ -136,8 +136,8 @@ Every E3 (and every E2 with numbers) is bound by these. They are the product; th
 Deliverable language: ask for (or infer) the target market's language in Discovery; artifacts and deliverables are written in it. The skill's internal doctrine stays English.
 
 ### 1. Intake & Triage
-- Read `ai_docs/README.md`, `ai_docs/INDEX.md` and `ai_docs/reference/INDEX.md` (the guide router) before touching the plan. The router is a mandatory read, not an optional one: it is the only orientation step that tells you a guide — a brand guideline, a tone-of-voice SOP, an agency playbook — already governs the work you are about to do.
-- Read `ai_docs/audit/handoff.md`, the workstream registry: one row per open engagement. Volatile resume state for an unfinished one lives in `ai_docs/audit/HANDOFF_[engagement].md`, which is ephemeral and deleted at closure.
+- Read the docs root's `README.md`, `INDEX.md` and `reference/INDEX.md` (the guide router; the docs root is `mkt_docs/` by default, `ai_docs/` on a migrated tree) before touching the plan. The router is a mandatory read, not an optional one: it is the only orientation step that tells you a guide — a brand guideline, a tone-of-voice SOP, an agency playbook — already governs the work you are about to do.
+- Read `audit/handoff.md` under the docs root, the workstream registry: one row per open engagement. Volatile resume state for an unfinished one lives in `audit/HANDOFF_[engagement].md`, which is ephemeral and deleted at closure.
 - Declare the level. Read `mkt_docs/audit/handoff.md` and `mkt_docs/README.md`/`INDEX.md` if they exist; if handoff dates are inconsistent, treat it as history.
 - Hybrid: bootstrap devPNT, restore Master/Action Plan and any existing marketing artifacts before asking the user anything they already answered.
 
@@ -161,7 +161,7 @@ Deliverable language: ask for (or infer) the target market's language in Discove
 - The user approves objectives before strategy. Objectives the user did not set are proposals, and say so.
 
 ### 6. Strategy — **REVIEW + USER GATE**
-- **Design review gate:** the strategy is reviewed by somebody other than its author before any tactic is executed — a subagent with fresh context, or a declared self-pass when none is available. Follow `review.md`; log the outcome in `ai_docs/audit/reviews/REVIEW_LOG.md`. A strategy reviewed only by the person who wrote it is not reviewed.
+- **Design review gate:** the strategy is reviewed by somebody other than its author before any tactic is executed — a subagent with fresh context, or a declared self-pass when none is available. Follow `review.md`; log the outcome in `audit/reviews/REVIEW_LOG.md` under the docs root. A strategy reviewed only by the person who wrote it is not reviewed.
 - Draft `STRATEGY.md`: segmentation, targeting choice with rationale, positioning (Dunford components + statement), messaging house.
 - **Adversarial review** (`review.md`) before the user sees it. Fix or answer every finding.
 - The user approves the strategy. Hybrid: propose as governed doc, user accepts in devPNT.
@@ -215,6 +215,16 @@ The final plan must be recognizable by a marketing professional:
 - Assumptions section on page one when material assumptions exist.
 - Positioning passes the swap test; messaging house has proof points, not slogans.
 - Budget table, funnel model, 90-day plan and kill/scale criteria present — a plan without a control loop is a brochure.
+
+## Reading the shared doctrine from this lens
+
+`review.md`, `dispatch.md` and `guides.md` are the family's shared spine,
+byte-identical in every distribution, written in the family's neutral
+vocabulary. Reading them from this lens: where they say `sdlc_check.py`,
+read `mkt_check.py`; where they say "Phase 3 / Phase 5 closure", read this
+workflow's phase 6 (strategy review) and phase 9 (control & packaging);
+where they say ANALYSIS/feature, read this lens's governed artifacts and
+engagement. The procedures bind as written; only the names translate.
 
 ## Mechanical Enforcement
 

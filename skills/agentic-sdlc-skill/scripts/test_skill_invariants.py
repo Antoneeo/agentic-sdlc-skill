@@ -134,7 +134,9 @@ class SkillInvariants(unittest.TestCase):
         """F-016 move B: Phase 1 (the only always-run read step) reads the guide
         router, not just README + INDEX."""
         t = read("SKILL.md")
-        self.assertIn("`ai_docs/reference/INDEX.md` (the guide router)", t)
+        self.assertIn("reference/INDEX.md` (the guide router", t,
+                      "Phase 1 must read the guide router under the docs "
+                      "root (ai_docs/ or this lens's own root)")
         self.assertIn("reference/INDEX.md", read("templates.md"),
                       "the README template must seed the router as a must-read")
 

@@ -10,7 +10,7 @@ The agent runs a single gate at closure (Phase 5):
 python "<skill_dir>/scripts/mkt_check.py" check
 ```
 
-(`check` = validate + stale in one command.) Exit code ≠ 0 ⇒ the feature is not declared closed. This is the minimum level the skill expects.
+(`check` = validate + ledger + budget + funnel + trace in one command.) Exit code ≠ 0 ⇒ the feature is not declared closed. This is the minimum level the skill expects.
 
 ## 2. Check in CI (recommended for teams)
 

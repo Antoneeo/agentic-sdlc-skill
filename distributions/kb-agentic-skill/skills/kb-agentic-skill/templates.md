@@ -242,17 +242,16 @@ end_date:
      must cover each, and the closure review checks coverage + actor UX fit. -->
 
 ## Capability Ledger
-<!-- the architect pass (`architect.md`), run BEFORE the Impact below. One row per
-     capability the feature requires the system to be able to DO — a verb over a
-     domain noun, naming no file. Verdict EXISTS (name the component and where) /
-     INADEQUATE (same, plus the gap) / MISSING (say what you searched). Every
-     INADEQUATE or MISSING row becomes a component with its own contract, stated
-     without naming this feature, and lands in the Impact below. Evidence is what
-     makes a verdict falsifiable: for EXISTS/INADEQUATE the one guarantee you
-     re-read to confirm it; for MISSING the terms, the tool and the areas searched
-     (and say "provisional" when the area is still PENDING in the audit plan).
-     A question, not a form: when every capability plainly exists, one line under
-     this heading answers it — still naming the component and where it lives. -->
+<!-- this lens's capability pass is the TAXONOMY pass (`taxonomy.md`), run BEFORE
+     the Impact below. One row per knowledge concept, topic or SOP the unit
+     requires — a domain subject, naming no file. Verdict EXISTS (name the owning
+     node/document and where) / INADEQUATE (same, plus the gap) / MISSING (say
+     what you searched: the topic index descended, the synonyms tried, the guides
+     consulted — an unread index can never ground a MISSING, `taxonomy.md` §2).
+     Every INADEQUATE or MISSING row becomes a node or document with its own home,
+     stated without naming this unit, and lands in the Impact below. Evidence is
+     what makes a verdict falsifiable. A question, not a form: when every concept
+     plainly has its owner, one line under this heading answers it. -->
 
 | Capability | Verdict | Component / gap | Evidence |
 |---|---|---|---|
@@ -474,8 +473,8 @@ status: CURRENT
 ## Technology Stack
 ## Directory Structure
 ## Component Map
-<!-- The inventory the architect pass reads BEFORE searching the code
-     (`architect.md` §2). One row per component that OWNS a capability:
+<!-- The inventory the taxonomy pass reads BEFORE searching the corpus and the
+     graph (`taxonomy.md` §1–§2). One row per component that OWNS a capability:
      Capability = what it lets the system DO (a verb over a domain noun, naming
      no file). Contract = what it guarantees its consumers, in one line, stated
      without naming any single consumer. Where = a path, or `path#symbol` when
@@ -490,7 +489,7 @@ status: CURRENT
 Coverage: whatever `audit/audit_plan.md` marks ANALYZED — **read it, do not trust a
 list restated here** (a hand-copied list is a cache with no invalidation). Outside
 those areas this map is **unread, not empty**: it can never ground a MISSING
-verdict, and the code is searched instead (`architect.md` §2).
+verdict, and the corpus and graph are searched instead (`taxonomy.md` §2).
 
 | Component | Capability it owns | Contract | Where |
 |---|---|---|---|
