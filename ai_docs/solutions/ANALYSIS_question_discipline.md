@@ -1,10 +1,10 @@
 ---
 id: F-026
 feature: Question discipline (when a question to the user is legal)
-status: IN_PROGRESS
+status: COMPLETED
 level: L3
 start_date: 2026-08-01
-end_date:
+end_date: 2026-08-01
 ---
 # Feature Analysis: Question Discipline
 
