@@ -15,7 +15,7 @@ Support files in the skill directory:
 - `research.md`: the research playbook and the evidence ledger discipline.
 - `templates.md`: templates for every artifact and deliverable.
 - `review.md`: the CMO review discipline and the marketing red-flag battery.
-- `scripts/mkt_check.py` + `scripts/sdlc_core.py`: the mechanical validator (`check`, `validate`, `ledger`, `budget`, `funnel`, `trace`, `index`, plus the spine's `stale`/`mark`/`gate`/`orient`/`plan`). Two files: the core is the family's shared spine, the entry point is this domain's overlay. Copy both, or neither.
+- `scripts/mkt_check.py` + `scripts/sdlc_core.py`: the mechanical validator (`check`, `validate`, `ledger`, `budget`, `funnel`, `trace`, `index`, plus the spine's `stale`/`mark`/`gate`/`orient`/`plan`/`migrate`). Two files: the core is the family's shared spine, the entry point is this domain's overlay. Copy both, or neither.
 - `ENFORCEMENT.md`: optional setup for CI and hooks.
 
 Read these files only when needed. `SKILL.md` is the operating contract; the support files are progressive resources.
