@@ -178,8 +178,28 @@ The Vision has no mechanical validator, so its tests are the batteries:
   nothing omitted — the Round-9 instrument error is the reason the file is complete):
   8 recorded attack classes re-thrown, 6 accept-side items, new-class hunt, verdict-diff
   duty (any flip goes to the owner as a decision, per T1).
-- **Open before promotion:** C5 — the fifteen residual shape rules (Round 9 lists them;
-  three named worst: the manifest carve-out, the ceremony-form enumeration, the
-  "advances a Goal" test). Round 9's own warning applies: three new landings were shapes
-  the restatement itself introduced, so C5 is a careful pass, not a sweep. Then the
-  blind verdict, the verdict diff to the owner, and the owner's promotion decision.
+- **2026-08-01 — blind round on the v8 draft: PASS-conditional.** All eight recorded
+  attack classes stopped (metering-as-fix triple-stopped; the readiness board by the
+  v7 aggregation clause verbatim; scope growth re-ruled then killed by Non-Goal 1;
+  the bundled amendment twice; the paid sibling by the scope appositive; the
+  offline-mode "perf" change by the effect backstop; silence-near-a-Non-Goal by
+  omission-resolves-against; the best restatement by the question-not-form rule).
+  All six accept-side items ADMIT — the gate did not go reject-only. **Zero verdict
+  flips.** One BLOCK: the effect backstop, read literally, refused every bug fix
+  (fixing makes the product able to do what it could not — reject-only defect, not a
+  bypass). Nine MAJOR, all wording inside the new clauses: the backstop bounded to
+  kind and made bidirectional (degradation no longer rides the exemption); the
+  scope-growth triple made instances-not-list; the exemption's baseline given a
+  locus (recorded, else narrowest reading, proposer's burden); disclosure keyed to
+  what ships rather than the proposal's self-description; "ruled apart" required to
+  stand with the capability withdrawn; the scoped default's override narrowed to the
+  rule itself; the manifest/aggregation overlap given an explicit discriminator; the
+  owner-acceptance disclosure path restored; Provenance dated correctly and
+  superseded-draft narrations marked as not-current-text. **All ten fixes applied
+  same-day.**
+- **Open before promotion:** C5 — the fifteen residual shape rules (Round 9 lists
+  them; three named worst: the manifest carve-out — now partly addressed by the F8
+  discriminator — the ceremony-form enumeration, the "advances a Goal" test). Round
+  9's warning applies: fixes introduce new shapes, so C5 is a careful pass. Then a
+  confirming blind round on the fixed text (the Round-8 lesson: fixes written
+  against seen attacks fall to rewords), and the owner's promotion decision.

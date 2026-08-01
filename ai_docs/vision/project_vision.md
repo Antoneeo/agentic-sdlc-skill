@@ -232,8 +232,11 @@ bind the same way.
   own frontmatter says `IN_PROGRESS`. Out: a manifest view listing the ones that
   are. The generated manifest is the permitted form: an inventory of what exists and
   whether each document is current, ordered for lookup and carrying no further
-  per-document state — and it crosses the line the moment it is reorganized, or
-  enriched with such state, to answer what to do next.
+  per-document state. The discriminator, stated because the two sentences above meet
+  on real cases: **the manifest answers a lookup about a document you name; anything
+  whose output is the set that is not current — or any other selection by state —
+  answers what to do next, and is out.** It crosses the line the moment it is
+  reorganized, or enriched with such state, to serve that second question.
 - **One triage authority per kind of work.** Exactly one thing may classify any
   given change. A second authority over work something here already governs is out —
   whether it arrives as a sibling skill, as a mode or profile inside an existing one,
@@ -275,44 +278,54 @@ bind the same way.
 
 **What this test governs**: proposals that add or change *what the product does* —
 including widening what an already-admitted capability governs. **Scope growth is
-re-ruled, not inherited**: a capability admitted for one purpose, actor set or
-surface that would now reach more of any of the three is a changed capability, ruled
-here again against everything that already governs the work it would newly reach. A
-narrow admission is not a beachhead.
+re-ruled, not inherited**: a capability that would now reach more work, more people,
+or more of the product than it was admitted for — purpose, actor set and surface are
+instances, not the list — is a changed capability, ruled here again against
+everything that already governs the work it would newly reach. A narrow admission is
+not a beachhead.
 
 **The exemption, bounded.** Fixing a defect or maintaining a capability needs no
-admission — where *maintaining* means the capability's stated purpose, actors and
-surface are unchanged and only its correctness, cost or robustness improve. **If the
-product can do something it could not do before, it is a new capability whatever the
-proposal calls it**, and the exemption never applies. The exemption is from this
-test only: the Non-Goals and the user's guarantee bind everything, always. Work
-framed as a fix to something that should never have shipped is not exempt — it is
-the removal of that thing, or it is out.
+admission — where *maintaining* means the capability's purpose, actors and surface
+are unchanged and only its correctness, cost or robustness improve. The baseline is
+what this document or the change that admitted the capability recorded; **where
+nothing records them, the narrowest reading consistent with the shipped behaviour
+governs, and the proposer carries the burden**. If the product can do something
+**outside the capability's stated purpose, actors and surface** — or can no longer
+do something it could — it is a changed capability whatever the proposal calls it,
+and the exemption never applies. The exemption is from this test only, and the
+scoped default below is not part of its reach: the Non-Goals and the user's
+guarantee bind everything, always. Work framed as a fix to something that should
+never have shipped is not exempt — it is the removal of that thing, or it is out.
 
 **Disclosure, and what silence means.** A proposal must state the facts its ruling
 turns on: for anything that meters, the metered unit and the unmetered single-user
 path; for anything that adds a mandatory artifact, field or check, which level it
-lands on and what it removes; and **for every Non-Goal whose territory the
-proposal's subject matter approaches, the fact that decides whether it crosses**.
-**Omission resolves against the proposal** — an undisclosed fact is read the way
-that makes the proposal fail, on the exempt path as much as the admitted one.
+lands on and what it removes **or the cost the owner is asked to accept**; and **for
+every Non-Goal whose territory anything the proposal ships, generates or instructs
+would operate in, the fact that decides whether it crosses**. **Omission resolves
+against the proposal** — an undisclosed fact is read the way that makes the proposal
+fail, on the exempt path as much as the admitted one.
 
 **One default, scoped to the prohibitions.** A capability operating in territory a
-Non-Goal or the user's guarantee reaches is out unless this document explicitly
-admits it — silence in forbidden territory is a NO. Everything else is ruled by the
-admission test below: silence outside forbidden territory is not a veto, it is the
-question the test answers. (An earlier text carried two defaults — "anything this
-document does not reach is out" beside "admitted if it advances a Goal" — and the
-same proposal could be ADMIT under one sentence and REJECT under the other;
-whichever the reader met first decided the ruling.)
+Non-Goal or the user's guarantee reaches is out unless **that rule itself** admits
+it — a rule's territory is what its own text reaches, and an admission found
+elsewhere in this document never beats a Non-Goal. Silence in forbidden territory is
+a NO. Everything else is ruled by the admission test below: silence outside
+forbidden territory is not a veto, it is the question the test answers. (An earlier
+text carried two defaults — "anything this document does not reach is out" beside
+"admitted if it advances a Goal" — and the same proposal could be ADMIT under one
+sentence and REJECT under the other; whichever the reader met first decided the
+ruling.)
 
 **An accepted change never silently falsifies this document.** If a proposal
 contradicts a fact stated here — the number of levels, what the product ships, who
 the actors are — the Vision is amended first, and **the amendment is ruled as its
 own proposal, before and apart from the capability that needs it**: an amendment
-bundled with the capability it authorizes is the capability grading its own exam.
-The Non-Goals are not amendable by a capability proposal at all — changing what the
-product refuses to be is the owner's decision, taken at the Vision, never a rider.
+bundled with the capability it authorizes is the capability grading its own exam,
+and **an amendment must stand with the capability withdrawn — one whose only stated
+justification is a pending capability is refused**. The Non-Goals are not amendable
+by a capability proposal at all — changing what the product refuses to be is the
+owner's decision, taken at the Vision, never a rider.
 
 A new or changed capability is admitted only if it **advances at least one Goal,
 Actor commitment or Success Signal above, and violates neither a Non-Goal nor the
@@ -389,9 +402,12 @@ the Non-Goals.
 
 ## Provenance
 
-All four versions below were produced and approved on **2026-07-27**, in one
-session, each after a blind round against the previous text. The rapid succession
-is the method, not instability; the text settled at v4.
+Versions **through v6** below were produced and approved on **2026-07-27**, in one
+session, each after a blind round against the previous text; later amendments carry
+their own dates. The rapid succession is the method, not instability. Narrations of
+superseded drafts inside the entries below describe text **not in the current
+document** — a cold reader applies what the sections above state, never a rule an
+entry says was once drafted.
 
 - **v7 — 2026-07-31, APPROVED by Antonio Pinto.** Amends `## North Star`: the product
   ships as a **family of skills built from one shared core**, not as one skill. The
