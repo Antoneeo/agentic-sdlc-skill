@@ -1,9 +1,9 @@
 ---
 description: How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish.
 status: CURRENT
-source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note).
+source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it).
 distilled_from: ai_docs/reference/.sources/release-runbook-2792f160.md
-source_hash: 2792f1609466bdc7d10a730ee9778385efd1012a304df9eda5314f9ef283780d
+source_hash: 49b46d13ee390bb4aa047e58e42f9ac6a0b3cf56f7f28875da870832f07c3e81
 ---
 # Guide: Release
 
@@ -24,7 +24,13 @@ Order: bump → verify → script (commit+tag+push) → verify tag → merge →
 2. Any NEW support file since the last release MUST be in `package.json`
    `files` — it is an allowlist, and `postinstall.js` can only copy what the
    tarball contains. Update README's support-files bullet and Runtime Shape
-   tree too. (snapshot §Packaging completeness, §README alignment)
+   tree too — **in all three distributions** (repo root for the code lens,
+   `distributions/kb-agentic-skill/`, `distributions/mkt-agentic-sdlc/`): each
+   `README.md` IS that package's npm page. The same duty covers
+   `strategic/skill_family_agent_workflows.md`. When the doctrine changed,
+   `mark` on the `skills/`/`distributions/` audit areas is the LAST step of
+   closure, not the first: do not record the analysis while a derived document
+   still says something else. (snapshot §Packaging completeness, §README alignment)
 3. Working tree must contain ONLY the release edits (bumps + CHANGELOG +
    README + handoff): the script stages EVERYTHING (`git add .`).
 4. From the feature branch run

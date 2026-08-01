@@ -3,7 +3,9 @@
 Approved by Antonio Pinto, 2026-07-02. Distilled from the v1.8.0 release session
 (first documented release run); amended same day by Antonio's indication to use
 `git_push_tag.bat` for the commit+tag+push step, and again same day with the
-script's re-run behavior observed in the field. This is the verbatim source
+script's re-run behavior observed in the field; amended 2026-08-01 by Antonio's
+approval — README alignment covers all three distributions plus the family
+document, and `mark` closes the step instead of opening it. This is the verbatim source
 ("book") for `GUIDE_release.md`; detail lives here, the guide is the synthesis.
 
 ## Preconditions
@@ -48,6 +50,16 @@ All three, in the same commit:
   add any new one.
 - The "Runtime Shape" tree in `README.md` lists the skill folder contents — add
   any new file there too.
+- **Every distribution has its own `README.md`, and it is that package's npm
+  page**: the step above applies to all three (`README.md` at the repo root for
+  the code lens, `distributions/kb-agentic-skill/README.md`,
+  `distributions/mkt-agentic-sdlc/README.md`), and it includes
+  `ai_docs/strategic/skill_family_agent_workflows.md` — the document that says
+  what an agent does differently under each lens.
+- When the doctrine changed, `sdlc_check.py mark` on the `skills/` and
+  `distributions/` audit areas is the LAST step of closure, not the first: do
+  not record the analysis until those derived documents say the same thing as
+  the doctrine.
 
 ## Verification battery
 
