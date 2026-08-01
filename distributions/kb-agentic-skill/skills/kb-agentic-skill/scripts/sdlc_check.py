@@ -68,7 +68,7 @@ sdlc_core.set_profile(
         "triage", "write_triggers", "workstream_registry", "vision_gate",
         "design_review_gate", "guide_router", "worktree_hygiene",
         # knowledge overlay
-        "taxonomy_pass", "subagent_dispatch",
+        "taxonomy_pass", "subagent_dispatch", "question_discipline",
     ),
     design_gate_between=("### 3. Request Analysis & Taxonomy Pass",
                          "### 4. Knowledge Processing & Distillation"),
