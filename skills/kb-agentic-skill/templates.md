@@ -72,6 +72,9 @@ Section repertoire (pick what the source supports):
 Curated must-read index, by hand (it is NOT the generated manifest). Created at init, updated rarely, only for real must-reads.
 
 ```markdown
+---
+default_domain: knowledge
+---
 # ai_docs — reading guide
 
 Must-reads for this project, in order. The full manifest of canonical docs is
@@ -420,7 +423,7 @@ honest; writing nothing, or implying independence you did not have, is the failu
 this column exists to prevent. `findings_real` is how many raised findings survived
 triage: over time it is the only evidence of whether the gate earns its cost.
 
-## ai_docs/audit/HANDOFF_[feature].md — volatile resume logistics (ephemeral)
+## ai_docs/audit/HANDOFF_[topic].md — volatile resume logistics (ephemeral)
 
 **Resume logistics ONLY; the ANALYSIS Diary keeps the durable narrative (DRY).**
 The boundary: Diary = what happened and why (decisions, state of the work — survives
@@ -431,7 +434,7 @@ Created only when a session pauses the feature WITH volatile state to record;
 COMPLETED — anything in it worth keeping was in the wrong file.
 
 ```markdown
-# HANDOFF: [feature] (ephemeral — deleted at closure)
+# HANDOFF: [topic] (ephemeral — deleted at closure)
 Updated: 2026-06-11 (UTC)
 Branch: feature/sso-login (worktree ../wt-sso)
 

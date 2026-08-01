@@ -14,15 +14,19 @@ python "<skill_dir>/scripts/sdlc_check.py" check
 
 ## 2. Check in CI (recommended for teams)
 
-Copy `scripts/sdlc_check.py` into the repository (e.g. `tools/sdlc_check.py`) and add to the pipeline:
+Copy **both** validator files into the repository — `scripts/sdlc_check.py` (the entry point) **and** `scripts/sdlc_core.py` (the shared core it imports) — keeping them side by side, e.g. `tools/sdlc_check.py` + `tools/sdlc_core.py`. Then add to the pipeline:
 
 ```
 python tools/sdlc_check.py validate --strict
 ```
 
+The validator ships as two files: the core carries the behaviour and is identical in every distribution of the family, the entry point names the domain. Copying only `sdlc_check.py` fails immediately with a message saying so — loudly, never as a silently green pipeline. (Copying `sdlc_core.py` alone also works: `python tools/sdlc_core.py validate --strict` behaves identically, defaulting to the code domain rather than this one.)
+
 Effect: an unregenerated index, invalid frontmatter, a missing security section or incoherent states **block the pipeline** instead of relying on the agent's memory. `--strict` also fails on warnings and on a missing `ai_docs/`, so a wrong working directory cannot produce a green pipeline. This works because documents travel in the same PR as the code (Phase 5 rule).
 
-Note: the copy in the repo is the authoritative one for CI; update it when you update the skill.
+Note: the copy in the repo is the authoritative one for CI; update it when you update the skill — both files, together.
+
+**Projects whose docs root is not `ai_docs/`.** Pass `--docs-dir <name>` (e.g. `--docs-dir mkt_docs`) on any subcommand, or set `AGENTIC_SDLC_DOCS_DIR`. Without either, the validator walks up from the working directory and takes the nearest root it recognizes. If it finds two side by side — the shape of a half-finished migration — it refuses and names both rather than validating half a project and printing a verdict. `ai_docs/` remains the default and the recommended root: the parameter exists so a legacy tree can be read and migrated, not so a second one can be kept.
 
 ## 3. PreToolUse hook (gate on writes)
 

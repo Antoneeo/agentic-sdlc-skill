@@ -18,8 +18,10 @@ Support files in the skill directory:
 - `vision.md`: how to write a Vision a cold reviewer can actually apply — the properties that make a rule hold, the minimum operable sections, and the blind check.
 - `distillation.md`: contract-first signal distillation discipline (symbiosis with `distill`).
 - `reconciliation.md`: systematic procedure for resolving conflicting notes, handling obsolete information, and marking deprecated docs.
-- `review.md`: document & fact review gate before finalizing L3 knowledge artifacts.
-- `scripts/sdlc_check.py`: mechanical validator for `ai_docs/` (`check`, `validate`, `index`, `stale`, `mark`, `gate`, `plan`, `orient`).
+- `review.md`: the review discipline — when a review is due, how to request one, how to receive findings, how to review.
+- `dispatch.md`: opt-in subagent execution of an approved plan.
+- `routing.md`: which lens owns this unit of work. Read ONLY when a sibling lens skill is installed alongside this one; a single-lens install never reads it.
+- `scripts/sdlc_check.py` + `scripts/sdlc_core.py`: the mechanical validator for the docs root (`check`, `validate`, `index`, `stale`, `mark`, `gate`, `plan`, `orient`). Two files: the core is the family's shared spine, the entry point names this domain. Copy both, or neither.
 - `ENFORCEMENT.md`: optional setup for CI and hooks.
 
 Read these files only when needed. `SKILL.md` is the operating contract; the support files are progressive resources.
@@ -47,6 +49,7 @@ Always classify the request before choosing the process. Declare the chosen leve
 | **Spike - Exploration** | Time-boxed exploratory research or draft without merging into official KB. | Outcome in `ai_docs/solutions/SPIKE_[topic].md`. |
 
 Cross-cutting rules:
+- **Domain routing (multi-lens installs only).** After the level is set, and only when a sibling lens skill of this family is installed (`agentic-sdlc`, `mkt-agentic-sdlc`), run the router in `routing.md` for every L2, L3 and Spike: it decides which lens's method and validation rules govern this unit of work. L1 never reaches it, and a single-lens install never reads the file — detection fails open. In such a project, never refer to a document whose meaning differs by lens ("threat model", "vision", `principles.md`, `handoff.md`) by its bare name: qualify it with its domain, or name its path.
 - Personal data, credentials, security-sensitive processes, authN/authZ specs are high-risk: never L1.
 - If a bigger impact emerges during L1/L2 work, stop, reclassify and declare it.
 - When in doubt, pick the higher level.
@@ -86,7 +89,7 @@ Use this mode when `devpnt_*` tools are available and point at the current proje
 
 ### 1. Audit and Alignment
 - Read `ai_docs/audit/handoff.md` (workstream registry) to see active topics.
-- Read `ai_docs/README.md`, `ai_docs/INDEX.md`, and `ai_docs/reference/INDEX.md` (guide router) before exploring notes.
+- Read `ai_docs/README.md`, `ai_docs/INDEX.md` and `ai_docs/reference/INDEX.md` (the guide router) before exploring notes. The router is a mandatory read, not an optional one: it is the only orientation step that tells you a guide already governs the work you are about to do.
 - If `ai_docs/` is missing, create the bootstrap set: `README.md`, `vision/` docs, `strategic/` docs, and `audit/audit_plan.md`, then run `sdlc_check.py index`.
 
 ### 2. Vision Gate
@@ -97,22 +100,26 @@ Use this mode when `devpnt_*` tools are available and point at the current proje
 - Run spec elicitation round (`elicitation.md`) before drafting analysis.
 - Run taxonomy pass (`taxonomy.md`): verify whether topics, categories, or SOPs already exist in `ai_docs/`. Avoid duplication.
 - Create or update `ai_docs/solutions/ANALYSIS_[topic].md`.
-- Conduct independent review gate (`review.md`) before finalizing the analysis.
+- **Design review gate (end of Phase 3, before any drafting):** the analysis is reviewed by somebody other than its author — a subagent with fresh context, or a declared self-pass when none is available. Follow `review.md`; log the outcome in `audit/reviews/REVIEW_LOG.md`. A knowledge structure reviewed only by the person who chose it is not reviewed.
 
 ### 4. Knowledge Processing & Distillation
+- **Isolate the work (Branch/worktree hygiene).** Distillation rewrites existing notes: do it on a branch or a worktree, never directly on the shared corpus, so a half-finished reconciliation is never what the next reader finds.
+- Before drafting (L2/L3; L1 exempt), **consult the guide router** for a guide covering the task and read it first (the consult trigger, `guides.md` §0). A targeted description match, not a blanket read. Its result is the router verdict already declared with the triage level (Rule Zero).
 - Execute knowledge extraction using **Signal Distillation** (`distillation.md`).
-- Consult the guide router (`guides.md`) for existing SOPs.
+- **Opt-in subagent execution**: for an L3 with an approved analysis, the work MAY be executed via subagents per `dispatch.md`; default stays same-session.
 - Handle conflicting or outdated information via **Reconciliation** (`reconciliation.md`). Mark obsolete files `status: SUPERSEDED`.
 
 ### 5. Closure & Indexing
 - Run verification checks (`sdlc_check.py check --root <project_root>`).
+- If the work was governed by user-provided indications and is reusable, **PROPOSE distilling a guide** (proactive trigger, `guides.md` §1) — a proposal for the user, never a silent write, never from model knowledge.
 - Update `audit/handoff.md`.
 - Regenerate manifests: `python <skill_dir>/scripts/sdlc_check.py index --root <project_root>`.
 - Mark output clean and complete.
 
 ## Operative Guides & Router
 Guides are consulted, created, and distilled per `guides.md`.
-- Consult before acting: check `ai_docs/reference/INDEX.md` and declare verdict.
+- **Consult (before acting)**: check `ai_docs/reference/INDEX.md` — the guide router — and declare the verdict with the triage level.
+- **Propose proactively**: when the user hands over indications that will govern future work, propose distilling them into a guide. A proposal, never a silent write, and never from model knowledge — a guide's whole value is that every claim traces to what the user actually provided.
 - Distill from user instructions into `ai_docs/reference/GUIDE_[topic].md`.
 
 ## Mechanical Enforcement
