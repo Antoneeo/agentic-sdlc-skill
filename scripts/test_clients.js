@@ -24,8 +24,97 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 
 const LIB_PATH = require.resolve('./lib');
+// Distribution-specific expectations are DERIVED, never written here: three
+// distributions share this file, and a literal is how a copy-fork starts asserting
+// its sibling's identity instead of its own.
+const SKILL_SOURCE = require('./lib').SKILL_SOURCE;
+const EXPECTED_DEFAULT_DOMAIN = (() => {
+  const tpl = require('fs').readFileSync(require('path').join(SKILL_SOURCE, 'templates.md'), 'utf8');
+  const m = tpl.match(/^default_domain:\s*(\S+)/m);
+  if (!m) throw new Error('templates.md seeds no default_domain: the README template is incomplete');
+  return m[1];
+})();
+const A_SIBLING = (() => {
+  const init = require('fs').readFileSync(require('path').join(__dirname, 'init.js'), 'utf8');
+  const block = init.match(/SIBLING_LENSES = \{([^}]+)\}/);
+  if (!block) throw new Error('init.js declares no SIBLING_LENSES');
+  const m = block[1].match(/'([^']+)'\s*:/);
+  return m[1];
+})();
 const POSTINSTALL = path.join(__dirname, 'postinstall.js');
 const PREUNINSTALL = path.join(__dirname, 'preuninstall.js');
+const INIT = path.join(__dirname, 'init.js');
+
+// --- TS11 helpers: run init.js in a throwaway project dir with a stubbed home.
+// `siblingDirs` are created under <home>/.claude/skills/ so the sibling-lens probe
+// sees exactly what the test intends, independent of what is installed for real.
+function runInit(projectDir, { siblingDirs = [] } = {}) {
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-init-home-'));
+  const claudeHome = path.join(home, '.claude');
+  fs.mkdirSync(path.join(claudeHome, 'skills'), { recursive: true });
+  for (const d of siblingDirs) fs.mkdirSync(path.join(claudeHome, 'skills', d), { recursive: true });
+  const env = { ...process.env, HOME: home, USERPROFILE: home, CLAUDE_CONFIG_DIR: claudeHome };
+  delete env.GEMINI_HOME;
+  delete env.CODEX_HOME;
+  delete env.ANTIGRAVITY_HOME;
+  try {
+    execFileSync(process.execPath, [INIT], { cwd: projectDir, env, stdio: 'ignore' });
+  } finally {
+    fs.rmSync(home, { recursive: true, force: true });
+  }
+}
+
+// --- TS11: init seeds default_domain once, stays create-only, sibling path additive ---
+test('TS11 init seeds default_domain in ai_docs/README.md and never overwrites it', () => {
+  const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-init-proj-'));
+  try {
+    runInit(proj);
+    const readme = path.join(proj, 'ai_docs', 'README.md');
+    const first = fs.readFileSync(readme, 'utf8');
+    assert.match(first, new RegExp('^---\r?\ndefault_domain: ' + EXPECTED_DEFAULT_DOMAIN + '\r?\n---'),
+      `README frontmatter must open with default_domain: ${EXPECTED_DEFAULT_DOMAIN}`);
+
+    // A project that edited its own default must survive a second init (create-only).
+    fs.writeFileSync(readme, first.replace(`default_domain: ${EXPECTED_DEFAULT_DOMAIN}`,
+      'default_domain: edited-by-hand'), 'utf8');
+    runInit(proj);
+    assert.match(fs.readFileSync(readme, 'utf8'), /default_domain: edited-by-hand/,
+      'a second init must not overwrite an existing README (T1: create-only)');
+  } finally {
+    fs.rmSync(proj, { recursive: true, force: true });
+  }
+});
+
+test('TS11 no sibling lens installed: no multi-lens note is written', () => {
+  const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-init-solo-'));
+  try {
+    runInit(proj);
+    assert.ok(!fs.existsSync(path.join(proj, 'AGENTIC_MULTI_LENS.md')),
+      'single-lens install must cost nothing: no note, no ceremony');
+  } finally {
+    fs.rmSync(proj, { recursive: true, force: true });
+  }
+});
+
+test('TS11 sibling lens installed: the note is additive and the protocol pointer is untouched', () => {
+  const proj = fs.mkdtempSync(path.join(os.tmpdir(), 'sdlc-init-multi-'));
+  try {
+    // A protocol pointer written by the OTHER lens's init, carrying its own ladder.
+    const sentinel = '# Written by the knowledge lens — do not touch\n';
+    fs.writeFileSync(path.join(proj, 'CLAUDE.md'), sentinel, 'utf8');
+
+    runInit(proj, { siblingDirs: [A_SIBLING] });
+
+    assert.strictEqual(fs.readFileSync(path.join(proj, 'CLAUDE.md'), 'utf8'), sentinel,
+      'init must never overwrite a user/sibling-authored protocol pointer (T1)');
+    const note = fs.readFileSync(path.join(proj, 'AGENTIC_MULTI_LENS.md'), 'utf8');
+    assert.match(note, new RegExp(A_SIBLING), 'the note names the detected sibling');
+    assert.match(note, /routing\.md/, 'the note points at the domain router');
+    assert.match(note, /Merge step owed/, 'a pre-existing pointer means a merge is owed');
+  } finally {
+    fs.rmSync(proj, { recursive: true, force: true });
+  }
+});
 
 // Load a fresh copy of lib.js under a given env override. lib.js reads env +
 // os.homedir() at require time, so we clear the require cache and (optionally)
@@ -66,21 +155,45 @@ function clientByKey(lib, key) {
   return c;
 }
 
+// --- T4/TS7 (file-list half): what the package actually ships ---------------
+// Run in EVERY phase that edits `files[]`, not only at release: an unlisted
+// support file reaches no consumer, and a listed-but-absent one breaks the pack.
+test('TS7 package files[] lists exactly the shipped skill files, and they all exist', () => {
+  const pkgRoot = path.resolve(__dirname, '..');
+  const pkg = JSON.parse(fs.readFileSync(path.join(pkgRoot, 'package.json'), 'utf8'));
+  for (const rel of pkg.files) {
+    assert.ok(fs.existsSync(path.join(pkgRoot, rel)), `files[] lists a missing path: ${rel}`);
+  }
+  // The validator ships as two files since the multi-domain core: shipping the
+  // entry point without the core would fail at import on every consumer.
+  const skillDir = path.relative(pkgRoot, require('./lib').SKILL_SOURCE).split(path.sep).join('/');
+  for (const rel of [`${skillDir}/scripts/sdlc_check.py`,
+                     `${skillDir}/scripts/sdlc_core.py`,
+                     `${skillDir}/routing.md`]) {
+    assert.ok(pkg.files.includes(rel), `files[] must list ${rel}`);
+  }
+  // Dev-only assets must never reach a consumer.
+  for (const rel of pkg.files) {
+    assert.ok(!/scripts\/test_|\/evals\/|\/fixtures\//.test(rel),
+      `files[] must not ship dev-only assets: ${rel}`);
+  }
+});
+
 // --- T7: existing three clients unchanged (skill-target byte-equal) ---------
 test('T7 skillTarget unchanged for claude/gemini/codex (default skills subdir)', () => {
   const fakeHome = path.join(os.tmpdir(), 'agy-test-home-fixed');
   const lib = freshLib({ __homedir: fakeHome });
   assert.strictEqual(
     lib.skillTarget(clientByKey(lib, 'claude')),
-    path.join(fakeHome, '.claude', 'skills', 'agentic-sdlc'),
+    path.join(fakeHome, '.claude', 'skills', lib.INSTALLED_SKILL_NAME),
   );
   assert.strictEqual(
     lib.skillTarget(clientByKey(lib, 'gemini')),
-    path.join(fakeHome, '.gemini', 'skills', 'agentic-sdlc'),
+    path.join(fakeHome, '.gemini', 'skills', lib.INSTALLED_SKILL_NAME),
   );
   assert.strictEqual(
     lib.skillTarget(clientByKey(lib, 'codex')),
-    path.join(fakeHome, '.codex', 'skills', 'agentic-sdlc'),
+    path.join(fakeHome, '.codex', 'skills', lib.INSTALLED_SKILL_NAME),
   );
 });
 
@@ -102,7 +215,7 @@ test('T2 skillTarget(antigravity) === ~/.gemini/config/skills/agentic-sdlc', () 
   assert.strictEqual(anti.skillsSubdir, 'config/skills');
   assert.strictEqual(
     lib.skillTarget(anti),
-    path.join(fakeHome, '.gemini', 'config', 'skills', 'agentic-sdlc'),
+    path.join(fakeHome, '.gemini', 'config', 'skills', lib.INSTALLED_SKILL_NAME),
   );
   // Distinct from the legacy gemini target (T2: no path overlap).
   assert.notStrictEqual(
@@ -224,8 +337,8 @@ test('T2/T7 install then uninstall: antigravity + gemini targets round-trip clea
     delete childEnv.CODEX_HOME;
     delete childEnv.ANTIGRAVITY_HOME;
 
-    const geminiTarget = path.join(tmpHome, '.gemini', 'skills', 'agentic-sdlc');
-    const antiTarget = path.join(tmpHome, '.gemini', 'config', 'skills', 'agentic-sdlc');
+    const geminiTarget = path.join(tmpHome, '.gemini', 'skills', freshLib().INSTALLED_SKILL_NAME);
+    const antiTarget = path.join(tmpHome, '.gemini', 'config', 'skills', freshLib().INSTALLED_SKILL_NAME);
 
     execFileSync(process.execPath, [POSTINSTALL], { env: childEnv, stdio: 'ignore' });
 

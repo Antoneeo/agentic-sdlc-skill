@@ -1,5 +1,4 @@
-# Guide source snapshots stay byte-verbatim on disk (verbatim-snapshot fidelity):
-# git must not rewrite their line endings. Since v1.8.1 sdlc_check.py hashes
-# LF-normalized content, so source_hash survives CRLF checkouts even without
-# this rule — it remains as defense in depth for byte-level fidelity.
-ai_docs/reference/.sources/** -text
+# The golden corpus and its baseline are compared byte for byte: a checkout that
+# rewrote their line endings would fail the test for a reason that has nothing to
+# do with the validator behaviour it guards.
+skills/kb-agentic-skill/scripts/fixtures/** -text
