@@ -18,7 +18,9 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-import sdlc_check as sc  # noqa: E402
+import sdlc_core  # noqa: E402
+import sdlc_core as sc  # noqa: E402  the SHARED core: these assert spine behaviour,
+# not whichever overlay is installed -- an overlay may replace part of the document model
 
 
 def make_project(root):
@@ -60,6 +62,21 @@ def valid_task(**overrides):
     }
     t.update(overrides)
     return t
+
+
+def setUpModule():
+    """Pin the docs root for this battery's fixtures.
+
+    The marketing overlay defaults to `mkt_docs`, so a shared battery that builds
+    `ai_docs` fixtures must say which root it means instead of inheriting whichever
+    distribution happens to be installed."""
+    global _SAVED_DOCS_DIR
+    _SAVED_DOCS_DIR = sdlc_core.docs_dir()
+    sdlc_core.set_docs_dir("ai_docs")
+
+
+def tearDownModule():
+    sdlc_core.set_docs_dir(_SAVED_DOCS_DIR)
 
 
 class ArgsNS:
@@ -223,6 +240,8 @@ class PlanValidateTests(unittest.TestCase):
         self.assertEqual(rc, 0)
         self.assertIn("not found", stderr.getvalue())
 
+    @unittest.skipUnless((Path(__file__).resolve().parents[3] / "ai_docs" / "INDEX.md").is_file(),
+                         "this distribution's repo is not governed by the core document model")
     def test_regression_own_repo_validate_still_green(self):
         # Regression per the E-TDD test block: validate/check on this repo's
         # own ai_docs stays green after the confine_under refactor.

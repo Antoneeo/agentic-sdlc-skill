@@ -20,7 +20,8 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-import sdlc_check as sc  # noqa: E402
+import sdlc_core as sc  # noqa: E402  the SHARED core: these assert spine behaviour,
+# not whichever overlay is installed -- an overlay may replace part of the document model
 import sdlc_core  # noqa: E402
 
 
