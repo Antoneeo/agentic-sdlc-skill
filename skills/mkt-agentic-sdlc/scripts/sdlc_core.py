@@ -1767,6 +1767,125 @@ def _knowledge_sources(rel, meta, text):
     return findings
 
 
+# ------------------------------------------------------------------- migrate
+
+def _migration_plan(root, src_name, dst_name):
+    """(files, refs, conflicts) for a docs-root move. Reads only."""
+    src = root / src_name
+    dst = root / dst_name
+    files, refs, conflicts = [], [], []
+    if not src.is_dir():
+        return None, None, None
+    for p in sorted(src.rglob("*")):
+        if not p.is_file():
+            continue
+        rel = p.relative_to(src)
+        target = dst / rel
+        if target.exists():
+            conflicts.append(rel.as_posix())
+        files.append(rel.as_posix())
+        if p.suffix.lower() in (".md", ".txt", ".json", ".yml", ".yaml"):
+            try:
+                if f"{src_name}/" in p.read_text(encoding="utf-8", errors="replace"):
+                    refs.append(rel.as_posix())
+            except OSError:
+                pass
+    return files, refs, conflicts
+
+
+def _external_references(root, src_name):
+    """Files OUTSIDE both roots that mention the old root.
+
+    Reported, never edited: the protocol pointers (CLAUDE.md, AGENTS.md,
+    .cursorrules) are user-authored, and a tool that rewrites them is the one thing
+    `init` has refused to do since day one."""
+    out = []
+    for p in sorted(root.rglob("*")):
+        if not p.is_file() or p.suffix.lower() not in (".md", ".txt", ".json", ".yml", ".yaml"):
+            continue
+        rel = p.relative_to(root)
+        if rel.parts and rel.parts[0] in (src_name, ".git"):
+            continue
+        if any(part in SKIP_DIRS for part in rel.parts):
+            continue
+        try:
+            if f"{src_name}/" in p.read_text(encoding="utf-8", errors="replace"):
+                out.append(rel.as_posix())
+        except OSError:
+            pass
+    return out
+
+
+def cmd_migrate(root, args):
+    """Relocate the documentation root. Dry-run by default; never deletes.
+
+    Reversibility is structural, not promised: the old root is COPIED, never moved,
+    so undoing the migration is deleting the new directory. Both roots stay
+    readable throughout, which is what lets a team switch over one session at a
+    time instead of in one jump.
+    """
+    src_name = args.from_dir
+    dst_name = args.to_dir
+    if src_name == dst_name:
+        print(f"[ERROR] --from and --to are both '{src_name}': nothing to do.")
+        return 1
+    src = root / src_name
+    if not src.is_dir():
+        print(f"[ERROR] {src} not found: nothing to migrate.")
+        return 1
+
+    files, refs, conflicts = _migration_plan(root, src_name, dst_name)
+    external = _external_references(root, src_name)
+
+    print(f"=== migrate {src_name}/ -> {dst_name}/ ===")
+    print(f"  {len(files)} file(s) to copy, {len(refs)} carrying '{src_name}/' references")
+    for rel in files[:20]:
+        print(f"    {src_name}/{rel}  ->  {dst_name}/{rel}")
+    if len(files) > 20:
+        print(f"    ... and {len(files) - 20} more")
+    if conflicts:
+        print(f"\n[ERROR] {len(conflicts)} file(s) already exist under {dst_name}/:")
+        for rel in conflicts[:10]:
+            print(f"    {dst_name}/{rel}")
+        print("  Refusing to overwrite. Move them aside, or migrate into an empty root.")
+        return 1
+    if external:
+        print(f"\n[note] {len(external)} file(s) OUTSIDE the docs roots mention "
+              f"'{src_name}/'. They are NOT touched -- protocol pointers and READMEs are "
+              "yours to edit:")
+        for rel in external[:10]:
+            print(f"    {rel}")
+
+    if not args.apply:
+        print("\n[dry-run] Nothing was written. Re-run with --apply to perform the copy.")
+        print("          The old root is kept: this migration is undone by deleting "
+              f"{dst_name}/.")
+        return 0
+
+    if git_available(root) and git_has_changes(root, "."):
+        print("\n[ERROR] the working tree has uncommitted changes. Commit or stash first: "
+              "a migration you cannot diff is a migration you cannot review.")
+        return 1
+
+    written = 0
+    for rel in files:
+        source = src / rel
+        target = root / dst_name / rel
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if rel in refs:
+            text = source.read_text(encoding="utf-8", errors="replace")
+            target.write_text(text.replace(f"{src_name}/", f"{dst_name}/"), encoding="utf-8")
+        else:
+            target.write_bytes(source.read_bytes())
+        written += 1
+    print(f"\n[ok] copied {written} file(s) into {dst_name}/. "
+          f"{src_name}/ is untouched -- delete it yourself once you are satisfied.")
+    print(f"     Next: run `validate --docs-dir {dst_name}` and compare it with "
+          f"`validate --docs-dir {src_name}`. They should say the same thing.")
+    return 0
+
+
+
 # --------------------------------------------------------------------- main
 
 def main(argv=None):
@@ -1795,6 +1914,15 @@ def main(argv=None):
                    help="verify docs-root coherence")
     sub.add_parser("index", parents=[common], help="regenerate features_history.md + ai_docs/INDEX.md")
     sub.add_parser("stale", parents=[common, hybrid_opt], help="areas modified after the last analysis")
+    gp_mig = sub.add_parser("migrate", parents=[common],
+                            help="relocate the documentation root (dry-run by default)")
+    gp_mig.add_argument("--from", dest="from_dir", required=True,
+                        help="current docs root name, e.g. mkt_docs")
+    gp_mig.add_argument("--to", dest="to_dir", default=DEFAULT_DOCS_DIR,
+                        help=f"target docs root name (default: {DEFAULT_DOCS_DIR})")
+    gp_mig.add_argument("--apply", action="store_true",
+                        help="actually copy (default is a dry run; never deletes)")
+
     mp = sub.add_parser("mark", parents=[common], help="record paths as ANALYZED")
     mp.add_argument("paths", nargs="+", help="paths relative to the project root")
     gp = sub.add_parser("gate", parents=[common, hybrid_opt], help="PreToolUse hook (exit 2 = block)")
@@ -1822,7 +1950,13 @@ def main(argv=None):
     try:
         discovered, name = resolve_docs_dir(args, getattr(args, "root", None))
     except AmbiguousDocsRoot as exc:
-        if args.cmd == "orient":
+        if args.cmd == "migrate":
+            # A tree with two roots is not an obstacle to `migrate`: it is the state
+            # `migrate` exists to resolve, and both names come from --from/--to, so
+            # nothing is being guessed. Refusing here would make the guard block the
+            # one command that ends the ambiguity.
+            discovered, name = None, args.from_dir
+        elif args.cmd == "orient":
             # The SessionStart hook is fail-open by contract: it must never block a
             # session, not even on a half-migrated tree. It orients on the default
             # and says so rather than exiting non-zero.
@@ -1849,6 +1983,8 @@ def main(argv=None):
         return cmd_stale(root, hybrid=args.hybrid)
     if args.cmd == "mark":
         return cmd_mark(root, args.paths)
+    if args.cmd == "migrate":
+        return cmd_migrate(root, args)
     if args.cmd == "plan":
         return cmd_plan(root, args)
     return 0

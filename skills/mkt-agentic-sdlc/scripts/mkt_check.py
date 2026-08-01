@@ -637,7 +637,10 @@ def main(argv=None):
                         help="warnings also fail the exit code")
     args = parser.parse_args(argv)
 
-    root = find_root(args.root, args.docs_dir)
+    # Resolve the docs root fresh on EVERY invocation, from this distribution's own
+    # default: the core keeps it in module state, and an entry point that inherited
+    # whatever a previous call left behind would be answering the wrong question.
+    root = find_root(args.root, args.docs_dir or MKT_DOCS_DIR)
     if root is None:
         print(f"[ERROR] no {sdlc_core.docs_dir()}/ directory found "
               "(use --root or run mkt-sdlc-init)")
