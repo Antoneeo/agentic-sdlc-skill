@@ -3,7 +3,14 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const { SKILL_SOURCE, CLIENTS, clientDetected, loadTemplates, templateFor } = require('./lib');
+const { SKILL_SOURCE, CLIENTS, clientDetected, skillTarget, loadTemplates, templateFor } = require('./lib');
+
+// Sibling lenses of the same family: one shared core, one `ai_docs/` tree, a different
+// fidelity discipline each. Keyed by the installed skill directory name.
+const SIBLING_LENSES = {
+  'kb-agentic': 'knowledge',
+  'agentic-sdlc': 'code',
+};
 
 const cwd = process.cwd();
 
@@ -113,15 +120,75 @@ const protocolFiles = {
   antigravity: 'AGENTS.md', // Antigravity CLI reads AGENTS.md; single protocolContent reused.
 };
 
+// A protocol pointer that ALREADY existed was written by someone else — typically a
+// sibling lens's init, which seeded the project with its own triage ladder. This init
+// must not overwrite it (create-only is the T1 guarantee), so the second ladder is
+// written aside and merged by hand.
+let protocolPreexisting = false;
+
 for (const client of CLIENTS) {
   if (clientDetected(client)) {
     console.log(`✅ ${client.label} detected.`);
-    writeIfNotExists(protocolFiles[client.key], protocolContent, `${client.label} protocol pointer`);
+    const created = writeIfNotExists(protocolFiles[client.key], protocolContent, `${client.label} protocol pointer`);
+    if (!created) protocolPreexisting = true;
   }
 }
 
 // Cursor/Windsurf (always recommended)
 writeIfNotExists('.cursorrules', protocolContent, 'Cursor/Windsurf rules');
+
+// 6b. Sibling lenses: additive only. Never edits a user-authored root file.
+function installedSiblingLenses() {
+  const found = new Map();
+  for (const client of CLIENTS) {
+    if (!clientDetected(client)) continue;
+    const skillsDir = path.dirname(skillTarget(client));
+    for (const [dirName, lens] of Object.entries(SIBLING_LENSES)) {
+      if (fs.existsSync(path.join(skillsDir, dirName))) found.set(dirName, lens);
+    }
+  }
+  return found;
+}
+
+const siblings = installedSiblingLenses();
+if (siblings.size > 0) {
+  const list = [...siblings].map(([dir, lens]) => `- \`${dir}\` — the **${lens}** lens`).join('\n');
+  console.log(`\n🔀 Sibling lens detected: ${[...siblings.keys()].join(', ')}.`);
+  const wrote = writeIfNotExists('AGENTIC_MULTI_LENS.md', `# Multi-lens project — routing note (additive)
+
+This project has more than one lens of the Agentic SDLC family installed:
+
+${list}
+- \`agentic-sdlc\` — the **code** lens
+
+One \`ai_docs/\` tree, one project default (\`default_domain:\` in \`ai_docs/README.md\`),
+one lens per unit of work. Before acting on any L2, L3 or Spike, run the domain router
+in the skill's \`routing.md\`: it decides which lens's method and validation rules govern
+that unit. L1 never reaches it. Never refer to a document whose meaning differs by lens
+("threat model", "vision", \`principles.md\`, \`handoff.md\`) by its bare name.
+
+${protocolPreexisting ? `**Merge step owed.** The always-on protocol pointer of this project (\`CLAUDE.md\` /
+\`GEMINI.md\` / \`AGENTS.md\` / \`.cursorrules\`) was written by another lens's init and
+carries ITS triage ladder. This init did not overwrite it. Add the marketing lens's ladder
+to that file by hand — the pointer below — so both are always loaded.
+
+## Rule Zero — Triage every request (marketing lens)
+- E1 Question: one answer from the existing plan, no document written.
+- E2 Campaign: a single campaign or channel, on an approved strategy.
+- E3 Full engagement: the nine-phase SOSTAC workflow, evidence ledger and all
+  three validator gates.
+` : `The always-on protocol pointer for the marketing lens was created by this init. When you
+install another lens over this project, its init will leave its own ladder here for you
+to merge.
+`}
+This file is NOT auto-loaded by any client: it is a note for you, deliberately additive.
+Delete it once the merge is done.
+`, 'multi-lens routing note');
+  if (wrote && protocolPreexisting) {
+    console.log('   ⚠️  A protocol pointer already existed and was NOT overwritten.');
+    console.log('       Merge the code-lens ladder from AGENTIC_MULTI_LENS.md into it by hand.');
+  }
+}
 
 // 7. Generate mkt_docs/INDEX.md so the very first `validate` is already clean.
 // The manifest is generated, never seeded: delegate to the validator if Python is available.

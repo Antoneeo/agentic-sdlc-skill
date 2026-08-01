@@ -15,7 +15,7 @@ Support files in the skill directory:
 - `research.md`: the research playbook and the evidence ledger discipline.
 - `templates.md`: templates for every artifact and deliverable.
 - `review.md`: the CMO review discipline and the marketing red-flag battery.
-- `scripts/mkt_check.py`: mechanical validator (`check`, `validate`, `ledger`, `budget`, `funnel`, `trace`, `index`).
+- `scripts/mkt_check.py` + `scripts/sdlc_core.py`: the mechanical validator (`check`, `validate`, `ledger`, `budget`, `funnel`, `trace`, `index`, plus the spine's `stale`/`mark`/`gate`/`orient`/`plan`). Two files: the core is the family's shared spine, the entry point is this domain's overlay. Copy both, or neither.
 - `ENFORCEMENT.md`: optional setup for CI and hooks.
 
 Read these files only when needed. `SKILL.md` is the operating contract; the support files are progressive resources.
@@ -39,6 +39,11 @@ If a strategic choice looks obvious but you cannot trace it to evidence, researc
 
 ## Rule Zero: Triage
 
+
+**Declare the level WITH the router verdict** (one line, for every engagement level above the trivial one): the result of the guide-router lookup, i.e. `Level: E2 · router: no match` or `Level: E3 · router: GUIDE_brand_voice.md → read`. The lookup is the consult trigger; making its result a declared output is what keeps it from being skipped — a level declared without a verdict makes "did not look" indistinguishable from "looked, nothing matched". Name the guide you matched, or `no match`.
+
+**Domain routing (multi-lens installs only).** After the level is set, and only when a sibling lens skill of this family is installed (`agentic-sdlc`, `kb-agentic`), run the router in `routing.md`: it decides which lens's method and validation rules govern this unit of work. The trivial level never reaches it (L1 never reaches it), and a single-lens install never reads the file — detection fails open. In such a project, never refer to a document whose meaning differs by lens ("threat model", "vision", `principles.md`, `handoff.md`) by its bare name: qualify it with its domain, or name its path.
+
 Always classify the request before choosing the process. Declare the chosen level to the user when you start operational work.
 
 | Level | Criteria | Required process |
@@ -53,6 +58,18 @@ Cross-cutting rules:
 - If a bigger scope emerges during E1/E2 work (e.g. the campaign reveals there is no positioning), stop, reclassify and declare it.
 - When in doubt, pick the higher level.
 - An E2 whose strategy context does not exist (no approved MKT-VISION or STRATEGY) escalates to E3: tactics without strategy is the failure mode this skill exists to prevent.
+
+## Write Triggers
+
+One event, one destination: when the trigger fires and the document does not exist, create it; when it exists, update it — never duplicate it.
+
+| Document | Write trigger | Phase |
+|---|---|---|
+| `audit/handoff.md` (workstream registry) | One row per OPEN engagement — refresh at every closure and at session end. ≤ 20 lines. | 9 / session end |
+| `audit/HANDOFF_[engagement].md` | Session ends with that engagement unfinished AND there is volatile resume state. Ephemeral, deleted at closure. | 8 / 9 / session end |
+| `audit/reviews/REVIEW_LOG.md` | Every completed review — when and what to write is `review.md`; schema is `templates.md`. | 6 / 9 |
+| `reference/GUIDE_[topic].md` | Origin+purpose test (`guides.md`), or a proactive proposal the user accepted. | 8 / 9 |
+| `vision/` documents | Bootstrap as `Status: DRAFT`; promoted to APPROVED only by explicit user confirmation, and only after the blind check (`vision.md` §6). | 1 / 5 |
 
 ## Operating Modes
 
@@ -118,6 +135,8 @@ Every E3 (and every E2 with numbers) is bound by these. They are the product; th
 Deliverable language: ask for (or infer) the target market's language in Discovery; artifacts and deliverables are written in it. The skill's internal doctrine stays English.
 
 ### 1. Intake & Triage
+- Read `ai_docs/README.md`, `ai_docs/INDEX.md` and `ai_docs/reference/INDEX.md` (the guide router) before touching the plan. The router is a mandatory read, not an optional one: it is the only orientation step that tells you a guide — a brand guideline, a tone-of-voice SOP, an agency playbook — already governs the work you are about to do.
+- Read `ai_docs/audit/handoff.md`, the workstream registry: one row per open engagement. Volatile resume state for an unfinished one lives in `ai_docs/audit/HANDOFF_[engagement].md`, which is ephemeral and deleted at closure.
 - Declare the level. Read `mkt_docs/audit/handoff.md` and `mkt_docs/README.md`/`INDEX.md` if they exist; if handoff dates are inconsistent, treat it as history.
 - Hybrid: bootstrap devPNT, restore Master/Action Plan and any existing marketing artifacts before asking the user anything they already answered.
 
@@ -141,6 +160,7 @@ Deliverable language: ask for (or infer) the target market's language in Discove
 - The user approves objectives before strategy. Objectives the user did not set are proposals, and say so.
 
 ### 6. Strategy — **REVIEW + USER GATE**
+- **Design review gate:** the strategy is reviewed by somebody other than its author before any tactic is executed — a subagent with fresh context, or a declared self-pass when none is available. Follow `review.md`; log the outcome in `ai_docs/audit/reviews/REVIEW_LOG.md`. A strategy reviewed only by the person who wrote it is not reviewed.
 - Draft `STRATEGY.md`: segmentation, targeting choice with rationale, positioning (Dunford components + statement), messaging house.
 - **Adversarial review** (`review.md`) before the user sees it. Fix or answer every finding.
 - The user approves the strategy. Hybrid: propose as governed doc, user accepts in devPNT.
@@ -151,9 +171,13 @@ Deliverable language: ask for (or infer) the target market's language in Discove
 - `mkt_check.py budget && mkt_check.py funnel && mkt_check.py trace` must pass. A tactic that serves no objective is deleted or the objective set is revisited — never silently kept.
 
 ### 8. Action
+- **Isolate the work (Branch/worktree hygiene).** Execution rewrites plan documents other people are reading: do it on a branch or a worktree, never directly on the shared plan.
+- **Consult (before acting)**: **consult the guide router** for a guide covering the task and read it first (the consult trigger, `guides.md` §0). A targeted description match, not a blanket read.
+- **Opt-in subagent execution**: for an approved plan, the work MAY be executed via subagents per `dispatch.md`; default stays same-session.
 - Draft `ACTION_90D.md`: sequenced 90-day plan (what starts when, owner, dependency), first 2 weeks day-level, rest weekly.
 
 ### 9. Control & Packaging — **FINAL REVIEW GATE**
+- **Propose proactively**: if the work was governed by user-provided indications and is reusable, **PROPOSE distilling a guide** (proactive trigger, `guides.md` §1) — a proposal for the user, never a silent write, never from model knowledge.
 - Draft `MEASUREMENT_PLAN.md`: KPI tree with targets and benchmark references, review cadence, explicit kill/scale criteria per channel.
 - Assemble `MARKETING_PLAN.md` (the SOSTAC deliverable) and `ONE_PAGER.md` from the approved artifacts — assembly, not rewriting; on divergence the approved artifact wins.
 - Final adversarial review on the assembled plan + `mkt_check.py check` CLEAN.

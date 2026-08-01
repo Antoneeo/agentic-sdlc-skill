@@ -1,17 +1,33 @@
 #!/usr/bin/env python3
-"""mkt_check.py -- mechanical validator for mkt_docs/ (Marketing Agentic SDLC).
+"""mkt_check.py -- the MARKETING domain entry point.
 
-Commands:
+The family's shared spine lives in `sdlc_core.py`, byte-identical in every
+distribution; this file is the marketing OVERLAY on top of it. It is deliberately
+not thin: a marketing plan is not a set of ANALYSIS documents, so the document
+model (`vision/ strategy/ tactics/ deliverables/`, the evidence ledger, the budget
+and funnel arithmetic) is genuinely this domain's own and stays here. What
+converges is the spine, not the paperwork.
+
+From the overlay (unchanged behaviour, unchanged exit codes):
   check    [--root R] [--strict]   run validate + ledger + budget + funnel + trace
   validate [--root R] [--strict]   frontmatter + index freshness on canonical docs
   ledger   [--root R]              evidence ledger integrity + [EV-nn] reference resolution
-  budget   [--root R] [FILE]       budget allocation sums to Total budget (±1%)
-  funnel   [--root R] [FILE]       funnel model rows recompute (±5%)
+  budget   [--root R] [FILE]       budget allocation sums to Total budget (+/-1%)
+  funnel   [--root R] [FILE]       funnel model rows recompute (+/-5%)
   trace    [--root R]              objective -> tactic -> KPI chain
-  index    [--root R]              (re)generate mkt_docs/INDEX.md
+  index    [--root R]              (re)generate INDEX.md
+
+From the shared core (new to this distribution):
+  stale / mark / gate / orient / plan   -- the spine commands, identical everywhere
+
+Both files must sit in the same directory. Copying only this one fails at import,
+loudly, which is the intended failure.
+
+Docs root: `mkt_docs/` by default. `--docs-dir ai_docs` reaches a migrated project,
+which is what makes the move to the family's single tree possible at all.
 
 Exit codes: 0 clean (warnings allowed unless --strict), 1 errors (or warnings
-under --strict), 2 usage / structural problem (no mkt_docs).
+under --strict), 2 usage / structural problem (no docs root).
 
 Pure stdlib. ASCII output only (Windows-console safe).
 """
@@ -20,6 +36,46 @@ import argparse
 import re
 import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+try:
+    import sdlc_core
+except ImportError as exc:  # pragma: no cover - exercised by the copied-file test
+    sys.stderr.write(
+        "[ERROR] mkt_check.py cannot find sdlc_core.py next to it: " + str(exc) + "\n"
+        "        The validator ships as TWO files since the multi-domain core.\n"
+        "        Copy both, or run sdlc_core.py directly.\n")
+    sys.exit(1)
+
+# This distribution IS the marketing lens. The default docs root is its own; the
+# core still resolves `--docs-dir` and the env seam on top of it, so a project that
+# has migrated to the family's single `ai_docs/` tree is reachable from here too.
+DOMAIN = "marketing"
+MKT_DOCS_DIR = "mkt_docs"
+sdlc_core.set_entry_point(DOMAIN, provides=("marketing",))
+sdlc_core.set_docs_dir(MKT_DOCS_DIR)
+
+sdlc_core.set_profile(
+    skill_name="mkt-agentic-sdlc",
+    unit_noun="engagement",
+    support_files=("templates.md", "frameworks.md", "research.md", "elicitation.md",
+                   "review.md", "routing.md", "guides.md", "vision.md", "dispatch.md",
+                   "ENFORCEMENT.md"),
+    capabilities=(
+        # spine
+        "triage", "write_triggers", "workstream_registry", "vision_gate",
+        "design_review_gate", "guide_router", "worktree_hygiene",
+        # marketing overlay
+        "subagent_dispatch",
+    ),
+    # The strategy is reviewed before any tactic is executed: nine phases, but the
+    # ordering the gate cares about is the same one every domain owes.
+    design_gate_between=("### 6. Strategy", "### 8. Action"),
+)
+
+# Handed straight to the shared core: one implementation, three distributions.
+SPINE_COMMANDS = ("stale", "mark", "gate", "orient", "plan")
 
 CANONICAL_DIRS = ("vision", "strategy", "tactics", "deliverables")
 VALID_STATUS = ("CURRENT", "SUPERSEDED", "DRAFT", "DEPRECATED")
@@ -65,14 +121,22 @@ class Report:
 
 # ---------------------------------------------------------------- helpers
 
-def find_root(root_arg):
-    """Resolve the project root: --root wins, else walk up from cwd."""
+def find_root(root_arg, docs_dir=None):
+    """Resolve the project root: --root wins, else walk up from cwd.
+
+    The docs-root NAME comes from the core (`--docs-dir`, then the env seam, then
+    discovery, then this distribution's `mkt_docs`), so one project mid-migration
+    cannot be validated half under one root and half under the other.
+    """
+    if docs_dir:
+        sdlc_core.set_docs_dir(docs_dir)
+    name = sdlc_core.docs_dir()
     if root_arg:
         root = Path(root_arg).resolve()
-        return root if (root / "mkt_docs").is_dir() else None
+        return root if (root / name).is_dir() else None
     cur = Path.cwd().resolve()
     for candidate in (cur, *cur.parents):
-        if (candidate / "mkt_docs").is_dir():
+        if (candidate / name).is_dir():
             return candidate
     return None
 
@@ -181,7 +245,7 @@ def close_enough(stated, computed, tol):
 
 
 def canonical_files(root):
-    docs = root / "mkt_docs"
+    docs = sdlc_core.ai_path(root)
     for d in CANONICAL_DIRS:
         base = docs / d
         if base.is_dir():
@@ -190,7 +254,7 @@ def canonical_files(root):
 
 
 def all_md_files(root):
-    docs = root / "mkt_docs"
+    docs = sdlc_core.ai_path(root)
     for p in sorted(docs.rglob("*.md")):
         yield p
 
@@ -198,7 +262,7 @@ def all_md_files(root):
 # ---------------------------------------------------------------- index
 
 def build_index(root):
-    docs = root / "mkt_docs"
+    docs = sdlc_core.ai_path(root)
     lines = [
         "# mkt_docs INDEX (generated by mkt_check.py index -- do not edit by hand)",
         "",
@@ -221,7 +285,7 @@ def build_index(root):
 
 def cmd_index(root):
     content = build_index(root)
-    out = root / "mkt_docs" / "INDEX.md"
+    out = sdlc_core.ai_path(root) / "INDEX.md"
     out.write_text(content, encoding="utf-8")
     print(f"[OK] wrote {out.relative_to(root).as_posix()}")
     return 0
@@ -231,7 +295,7 @@ def cmd_index(root):
 
 def run_validate(root):
     rep = Report()
-    docs = root / "mkt_docs"
+    docs = sdlc_core.ai_path(root)
     known = {p.name for p in docs.rglob("*.md")}
     for p in canonical_files(root):
         if p.name == "INDEX.md":
@@ -259,7 +323,7 @@ def run_validate(root):
 def load_ledger(root):
     """Return (rows, report). Rows: list of dicts with id/claim/class/... keys."""
     rep = Report()
-    path = root / "mkt_docs" / "research" / "evidence_ledger.md"
+    path = sdlc_core.ai_path(root) / "research" / "evidence_ledger.md"
     if not path.exists():
         rep.error("research/evidence_ledger.md missing")
         return [], rep
@@ -312,7 +376,7 @@ def run_ledger(root):
                 rep.warn(f"ledger {rid}: ASSUMPTION value looks like a point estimate, expected a range")
     # reference resolution across every md file (ledger file itself excluded)
     referenced = set()
-    ledger_path = root / "mkt_docs" / "research" / "evidence_ledger.md"
+    ledger_path = sdlc_core.ai_path(root) / "research" / "evidence_ledger.md"
     for p in all_md_files(root):
         if p == ledger_path:
             continue
@@ -323,7 +387,7 @@ def run_ledger(root):
             for m in EV_REF.finditer(line):
                 referenced.add(m.group(1))
                 if m.group(1) not in ids:
-                    rel = p.relative_to(root / "mkt_docs").as_posix()
+                    rel = p.relative_to(sdlc_core.ai_path(root)).as_posix()
                     rep.error(f"{rel}: reference [{m.group(1)}] not found in the ledger")
     for rid in sorted(ids - referenced, key=lambda x: int(x.split("-")[1])):
         rep.warn(f"ledger {rid}: never referenced by any document")
@@ -338,7 +402,7 @@ def default_tactical_files(root, file_arg):
         if not p.is_absolute():
             p = root / file_arg
         return [p] if p.exists() else []
-    tactics = root / "mkt_docs" / "tactics"
+    tactics = sdlc_core.ai_path(root) / "tactics"
     files = []
     if (tactics / "TACTICAL_PLAN.md").exists():
         files.append(tactics / "TACTICAL_PLAN.md")
@@ -453,7 +517,7 @@ def run_funnel(root, file_arg=None):
 
 def run_trace(root):
     rep = Report()
-    docs = root / "mkt_docs"
+    docs = sdlc_core.ai_path(root)
     obj_path = docs / "strategy" / "OBJECTIVES.md"
     if not obj_path.exists():
         rep.warn("strategy/OBJECTIVES.md missing -- trace check skipped")
@@ -522,20 +586,61 @@ def run_check(root):
 
 # ---------------------------------------------------------------- main
 
+# --- portable checks this distribution exposes -------------------------------
+# The marketing arithmetic, offered to documents owned by ANOTHER domain: a
+# distilled spec that carries a budget table can import `marketing.budget` and have
+# it actually checked, instead of the table sitting in a document whose own
+# validator has no opinion about it (UC8). Imported checks may only ADD findings.
+
+def _report_findings(rep):
+    return ([("error", m) for m in rep.errors]
+            + [("warning", m) for m in rep.warnings])
+
+
+@sdlc_core.portable_check("marketing.ledger")
+def _check_ledger(rel, meta, text):
+    root = sdlc_core.find_project_root()
+    return _report_findings(run_ledger(root)) if root else []
+
+
+@sdlc_core.portable_check("marketing.budget")
+def _check_budget(rel, meta, text):
+    root = sdlc_core.find_project_root()
+    return _report_findings(run_budget(root)) if root else []
+
+
+@sdlc_core.portable_check("marketing.funnel")
+def _check_funnel(rel, meta, text):
+    root = sdlc_core.find_project_root()
+    return _report_findings(run_funnel(root)) if root else []
+
+
 def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
+    # Spine commands are the core's, identical in every distribution: hand them over
+    # untouched rather than reimplementing them here, which is how the three
+    # validators diverged in the first place.
+    if argv and argv[0] in SPINE_COMMANDS:
+        return sdlc_core.main(argv)
+
     parser = argparse.ArgumentParser(prog="mkt_check.py", description=__doc__)
     parser.add_argument("command", choices=["check", "validate", "ledger",
                                             "budget", "funnel", "trace", "index"])
     parser.add_argument("file", nargs="?", default=None,
                         help="optional target file for budget/funnel")
-    parser.add_argument("--root", default=None, help="project root (contains mkt_docs/)")
+    parser.add_argument("--root", default=None, help="project root (contains the docs root)")
+    parser.add_argument("--docs-dir", dest="docs_dir", default=None,
+                        help="name of the documentation root (default: mkt_docs; "
+                             "use --docs-dir ai_docs on a project that has migrated "
+                             "to the family's single tree)")
     parser.add_argument("--strict", action="store_true",
                         help="warnings also fail the exit code")
     args = parser.parse_args(argv)
 
-    root = find_root(args.root)
+    root = find_root(args.root, args.docs_dir)
     if root is None:
-        print("[ERROR] no mkt_docs/ directory found (use --root or run mkt-sdlc-init)")
+        print(f"[ERROR] no {sdlc_core.docs_dir()}/ directory found "
+              "(use --root or run mkt-sdlc-init)")
         return 2
 
     if args.command == "index":

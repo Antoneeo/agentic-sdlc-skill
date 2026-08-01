@@ -1,5 +1,7 @@
 # Elicitation — question waves
 
+Ask for the **benefit** the user wants, never for the mechanism they imagine delivers it: a mechanism stated as a requirement forecloses every better one.
+
 The cardinal rule: **ask only what the user uniquely owns.** Facts about their
 business come from them; everything derivable from research comes from
 research. Asking the user "who are your competitors and how are you

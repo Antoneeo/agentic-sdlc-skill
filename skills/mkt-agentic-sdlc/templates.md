@@ -26,6 +26,9 @@ When a doc replaces another: the new one declares `supersedes:`, the old one swi
 Curated must-read index, by hand (it is NOT the generated manifest). Created at init, updated rarely.
 
 ```markdown
+---
+default_domain: marketing
+---
 # mkt_docs — reading guide
 
 Must-reads for this marketing project, in order. The full manifest of
@@ -442,3 +445,172 @@ Agent: Claude
 ## Session notes
 <!-- gates passed? open review findings? ledger rows pending sources? -->
 ```
+
+## ai_docs/audit/handoff.md — the workstream registry
+
+One row per OPEN workstream, ≤ 20 lines. **Parallel-safe by construction**: closing
+one milestone removes one row and never touches another's resume point — the defect
+this replaces was a single narrative slot where the last session to close overwrote
+everyone else's handoff. It is an **inventory for lookup** (like the generated
+manifest), not a work board: no assignment, no due dates, no execution ordering.
+
+Updated at every L3 closure (row removed) AND at session end with work still
+IN_PROGRESS (row refreshed) — see Write Triggers.
+
+**Coming from a pre-1.17 project** (narrative handoff with `## Active features` /
+`## Next step` / `## Session notes`): nothing is broken and nothing is urgent — the
+validator only checks the `Date:` header and its age, and the orientation hook reads
+the file verbatim. Read it as a one-row registry, and convert it the next time the
+write trigger fires: each `## Active features` bullet becomes a row, `## Next step`
+becomes that row's next step, `## Session notes` becomes `## Project-wide notes`.
+Migrating a repository that is not being worked on buys nothing.
+
+```markdown
+# Handoff — workstream registry
+Date: 2026-06-11 (UTC)
+
+| Workstream | Level | Branch | Status | Since | Next step | Details |
+|---|---|---|---|---|---|---|
+| F-001 SSO login | L3 | feature/sso-login | PROGRESS | 2026-06-10 | wire callback tests | HANDOFF_login_sso.md · ANALYSIS_login_sso.md |
+| F-002 Audit refresh | L3 | feature/audit | PAUSED | 2026-06-02 | resume at Phase 4 | ANALYSIS_audit_refresh.md (no volatile state) |
+
+## Project-wide notes
+<!-- one or two lines: release pending, environment quirks that affect everyone -->
+```
+
+## ai_docs/audit/reviews/REVIEW_LOG.md
+
+One row per completed review (`review.md` §When a review is due). Append-only; it
+is the record that the gate ran and what it was worth. **One schema for both
+modes** — a Hybrid project's devPNT gates write to this same file, so Standalone
+adds values to the existing columns rather than a second table.
+
+```markdown
+# Independent Review Log
+
+| date | doc_key | tier | reviewer | findings_raised | findings_real | verdict | revise_rounds |
+|---|---|---|---|---|---|---|---|
+| 2026-06-11 | ANALYSIS_login_sso.md | design | subagent (opus, fresh ctx) | 4 | 3 | PASS | 2 |
+| 2026-06-12 | diff feature/sso-login | closure | self-pass (declared; no subagent facility) | 2 | 2 | PASS | 1 |
+
+## Notes
+<!-- One short paragraph per review that found something worth remembering: what
+     the findings actually were, and what changed because of them. The table
+     answers "was it reviewed and by what"; this answers "what did it find" —
+     which is where `review.md`'s per-finding outcomes live. Omit for a clean
+     review; a row with 0 findings needs no note. -->
+```
+
+`tier` is the moment plus, in Hybrid, the reviewer weight: `design`, `design (late)`
+and `closure` (Standalone); `deep`, `light`, `code`, `guide`, `vision` (devPNT gates
+and the Vision blind check). The validator reads this column by its header name, so
+extra or reordered columns are fine — but the header must say `tier`. `reviewer`
+records the realization actually used — fresh subagent, one-shot client run, or a
+**declared** self-pass. Writing `self-pass` where independence was unavailable is
+honest; writing nothing, or implying independence you did not have, is the failure
+this column exists to prevent. `findings_real` is how many raised findings survived
+triage: over time it is the only evidence of whether the gate earns its cost.
+
+## ai_docs/audit/HANDOFF_[engagement].md — volatile resume logistics (ephemeral)
+
+**Resume logistics ONLY; the ANALYSIS Diary keeps the durable narrative (DRY).**
+The boundary: Diary = what happened and why (decisions, state of the work — survives
+forever); this file = how to pick the work back up (branch/worktree, uncommitted
+state, environment notes, the next concrete command — worthless once resumed).
+Created only when a session pauses the feature WITH volatile state to record;
+**DELETED at the feature's closure**, in the same step that flips the ANALYSIS to
+COMPLETED — anything in it worth keeping was in the wrong file.
+
+```markdown
+# HANDOFF: [engagement] (ephemeral — deleted at closure)
+Updated: 2026-06-11 (UTC)
+Branch: feature/sso-login (worktree ../wt-sso)
+
+## Resume state
+<!-- uncommitted files, half-run migrations, env vars, running services -->
+
+## Next command
+<!-- the literal next thing to run or edit -->
+
+## Watch out
+<!-- traps discovered this session that bite on resume (locks, CRLF, flaky test) -->
+```
+
+## ai_docs/strategic/architecture.md and existing_features.md
+
+Canonical docs: they open with the header (`description:`/`status:`) so they enter the `INDEX.md` manifest cleanly.
+
+```markdown
+---
+description: Stack, directory structure, component map and architectural patterns of the project.
+status: CURRENT
+---
+# Project Architecture
+## Technology Stack
+## Directory Structure
+## Component Map
+<!-- The inventory the architect pass reads BEFORE searching the code
+     (`architect.md` §2). One row per component that OWNS a capability:
+     Capability = what it lets the system DO (a verb over a domain noun, naming
+     no file). Contract = what it guarantees its consumers, in one line, stated
+     without naming any single consumer. Where = a path, or `path#symbol` when
+     the component is smaller than its file.
+     Seeded at bootstrap; a row is added or corrected in the SAME closure that
+     builds — or merely discovers — a component, and the area is marked ANALYZED.
+     A directory is not a component: rows name what owns a capability, not where
+     files sit (that is ## Directory Structure above). An absent or stale map is
+     why the next feature rules the same capability MISSING a second time and
+     builds it again. -->
+
+Coverage: whatever `audit/audit_plan.md` marks ANALYZED — **read it, do not trust a
+list restated here** (a hand-copied list is a cache with no invalidation). Outside
+those areas this map is **unread, not empty**: it can never ground a MISSING
+verdict, and the code is searched instead (`architect.md` §2).
+
+| Component | Capability it owns | Contract | Where |
+|---|---|---|---|
+| ... | ... | ... | ... |
+
+<!-- Where is `path/to/file.py#Symbol`. Leave the placeholder row untouched until
+     the map has a real component: the validator skips an all-`...` row, so a
+     freshly seeded project is never nagged about a table nobody has filled in. -->
+
+## Architectural Patterns
+```
+
+```markdown
+---
+description: Concise catalog of the project's existing features.
+status: CURRENT
+---
+# Existing Features
+- [ID] **Feature Name**: Description
+```
+
+`ai_docs/strategic/features_history.md` and `ai_docs/INDEX.md` have NO template: they are generated by `sdlc_check.py index`.
+
+## ai_docs/README.md
+
+Curated must-read index, by hand (it is NOT the generated manifest). Created at init, updated rarely, only for real must-reads.
+
+```markdown
+---
+default_domain: marketing
+---
+# ai_docs — reading guide
+
+Must-reads for this project, in order. The full manifest of canonical docs is
+`INDEX.md` (generated — regenerate with `sdlc_check.py index`, never edit by hand).
+
+1. `reference/INDEX.md` — the guide router: which guide already governs the work you are about to do (generated).
+2. `vision/project_vision.md` — why the project exists (check its Status first).
+3. `strategic/architecture.md` — how it is built.
+4. `audit/handoff.md` — where work stopped last session (if present).
+
+Directory purposes: `vision/` (project direction), `strategic/` (architecture and
+feature catalog), `reference/` (operative guides), `solutions/` (per-feature
+analyses, discovery-by-grep), `audit/` (audit plan and handoff).
+```
+
+`default_domain:` is the project's answer for every document that does not declare its own `domain:`. Whichever lens's `init` created the project seeds it; a later init never overwrites it, and an absent line resolves to `code` — so every project created before this field existed keeps behaving exactly as it did. It is written once, at project level, precisely so that the same tree gets **the same verdict from every installed lens**.
+
