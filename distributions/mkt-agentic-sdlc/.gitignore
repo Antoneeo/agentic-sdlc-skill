@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+node_modules/
+.workdir/
+.devpnt/patch_history.json
+.vscode/
+temp/
+logs/

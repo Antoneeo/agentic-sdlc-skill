@@ -1,0 +1,5865 @@
+{
+  "version": "1.1",
+  "by_file": {
+    "skills/mkt-agentic-sdlc/scripts/mkt_check.py": {
+      "hash": "c45f40f2ddab8c559e9faf7ab13e557c1794197aa80f4320db6680400c2ec16a",
+      "definitions": [
+        {
+          "name": "Report",
+          "type": "class",
+          "line": 37,
+          "bases": []
+        },
+        {
+          "name": "Report.__init__",
+          "type": "method",
+          "line": 38
+        },
+        {
+          "name": "Report.error",
+          "type": "method",
+          "line": 42
+        },
+        {
+          "name": "Report.warn",
+          "type": "method",
+          "line": 45
+        },
+        {
+          "name": "Report.merge",
+          "type": "method",
+          "line": 48
+        },
+        {
+          "name": "Report.print",
+          "type": "method",
+          "line": 52
+        },
+        {
+          "name": "Report.exit_code",
+          "type": "method",
+          "line": 58
+        },
+        {
+          "name": "find_root",
+          "type": "function",
+          "line": 68
+        },
+        {
+          "name": "read_text",
+          "type": "function",
+          "line": 80
+        },
+        {
+          "name": "load_frontmatter",
+          "type": "function",
+          "line": 84
+        },
+        {
+          "name": "parse_num",
+          "type": "function",
+          "line": 99
+        },
+        {
+          "name": "parse_tables",
+          "type": "function",
+          "line": 120
+        },
+        {
+          "name": "find_table",
+          "type": "function",
+          "line": 148
+        },
+        {
+          "name": "col",
+          "type": "function",
+          "line": 160
+        },
+        {
+          "name": "is_example_row",
+          "type": "function",
+          "line": 171
+        },
+        {
+          "name": "close_enough",
+          "type": "function",
+          "line": 175
+        },
+        {
+          "name": "canonical_files",
+          "type": "function",
+          "line": 183
+        },
+        {
+          "name": "all_md_files",
+          "type": "function",
+          "line": 192
+        },
+        {
+          "name": "build_index",
+          "type": "function",
+          "line": 200
+        },
+        {
+          "name": "cmd_index",
+          "type": "function",
+          "line": 222
+        },
+        {
+          "name": "run_validate",
+          "type": "function",
+          "line": 232
+        },
+        {
+          "name": "load_ledger",
+          "type": "function",
+          "line": 259
+        },
+        {
+          "name": "run_ledger",
+          "type": "function",
+          "line": 289
+        },
+        {
+          "name": "default_tactical_files",
+          "type": "function",
+          "line": 335
+        },
+        {
+          "name": "run_budget",
+          "type": "function",
+          "line": 350
+        },
+        {
+          "name": "run_funnel",
+          "type": "function",
+          "line": 403
+        },
+        {
+          "name": "run_trace",
+          "type": "function",
+          "line": 454
+        },
+        {
+          "name": "run_check",
+          "type": "function",
+          "line": 512
+        },
+        {
+          "name": "main",
+          "type": "function",
+          "line": 525
+        }
+      ],
+      "imports": [
+        "argparse",
+        "re",
+        "sys",
+        "pathlib"
+      ],
+      "references": [
+        {
+          "symbol": "re.compile",
+          "line": 28
+        },
+        {
+          "symbol": "re",
+          "line": 28
+        },
+        {
+          "symbol": "re.compile",
+          "line": 29
+        },
+        {
+          "symbol": "re",
+          "line": 29
+        },
+        {
+          "symbol": "re.MULTILINE",
+          "line": 29
+        },
+        {
+          "symbol": "re.compile",
+          "line": 30
+        },
+        {
+          "symbol": "re",
+          "line": 30
+        },
+        {
+          "symbol": "self",
+          "line": 39
+        },
+        {
+          "symbol": "self",
+          "line": 40
+        },
+        {
+          "symbol": "self.errors.append",
+          "line": 43
+        },
+        {
+          "symbol": "self.errors",
+          "line": 43
+        },
+        {
+          "symbol": "self",
+          "line": 43
+        },
+        {
+          "symbol": "msg",
+          "line": 43
+        },
+        {
+          "symbol": "self.warnings.append",
+          "line": 46
+        },
+        {
+          "symbol": "self.warnings",
+          "line": 46
+        },
+        {
+          "symbol": "self",
+          "line": 46
+        },
+        {
+          "symbol": "msg",
+          "line": 46
+        },
+        {
+          "symbol": "self.errors.extend",
+          "line": 49
+        },
+        {
+          "symbol": "self.errors",
+          "line": 49
+        },
+        {
+          "symbol": "self",
+          "line": 49
+        },
+        {
+          "symbol": "other.errors",
+          "line": 49
+        },
+        {
+          "symbol": "other",
+          "line": 49
+        },
+        {
+          "symbol": "self.warnings.extend",
+          "line": 50
+        },
+        {
+          "symbol": "self.warnings",
+          "line": 50
+        },
+        {
+          "symbol": "self",
+          "line": 50
+        },
+        {
+          "symbol": "other.warnings",
+          "line": 50
+        },
+        {
+          "symbol": "other",
+          "line": 50
+        },
+        {
+          "symbol": "self.warnings",
+          "line": 53
+        },
+        {
+          "symbol": "self",
+          "line": 53
+        },
+        {
+          "symbol": "print",
+          "line": 54
+        },
+        {
+          "symbol": "title",
+          "line": 54
+        },
+        {
+          "symbol": "w",
+          "line": 54
+        },
+        {
+          "symbol": "self.errors",
+          "line": 55
+        },
+        {
+          "symbol": "self",
+          "line": 55
+        },
+        {
+          "symbol": "print",
+          "line": 56
+        },
+        {
+          "symbol": "title",
+          "line": 56
+        },
+        {
+          "symbol": "e",
+          "line": 56
+        },
+        {
+          "symbol": "self.errors",
+          "line": 59
+        },
+        {
+          "symbol": "self",
+          "line": 59
+        },
+        {
+          "symbol": "strict",
+          "line": 61
+        },
+        {
+          "symbol": "self.warnings",
+          "line": 61
+        },
+        {
+          "symbol": "self",
+          "line": 61
+        },
+        {
+          "symbol": "root_arg",
+          "line": 70
+        },
+        {
+          "symbol": "Path(root_arg).resolve",
+          "line": 71
+        },
+        {
+          "symbol": "Path",
+          "line": 71
+        },
+        {
+          "symbol": "root_arg",
+          "line": 71
+        },
+        {
+          "symbol": "(root / 'mkt_docs').is_dir",
+          "line": 72
+        },
+        {
+          "symbol": "root",
+          "line": 72
+        },
+        {
+          "symbol": "Path.cwd().resolve",
+          "line": 73
+        },
+        {
+          "symbol": "Path.cwd",
+          "line": 73
+        },
+        {
+          "symbol": "Path",
+          "line": 73
+        },
+        {
+          "symbol": "cur",
+          "line": 74
+        },
+        {
+          "symbol": "cur.parents",
+          "line": 74
+        },
+        {
+          "symbol": "(candidate / 'mkt_docs').is_dir",
+          "line": 75
+        },
+        {
+          "symbol": "candidate",
+          "line": 75
+        },
+        {
+          "symbol": "candidate",
+          "line": 76
+        },
+        {
+          "symbol": "path.read_text",
+          "line": 81
+        },
+        {
+          "symbol": "path",
+          "line": 81
+        },
+        {
+          "symbol": "text.startswith",
+          "line": 86
+        },
+        {
+          "symbol": "text",
+          "line": 86
+        },
+        {
+          "symbol": "text",
+          "line": 87
+        },
+        {
+          "symbol": "text.split",
+          "line": 88
+        },
+        {
+          "symbol": "text",
+          "line": 88
+        },
+        {
+          "symbol": "enumerate",
+          "line": 90
+        },
+        {
+          "symbol": "lines",
+          "line": 90
+        },
+        {
+          "symbol": "line.strip",
+          "line": 91
+        },
+        {
+          "symbol": "line",
+          "line": 91
+        },
+        {
+          "symbol": "fm",
+          "line": 92
+        },
+        {
+          "symbol": "'\\n'.join",
+          "line": 92
+        },
+        {
+          "symbol": "lines",
+          "line": 92
+        },
+        {
+          "symbol": "i",
+          "line": 92
+        },
+        {
+          "symbol": "re.match",
+          "line": 93
+        },
+        {
+          "symbol": "re",
+          "line": 93
+        },
+        {
+          "symbol": "line",
+          "line": 93
+        },
+        {
+          "symbol": "m",
+          "line": 94
+        },
+        {
+          "symbol": "fm",
+          "line": 95
+        },
+        {
+          "symbol": "m.group(1).strip",
+          "line": 95
+        },
+        {
+          "symbol": "m.group",
+          "line": 95
+        },
+        {
+          "symbol": "m",
+          "line": 95
+        },
+        {
+          "symbol": "m.group(2).strip",
+          "line": 95
+        },
+        {
+          "symbol": "text",
+          "line": 96
+        },
+        {
+          "symbol": "cell",
+          "line": 102
+        },
+        {
+          "symbol": "EV_REF.sub",
+          "line": 104
+        },
+        {
+          "symbol": "EV_REF",
+          "line": 104
+        },
+        {
+          "symbol": "cell",
+          "line": 104
+        },
+        {
+          "symbol": "re.sub",
+          "line": 105
+        },
+        {
+          "symbol": "re",
+          "line": 105
+        },
+        {
+          "symbol": "s.strip",
+          "line": 105
+        },
+        {
+          "symbol": "s",
+          "line": 105
+        },
+        {
+          "symbol": "s.replace(',', '').replace",
+          "line": 106
+        },
+        {
+          "symbol": "s.replace",
+          "line": 106
+        },
+        {
+          "symbol": "s",
+          "line": 106
+        },
+        {
+          "symbol": "s",
+          "line": 107
+        },
+        {
+          "symbol": "s",
+          "line": 110
+        },
+        {
+          "symbol": "s",
+          "line": 111
+        },
+        {
+          "symbol": "s",
+          "line": 112
+        },
+        {
+          "symbol": "s",
+          "line": 113
+        },
+        {
+          "symbol": "float",
+          "line": 115
+        },
+        {
+          "symbol": "s",
+          "line": 115
+        },
+        {
+          "symbol": "mult",
+          "line": 115
+        },
+        {
+          "symbol": "ValueError",
+          "line": 116
+        },
+        {
+          "symbol": "text.split",
+          "line": 124
+        },
+        {
+          "symbol": "text",
+          "line": 124
+        },
+        {
+          "symbol": "i",
+          "line": 126
+        },
+        {
+          "symbol": "len",
+          "line": 126
+        },
+        {
+          "symbol": "lines",
+          "line": 126
+        },
+        {
+          "symbol": "lines[i].strip",
+          "line": 127
+        },
+        {
+          "symbol": "lines",
+          "line": 127
+        },
+        {
+          "symbol": "i",
+          "line": 127
+        },
+        {
+          "symbol": "line.startswith",
+          "line": 128
+        },
+        {
+          "symbol": "line",
+          "line": 128
+        },
+        {
+          "symbol": "i",
+          "line": 128
+        },
+        {
+          "symbol": "len",
+          "line": 128
+        },
+        {
+          "symbol": "lines",
+          "line": 128
+        },
+        {
+          "symbol": "re.match",
+          "line": 129
+        },
+        {
+          "symbol": "re",
+          "line": 129
+        },
+        {
+          "symbol": "lines[i + 1].strip",
+          "line": 129
+        },
+        {
+          "symbol": "lines",
+          "line": 129
+        },
+        {
+          "symbol": "i",
+          "line": 129
+        },
+        {
+          "symbol": "h.strip().lower",
+          "line": 130
+        },
+        {
+          "symbol": "h.strip",
+          "line": 130
+        },
+        {
+          "symbol": "h",
+          "line": 130
+        },
+        {
+          "symbol": "line.strip('|').split",
+          "line": 130
+        },
+        {
+          "symbol": "line.strip",
+          "line": 130
+        },
+        {
+          "symbol": "line",
+          "line": 130
+        },
+        {
+          "symbol": "i",
+          "line": 132
+        },
+        {
+          "symbol": "j",
+          "line": 133
+        },
+        {
+          "symbol": "len",
+          "line": 133
+        },
+        {
+          "symbol": "lines",
+          "line": 133
+        },
+        {
+          "symbol": "lines[j].strip().startswith",
+          "line": 133
+        },
+        {
+          "symbol": "lines[j].strip",
+          "line": 133
+        },
+        {
+          "symbol": "c.strip",
+          "line": 134
+        },
+        {
+          "symbol": "c",
+          "line": 134
+        },
+        {
+          "symbol": "lines[j].strip().strip('|').split",
+          "line": 134
+        },
+        {
+          "symbol": "lines[j].strip().strip",
+          "line": 134
+        },
+        {
+          "symbol": "lines[j].strip",
+          "line": 134
+        },
+        {
+          "symbol": "lines",
+          "line": 134
+        },
+        {
+          "symbol": "j",
+          "line": 134
+        },
+        {
+          "symbol": "len",
+          "line": 135
+        },
+        {
+          "symbol": "cells",
+          "line": 135
+        },
+        {
+          "symbol": "headers",
+          "line": 135
+        },
+        {
+          "symbol": "enumerate",
+          "line": 137
+        },
+        {
+          "symbol": "headers",
+          "line": 137
+        },
+        {
+          "symbol": "row",
+          "line": 138
+        },
+        {
+          "symbol": "h",
+          "line": 138
+        },
+        {
+          "symbol": "k",
+          "line": 138
+        },
+        {
+          "symbol": "len",
+          "line": 138
+        },
+        {
+          "symbol": "cells",
+          "line": 138
+        },
+        {
+          "symbol": "rows.append",
+          "line": 139
+        },
+        {
+          "symbol": "rows",
+          "line": 139
+        },
+        {
+          "symbol": "row",
+          "line": 139
+        },
+        {
+          "symbol": "tables.append",
+          "line": 141
+        },
+        {
+          "symbol": "tables",
+          "line": 141
+        },
+        {
+          "symbol": "headers",
+          "line": 141
+        },
+        {
+          "symbol": "rows",
+          "line": 141
+        },
+        {
+          "symbol": "j",
+          "line": 142
+        },
+        {
+          "symbol": "tables",
+          "line": 145
+        },
+        {
+          "symbol": "c.lower",
+          "line": 150
+        },
+        {
+          "symbol": "c",
+          "line": 150
+        },
+        {
+          "symbol": "required_cols",
+          "line": 150
+        },
+        {
+          "symbol": "parse_tables",
+          "line": 151
+        },
+        {
+          "symbol": "text",
+          "line": 151
+        },
+        {
+          "symbol": "all",
+          "line": 152
+        },
+        {
+          "symbol": "any",
+          "line": 152
+        },
+        {
+          "symbol": "r",
+          "line": 152
+        },
+        {
+          "symbol": "h",
+          "line": 152
+        },
+        {
+          "symbol": "headers",
+          "line": 152
+        },
+        {
+          "symbol": "req",
+          "line": 152
+        },
+        {
+          "symbol": "headers",
+          "line": 153
+        },
+        {
+          "symbol": "rows",
+          "line": 153
+        },
+        {
+          "symbol": "all",
+          "line": 155
+        },
+        {
+          "symbol": "r",
+          "line": 155
+        },
+        {
+          "symbol": "headers",
+          "line": 155
+        },
+        {
+          "symbol": "req",
+          "line": 155
+        },
+        {
+          "symbol": "headers",
+          "line": 156
+        },
+        {
+          "symbol": "rows",
+          "line": 156
+        },
+        {
+          "symbol": "name.lower",
+          "line": 162
+        },
+        {
+          "symbol": "name",
+          "line": 162
+        },
+        {
+          "symbol": "name",
+          "line": 163
+        },
+        {
+          "symbol": "row",
+          "line": 163
+        },
+        {
+          "symbol": "row",
+          "line": 164
+        },
+        {
+          "symbol": "name",
+          "line": 164
+        },
+        {
+          "symbol": "row.items",
+          "line": 165
+        },
+        {
+          "symbol": "row",
+          "line": 165
+        },
+        {
+          "symbol": "name",
+          "line": 166
+        },
+        {
+          "symbol": "h",
+          "line": 166
+        },
+        {
+          "symbol": "v",
+          "line": 167
+        },
+        {
+          "symbol": "any",
+          "line": 172
+        },
+        {
+          "symbol": "EXAMPLE_MARKER",
+          "line": 172
+        },
+        {
+          "symbol": "v",
+          "line": 172
+        },
+        {
+          "symbol": "row.values",
+          "line": 172
+        },
+        {
+          "symbol": "row",
+          "line": 172
+        },
+        {
+          "symbol": "stated",
+          "line": 176
+        },
+        {
+          "symbol": "computed",
+          "line": 176
+        },
+        {
+          "symbol": "computed",
+          "line": 178
+        },
+        {
+          "symbol": "abs",
+          "line": 179
+        },
+        {
+          "symbol": "stated",
+          "line": 179
+        },
+        {
+          "symbol": "abs",
+          "line": 180
+        },
+        {
+          "symbol": "stated",
+          "line": 180
+        },
+        {
+          "symbol": "computed",
+          "line": 180
+        },
+        {
+          "symbol": "tol",
+          "line": 180
+        },
+        {
+          "symbol": "root",
+          "line": 184
+        },
+        {
+          "symbol": "CANONICAL_DIRS",
+          "line": 185
+        },
+        {
+          "symbol": "docs",
+          "line": 186
+        },
+        {
+          "symbol": "d",
+          "line": 186
+        },
+        {
+          "symbol": "base.is_dir",
+          "line": 187
+        },
+        {
+          "symbol": "base",
+          "line": 187
+        },
+        {
+          "symbol": "sorted",
+          "line": 188
+        },
+        {
+          "symbol": "base.rglob",
+          "line": 188
+        },
+        {
+          "symbol": "base",
+          "line": 188
+        },
+        {
+          "symbol": "p",
+          "line": 189
+        },
+        {
+          "symbol": "root",
+          "line": 193
+        },
+        {
+          "symbol": "sorted",
+          "line": 194
+        },
+        {
+          "symbol": "docs.rglob",
+          "line": 194
+        },
+        {
+          "symbol": "docs",
+          "line": 194
+        },
+        {
+          "symbol": "p",
+          "line": 195
+        },
+        {
+          "symbol": "root",
+          "line": 201
+        },
+        {
+          "symbol": "canonical_files",
+          "line": 208
+        },
+        {
+          "symbol": "root",
+          "line": 208
+        },
+        {
+          "symbol": "p.name",
+          "line": 209
+        },
+        {
+          "symbol": "p",
+          "line": 209
+        },
+        {
+          "symbol": "load_frontmatter",
+          "line": 211
+        },
+        {
+          "symbol": "read_text",
+          "line": 211
+        },
+        {
+          "symbol": "p",
+          "line": 211
+        },
+        {
+          "symbol": "fm.get",
+          "line": 212
+        },
+        {
+          "symbol": "fm",
+          "line": 212
+        },
+        {
+          "symbol": "fm.get",
+          "line": 213
+        },
+        {
+          "symbol": "fm",
+          "line": 213
+        },
+        {
+          "symbol": "desc",
+          "line": 214
+        },
+        {
+          "symbol": "re.search",
+          "line": 215
+        },
+        {
+          "symbol": "re",
+          "line": 215
+        },
+        {
+          "symbol": "body",
+          "line": 215
+        },
+        {
+          "symbol": "re.MULTILINE",
+          "line": 215
+        },
+        {
+          "symbol": "h1",
+          "line": 216
+        },
+        {
+          "symbol": "h1.group(1).strip",
+          "line": 216
+        },
+        {
+          "symbol": "h1.group",
+          "line": 216
+        },
+        {
+          "symbol": "p.relative_to(docs).as_posix",
+          "line": 217
+        },
+        {
+          "symbol": "p.relative_to",
+          "line": 217
+        },
+        {
+          "symbol": "p",
+          "line": 217
+        },
+        {
+          "symbol": "docs",
+          "line": 217
+        },
+        {
+          "symbol": "lines.append",
+          "line": 218
+        },
+        {
+          "symbol": "lines",
+          "line": 218
+        },
+        {
+          "symbol": "rel",
+          "line": 218
+        },
+        {
+          "symbol": "desc",
+          "line": 218
+        },
+        {
+          "symbol": "status",
+          "line": 218
+        },
+        {
+          "symbol": "'\\n'.join",
+          "line": 219
+        },
+        {
+          "symbol": "lines",
+          "line": 219
+        },
+        {
+          "symbol": "build_index",
+          "line": 223
+        },
+        {
+          "symbol": "root",
+          "line": 223
+        },
+        {
+          "symbol": "root",
+          "line": 224
+        },
+        {
+          "symbol": "out.write_text",
+          "line": 225
+        },
+        {
+          "symbol": "out",
+          "line": 225
+        },
+        {
+          "symbol": "content",
+          "line": 225
+        },
+        {
+          "symbol": "print",
+          "line": 226
+        },
+        {
+          "symbol": "out.relative_to(root).as_posix",
+          "line": 226
+        },
+        {
+          "symbol": "out.relative_to",
+          "line": 226
+        },
+        {
+          "symbol": "out",
+          "line": 226
+        },
+        {
+          "symbol": "root",
+          "line": 226
+        },
+        {
+          "symbol": "Report",
+          "line": 233
+        },
+        {
+          "symbol": "root",
+          "line": 234
+        },
+        {
+          "symbol": "p.name",
+          "line": 235
+        },
+        {
+          "symbol": "p",
+          "line": 235
+        },
+        {
+          "symbol": "docs.rglob",
+          "line": 235
+        },
+        {
+          "symbol": "docs",
+          "line": 235
+        },
+        {
+          "symbol": "canonical_files",
+          "line": 236
+        },
+        {
+          "symbol": "root",
+          "line": 236
+        },
+        {
+          "symbol": "p.name",
+          "line": 237
+        },
+        {
+          "symbol": "p",
+          "line": 237
+        },
+        {
+          "symbol": "p.relative_to(docs).as_posix",
+          "line": 239
+        },
+        {
+          "symbol": "p.relative_to",
+          "line": 239
+        },
+        {
+          "symbol": "p",
+          "line": 239
+        },
+        {
+          "symbol": "docs",
+          "line": 239
+        },
+        {
+          "symbol": "load_frontmatter",
+          "line": 240
+        },
+        {
+          "symbol": "read_text",
+          "line": 240
+        },
+        {
+          "symbol": "p",
+          "line": 240
+        },
+        {
+          "symbol": "fm.get",
+          "line": 241
+        },
+        {
+          "symbol": "fm",
+          "line": 241
+        },
+        {
+          "symbol": "status",
+          "line": 242
+        },
+        {
+          "symbol": "rep.warn",
+          "line": 243
+        },
+        {
+          "symbol": "rep",
+          "line": 243
+        },
+        {
+          "symbol": "rel",
+          "line": 243
+        },
+        {
+          "symbol": "status.upper",
+          "line": 244
+        },
+        {
+          "symbol": "status",
+          "line": 244
+        },
+        {
+          "symbol": "VALID_STATUS",
+          "line": 244
+        },
+        {
+          "symbol": "rep.warn",
+          "line": 245
+        },
+        {
+          "symbol": "rep",
+          "line": 245
+        },
+        {
+          "symbol": "rel",
+          "line": 245
+        },
+        {
+          "symbol": "status",
+          "line": 245
+        },
+        {
+          "symbol": "'|'.join",
+          "line": 245
+        },
+        {
+          "symbol": "VALID_STATUS",
+          "line": 245
+        },
+        {
+          "symbol": "fm.get",
+          "line": 246
+        },
+        {
+          "symbol": "fm",
+          "line": 246
+        },
+        {
+          "symbol": "sup",
+          "line": 247
+        },
+        {
+          "symbol": "Path(sup).name",
+          "line": 247
+        },
+        {
+          "symbol": "Path",
+          "line": 247
+        },
+        {
+          "symbol": "known",
+          "line": 247
+        },
+        {
+          "symbol": "rep.warn",
+          "line": 248
+        },
+        {
+          "symbol": "rep",
+          "line": 248
+        },
+        {
+          "symbol": "rel",
+          "line": 248
+        },
+        {
+          "symbol": "sup",
+          "line": 248
+        },
+        {
+          "symbol": "docs",
+          "line": 249
+        },
+        {
+          "symbol": "index_path.exists",
+          "line": 250
+        },
+        {
+          "symbol": "index_path",
+          "line": 250
+        },
+        {
+          "symbol": "rep.warn",
+          "line": 251
+        },
+        {
+          "symbol": "rep",
+          "line": 251
+        },
+        {
+          "symbol": "read_text",
+          "line": 252
+        },
+        {
+          "symbol": "index_path",
+          "line": 252
+        },
+        {
+          "symbol": "build_index",
+          "line": 252
+        },
+        {
+          "symbol": "root",
+          "line": 252
+        },
+        {
+          "symbol": "rep.warn",
+          "line": 253
+        },
+        {
+          "symbol": "rep",
+          "line": 253
+        },
+        {
+          "symbol": "rep",
+          "line": 254
+        },
+        {
+          "symbol": "Report",
+          "line": 261
+        },
+        {
+          "symbol": "root",
+          "line": 262
+        },
+        {
+          "symbol": "path.exists",
+          "line": 263
+        },
+        {
+          "symbol": "path",
+          "line": 263
+        },
+        {
+          "symbol": "rep.error",
+          "line": 264
+        },
+        {
+          "symbol": "rep",
+          "line": 264
+        },
+        {
+          "symbol": "rep",
+          "line": 265
+        },
+        {
+          "symbol": "find_table",
+          "line": 266
+        },
+        {
+          "symbol": "read_text",
+          "line": 266
+        },
+        {
+          "symbol": "path",
+          "line": 266
+        },
+        {
+          "symbol": "rows",
+          "line": 267
+        },
+        {
+          "symbol": "rep.error",
+          "line": 268
+        },
+        {
+          "symbol": "rep",
+          "line": 268
+        },
+        {
+          "symbol": "rep",
+          "line": 270
+        },
+        {
+          "symbol": "set",
+          "line": 272
+        },
+        {
+          "symbol": "rows",
+          "line": 273
+        },
+        {
+          "symbol": "(col(row, 'id') or '').strip",
+          "line": 274
+        },
+        {
+          "symbol": "col",
+          "line": 274
+        },
+        {
+          "symbol": "row",
+          "line": 274
+        },
+        {
+          "symbol": "rid",
+          "line": 275
+        },
+        {
+          "symbol": "is_example_row",
+          "line": 277
+        },
+        {
+          "symbol": "row",
+          "line": 277
+        },
+        {
+          "symbol": "re.fullmatch",
+          "line": 279
+        },
+        {
+          "symbol": "re",
+          "line": 279
+        },
+        {
+          "symbol": "rid",
+          "line": 279
+        },
+        {
+          "symbol": "rep.error",
+          "line": 280
+        },
+        {
+          "symbol": "rep",
+          "line": 280
+        },
+        {
+          "symbol": "rid",
+          "line": 280
+        },
+        {
+          "symbol": "rid",
+          "line": 282
+        },
+        {
+          "symbol": "seen",
+          "line": 282
+        },
+        {
+          "symbol": "rep.error",
+          "line": 283
+        },
+        {
+          "symbol": "rep",
+          "line": 283
+        },
+        {
+          "symbol": "rid",
+          "line": 283
+        },
+        {
+          "symbol": "seen.add",
+          "line": 284
+        },
+        {
+          "symbol": "seen",
+          "line": 284
+        },
+        {
+          "symbol": "rid",
+          "line": 284
+        },
+        {
+          "symbol": "entries.append",
+          "line": 285
+        },
+        {
+          "symbol": "entries",
+          "line": 285
+        },
+        {
+          "symbol": "row",
+          "line": 285
+        },
+        {
+          "symbol": "entries",
+          "line": 286
+        },
+        {
+          "symbol": "rep",
+          "line": 286
+        },
+        {
+          "symbol": "load_ledger",
+          "line": 290
+        },
+        {
+          "symbol": "root",
+          "line": 290
+        },
+        {
+          "symbol": "set",
+          "line": 291
+        },
+        {
+          "symbol": "entries",
+          "line": 292
+        },
+        {
+          "symbol": "col(row, 'id').strip",
+          "line": 293
+        },
+        {
+          "symbol": "col",
+          "line": 293
+        },
+        {
+          "symbol": "row",
+          "line": 293
+        },
+        {
+          "symbol": "ids.add",
+          "line": 294
+        },
+        {
+          "symbol": "ids",
+          "line": 294
+        },
+        {
+          "symbol": "rid",
+          "line": 294
+        },
+        {
+          "symbol": "(col(row, 'class') or '').strip().upper",
+          "line": 295
+        },
+        {
+          "symbol": "(col(row, 'class') or '').strip",
+          "line": 295
+        },
+        {
+          "symbol": "col",
+          "line": 295
+        },
+        {
+          "symbol": "row",
+          "line": 295
+        },
+        {
+          "symbol": "(col(row, 'source') or '').strip",
+          "line": 296
+        },
+        {
+          "symbol": "col",
+          "line": 296
+        },
+        {
+          "symbol": "row",
+          "line": 296
+        },
+        {
+          "symbol": "(col(row, 'date') or '').strip",
+          "line": 297
+        },
+        {
+          "symbol": "col",
+          "line": 297
+        },
+        {
+          "symbol": "row",
+          "line": 297
+        },
+        {
+          "symbol": "(col(row, 'confidence') or '').strip().upper",
+          "line": 298
+        },
+        {
+          "symbol": "(col(row, 'confidence') or '').strip",
+          "line": 298
+        },
+        {
+          "symbol": "col",
+          "line": 298
+        },
+        {
+          "symbol": "row",
+          "line": 298
+        },
+        {
+          "symbol": "cls",
+          "line": 299
+        },
+        {
+          "symbol": "LEDGER_CLASSES",
+          "line": 299
+        },
+        {
+          "symbol": "rep.error",
+          "line": 300
+        },
+        {
+          "symbol": "rep",
+          "line": 300
+        },
+        {
+          "symbol": "rid",
+          "line": 300
+        },
+        {
+          "symbol": "cls",
+          "line": 300
+        },
+        {
+          "symbol": "cls",
+          "line": 302
+        },
+        {
+          "symbol": "source.lower",
+          "line": 303
+        },
+        {
+          "symbol": "source",
+          "line": 303
+        },
+        {
+          "symbol": "rep.error",
+          "line": 304
+        },
+        {
+          "symbol": "rep",
+          "line": 304
+        },
+        {
+          "symbol": "rid",
+          "line": 304
+        },
+        {
+          "symbol": "date",
+          "line": 305
+        },
+        {
+          "symbol": "rep.error",
+          "line": 306
+        },
+        {
+          "symbol": "rep",
+          "line": 306
+        },
+        {
+          "symbol": "rid",
+          "line": 306
+        },
+        {
+          "symbol": "cls",
+          "line": 307
+        },
+        {
+          "symbol": "confidence",
+          "line": 308
+        },
+        {
+          "symbol": "CONFIDENCE_VALUES",
+          "line": 308
+        },
+        {
+          "symbol": "rep.error",
+          "line": 309
+        },
+        {
+          "symbol": "rep",
+          "line": 309
+        },
+        {
+          "symbol": "rid",
+          "line": 309
+        },
+        {
+          "symbol": "(col(row, 'value') or '').strip",
+          "line": 310
+        },
+        {
+          "symbol": "col",
+          "line": 310
+        },
+        {
+          "symbol": "row",
+          "line": 310
+        },
+        {
+          "symbol": "value",
+          "line": 311
+        },
+        {
+          "symbol": "re.search",
+          "line": 311
+        },
+        {
+          "symbol": "re",
+          "line": 311
+        },
+        {
+          "symbol": "rep.warn",
+          "line": 312
+        },
+        {
+          "symbol": "rep",
+          "line": 312
+        },
+        {
+          "symbol": "rid",
+          "line": 312
+        },
+        {
+          "symbol": "set",
+          "line": 314
+        },
+        {
+          "symbol": "root",
+          "line": 315
+        },
+        {
+          "symbol": "all_md_files",
+          "line": 316
+        },
+        {
+          "symbol": "root",
+          "line": 316
+        },
+        {
+          "symbol": "p",
+          "line": 317
+        },
+        {
+          "symbol": "ledger_path",
+          "line": 317
+        },
+        {
+          "symbol": "read_text",
+          "line": 319
+        },
+        {
+          "symbol": "p",
+          "line": 319
+        },
+        {
+          "symbol": "text.split",
+          "line": 320
+        },
+        {
+          "symbol": "text",
+          "line": 320
+        },
+        {
+          "symbol": "EXAMPLE_MARKER",
+          "line": 321
+        },
+        {
+          "symbol": "line",
+          "line": 321
+        },
+        {
+          "symbol": "EV_REF.finditer",
+          "line": 323
+        },
+        {
+          "symbol": "EV_REF",
+          "line": 323
+        },
+        {
+          "symbol": "line",
+          "line": 323
+        },
+        {
+          "symbol": "referenced.add",
+          "line": 324
+        },
+        {
+          "symbol": "referenced",
+          "line": 324
+        },
+        {
+          "symbol": "m.group",
+          "line": 324
+        },
+        {
+          "symbol": "m",
+          "line": 324
+        },
+        {
+          "symbol": "m.group",
+          "line": 325
+        },
+        {
+          "symbol": "m",
+          "line": 325
+        },
+        {
+          "symbol": "ids",
+          "line": 325
+        },
+        {
+          "symbol": "p.relative_to(root / 'mkt_docs').as_posix",
+          "line": 326
+        },
+        {
+          "symbol": "p.relative_to",
+          "line": 326
+        },
+        {
+          "symbol": "p",
+          "line": 326
+        },
+        {
+          "symbol": "root",
+          "line": 326
+        },
+        {
+          "symbol": "rep.error",
+          "line": 327
+        },
+        {
+          "symbol": "rep",
+          "line": 327
+        },
+        {
+          "symbol": "rel",
+          "line": 327
+        },
+        {
+          "symbol": "m.group",
+          "line": 327
+        },
+        {
+          "symbol": "m",
+          "line": 327
+        },
+        {
+          "symbol": "sorted",
+          "line": 328
+        },
+        {
+          "symbol": "ids",
+          "line": 328
+        },
+        {
+          "symbol": "referenced",
+          "line": 328
+        },
+        {
+          "symbol": "int",
+          "line": 328
+        },
+        {
+          "symbol": "x.split",
+          "line": 328
+        },
+        {
+          "symbol": "x",
+          "line": 328
+        },
+        {
+          "symbol": "rep.warn",
+          "line": 329
+        },
+        {
+          "symbol": "rep",
+          "line": 329
+        },
+        {
+          "symbol": "rid",
+          "line": 329
+        },
+        {
+          "symbol": "rep",
+          "line": 330
+        },
+        {
+          "symbol": "file_arg",
+          "line": 336
+        },
+        {
+          "symbol": "Path",
+          "line": 337
+        },
+        {
+          "symbol": "file_arg",
+          "line": 337
+        },
+        {
+          "symbol": "p.is_absolute",
+          "line": 338
+        },
+        {
+          "symbol": "p",
+          "line": 338
+        },
+        {
+          "symbol": "root",
+          "line": 339
+        },
+        {
+          "symbol": "file_arg",
+          "line": 339
+        },
+        {
+          "symbol": "p.exists",
+          "line": 340
+        },
+        {
+          "symbol": "p",
+          "line": 340
+        },
+        {
+          "symbol": "root",
+          "line": 341
+        },
+        {
+          "symbol": "(tactics / 'TACTICAL_PLAN.md').exists",
+          "line": 343
+        },
+        {
+          "symbol": "tactics",
+          "line": 343
+        },
+        {
+          "symbol": "files.append",
+          "line": 344
+        },
+        {
+          "symbol": "files",
+          "line": 344
+        },
+        {
+          "symbol": "tactics",
+          "line": 344
+        },
+        {
+          "symbol": "tactics.is_dir",
+          "line": 345
+        },
+        {
+          "symbol": "tactics",
+          "line": 345
+        },
+        {
+          "symbol": "files.extend",
+          "line": 346
+        },
+        {
+          "symbol": "files",
+          "line": 346
+        },
+        {
+          "symbol": "sorted",
+          "line": 346
+        },
+        {
+          "symbol": "tactics.glob",
+          "line": 346
+        },
+        {
+          "symbol": "tactics",
+          "line": 346
+        },
+        {
+          "symbol": "files",
+          "line": 347
+        },
+        {
+          "symbol": "Report",
+          "line": 351
+        },
+        {
+          "symbol": "default_tactical_files",
+          "line": 352
+        },
+        {
+          "symbol": "root",
+          "line": 352
+        },
+        {
+          "symbol": "file_arg",
+          "line": 352
+        },
+        {
+          "symbol": "files",
+          "line": 353
+        },
+        {
+          "symbol": "rep.warn",
+          "line": 354
+        },
+        {
+          "symbol": "rep",
+          "line": 354
+        },
+        {
+          "symbol": "rep",
+          "line": 355
+        },
+        {
+          "symbol": "files",
+          "line": 356
+        },
+        {
+          "symbol": "path.name",
+          "line": 357
+        },
+        {
+          "symbol": "path",
+          "line": 357
+        },
+        {
+          "symbol": "read_text",
+          "line": 358
+        },
+        {
+          "symbol": "path",
+          "line": 358
+        },
+        {
+          "symbol": "re.search",
+          "line": 359
+        },
+        {
+          "symbol": "re",
+          "line": 359
+        },
+        {
+          "symbol": "text",
+          "line": 359
+        },
+        {
+          "symbol": "re.MULTILINE",
+          "line": 359
+        },
+        {
+          "symbol": "re.IGNORECASE",
+          "line": 359
+        },
+        {
+          "symbol": "m",
+          "line": 360
+        },
+        {
+          "symbol": "rep.error",
+          "line": 361
+        },
+        {
+          "symbol": "rep",
+          "line": 361
+        },
+        {
+          "symbol": "rel",
+          "line": 361
+        },
+        {
+          "symbol": "parse_num",
+          "line": 363
+        },
+        {
+          "symbol": "m.group",
+          "line": 363
+        },
+        {
+          "symbol": "m",
+          "line": 363
+        },
+        {
+          "symbol": "total",
+          "line": 364
+        },
+        {
+          "symbol": "rep.error",
+          "line": 365
+        },
+        {
+          "symbol": "rep",
+          "line": 365
+        },
+        {
+          "symbol": "rel",
+          "line": 365
+        },
+        {
+          "symbol": "m.group(1).strip",
+          "line": 365
+        },
+        {
+          "symbol": "m.group",
+          "line": 365
+        },
+        {
+          "symbol": "m",
+          "line": 365
+        },
+        {
+          "symbol": "find_table",
+          "line": 367
+        },
+        {
+          "symbol": "text",
+          "line": 367
+        },
+        {
+          "symbol": "rows",
+          "line": 368
+        },
+        {
+          "symbol": "rep.error",
+          "line": 369
+        },
+        {
+          "symbol": "rep",
+          "line": 369
+        },
+        {
+          "symbol": "rel",
+          "line": 369
+        },
+        {
+          "symbol": "r",
+          "line": 371
+        },
+        {
+          "symbol": "rows",
+          "line": 371
+        },
+        {
+          "symbol": "is_example_row",
+          "line": 371
+        },
+        {
+          "symbol": "rows",
+          "line": 372
+        },
+        {
+          "symbol": "rep.error",
+          "line": 373
+        },
+        {
+          "symbol": "rep",
+          "line": 373
+        },
+        {
+          "symbol": "rel",
+          "line": 373
+        },
+        {
+          "symbol": "rows",
+          "line": 376
+        },
+        {
+          "symbol": "parse_num",
+          "line": 377
+        },
+        {
+          "symbol": "col",
+          "line": 377
+        },
+        {
+          "symbol": "r",
+          "line": 377
+        },
+        {
+          "symbol": "v",
+          "line": 378
+        },
+        {
+          "symbol": "rep.error",
+          "line": 379
+        },
+        {
+          "symbol": "rep",
+          "line": 379
+        },
+        {
+          "symbol": "rel",
+          "line": 379
+        },
+        {
+          "symbol": "col",
+          "line": 379
+        },
+        {
+          "symbol": "r",
+          "line": 379
+        },
+        {
+          "symbol": "col",
+          "line": 380
+        },
+        {
+          "symbol": "r",
+          "line": 380
+        },
+        {
+          "symbol": "v",
+          "line": 382
+        },
+        {
+          "symbol": "close_enough",
+          "line": 383
+        },
+        {
+          "symbol": "alloc",
+          "line": 383
+        },
+        {
+          "symbol": "total",
+          "line": 383
+        },
+        {
+          "symbol": "BUDGET_TOLERANCE",
+          "line": 383
+        },
+        {
+          "symbol": "rep.error",
+          "line": 384
+        },
+        {
+          "symbol": "rep",
+          "line": 384
+        },
+        {
+          "symbol": "rel",
+          "line": 384
+        },
+        {
+          "symbol": "alloc",
+          "line": 384
+        },
+        {
+          "symbol": "total",
+          "line": 384
+        },
+        {
+          "symbol": "rep",
+          "line": 386
+        },
+        {
+          "symbol": "cpc",
+          "line": 393
+        },
+        {
+          "symbol": "b",
+          "line": 393
+        },
+        {
+          "symbol": "r",
+          "line": 395
+        },
+        {
+          "symbol": "cvr",
+          "line": 395
+        },
+        {
+          "symbol": "r",
+          "line": 394
+        },
+        {
+          "symbol": "cvr",
+          "line": 394
+        },
+        {
+          "symbol": "r",
+          "line": 397
+        },
+        {
+          "symbol": "close",
+          "line": 397
+        },
+        {
+          "symbol": "r",
+          "line": 396
+        },
+        {
+          "symbol": "close",
+          "line": 396
+        },
+        {
+          "symbol": "r",
+          "line": 399
+        },
+        {
+          "symbol": "b",
+          "line": 399
+        },
+        {
+          "symbol": "b",
+          "line": 398
+        },
+        {
+          "symbol": "r",
+          "line": 398
+        },
+        {
+          "symbol": "Report",
+          "line": 404
+        },
+        {
+          "symbol": "default_tactical_files",
+          "line": 405
+        },
+        {
+          "symbol": "root",
+          "line": 405
+        },
+        {
+          "symbol": "file_arg",
+          "line": 405
+        },
+        {
+          "symbol": "files",
+          "line": 406
+        },
+        {
+          "symbol": "rep.warn",
+          "line": 407
+        },
+        {
+          "symbol": "rep",
+          "line": 407
+        },
+        {
+          "symbol": "rep",
+          "line": 408
+        },
+        {
+          "symbol": "files",
+          "line": 409
+        },
+        {
+          "symbol": "path.name",
+          "line": 410
+        },
+        {
+          "symbol": "path",
+          "line": 410
+        },
+        {
+          "symbol": "read_text",
+          "line": 411
+        },
+        {
+          "symbol": "path",
+          "line": 411
+        },
+        {
+          "symbol": "find_table",
+          "line": 412
+        },
+        {
+          "symbol": "text",
+          "line": 412
+        },
+        {
+          "symbol": "rows",
+          "line": 413
+        },
+        {
+          "symbol": "rep.error",
+          "line": 414
+        },
+        {
+          "symbol": "rep",
+          "line": 414
+        },
+        {
+          "symbol": "rel",
+          "line": 414
+        },
+        {
+          "symbol": "r",
+          "line": 417
+        },
+        {
+          "symbol": "rows",
+          "line": 417
+        },
+        {
+          "symbol": "is_example_row",
+          "line": 417
+        },
+        {
+          "symbol": "rows",
+          "line": 418
+        },
+        {
+          "symbol": "rep.error",
+          "line": 419
+        },
+        {
+          "symbol": "rep",
+          "line": 419
+        },
+        {
+          "symbol": "rel",
+          "line": 419
+        },
+        {
+          "symbol": "rows",
+          "line": 421
+        },
+        {
+          "symbol": "col",
+          "line": 422
+        },
+        {
+          "symbol": "r",
+          "line": 422
+        },
+        {
+          "symbol": "parse_num",
+          "line": 423
+        },
+        {
+          "symbol": "col",
+          "line": 423
+        },
+        {
+          "symbol": "r",
+          "line": 423
+        },
+        {
+          "symbol": "parse_num",
+          "line": 424
+        },
+        {
+          "symbol": "col",
+          "line": 424
+        },
+        {
+          "symbol": "r",
+          "line": 424
+        },
+        {
+          "symbol": "parse_num",
+          "line": 425
+        },
+        {
+          "symbol": "col",
+          "line": 425
+        },
+        {
+          "symbol": "r",
+          "line": 425
+        },
+        {
+          "symbol": "parse_num",
+          "line": 426
+        },
+        {
+          "symbol": "col",
+          "line": 426
+        },
+        {
+          "symbol": "r",
+          "line": 426
+        },
+        {
+          "symbol": "parse_num",
+          "line": 428
+        },
+        {
+          "symbol": "col",
+          "line": 428
+        },
+        {
+          "symbol": "r",
+          "line": 428
+        },
+        {
+          "symbol": "parse_num",
+          "line": 429
+        },
+        {
+          "symbol": "col",
+          "line": 429
+        },
+        {
+          "symbol": "r",
+          "line": 429
+        },
+        {
+          "symbol": "parse_num",
+          "line": 430
+        },
+        {
+          "symbol": "col",
+          "line": 430
+        },
+        {
+          "symbol": "r",
+          "line": 430
+        },
+        {
+          "symbol": "parse_num",
+          "line": 431
+        },
+        {
+          "symbol": "col",
+          "line": 431
+        },
+        {
+          "symbol": "r",
+          "line": 431
+        },
+        {
+          "symbol": "budget",
+          "line": 433
+        },
+        {
+          "symbol": "cpc",
+          "line": 433
+        },
+        {
+          "symbol": "rep.error",
+          "line": 434
+        },
+        {
+          "symbol": "rep",
+          "line": 434
+        },
+        {
+          "symbol": "rel",
+          "line": 434
+        },
+        {
+          "symbol": "channel",
+          "line": 434
+        },
+        {
+          "symbol": "dict",
+          "line": 438
+        },
+        {
+          "symbol": "stated",
+          "line": 438
+        },
+        {
+          "symbol": "FUNNEL_CHAIN",
+          "line": 439
+        },
+        {
+          "symbol": "compute",
+          "line": 440
+        },
+        {
+          "symbol": "budget",
+          "line": 440
+        },
+        {
+          "symbol": "cpc",
+          "line": 440
+        },
+        {
+          "symbol": "cvr",
+          "line": 440
+        },
+        {
+          "symbol": "close",
+          "line": 440
+        },
+        {
+          "symbol": "chain_inputs",
+          "line": 440
+        },
+        {
+          "symbol": "stated",
+          "line": 441
+        },
+        {
+          "symbol": "name",
+          "line": 441
+        },
+        {
+          "symbol": "rep.error",
+          "line": 442
+        },
+        {
+          "symbol": "rep",
+          "line": 442
+        },
+        {
+          "symbol": "rel",
+          "line": 442
+        },
+        {
+          "symbol": "channel",
+          "line": 442
+        },
+        {
+          "symbol": "name",
+          "line": 442
+        },
+        {
+          "symbol": "computed",
+          "line": 444
+        },
+        {
+          "symbol": "close_enough",
+          "line": 446
+        },
+        {
+          "symbol": "stated",
+          "line": 446
+        },
+        {
+          "symbol": "name",
+          "line": 446
+        },
+        {
+          "symbol": "computed",
+          "line": 446
+        },
+        {
+          "symbol": "FUNNEL_TOLERANCE",
+          "line": 446
+        },
+        {
+          "symbol": "rep.error",
+          "line": 447
+        },
+        {
+          "symbol": "rep",
+          "line": 447
+        },
+        {
+          "symbol": "rel",
+          "line": 447
+        },
+        {
+          "symbol": "channel",
+          "line": 447
+        },
+        {
+          "symbol": "name",
+          "line": 447
+        },
+        {
+          "symbol": "stated",
+          "line": 447
+        },
+        {
+          "symbol": "label",
+          "line": 447
+        },
+        {
+          "symbol": "computed",
+          "line": 448
+        },
+        {
+          "symbol": "rep",
+          "line": 449
+        },
+        {
+          "symbol": "Report",
+          "line": 455
+        },
+        {
+          "symbol": "root",
+          "line": 456
+        },
+        {
+          "symbol": "docs",
+          "line": 457
+        },
+        {
+          "symbol": "obj_path.exists",
+          "line": 458
+        },
+        {
+          "symbol": "obj_path",
+          "line": 458
+        },
+        {
+          "symbol": "rep.warn",
+          "line": 459
+        },
+        {
+          "symbol": "rep",
+          "line": 459
+        },
+        {
+          "symbol": "rep",
+          "line": 460
+        },
+        {
+          "symbol": "set",
+          "line": 461
+        },
+        {
+          "symbol": "OBJECTIVE_HEADING.findall",
+          "line": 461
+        },
+        {
+          "symbol": "OBJECTIVE_HEADING",
+          "line": 461
+        },
+        {
+          "symbol": "read_text",
+          "line": 461
+        },
+        {
+          "symbol": "obj_path",
+          "line": 461
+        },
+        {
+          "symbol": "objectives",
+          "line": 462
+        },
+        {
+          "symbol": "rep.error",
+          "line": 463
+        },
+        {
+          "symbol": "rep",
+          "line": 463
+        },
+        {
+          "symbol": "rep",
+          "line": 464
+        },
+        {
+          "symbol": "docs",
+          "line": 466
+        },
+        {
+          "symbol": "set",
+          "line": 467
+        },
+        {
+          "symbol": "tactical.exists",
+          "line": 468
+        },
+        {
+          "symbol": "tactical",
+          "line": 468
+        },
+        {
+          "symbol": "find_table",
+          "line": 469
+        },
+        {
+          "symbol": "read_text",
+          "line": 469
+        },
+        {
+          "symbol": "tactical",
+          "line": 469
+        },
+        {
+          "symbol": "rows",
+          "line": 470
+        },
+        {
+          "symbol": "rep.error",
+          "line": 471
+        },
+        {
+          "symbol": "rep",
+          "line": 471
+        },
+        {
+          "symbol": "rows",
+          "line": 474
+        },
+        {
+          "symbol": "is_example_row",
+          "line": 475
+        },
+        {
+          "symbol": "r",
+          "line": 475
+        },
+        {
+          "symbol": "set",
+          "line": 477
+        },
+        {
+          "symbol": "OBJECTIVE_TOKEN.findall",
+          "line": 477
+        },
+        {
+          "symbol": "OBJECTIVE_TOKEN",
+          "line": 477
+        },
+        {
+          "symbol": "col",
+          "line": 477
+        },
+        {
+          "symbol": "r",
+          "line": 477
+        },
+        {
+          "symbol": "tokens",
+          "line": 478
+        },
+        {
+          "symbol": "rep.error",
+          "line": 479
+        },
+        {
+          "symbol": "rep",
+          "line": 479
+        },
+        {
+          "symbol": "col",
+          "line": 479
+        },
+        {
+          "symbol": "r",
+          "line": 479
+        },
+        {
+          "symbol": "tokens",
+          "line": 480
+        },
+        {
+          "symbol": "t",
+          "line": 481
+        },
+        {
+          "symbol": "objectives",
+          "line": 481
+        },
+        {
+          "symbol": "rep.error",
+          "line": 482
+        },
+        {
+          "symbol": "rep",
+          "line": 482
+        },
+        {
+          "symbol": "col",
+          "line": 482
+        },
+        {
+          "symbol": "r",
+          "line": 482
+        },
+        {
+          "symbol": "t",
+          "line": 482
+        },
+        {
+          "symbol": "tokens",
+          "line": 484
+        },
+        {
+          "symbol": "objectives",
+          "line": 484
+        },
+        {
+          "symbol": "(col(r, 'kpi') or '').strip",
+          "line": 485
+        },
+        {
+          "symbol": "col",
+          "line": 485
+        },
+        {
+          "symbol": "r",
+          "line": 485
+        },
+        {
+          "symbol": "rep.error",
+          "line": 486
+        },
+        {
+          "symbol": "rep",
+          "line": 486
+        },
+        {
+          "symbol": "col",
+          "line": 486
+        },
+        {
+          "symbol": "r",
+          "line": 486
+        },
+        {
+          "symbol": "sorted",
+          "line": 487
+        },
+        {
+          "symbol": "objectives",
+          "line": 487
+        },
+        {
+          "symbol": "served",
+          "line": 487
+        },
+        {
+          "symbol": "rep.warn",
+          "line": 488
+        },
+        {
+          "symbol": "rep",
+          "line": 488
+        },
+        {
+          "symbol": "o",
+          "line": 488
+        },
+        {
+          "symbol": "rep.warn",
+          "line": 490
+        },
+        {
+          "symbol": "rep",
+          "line": 490
+        },
+        {
+          "symbol": "docs",
+          "line": 492
+        },
+        {
+          "symbol": "measure.exists",
+          "line": 493
+        },
+        {
+          "symbol": "measure",
+          "line": 493
+        },
+        {
+          "symbol": "find_table",
+          "line": 494
+        },
+        {
+          "symbol": "read_text",
+          "line": 494
+        },
+        {
+          "symbol": "measure",
+          "line": 494
+        },
+        {
+          "symbol": "rows",
+          "line": 495
+        },
+        {
+          "symbol": "rep.error",
+          "line": 496
+        },
+        {
+          "symbol": "rep",
+          "line": 496
+        },
+        {
+          "symbol": "set",
+          "line": 498
+        },
+        {
+          "symbol": "rows",
+          "line": 499
+        },
+        {
+          "symbol": "is_example_row",
+          "line": 500
+        },
+        {
+          "symbol": "r",
+          "line": 500
+        },
+        {
+          "symbol": "set",
+          "line": 502
+        },
+        {
+          "symbol": "OBJECTIVE_TOKEN.findall",
+          "line": 502
+        },
+        {
+          "symbol": "OBJECTIVE_TOKEN",
+          "line": 502
+        },
+        {
+          "symbol": "col",
+          "line": 502
+        },
+        {
+          "symbol": "r",
+          "line": 502
+        },
+        {
+          "symbol": "sorted",
+          "line": 503
+        },
+        {
+          "symbol": "objectives",
+          "line": 503
+        },
+        {
+          "symbol": "measured",
+          "line": 503
+        },
+        {
+          "symbol": "rep.error",
+          "line": 504
+        },
+        {
+          "symbol": "rep",
+          "line": 504
+        },
+        {
+          "symbol": "o",
+          "line": 504
+        },
+        {
+          "symbol": "rep.warn",
+          "line": 506
+        },
+        {
+          "symbol": "rep",
+          "line": 506
+        },
+        {
+          "symbol": "rep",
+          "line": 507
+        },
+        {
+          "symbol": "Report",
+          "line": 513
+        },
+        {
+          "symbol": "run_validate",
+          "line": 514
+        },
+        {
+          "symbol": "run_ledger",
+          "line": 514
+        },
+        {
+          "symbol": "run_budget",
+          "line": 515
+        },
+        {
+          "symbol": "run_funnel",
+          "line": 515
+        },
+        {
+          "symbol": "run_trace",
+          "line": 516
+        },
+        {
+          "symbol": "fn",
+          "line": 517
+        },
+        {
+          "symbol": "root",
+          "line": 517
+        },
+        {
+          "symbol": "sub.print",
+          "line": 518
+        },
+        {
+          "symbol": "sub",
+          "line": 518
+        },
+        {
+          "symbol": "title",
+          "line": 518
+        },
+        {
+          "symbol": "rep.merge",
+          "line": 519
+        },
+        {
+          "symbol": "rep",
+          "line": 519
+        },
+        {
+          "symbol": "sub",
+          "line": 519
+        },
+        {
+          "symbol": "rep",
+          "line": 520
+        },
+        {
+          "symbol": "argparse.ArgumentParser",
+          "line": 526
+        },
+        {
+          "symbol": "argparse",
+          "line": 526
+        },
+        {
+          "symbol": "__doc__",
+          "line": 526
+        },
+        {
+          "symbol": "parser.add_argument",
+          "line": 527
+        },
+        {
+          "symbol": "parser",
+          "line": 527
+        },
+        {
+          "symbol": "parser.add_argument",
+          "line": 529
+        },
+        {
+          "symbol": "parser",
+          "line": 529
+        },
+        {
+          "symbol": "parser.add_argument",
+          "line": 531
+        },
+        {
+          "symbol": "parser",
+          "line": 531
+        },
+        {
+          "symbol": "parser.add_argument",
+          "line": 532
+        },
+        {
+          "symbol": "parser",
+          "line": 532
+        },
+        {
+          "symbol": "parser.parse_args",
+          "line": 534
+        },
+        {
+          "symbol": "parser",
+          "line": 534
+        },
+        {
+          "symbol": "argv",
+          "line": 534
+        },
+        {
+          "symbol": "find_root",
+          "line": 536
+        },
+        {
+          "symbol": "args.root",
+          "line": 536
+        },
+        {
+          "symbol": "args",
+          "line": 536
+        },
+        {
+          "symbol": "root",
+          "line": 537
+        },
+        {
+          "symbol": "print",
+          "line": 538
+        },
+        {
+          "symbol": "args.command",
+          "line": 541
+        },
+        {
+          "symbol": "args",
+          "line": 541
+        },
+        {
+          "symbol": "cmd_index",
+          "line": 542
+        },
+        {
+          "symbol": "root",
+          "line": 542
+        },
+        {
+          "symbol": "run_validate",
+          "line": 545
+        },
+        {
+          "symbol": "root",
+          "line": 545
+        },
+        {
+          "symbol": "run_ledger",
+          "line": 546
+        },
+        {
+          "symbol": "root",
+          "line": 546
+        },
+        {
+          "symbol": "run_budget",
+          "line": 547
+        },
+        {
+          "symbol": "root",
+          "line": 547
+        },
+        {
+          "symbol": "args.file",
+          "line": 547
+        },
+        {
+          "symbol": "args",
+          "line": 547
+        },
+        {
+          "symbol": "run_funnel",
+          "line": 548
+        },
+        {
+          "symbol": "root",
+          "line": 548
+        },
+        {
+          "symbol": "args.file",
+          "line": 548
+        },
+        {
+          "symbol": "args",
+          "line": 548
+        },
+        {
+          "symbol": "run_trace",
+          "line": 549
+        },
+        {
+          "symbol": "root",
+          "line": 549
+        },
+        {
+          "symbol": "args.command",
+          "line": 551
+        },
+        {
+          "symbol": "args",
+          "line": 551
+        },
+        {
+          "symbol": "run_check",
+          "line": 552
+        },
+        {
+          "symbol": "root",
+          "line": 552
+        },
+        {
+          "symbol": "runners",
+          "line": 554
+        },
+        {
+          "symbol": "args.command",
+          "line": 554
+        },
+        {
+          "symbol": "args",
+          "line": 554
+        },
+        {
+          "symbol": "rep.print",
+          "line": 555
+        },
+        {
+          "symbol": "rep",
+          "line": 555
+        },
+        {
+          "symbol": "args.command",
+          "line": 555
+        },
+        {
+          "symbol": "args",
+          "line": 555
+        },
+        {
+          "symbol": "rep.exit_code",
+          "line": 557
+        },
+        {
+          "symbol": "rep",
+          "line": 557
+        },
+        {
+          "symbol": "args.strict",
+          "line": 557
+        },
+        {
+          "symbol": "args",
+          "line": 557
+        },
+        {
+          "symbol": "code",
+          "line": 558
+        },
+        {
+          "symbol": "print",
+          "line": 559
+        },
+        {
+          "symbol": "rep.warnings",
+          "line": 560
+        },
+        {
+          "symbol": "rep",
+          "line": 560
+        },
+        {
+          "symbol": "args.command",
+          "line": 559
+        },
+        {
+          "symbol": "args",
+          "line": 559
+        },
+        {
+          "symbol": "len",
+          "line": 560
+        },
+        {
+          "symbol": "args.command",
+          "line": 560
+        },
+        {
+          "symbol": "args",
+          "line": 560
+        },
+        {
+          "symbol": "print",
+          "line": 562
+        },
+        {
+          "symbol": "args.command",
+          "line": 562
+        },
+        {
+          "symbol": "args",
+          "line": 562
+        },
+        {
+          "symbol": "len",
+          "line": 562
+        },
+        {
+          "symbol": "rep.errors",
+          "line": 562
+        },
+        {
+          "symbol": "rep",
+          "line": 562
+        },
+        {
+          "symbol": "rep.warnings",
+          "line": 562
+        },
+        {
+          "symbol": "code",
+          "line": 563
+        },
+        {
+          "symbol": "__name__",
+          "line": 566
+        },
+        {
+          "symbol": "sys.exit",
+          "line": 567
+        },
+        {
+          "symbol": "sys",
+          "line": 567
+        },
+        {
+          "symbol": "main",
+          "line": 567
+        }
+      ]
+    },
+    "skills/mkt-agentic-sdlc/scripts/test_mkt_check.py": {
+      "hash": "b0fa0b772e314cff18dfd33cdc6f1ee9818ff917203b046f080cc84c70f3ecf2",
+      "definitions": [
+        {
+          "name": "MktCheckTests",
+          "type": "class",
+          "line": 94,
+          "bases": [
+            "unittest.TestCase"
+          ]
+        },
+        {
+          "name": "MktCheckTests.setUp",
+          "type": "method",
+          "line": 95
+        },
+        {
+          "name": "MktCheckTests.tearDown",
+          "type": "method",
+          "line": 105
+        },
+        {
+          "name": "MktCheckTests.write",
+          "type": "method",
+          "line": 108
+        },
+        {
+          "name": "MktCheckTests.run_cmd",
+          "type": "method",
+          "line": 113
+        },
+        {
+          "name": "MktCheckTests.test_clean_project_check_passes",
+          "type": "method",
+          "line": 118
+        },
+        {
+          "name": "MktCheckTests.test_index_lists_canonical_docs",
+          "type": "method",
+          "line": 122
+        },
+        {
+          "name": "MktCheckTests.test_budget_mismatch_fails",
+          "type": "method",
+          "line": 131
+        },
+        {
+          "name": "MktCheckTests.test_budget_total_line_missing_fails",
+          "type": "method",
+          "line": 136
+        },
+        {
+          "name": "MktCheckTests.test_funnel_broken_customers_fails",
+          "type": "method",
+          "line": 142
+        },
+        {
+          "name": "MktCheckTests.test_funnel_clean_passes",
+          "type": "method",
+          "line": 147
+        },
+        {
+          "name": "MktCheckTests.test_unresolved_ev_reference_fails",
+          "type": "method",
+          "line": 152
+        },
+        {
+          "name": "MktCheckTests.test_benchmark_without_url_fails",
+          "type": "method",
+          "line": 156
+        },
+        {
+          "name": "MktCheckTests.test_assumption_without_confidence_fails",
+          "type": "method",
+          "line": 161
+        },
+        {
+          "name": "MktCheckTests.test_orphan_tactic_fails",
+          "type": "method",
+          "line": 170
+        },
+        {
+          "name": "MktCheckTests.test_objective_without_kpi_row_fails",
+          "type": "method",
+          "line": 175
+        },
+        {
+          "name": "MktCheckTests.test_tactic_without_objective_token_fails",
+          "type": "method",
+          "line": 180
+        },
+        {
+          "name": "MktCheckTests.test_missing_status_warns_strict_fails",
+          "type": "method",
+          "line": 187
+        },
+        {
+          "name": "MktCheckTests.test_stale_index_warns",
+          "type": "method",
+          "line": 194
+        },
+        {
+          "name": "MktCheckTests.test_parse_num",
+          "type": "method",
+          "line": 202
+        }
+      ],
+      "imports": [
+        "sys",
+        "tempfile",
+        "unittest",
+        "pathlib",
+        "mkt_check"
+      ],
+      "references": [
+        {
+          "symbol": "sys.path.insert",
+          "line": 9
+        },
+        {
+          "symbol": "sys.path",
+          "line": 9
+        },
+        {
+          "symbol": "sys",
+          "line": 9
+        },
+        {
+          "symbol": "str",
+          "line": 9
+        },
+        {
+          "symbol": "Path(__file__).resolve().parent",
+          "line": 9
+        },
+        {
+          "symbol": "Path(__file__).resolve",
+          "line": 9
+        },
+        {
+          "symbol": "Path",
+          "line": 9
+        },
+        {
+          "symbol": "__file__",
+          "line": 9
+        },
+        {
+          "symbol": "unittest.TestCase",
+          "line": 94
+        },
+        {
+          "symbol": "unittest",
+          "line": 94
+        },
+        {
+          "symbol": "self",
+          "line": 96
+        },
+        {
+          "symbol": "tempfile.TemporaryDirectory",
+          "line": 96
+        },
+        {
+          "symbol": "tempfile",
+          "line": 96
+        },
+        {
+          "symbol": "self",
+          "line": 97
+        },
+        {
+          "symbol": "Path",
+          "line": 97
+        },
+        {
+          "symbol": "self._tmp.name",
+          "line": 97
+        },
+        {
+          "symbol": "self._tmp",
+          "line": 97
+        },
+        {
+          "symbol": "self",
+          "line": 98
+        },
+        {
+          "symbol": "self.root",
+          "line": 98
+        },
+        {
+          "symbol": "self.write",
+          "line": 99
+        },
+        {
+          "symbol": "self",
+          "line": 99
+        },
+        {
+          "symbol": "LEDGER",
+          "line": 99
+        },
+        {
+          "symbol": "self.write",
+          "line": 100
+        },
+        {
+          "symbol": "self",
+          "line": 100
+        },
+        {
+          "symbol": "VISION",
+          "line": 100
+        },
+        {
+          "symbol": "self.write",
+          "line": 101
+        },
+        {
+          "symbol": "self",
+          "line": 101
+        },
+        {
+          "symbol": "OBJECTIVES",
+          "line": 101
+        },
+        {
+          "symbol": "self.write",
+          "line": 102
+        },
+        {
+          "symbol": "self",
+          "line": 102
+        },
+        {
+          "symbol": "TACTICAL",
+          "line": 102
+        },
+        {
+          "symbol": "self.write",
+          "line": 103
+        },
+        {
+          "symbol": "self",
+          "line": 103
+        },
+        {
+          "symbol": "MEASUREMENT",
+          "line": 103
+        },
+        {
+          "symbol": "self._tmp.cleanup",
+          "line": 106
+        },
+        {
+          "symbol": "self._tmp",
+          "line": 106
+        },
+        {
+          "symbol": "self",
+          "line": 106
+        },
+        {
+          "symbol": "self.docs",
+          "line": 109
+        },
+        {
+          "symbol": "self",
+          "line": 109
+        },
+        {
+          "symbol": "rel",
+          "line": 109
+        },
+        {
+          "symbol": "p.parent.mkdir",
+          "line": 110
+        },
+        {
+          "symbol": "p.parent",
+          "line": 110
+        },
+        {
+          "symbol": "p",
+          "line": 110
+        },
+        {
+          "symbol": "p.write_text",
+          "line": 111
+        },
+        {
+          "symbol": "p",
+          "line": 111
+        },
+        {
+          "symbol": "content",
+          "line": 111
+        },
+        {
+          "symbol": "mkt_check.main",
+          "line": 114
+        },
+        {
+          "symbol": "mkt_check",
+          "line": 114
+        },
+        {
+          "symbol": "list",
+          "line": 114
+        },
+        {
+          "symbol": "argv",
+          "line": 114
+        },
+        {
+          "symbol": "str",
+          "line": 114
+        },
+        {
+          "symbol": "self.root",
+          "line": 114
+        },
+        {
+          "symbol": "self",
+          "line": 114
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 119
+        },
+        {
+          "symbol": "self",
+          "line": 119
+        },
+        {
+          "symbol": "self.run_cmd",
+          "line": 119
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 120
+        },
+        {
+          "symbol": "self",
+          "line": 120
+        },
+        {
+          "symbol": "self.run_cmd",
+          "line": 120
+        },
+        {
+          "symbol": "self.run_cmd",
+          "line": 123
+        },
+        {
+          "symbol": "self",
+          "line": 123
+        },
+        {
+          "symbol": "(self.docs / 'INDEX.md').read_text",
+          "line": 124
+        },
+        {
+          "symbol": "self.docs",
+          "line": 124
+        },
+        {
+          "symbol": "self",
+          "line": 124
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 125
+        },
+        {
+          "symbol": "self",
+          "line": 125
+        },
+        {
+          "symbol": "index",
+          "line": 125
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 126
+        },
+        {
+          "symbol": "self",
+          "line": 126
+        },
+        {
+          "symbol": "index",
+          "line": 126
+        },
+        {
+          "symbol": "self.assertNotIn",
+          "line": 127
+        },
+        {
+          "symbol": "self",
+          "line": 127
+        },
+        {
+          "symbol": "index",
+          "line": 127
+        },
+        {
+          "symbol": "self.write",
+          "line": 132
+        },
+        {
+          "symbol": "self",
+          "line": 132
+        },
+        {
+          "symbol": "TACTICAL.replace",
+          "line": 132
+        },
+        {
+          "symbol": "TACTICAL",
+          "line": 132
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 134
+        },
+        {
+          "symbol": "self",
+          "line": 134
+        },
+        {
+          "symbol": "self.run_cmd",
+          "line": 134
+        },
+        {
+          "symbol": "self.write",
+          "line": 137
+        },
+        {
+          "symbol": "self",
+          "line": 137
+        },
+        {
+          "symbol": "TACTICAL.replace",
+          "line": 137
+        },
+        {
+          "symbol": "TACTICAL",
+          "line": 137
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 138
+        },
+        {
+          "symbol": "self",
+          "line": 138
+        },
+        {
+          "symbol": "self.run_cmd",
+          "line": 138
+        },
+        {
+          "symbol": "TACTICAL.replace",
+          "line": 143
+        },
+        {
+          "symbol": "TACTICAL",
+          "line": 143
+        },
+        {
+          "symbol": "self.write",
+          "line": 144
+        },
+        {
+          "symbol": "self",
+          "line": 144
+        },
+        {
+          "symbol": "broken",
+          "line": 144
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 145
+        },
+        {
+          "symbol": "self",
+          "line": 145
+        },
+        {
+          "symbol": "self.run_cmd",
+          "line": 145
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 148
+        },
+        {
+          "symbol": "self",
+          "line": 148
+        },
+        {
+          "symbol": "self.run_cmd",
+          "line": 148
+        },
+        {
+          "symbol": "self.write",
+          "line": 153
+        },
+        {
+          "symbol": "self",
+          "line": 153
+        },
+        {
+          "symbol": "OBJECTIVES",
+          "line": 153
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 154
+        },
+        {
+          "symbol": "self",
+          "line": 154
+        },
+        {
+          "symbol": "self.run_cmd",
+          "line": 154
+        },
+        {
+          "symbol": "LEDGER.replace",
+          "line": 157
+        },
+        {
+          "symbol": "LEDGER",
+          "line": 157
+        },
+        {
+          "symbol": "self.write",
+          "line": 158
+        },
+        {
+          "symbol": "self",
+          "line": 158
+        },
+        {
+          "symbol": "bad",
+          "line": 158
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 159
+        },
+        {
+          "symbol": "self",
+          "line": 159
+        },
+        {
+          "symbol": "self.run_cmd",
+          "line": 159
+        },
+        {
+          "symbol": "LEDGER.replace",
+          "line": 162
+        },
+        {
+          "symbol": "LEDGER",
+          "line": 162
+        },
+        {
+          "symbol": "self.write",
+          "line": 165
+        },
+        {
+          "symbol": "self",
+          "line": 165
+        },
+        {
+          "symbol": "bad",
+          "line": 165
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 166
+        },
+        {
+          "symbol": "self",
+          "line": 166
+        },
+        {
+          "symbol": "self.run_cmd",
+          "line": 166
+        },
+        {
+          "symbol": "self.write",
+          "line": 171
+        },
+        {
+          "symbol": "self",
+          "line": 171
+        },
+        {
+          "symbol": "TACTICAL.replace",
+          "line": 171
+        },
+        {
+          "symbol": "TACTICAL",
+          "line": 171
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 173
+        },
+        {
+          "symbol": "self",
+          "line": 173
+        },
+        {
+          "symbol": "self.run_cmd",
+          "line": 173
+        },
+        {
+          "symbol": "MEASUREMENT.replace",
+          "line": 176
+        },
+        {
+          "symbol": "MEASUREMENT",
+          "line": 176
+        },
+        {
+          "symbol": "self.write",
+          "line": 177
+        },
+        {
+          "symbol": "self",
+          "line": 177
+        },
+        {
+          "symbol": "trimmed",
+          "line": 177
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 178
+        },
+        {
+          "symbol": "self",
+          "line": 178
+        },
+        {
+          "symbol": "self.run_cmd",
+          "line": 178
+        },
+        {
+          "symbol": "self.write",
+          "line": 181
+        },
+        {
+          "symbol": "self",
+          "line": 181
+        },
+        {
+          "symbol": "TACTICAL.replace",
+          "line": 181
+        },
+        {
+          "symbol": "TACTICAL",
+          "line": 181
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 183
+        },
+        {
+          "symbol": "self",
+          "line": 183
+        },
+        {
+          "symbol": "self.run_cmd",
+          "line": 183
+        },
+        {
+          "symbol": "VISION.replace",
+          "line": 188
+        },
+        {
+          "symbol": "VISION",
+          "line": 188
+        },
+        {
+          "symbol": "self.write",
+          "line": 189
+        },
+        {
+          "symbol": "self",
+          "line": 189
+        },
+        {
+          "symbol": "no_fm",
+          "line": 189
+        },
+        {
+          "symbol": "self.run_cmd",
+          "line": 190
+        },
+        {
+          "symbol": "self",
+          "line": 190
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 191
+        },
+        {
+          "symbol": "self",
+          "line": 191
+        },
+        {
+          "symbol": "self.run_cmd",
+          "line": 191
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 192
+        },
+        {
+          "symbol": "self",
+          "line": 192
+        },
+        {
+          "symbol": "self.run_cmd",
+          "line": 192
+        },
+        {
+          "symbol": "self.run_cmd",
+          "line": 195
+        },
+        {
+          "symbol": "self",
+          "line": 195
+        },
+        {
+          "symbol": "self.write",
+          "line": 196
+        },
+        {
+          "symbol": "self",
+          "line": 196
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 198
+        },
+        {
+          "symbol": "self",
+          "line": 198
+        },
+        {
+          "symbol": "self.run_cmd",
+          "line": 198
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 203
+        },
+        {
+          "symbol": "self",
+          "line": 203
+        },
+        {
+          "symbol": "mkt_check.parse_num",
+          "line": 203
+        },
+        {
+          "symbol": "mkt_check",
+          "line": 203
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 204
+        },
+        {
+          "symbol": "self",
+          "line": 204
+        },
+        {
+          "symbol": "mkt_check.parse_num",
+          "line": 204
+        },
+        {
+          "symbol": "mkt_check",
+          "line": 204
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 205
+        },
+        {
+          "symbol": "self",
+          "line": 205
+        },
+        {
+          "symbol": "mkt_check.parse_num",
+          "line": 205
+        },
+        {
+          "symbol": "mkt_check",
+          "line": 205
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 206
+        },
+        {
+          "symbol": "self",
+          "line": 206
+        },
+        {
+          "symbol": "mkt_check.parse_num",
+          "line": 206
+        },
+        {
+          "symbol": "mkt_check",
+          "line": 206
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 207
+        },
+        {
+          "symbol": "self",
+          "line": 207
+        },
+        {
+          "symbol": "mkt_check.parse_num",
+          "line": 207
+        },
+        {
+          "symbol": "mkt_check",
+          "line": 207
+        },
+        {
+          "symbol": "self.assertEqual",
+          "line": 208
+        },
+        {
+          "symbol": "self",
+          "line": 208
+        },
+        {
+          "symbol": "mkt_check.parse_num",
+          "line": 208
+        },
+        {
+          "symbol": "mkt_check",
+          "line": 208
+        },
+        {
+          "symbol": "self.assertIsNone",
+          "line": 209
+        },
+        {
+          "symbol": "self",
+          "line": 209
+        },
+        {
+          "symbol": "mkt_check.parse_num",
+          "line": 209
+        },
+        {
+          "symbol": "mkt_check",
+          "line": 209
+        },
+        {
+          "symbol": "self.assertIsNone",
+          "line": 210
+        },
+        {
+          "symbol": "self",
+          "line": 210
+        },
+        {
+          "symbol": "mkt_check.parse_num",
+          "line": 210
+        },
+        {
+          "symbol": "mkt_check",
+          "line": 210
+        },
+        {
+          "symbol": "__name__",
+          "line": 213
+        },
+        {
+          "symbol": "unittest.main",
+          "line": 214
+        },
+        {
+          "symbol": "unittest",
+          "line": 214
+        }
+      ]
+    },
+    "skills/mkt-agentic-sdlc/evals/run_behavioral.py": {
+      "hash": "42bc930c5edd0d467c23c4845aff8b9bc246354cca527386f835445a5248274b",
+      "definitions": [
+        {
+          "name": "_fail",
+          "type": "function",
+          "line": 20
+        },
+        {
+          "name": "load_scenario",
+          "type": "function",
+          "line": 26
+        },
+        {
+          "name": "_confined",
+          "type": "function",
+          "line": 69
+        },
+        {
+          "name": "seed",
+          "type": "function",
+          "line": 76
+        },
+        {
+          "name": "main",
+          "type": "function",
+          "line": 94
+        }
+      ],
+      "imports": [
+        "sys",
+        "tempfile",
+        "pathlib"
+      ],
+      "references": [
+        {
+          "symbol": "print",
+          "line": 22
+        },
+        {
+          "symbol": "msg",
+          "line": 22
+        },
+        {
+          "symbol": "sys.exit",
+          "line": 23
+        },
+        {
+          "symbol": "sys",
+          "line": 23
+        },
+        {
+          "symbol": "Path",
+          "line": 29
+        },
+        {
+          "symbol": "path",
+          "line": 29
+        },
+        {
+          "symbol": "p.is_file",
+          "line": 30
+        },
+        {
+          "symbol": "p",
+          "line": 30
+        },
+        {
+          "symbol": "_fail",
+          "line": 31
+        },
+        {
+          "symbol": "path",
+          "line": 31
+        },
+        {
+          "symbol": "p.read_text",
+          "line": 32
+        },
+        {
+          "symbol": "p",
+          "line": 32
+        },
+        {
+          "symbol": "text.startswith",
+          "line": 33
+        },
+        {
+          "symbol": "text",
+          "line": 33
+        },
+        {
+          "symbol": "_fail",
+          "line": 34
+        },
+        {
+          "symbol": "path",
+          "line": 34
+        },
+        {
+          "symbol": "text.split",
+          "line": 35
+        },
+        {
+          "symbol": "text",
+          "line": 35
+        },
+        {
+          "symbol": "len",
+          "line": 36
+        },
+        {
+          "symbol": "parts",
+          "line": 36
+        },
+        {
+          "symbol": "_fail",
+          "line": 37
+        },
+        {
+          "symbol": "path",
+          "line": 37
+        },
+        {
+          "symbol": "parts",
+          "line": 38
+        },
+        {
+          "symbol": "front_raw.splitlines",
+          "line": 40
+        },
+        {
+          "symbol": "front_raw",
+          "line": 40
+        },
+        {
+          "symbol": "line",
+          "line": 41
+        },
+        {
+          "symbol": "line.partition",
+          "line": 42
+        },
+        {
+          "symbol": "line",
+          "line": 42
+        },
+        {
+          "symbol": "front",
+          "line": 43
+        },
+        {
+          "symbol": "k.strip",
+          "line": 43
+        },
+        {
+          "symbol": "k",
+          "line": 43
+        },
+        {
+          "symbol": "v.strip",
+          "line": 43
+        },
+        {
+          "symbol": "v",
+          "line": 43
+        },
+        {
+          "symbol": "front",
+          "line": 44
+        },
+        {
+          "symbol": "_fail",
+          "line": 45
+        },
+        {
+          "symbol": "path",
+          "line": 45
+        },
+        {
+          "symbol": "body.splitlines",
+          "line": 48
+        },
+        {
+          "symbol": "body",
+          "line": 48
+        },
+        {
+          "symbol": "line.startswith",
+          "line": 49
+        },
+        {
+          "symbol": "line",
+          "line": 49
+        },
+        {
+          "symbol": "cur",
+          "line": 50
+        },
+        {
+          "symbol": "sections",
+          "line": 51
+        },
+        {
+          "symbol": "cur",
+          "line": 51
+        },
+        {
+          "symbol": "'\\n'.join(buf).strip",
+          "line": 51
+        },
+        {
+          "symbol": "'\\n'.join",
+          "line": 51
+        },
+        {
+          "symbol": "buf",
+          "line": 51
+        },
+        {
+          "symbol": "line[3:].strip",
+          "line": 52
+        },
+        {
+          "symbol": "line",
+          "line": 52
+        },
+        {
+          "symbol": "cur",
+          "line": 53
+        },
+        {
+          "symbol": "buf.append",
+          "line": 54
+        },
+        {
+          "symbol": "buf",
+          "line": 54
+        },
+        {
+          "symbol": "line",
+          "line": 54
+        },
+        {
+          "symbol": "cur",
+          "line": 55
+        },
+        {
+          "symbol": "sections",
+          "line": 56
+        },
+        {
+          "symbol": "cur",
+          "line": 56
+        },
+        {
+          "symbol": "'\\n'.join(buf).strip",
+          "line": 56
+        },
+        {
+          "symbol": "'\\n'.join",
+          "line": 56
+        },
+        {
+          "symbol": "buf",
+          "line": 56
+        },
+        {
+          "symbol": "REQUIRED_SECTIONS",
+          "line": 57
+        },
+        {
+          "symbol": "req",
+          "line": 58
+        },
+        {
+          "symbol": "sections",
+          "line": 58
+        },
+        {
+          "symbol": "_fail",
+          "line": 59
+        },
+        {
+          "symbol": "path",
+          "line": 59
+        },
+        {
+          "symbol": "req",
+          "line": 59
+        },
+        {
+          "symbol": "front",
+          "line": 61
+        },
+        {
+          "symbol": "front.get",
+          "line": 62
+        },
+        {
+          "symbol": "front",
+          "line": 62
+        },
+        {
+          "symbol": "sections",
+          "line": 63
+        },
+        {
+          "symbol": "sections",
+          "line": 64
+        },
+        {
+          "symbol": "sections",
+          "line": 65
+        },
+        {
+          "symbol": "Path",
+          "line": 72
+        },
+        {
+          "symbol": "rel",
+          "line": 72
+        },
+        {
+          "symbol": "p.is_absolute",
+          "line": 73
+        },
+        {
+          "symbol": "p",
+          "line": 73
+        },
+        {
+          "symbol": "bool",
+          "line": 73
+        },
+        {
+          "symbol": "p.drive",
+          "line": 73
+        },
+        {
+          "symbol": "p.parts",
+          "line": 73
+        },
+        {
+          "symbol": "Path",
+          "line": 78
+        },
+        {
+          "symbol": "dest",
+          "line": 78
+        },
+        {
+          "symbol": "scenario['setup'].splitlines",
+          "line": 79
+        },
+        {
+          "symbol": "scenario",
+          "line": 79
+        },
+        {
+          "symbol": "line.strip",
+          "line": 80
+        },
+        {
+          "symbol": "line",
+          "line": 80
+        },
+        {
+          "symbol": "line.startswith",
+          "line": 81
+        },
+        {
+          "symbol": "line",
+          "line": 81
+        },
+        {
+          "symbol": "line[2:].partition",
+          "line": 83
+        },
+        {
+          "symbol": "line",
+          "line": 83
+        },
+        {
+          "symbol": "rel.strip",
+          "line": 84
+        },
+        {
+          "symbol": "rel",
+          "line": 84
+        },
+        {
+          "symbol": "rel",
+          "line": 85
+        },
+        {
+          "symbol": "_confined",
+          "line": 87
+        },
+        {
+          "symbol": "rel",
+          "line": 87
+        },
+        {
+          "symbol": "_fail",
+          "line": 88
+        },
+        {
+          "symbol": "rel",
+          "line": 88
+        },
+        {
+          "symbol": "dest",
+          "line": 89
+        },
+        {
+          "symbol": "rel",
+          "line": 89
+        },
+        {
+          "symbol": "target.parent.mkdir",
+          "line": 90
+        },
+        {
+          "symbol": "target.parent",
+          "line": 90
+        },
+        {
+          "symbol": "target",
+          "line": 90
+        },
+        {
+          "symbol": "target.write_text",
+          "line": 91
+        },
+        {
+          "symbol": "target",
+          "line": 91
+        },
+        {
+          "symbol": "content.strip",
+          "line": 91
+        },
+        {
+          "symbol": "content",
+          "line": 91
+        },
+        {
+          "symbol": "len",
+          "line": 95
+        },
+        {
+          "symbol": "argv",
+          "line": 95
+        },
+        {
+          "symbol": "_fail",
+          "line": 96
+        },
+        {
+          "symbol": "load_scenario",
+          "line": 97
+        },
+        {
+          "symbol": "argv",
+          "line": 97
+        },
+        {
+          "symbol": "Path",
+          "line": 98
+        },
+        {
+          "symbol": "tempfile.mkdtemp",
+          "line": 98
+        },
+        {
+          "symbol": "tempfile",
+          "line": 98
+        },
+        {
+          "symbol": "seed",
+          "line": 99
+        },
+        {
+          "symbol": "scenario",
+          "line": 99
+        },
+        {
+          "symbol": "fixture",
+          "line": 99
+        },
+        {
+          "symbol": "print",
+          "line": 100
+        },
+        {
+          "symbol": "scenario",
+          "line": 100
+        },
+        {
+          "symbol": "print",
+          "line": 101
+        },
+        {
+          "symbol": "scenario",
+          "line": 101
+        },
+        {
+          "symbol": "print",
+          "line": 102
+        },
+        {
+          "symbol": "fixture",
+          "line": 102
+        },
+        {
+          "symbol": "print",
+          "line": 103
+        },
+        {
+          "symbol": "print",
+          "line": 104
+        },
+        {
+          "symbol": "scenario",
+          "line": 104
+        },
+        {
+          "symbol": "print",
+          "line": 105
+        },
+        {
+          "symbol": "print",
+          "line": 106
+        },
+        {
+          "symbol": "scenario",
+          "line": 106
+        },
+        {
+          "symbol": "print",
+          "line": 107
+        },
+        {
+          "symbol": "__name__",
+          "line": 113
+        },
+        {
+          "symbol": "sys.exit",
+          "line": 114
+        },
+        {
+          "symbol": "sys",
+          "line": 114
+        },
+        {
+          "symbol": "main",
+          "line": 114
+        },
+        {
+          "symbol": "sys.argv",
+          "line": 114
+        }
+      ]
+    },
+    "skills/mkt-agentic-sdlc/scripts/test_skill_invariants.py": {
+      "hash": "4bc9586e6e274fdca5b65ba9478140a12b7c2a572bbf06850ccda0a1713b432d",
+      "definitions": [
+        {
+          "name": "read",
+          "type": "function",
+          "line": 23
+        },
+        {
+          "name": "SkillInvariants",
+          "type": "class",
+          "line": 27,
+          "bases": [
+            "unittest.TestCase"
+          ]
+        },
+        {
+          "name": "SkillInvariants.test_three_guarantees_declared",
+          "type": "method",
+          "line": 31
+        },
+        {
+          "name": "SkillInvariants.test_honesty_contract",
+          "type": "method",
+          "line": 38
+        },
+        {
+          "name": "SkillInvariants.test_triage_levels",
+          "type": "method",
+          "line": 44
+        },
+        {
+          "name": "SkillInvariants.test_dual_mode",
+          "type": "method",
+          "line": 51
+        },
+        {
+          "name": "SkillInvariants.test_elicitation_only_owned_facts",
+          "type": "method",
+          "line": 59
+        },
+        {
+          "name": "SkillInvariants.test_elicitation_preauthorize_dont_know",
+          "type": "method",
+          "line": 65
+        },
+        {
+          "name": "SkillInvariants.test_elicitation_wave_cap",
+          "type": "method",
+          "line": 71
+        },
+        {
+          "name": "SkillInvariants.test_ledger_classes",
+          "type": "method",
+          "line": 76
+        },
+        {
+          "name": "SkillInvariants.test_research_url_not_docpointer",
+          "type": "method",
+          "line": 83
+        },
+        {
+          "name": "SkillInvariants.test_review_swap_test_published_statement",
+          "type": "method",
+          "line": 93
+        },
+        {
+          "name": "SkillInvariants.test_review_low_cost_trap",
+          "type": "method",
+          "line": 99
+        },
+        {
+          "name": "SkillInvariants.test_review_strawman_swap",
+          "type": "method",
+          "line": 105
+        },
+        {
+          "name": "SkillInvariants.test_review_conformance_statement",
+          "type": "method",
+          "line": 110
+        },
+        {
+          "name": "SkillInvariants.test_frameworks_sostac_and_swap",
+          "type": "method",
+          "line": 116
+        },
+        {
+          "name": "SkillInvariants.test_frameworks_salesled_funnel",
+          "type": "method",
+          "line": 122
+        },
+        {
+          "name": "SkillInvariants.test_template_parseable_formats",
+          "type": "method",
+          "line": 131
+        },
+        {
+          "name": "SkillInvariants.test_template_situation_swot",
+          "type": "method",
+          "line": 141
+        },
+        {
+          "name": "SkillInvariants.test_template_enabler_row",
+          "type": "method",
+          "line": 145
+        },
+        {
+          "name": "SkillInvariants.test_support_files_wired",
+          "type": "method",
+          "line": 152
+        },
+        {
+          "name": "SkillInvariants.test_enforcement_pre_delivery_gate",
+          "type": "method",
+          "line": 168
+        },
+        {
+          "name": "SkillInvariants.test_behavioral_driver_no_llm",
+          "type": "method",
+          "line": 175
+        }
+      ],
+      "imports": [
+        "os",
+        "sys",
+        "unittest",
+        "pathlib"
+      ],
+      "references": [
+        {
+          "symbol": "sys.path.insert",
+          "line": 17
+        },
+        {
+          "symbol": "sys.path",
+          "line": 17
+        },
+        {
+          "symbol": "sys",
+          "line": 17
+        },
+        {
+          "symbol": "os.path.dirname",
+          "line": 17
+        },
+        {
+          "symbol": "os.path",
+          "line": 17
+        },
+        {
+          "symbol": "os",
+          "line": 17
+        },
+        {
+          "symbol": "os.path.abspath",
+          "line": 17
+        },
+        {
+          "symbol": "__file__",
+          "line": 17
+        },
+        {
+          "symbol": "Path(__file__).resolve().parents",
+          "line": 20
+        },
+        {
+          "symbol": "Path(__file__).resolve",
+          "line": 20
+        },
+        {
+          "symbol": "Path",
+          "line": 20
+        },
+        {
+          "symbol": "__file__",
+          "line": 20
+        },
+        {
+          "symbol": "(SKILL_DIR / rel).read_text",
+          "line": 24
+        },
+        {
+          "symbol": "SKILL_DIR",
+          "line": 24
+        },
+        {
+          "symbol": "rel",
+          "line": 24
+        },
+        {
+          "symbol": "unittest.TestCase",
+          "line": 27
+        },
+        {
+          "symbol": "unittest",
+          "line": 27
+        },
+        {
+          "symbol": "read",
+          "line": 32
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 33
+        },
+        {
+          "symbol": "self",
+          "line": 33
+        },
+        {
+          "symbol": "t",
+          "line": 33
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 34
+        },
+        {
+          "symbol": "self",
+          "line": 34
+        },
+        {
+          "symbol": "t",
+          "line": 34
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 35
+        },
+        {
+          "symbol": "self",
+          "line": 35
+        },
+        {
+          "symbol": "t",
+          "line": 35
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 36
+        },
+        {
+          "symbol": "self",
+          "line": 36
+        },
+        {
+          "symbol": "t",
+          "line": 36
+        },
+        {
+          "symbol": "read",
+          "line": 40
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 41
+        },
+        {
+          "symbol": "self",
+          "line": 41
+        },
+        {
+          "symbol": "t",
+          "line": 41
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 42
+        },
+        {
+          "symbol": "self",
+          "line": 42
+        },
+        {
+          "symbol": "t",
+          "line": 42
+        },
+        {
+          "symbol": "read",
+          "line": 45
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 47
+        },
+        {
+          "symbol": "self",
+          "line": 47
+        },
+        {
+          "symbol": "level",
+          "line": 47
+        },
+        {
+          "symbol": "t",
+          "line": 47
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 49
+        },
+        {
+          "symbol": "self",
+          "line": 49
+        },
+        {
+          "symbol": "t.lower",
+          "line": 49
+        },
+        {
+          "symbol": "t",
+          "line": 49
+        },
+        {
+          "symbol": "read",
+          "line": 52
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 53
+        },
+        {
+          "symbol": "self",
+          "line": 53
+        },
+        {
+          "symbol": "t",
+          "line": 53
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 54
+        },
+        {
+          "symbol": "self",
+          "line": 54
+        },
+        {
+          "symbol": "t",
+          "line": 54
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 55
+        },
+        {
+          "symbol": "self",
+          "line": 55
+        },
+        {
+          "symbol": "t",
+          "line": 55
+        },
+        {
+          "symbol": "read",
+          "line": 60
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 61
+        },
+        {
+          "symbol": "self",
+          "line": 61
+        },
+        {
+          "symbol": "t",
+          "line": 61
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 63
+        },
+        {
+          "symbol": "self",
+          "line": 63
+        },
+        {
+          "symbol": "read",
+          "line": 63
+        },
+        {
+          "symbol": "read",
+          "line": 67
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 68
+        },
+        {
+          "symbol": "self",
+          "line": 68
+        },
+        {
+          "symbol": "t",
+          "line": 68
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 69
+        },
+        {
+          "symbol": "self",
+          "line": 69
+        },
+        {
+          "symbol": "t",
+          "line": 69
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 72
+        },
+        {
+          "symbol": "self",
+          "line": 72
+        },
+        {
+          "symbol": "read",
+          "line": 72
+        },
+        {
+          "symbol": "read",
+          "line": 77
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 79
+        },
+        {
+          "symbol": "self",
+          "line": 79
+        },
+        {
+          "symbol": "cls",
+          "line": 79
+        },
+        {
+          "symbol": "t",
+          "line": 79
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 80
+        },
+        {
+          "symbol": "self",
+          "line": 80
+        },
+        {
+          "symbol": "t",
+          "line": 81
+        },
+        {
+          "symbol": "t.lower().replace",
+          "line": 80
+        },
+        {
+          "symbol": "t.lower",
+          "line": 80
+        },
+        {
+          "symbol": "t",
+          "line": 80
+        },
+        {
+          "symbol": "read",
+          "line": 86
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 88
+        },
+        {
+          "symbol": "self",
+          "line": 88
+        },
+        {
+          "symbol": "t",
+          "line": 88
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 89
+        },
+        {
+          "symbol": "self",
+          "line": 89
+        },
+        {
+          "symbol": "t",
+          "line": 89
+        },
+        {
+          "symbol": "read",
+          "line": 95
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 96
+        },
+        {
+          "symbol": "self",
+          "line": 96
+        },
+        {
+          "symbol": "t",
+          "line": 96
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 97
+        },
+        {
+          "symbol": "self",
+          "line": 97
+        },
+        {
+          "symbol": "t",
+          "line": 97
+        },
+        {
+          "symbol": "read",
+          "line": 101
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 102
+        },
+        {
+          "symbol": "self",
+          "line": 102
+        },
+        {
+          "symbol": "t",
+          "line": 102
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 103
+        },
+        {
+          "symbol": "self",
+          "line": 103
+        },
+        {
+          "symbol": "t",
+          "line": 103
+        },
+        {
+          "symbol": "read",
+          "line": 107
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 108
+        },
+        {
+          "symbol": "self",
+          "line": 108
+        },
+        {
+          "symbol": "t",
+          "line": 108
+        },
+        {
+          "symbol": "read",
+          "line": 111
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 112
+        },
+        {
+          "symbol": "self",
+          "line": 112
+        },
+        {
+          "symbol": "t",
+          "line": 112
+        },
+        {
+          "symbol": "read",
+          "line": 117
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 118
+        },
+        {
+          "symbol": "self",
+          "line": 118
+        },
+        {
+          "symbol": "t",
+          "line": 118
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 119
+        },
+        {
+          "symbol": "self",
+          "line": 119
+        },
+        {
+          "symbol": "t",
+          "line": 119
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 120
+        },
+        {
+          "symbol": "self",
+          "line": 120
+        },
+        {
+          "symbol": "t",
+          "line": 120
+        },
+        {
+          "symbol": "read",
+          "line": 125
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 126
+        },
+        {
+          "symbol": "self",
+          "line": 126
+        },
+        {
+          "symbol": "t",
+          "line": 126
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 127
+        },
+        {
+          "symbol": "self",
+          "line": 127
+        },
+        {
+          "symbol": "t",
+          "line": 127
+        },
+        {
+          "symbol": "read",
+          "line": 134
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 135
+        },
+        {
+          "symbol": "self",
+          "line": 135
+        },
+        {
+          "symbol": "t",
+          "line": 135
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 136
+        },
+        {
+          "symbol": "self",
+          "line": 136
+        },
+        {
+          "symbol": "t",
+          "line": 136
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 137
+        },
+        {
+          "symbol": "self",
+          "line": 137
+        },
+        {
+          "symbol": "t",
+          "line": 137
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 138
+        },
+        {
+          "symbol": "self",
+          "line": 138
+        },
+        {
+          "symbol": "t",
+          "line": 138
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 139
+        },
+        {
+          "symbol": "self",
+          "line": 139
+        },
+        {
+          "symbol": "t",
+          "line": 139
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 143
+        },
+        {
+          "symbol": "self",
+          "line": 143
+        },
+        {
+          "symbol": "read",
+          "line": 143
+        },
+        {
+          "symbol": "read",
+          "line": 147
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 148
+        },
+        {
+          "symbol": "self",
+          "line": 148
+        },
+        {
+          "symbol": "t",
+          "line": 148
+        },
+        {
+          "symbol": "read",
+          "line": 153
+        },
+        {
+          "symbol": "expected",
+          "line": 157
+        },
+        {
+          "symbol": "self.assertTrue",
+          "line": 158
+        },
+        {
+          "symbol": "self",
+          "line": 158
+        },
+        {
+          "symbol": "(SKILL_DIR / rel).is_file",
+          "line": 158
+        },
+        {
+          "symbol": "SKILL_DIR",
+          "line": 158
+        },
+        {
+          "symbol": "rel",
+          "line": 158
+        },
+        {
+          "symbol": "rel",
+          "line": 159
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 160
+        },
+        {
+          "symbol": "self",
+          "line": 160
+        },
+        {
+          "symbol": "Path(rel).name",
+          "line": 160
+        },
+        {
+          "symbol": "Path",
+          "line": 160
+        },
+        {
+          "symbol": "rel",
+          "line": 160
+        },
+        {
+          "symbol": "skill_md",
+          "line": 160
+        },
+        {
+          "symbol": "rel",
+          "line": 161
+        },
+        {
+          "symbol": "SKILL_DIR.glob",
+          "line": 162
+        },
+        {
+          "symbol": "SKILL_DIR",
+          "line": 162
+        },
+        {
+          "symbol": "p.name",
+          "line": 163
+        },
+        {
+          "symbol": "p",
+          "line": 163
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 165
+        },
+        {
+          "symbol": "self",
+          "line": 165
+        },
+        {
+          "symbol": "p.name",
+          "line": 165
+        },
+        {
+          "symbol": "p",
+          "line": 165
+        },
+        {
+          "symbol": "skill_md",
+          "line": 165
+        },
+        {
+          "symbol": "p.name",
+          "line": 166
+        },
+        {
+          "symbol": "p",
+          "line": 166
+        },
+        {
+          "symbol": "read",
+          "line": 169
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 170
+        },
+        {
+          "symbol": "self",
+          "line": 170
+        },
+        {
+          "symbol": "t",
+          "line": 170
+        },
+        {
+          "symbol": "self.assertIn",
+          "line": 171
+        },
+        {
+          "symbol": "self",
+          "line": 171
+        },
+        {
+          "symbol": "t",
+          "line": 171
+        },
+        {
+          "symbol": "SKILL_DIR",
+          "line": 176
+        },
+        {
+          "symbol": "p.is_file",
+          "line": 177
+        },
+        {
+          "symbol": "p",
+          "line": 177
+        },
+        {
+          "symbol": "self.skipTest",
+          "line": 178
+        },
+        {
+          "symbol": "self",
+          "line": 178
+        },
+        {
+          "symbol": "p.read_text",
+          "line": 179
+        },
+        {
+          "symbol": "p",
+          "line": 179
+        },
+        {
+          "symbol": "forbidden",
+          "line": 182
+        },
+        {
+          "symbol": "self.assertNotIn",
+          "line": 183
+        },
+        {
+          "symbol": "self",
+          "line": 183
+        },
+        {
+          "symbol": "tok",
+          "line": 183
+        },
+        {
+          "symbol": "src",
+          "line": 183
+        },
+        {
+          "symbol": "__name__",
+          "line": 186
+        },
+        {
+          "symbol": "unittest.main",
+          "line": 187
+        },
+        {
+          "symbol": "unittest",
+          "line": 187
+        }
+      ]
+    }
+  }
+}
