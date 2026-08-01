@@ -51,4 +51,4 @@ not manifested here.
 | `strategic/capabilities_and_positioning.md` | CURRENT | Honest catalog of agentic-sdlc's current advantages (explained), parity points, and positioning vs superpowers (through v6.0.x). Owns the four-layer (A/B/C/D... |
 | `strategic/existing_features.md` | CURRENT | Concise catalog of the skill's existing features. |
 | `strategic/process_agentic_sdlc_devpnt.md` | CURRENT | The joint agentic-sdlc × devPNT governance process — pipeline, documents, human vs agent reviews, mandatory checks, and why it works. Read to understand how... |
-| `strategic/skill_family_agent_workflows.md` | CURRENT | How the three skills differ in the way an AGENT actually works under each — same spine, three fidelity disciplines. For the owner; body in Italian. |
+| `strategic/skill_family_agent_workflows.md` | CURRENT | How the three skills differ in the way an AGENT actually works under each — from a full three-way doctrine inventory. For the owner; body in Italian. |
