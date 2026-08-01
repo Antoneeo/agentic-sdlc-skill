@@ -360,9 +360,22 @@ threats are owned by F-025 (TL1–TL6) and not restated.
 - [x] End-to-end smoke on a mini corpus: graph/corpus/index/validate/check rc 0; UC2 sums
       by selection; the span check and the digest check each caught a real error on the
       first attempt
-- [ ] Ingest the owner's real corpus; answer UC2 and UC3 from the graph — **the
-      acceptance bar; needs the owner's documents**
-- [ ] Closure: `check` CLEAN, Component Map, ADR (topic graph + detect-don't-decide)
+- [x] Ingest the owner's real corpus; answer UC2 and UC3 from the graph — **done on
+      the Eclosion corpus** (owner: "pesca dal progetto di Eclosion", 2026-08-01).
+      Five specifications ingested content-addressed into
+      `D:\SoftwareDev\skill_sdlc\kb_field_test_eclosion\`; 7 topics, 26 claims, every
+      one bound to a line locator; `check: CLEAN`, graph and corpus consistent.
+      **UC2 answered**: power-user storage = 5+150+200 = 355 MB/month, matching the
+      document's own declared total, each figure with its source. **UC3 produced a
+      real finding**: the scaling strategy (Phase 1 < 100 concurrent) and the
+      performance report (200–300 concurrent), same in-document date, GIVEN vs GIVEN
+      → CONTESTED pair, escalated to the owner in the legal form — the machine held
+      it, decided nothing. During authoring the checks caught two real errors
+      (duplicate id from two claims on one line without a distinguishing qty;
+      CONTESTED pointers computed without the qty component) and, earlier, a wrong
+      span and a fake digest — four catches, zero false positives
+- [ ] Closure: `check` CLEAN on this repo, Component Map, ADR (topic graph +
+      detect-don't-decide); owner resolves or leaves open the capacity CONTESTED
 
 ## Test Strategy
 
