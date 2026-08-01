@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Deterministic tests for mkt_check.py — fixture project built in a tempdir."""
 
+import re
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -208,6 +210,40 @@ class MktCheckTests(unittest.TestCase):
         self.assertEqual(mkt_check.parse_num("EUR 6,000"), 6000)
         self.assertIsNone(mkt_check.parse_num(""))
         self.assertIsNone(mkt_check.parse_num("n/a"))
+
+
+class CommandSurfaceTests(unittest.TestCase):
+    """Every subcommand SKILL.md advertises must be recognized by mkt_check.py.
+
+    Regression net for the dropped-`migrate` bug: SKILL.md documented the command
+    while the entry point's hand-copied spine list rejected it with an argparse
+    usage error (exit 2). `--help` on a recognized subcommand exits 0; an unknown
+    one fails choice validation and exits 2.
+    """
+
+    SKILL_MD = Path(__file__).resolve().parents[1] / "SKILL.md"
+    VALIDATOR = Path(__file__).resolve().parent / "mkt_check.py"
+
+    def documented_commands(self):
+        text = self.SKILL_MD.read_text(encoding="utf-8")
+        line = next(l for l in text.splitlines()
+                    if "mkt_check.py" in l and "validator" in l)
+        return sorted(set(re.findall(r"`([a-z]+)`", line)))
+
+    def test_skill_md_names_the_command_surface(self):
+        cmds = self.documented_commands()
+        self.assertIn("check", cmds, "SKILL.md validator line lost its command list")
+        self.assertIn("migrate", cmds, "SKILL.md validator line lost the spine commands")
+
+    def test_every_documented_subcommand_is_recognized(self):
+        for cmd in self.documented_commands():
+            proc = subprocess.run(
+                [sys.executable, str(self.VALIDATOR), cmd, "--help"],
+                capture_output=True, text=True)
+            self.assertEqual(
+                proc.returncode, 0,
+                f"`mkt_check.py {cmd}` is documented in SKILL.md but the entry "
+                f"point does not recognize it:\n{proc.stderr}")
 
 
 if __name__ == "__main__":
