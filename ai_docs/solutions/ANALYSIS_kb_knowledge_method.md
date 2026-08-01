@@ -1,10 +1,10 @@
 ---
 id: F-024
 feature: kb Knowledge Method (the topic graph over a governed corpus)
-status: IN_PROGRESS
+status: COMPLETED
 level: L3
 start_date: 2026-08-01
-end_date:
+end_date: 2026-08-01
 ---
 # Feature Analysis: kb Knowledge Method
 
@@ -374,8 +374,12 @@ threats are owned by F-025 (TL1–TL6) and not restated.
       (duplicate id from two claims on one line without a distinguishing qty;
       CONTESTED pointers computed without the qty component) and, earlier, a wrong
       span and a fake digest — four catches, zero false positives
-- [ ] Closure: `check` CLEAN on this repo, Component Map, ADR (topic graph +
-      detect-don't-decide); owner resolves or leaves open the capacity CONTESTED
+- [x] Closure: `check` CLEAN on this repo; Component Map rows (claim ledger, topic
+      graph, corpus store); `architecture/ADR_2026-08-01_kb_topic_graph_claim_ledger.md`.
+      The capacity CONTESTED was resolved by owner ruling ("alla fine tieni 200-300",
+      2026-08-01) with `basis:` = the report measures post-optimization capacity; the
+      ruling row supersedes both prior members, per the state machine, and the field
+      test re-checks CLEAN
 
 ## Test Strategy
 
