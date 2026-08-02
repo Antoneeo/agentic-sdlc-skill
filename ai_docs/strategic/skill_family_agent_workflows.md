@@ -168,10 +168,16 @@ tattiche (Wave 3, **gate validator**) → azione → controllo e packaging (**re
 finale** + `check` CLEAN).
 
 - **L'evidence ledger è la spina dorsale**: ogni numero ha una classe — `FACT`
-  (detto da te / dati primari), `BENCHMARK` (**URL reale + data obbligatori** — "vedi
-  VOC.md" è rifiutato dal validator), `ASSUMPTION` (**range obbligatorio**, mai
+  (detto da te / dati primari, **e solo quelle due origini**), `BENCHMARK` (**URL
+  reale + data obbligatori**), `ASSUMPTION` (**range obbligatorio**, mai
   stima puntuale, + confidenza + cosa cambia se è sbagliata) — e un id `[EV-nn]`
-  che il validator risolve su ogni documento. **Nessun numero dalla memoria del
+  che il validator risolve su ogni documento. **"Vedi VOC.md" non è una fonte per
+  nessuna delle tre**: il validator lo rifiuta su un BENCHMARK (nessun `http`) e
+  ora anche su un FACT che punta a un documento dell'ingaggio — classificare una
+  ricerca come FACT era l'unica via per far entrare un numero senza URL, perché
+  FACT è l'unica classe che la regola dell'URL non raggiunge (trovato dal field
+  test 2026-08-02). Chi cita il cliente come origine resta esente: i suoi dati
+  primari possono benissimo essere un file che ti ha passato lui. **Nessun numero dalla memoria del
   modello** — nemmeno se lo asserisci tu senza fonte: diventa FACT tuo, dichiarato.
   Due fonti indipendenti per ogni numero che guida budget o obiettivi.
 - **Elicitazione a ondate con la regola cardinale**: si chiede solo ciò che

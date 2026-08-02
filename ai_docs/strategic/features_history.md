@@ -19,3 +19,4 @@
 | F-024 | kb Knowledge Method (the topic graph over a governed corpus) | L3 | COMPLETED | 2026-08-01 | 2026-08-01 | solutions/ANALYSIS_kb_knowledge_method.md |
 | F-025 | Claim Ledger (assertions with provenance; conflicts held open, never auto-resolved) | L3 | COMPLETED | 2026-08-01 | 2026-08-01 | solutions/ANALYSIS_claim_ledger.md |
 | F-026 | Question discipline (when a question to the user is legal) | L3 | COMPLETED | 2026-08-01 | 2026-08-01 | solutions/ANALYSIS_question_discipline.md |
+| F-027 | Field-test defects — lens identity, FACT laundering, verdict return path | L3 | COMPLETED | 2026-08-02 | 2026-08-02 | solutions/ANALYSIS_field_test_defects.md |

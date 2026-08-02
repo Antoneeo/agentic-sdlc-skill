@@ -160,6 +160,38 @@ class MktCheckTests(unittest.TestCase):
         self.write("research/evidence_ledger.md", bad)
         self.assertEqual(self.run_cmd("ledger"), 1)
 
+    def test_fact_sourced_to_our_own_document_fails(self):
+        # The laundering path a cold-agent field test walked (2026-08-02): a researched
+        # observation classed FACT, pointed at one of our own documents. BENCHMARK would
+        # have owed a URL; FACT is the one class the URL rule never reached.
+        # One branch per test: the field-test row tripped both at once, so either branch
+        # could have been deleted with the suite still green.
+        bad = LEDGER.replace("| user, Wave 1 |", "| VoC sweep, research/VOC.md |")
+        self.write("research/evidence_ledger.md", bad)
+        self.assertEqual(self.run_cmd("ledger"), 1)
+
+    def test_fact_sourced_by_pointing_elsewhere_fails(self):
+        bad = LEDGER.replace("| user, Wave 1 |", "| see the VoC sweep |")
+        self.write("research/evidence_ledger.md", bad)
+        self.assertEqual(self.run_cmd("ledger"), 1)
+
+    def test_fact_without_a_source_fails(self):
+        bad = LEDGER.replace("| user, Wave 1 |", "|  |")
+        self.write("research/evidence_ledger.md", bad)
+        self.assertEqual(self.run_cmd("ledger"), 1)
+
+    def test_fact_from_the_client_still_passes(self):
+        # The rule must not make FACT unusable: it is the one class with no URL,
+        # precisely because the client is the origin — including when what they handed
+        # over is a Markdown file.
+        for src in ("user, Wave 1: Stripe export",
+                    "client, onboarding_brief.md",
+                    "owner, see their CRM export"):
+            with self.subTest(source=src):
+                self.write("research/evidence_ledger.md",
+                           LEDGER.replace("| user, Wave 1 |", f"| {src} |"))
+                self.assertEqual(self.run_cmd("ledger"), 0)
+
     def test_assumption_without_confidence_fails(self):
         bad = LEDGER.replace(
             "| EV-03 | organic reach growth | ASSUMPTION | 5-10% monthly | reasoning: early-stage account | 2026-01-01 | MED |",

@@ -16,7 +16,13 @@ piece of evidence:
   numbers as `[EV-nn]`.
 - **Class** (exactly one):
   - `FACT` — user input or primary data (their analytics, their CRM export).
-    Source = "user, Wave 1" or the data file.
+    Source = "user, Wave 1" or the data file. **Only these two origins.** An
+    observation *you* gathered — a forum quote, a competitor's page, a review
+    site — is a `BENCHMARK` however solid it looks, and owes its URL. FACT is
+    the one class the URL rule cannot reach, so classing research as FACT is
+    the way an unsourced number gets in wearing the strongest label; the
+    validator now rejects a FACT whose Source names one of your own documents
+    or says "see X".
   - `BENCHMARK` — external number. Source URL **and** publication date
     mandatory. The Source cell must carry the actual external URL, NOT a
     pointer to one of your own research documents that aggregates it ("see

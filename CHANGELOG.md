@@ -2,6 +2,42 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.20.3] - 2026-08-02
+
+Three defects found by a field test in which cold agents operated the three published
+skills on real fixtures — a brownfield API, three infrastructure documents, a business
+brief. None of them had been found by any static pass.
+
+### Fixed
+- **The multi-lens routing note named the wrong lens** (shipped in kb 1.0.0 and mkt
+  0.3.0; invisible in the code package, where the literal happened to be right). The row
+  for the CURRENT lens was hardcoded as `` `agentic-sdlc` — the **code** lens `` and
+  copied verbatim into every distribution, so a kb project listed the code lens twice
+  and never named kb. Both the self row AND the sibling table are now derived from the
+  `routing.md` lens table — the same authoritative, drift-guarded file the domain router
+  reads — so no lens word is restated by hand anywhere. The lookup is lazy: `preuninstall`
+  keeps working on an installation that lost `routing.md`, a duplicate row is refused
+  instead of silently winning, and a missing row throws.
+- **`FACT` was the way past the URL rule** (marketing lens). `BENCHMARK` owes a source
+  URL and `ASSUMPTION` a range, but `FACT` — "user input or primary data" — owed nothing,
+  so a researched observation classed FACT with source "see research/VOC.md" entered the
+  ledger unsourced. `mkt_check.py` now errors on a FACT with no source, or one pointing at
+  a document of the engagement, while exempting a cell that names the client as origin
+  (their own primary data may well be a file they handed over). `research.md` states the
+  two legal origins.
+- **A review verdict could be delivered nowhere.** `review.md` (all three copies) now says
+  the verdict travels as the reviewer's final output, and says it on both sides — the
+  requester's and the reviewer's. A reviewer that messages the requester mid-run depends
+  on a channel it cannot verify and which fails silently; a requester waiting for that
+  message stalls holding a verdict that already exists.
+
+### Changed
+- The guarding test for the routing note asserted that it named the detected SIBLING,
+  never itself — which is why the bug shipped. It now asserts this lens is named, with
+  its own lens word and no duplicates, and is mutation-tested against the original
+  defect. `A_SIBLING` is derived from the lens table rather than parsed out of the file
+  under test.
+
 ## [1.20.2] - 2026-08-01
 
 ### Fixed

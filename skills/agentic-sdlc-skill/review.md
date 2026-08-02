@@ -85,6 +85,14 @@ When you hand work to a reviewer (human or agent), give them:
   should have been. The design reviewer checks that every threat surface the change
   touches has a matching security requirement.
 
+**The verdict travels back as the reviewer's own final output** — the text it
+returns when it finishes, nothing else. A reviewer that tries to message the
+requester mid-run depends on a delivery channel it cannot verify (a subagent
+addressed by agent TYPE rather than by session gets no such channel, and the
+attempt fails silently); a requester that waits for such a message stalls
+holding a verdict that already exists. State the return form when you request
+the review, and read the verdict where it actually arrives.
+
 Never ask a reviewer to "review my session" or "review what I just did"
 without the artifacts above — that forces them to reconstruct scope from
 conversation instead of reviewing the change itself. Say which finding
@@ -109,6 +117,10 @@ When you are the reviewer:
 
 - Verify claims against the real source, not against the diff's own
   description of itself.
+- **Your verdict is your final output.** Deliver findings and verdict as the text
+  you return when you finish — never only through a message to the requester, a
+  channel you cannot verify and which fails silently when it is not there
+  (see `## Requesting`).
 - Cite evidence as `file:line` for every finding — a finding without a
   location is not actionable.
 - Keep severity honest: do not inflate a style preference to a blocker, and

@@ -1,6 +1,6 @@
 {
   "name": "@antoneeo/mkt-agentic-sdlc-skill",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Evidence-First marketing planning protocol for Claude Code, Gemini CLI, Google Antigravity and Codex: engagement triage, SOSTAC workflow, evidence ledger, mechanical validator and optional devPNT integration.",
   "keywords": [
     "claude-code",
