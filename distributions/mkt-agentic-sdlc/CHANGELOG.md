@@ -1,5 +1,33 @@
 # Changelog
 
+## 0.3.1 — 2026-08-02
+
+### Fixed
+- **The multi-lens routing note announced this skill as the code lens.** `init.js` wrote
+  the row for the CURRENT lens as a hardcoded literal copied from the code distribution,
+  so a project initialised with `mkt-sdlc-init` listed `agentic-sdlc` twice and never
+  named `mkt-agentic-sdlc`. Both the self row and the sibling table are now derived from
+  the shared `routing.md` lens table. Found by a cold-agent field test.
+- **`FACT` was the way past the evidence rule.** `BENCHMARK` owes a source URL and
+  `ASSUMPTION` a range; `FACT` owed nothing, so a researched observation classed FACT
+  with source "see research/VOC.md" entered the ledger unsourced. `mkt_check.py` now
+  errors on a FACT with no source, or one pointing at a document of the engagement,
+  while exempting a cell that names the client as origin. `research.md` states the two
+  legal origins.
+- `review.md` (shared spine): a review verdict travels as the reviewer's final output.
+
+## 0.3.0 — 2026-08-01
+
+- **One shared core, three lenses.** This skill is now built from the family's spine
+  instead of a copy of it: triage, the Vision gate, the review gates, the guide router,
+  question discipline and the validator core are byte-identical with
+  `@antoneeo/agentic-sdlc-skill` and `@antoneeo/kb-agentic-skill`, and a drift guard
+  verifies it on every build. `routing.md` decides which lens owns a unit of work when
+  more than one is installed.
+- `mkt_check.py` forwards every spine subcommand it does not intercept by iterating the
+  spine's parser — the hand-copied command tuple used to drop `migrate` while `SKILL.md`
+  documented it.
+
 ## 0.2.1 — 2026-07-09
 
 - **Install DX fix**: README + the generated project protocol pointer no longer present `mkt-sdlc-install-skill` as a required second step. `npm i -g` alone installs the skill (the `postinstall` runs the installer); the manual command is documented as a fallback via `npx mkt-sdlc-install-skill` for setups that block install scripts, with an explicit note that the bare command is only on PATH after a global install. Prevents the "command not recognized" error after a local `npm i`.

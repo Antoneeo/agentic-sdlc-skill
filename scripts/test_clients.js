@@ -28,6 +28,7 @@ const LIB_PATH = require.resolve('./lib');
 // distributions share this file, and a literal is how a copy-fork starts asserting
 // its sibling's identity instead of its own.
 const SKILL_SOURCE = require('./lib').SKILL_SOURCE;
+const { INSTALLED_SKILL_NAME, SELF_LENS } = require('./lib');
 const EXPECTED_DEFAULT_DOMAIN = (() => {
   const tpl = require('fs').readFileSync(require('path').join(SKILL_SOURCE, 'templates.md'), 'utf8');
   const m = tpl.match(/^default_domain:\s*(\S+)/m);
@@ -50,11 +51,12 @@ const ENTRY_POINT_FILE = (() => {
   throw new Error('no validator entry point in ' + dir);
 })();
 const A_SIBLING = (() => {
-  const init = require('fs').readFileSync(require('path').join(__dirname, 'init.js'), 'utf8');
-  const block = init.match(/SIBLING_LENSES = \{([^}]+)\}/);
-  if (!block) throw new Error('init.js declares no SIBLING_LENSES');
-  const m = block[1].match(/'([^']+)'\s*:/);
-  return m[1];
+  // Derived from the shared routing.md table via lib, NOT from a literal in init.js:
+  // reading the value under test out of the file under test is how a wrong lens word
+  // stayed untestable.
+  const names = Object.keys(require('./lib').SIBLING_LENSES);
+  if (!names.length) throw new Error('the lens table names no sibling for this distribution');
+  return names[0];
 })();
 const POSTINSTALL = path.join(__dirname, 'postinstall.js');
 const PREUNINSTALL = path.join(__dirname, 'preuninstall.js');
@@ -126,6 +128,18 @@ test('TS11 sibling lens installed: the note is additive and the protocol pointer
     assert.match(note, new RegExp(A_SIBLING), 'the note names the detected sibling');
     assert.match(note, /routing\.md/, 'the note points at the domain router');
     assert.match(note, /Merge step owed/, 'a pre-existing pointer means a merge is owed');
+    // The note must name THIS lens. The self row used to be the literal
+    // "`agentic-sdlc` — the **code** lens", copied verbatim into every distribution:
+    // kb and mkt announced themselves as their sibling and never named themselves,
+    // and this test passed because it only ever checked the DETECTED sibling.
+    // (Found by the cold-agent field test, 2026-08-02.)
+    const LENS_ROW = /^- `([a-z0-9-]+)` — the \*\*([a-z]+)\*\* lens$/;
+    const rows = note.split(/\r?\n/).map((l) => l.match(LENS_ROW)).filter(Boolean);
+    assert.ok(rows.some((m) => m[1] === INSTALLED_SKILL_NAME && m[2] === SELF_LENS),
+      `the note must name THIS lens (\`${INSTALLED_SKILL_NAME}\` — the **${SELF_LENS}** lens); it listed: ` +
+      rows.map((m) => `${m[1]}/${m[2]}`).join(', '));
+    assert.strictEqual(new Set(rows.map((m) => m[1])).size, rows.length,
+      'no lens may be listed twice in the note');
   } finally {
     fs.rmSync(proj, { recursive: true, force: true });
   }

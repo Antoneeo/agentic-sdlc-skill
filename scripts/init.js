@@ -3,14 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const { SKILL_SOURCE, CLIENTS, clientDetected, skillTarget, loadTemplates, templateFor } = require('./lib');
-
-// Sibling lenses of the same family: one shared core, one `ai_docs/` tree, a different
-// fidelity discipline each. Keyed by the installed skill directory name.
-const SIBLING_LENSES = {
-  'kb-agentic': 'knowledge',
-  'mkt-agentic-sdlc': 'marketing',
-};
+const { SKILL_SOURCE, INSTALLED_SKILL_NAME, SELF_LENS, SIBLING_LENSES, CLIENTS, clientDetected, skillTarget, loadTemplates, templateFor } = require('./lib');
 
 const cwd = process.cwd();
 
@@ -168,7 +161,7 @@ if (siblings.size > 0) {
 This project has more than one lens of the Agentic SDLC family installed:
 
 ${list}
-- \`agentic-sdlc\` — the **code** lens
+- \`${INSTALLED_SKILL_NAME}\` — the **${SELF_LENS}** lens
 
 One \`ai_docs/\` tree, one project default (\`default_domain:\` in \`ai_docs/README.md\`),
 one lens per unit of work. Before acting on any L2, L3 or Spike, run the domain router
@@ -196,7 +189,7 @@ Delete it once the merge is done.
 `, 'multi-lens routing note');
   if (wrote && protocolPreexisting) {
     console.log('   ⚠️  A protocol pointer already existed and was NOT overwritten.');
-    console.log('       Merge the code-lens ladder from AGENTIC_MULTI_LENS.md into it by hand.');
+    console.log(`       Merge the ${SELF_LENS}-lens ladder from AGENTIC_MULTI_LENS.md into it by hand.`);
   }
 }
 

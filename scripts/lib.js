@@ -19,6 +19,51 @@ const INSTALLED_SKILL_NAME = (() => {
   return m[1];
 })();
 
+// The family's lens table, read from the shared `routing.md` rather than restated
+// here. Same reason as INSTALLED_SKILL_NAME above, and the same failure it prevents:
+// BOTH the row for this lens and the rows for its siblings used to be literals copied
+// between distributions, so kb and mkt wrote a multi-lens note announcing themselves
+// as the code lens. routing.md is one of the byte-identical shared files, so this
+// lookup cannot drift between distributions.
+// Lazy on purpose: preuninstall.js needs INSTALLED_SKILL_NAME and nothing else, and
+// must keep working on an installation damaged badly enough to have lost routing.md.
+function lensTable() {
+  const routing = path.join(SKILL_SOURCE, 'routing.md');
+  if (!fs.existsSync(routing)) throw new Error(`routing.md missing from the skill: ${SKILL_SOURCE}`);
+  // Parsed as a table, not matched with a regex: a mis-escaped pattern matches the
+  // empty string and yields undefined instead of throwing, which is how this lookup
+  // failed the first time it was written.
+  const table = new Map();
+  for (const line of fs.readFileSync(routing, 'utf8').split(/\r?\n/)) {
+    const cells = line.split('|').map((cell) => cell.trim());
+    if (cells.length < 4) continue;
+    const [, lens, skill] = cells;
+    if (!/^[a-z]+$/.test(lens) || !/^`[a-z0-9-]+`$/.test(skill)) continue;
+    const name = skill.slice(1, -1);
+    // A duplicate row would otherwise be won silently by whichever came first, and a
+    // wrong routing.md propagates byte-identically to every distribution.
+    if (table.has(name)) throw new Error(`routing.md lists '${name}' more than once`);
+    table.set(name, lens);
+  }
+  if (!table.size) throw new Error(`routing.md carries no lens table: ${routing}`);
+  return table;
+}
+
+function selfLens() {
+  const lens = lensTable().get(INSTALLED_SKILL_NAME);
+  if (!lens) throw new Error(`routing.md has no lens row for '${INSTALLED_SKILL_NAME}'`);
+  return lens;
+}
+
+// Sibling lenses of the same family: one shared core, one docs tree, a different
+// fidelity discipline each. Keyed by the installed skill directory name.
+function siblingLenses() {
+  const table = lensTable();
+  selfLens();                       // this lens must be in the table too
+  table.delete(INSTALLED_SKILL_NAME);
+  return Object.fromEntries(table);
+}
+
 // One entry per supported AI client. `home` may be overridden by an env var
 // (Claude Desktop / portable installs); presence of the home dir counts as
 // detection even when the CLI is not on PATH.
@@ -175,3 +220,8 @@ module.exports = {
   loadTemplates,
   templateFor,
 };
+
+// Lazy: reading routing.md is deferred to the consumer that actually asks.
+Object.defineProperty(module.exports, 'SELF_LENS', { enumerable: true, get: selfLens });
+Object.defineProperty(module.exports, 'SIBLING_LENSES', { enumerable: true, get: siblingLenses });
+

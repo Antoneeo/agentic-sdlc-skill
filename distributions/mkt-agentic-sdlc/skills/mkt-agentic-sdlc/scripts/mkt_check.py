@@ -84,6 +84,18 @@ VALID_STATUS = ("CURRENT", "SUPERSEDED", "DRAFT", "DEPRECATED")
 LEDGER_CLASSES = ("FACT", "BENCHMARK", "ASSUMPTION")
 CONFIDENCE_VALUES = ("HIGH", "MED", "MEDIUM", "LOW")
 EV_REF = re.compile(r"\[(EV-\d+)\]")
+# A source that points INSIDE this engagement instead of at the world: a document of
+# OUR OWN under a canonical dir, or the "see X" form. Only FACT can carry it today,
+# because FACT is the one class the URL rule does not reach.
+INTERNAL_SOURCE_RE = re.compile(
+    r"(?:\b(?:mkt_docs|ai_docs|research|strategy|tactics|deliverables|vision)/\S*\.md\b"
+    r"|\b(?:see|vedi|cfr\.?)\s)", re.IGNORECASE)
+# The two origins research.md sanctions for a FACT. A cell that opens by naming the
+# client is exempt: their own primary data may well be a Markdown file they handed
+# over, and telling its author to "reclassify as BENCHMARK and add a URL" would be
+# advice to misclassify.
+CLIENT_ORIGIN_RE = re.compile(
+    r"^\s*(?:user|client|owner|utente|cliente|titolare|proprietario)\b", re.IGNORECASE)
 OBJECTIVE_HEADING = re.compile(r"^###\s+(O\d+)\b", re.MULTILINE)
 OBJECTIVE_TOKEN = re.compile(r"\bO\d+\b")
 EXAMPLE_MARKER = "(example)"
@@ -370,6 +382,20 @@ def run_ledger(root):
                 rep.error(f"ledger {rid}: BENCHMARK without a source URL")
             if not date:
                 rep.error(f"ledger {rid}: BENCHMARK without a date")
+        if cls == "FACT" and not source:
+            rep.error(f"ledger {rid}: FACT without a source -- name the origin "
+                      "('user, Wave 1' or the client's data file)")
+        if (cls == "FACT" and source and not CLIENT_ORIGIN_RE.match(source)
+                and INTERNAL_SOURCE_RE.search(source)):
+            # FACT means "the client told me" or "the client's own primary data" — the
+            # one class that legitimately has no URL. Pointing it at another document
+            # of this engagement is how a researched observation gets in without the
+            # URL its class would owe: the row cites a file that cites the source, the
+            # validator resolves nothing, and "see VOC.md" is exactly the form the
+            # BENCHMARK rule rejects. Observed in a cold-agent field test, 2026-08-02.
+            rep.error(f"ledger {rid}: FACT sourced to an internal document ('{source}') -- "
+                      "a FACT is what the client stated or their own primary data; an "
+                      "observation gathered by research is a BENCHMARK and owes its URL")
         if cls == "ASSUMPTION":
             if confidence not in CONFIDENCE_VALUES:
                 rep.error(f"ledger {rid}: ASSUMPTION without confidence (HIGH|MED|LOW)")

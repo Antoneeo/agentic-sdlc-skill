@@ -1,6 +1,44 @@
-# Changelog - Agentic SDLC Skill
+# Changelog - KB Agentic Skill
 
-Tutte le modifiche significative a questa skill saranno documentate in questo file.
+Every significant change to this skill is recorded here.
+
+## [1.0.1] - 2026-08-02
+
+### Fixed
+- **The multi-lens routing note announced this skill as the code lens.** `init.js` wrote
+  the row for the CURRENT lens as a hardcoded literal copied from the code distribution,
+  so a project initialised with `kb-agentic-init` listed `agentic-sdlc` twice and never
+  named `kb-agentic`. Both the self row and the sibling table are now derived from the
+  shared `routing.md` lens table; the guarding test asserts this lens is named and is
+  mutation-tested against the original defect. Found by a cold-agent field test.
+- `review.md` (shared spine): a review verdict travels as the reviewer's final output,
+  stated on both the requester's and the reviewer's side.
+
+## [1.0.0] - 2026-08-01
+
+First release of the knowledge lens as its own package: the same spine as
+`@antoneeo/agentic-sdlc-skill`, with fidelity to **the documents you supply**.
+
+### Added
+- **Content-addressed corpus.** Every source enters verbatim under `corpus/given/`,
+  digest-verified; a new version is appended with `supersedes:`, never overwritten.
+  Non-text files carry a stored canonical extraction, and locators address those bytes.
+- **Claim ledger.** `id | claim | valid | qty | about | source | prov | state`, where the
+  id hashes location and quantity — never the text, so an LLM rephrasing mints no new
+  identity. Locator spans are verified against the extraction; validity scopes are
+  half-open; mixed quantity kinds refuse to sum.
+- **Topic graph** with five placement verdicts, polyhierarchy, tombstones with
+  `redirect_to:`, cycles refused at write time, unreachable nodes an error.
+- **Detect-and-hold reconciliation.** A conflict marks the whole set `CONTESTED`,
+  symmetrically — flipping one cell by hand fails the check. Only new information
+  resolves it: a later source, or the owner's ruling with a `basis:`.
+- `graph`, `corpus` and `claim-id` in the validator, alongside the shared spine.
+
+---
+
+Everything below predates this package: it is the shared spine's history, kept
+because the knowledge lens inherits it. Version numbers in that section are the
+code lens's.
 
 ## [1.19.0] - 2026-07-28 (Design Review Gate)
 ### Added

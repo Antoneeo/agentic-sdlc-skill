@@ -6,7 +6,7 @@ States: PENDING (to analyze) | ANALYZED (analyzed, with reference) | SKIPPED (wi
 |---|---|---|---|
 | examples/ | PENDING | - | legacy docs/ layout examples, predate the ai_docs structure |
 | sdlc-test-project/ | SKIPPED | - | manual test fixture, not product code |
-| skills/agentic-sdlc-skill/ | ANALYZED | 2026-08-01T17:29:35Z | re-analysis here is not complete until the two DERIVED documents say the same thing: `strategic/skill_family_agent_workflows.md` (what an agent does differently under each lens) and the distribution's `README.md` (the npm front page — support-files bullet, Runtime Shape tree, validator commands). `mark` is the last step, not the first |
-| scripts/ | ANALYZED | 4dc4a3e395eb |  |
-| distributions/ | ANALYZED | 2026-08-01T18:07:39Z | same duty as the row above, per distribution: doctrine changed here means `strategic/skill_family_agent_workflows.md` and that distribution's `README.md` are stale until refreshed. `stale` fires on this row at the first doctrine edit — that is the prompt |
-| ai_docs/ | ANALYZED | 2026-08-02T08:10:12Z | the governance tree itself, not an analyzable area: marking it rewrites this file, which sits inside it, so a hash-based row chases its own tail forever. Its freshness is what `check` already verifies directly |
+| skills/agentic-sdlc-skill/ | ANALYZED | 2026-08-02T09:40:55Z | re-analysis here is not complete until the two DERIVED documents say the same thing: `strategic/skill_family_agent_workflows.md` (what an agent does differently under each lens) and the distribution's `README.md` (the npm front page — support-files bullet, Runtime Shape tree, validator commands). `mark` is the last step, not the first |
+| scripts/ | ANALYZED | 2026-08-02T09:40:55Z |  |
+| distributions/ | ANALYZED | 2026-08-02T09:40:55Z | same duty as the row above, per distribution: doctrine changed here means `strategic/skill_family_agent_workflows.md` and that distribution's `README.md` are stale until refreshed. `stale` fires on this row at the first doctrine edit — that is the prompt |
+| ai_docs/ | ANALYZED | 2026-08-02T09:40:56Z | the governance tree itself, not an analyzable area: marking it rewrites this file, which sits inside it, so a hash-based row chases its own tail forever. Its freshness is what `check` already verifies directly |
