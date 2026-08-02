@@ -46,7 +46,9 @@ four load-bearing decisions, each forced by a review finding or an owner ruling.
 - **Text-keyed claim ids** — rejected: an LLM re-extraction paraphrases and every id
   moves; dedup then re-inserts everything.
 - **A persisted sqlite graph artifact** — rejected: the one derived artifact that cannot
-  be verified by regenerate-and-compare, and a torn one reports green. In-memory only.
+  be verified by regenerate-and-compare, and a torn one reports green. The graph is
+  rebuilt in memory on every run — and as implemented that is plain Python structures,
+  not in-memory sqlite: `sdlc_check.py` imports no `sqlite3` at all.
 - **Computed per-node coverage (STUB/PARTIAL/FULL)** — rejected: derived-on-demand
   collection of per-document state is the work-management Non-Goal's own named case.
 
