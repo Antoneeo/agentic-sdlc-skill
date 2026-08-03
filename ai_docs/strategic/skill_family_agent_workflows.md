@@ -27,14 +27,14 @@ gate, il vocabolario, i controlli — discende da quella scelta.
 |---|---|---|---|
 | **Fedele a** | il codice di QUESTO repo | i documenti che TU fornisci | l'evidenza di mercato |
 | **Unità di lavoro** | feature (`F-`) | topic (`K-`) | engagement (`E1/E2/E3`) |
-| **Triage** | L1 / L2 / L3 / Spike | L1 / L2 / L3 / Spike (grana: nota → SOP → corpus) | E1 / E2 / E3 / Research Spike |
+| **Triage** | L1 / L2 / L3 / Spike (grana: **file** — ~10 righe, ≤3 file) | L1 / L2 / L3 / Spike (grana: **conoscenza**, mai file — una riga di claim → propagazione di un fatto già assestato → nuova unità di conoscenza) | E1 / E2 / E3 / Research Spike |
 | **Fasi L3/E3** | 5 (audit → vision → analisi → sviluppo → chiusura) | 5 (+ dentro la 4: l'algoritmo di ingestione) | **9** (spina SOSTAC) |
 | **La domanda dell'agente** | "cosa rompe questo cambiamento?" | "cosa sappiamo già, quanto è certo, da dove viene?" | "quale evidenza sostiene questa scelta?" |
 | **Il peccato capitale** | modificare a istinto senza orientarsi | spacciare conoscenza del modello per fonte | inventare un numero |
 | **Slot di rischio (obbligatorio, il validator lo esige)** | `## Security and Threat Model` | `## Sources and Verification` | `## Threat Map / Plan Risks` |
 | **Albero documenti** | `ai_docs/` | `ai_docs/` + `corpus/` + `topics/` | `mkt_docs/` (vision/strategy/tactics/deliverables) — `ai_docs/` su albero migrato con `migrate` |
 | **File di dottrina propri** | `architect.md`, `tdd.md`, `debugging.md` | `taxonomy.md`, `distillation.md`, `reconciliation.md` | `frameworks.md`, `research.md` |
-| **Comandi validator propri** | (spina, entry sottile) | `graph`, `corpus`, `claim-id` | `ledger`, `budget`, `funnel`, `trace` |
+| **Comandi validator propri** | (spina, entry sottile) | `graph`, `corpus`, `claim-id`, `anchor` | `ledger`, `budget`, `funnel`, `trace` |
 | **Cosa valida in più** | struttura + Component Map anti-rot | **il grafo e i claim** (span, digest, id, simmetrie, cicli) | **l'aritmetica** (budget ±1%, funnel ±5%, catena obiettivo→tattica→KPI) |
 
 ## La spina comune (identica byte per byte, su tutte e tre)
@@ -114,12 +114,24 @@ form-feed, estrattore registrato): è a QUEI byte che puntano gli offset. Parlat
 nota `origin: elicited`; sintesi → `derived_from:`; ruling → `basis:`. **Una nota
 senza nessuno dei tre è "conoscenza del modello travestita da fonte" e il
 validator la rifiuta.**
+Su corpus binari grandi vale la variante **estrazione-come-artefatto** (F-029): in
+`given/` entra solo l'estrazione, `sha256:` è il suo digest — l'immutabilità resta
+imposta sui byte che i locator indirizzano — e l'originale resta dov'è, registrato
+come `original_path:` + `original_sha256:`. Quei due campi sono **registrati e mai
+verificati**, e il limite va scritto dove stanno: 233 MB di PDF non entrano nel
+docs root per proteggere byte che nessun locator tocca.
 
 **2. Estrazione — l'unità è il claim.** Righe
 `id | claim | valid | qty | about | source | prov | state`. L'**id** =
 hash(posizione+quantità), **mai del testo** — una riformulazione LLM non conia
 identità nuove. Il **locator** (`p=17@412-509`) è verificato: il validator apre
-l'estrazione e controlla che lo span esista. `valid` half-open ("fino al 1/3" e
+l'estrazione e controlla che lo span esista; `anchor <path> <frase>` lo produce
+(F-029), matchando gli spazi come `\s+` perché l'estrazione PDF spezza le frasi a
+metà riga. **Copri i gate, non solo i poteri**: per ogni riga che dice cosa il
+soggetto *può fare*, chiedi alla fonte cosa deve valere prima — default-off,
+licenza, versione minima, dipendenza. La regola è *chiedi*, mai *produci*: fonte
+che non enuncia un gate → nessuna riga, e un gate sospettato ma non trovato è un
+`gaps:`. `valid` half-open ("fino al 1/3" e
 "dal 1/3" NON confliggono); `qty` tipizzata (effort in giorni-persona, costo in
 UNA valuta — misto **rifiuta di sommare**, niente cambi offline); `about` per le
 relazioni. L'estrattore **non inventa nulla**: ciò che la fonte non asserisce

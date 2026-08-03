@@ -118,6 +118,60 @@ class SkillInvariants(unittest.TestCase):
         self.assertIn("consult the guide router", t)
         self.assertIn("Consult (before acting)", t)
 
+    def test_scenarios_only_cite_support_files_this_lens_ships(self):
+        """F-029 G: a scenario may not test a construct this distribution lacks.
+
+        kb shipped two scenarios copied byte-for-byte from the code lens, both
+        exercising `architect.md` — which kb does not have. The battery therefore
+        reported coverage of a pass that is not here, while kb's OWN method
+        (extraction, placement, reconciliation, the corpus letter, locators) had
+        none at all. Local by design: a cross-distribution diff cannot run in an
+        installed skill, but an absent support file can always be seen from here."""
+        scen = SKILL_DIR / "evals" / "scenarios"
+        if not scen.is_dir():
+            self.skipTest("this distribution ships no scenarios")
+        known = {p.name for p in SKILL_DIR.glob("*.md")}
+        for p in sorted(scen.glob("*.md")):
+            for ref in set(re.findall(r"`([A-Za-z_]+\.md)`", sc.read_text(p))):
+                if ref in known or ref.startswith(("GUIDE_", "ANALYSIS_", "SPIKE_")):
+                    continue
+                self.fail(f"evals/scenarios/{p.name} cites `{ref}`, which this "
+                          f"distribution does not ship: the scenario tests a "
+                          f"construct that is not here, so a green battery "
+                          f"reports coverage it does not have")
+
+    def test_triage_levels_are_distinguishable(self):
+        """F-029: no two levels may state the same criteria.
+
+        kb shipped L1 and L2 both bounded at 'at most 1-2 files', so no change
+        could be classified L2 and anything touching three files fell to L3 by
+        'when in doubt, go higher'. A field user hit it with a five-file
+        propagation of one already-settled fact, deviated, and declared the
+        deviation -- the best available behaviour against an undecidable rule.
+
+        Lens-agnostic on purpose, in the level NAMES as much as in the units:
+        each domain states the boundaries in its own (`L1..L3` here, `E1..E3` in
+        marketing), and the Vision requires exactly that of every sibling. So
+        this asserts the graded levels are DISTINGUISHABLE, never what they say."""
+        rows = {}
+        for line in read("SKILL.md").splitlines():
+            m = re.match(r"^\|\s*\*\*([A-Z]\d)\s*-[^|]*\*\*\s*\|([^|]*)\|", line)
+            if m:
+                rows[m.group(1)] = " ".join(m.group(2).split()).strip().lower()
+        self.assertGreaterEqual(
+            len(rows), 3,
+            "Rule Zero must offer at least three graded levels to classify by; "
+            f"found {sorted(rows)}")
+        seen = {}
+        for lvl in sorted(rows):
+            crit = rows[lvl]
+            if crit in seen:
+                self.fail(f"{seen[crit]} and {lvl} state the SAME criteria "
+                          f"({crit!r}): no request can be classified between "
+                          f"them, so the level is decided by the tie-break "
+                          f"rule instead of by the request")
+            seen[crit] = lvl
+
     def test_rule_zero_declares_router_verdict(self):
         """F-016 move A: the consult lives on the ALWAYS-executed path. Rule Zero
         makes the router lookup a DECLARED output, so 'did not look' is

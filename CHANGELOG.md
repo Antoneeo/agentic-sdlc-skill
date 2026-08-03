@@ -2,6 +2,64 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [kb 1.1.0] - 2026-08-03
+
+Scoped to `@antoneeo/kb-agentic-skill`. `agentic-sdlc-skill` (1.20.3) and
+`mkt-agentic-sdlc` (0.3.1) are unchanged in what they ship: the shared invariant
+added here lives in `test_skill_invariants.py`, which no distribution packages.
+
+F-029 — six defects from the first full field application of `kb-agentic` by a
+practitioner other than its author (233 MB of manuals, 51 corpus artifacts, 22 topic
+nodes, 82 offset-verified claims). **None was an adherence failure**: in every one the
+agent did what it was told and was wrong anyway, which makes them agent-UX defects.
+Analysis: `ai_docs/solutions/ANALYSIS_kb_field_report.md`.
+
+### Fixed
+- **kb's triage levels were undecidable.** L1 and L2 carried the *identical* bound
+  ("at most 1-2 files"), so no request could be classified L2 and anything touching
+  three files fell to L3 by "when in doubt, go higher". Root cause: kb never performed
+  the restatement the Vision requires of every sibling — the file counts were the code
+  lens's units, and they contradicted the escalation triggers two lines below them.
+  Restated in knowledge units by owner ruling (2026-08-02): one claim row → propagation
+  of an already-settled fact → a new knowledge unit. The one limit: propagation that
+  changes what a claim *asserts* is not propagation. New shared invariant asserts no two
+  graded levels state the same criteria, lens-agnostically (`L1..L3` here, `E1..E3` in
+  marketing) — mutation-tested RED before the fix.
+- **The claim model recorded powers and skipped gates**, making every ledger
+  systematically optimistic on a corpus whose purpose is to deflate over-promising. A
+  query returned three verified rows saying "yes, supported" while omitting that the
+  feature ships disabled and needs a second construct — true, and a plan that fails on
+  site. `distillation.md` §3 now requires the gates alongside the powers, with the guard
+  that keeps it from becoming fabrication: the rule is *ask*, never *produce*.
+- **`--help` hid the knowledge overlay.** Forward-by-default handed `--help` to the
+  spine, whose usage lists nine commands and none of kb's, so a user concluded the
+  overlay was not installed. Intercepted at `argv[0]` only, and the spine's own usage is
+  still rendered — forward-by-default is intact, with a regression test that proves a
+  non-intercepted command still reaches the spine.
+- **kb's eval battery tested the wrong skill.** Six scenarios, none covering kb's own
+  method, two byte-identical to the code lens's and exercising an architect pass kb does
+  not ship — while extraction, placement, reconciliation, the corpus letter and locators
+  had no cold-run coverage at all. Rewritten in kb's units, three new scenarios added,
+  and a new invariant refuses any scenario citing a support file its distribution lacks.
+  The ANALYSIS template's example rows were the code lens's verbatim (Python paths in a
+  knowledge template); replaced with topic-graph rows.
+
+### Added
+- **`sdlc_check.py anchor <path> <phrase>`** — the half `claim-id` never had: it turns a
+  prose citation into a *verified* span. The check has always demanded resolved locators
+  and nothing produced them, so every one was hand-authored against a machine verifier.
+  Whitespace in the phrase matches as `\s+`, because a PDF extraction breaks phrases
+  mid-line and a probe that pretty-prints collapsed whitespace shows the phrase intact
+  while the checker sees the break. Refuses ambiguity and refuses what it cannot anchor,
+  and re-verifies every locator with `kb_check_locator` before emitting it — the tool can
+  never produce a span its own validator would reject.
+- **Extraction-as-artifact** for large binary corpora (`distillation.md` §1): the stored
+  extraction may be the corpus artifact on its own, `sha256:` covering it, with the
+  original recorded as `original_path:` + `original_sha256:` instead of copied in. The
+  code already allowed this; the doctrine said the extraction came "additionally", so a
+  faithful reader copied gigabytes for nothing. The recorded fields state their limit
+  where they are defined: `original_sha256` is never checked.
+
 ## [1.20.3] - 2026-08-02
 
 Three defects found by a field test in which cold agents operated the three published

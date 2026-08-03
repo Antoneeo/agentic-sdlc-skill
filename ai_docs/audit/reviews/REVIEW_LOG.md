@@ -4,6 +4,7 @@ Records each independent-review-gate pass (§4.5 tech artifacts, §4.6 code). Th
 
 | date | doc_key | tier | reviewer | findings_raised | findings_real | verdict | revise_rounds |
 |---|---|---|---|---|---|---|---|
+| 2026-08-02 | F-029 kb field-report defects (diff: kb SKILL/distillation/templates/sdlc_check + 3 new evals + 2 rewritten + shared invariants x3 + 2 derived docs) | closure | SELF-PASS (declared; harness forbids unprompted reviewer subagents -- independence reduced) | 3 | 3 | FAIL -> all three closed | 1 |
 | 2026-08-02 | F-027 field-test defect fixes (diff of 18 files across the three distributions) | closure | subagent (fresh ctx, read-only, no repo history) | 1 BLOCK + 7 WARN | 8 | FAIL -> all eight closed | 1 |
 | 2026-08-01 | project_vision.md v8 draft (F-023 C1-C4+C6; 8 attack classes re-thrown + 6 accept-side + new-class hunt, full text, one-file blind read) | vision | general-purpose (fresh ctx, NO repo access) | 1 BLOCK + 9 MAJOR | 10 | PASS-conditional — zero attacks through, zero verdict flips | 1; all ten fixes applied same-day |
 | 2026-08-01 | F-026 implemented state (round 2, re-run) | design | subagent (opus, fresh ctx, read-only) | 9 | 9 | FAIL → all fixed | 3 |

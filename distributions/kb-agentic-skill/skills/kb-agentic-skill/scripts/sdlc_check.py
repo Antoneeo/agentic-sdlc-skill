@@ -435,6 +435,65 @@ def kb_check_locator(target, loc, where, errors):
                       "(p=<n>@<a>-<b> / L<a>-<b> / Sheet<s>!<cell>)" % (where, loc))
 
 
+def kb_anchor_pattern(phrase, ignore_case=False):
+    """A phrase, compiled so it survives the line wraps an extraction introduces.
+
+    Every run of whitespace in the phrase becomes `\\s+`: a PDF extraction breaks
+    phrases mid-line, so a literal space matches nothing while a probe that
+    pretty-prints collapsed whitespace shows the phrase intact. That gap cost a
+    field user two full generation rounds."""
+    tokens = [t for t in re.split(r"\s+", phrase.strip()) if t]
+    if not tokens:
+        return None
+    body = r"\s+".join(re.escape(t) for t in tokens)
+    return re.compile(body, re.IGNORECASE if ignore_case else 0)
+
+
+def kb_resolve_anchor(target, phrase, ignore_case=False, page=None):
+    """Locate a phrase in stored bytes and return [(locator, context), ...].
+
+    The stored form decides the locator form: form-feeds mean paged bytes and
+    offsets are counted inside the page, exactly as `kb_check_locator` reads
+    them; otherwise line numbers. Every locator produced here is re-verified with
+    that same checker before it is returned, so this can never emit a span its
+    own validator would reject."""
+    rx = kb_anchor_pattern(phrase, ignore_case)
+    if rx is None:
+        return []
+    # Read what the checker will read: for a non-text original the stored
+    # extraction beside it holds the bytes offsets address. `target` stays as
+    # given, because that is the path the claim's `source` cell will carry and
+    # therefore the path the round-trip below must verify.
+    ext = target if target.suffix == ".txt" else target.with_suffix(".txt")
+    text = sdlc_core.read_text(ext if ext.is_file() else target)
+    hits = []
+    if "\f" in text:
+        for idx, body in enumerate(text.split("\f"), start=1):
+            if page is not None and idx != page:
+                continue
+            for m in rx.finditer(body):
+                hits.append(("p=%d@%d-%d" % (idx, m.start(), m.end()),
+                             body[max(0, m.start() - 40):m.end() + 40]))
+    else:
+        lines = text.splitlines()
+        starts, pos = [], 0
+        for ln in lines:
+            starts.append(pos)
+            pos += len(ln) + 1
+        for m in rx.finditer(text):
+            a = sum(1 for s in starts if s <= m.start())
+            b = sum(1 for s in starts if s <= m.end() - 1)
+            hits.append(("L%d-%d" % (a, b),
+                         text[max(0, m.start() - 40):m.end() + 40]))
+    verified = []
+    for loc, ctx in hits:
+        errs = []
+        kb_check_locator(target, loc, "anchor", errs)
+        if not errs:
+            verified.append((loc, ctx))
+    return verified
+
+
 # ---------------------------------------------------------------- topic graph
 # F-024. Findings only; the graph is held in memory, rebuilt per run.
 
@@ -677,7 +736,8 @@ def kb_sha256_bytes(path):
 
 # ------------------------------------------------------------------ commands
 
-INTERCEPTED = {"index", "validate", "check", "graph", "corpus", "claim-id"}
+INTERCEPTED = {"index", "validate", "check", "graph", "corpus", "claim-id",
+               "anchor"}
 
 
 def _kb_root(args):
@@ -798,8 +858,63 @@ def kb_cmd_claim_id(args):
     return 0
 
 
+def kb_cmd_anchor(args):
+    """Prose citation -> a verified span. The half `claim-id` never had."""
+    p = Path(args.path)
+    if not p.is_file():
+        print("[ERROR] no such file: %s" % p)
+        return 2
+    hits = kb_resolve_anchor(p, args.phrase, ignore_case=args.ignore_case,
+                             page=args.page)
+    if not hits:
+        print("[ERROR] phrase not found in the stored bytes of %s" % p)
+        print("        nothing written: a locator you cannot verify is worse "
+              "than no locator.")
+        return 2
+    if len(hits) > 1 and not args.all:
+        print("[ERROR] %d matches -- ambiguous, so nothing is emitted. Narrow "
+              "the phrase, add --page, or pass --all to see them:" % len(hits))
+        for loc, ctx in hits:
+            print("        %s" % loc)
+        return 2
+    for loc, ctx in hits:
+        print(loc)
+        print("    ...%s..." % " ".join(ctx.split()))
+    return 0
+
+
+def kb_cmd_help():
+    """The spine's usage, then the overlay's own commands.
+
+    Forward-by-default sends everything the overlay does not intercept to the
+    spine -- including `--help`, whose usage line then lists the spine's nine
+    commands and nothing else. A reader concludes the knowledge overlay is not
+    installed; it is, and every command below works. Only `-h/--help` AT argv[0]
+    lands here, so dispatch is otherwise untouched and a future spine command
+    still reaches the spine."""
+    try:
+        sdlc_core.main(["--help"])
+    except SystemExit:
+        pass
+    print("""
+knowledge overlay (kb-agentic) -- also available:
+  graph                       topic-graph integrity: placement, edges, cycles
+  corpus                      corpus integrity: digests, supersession, notes
+  claim-id <path> <locator>   compute a claim id (--fill to fill a whole table)
+  anchor <path> <phrase>      resolve a phrase to a verified locator span
+
+  index / validate / check    the spine's behaviour PLUS the claim ledger and
+                              the topic graph""")
+    return 0
+
+
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
+    # `--help` is the one flag the overlay must answer for itself: forwarded, it
+    # renders the spine's usage and hides every command above (field report,
+    # 2026-08-02). Intercepted at argv[0] ONLY.
+    if argv and argv[0] in ("-h", "--help"):
+        return kb_cmd_help()
     # Forward-by-default: anything not intercepted goes to the spine untouched.
     # Never a hand-copied command tuple - that is how a spine command gets
     # silently dropped (mkt_check.py ships that exact defect with `migrate`).
@@ -822,9 +937,17 @@ def main(argv=None):
     p.add_argument("locator", nargs="?")
     p.add_argument("--qty")
     p.add_argument("--fill", action="store_true")
+    p = sub.add_parser("anchor")
+    p.add_argument("path")
+    p.add_argument("phrase")
+    p.add_argument("--page", type=int)
+    p.add_argument("--ignore-case", action="store_true")
+    p.add_argument("--all", action="store_true")
     args = ap.parse_args(argv)
     if args.cmd == "claim-id":
         return kb_cmd_claim_id(args)
+    if args.cmd == "anchor":
+        return kb_cmd_anchor(args)
     try:
         root, docs = _kb_root(args)
     except sdlc_core.AmbiguousDocsRoot as e:

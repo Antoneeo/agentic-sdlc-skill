@@ -43,12 +43,19 @@ Always classify the request before choosing the process. Declare the chosen leve
 
 | Level | Criteria | Required process |
 |---|---|---|
-| **L1 - Quick Fact / Snippet** | Small update to an existing note, typo fix in docs, quick preference update (at most 1-2 files). | Implement edit directly in existing note. No new documents. |
-| **L2 - Local Note / SOP Update** | Specific SOP update, local research note, or small document addition (at most 1-2 files). Low risk. | Mini-analysis in message: objective, impact, sources, validation. Update existing document or create single SOP/note. |
-| **L3 - Major Knowledge Unit / Corpus** | Ingesting large document sets, complex multi-topic research, multi-part guide creation, or restructuring the KB. | Full workflow: Vision Gate, Spec Elicitation, Taxonomy Pass, Knowledge Analysis, Distillation, Review, Indexing. |
+| **L1 - Quick Fact / Snippet** | One claim row added to an existing topic; a typo; a preference update. No node created, no source entering the corpus, no frontmatter change. | Implement edit directly in existing note. No new documents. |
+| **L2 - Propagation of settled knowledge** | The fact is **already settled** in the corpus and the work carries it into existing documents — restating, correcting a stale copy, updating an SOP that quotes it. No node created or superseded, no hierarchy change, no node frontmatter change, no new source ingested. | Mini-analysis in message: objective, impact, sources, validation. Update existing document or create single SOP/note. |
+| **L3 - New knowledge unit / Corpus** | A source enters the corpus; a topic node is created or superseded; the hierarchy moves; a conflict must be reconciled; or what a claim asserts changes. | Full workflow: Vision Gate, Spec Elicitation, Taxonomy Pass, Knowledge Analysis, Distillation, Review, Indexing. |
 | **Spike - Exploration** | Time-boxed exploratory research or draft without merging into official KB. | Outcome in `ai_docs/solutions/SPIKE_[topic].md`. |
 
 Cross-cutting rules:
+- **The unit of measure here is knowledge, never file count.** In this domain risk is
+  knowledge-shaped: carrying one settled fact into eight documents is small, and one
+  claim that re-parents a node is not. Do not import the code lens's file thresholds —
+  a level is chosen by what the change does to the corpus and the graph. What keeps
+  this from becoming an escape hatch is the trigger list below, which overrides the
+  level whatever the size, plus one limit: **propagation that changes what a claim
+  asserts is not propagation** — it is a new knowledge unit, so L3.
 - **Domain routing (multi-lens installs only).** After the level is set, and only when a sibling lens skill of this family is installed (`agentic-sdlc`, `mkt-agentic-sdlc`), run the router in `routing.md` for every L2, L3 and Spike: it decides which lens's method and validation rules govern this unit of work. L1 never reaches it, and a single-lens install never reads the file — detection fails open. In such a project, never refer to a document whose meaning differs by lens ("threat model", "vision", `principles.md`, `handoff.md`) by its bare name: qualify it with its domain, or name its path.
 - Personal data, credentials, security-sensitive processes, authN/authZ specs are high-risk: never L1.
 - **Escalation triggers — ANY of these makes it L3, whatever the file count:** the change touches the topic hierarchy (`parents:`, a `GENERALIZES` verdict, a re-parent); it touches more than one node's frontmatter; it creates or supersedes a node other nodes reference. Re-shaping the graph is a unit of change, never a side effect of placing one claim.
