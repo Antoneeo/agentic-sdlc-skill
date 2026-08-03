@@ -361,6 +361,38 @@ class TL_F029_Dispatch(unittest.TestCase):
         self.assertEqual(rc, 0)
         self.assertNotIn("knowledge overlay", out)
 
+    def test_skill_md_names_every_intercepted_command(self):
+        """F-029 follow-up: `anchor` shipped working, listed in `--help`, and
+        absent from SKILL.md -- so an agent reading only the doctrine never
+        learned it exists. Derived from INTERCEPTED, never from a second hand-
+        maintained list: that duplication is the defect, not the omission."""
+        skill = Path(__file__).resolve().parents[1] / "SKILL.md"
+        text = skill.read_text(encoding="utf-8")
+        for cmd in sorted(kc.INTERCEPTED):
+            self.assertIn(f"`{cmd}`", text,
+                          f"SKILL.md never names `{cmd}`, which the entry point "
+                          f"intercepts: the doctrine and the machinery disagree "
+                          f"about what this skill can do")
+
+
+class TL_F029_AnchorPath(unittest.TestCase):
+    """F-029 follow-up: reported from the field as an asymmetry -- `anchor`
+    had to be run from inside the docs root while its siblings take `--root`."""
+
+    def test_path_resolves_under_the_docs_root_from_outside_it(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {}, given={"m-ab12cd34.txt": PAGED})
+            args = type("A", (), {"path": "corpus/given/m-ab12cd34.txt",
+                                  "phrase": "Operator groups", "root": tmp,
+                                  "docs_dir": docs.name, "page": None,
+                                  "ignore_case": False, "all": False})()
+            import contextlib, io
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = kc.kb_cmd_anchor(args)
+        self.assertEqual(rc, 0, buf.getvalue())
+        self.assertIn("p=2@", buf.getvalue())
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=1)

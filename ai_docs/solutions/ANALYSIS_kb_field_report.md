@@ -297,5 +297,27 @@ old triage grain, the old intake letter and a command list without `anchor`. Dev
 from the Impact, declared: no `scripts/fixtures/` were added — the new tests build their
 trees with `tempfile`, which is what the surrounding battery already does.
 
+**2026-08-03 — three follow-up findings from the same practitioner, reading 1.1.0.**
+All three verified in the source and all three of the class this unit exists to
+remove — the doctrine and the machinery disagreeing:
+
+- `SKILL.md:24` never named `anchor`, though it shipped working and listed in
+  `--help`. The practitioner found the command from the prose, by accident. Now
+  guarded by a kb invariant that **derives** the expected list from `INTERCEPTED`;
+  a second hand-maintained list would repeat the defect rather than close it.
+- `SKILL.md:86` (Write Triggers, `corpus/given/*`) still read "verbatim copy …
+  non-text originals **also** get their stored canonical extraction" — the exact
+  wording §1 carried *before* this unit changed it. Two rules, opposite outcomes on
+  a binary corpus. Fixed by stating both forms and naming §1 as the rule's owner.
+  Lesson recorded: changing a rule in its owning file is half the change; the
+  Write Triggers table restates enough of it to diverge.
+- `anchor` resolved paths only from inside the docs root while its siblings take
+  `--root`. Made to resolve instead of documented: a path that does not resolve from
+  the current directory is retried under the docs root, so it can be written exactly
+  as a claim's `source` cell carries it.
+
+Shipped as **kb 1.1.1**; 1.1.0 was already published and is tagged `kb-v1.1.0` at
+the tree the registry carries (shasum verified identical to the local pack).
+
 Open: nothing blocking. F-028 (mergeable documentation) is PAUSED at its own design gate
 by owner priority. Not in scope and recorded above: `mkt_check.py`'s dropped `migrate`.
