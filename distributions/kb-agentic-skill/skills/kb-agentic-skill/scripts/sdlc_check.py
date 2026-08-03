@@ -92,6 +92,8 @@ DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 LOC_PAGE_RE = re.compile(r"^p=(\d+)@(\d+)-(\d+)$")
 LOC_LINE_RE = re.compile(r"^L(\d+)-(\d+)$")
 LOC_CELL_RE = re.compile(r"^Sheet[^!]+![A-Z]+\d+$")
+# F-031. How far a source has been read, in the unit its locators address.
+EXTRACTED_THROUGH_RE = re.compile(r"^(?:complete|p=(\d+)|L(\d+))$")
 
 # Unit conventions, documented in templates.md. effort in person-days
 # (8h day, 5d week, 21d month); duration in calendar days; cost within ONE
@@ -664,6 +666,64 @@ def kb_build_topic_index(root):
     return "\n".join(lines) + "\n"
 
 
+def kb_parse_extracted_through(value):
+    """('complete', None) | ('p', n) | ('L', n), or None when the value is not a
+    coverage statement.
+
+    Fail-closed on purpose: a field whose whole job is to be checkable must be
+    checkable, so an unreadable value is an error rather than a silent pass."""
+    m = EXTRACTED_THROUGH_RE.match((value or "").strip())
+    if not m:
+        return None
+    if m.group(1):
+        return "p", int(m.group(1))
+    if m.group(2):
+        return "L", int(m.group(2))
+    return "complete", None
+
+
+def kb_extraction_extent(artifact, kind):
+    """How far the stored bytes go, in the unit `kind` — or None when nothing
+    measurable is stored.
+
+    Opens exactly the file `kb_check_locator` opens for that locator form: pages
+    live in the stored extraction beside the original, lines in the artifact
+    itself. Coverage is therefore measured against the same bytes a locator
+    addresses, and a binary is never read as text (a .pdf with no extraction
+    beside it is simply unmeasurable — the p= branch needs the .txt)."""
+    if kind == "p":
+        ext = artifact if artifact.suffix == ".txt" else artifact.with_suffix(".txt")
+        if not ext.is_file():
+            return None
+        return len(sdlc_core.read_text(ext).split("\f"))
+    if kind == "L":
+        if not artifact.is_file():
+            return None
+        return sdlc_core.read_text(artifact).count("\n") + 1
+    return None
+
+
+def kb_coverage_cell(artifact, through):
+    """The coverage fact for one corpus row.
+
+    EVERY artifact gets one, including the finished ones: printing only the
+    incomplete ones would turn this index into 'the set that is not current',
+    which the Vision refuses (r9). It is a fact on an existing row, never a
+    filter and never a sort key."""
+    if not (through or "").strip():
+        return "extraction not recorded"
+    parsed = kb_parse_extracted_through(through)
+    if parsed is None:
+        return "extracted through %s (unreadable)" % through.strip()
+    kind, n = parsed
+    if kind == "complete":
+        return "extracted through complete"
+    total = kb_extraction_extent(artifact, kind)
+    stated = ("p=%d" % n) if kind == "p" else ("L%d" % n)
+    return "extracted through %s of %d" % (stated, total) if total \
+        else "extracted through %s" % stated
+
+
 def kb_build_corpus_index(root):
     """One row per corpus artifact, from sidecars and note frontmatter."""
     corpus = root / "corpus"
@@ -676,9 +736,10 @@ def kb_build_corpus_index(root):
             meta = sdlc_core.load_frontmatter(sdlc_core.read_text(meta_p).splitlines()) or {}
             orig = meta_p.name[:-len(".meta.md")]
             sup = (meta.get("supersedes") or "").strip()
-            lines.append("- `%s` — %s%s" % (
+            lines.append("- `%s` — %s%s — %s" % (
                 orig, (meta.get("date") or "undated"),
-                (" — supersedes `%s`" % sup) if sup else ""))
+                (" — supersedes `%s`" % sup) if sup else "",
+                kb_coverage_cell(given / orig, meta.get("extracted_through"))))
     notes = corpus / "notes"
     if notes.is_dir():
         lines.append("")
@@ -692,12 +753,125 @@ def kb_build_corpus_index(root):
     return "\n".join(lines) + "\n"
 
 
+def kb_cited_extents(root):
+    """Per artifact file name, what the claim rows say about it: the highest page
+    and the highest line any locator addresses (with the row that says so), and
+    every row citing it. One walk of topics/, shared by the supersession and the
+    coverage checks — two walks of the same tree for two questions is how the
+    answers start disagreeing."""
+    cited = {}
+    topics = root / "topics"
+    if not topics.is_dir():
+        return cited
+    for p in sorted(topics.glob("*.md")):
+        for row in kb_parse_claims(sdlc_core.read_text(p))[0]:
+            where = "topics/%s:%d" % (p.name, row["_line"])
+            for src in row["source"].split(";"):
+                src = src.strip()
+                if not src:
+                    continue
+                path_s, loc = src.rsplit("#", 1) if "#" in src else (src, "")
+                parts = Path(path_s.strip().replace("\\", "/")).parts
+                if parts[-3:-1] != ("corpus", "given"):
+                    # Keyed by file name, so a note sharing a name with an
+                    # artifact would otherwise be attributed to it and inflate
+                    # its extents. Both consumers here ask only about given/.
+                    continue
+                name = parts[-1]
+                e = cited.setdefault(name, {"p": 0, "p_where": None,
+                                            "L": 0, "L_where": None, "rows": []})
+                e["rows"].append(where)
+                m = LOC_PAGE_RE.match(loc.strip())
+                if m and int(m.group(1)) > e["p"]:
+                    e["p"], e["p_where"] = int(m.group(1)), where
+                    continue
+                m = LOC_LINE_RE.match(loc.strip())
+                if m and int(m.group(2)) > e["L"]:
+                    e["L"], e["L_where"] = int(m.group(2)), where
+    return cited
+
+
+def _kb_cited_for(cited, artifact_name):
+    """Claims may cite the original or its stored extraction — both address the
+    same bytes, so both count as citing this artifact."""
+    names = [artifact_name]
+    if not artifact_name.endswith(".txt"):
+        names.append(Path(artifact_name).with_suffix(".txt").name)
+    found = [cited[n] for n in names if n in cited]
+    if not found:
+        return None
+    merged = dict(found[0])
+    for e in found[1:]:
+        for kind in ("p", "L"):
+            if e[kind] > merged[kind]:
+                merged[kind], merged[kind + "_where"] = e[kind], e[kind + "_where"]
+        merged["rows"] = merged["rows"] + e["rows"]
+    return merged
+
+
+def kb_check_coverage(rel, artifact, through, facts, errors, warnings):
+    """`extracted_through:` against the rows and against the stored bytes (F-031).
+
+    Four outcomes, and the boundary between them is the whole point: claims with
+    no field errors (an unfalsifiable 'done'); a field that contradicts the bytes
+    or the rows errors; a field short of the end warns, because partial work is
+    legal mid-ingestion; an artifact nobody extracted from stays silent.
+
+    The limit, stated where the code is: nothing here proves a page was READ. A
+    field advanced without extracting is invisible to any checker, since a page
+    that asserts nothing legitimately yields no rows — that direction belongs to
+    the ingestion review. What this buys is that the shortcut must be written
+    down to pass."""
+    if not through:
+        if facts:
+            errors.append("%s: claims cite this artifact and the sidecar has no "
+                          "'extracted_through:' — how far a source was read is an "
+                          "assertion like any other, and unstated 'I am finished' "
+                          "cannot be falsified. Record it: 'p=<n>', 'L<n>', or "
+                          "'complete' (first row at %s)" % (rel, facts["rows"][0]))
+        return
+    parsed = kb_parse_extracted_through(through)
+    if parsed is None:
+        errors.append("%s: extracted_through: %r is not a coverage statement — use "
+                      "'complete', 'p=<n>' or 'L<n>'" % (rel, through))
+        return
+    kind, n = parsed
+    if kind == "complete":
+        return
+    other = "L" if kind == "p" else "p"
+    unit = "pages" if kind == "p" else "lines"
+    total = kb_extraction_extent(artifact, kind)
+    if facts and facts[other] and not facts[kind]:
+        errors.append("%s: coverage is stated in %s while every claim addresses %s "
+                      "(%s) — stated in the wrong unit it compares with nothing, "
+                      "and nothing here is checkable"
+                      % (rel, unit, "lines" if kind == "p" else "pages",
+                         facts[other + "_where"]))
+        return
+    if total and n > total:
+        errors.append("%s: extracted_through: %s, past the end of the stored bytes "
+                      "(%d %s) — coverage cannot exceed what was stored"
+                      % (rel, through, total, unit))
+    elif total and n < total:
+        warnings.append("%s: extracted through %s of %d %s — ingestion is incomplete "
+                        "(legal mid-work: a source is finished when every page has "
+                        "been read, not when enough rows exist)"
+                        % (rel, through, total, unit))
+    if facts and facts[kind] > n:
+        reached = ("p=%d" % facts[kind]) if kind == "p" else ("L%d" % facts[kind])
+        errors.append("%s: a claim addresses %s, past the declared coverage %s (%s) — "
+                      "the sidecar and the rows contradict each other; one of the two "
+                      "is wrong" % (rel, reached, through, facts[kind + "_where"]))
+
+
 def kb_corpus_check(root):
-    """Corpus integrity: digests, supersession, laundered notes. Findings only."""
+    """Corpus integrity: digests, supersession, coverage, laundered notes.
+    Findings only."""
     errors, warnings = [], []
     corpus = root / "corpus"
     if not corpus.is_dir():
         return errors, warnings
+    cited = kb_cited_extents(root)
     superseded = set()
     given = corpus / "given"
     if given.is_dir():
@@ -721,6 +895,9 @@ def kb_corpus_check(root):
                 if not (given / sup).is_file():
                     warnings.append("%s: supersedes %r which is not in given/"
                                     % (rel, sup))
+            kb_check_coverage(rel, orig,
+                              (meta.get("extracted_through") or "").strip(),
+                              _kb_cited_for(cited, orig.name), errors, warnings)
     notes = corpus / "notes"
     if notes.is_dir():
         for p in sorted(notes.glob("*.md")):
@@ -730,20 +907,11 @@ def kb_corpus_check(root):
                 errors.append("corpus/notes/%s: neither 'derived_from:' nor "
                               "'origin:' nor 'basis:' — model knowledge disguised "
                               "as a source" % p.name)
-    # claims resting on superseded originals (UC4)
-    if superseded:
-        topics = root / "topics"
-        if topics.is_dir():
-            for p in sorted(topics.glob("*.md")):
-                rows, _ = kb_parse_claims(sdlc_core.read_text(p))
-                for row in rows:
-                    for src in row["source"].split(";"):
-                        name = Path(src.split("#")[0].strip()).name
-                        if name in superseded:
-                            warnings.append(
-                                "topics/%s:%d: claim rests on %s, which a newer "
-                                "version supersedes — re-verify or re-place"
-                                % (p.name, row["_line"], name))
+    # claims resting on superseded originals (UC4), from the same single walk
+    for name in sorted(superseded):
+        for where in (cited.get(name) or {}).get("rows", []):
+            warnings.append("%s: claim rests on %s, which a newer version "
+                            "supersedes — re-verify or re-place" % (where, name))
     return errors, warnings
 
 

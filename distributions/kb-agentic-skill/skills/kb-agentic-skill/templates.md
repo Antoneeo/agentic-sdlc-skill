@@ -355,6 +355,25 @@ owned, validator-read-only): `{ "<task_id>": {"status": "done", "verify_result":
 sentinel skips re-dispatch; any other value (or a missing `status`) is treated
 as pending. A ledger id absent from the plan is a non-fatal orphan warning.
 
+**Ingestion plans: one task per reading window** (`distillation.md` §3). A source too
+long for one context becomes several tasks over the same artifact, each ending at a
+declared page:
+
+```json
+{
+  "id": "T2",
+  "title": "Extract manual-1a2b3c4d.pdf, pages 31-60",
+  "paths": ["ai_docs/topics/pricing.md",
+            "ai_docs/corpus/given/manual-1a2b3c4d.pdf.meta.md"],
+  "produces": ["ai_docs/corpus/given/manual-1a2b3c4d.pdf.meta.md#extracted_through=p=60"],
+  "verify": "python <skill_dir>/scripts/sdlc_check.py check"
+}
+```
+
+That ledger **is** the register an ingestion resumes from across sessions, so ingestion
+adds no second one: what has been covered is recorded (here and on the sidecar), and what
+remains is derived — the next window is the next pending task.
+
 ## ai_docs/audit/audit_plan.md (Standalone mode only)
 
 The `Reference` field (git hash or ISO UTC timestamp) is managed by `sdlc_check.py mark` — do not fill it by hand. Freshness is verified with `sdlc_check.py stale`.
@@ -553,6 +572,7 @@ date: 2026-08-01
 provenance: GIVEN
 supersedes: contract-1a2b3c4d.pdf
 extractor: pdftotext 24.02, form-feed page breaks, whitespace collapsed
+extracted_through: p=212
 ---
 Handed over by <who>, <context in one line>.
 ```
@@ -560,6 +580,18 @@ Handed over by <who>, <context in one line>.
 `supersedes:` is what makes "which claims rest on a superseded version" answerable —
 without it the two content-addressed files are unrelated. `extractor:` pins the stored
 canonical extraction (`<name>-<hash8>.txt`) that offset locators address.
+
+`extracted_through:` is how far the source has been read — `p=<n>` (paged extraction),
+`L<n>` (line file), or `complete`. It is **required once any claim cites this artifact**
+and it is advanced at the end of every reading window (`distillation.md` §3): unstated,
+"I am finished" is not falsifiable, which is exactly how a sampled 200-page manual passes
+for an ingested one. Three things are checked: claims with no field (error); a claim
+whose locator addresses **past** the declared coverage, or coverage past the end of the
+stored bytes (error — the sidecar and the rows contradict each other); coverage short of
+the end (warning, because partial work is legal mid-ingestion). Its limit is the mirror
+image of `original_sha256`'s: **nothing proves a page was read**, so a field advanced
+without extracting is caught at the ingestion review, never by the validator. An artifact
+nobody has extracted from yet owes nothing and stays silent.
 
 **Extraction-as-artifact** (`distillation.md` §1 — the variant for a large binary
 corpus): when the extraction IS the artifact and the original was never copied in, two

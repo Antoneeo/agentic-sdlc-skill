@@ -1,10 +1,10 @@
 ---
 id: F-031
 feature: Exhaustive ingestion — the source is exhausted, not sampled, and the work resumes across sessions
-status: PLANNED
+status: COMPLETED
 level: L3
 start_date: 2026-08-03
-end_date:
+end_date: 2026-08-03
 ---
 # Feature Analysis: Exhaustive ingestion
 
@@ -121,7 +121,7 @@ new external input — the window is a reading discipline, not a new intake path
 
 ## Action Plan
 
-- [ ] **A — the north star, then §3.** Owner, 2026-08-03: the ingestion agent needs a
+- [x] **A — the north star, then §3.** Owner, 2026-08-03: the ingestion agent needs a
       north star, *"nemmeno una delle informazioni contenute nei file forniti deve andare
       perduta"*. Accepted, with one correction to the unit and one to the shape — both
       agreed in the same exchange. Goes at the TOP of `distillation.md`, before §1,
@@ -144,13 +144,14 @@ new external input — the window is a reading discipline, not a new intake path
       apart get optimized whichever was read last, which is the coin-flip defect the
       Vision's own history records. Then §3 keeps the bounded window, the
       anti-fabrication restatement (T3) and the honest limit.
-- [ ] **B — `extracted_through:`**: sidecar template + the two checks (error when claims
+- [x] **B — `extracted_through:`**: sidecar template + the two checks (error when claims
       exist without it; advisory when short of the end), per artifact.
-- [ ] **C — coverage in `corpus/INDEX.md`**, one cell on the existing row.
-- [ ] **D — the ingestion plan shape**: one task per window, using `PLAN_` + the existing
+- [x] **C — coverage in `corpus/INDEX.md`**, one cell on the existing row.
+- [x] **D — the ingestion plan shape**: one task per window, using `PLAN_` + the existing
       ledger. No new machinery, and no change to `plan`/`dispatch.md`.
-- [ ] **E — span-vs-range consistency** (T2) if it holds up; if not, write the limit down.
-- [ ] **F — tests, cold-run scenario, derived docs, closure.**
+- [x] **E — span-vs-range consistency** (T2): the direction that holds is implemented,
+      the direction that cannot hold is written down. See the Diary.
+- [x] **F — tests, cold-run scenario, derived docs, closure.**
 
 ## Test Strategy
 
@@ -202,4 +203,40 @@ must share one sentence.
 Home: `distillation.md`, not the project Vision. The Vision governs the product; this
 governs one lens's method, and amending the Vision is its own proposal by its own rule.
 
-Open: nothing blocking. Nothing implemented.
+**2026-08-03, implemented — kb 1.3.0 prepared.** A–F done. Batteries 141/218/159 OK
+(kb +13 tests), drift identical, `npm pack` unchanged at 23 files, `check` CLEAN.
+
+**T2 resolved by splitting the direction.** The threat asked whether the advanced range
+could be compared against the spans actually cited. **One direction holds and shipped**:
+a claim whose locator addresses *past* the declared coverage is a contradiction between
+two assertions the artifact makes about itself — no judgement, no false positives, and it
+errors. **The other cannot ever hold**: coverage declared far ahead of any cited span is
+exactly the shortcut, and it is indistinguishable from a legitimate stretch of pages that
+assert nothing — which T3 requires to stay legal. So that direction is written down as a
+limit in three places (`distillation.md` §3, `templates.md`, the code's own docstring),
+next to `original_sha256`'s, rather than left as an implied guarantee. What the field
+buys is not detection: it is that the shortcut must now be **written down** to pass.
+
+**One deviation from the Test Strategy, disclosed.** "The second is the one dispatched"
+is asserted through the documented sentinel, not through a product function: the spine
+has no *next-pending* selector — `plan brief` briefs a task you name, and `dispatch.md`
+defines `status: done` as the skip. So the test drives the three-window plan through the
+real `plan validate` (which is what F-031 could have broken: the `#extracted_through=p=60`
+`produces` form had to survive path confinement) and then applies the sentinel. Adding a
+selector to make the test prettier would have been the new machinery the design refused.
+
+**Two defects the self-review caught, both in the same blind spot** — what the code
+attributes to what. (1) Extents are keyed by file name, mirroring the supersession check,
+so a note sharing a basename with an artifact would have inflated its reach and
+manufactured a contradiction that was not there; sources are now filtered to
+`corpus/given/` at collection, and the test is mutation-verified RED. (2) The README's
+"deliberately absent: any per-node coverage" would have shipped contradicting the feature
+— the sharpened line keeps the Non-Goal exact (per **node**, still absent; per **source**,
+on its own sidecar, printed for every artifact) instead of quietly dropping it. Left as
+is: extents keyed by name rather than by path, unchanged from the existing convention.
+
+**Found in passing, fixed:** the shipped `distributions/kb-agentic-skill/CHANGELOG.md`
+was three releases stale — a user installing 1.2.0 read 1.0.1 as the latest entry. The
+root CHANGELOG had them all. 1.1.0, 1.1.1, 1.2.0 and 1.3.0 are now in the shipped one.
+
+Open: publication (owner's 2FA) and the push+tag `.bat`.

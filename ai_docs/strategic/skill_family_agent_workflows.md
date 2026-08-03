@@ -136,6 +136,20 @@ che non enuncia un gate → nessuna riga, e un gate sospettato ma non trovato è
 UNA valuta — misto **rifiuta di sommare**, niente cambi offline); `about` per le
 relazioni. L'estrattore **non inventa nulla**: ciò che la fonte non asserisce
 diventa `gaps:`, mai una riga.
+**La fonte si esaurisce, non si campiona** (F-031). "Non inventa nulla" è un
+pavimento, e un estrattore che si ferma quando niente di ciò che ha scritto è
+falso si ferma a pagina venti di un manuale di duecento — con tutte le righe
+corrette: è il difetto osservato sul campo. Quindi una fonte lunga si legge a
+**finestre limitate** (30 pagine di default, un task di piano ciascuna: il ledger
+del `PLAN_` è il registro che sopravvive alla sessione, e non se ne costruisce un
+secondo), e ogni finestra si chiude avanzando `extracted_through:` sul sidecar
+dell'artefatto. È quel campo a rendere falsificabile "ho finito": claim senza
+copertura registrata → errore; una claim che indirizza oltre la copertura
+dichiarata → contraddizione; copertura corta rispetto alla fine → warning finché
+non ci arriva. Il limite sta scritto dove sta il campo: **niente dimostra che una
+pagina sia stata letta**; cambia che la scorciatoia ora va scritta per passare. E
+esaustivo vuol dire *letto*, mai *una riga per pagina*: una pagina che non
+asserisce nulla non produce nulla.
 
 **3. Collocazione — cinque verdetti** (`taxonomy.md`): discesa sull'indice
 generato seguendo OGNI parent (poligerarchia), sinonimi nell'indice ("listino"
@@ -163,7 +177,11 @@ decidere). L'ingestione non si ferma mai a farti domande.
 
 Deliberatamente **assente**: qualsiasi stato di copertura per nodo — `gaps:` dice
 cosa manca a QUEL nodo, e niente lo colleziona (il Non-Goal work-management). I
-check emettono findings, mai righe di stato.
+check emettono findings, mai righe di stato. Una **fonte** invece registra fin
+dove è stata letta, ma sul proprio sidecar e da nessun'altra parte: l'indice del
+corpus stampa quel fatto per **ogni** artefatto, anche per quelli finiti, perché
+l'elenco del solo "cosa è indietro" è esattamente il cruscotto che il metodo
+rifiuta (r9).
 
 Provato sul corpus Eclosion: 5 specifiche, 7 topic, 26 claim, un conflitto vero
 (capacità <100 vs 200–300, stessa data) rilevato, trattenuto, risolto dal tuo

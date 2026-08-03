@@ -2,6 +2,54 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [kb 1.3.0] - 2026-08-03
+
+F-031 — from the field: *"the ingestion agent takes shortcuts, and a lot of information
+is lost. The graph works only if all of a file's information is poured into it."* An
+agent handed a 200-page manual emitted a few dozen claims and reported done. Nothing it
+did broke a rule — and that is the finding. `distillation.md` carried a floor ("the
+extractor invents nothing") and no target, so an agent optimizing against it stops the
+moment nothing it wrote is false. **Nothing the field agent emitted was wrong.** Third
+appearance of one class: a rule that describes a good output and never says which
+outputs must exist.
+
+### Added
+- **A north star at the top of `distillation.md`**, above the rules rather than beside
+  them: *not one assertion the source makes may be lost, and not one it does not make
+  may appear.* One sentence, deliberately — two rules a paragraph apart get optimized
+  whichever was read last. The unit is the **assertion**, not the byte: layout and page
+  furniture are not assertions, exhaustive means **read** and never *a row per page*.
+- **`extracted_through:`** on the artifact's own sidecar (`p=<n>`, `L<n>`, `complete`) —
+  required once any claim cites it. It is what makes "I am finished" falsifiable, and it
+  makes the rows and the field check each other: claims with no coverage recorded error;
+  a claim addressing past the declared coverage, or coverage past the end of the stored
+  bytes, is a contradiction and errors; coverage short of the end warns, because partial
+  work is legal mid-ingestion. An artifact nobody has extracted from owes nothing.
+- **Bounded reading windows** — 30 pages by default, *the plan states the window used*
+  (a hard number baked into doctrine ages badly across models and page densities). One
+  plan task per window: the existing `PLAN_[topic].md` ledger is the register an
+  ingestion resumes from across sessions, so **no second register was built** — one
+  would have been the work board this method refuses.
+- **A coverage cell in `corpus/INDEX.md`**, printed for **every** artifact including the
+  finished ones. A list of only what is behind is the dashboard the Vision rejects, and
+  a test fails the suite if the report ever becomes one.
+- Cold-run scenario `long_source_is_exhausted_not_sampled.md`: sampling a long source and
+  reporting it ingested is the FAIL — and so is manufacturing a row per page.
+
+The limit is stated wherever the field is written, as with `original_sha256`: **nothing
+proves a page was read.** A field advanced without extracting is invisible to any
+checker, precisely because a page that asserts nothing legitimately yields no rows — that
+direction belongs to the ingestion review. What changed is that the shortcut must now be
+written down to pass, and a written claim can be reopened by anyone who cares to.
+
+### Upgrading an existing corpus
+`check` will error on every `corpus/given/` artifact that has claims and no
+`extracted_through:`. That is the migration, and it is the point: state how far each
+source was actually read (`complete` if it was finished). The message names the artifact,
+the first row citing it, and the three accepted forms. `corpus/INDEX.md` gains the
+coverage cell, so run `sdlc_check.py index` once — until then `validate` reports it
+out of alignment, as it does for any generated index.
+
 ## [kb 1.2.0] - 2026-08-03
 
 F-030 — knowledge built in one project could not leave it. A practitioner who grounded
