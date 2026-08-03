@@ -859,10 +859,27 @@ def kb_cmd_claim_id(args):
 
 
 def kb_cmd_anchor(args):
-    """Prose citation -> a verified span. The half `claim-id` never had."""
+    """Prose citation -> a verified span. The half `claim-id` never had.
+
+    The path may be given as it appears in a claim's `source` cell
+    (`corpus/given/x-ab12cd34.txt`): when it does not resolve from the current
+    directory it is retried under the docs root, so the command works from
+    anywhere in the project instead of only from inside `ai_docs/`. Reported
+    from the field as an asymmetry with `graph`/`corpus`/`check`, which take
+    `--root`; those scan a tree, this one takes a path, and the fix is to make
+    the path resolve rather than to document where to stand."""
     p = Path(args.path)
     if not p.is_file():
-        print("[ERROR] no such file: %s" % p)
+        try:
+            _, docs = _kb_root(args)
+            if (docs / args.path).is_file():
+                p = docs / args.path
+        except sdlc_core.AmbiguousDocsRoot:
+            pass
+    if not p.is_file():
+        print("[ERROR] no such file: %s" % args.path)
+        print("        looked from the current directory and under the docs "
+              "root; give the path as the claim's `source` cell carries it.")
         return 2
     hits = kb_resolve_anchor(p, args.phrase, ignore_case=args.ignore_case,
                              page=args.page)
@@ -940,6 +957,8 @@ def main(argv=None):
     p = sub.add_parser("anchor")
     p.add_argument("path")
     p.add_argument("phrase")
+    p.add_argument("--root")
+    p.add_argument("--docs-dir")
     p.add_argument("--page", type=int)
     p.add_argument("--ignore-case", action="store_true")
     p.add_argument("--all", action="store_true")

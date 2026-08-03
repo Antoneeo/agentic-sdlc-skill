@@ -2,6 +2,31 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [kb 1.1.1] - 2026-08-03
+
+Three inconsistencies the same field practitioner found by reading 1.1.0 against
+their own corpus — all of the class 1.1.0 exists to remove: the doctrine and the
+machinery disagreeing, where an agent reads one and the checker obeys the other.
+
+### Fixed
+- **`SKILL.md` never named `anchor`.** The command shipped working and listed in
+  `--help`, while the support-file line still said "the knowledge overlay: `graph`,
+  `corpus`, `claim-id`" — so an agent reading only the doctrine never learned it
+  exists, which is how the practitioner found it (from the prose, by accident). New
+  kb invariant derives the expected list from `INTERCEPTED` and fails when SKILL.md
+  omits any of it; deriving is the point, a second hand-maintained list would be the
+  same defect again.
+- **Two rules gave opposite outcomes on a binary corpus.** The Write Triggers row for
+  `corpus/given/*` still read "verbatim copy … non-text originals **also** get their
+  stored canonical extraction", contradicting the extraction-as-artifact rule added to
+  `distillation.md` §1 in 1.1.0. The row now states both forms and names §1 as the
+  owner of the rule.
+- **`anchor` only worked from inside the docs root**, an asymmetry with `graph`,
+  `corpus` and `check`, which take `--root`. Those scan a tree and this one takes a
+  path, so the fix is to make the path resolve rather than to document where to stand:
+  a path that does not resolve from the current directory is retried under the docs
+  root, which means it can be given exactly as a claim's `source` cell carries it.
+
 ## [kb 1.1.0] - 2026-08-03
 
 Scoped to `@antoneeo/kb-agentic-skill`. `agentic-sdlc-skill` (1.20.3) and
