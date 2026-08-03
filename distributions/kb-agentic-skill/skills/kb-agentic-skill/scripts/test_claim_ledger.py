@@ -405,7 +405,8 @@ def _portable_tree(tmp, name="A"):
     art = docs / "corpus" / "given" / "m-ab12cd34.txt"
     art.write_bytes(data)
     (docs / "corpus" / "given" / "m-ab12cd34.txt.meta.md").write_text(
-        "---\nsha256: %s\ndate: 2026-08-03\nprovenance: GIVEN\n---\n"
+        "---\nsha256: %s\ndate: 2026-08-03\nprovenance: GIVEN\n"
+        "extracted_through: complete\n---\n"
         % hashlib.sha256(data).hexdigest(), encoding="utf-8")
     src = "corpus/given/m-ab12cd34.txt"
     rows = [(kc.kb_claim_id(src, "p=1@42-61", ""), "disabled by default",
@@ -610,6 +611,198 @@ class TL_F030_ImportedAuthority(unittest.TestCase):
                              notes={"n.md": "---\nbasis: I decided, here is why\n---\nx\n"})
             errors, _w, _n = kc.kb_check_claims(docs)
         self.assertEqual([e for e in errors if "foreign decision" in e], [])
+
+
+# F-031. Page 3 is furniture: it asserts nothing, and must therefore yield
+# nothing. "Exhaustive" is read, never a row per page.
+THREE_PAGES = ("Introduction\nThe feature is disabled by default.\n"
+               "\fLimits\nThe cap is 20 operators.\n"
+               "\f\n   \n")
+
+
+def _cov_tree(tmp, through, spans=((1, 0, 12),), text=THREE_PAGES,
+              name="m-ab12cd34.txt"):
+    """A one-artifact corpus: the sidecar declares `through`, the topic cites
+    `spans`. `through=None` writes no field at all."""
+    docs = Path(tmp) / "ai_docs"
+    (docs / "corpus" / "given").mkdir(parents=True)
+    (docs / "topics").mkdir(parents=True)
+    art = docs / "corpus" / "given" / name
+    art.write_text(text, encoding="utf-8", newline="")
+    meta = ("---\nsha256: %s\ndate: 2026-08-03\nprovenance: GIVEN\n"
+            % kc.kb_sha256_bytes(art))
+    if through is not None:
+        meta += "extracted_through: %s\n" % through
+    (docs / "corpus" / "given" / (name + ".meta.md")).write_text(
+        meta + "---\nhanded over\n", encoding="utf-8")
+    src = "corpus/given/" + name
+    rows = []
+    for pg, a, b in spans:
+        loc = "p=%d@%d-%d" % (pg, a, b)
+        rows.append((kc.kb_claim_id(src, loc, ""), "fact from page %d" % pg,
+                     "-", "-", "-", src + "#" + loc, "GIVEN", "OK"))
+    (docs / "topics" / "t.md").write_text(claims_md(rows), encoding="utf-8")
+    return docs
+
+
+class TL_F031_Coverage(unittest.TestCase):
+    """F-031: a completion claim must be falsifiable. One test per branch —
+    a single test tripping two branches lets either be deleted with the suite
+    green (the F-027 lesson)."""
+
+    def _check(self, through, **kw):
+        with tempfile.TemporaryDirectory() as tmp:
+            return kc.kb_corpus_check(_cov_tree(tmp, through, **kw))
+
+    def test_claims_with_no_coverage_field_error(self):
+        errors, _w = self._check(None)
+        self.assertTrue(any("extracted_through" in e for e in errors), errors)
+
+    def test_an_artifact_nobody_extracted_from_owes_nothing(self):
+        errors, warnings = self._check(None, spans=())
+        self.assertEqual((errors, warnings), ([], []))
+
+    def test_short_of_the_end_warns_and_never_errors(self):
+        errors, warnings = self._check("p=1")
+        self.assertEqual(errors, [])
+        self.assertTrue(any("incomplete" in w for w in warnings), warnings)
+
+    def test_the_last_page_by_number_is_not_short(self):
+        errors, warnings = self._check("p=3", spans=((1, 0, 12), (2, 0, 6)))
+        self.assertEqual((errors, warnings), ([], []))
+
+    def test_complete_ends_the_matter(self):
+        errors, warnings = self._check("complete")
+        self.assertEqual((errors, warnings), ([], []))
+
+    def test_a_claim_past_the_declared_coverage_is_a_contradiction(self):
+        errors, _w = self._check("p=1", spans=((1, 0, 12), (2, 0, 6)))
+        self.assertTrue(any("contradict" in e for e in errors), errors)
+
+    def test_coverage_past_the_stored_end_errors(self):
+        errors, _w = self._check("p=9")
+        self.assertTrue(any("past the end" in e for e in errors), errors)
+
+    def test_an_unreadable_value_errors_rather_than_passing_silently(self):
+        """Fail-closed: a field whose whole job is to be checkable must be
+        checkable, or it is decoration that reads like a guarantee."""
+        errors, _w = self._check("most of it")
+        self.assertTrue(any("not a coverage statement" in e for e in errors), errors)
+
+    def test_the_wrong_unit_compares_with_nothing_and_errors(self):
+        errors, _w = self._check("L40")
+        self.assertTrue(any("wrong unit" in e for e in errors), errors)
+
+    def test_a_page_that_asserts_nothing_yields_no_rows_and_still_completes(self):
+        """T3, the counterweight: 'exhaust the source' must never become
+        'manufacture a row per page'. Page 3 is furniture and stays unrowed,
+        and the artifact is still legitimately complete."""
+        errors, warnings = self._check("complete", spans=((1, 0, 12), (2, 0, 6)))
+        self.assertEqual((errors, warnings), ([], []))
+
+    def test_a_note_sharing_a_name_is_not_attributed_to_the_artifact(self):
+        """Extents are keyed by file name (as the supersession check already is),
+        so a same-named note elsewhere in the corpus would otherwise inflate the
+        artifact's reach and manufacture a contradiction that is not there."""
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = _cov_tree(tmp, "p=1")
+            note = docs / "corpus" / "notes" / "m-ab12cd34.txt"
+            note.parent.mkdir(parents=True)
+            note.write_text(THREE_PAGES, encoding="utf-8", newline="")
+            src = "corpus/notes/m-ab12cd34.txt"
+            rows = [(kc.kb_claim_id("corpus/given/m-ab12cd34.txt", "p=1@0-12", ""),
+                     "fact from page 1", "-", "-", "-",
+                     "corpus/given/m-ab12cd34.txt#p=1@0-12", "GIVEN", "OK"),
+                    (kc.kb_claim_id(src, "p=2@0-6", ""), "said elsewhere",
+                     "-", "-", "-", src + "#p=2@0-6", "ELICITED", "OK")]
+            (docs / "topics" / "t.md").write_text(claims_md(rows), encoding="utf-8")
+            errors, _w = kc.kb_corpus_check(docs)
+        self.assertEqual([e for e in errors if "contradict" in e], [], errors)
+
+    def test_the_index_names_every_artifact_including_the_finished_ones(self):
+        """r9 guard: the coverage report is a fact on each row, never the
+        filtered set of what is not current. Deleting the finished rows here
+        would pass a naive 'shows incomplete work' test and break the Vision."""
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = _cov_tree(tmp, "complete")
+            given = docs / "corpus" / "given"
+            for name, through in (("b-11112222.txt", "p=1"),
+                                  ("c-33334444.txt", None)):
+                art = given / name
+                art.write_text(THREE_PAGES, encoding="utf-8", newline="")
+                meta = ("---\nsha256: %s\ndate: 2026-08-03\nprovenance: GIVEN\n"
+                        % kc.kb_sha256_bytes(art))
+                if through:
+                    meta += "extracted_through: %s\n" % through
+                (given / (name + ".meta.md")).write_text(meta + "---\nx\n",
+                                                         encoding="utf-8")
+            index = kc.kb_build_corpus_index(docs)
+        for name in ("m-ab12cd34.txt", "b-11112222.txt", "c-33334444.txt"):
+            self.assertIn(name, index, index)
+        self.assertIn("extracted through complete", index)
+        self.assertIn("extracted through p=1 of 3", index)
+        self.assertIn("extraction not recorded", index)
+
+
+class TL_F031_WindowPlan(unittest.TestCase):
+    """The register an ingestion resumes from is the PLAN_ ledger that already
+    exists: one task per reading window, no second surface. What could break is
+    the documented task shape, so it is driven through the real validator."""
+
+    PLAN = """---
+status: DRAFT
+derived-from: ANALYSIS_manual.md
+---
+# Plan: Ingest the manual
+
+```json
+{
+  "tasks": [
+    {"id": "T1", "title": "Extract m-ab12cd34.txt, pages 1-30",
+     "paths": ["ai_docs/topics/t.md",
+               "ai_docs/corpus/given/m-ab12cd34.txt.meta.md"],
+     "produces": ["ai_docs/corpus/given/m-ab12cd34.txt.meta.md#extracted_through=p=30"],
+     "verify": "sdlc_check.py check"},
+    {"id": "T2", "title": "Extract m-ab12cd34.txt, pages 31-60",
+     "paths": ["ai_docs/topics/t.md",
+               "ai_docs/corpus/given/m-ab12cd34.txt.meta.md"],
+     "produces": ["ai_docs/corpus/given/m-ab12cd34.txt.meta.md#extracted_through=p=60"],
+     "verify": "sdlc_check.py check"},
+    {"id": "T3", "title": "Extract m-ab12cd34.txt, pages 61-72",
+     "paths": ["ai_docs/topics/t.md",
+               "ai_docs/corpus/given/m-ab12cd34.txt.meta.md"],
+     "produces": ["ai_docs/corpus/given/m-ab12cd34.txt.meta.md#extracted_through=complete"],
+     "verify": "sdlc_check.py check"}
+  ]
+}
+```
+"""
+
+    def test_a_window_plan_validates_through_the_existing_command(self):
+        import contextlib, io, json as _json
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            sol = root / "ai_docs" / "solutions"
+            sol.mkdir(parents=True)
+            plan = sol / "PLAN_manual.md"
+            plan.write_text(self.PLAN, encoding="utf-8")
+            (sol / "PLAN_manual.ledger.json").write_text(
+                _json.dumps({"T1": {"status": "done", "verify_result": "pass",
+                                    "timestamp": "2026-08-03T00:00:00Z"}}),
+                encoding="utf-8")
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = kc.main(["plan", "--root", str(root), "validate", str(plan)])
+            self.assertEqual(rc, 0, buf.getvalue())
+            self.assertIn("3 task(s)", buf.getvalue())
+            ledger, reason = kc.sdlc_core.load_ledger(
+                sol / "PLAN_manual.ledger.json")
+            self.assertEqual(reason, "")
+            # The sentinel dispatch.md defines: only `status: done` is skipped,
+            # so the window to resume at is T2. No new machinery computes this.
+            pending = [t for t in ("T1", "T2", "T3")
+                       if (ledger.get(t) or {}).get("status") != "done"]
+            self.assertEqual(pending[0], "T2")
 
 
 if __name__ == "__main__":

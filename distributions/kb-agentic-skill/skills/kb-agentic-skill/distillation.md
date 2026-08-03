@@ -6,6 +6,19 @@ of knowledge get its file".
 **Does not answer**: where a claim's concept lives (above — `taxonomy.md`) or what
 happens when it disagrees with an existing one (`reconciliation.md`).
 
+> **North star.** *Not one assertion the source makes may be lost, and not one it does
+> not make may appear.* These are one rule, not two: a ledger that invents nothing but
+> keeps a tenth of the manual is as useless as one that keeps everything and made half
+> of it up.
+>
+> The unit is the **assertion**, not the byte: layout, ordering, repetition and page
+> furniture are not assertions. A page that asserts nothing yields nothing — exhaustive
+> means **read**, never *a row per page*. And "I am finished" is an assertion like any
+> other: `extracted_through:` is what makes it falsifiable.
+
+Everything below is that one rule made operable. Where a rule below does not reach the
+case in front of you, decide by the north star — both halves of it, in the same breath.
+
 ## 1. Intake — everything becomes a file first
 
 Ingest **never touches the graph**. First the source enters the corpus; the graph is fed
@@ -19,8 +32,9 @@ from the corpus, so everything is re-derivable when the rules improve.
 | an agent synthesis | a note in `corpus/notes/` with `derived_from:` listing its sources — a note with neither `origin:` nor `derived_from:` nor `basis:` is **model knowledge disguised as a source**, and the validator refuses it |
 | a practitioner ruling | a note with `basis:` (`reconciliation.md`) |
 
-Every sidecar (`<artifact>.meta.md`) carries: the digest, the date, provenance, and
-`supersedes:` when it replaces an earlier version. `corpus/INDEX.md` is generated.
+Every sidecar (`<artifact>.meta.md`) carries: the digest, the date, provenance,
+`supersedes:` when it replaces an earlier version, and `extracted_through:` once anything
+has been extracted from it (§3). `corpus/INDEX.md` is generated.
 
 **Extraction-as-artifact — the variant for a large binary corpus.** Copying gigabytes
 of PDFs into the docs root buys nothing: what the digest protects is *the bytes a
@@ -81,6 +95,33 @@ the offset span it came from. The extractor **invents nothing**: no labels, no
 summaries-as-claims, no filling of gaps from model knowledge. What the source does not
 assert does not become a row — it may become a `gaps:` entry on the topic.
 
+**Exhaust the source; never sample it.** *Invents nothing* is a floor, and a floor is not
+a target: an extractor that stops the moment nothing it wrote is false stops on page
+twenty of a two-hundred-page manual, with every row it emitted correct. A source is
+finished when every page has been **read**, not when enough rows exist. The claim count
+settles nothing in either direction — a short source legitimately yields few rows and a
+dense one yields many — so it can never distinguish *finished* from *sampled*.
+
+**Read in a bounded window, and let the plan hold your place.** A long source does not fit
+in one context, and an agent that runs out of room has two moves: summarize, or stop
+silently. It summarizes. So read a fixed span, emit that span's rows, and only then move
+on. **30 pages is the default and the plan states the window actually used** — page
+density and context budgets differ per source and per model, so the number is declared
+per ingestion rather than assumed. The window is also the unit of resumption: one plan
+task per window (below), so a session that ends mid-source resumes at the next task
+instead of re-reading or guessing where it stopped.
+
+**Close each window by advancing `extracted_through:`** on the artifact's sidecar
+(`templates.md`) — `p=<n>`, `L<n>`, or `complete` when the last page is read. It is what
+makes "I am finished" falsifiable, and it makes the rows and the field check each other:
+a claim whose locator addresses past the declared coverage is a contradiction, and the
+validator reports it. Say the limit out loud, as with `original_sha256` above:
+**nothing here proves a page was read.** A field advanced without extracting is not
+mechanically detectable, precisely because a page that asserts nothing legitimately
+yields no rows — that direction is verified at the ingestion review (`review.md`), like
+the gates below. What the field buys is that the shortcut must now be **written down** to
+pass, and a written claim can be reopened by anyone who cares to.
+
 **Cover the gates, not only the powers.** "One row per assertion" is obeyable and still
 leaves the ledger optimistic: reading a capability paragraph, an extractor emits the
 capability and moves on, because that is what the paragraph asserts. So for every row
@@ -110,9 +151,16 @@ locator without it is how two generation rounds get lost.
 
 Extraction is read-only on the corpus and blind to the graph: rows go to placement
 (`taxonomy.md`) afterwards. Ingesting a document set is **L3 by Rule Zero**; the
-ingestion plan derives from the ANALYSIS Action Plan, one task per source, each task's
-`verify` = "claim rows parse; every source resolves under the docs root". Serial in v1:
+ingestion plan derives from the ANALYSIS Action Plan, **one task per reading window** —
+a source that fits one window is one task, a 200-page manual at 30 pages is seven — each
+task's `verify` = "claim rows parse; every source resolves under the docs root; the
+sidecar's `extracted_through:` reaches this window's last page". Serial in v1:
 correctness first.
+
+The plan's ledger already records `status: done` per task (`templates.md`), which is the
+register that survives a session boundary — so ingestion **builds no second one**. What
+has been covered is recorded (the sidecar, the ledger); what remains is derived from
+them, never stored.
 
 ## 4. Signal discipline (what "distillation" still means)
 

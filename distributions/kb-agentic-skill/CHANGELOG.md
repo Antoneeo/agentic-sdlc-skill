@@ -2,6 +2,91 @@
 
 Every significant change to this skill is recorded here.
 
+## [1.3.0] - 2026-08-03
+
+Field defect: an agent handed a 200-page manual emits a few dozen claims and reports
+done. **Nothing it did broke a rule** — the extraction discipline carried a floor ("the
+extractor invents nothing") and no target, so an agent stops the moment nothing it wrote
+is false, and every row it emitted is correct.
+
+### Added
+- **A north star above the rules** in `distillation.md`: *not one assertion the source
+  makes may be lost, and not one it does not make may appear.* One sentence on purpose —
+  the halves counterweight each other, and two rules a paragraph apart get optimized
+  whichever was read last. The unit is the assertion, not the byte: exhaustive means
+  **read**, never *a row per page*.
+- **`extracted_through:`** on the artifact's sidecar (`p=<n>`, `L<n>`, `complete`),
+  required once any claim cites it — the thing that makes "I am finished" falsifiable.
+  Claims with no coverage recorded error; a claim addressing past the declared coverage,
+  or coverage past the end of the stored bytes, is a contradiction and errors; coverage
+  short of the end warns, since partial work is legal mid-ingestion.
+- **Bounded reading windows** (30 pages by default; the plan states the window used),
+  one plan task each. The existing `PLAN_` ledger is the register an ingestion resumes
+  from across sessions — no second register was built.
+- **A coverage cell in `corpus/INDEX.md` for every artifact**, finished ones included: a
+  list of only what is behind would be the work-management dashboard this method refuses.
+
+The limit is written where the field is: **nothing proves a page was read.** A field
+advanced without extracting is invisible to any checker, because a page that asserts
+nothing legitimately yields no rows — that direction belongs to the ingestion review.
+What changed is that the shortcut must be written down to pass.
+
+**Upgrading an existing corpus:** `check` errors on every artifact that has claims and
+no `extracted_through:`. State how far each source was actually read (`complete` if it
+was finished); the message names the artifact and the first row citing it. Run
+`sdlc_check.py index` once as well — `corpus/INDEX.md` gains the coverage cell.
+
+## [1.2.0] - 2026-08-03
+
+### Added
+- **`export --out <dir>` / `import <dir>`** — knowledge built in one project can be
+  carried into another. The export is a **closure**, not a selection: the bundle carries
+  the bytes its claims cite (a claim whose source cannot be reopened is model knowledge
+  arriving by another route) and pulls in the other half of any `CONTESTED` set, saying
+  which topics it added. The import is **additive and all-or-nothing**: it never
+  overwrites a node, never deletes, and computes the whole plan before writing a byte.
+  Duplicate claims are recognised by id, not by comparing text.
+- **`prov: IMPORTED`.** Knowledge crosses the project boundary; authority does not. An
+  imported ruling keeps its text, span and original `basis:` verbatim, must declare
+  `imported_from:`, and **cannot supersede a local row** until you re-ratify it with your
+  own note and your own basis.
+- **`portability.md`** — the doctrine those two commands cite, including what to tell the
+  user in their own words.
+
+## [1.1.1] - 2026-08-03
+
+### Fixed
+Three doctrine-vs-machinery inconsistencies found by a practitioner reading 1.1.0 —
+the worst defect class, because the agent verifies and is confirmed in a false belief.
+- `SKILL.md` never named `anchor`, so the command existed and the agent could not find it.
+- The `corpus/given/*` Write Trigger still carried its pre-1.1.0 wording, contradicting
+  the extraction-as-artifact rule it points at.
+- `anchor` resolved paths only from inside the docs root, unlike every sibling command.
+
+## [1.1.0] - 2026-08-03
+
+### Fixed / Added
+Six findings from the first full application of this skill by a practitioner other than
+its author (51 artifacts, 82 claims). None was an adherence failure: the agent obeyed
+every rule and the outcome was still wrong.
+- **Triage restated in knowledge units.** The levels were undecidable in this domain
+  because they carried the code lens's file counts. The unit here is knowledge, never
+  file count — with one limit: propagation that changes what a claim asserts is not
+  propagation.
+- **Gates are extracted alongside powers.** For every row saying what the subject *can
+  do*, the source is asked what must hold first — default-off, licence tier, version
+  floor, dependency — because "yes, supported" without the gate is a plan that fails on
+  site. The rule stays *ask*, never *produce*.
+- **`anchor <path> <phrase>`** turns a quoted phrase into a verified locator, matching
+  whitespace as `\s+` because a PDF extraction breaks phrases mid-line — the gap that
+  cost a field user two generation rounds.
+- **Extraction-as-artifact** for large binary corpora: the extraction is the artifact,
+  the digest moves onto the bytes locators actually address, and the original stays where
+  it lives as `original_path:` + `original_sha256:` (recorded, never checked — the limit
+  is stated wherever the fields are).
+- **`--help` lists the overlay commands**, so the ones this lens adds are discoverable
+  from the CLI rather than only from the documentation.
+
 ## [1.0.1] - 2026-08-02
 
 ### Fixed
