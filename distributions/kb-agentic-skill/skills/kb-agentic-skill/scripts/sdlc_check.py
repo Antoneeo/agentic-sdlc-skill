@@ -62,12 +62,17 @@ sdlc_core.set_profile(
     unit_noun="topic",
     support_files=("templates.md", "taxonomy.md", "guides.md", "vision.md",
                    "distillation.md", "reconciliation.md", "elicitation.md",
-                   "review.md", "dispatch.md", "routing.md", "ENFORCEMENT.md"),
+                   "review.md", "dispatch.md", "routing.md", "portability.md",
+                   "ENFORCEMENT.md"),
     capabilities=(
         # spine
         "triage", "write_triggers", "workstream_registry", "vision_gate",
         "design_review_gate", "guide_router", "worktree_hygiene",
         # knowledge overlay
+        # `knowledge_portability` (F-030) is deliberately NOT declared: the
+        # capability vocabulary lives in the shared spine, and no shared test
+        # guards on portability, so adding a label there would mean editing
+        # sdlc_core.py in three distributions to buy nothing.
         "taxonomy_pass", "subagent_dispatch", "question_discipline",
     ),
     design_gate_between=("### 3. Request Analysis & Taxonomy Pass",
@@ -80,7 +85,7 @@ sdlc_core.set_profile(
 
 CLAIM_COLUMNS = ("id", "claim", "valid", "qty", "about", "source", "prov", "state")
 CLAIM_HEADING = "## Claims"
-PROVENANCES = ("GIVEN", "ELICITED", "DERIVED", "RULING")
+PROVENANCES = ("GIVEN", "ELICITED", "DERIVED", "RULING", "IMPORTED")
 SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]{0,63}$")
 OWNS_RE = re.compile(r"^[a-z0-9][a-z0-9-]{0,63}/[a-z0-9][a-z0-9-]{0,63}$")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -315,7 +320,7 @@ def kb_check_claims(root):
             prov = row["prov"]
             if prov not in PROVENANCES:
                 errors.append("%s: prov %r not in %s" % (where, prov, "/".join(PROVENANCES)))
-            elif prov in ("DERIVED", "RULING", "ELICITED"):
+            elif prov in ("DERIVED", "RULING", "ELICITED", "IMPORTED"):
                 meta = _note_frontmatter(root, first.rsplit("#", 1)[0])
                 if meta is None:
                     pass  # unresolvable source already reported
@@ -325,6 +330,13 @@ def kb_check_claims(root):
                 elif prov == "RULING" and not meta.get("basis"):
                     errors.append("%s: RULING note carries no 'basis:' — a preference "
                                   "is not a fact; no basis, no ruling" % where)
+                elif prov == "IMPORTED" and not meta.get("imported_from"):
+                    # F-030: IMPORTED exists so a foreign decision cannot pass for
+                    # a local one. Without the origin the class says nothing and
+                    # the row is a RULING with the label filed off.
+                    errors.append("%s: IMPORTED note carries no 'imported_from:' — "
+                                  "the class exists to name whose decision this "
+                                  "was; unnamed, it is a RULING in disguise" % where)
             # --- grammar cells ---
             try:
                 kb_parse_scope(row["valid"])
@@ -384,6 +396,18 @@ def kb_check_claims(root):
                                   "the check, it does not clean up" % (where, kind, t))
                     continue
                 orow, _ = other
+                if kind == "SUPERSEDED" and orow["prov"] == "IMPORTED":
+                    # F-030, owner ruling 2026-08-03: knowledge crosses a project
+                    # boundary, authority does not. An IMPORTED row carries another
+                    # owner's decision; letting it supersede a local row would make
+                    # that decision binding here without anyone here granting it.
+                    # Re-ratify first: write your own ruling note with your own
+                    # basis and flip the row to RULING.
+                    errors.append("%s: SUPERSEDED by %s, which is IMPORTED — a "
+                                  "foreign decision cannot settle a local row. "
+                                  "Re-ratify it (own note, own 'basis:', prov "
+                                  "RULING) or resolve this some other way"
+                                  % (where, t))
                 if kind == "CONTESTED":
                     if orow["state"].startswith("SUPERSEDED"):
                         errors.append("%s: CONTESTED points at SUPERSEDED row %s — "
@@ -734,10 +758,179 @@ def kb_sha256_bytes(path):
     return h.hexdigest()
 
 
+# ------------------------------------------------------- portability (F-030)
+# Export a subgraph WITH the bytes its claims cite; import it additively.
+#
+# The bundle mirrors the docs-root layout on purpose: claim `source` cells are
+# docs-root-relative, so nothing is rewritten on import and `kb_claim_id` --
+# sha256(path#locator#qty), text excluded -- mints the SAME id in both projects.
+# That is what makes de-duplication mechanical instead of a judgement call, and
+# it is why this feature is small.
+
+BUNDLE_MANIFEST = "MANIFEST.md"
+
+
+def kb_claim_sources(row):
+    """The docs-root-relative artifact paths a claim row cites (no locators)."""
+    out = []
+    for src in row["source"].split(";"):
+        src = src.strip()
+        if src and "#" in src:
+            out.append(src.rsplit("#", 1)[0])
+        elif src:
+            out.append(src)
+    return out
+
+
+def kb_collect_topics(docs):
+    """{slug: (path, text, rows)} for every topic node that parses."""
+    out = {}
+    tdir = docs / "topics"
+    if not tdir.is_dir():
+        return out
+    for p in sorted(tdir.glob("*.md")):
+        if p.name == "INDEX.md":
+            continue
+        text = sdlc_core.read_text(p)
+        meta = sdlc_core.load_frontmatter(text.splitlines()) or {}
+        rows, _ = kb_parse_claims(text)
+        out[(meta.get("topic") or p.stem).strip()] = (p, text, rows)
+    return out
+
+
+def kb_export_closure(docs, slugs):
+    """(topics, artifacts, added_for_conflicts, errors).
+
+    Closure in two directions, because a partial export produces a target whose
+    own checks fail:
+      * every artifact a selected claim cites travels with it -- a claim whose
+        source cannot be reopened is model knowledge arriving by another route;
+      * every row a CONTESTED row points at travels too, since the symmetry
+        check refuses a set that lost half its members. When such a row lives in
+        an unselected topic, that topic is ADDED and reported, never dropped.
+    """
+    all_topics = kb_collect_topics(docs)
+    errors = []
+    for s in slugs:
+        if s not in all_topics:
+            errors.append("no such topic: %s" % s)
+    if errors:
+        return {}, [], [], errors
+    selected = dict((s, all_topics[s]) for s in slugs)
+    # id -> slug, over the WHOLE graph, so a conflict partner is findable
+    owner_of = {}
+    for slug, (_p, _t, rows) in all_topics.items():
+        for r in rows:
+            if r["id"]:
+                owner_of[r["id"]] = slug
+    added = []
+    pending = list(selected)
+    while pending:
+        slug = pending.pop()
+        for r in selected[slug][2]:
+            m = re.match(r"^(CONTESTED|SUPERSEDED) ([0-9a-f, ]+)$", r["state"].strip())
+            if not m:
+                continue
+            for ref in [x.strip() for x in m.group(2).split(",") if x.strip()]:
+                other = owner_of.get(ref)
+                if other is None:
+                    errors.append("claim %s in topic '%s' points at id %s, which "
+                                  "no topic owns: export would carry a broken set"
+                                  % (r["id"] or "(no id)", slug, ref))
+                elif other not in selected:
+                    selected[other] = all_topics[other]
+                    added.append(other)
+                    pending.append(other)
+    artifacts = []
+    seen = set()
+    for slug, (_p, _t, rows) in sorted(selected.items()):
+        for r in rows:
+            for rel in kb_claim_sources(r):
+                for cand in (rel, rel + ".meta.md",
+                             rel[:-len(Path(rel).suffix)] + ".txt" if Path(rel).suffix else rel):
+                    if cand in seen:
+                        continue
+                    if (docs / cand).is_file():
+                        seen.add(cand)
+                        artifacts.append(cand)
+    return selected, artifacts, added, errors
+
+
+def kb_bundle_write(docs, out, selected, artifacts, project):
+    """Write the bundle. Mirrors the docs-root layout; no path is rewritten."""
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "topics").mkdir(exist_ok=True)
+    for slug, (p, text, _rows) in sorted(selected.items()):
+        (out / "topics" / p.name).write_text(text, encoding="utf-8")
+    for rel in artifacts:
+        dst = out / rel
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        dst.write_bytes((docs / rel).read_bytes())
+    lines = ["---", "kb_bundle: 1", "source_project: %s" % project,
+             "topics: [%s]" % ", ".join(sorted(selected)),
+             "artifacts: %d" % len(artifacts), "---",
+             "# KB bundle", "",
+             "Import with `sdlc_check.py import <this directory>`. Additive: it "
+             "never overwrites a node and never deletes anything.", ""]
+    for rel in artifacts:
+        lines.append("- `%s` sha256:%s" % (rel, kb_sha256_bytes(docs / rel)))
+    (out / BUNDLE_MANIFEST).write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def kb_import_plan(bundle, docs):
+    """(writes, skipped_topics, dedup, errors) -- computed BEFORE anything is
+    written, because an import that half-applies leaves a tree whose checks fail
+    and whose owner cannot tell what landed."""
+    errors, writes, skipped, dedup = [], [], [], []
+    man = bundle / BUNDLE_MANIFEST
+    if not man.is_file():
+        return [], [], [], ["not a kb bundle: no %s in %s" % (BUNDLE_MANIFEST, bundle)]
+    meta = sdlc_core.load_frontmatter(sdlc_core.read_text(man).splitlines()) or {}
+    if str(meta.get("kb_bundle", "")).strip() != "1":
+        return [], [], [], ["%s carries no 'kb_bundle: 1'" % BUNDLE_MANIFEST]
+
+    known_ids = set()
+    target = kb_collect_topics(docs)
+    for _slug, (_p, _t, rows) in target.items():
+        for r in rows:
+            if r["id"]:
+                known_ids.add(r["id"])
+
+    for p in sorted(bundle.rglob("*")):
+        if not p.is_file() or p.name == BUNDLE_MANIFEST:
+            continue
+        rel = p.relative_to(bundle).as_posix()
+        dst = sdlc_core.confine_under(docs, rel)
+        if dst is None:
+            errors.append("bundle entry %r escapes the docs root — refusing the "
+                          "whole import, not just this file" % rel)
+            continue
+        if dst.is_file() and not rel.startswith("topics/"):
+            if kb_sha256_bytes(dst) != kb_sha256_bytes(p):
+                errors.append("%s exists with different bytes (target %s… vs "
+                              "bundle %s…): content-addressed names must mean "
+                              "equal content" % (rel, kb_sha256_bytes(dst)[:8],
+                                                 kb_sha256_bytes(p)[:8]))
+            continue
+        if rel.startswith("topics/") and dst.is_file():
+            skipped.append(rel)
+            continue
+        writes.append((rel, p, dst))
+
+    for rel, p, _dst in writes:
+        if not rel.startswith("topics/"):
+            continue
+        rows, _ = kb_parse_claims(sdlc_core.read_text(p))
+        for r in rows:
+            if r["id"] and r["id"] in known_ids:
+                dedup.append(r["id"])
+    return writes, skipped, dedup, errors
+
+
 # ------------------------------------------------------------------ commands
 
 INTERCEPTED = {"index", "validate", "check", "graph", "corpus", "claim-id",
-               "anchor"}
+               "anchor", "export", "import"}
 
 
 def _kb_root(args):
@@ -900,6 +1093,62 @@ def kb_cmd_anchor(args):
     return 0
 
 
+def kb_cmd_export(args):
+    root, docs = _kb_root(args)
+    slugs = ([s.strip() for s in args.topics.split(",") if s.strip()]
+             if args.topics else sorted(kb_collect_topics(docs)))
+    if not slugs:
+        print("[ERROR] no topics to export")
+        return 2
+    selected, artifacts, added, errors = kb_export_closure(docs, slugs)
+    for e in errors:
+        print("[ERROR] %s" % e)
+    if errors:
+        return 1
+    out = Path(args.out)
+    kb_bundle_write(docs, out, selected, artifacts, root.name)
+    print("[ok] bundle written: %s" % out)
+    print("     topics: %d, artifacts: %d" % (len(selected), len(artifacts)))
+    if added:
+        # never silent: a set that grew is a fact about the export, and the
+        # alternative -- dropping the partner rows -- ships a broken tree.
+        print("     +%d topic(s) added to keep conflict sets whole: %s"
+              % (len(added), ", ".join(sorted(added))))
+    return 0
+
+
+def kb_cmd_import(args):
+    _root, docs = _kb_root(args)
+    bundle = Path(args.bundle)
+    if not bundle.is_dir():
+        print("[ERROR] no such bundle directory: %s" % bundle)
+        return 2
+    writes, skipped, dedup, errors = kb_import_plan(bundle, docs)
+    for e in errors:
+        print("[ERROR] %s" % e)
+    if errors:
+        print("[ERROR] nothing was written: an import that half-applies leaves a "
+              "tree whose checks fail and whose owner cannot tell what landed.")
+        return 1
+    if args.dry_run:
+        print("[ok] dry run: %d file(s) would be written" % len(writes))
+    else:
+        for _rel, src, dst in writes:
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            dst.write_bytes(src.read_bytes())
+        print("[ok] imported %d file(s) into %s" % (len(writes), docs))
+    if dedup:
+        print("     %d claim(s) already present, by id — the same artifact cited "
+              "at the same span mints the same id in any project" % len(dedup))
+    for rel in skipped:
+        print("[note] %s already exists: NOT overwritten. Run the placement pass "
+              "(taxonomy.md) and merge by hand — an import never decides that."
+              % rel)
+    print("[note] re-run 'sdlc_check.py check' now: the import is additive, and "
+          "an imported RULING stays IMPORTED until you re-ratify it.")
+    return 0
+
+
 def kb_cmd_help():
     """The spine's usage, then the overlay's own commands.
 
@@ -919,6 +1168,8 @@ knowledge overlay (kb-agentic) -- also available:
   corpus                      corpus integrity: digests, supersession, notes
   claim-id <path> <locator>   compute a claim id (--fill to fill a whole table)
   anchor <path> <phrase>      resolve a phrase to a verified locator span
+  export --out <dir>          bundle a subgraph WITH the bytes its claims cite
+  import <dir>                merge a bundle in additively (never overwrites)
 
   index / validate / check    the spine's behaviour PLUS the claim ledger and
                               the topic graph""")
@@ -962,11 +1213,25 @@ def main(argv=None):
     p.add_argument("--page", type=int)
     p.add_argument("--ignore-case", action="store_true")
     p.add_argument("--all", action="store_true")
+    p = sub.add_parser("export")
+    p.add_argument("--out", required=True)
+    p.add_argument("--topics")
+    p.add_argument("--root")
+    p.add_argument("--docs-dir")
+    p = sub.add_parser("import")
+    p.add_argument("bundle")
+    p.add_argument("--dry-run", action="store_true")
+    p.add_argument("--root")
+    p.add_argument("--docs-dir")
     args = ap.parse_args(argv)
     if args.cmd == "claim-id":
         return kb_cmd_claim_id(args)
     if args.cmd == "anchor":
         return kb_cmd_anchor(args)
+    if args.cmd == "export":
+        return kb_cmd_export(args)
+    if args.cmd == "import":
+        return kb_cmd_import(args)
     try:
         root, docs = _kb_root(args)
     except sdlc_core.AmbiguousDocsRoot as e:

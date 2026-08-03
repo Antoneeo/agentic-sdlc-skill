@@ -2,6 +2,41 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [kb 1.2.0] - 2026-08-03
+
+F-030 — knowledge built in one project could not leave it. A practitioner who grounded
+82 claims against a vendor's manuals started the next project with nothing and paid the
+whole ingestion again from the same sources. The Core Problem this methodology exists
+against is that understanding evaporates; it was evaporating at the **project boundary**.
+
+### Added
+- **`export --out <dir>`** bundles a subgraph together with **the bytes its claims
+  cite** — a closure, not a selection. A claim whose source cannot be reopened is model
+  knowledge arriving by another route, so the artifacts, sidecars and extractions travel
+  with it. The closure also pulls in the other half of any `CONTESTED` set, because the
+  symmetry check refuses a set that lost members — and says which topics it added, never
+  silently.
+- **`import <dir>`** merges a bundle **additively**: never overwrites a node, never
+  deletes, and computes the whole plan before writing a byte (an import that half-applies
+  leaves a tree whose checks fail and whose owner cannot tell what landed). Refuses on a
+  path escaping the docs root, an artifact whose name matches an existing one with
+  different bytes, a directory carrying no `MANIFEST.md`, and a broken conflict set.
+  Placing an incoming concept stays the placement pass's job (`taxonomy.md`) — the import
+  reports the skipped node and decides nothing.
+- **`prov: IMPORTED`** (owner ruling, 2026-08-03). Knowledge crosses a project boundary;
+  authority does not. A ruling from another project keeps its text, span and original
+  `basis:` verbatim, must declare `imported_from:`, and **cannot supersede a local row**
+  — the validator errors on it. Re-ratification is one honest act: your own note, your
+  own basis, `prov: RULING`. Relabelling it `DERIVED` was rejected because the row would
+  then lie about where it came from.
+- **`portability.md`**, the doctrine the two commands cite.
+
+The feature is small because of one property it did not have to build: `kb_claim_id`
+hashes `path#locator#qty` with the **text excluded**, so the same artifact cited at the
+same span mints the same id in every project. Cross-project de-duplication is therefore
+mechanical rather than a judgement call, and importing the same bundle twice is a
+provable no-op.
+
 ## [kb 1.1.1] - 2026-08-03
 
 Three inconsistencies the same field practitioner found by reading 1.1.0 against

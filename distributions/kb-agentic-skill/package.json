@@ -1,6 +1,6 @@
 {
   "name": "@antoneeo/kb-agentic-skill",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Knowledge-Base & Document-First protocol for Claude Code, Gemini CLI, Google Antigravity and Codex with risk triage, Vision governance, signal distillation and optional devPNT integration.",
   "keywords": [
     "claude-code",
@@ -36,6 +36,7 @@
     "skills/kb-agentic-skill/review.md",
     "skills/kb-agentic-skill/dispatch.md",
     "skills/kb-agentic-skill/routing.md",
+    "skills/kb-agentic-skill/portability.md",
     "skills/kb-agentic-skill/ENFORCEMENT.md",
     "skills/kb-agentic-skill/scripts/sdlc_check.py",
     "skills/kb-agentic-skill/scripts/sdlc_core.py",

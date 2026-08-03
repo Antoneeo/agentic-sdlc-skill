@@ -69,7 +69,7 @@ Claims live in the owning topic's `## Claims` table (`templates.md` has the temp
   `p=<n>@<start>-<end>` (character offsets into page n of the stored extraction),
   `L<a>-<b>` (line files), `Sheet<s>!<cell>`. The span must exist — the validator opens
   the file and checks.
-- **prov** — `GIVEN | ELICITED | DERIVED | RULING`. Information for whoever resolves a
+- **prov** — `GIVEN | ELICITED | DERIVED | RULING | IMPORTED`. `IMPORTED` is a ruling that came from another project (`portability.md`): it keeps its text and original `basis:`, its note must say `imported_from:`, and it may not supersede a local row until you re-ratify it. Information for whoever resolves a
   conflict; never a rank.
 - **state** — `OK`, `CONTESTED <ids>`, `SUPERSEDED <id>` (`reconciliation.md` owns the
   transitions).
