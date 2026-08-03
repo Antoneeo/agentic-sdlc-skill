@@ -246,5 +246,121 @@ class TL_Corpus(unittest.TestCase):
         self.assertTrue(any("disguised as a source" in e for e in errors), errors)
 
 
+PAGED = ("Introduction\nThe multi-company feature is disabled by\n"
+         "default and must be enabled in the site\nwizard before use.\n"
+         "\fAppendix\nOperator groups must also be multi-company.\n")
+
+
+class TL_F029_Anchor(unittest.TestCase):
+    """F-029 D: prose citation -> verified span. One test per branch, because a
+    single test tripping two branches lets either be deleted with the suite
+    green (the F-027 lesson)."""
+
+    def _paged(self, tmp):
+        p = Path(tmp) / "m-ab12cd34.txt"
+        p.write_text(PAGED, encoding="utf-8", newline="")
+        return p
+
+    def test_resolves_a_phrase_broken_across_a_line_wrap(self):
+        """The field defect: 'disabled by default' is split by the extraction's
+        line wrap, so a literal-space anchor finds nothing."""
+        with tempfile.TemporaryDirectory() as tmp:
+            p = self._paged(tmp)
+            self.assertNotIn("disabled by default", p.read_text(encoding="utf-8"))
+            hits = kc.kb_resolve_anchor(p, "disabled by default", page=1)
+        self.assertEqual(len(hits), 1, hits)
+        self.assertTrue(hits[0][0].startswith("p=1@"), hits)
+
+    def test_every_emitted_locator_survives_the_checker(self):
+        """The round-trip: this tool may never emit a span its own validator
+        would reject."""
+        with tempfile.TemporaryDirectory() as tmp:
+            p = self._paged(tmp)
+            for loc, _ in kc.kb_resolve_anchor(p, "multi-company"):
+                errs = []
+                kc.kb_check_locator(p, loc, "t", errs)
+                self.assertEqual(errs, [], f"{loc} emitted but rejected: {errs}")
+
+    def test_absent_phrase_resolves_to_nothing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p = self._paged(tmp)
+            self.assertEqual(kc.kb_resolve_anchor(p, "biometric login"), [])
+
+    def test_page_filter_separates_two_occurrences(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p = self._paged(tmp)
+            self.assertEqual(len(kc.kb_resolve_anchor(p, "multi-company", page=2)), 1)
+            self.assertGreater(len(kc.kb_resolve_anchor(p, "multi-company")), 1)
+
+    def test_line_files_get_a_line_locator(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p = Path(tmp) / "n.md"
+            p.write_text("alpha\nbeta gamma\ndelta\n", encoding="utf-8", newline="")
+            hits = kc.kb_resolve_anchor(p, "beta gamma")
+        self.assertEqual([h[0] for h in hits], ["L2-2"], hits)
+
+
+class TL_F029_CorpusLetter(unittest.TestCase):
+    """F-029 C: the extraction may BE the artifact — the original never enters
+    the docs root. What the digest protects is the bytes a locator addresses."""
+
+    def test_extraction_is_a_legal_artifact_with_no_original_present(self):
+        data = PAGED.encode("utf-8")
+        import hashlib
+        meta = ("---\nsha256: %s\ndate: 2026-08-02\nprovenance: GIVEN\n"
+                "original_path: /vault/m.pdf\noriginal_sha256: %s\n---\n"
+                % (hashlib.sha256(data).hexdigest(), "0" * 64))
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {}, given={"m-ab12cd34.txt": data,
+                                             "m-ab12cd34.txt.meta.md": meta})
+            errors, warnings = kc.kb_corpus_check(docs)
+        self.assertEqual(errors, [], errors)
+
+    def test_a_tampered_extraction_is_still_caught(self):
+        """The relaxation must not cost the guarantee: the enforced digest moved
+        onto the extraction, it did not disappear."""
+        import hashlib
+        meta = ("---\nsha256: %s\ndate: 2026-08-02\nprovenance: GIVEN\n---\n"
+                % hashlib.sha256(b"the original bytes").hexdigest())
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {}, given={"m-ab12cd34.txt": b"tampered",
+                                             "m-ab12cd34.txt.meta.md": meta})
+            errors, _ = kc.kb_corpus_check(docs)
+        self.assertTrue(any("digest changed" in e for e in errors), errors)
+
+
+class TL_F029_Dispatch(unittest.TestCase):
+    """F-029 E: `--help` must show the overlay, WITHOUT costing
+    forward-by-default — the property that keeps a future spine command from
+    being silently dropped."""
+
+    def _run(self, argv):
+        import contextlib, io
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = kc.main(argv)
+        return rc, buf.getvalue()
+
+    def test_help_lists_the_overlay_commands(self):
+        rc, out = self._run(["--help"])
+        self.assertEqual(rc, 0)
+        for cmd in ("graph", "corpus", "claim-id", "anchor"):
+            self.assertIn(cmd, out, f"--help hides '{cmd}': a reader concludes "
+                                    "the knowledge overlay is not installed")
+
+    def test_help_still_shows_the_spine_commands(self):
+        _, out = self._run(["--help"])
+        for cmd in ("stale", "mark", "orient"):
+            self.assertIn(cmd, out, "the overlay's help replaced the spine's "
+                                    "instead of extending it")
+
+    def test_forward_by_default_survives(self):
+        """A command the overlay does not intercept still reaches the spine."""
+        with tempfile.TemporaryDirectory() as tmp:
+            rc, out = self._run(["orient", "--root", tmp])
+        self.assertEqual(rc, 0)
+        self.assertNotIn("knowledge overlay", out)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

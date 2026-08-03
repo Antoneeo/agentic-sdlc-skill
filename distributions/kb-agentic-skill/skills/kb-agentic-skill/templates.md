@@ -253,10 +253,10 @@ end_date:
      what makes a verdict falsifiable. A question, not a form: when every concept
      plainly has its owner, one line under this heading answers it. -->
 
-| Capability | Verdict | Component / gap | Evidence |
+| Capability | Verdict | Owning node / gap | Evidence |
 |---|---|---|---|
-| persist an order | EXISTS | `path/to/store.py#OrderStore` | re-read `save()`: durable, returns the id |
-| notify the customer | MISSING | — | grep notify/alert/dispatch + send, over src/ and legacy/; no owner |
+| scoping authorizations per company | EXISTS | `topics/multi-company.md`, `owns: [multi-company/scoping]` | descended the index from `access-control`; re-read `owns:` — the concept is claimed there, not in `topics/operators.md` |
+| the licence tiers that gate it | MISSING | — | descended `pricing`, `licensing`, `editions`; synonyms tried: edition, tier, SKU. No node owns it and no source asserts it → a `gaps:` entry, not a claim |
 
 ## Impact
 <!-- existing files touched, APIs/contracts, performance, new dependencies.
@@ -548,7 +548,7 @@ status: CURRENT
 
 ```markdown
 ---
-sha256: <raw-byte digest of the original — NOT the LF-normalized text digest>
+sha256: <raw-byte digest of the artifact this sidecar names — NOT the LF-normalized text digest>
 date: 2026-08-01
 provenance: GIVEN
 supersedes: contract-1a2b3c4d.pdf
@@ -560,6 +560,24 @@ Handed over by <who>, <context in one line>.
 `supersedes:` is what makes "which claims rest on a superseded version" answerable —
 without it the two content-addressed files are unrelated. `extractor:` pins the stored
 canonical extraction (`<name>-<hash8>.txt`) that offset locators address.
+
+**Extraction-as-artifact** (`distillation.md` §1 — the variant for a large binary
+corpus): when the extraction IS the artifact and the original was never copied in, two
+more fields record where it came from.
+
+```markdown
+---
+sha256: <digest of THIS extraction — enforced, these are the bytes locators address>
+date: 2026-08-02
+provenance: GIVEN
+extractor: pdftotext 24.02, form-feed page breaks, whitespace collapsed
+original_path: /vault/manuals/xyz.pdf
+original_sha256: <digest at ingest — RECORDED, never checked: we do not hold the file>
+---
+```
+
+Keep `original_sha256`'s limit visible wherever it is written: it lets a human
+re-verify by hand and it dates the ingest, and it detects nothing on its own.
 
 ## ai_docs/corpus/notes/RULING_[topic]_[date].md (practitioner ruling)
 

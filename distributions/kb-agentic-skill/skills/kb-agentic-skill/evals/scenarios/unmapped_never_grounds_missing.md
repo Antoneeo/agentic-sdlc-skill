@@ -1,18 +1,17 @@
 ---
 id: unmapped_never_grounds_missing
-expected: in an area the audit plan has not analyzed, the agent searches the code instead of ruling MISSING from the Component Map's silence
+expected: where the topic index has not been descended, the agent descends it instead of ruling MISSING from its silence
 ---
 ## Setup
-- legacy/billing/rates.py: class RateLimiter:\n    """Owns request throttling. acquire(key) -> bool. The component the trap hides."""\n    def acquire(self, key): ...
-- src/api.py: def handle(req): ...  # entry point, no throttling wired
-- ai_docs/vision/project_vision.md: # Project Vision\nStatus: APPROVED (by owner)\n## North Star\nAn API that survives abusive clients.
-- ai_docs/strategic/architecture.md: ---\ndescription: Stack and component map.\nstatus: CURRENT\n---\n# Project Architecture\n## Component Map\nCoverage: whatever audit/audit_plan.md marks ANALYZED - read it, do not trust a list restated here. Outside them this map is unread, not empty.\n| Component | Capability it owns | Contract | Where |\n|---|---|---|---|\n| API entry | accept a request | handle(req) | `src/api.py#handle` |
-- ai_docs/audit/audit_plan.md: # Audit Plan\n| Path | Status | Reference | Notes |\n|---|---|---|---|\n| src/ | ANALYZED | 2026-07-28T00:00:00Z | |\n| legacy/ | PENDING | - | inherited code, never analyzed |
+- ai_docs/topics/site-configuration.md: ---\ntopic: site-configuration\ndescription: How an installation is set up before use.\nparents: []\nowns: [site-configuration/wizard, site-configuration/multi-company-toggle]\nsynonyms: [site wizard, setup]\nstatus: CURRENT\n---\n\n## Claims\n\n| id | claim | valid | qty | about | source | prov | state |\n|---|---|---|---|---|---|---|---|\n| c1 | The multi-company feature is disabled by default and must be enabled in the site wizard | - | - | - | corpus/given/manual-ab12cd34.txt#p=1@42-61 | GIVEN | OK |\n  <-- the node the trap hides: the concept lives here, under a name the query does not use
+- ai_docs/topics/access-control.md: a node about operator permissions, owning nothing about defaults
+- ai_docs/topics/INDEX.md: generated index; the agent has read only the `access-control` branch this session
+- ai_docs/vision/project_vision.md: # Project Vision\nStatus: APPROVED (by owner)\n## North Star\nA knowledge base an installer can trust on site.
 ## Prompt
-Add rate limiting to the API so abusive clients get throttled. This is an L3 feature; produce the ANALYSIS first.
+Does the multi-company feature need enabling, or is it on out of the box? Add what we know as a new topic if we don't have it.
 ## Pass criteria
-- The agent does NOT rule "throttle requests" MISSING from the Component Map's silence: legacy/ is PENDING, so the map is unread there (the Empty-map MISSING anti-pattern).
-- It SEARCHES the unmapped area (find-usages/grep for throttle/rate/limit terms) and finds `legacy/billing/rates.py#RateLimiter`.
-- Verdict comes out **EXISTS** (or INADEQUATE with the gap named if it judges the contract insufficient) citing that path#symbol -- never a bare MISSING.
-- The discovered component is ADDED to the Component Map as a new row, and the agent marks/notes legacy/billing/ as covered (audit plan progression).
-- If the agent rules MISSING anyway and designs a new rate limiter, the scenario FAILS -- that is the duplicate-the-codebase failure this pass exists to prevent.
+- The agent does NOT rule the concept MISSING because the branch it happened to read is silent about it: an index not descended is **unread, not empty** (`taxonomy.md` §2).
+- It DESCENDS the index and tries synonyms ("site wizard", "setup", "default", "enable") before any verdict, and finds `topics/site-configuration.md` owning `site-configuration/multi-company-toggle`.
+- Verdict comes out **EXISTS** (or INADEQUATE with the gap named) citing that node and its `owns:` key -- never a bare MISSING.
+- If the agent rules MISSING and creates a second node for the same concept, the scenario FAILS: that is the double-placement `owns:` exists to prevent, and it splits one fact across two homes where later descent finds only one of them.
+- A genuinely absent concept for which no source asserts anything is a `gaps:` entry on the owning node, not a new empty node.
