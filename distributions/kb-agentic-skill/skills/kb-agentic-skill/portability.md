@@ -5,6 +5,45 @@
 **Does not answer**: where a claim's concept belongs (`taxonomy.md` — import *uses* that
 pass, it does not replace it) or how a disagreement is settled (`reconciliation.md`).
 
+## 0. The two commands, and what to tell the user
+
+A bundle is a **folder**, not an archive. Nothing here compresses or unpacks anything:
+the user moves the folder however they already move folders.
+
+**Sending side** — run from the project that owns the knowledge:
+
+```
+sdlc_check.py export --out ../kb-bundle                    # the whole KB
+sdlc_check.py export --out ../kb-bundle --topics pricing,licensing
+```
+
+Write it **outside the docs root**. A bundle sitting inside `ai_docs/` is a second copy
+of topics and corpus files in the tree the validator walks, and that confusion is free
+to avoid.
+
+**Receiving side** — run from the project that is to gain it:
+
+```
+sdlc_check.py import ../kb-bundle --dry-run     # see what would land
+sdlc_check.py import ../kb-bundle
+sdlc_check.py check                             # always, right after
+```
+
+**What to say to the user, in their words.** Say these four things and stop:
+
+1. *"I've written the bundle to `<path>`. It's a folder — move it to the other project
+   however you like."*
+2. *"It carries the source documents too, not just the notes, so it is not small. That is
+   the point: over there the claims can still be traced back to the page they came from."*
+3. After importing: *"Nothing was overwritten. Anything already there stayed as it was"* —
+   and, if a topic was skipped, *"a topic with the same name already exists; I have not
+   merged them, because they may not be the same subject. Do you want me to look?"*
+4. If an imported ruling arrived: *"one decision came from the other project. I have kept
+   it, marked as theirs, and it cannot settle anything here until you confirm it."*
+
+Do not explain the closure, the id hashing or the provenance model unless asked. The
+user asked to move their knowledge, not to learn how it is stored.
+
 ## 1. What a bundle is
 
 A directory mirroring the docs-root layout:
