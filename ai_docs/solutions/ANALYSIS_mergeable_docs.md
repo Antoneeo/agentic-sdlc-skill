@@ -60,13 +60,17 @@ assignment, no due dates, no execution ordering, no holder.
 | Added | Removed |
 |---|---|
 | one `validate` ERROR: the generated registry is out of sync with its sources | the manual "remove the row at closure" step — closure already deletes `HANDOFF_[feature].md`, and deleting it *is* removing the row |
-| — | the duplicated `Branch`/`Next step` fields: one authored home instead of two |
+| **`HANDOFF_[feature].md` becomes unconditional for an OPEN workstream** (review round 1, BLOCK 3): today it is written only when there is volatile state, and a row generated from a file that may not exist is a row that vanishes | the duplicated `Branch`/`Next step` fields: one authored home instead of two |
 | — | hand-resolution of a merge conflict on every concurrent handoff write |
 
 Write count at closure is unchanged (one file touched either way), and **L1 is not
-reached at all**: the handoff is an L3-closure / session-end trigger. Net negative
-cost. No owner acceptance is being requested under the budget clause; if the review
-disagrees with that accounting, it becomes an explicit ask.
+reached at all**: the handoff is an L3-closure / session-end trigger. The added row
+above does not change the count either — a workstream that today writes one row in a
+shared file tomorrow writes one file of its own — but it changes *which* file the
+write trigger names, and pretending otherwise would be the budget dishonesty this
+clause exists to prevent. Net cost still negative. No owner acceptance is being
+requested under the budget clause; if a later review disagrees with that accounting,
+it becomes an explicit ask.
 
 **Non-Goal 4 (no coupling).** The fragment-directory idea is absorbed from
 news-fragment tooling (towncrier, reno, scriv) as an **idea**. No format of theirs is
@@ -121,14 +125,30 @@ verified by exactly the machinery that already builds and verifies the guide rou
 
 Consequences that fall out for free: closure already deletes the per-feature file, so
 the row disappears without a second edit; the `Date:` header is derived from the
-newest source file, so no writer ever touches it; and two writers touching two
-workstreams touch two files.
+sources, so no writer ever touches it; and two writers touching two workstreams touch
+two files.
+
+**Four things the generator must pin down, or the alignment check becomes the defect**
+(review round 1 — a byte comparison is unforgiving, and each of these was left open):
+
+1. **`Date:` is the newest date VALUE carried in the sources' own frontmatter**
+   (`Updated:`), **never a filesystem timestamp.** Git does not preserve mtimes, so an
+   mtime-derived header regenerates differently after every clone and `validate` would
+   error on a tree nobody touched. This is the one reading that had to be excluded.
+2. **Row order is a declared, stable sort** (by workstream id), like
+   `build_guide_index`. Glob order differs across filesystems and would make the
+   alignment check fail at random.
+3. **Conversion is per project, not per row** — see T6, rewritten. The generator never
+   writes a registry it cannot fully account for.
+4. **The `≤ 20 lines` cap becomes a warning, not a truncation.** A generated view that
+   silently drops the 21st workstream loses exactly the state this feature exists to
+   keep; the cap survives as a signal that too much is open at once.
 
 | Path | Change | Why |
 |---|---|---|
 | `skills/*/scripts/sdlc_core.py` ×3 | MODIFY | `list_workstreams()` + `build_registry()`; `cmd_index` writes `audit/handoff.md` when sources exist; `cmd_validate` alignment check, **gated on source presence** |
-| `skills/*/SKILL.md` ×3 | MODIFY | Write Triggers: the registry row becomes "generated — never by hand"; the `HANDOFF_[feature]` row gains the frontmatter that feeds it and stays the only hand-written home |
-| `skills/*/templates.md` ×3 | MODIFY | registry template → generated-header form; `HANDOFF_[feature].md` template gains registry frontmatter; **delete the false "Parallel-safe by construction" claim** and state what actually makes it safe |
+| `skills/*/SKILL.md` ×3 | MODIFY | Write Triggers: the registry row becomes "generated — never by hand"; the `HANDOFF_[feature]` row gains the frontmatter that feeds it, stays the only hand-written home, and **loses its "AND there is volatile resume state" condition** — an open workstream owes its file, or its row does not exist (round 1, BLOCK 3) |
+| `skills/*/templates.md` ×3 | MODIFY | registry template → generated-header form; `HANDOFF_[feature].md` template gains registry frontmatter; **delete the false "Parallel-safe by construction" claim** (`templates.md`:372) and state what actually makes it safe; **restate the DRY boundary** at `templates.md`:437-440 — the file now always exists for an open workstream, so "Diary = the durable narrative" needs a sharper line than "created only when there is volatile state", which is what kept narrative out of it before |
 | `skills/*/scripts/test_skill_invariants.py` ×3 | MODIFY | extend the existing `workstream_registry` invariant (`sdlc_core.py:234`) to assert the generated form + the migration clause |
 | `skills/*/scripts/test_merge_safety.py` ×3 | ADD | the experiment becomes a regression test (see Test Strategy) |
 | `scripts/init.js` ×3 | MODIFY | Plan B only: append the `.gitattributes` stanza, create-only, never clobbering a user's file |
@@ -170,18 +190,24 @@ the SessionStart hook — an existing surface, same path, same truncation caps.
 | **T3** — the generated `handoff.md` is committed, so it still conflicts at merge | true and accepted: resolution is **mechanical** (`index`), and `validate` refuses CLEAN until it matches. It stays committed because Signal 1 requires a cold agent given only `ai_docs/` to read it without running Python. `merge=union` is *not* applied here — interleaving two generated tables produces a plausible-looking wrong file, the worst outcome of the three |
 | **T4** — two people edit the same workstream's file | a genuine semantic conflict. Nothing here fixes it, and nothing should pretend to |
 | **T5** — glob collision: `handoff.md` matched by the `HANDOFF_*.md` source glob on a case-insensitive filesystem | the pattern requires the `_`, so `handoff.md` cannot match — but Windows is the development platform and this must be a **test**, not an argument |
-| **T6** — an installed project upgrades and its hand-maintained `handoff.md` starts failing `check` | **the migration trap, and the one that would break every existing project.** The alignment check fires only when at least one source file carries registry frontmatter — opt-in by presence, mirroring `if guides:` in `cmd_index`. Convert lazily on first write, never as a sweep (F-019's clause, re-used verbatim) |
+| **T6** — an installed project upgrades and its hand-maintained `handoff.md` starts failing `check` | **the migration trap, and the one that would break every existing project.** The alignment check fires only when at least one source file carries registry frontmatter — opt-in by presence, mirroring `if guides:` in `cmd_index` (`sdlc_core.py`:806). A project with no sources sees byte-identical output to today's |
+| **T8 — the mixed state eats the un-converted rows** (round 1, BLOCK 1) | **the same trap one step later, and it was invisible because T6 gated the CHECK and said nothing about the WRITE.** Lazy conversion means a real project sits with one source file and five hand-written rows; the next `index` — run at every closure — regenerates the registry from the one source and silently deletes the other five. Rule: **`index` refuses to write the registry while `handoff.md` carries rows no source accounts for**, naming them, and `check` says the same. Conversion is therefore per **project** (convert every row, once, when you first touch it), not per row. The alternative — merging generated rows with surviving hand-written ones — was rejected: it makes the file two truths at once, which is the shape that produced this feature |
+| **T9 — the `Date:` header derived from a filesystem timestamp** (round 1, BLOCK 2) | git does not preserve mtimes, so an mtime-derived header regenerates differently in every fresh clone and the alignment ERROR fires on a tree nobody edited — a check that cries wolf gets disabled, taking the real finding with it. The header is the newest `Updated:` **value** written inside the sources. Tested by copying the fixture with fresh mtimes and asserting `check` stays CLEAN |
 | **T7** — `.gitattributes` (Plan B) overwrites a user's own file | create-only; append the stanza if absent, never rewrite. Same discipline `init.js` already applies to protocol pointers |
 
 ## Action Plan
 
 - [ ] **A — the registry** (the certain, highest-frequency conflict): sources +
-      generated view + alignment check gated on presence; `Date:` derived.
+      generated view + alignment check gated on presence. Pin the four generator
+      facts (Impact): `Date:` from the newest frontmatter **value**, stable sort by
+      workstream id, refuse-on-unaccounted-rows, cap as a warning.
 - [ ] **B — REVIEW_LOG**: `.gitattributes` stanza `merge=union`, written create-only
       by `init`, plus the template note. Defense-in-depth; absent git, unchanged.
-- [ ] **C — migration clause**: Write Trigger row + template conversion, lazy, so no
-      installed project is touched. Invariant asserts it exists (F-026 precedent:
-      shipping a format change without one strands existing projects).
+- [ ] **C — migration clause**: Write Trigger row + template conversion. Lazy **per
+      project** (T8): nothing is touched until the first write, and that write converts
+      every row, because a half-converted registry is the one state that loses rows.
+      Invariant asserts the clause exists (F-026 precedent: shipping a format change
+      without one strands existing projects).
 - [ ] **D — dogfood**: this repo's 6 rows converted; `check` CLEAN.
 - [ ] **E — design review** (independent, before implementation) and **closure
       review** (on the diff), both logged.
@@ -201,6 +227,14 @@ the SessionStart hook — an existing surface, same path, same truncation caps.
 - **Opt-in guard (T6)**: a fixture project with a hand-written `handoff.md` and no
   source files → `check` output byte-identical to today's. This is the regression
   that protects every installed project.
+- **Mixed state (T8)**: one source file plus four hand-written rows → `index` writes
+  **nothing** and names the four; the rows survive on disk. Mutation: let it write →
+  the test must fail with the four rows gone, because silent loss is the failure mode
+  and a guard that cannot observe it is decoration.
+- **Fresh mtimes (T9)**: copy the fixture so every file's timestamp is now, regenerate
+  → the same bytes, `check` CLEAN. Proves the header is a value and not a clock.
+- **Determinism**: build the registry twice from the same tree, and from a shuffled
+  glob order → byte-identical both times.
 - **Case-sensitivity (T5)**: assert `handoff.md` is never collected as a source, run
   on the case-insensitive development filesystem.
 - **Family**: full battery ×3, drift guard byte-identical, `npm pack` unchanged.
@@ -236,4 +270,51 @@ duplicates two of the registry's fields and is already deleted at exactly the mo
 the row must disappear. The unit is mostly **connecting existing components**, which
 is why the ceremony budget comes out negative.
 
-Open: nothing blocking. Next step is the independent design review before any code.
+**2026-08-03 — paused, then design-reviewed.** Paused on 2026-08-02 by owner priority
+in favour of F-029; resumed at the same point, which is the gate the plan names.
+
+**Design review round 1 — FAIL, 5 findings (3 BLOCK), all folded above.** Declared
+adversarial self-pass, since a separate reviewer was not available: independence is
+reduced and this says so rather than claiming four eyes. Every claim was re-verified
+against the source rather than against the ANALYSIS's own line numbers.
+
+The three blocks share one root, and it is worth naming because it is the same root
+as F-031's: **the design specified the good output and left unsaid which outputs must
+exist, and when.**
+
+- **BLOCK 1, the mixed state.** T6 gated the alignment *check* on source presence and
+  said nothing about the *write*. With lazy per-row conversion, a real project sits
+  with one source file and five hand-written rows, and the next `index` — which runs
+  at every closure — regenerates the registry from the one source and deletes the
+  other five. Silently, and in the file whose whole purpose is not losing them. Fixed
+  by refusing to write a registry the sources cannot fully account for (T8), which
+  makes conversion per project instead of per row.
+- **BLOCK 2, `Date:` from "the newest source file".** Read as an mtime, it breaks
+  every fresh clone: git does not preserve mtimes, the generated header differs from
+  the committed one, and the alignment ERROR fires on a tree nobody touched. A check
+  that cries wolf gets disabled, and it takes the real finding with it. Now pinned to
+  the newest `Updated:` **value** inside the sources (T9), with the clone test.
+- **BLOCK 3, the file that may not exist.** The row is generated from
+  `HANDOFF_[feature].md`, whose write trigger is *conditional* on volatile state
+  (`templates.md`:441, "created only when a session pauses the feature WITH volatile
+  state"). A workstream with none — F-015 and F-028 in this very registry — would
+  generate no row at all. The trigger becomes unconditional for an OPEN workstream,
+  the ceremony budget now discloses that as an addition instead of listing only
+  removals, and the DRY boundary at `templates.md`:437-440 gets restated: what kept
+  narrative out of that file was its rarity, and the rarity is what just went away.
+- WARN 4 (row order must be a declared stable sort — a byte comparison against a glob
+  order is a coin flip across filesystems) and WARN 5 (the `≤ 20 lines` cap becomes a
+  warning; a generator that truncates loses the 21st workstream) folded the same way.
+
+Dismissed after checking: T5's glob collision argument holds (`HANDOFF_*.md` requires
+the underscore, so `handoff.md` cannot match even case-insensitively) — and the design
+already demands a test rather than resting on the argument, which is the right posture.
+`GENERATED_DOCS` (`sdlc_core.py`:63) indeed needs no extension: `handoff.md` lives
+under `audit/` and is not a canonical doc.
+
+**Round 2 — PASS, verification only.** All five closed, no new contradiction: the
+Vision analysis is unaffected (no column added, no holder field, the output still
+byte-identical to today's at an unchanged path), and the budget stays net-negative
+now that its addition is written down.
+
+Open: nothing blocking. Next step is Action Plan A — implementation.
