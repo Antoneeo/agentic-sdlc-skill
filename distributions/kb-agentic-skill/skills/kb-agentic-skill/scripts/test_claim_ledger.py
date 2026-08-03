@@ -518,6 +518,53 @@ class TL_F030_Portability(unittest.TestCase):
         self.assertEqual(added, ["u"], "and the growth must be reported, not silent")
 
 
+class TL_F030_DocumentedInvocation(unittest.TestCase):
+    """The commands `portability.md` §0 tells the agent to run, driven through
+    `main()` exactly as written there. An executable spec beats a string match:
+    it fails when the doctrine and the CLI drift apart, which is the defect class
+    this skill keeps re-finding in its own field reports."""
+
+    def _run(self, argv):
+        import contextlib, io
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = kc.main(argv)
+        return rc, buf.getvalue()
+
+    def test_the_documented_export_import_sequence_works(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            rootA, _docsA = _portable_tree(tmp, "A")
+            rootB = Path(tmp) / "B"
+            (rootB / "ai_docs" / "topics").mkdir(parents=True)
+            out = Path(tmp) / "kb-bundle"
+
+            rc, o = self._run(["export", "--root", str(rootA), "--out", str(out)])
+            self.assertEqual(rc, 0, o)
+            self.assertTrue((out / "MANIFEST.md").is_file(), o)
+
+            rc, o = self._run(["import", str(out), "--root", str(rootB), "--dry-run"])
+            self.assertEqual(rc, 0, o)
+            self.assertIn("dry run", o)
+            self.assertFalse((rootB / "ai_docs" / "topics" / "t.md").is_file(),
+                             "--dry-run must write nothing")
+
+            rc, o = self._run(["import", str(out), "--root", str(rootB)])
+            self.assertEqual(rc, 0, o)
+            self.assertTrue((rootB / "ai_docs" / "topics" / "t.md").is_file(), o)
+
+            rc, o = self._run(["check", "--root", str(rootB)])
+            self.assertEqual(rc, 0, "check must be CLEAN right after an import:\n" + o)
+
+    def test_export_of_named_topics_only(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            rootA, _docsA = _portable_tree(tmp, "A")
+            out = Path(tmp) / "kb-bundle"
+            rc, o = self._run(["export", "--root", str(rootA), "--out", str(out),
+                               "--topics", "t"])
+            self.assertEqual(rc, 0, o)
+            self.assertEqual([p.name for p in (out / "topics").glob("*.md")], ["t.md"])
+
+
 class TL_F030_ImportedAuthority(unittest.TestCase):
     """Owner ruling 2026-08-03: knowledge crosses a project boundary, authority
     does not."""
