@@ -77,3 +77,18 @@ Whole documents keep the family lifecycle: a superseding note or guide marks the
 documents move independently — superseding a document does not silently resolve the
 claims extracted from it; the `corpus` check reports claims resting on superseded
 originals for re-verification.
+
+## Rulings that came from another project
+
+An `IMPORTED` row is a ruling made by the owner of a different project
+(`portability.md`). Knowledge crosses a project boundary; authority does not.
+
+- It keeps its text, its span and its original `basis:` verbatim — the knowledge is not
+  lost, and relabelling it `DERIVED` would make the row lie about its origin.
+- Its note must carry `imported_from:`. Unnamed, the class says nothing and the row is a
+  `RULING` with the label filed off; the validator refuses it.
+- **It cannot settle anything here.** `SUPERSEDED <id>` pointing at an `IMPORTED` row is
+  an error: nobody in this project granted that decision its authority.
+
+Re-ratification is one act, and it is you deciding: read it, write your own note with
+your own `basis:`, set `prov` to `RULING`.

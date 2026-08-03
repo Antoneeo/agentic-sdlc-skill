@@ -34,7 +34,7 @@ gate, il vocabolario, i controlli — discende da quella scelta.
 | **Slot di rischio (obbligatorio, il validator lo esige)** | `## Security and Threat Model` | `## Sources and Verification` | `## Threat Map / Plan Risks` |
 | **Albero documenti** | `ai_docs/` | `ai_docs/` + `corpus/` + `topics/` | `mkt_docs/` (vision/strategy/tactics/deliverables) — `ai_docs/` su albero migrato con `migrate` |
 | **File di dottrina propri** | `architect.md`, `tdd.md`, `debugging.md` | `taxonomy.md`, `distillation.md`, `reconciliation.md` | `frameworks.md`, `research.md` |
-| **Comandi validator propri** | (spina, entry sottile) | `graph`, `corpus`, `claim-id`, `anchor` | `ledger`, `budget`, `funnel`, `trace` |
+| **Comandi validator propri** | (spina, entry sottile) | `graph`, `corpus`, `claim-id`, `anchor`, `export`, `import` | `ledger`, `budget`, `funnel`, `trace` |
 | **Cosa valida in più** | struttura + Component Map anti-rot | **il grafo e i claim** (span, digest, id, simmetrie, cicli) | **l'aritmetica** (budget ±1%, funnel ±5%, catena obiettivo→tattica→KPI) |
 
 ## La spina comune (identica byte per byte, su tutte e tre)
@@ -168,6 +168,21 @@ check emettono findings, mai righe di stato.
 Provato sul corpus Eclosion: 5 specifiche, 7 topic, 26 claim, un conflitto vero
 (capacità <100 vs 200–300, stessa data) rilevato, trattenuto, risolto dal tuo
 ruling.
+
+**Portabilità della conoscenza (F-030).** `export` impacchetta un sottografo
+**insieme ai byte che le sue claim citano** — una chiusura, non una selezione: una
+claim la cui fonte non si può riaprire è conoscenza del modello che arriva per
+un'altra strada, e il validator del progetto di destinazione la rifiuterebbe.
+L'export tira dentro anche la controparte di ogni set `CONTESTED` (la simmetria è
+imposta, mezzo set è un albero che non passa i suoi controlli) e **lo dichiara**.
+`import` è **additivo**: non sovrascrive mai un nodo, non cancella mai nulla, e
+calcola tutto prima di scrivere un byte. Le claim già presenti si riconoscono
+**per id**, non confrontando testi, perché `kb_claim_id` esclude il testo: stesso
+artefatto content-addressed allo stesso span = stesso id in qualunque progetto.
+La conoscenza attraversa il confine di progetto, **l'autorità no**: un ruling
+importato arriva come `prov: IMPORTED`, conserva il suo `basis:` originale, deve
+dichiarare `imported_from:`, e **non può superare una riga locale** finché non lo
+ratifichi tu con una nota e un basis tuoi (ruling del proprietario, 2026-08-03).
 
 ## mkt-agentic-sdlc — la lente del mercato
 

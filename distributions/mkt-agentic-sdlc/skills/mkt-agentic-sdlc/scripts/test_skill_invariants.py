@@ -118,6 +118,25 @@ class SkillInvariants(unittest.TestCase):
         self.assertIn("consult the guide router", t)
         self.assertIn("Consult (before acting)", t)
 
+    def test_every_support_file_is_in_the_package(self):
+        """F-030: a support file the profile declares but `package.json` omits is
+        doctrine the installed skill does not have. It ships a SKILL.md pointing
+        at a file the user cannot open -- the same doctrine-vs-machinery class
+        F-029 spent a release closing, and it nearly shipped again with
+        `portability.md`. Skipped where no package.json sits beside the skill
+        (an installed copy), because there the question does not arise."""
+        import json
+        pkg = SKILL_DIR.parents[1] / "package.json"
+        if not pkg.is_file():
+            self.skipTest("no package.json beside this skill (installed copy)")
+        listed = set(json.loads(sc.read_text(pkg)).get("files", []))
+        for name in dist.profile()["support_files"]:
+            rel = "%s/%s" % (SKILL_DIR.name, name)
+            self.assertIn(
+                "skills/" + rel, listed,
+                f"'{name}' is a declared support file and is NOT packaged: the "
+                f"published skill would cite doctrine its user cannot open")
+
     def test_scenarios_only_cite_support_files_this_lens_ships(self):
         """F-029 G: a scenario may not test a construct this distribution lacks.
 

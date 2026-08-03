@@ -394,5 +394,176 @@ class TL_F029_AnchorPath(unittest.TestCase):
         self.assertIn("p=2@", buf.getvalue())
 
 
+def _portable_tree(tmp, name="A"):
+    """A project holding one topic whose two claims cite one artifact."""
+    import hashlib
+    data = PAGED.encode("utf-8")
+    root = Path(tmp) / name
+    docs = root / "ai_docs"
+    (docs / "corpus" / "given").mkdir(parents=True)
+    (docs / "topics").mkdir(parents=True)
+    art = docs / "corpus" / "given" / "m-ab12cd34.txt"
+    art.write_bytes(data)
+    (docs / "corpus" / "given" / "m-ab12cd34.txt.meta.md").write_text(
+        "---\nsha256: %s\ndate: 2026-08-03\nprovenance: GIVEN\n---\n"
+        % hashlib.sha256(data).hexdigest(), encoding="utf-8")
+    src = "corpus/given/m-ab12cd34.txt"
+    rows = [(kc.kb_claim_id(src, "p=1@42-61", ""), "disabled by default",
+             "-", "-", "-", src + "#p=1@42-61", "GIVEN", "OK"),
+            (kc.kb_claim_id(src, "p=2@9-51", ""), "operator groups too",
+             "-", "-", "-", src + "#p=2@9-51", "GIVEN", "OK")]
+    (docs / "topics" / "t.md").write_text(claims_md(rows), encoding="utf-8")
+    return root, docs
+
+
+class TL_F030_Portability(unittest.TestCase):
+    """F-030. The load-bearing property is id stability: kb_claim_id hashes
+    path#locator#qty with the TEXT EXCLUDED, so the same artifact cited at the
+    same span mints the same id in every project. Dedup is therefore mechanical,
+    and that is why this feature is small."""
+
+    def test_round_trip_preserves_claim_ids_across_projects(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _rootA, docsA = _portable_tree(tmp, "A")
+            selected, artifacts, added, errors = kc.kb_export_closure(docsA, ["t"])
+            self.assertEqual(errors, [], errors)
+            bundle = Path(tmp) / "bundle"
+            kc.kb_bundle_write(docsA, bundle, selected, artifacts, "A")
+            docsB = Path(tmp) / "B" / "ai_docs"
+            docsB.mkdir(parents=True)
+            writes, skipped, dedup, errors = kc.kb_import_plan(bundle, docsB)
+            self.assertEqual(errors, [], errors)
+            for _rel, src, dst in writes:
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                dst.write_bytes(src.read_bytes())
+            ida = {r["id"] for r in kc.kb_collect_topics(docsA)["t"][2]}
+            idb = {r["id"] for r in kc.kb_collect_topics(docsB)["t"][2]}
+        self.assertEqual(ida, idb, "claim ids must survive the project boundary")
+
+    def test_export_carries_the_bytes_its_claims_cite(self):
+        """Closure, not selection: a claim whose source cannot be reopened is
+        model knowledge arriving by another route."""
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docs = _portable_tree(tmp)
+            _sel, artifacts, _added, _errs = kc.kb_export_closure(docs, ["t"])
+        self.assertIn("corpus/given/m-ab12cd34.txt", artifacts)
+        self.assertIn("corpus/given/m-ab12cd34.txt.meta.md", artifacts)
+
+    def test_second_import_is_a_no_op_by_id(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _rootA, docsA = _portable_tree(tmp, "A")
+            selected, artifacts, _a, _e = kc.kb_export_closure(docsA, ["t"])
+            bundle = Path(tmp) / "bundle"
+            kc.kb_bundle_write(docsA, bundle, selected, artifacts, "A")
+            writes, _s, _d, _e = kc.kb_import_plan(bundle, docsA)
+        self.assertEqual(writes, [], "re-importing into its own source must write nothing")
+
+    def test_import_never_overwrites_an_existing_topic(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _rootA, docsA = _portable_tree(tmp, "A")
+            selected, artifacts, _a, _e = kc.kb_export_closure(docsA, ["t"])
+            bundle = Path(tmp) / "bundle"
+            kc.kb_bundle_write(docsA, bundle, selected, artifacts, "A")
+            _rootB, docsB = _portable_tree(tmp, "B")
+            (docsB / "topics" / "t.md").write_text(
+                claims_md([]) + "\nLOCAL BODY\n", encoding="utf-8")
+            writes, skipped, _d, errors = kc.kb_import_plan(bundle, docsB)
+        self.assertEqual(errors, [], errors)
+        self.assertIn("topics/t.md", skipped)
+        self.assertNotIn("topics/t.md", [r for r, _p, _d in writes])
+
+    def test_refuses_a_directory_that_is_not_a_bundle(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docs = _portable_tree(tmp)
+            _w, _s, _d, errors = kc.kb_import_plan(Path(tmp), docs)
+        self.assertTrue(any("not a kb bundle" in e for e in errors), errors)
+
+    def test_refuses_a_same_named_artifact_with_different_bytes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _rootA, docsA = _portable_tree(tmp, "A")
+            selected, artifacts, _a, _e = kc.kb_export_closure(docsA, ["t"])
+            bundle = Path(tmp) / "bundle"
+            kc.kb_bundle_write(docsA, bundle, selected, artifacts, "A")
+            _rootB, docsB = _portable_tree(tmp, "B")
+            (docsB / "corpus" / "given" / "m-ab12cd34.txt").write_bytes(b"other")
+            _w, _s, _d, errors = kc.kb_import_plan(bundle, docsB)
+        self.assertTrue(any("different bytes" in e for e in errors), errors)
+
+    def test_a_path_escaping_the_docs_root_is_refused(self):
+        """Belt and braces: rglob cannot currently produce a `..` entry, but the
+        write path is confined anyway, so a future bundle form (archive,
+        manifest-driven paths) cannot open the hole."""
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docs = _portable_tree(tmp)
+            self.assertIsNone(kc.sdlc_core.confine_under(docs, "../../out.md"))
+            self.assertIsNone(kc.sdlc_core.confine_under(docs, "topics/../../out.md"))
+
+    def test_export_pulls_in_the_other_half_of_a_conflict_set(self):
+        """A partial export ships a tree the symmetry check refuses."""
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docs = _portable_tree(tmp)
+            src = "corpus/given/m-ab12cd34.txt"
+            i1 = kc.kb_claim_id(src, "p=1@42-61", "")
+            i2 = kc.kb_claim_id(src, "p=2@9-51", "")
+            (docs / "topics" / "t.md").write_text(claims_md([
+                (i1, "a", "-", "-", "-", src + "#p=1@42-61", "GIVEN",
+                 "CONTESTED " + i2)]), encoding="utf-8")
+            (docs / "topics" / "u.md").write_text(claims_md([
+                (i2, "b", "-", "-", "-", src + "#p=2@9-51", "GIVEN",
+                 "CONTESTED " + i1)]).replace("topic: t", "topic: u"),
+                encoding="utf-8")
+            selected, _art, added, errors = kc.kb_export_closure(docs, ["t"])
+        self.assertEqual(errors, [], errors)
+        self.assertIn("u", selected, "the conflict partner must travel too")
+        self.assertEqual(added, ["u"], "and the growth must be reported, not silent")
+
+
+class TL_F030_ImportedAuthority(unittest.TestCase):
+    """Owner ruling 2026-08-03: knowledge crosses a project boundary, authority
+    does not."""
+
+    def test_imported_row_may_not_supersede_a_local_one(self):
+        src = "corpus/notes/n.md"
+        i_imp = kc.kb_claim_id(src, "L1-1", "")
+        i_loc = kc.kb_claim_id(src, "L2-2", "")
+        rows = [(i_imp, "foreign ruling", "-", "-", "-", src + "#L1-1",
+                 "IMPORTED", "OK"),
+                (i_loc, "local fact", "-", "-", "-", src + "#L2-2",
+                 "GIVEN", "SUPERSEDED " + i_imp)]
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(rows)},
+                             notes={"n.md": "---\nimported_from: project-A\n"
+                                            "basis: their owner said so\n---\nx\n"})
+            errors, _w, _n = kc.kb_check_claims(docs)
+        self.assertTrue(any("foreign decision cannot settle" in e for e in errors),
+                        errors)
+
+    def test_imported_without_its_origin_is_a_ruling_in_disguise(self):
+        src = "corpus/notes/n.md"
+        rows = [(kc.kb_claim_id(src, "L1-1", ""), "foreign ruling", "-", "-",
+                 "-", src + "#L1-1", "IMPORTED", "OK")]
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(rows)},
+                             notes={"n.md": "---\nbasis: their owner said so\n---\nx\n"})
+            errors, _w, _n = kc.kb_check_claims(docs)
+        self.assertTrue(any("imported_from" in e for e in errors), errors)
+
+    def test_a_reratified_row_settles_normally(self):
+        """The escape is one honest act, not a workaround: own note, own basis,
+        prov RULING."""
+        src = "corpus/notes/n.md"
+        i_rul = kc.kb_claim_id(src, "L1-1", "")
+        i_loc = kc.kb_claim_id(src, "L2-2", "")
+        rows = [(i_rul, "re-ratified here", "-", "-", "-", src + "#L1-1",
+                 "RULING", "OK"),
+                (i_loc, "local fact", "-", "-", "-", src + "#L2-2",
+                 "GIVEN", "SUPERSEDED " + i_rul)]
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(rows)},
+                             notes={"n.md": "---\nbasis: I decided, here is why\n---\nx\n"})
+            errors, _w, _n = kc.kb_check_claims(docs)
+        self.assertEqual([e for e in errors if "foreign decision" in e], [])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

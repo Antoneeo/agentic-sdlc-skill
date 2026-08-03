@@ -22,3 +22,4 @@
 | F-027 | Field-test defects — lens identity, FACT laundering, verdict return path | L3 | COMPLETED | 2026-08-02 | 2026-08-02 | solutions/ANALYSIS_field_test_defects.md |
 | F-028 | Mergeable documentation — several people on one project, in parallel | L3 | PLANNED | 2026-08-02 |  | solutions/ANALYSIS_mergeable_docs.md |
 | F-029 | kb field-report defects — triage units, precondition axis, corpus letter, anchor resolver, overlay help | L3 | COMPLETED | 2026-08-02 | 2026-08-02 | solutions/ANALYSIS_kb_field_report.md |
+| F-030 | Portable knowledge — export a KB subgraph from one project, import it additively into another | L3 | COMPLETED | 2026-08-03 | 2026-08-03 | solutions/ANALYSIS_kb_portable_knowledge.md |
