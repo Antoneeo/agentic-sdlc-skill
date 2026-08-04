@@ -48,6 +48,7 @@ SHARED_FILES = (
     "scripts/test_plan.py",
     "scripts/test_drift.py",
     "scripts/test_migrate.py",
+    "scripts/test_merge_safety.py",
     # domain-neutral doctrine
     "review.md",
     "routing.md",

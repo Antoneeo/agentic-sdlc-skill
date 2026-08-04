@@ -112,6 +112,34 @@ const writeIfNotExists = (relPath, content, description) => {
 
 seedFiles.forEach(([relPath, content]) => writeIfNotExists(relPath, content));
 
+const EOL = String.fromCharCode(10);
+// 5b. Merge hygiene for the append-only review log (F-028, defence in depth).
+// `merge=union` is a BUILT-IN driver: no per-clone `git config`, unlike
+// `merge=ours`, which silently does nothing until every clone configures it.
+// Rows are date-stamped, so interleaving them loses no information and their
+// order carries none. Create-only, and appended rather than rewritten: a user's
+// own .gitattributes is never clobbered.
+const gitattributes = () => {
+  const marker = 'ai_docs/audit/reviews/REVIEW_LOG.md';
+  const stanza = [
+    '',
+    '# agentic-sdlc: the review log is append-only and its rows are date-stamped,',
+    '# so a union merge keeps both sides instead of asking a human to pick one.',
+    marker + ' merge=union',
+    '',
+  ].join(EOL);
+  const filePath = path.join(cwd, '.gitattributes');
+  if (!fs.existsSync(path.join(cwd, '.git'))) return;   // not a git repo: nothing to do
+  const current = fs.existsSync(filePath) ? fs.readFileSync(filePath, 'utf8') : '';
+  if (current.includes(marker)) {
+    console.log('SKIP  .gitattributes already covers the review log.');
+    return;
+  }
+  fs.writeFileSync(filePath, current + stanza, 'utf8');
+  console.log('OK    .gitattributes: review log set to merge=union (concurrent reviews merge cleanly).');
+};
+gitattributes();
+
 // 6. Client discovery and protocol pointers
 console.log('\n--- Environment Analysis ---');
 

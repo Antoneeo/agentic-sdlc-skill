@@ -2,6 +2,57 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.21.0 / kb 1.4.0 / mkt 0.4.0] - 2026-08-03
+
+F-028 — several people on one project. `templates.md` had claimed the workstream
+registry was "Parallel-safe by construction" since F-019, and nothing had ever exercised
+it. Two workstreams opened from one base conflict **twice in one file**: on the row
+insert, and on the file-global `Date:` header. Row-level ownership cannot save a file
+that has a file-level field.
+
+### Changed
+- **`audit/handoff.md` is now GENERATED** from one `HANDOFF_[unit].md` per open
+  workstream, whose frontmatter IS the row. Two writers on two workstreams touch two
+  different files, and the `Date:` header is derived — from the newest `updated:` VALUE
+  in the sources, never a filesystem timestamp (git does not preserve mtimes, and an
+  mtime-derived header would make the file regenerate differently in every fresh clone).
+- **`HANDOFF_[unit].md` is now written for every OPEN workstream**, with or without
+  volatile state — no file, no row. It still carries the resume logistics, and deleting
+  it at closure *is* what removes the row. The DRY boundary against the ANALYSIS Diary
+  is restated in the template, because what used to keep narrative out of that file was
+  its rarity, and the rarity is gone.
+- Project-wide notes move to their own source, `audit/project_notes.md`, so generating
+  the registry cannot destroy notes that belong to no workstream.
+
+### Added
+- **`validate` errors when the registry disagrees with its sources** — which is what
+  turns a merge resolved carelessly from permanent into loud. Resolution is mechanical:
+  re-run `index`. The generated view can still conflict; the authored truth does not.
+- **`index` refuses to write while anything in the file is unaccounted for**, and names
+  it. Converting one row at a time is the state that loses the others, so conversion is
+  per project. A project with no sources is untouched and sees no new finding.
+- **`init` writes a `.gitattributes` stanza** giving the append-only review log
+  `merge=union` — a **built-in** driver, unlike `merge=ours`, which silently does
+  nothing until every clone runs `git config` and leaves the file wrong even then.
+  Create-only; a user's own `.gitattributes` is never clobbered.
+- `scripts/test_merge_safety.py` (shared, ×3): the experiment that found the defect,
+  kept as a regression test — two workstreams from one base, merged, with the assertion
+  that only the generated view may conflict and that regenerating loses no state. Plus
+  the mixed-state, fresh-mtime, ordering, cap and duplicate-id guards, each
+  mutation-verified.
+- A warning when two files claim the same workstream: the collision this design does
+  **not** fix (two people opening the same work under two names) must not pass as two
+  ordinary rows.
+
+The mechanism is files and a generator: **it works with no VCS at all.** The
+`.gitattributes` stanza is defence in depth — without it the outcome is today's, one
+conflict resolved by hand, never a lost row.
+
+### Upgrading
+Nothing happens until you convert: with no `HANDOFF_*.md` sources, `index` and
+`validate` behave exactly as before. When you convert, convert the whole registry at
+once — `index` will tell you what is still unaccounted for.
+
 ## [kb 1.3.0] - 2026-08-03
 
 F-031 — from the field: *"the ingestion agent takes shortcuts, and a lot of information
