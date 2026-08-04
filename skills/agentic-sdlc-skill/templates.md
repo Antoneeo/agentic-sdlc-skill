@@ -250,6 +250,37 @@ checks: [marketing.funnel]      # optional — extra portable checks to run on t
      use-case = what they do. Derived from the elicitation round; the Impact below
      must cover each, and the closure review checks coverage + actor UX fit. -->
 
+## Interaction Contract
+<!-- [conditional] Fires when the change creates or modifies a surface through
+     which an actor **acts on or perceives** the system — GUI view, CLI
+     command/flags, API endpoint, user-edited config, notification or
+     user-facing message. The verb pair is the test; the list is illustrative.
+     IN: an error dialog's wording and states (the actor perceives it and
+     decides on it). OUT: an internal log format, a private module API
+     (operated by code, not by an actor). Not fired → one line stating why.
+     This comment is the OWNING definition of the trigger; SKILL.md and
+     review.md cite it, never restate it.
+     Content, in this order:
+     1. As-is — the touched surfaces as they exist, AND the interaction
+        patterns/idioms already in use relevant to these use cases (how the
+        product already does selection, confirmation, errors, navigation).
+     2. Per use case, the interaction path (table below): actor action on
+        surface → system response → outcome. Reuse the as-is idioms by
+        default; a NEW idiom where an existing one covers the job is a
+        declared decision with its reason — never an unmarked invention.
+     3. States for each new/changed view: empty, loading, error, denied.
+     4. Feasibility notes, NON-binding: "path X presupposes reuse of Y",
+        "alternative Z discarded: disproportionate cost" — hypotheses the
+        Impact confirms or refutes (early architect-pass probes).
+     The contract binds OBSERVABLE behavior only — no components, no files
+     (that is the Impact's vocabulary). After design approval, changing a
+     contracted path is a scope change the USER approves: the solution may
+     propose it, never enact it silently. Every contracted path is covered
+     by ## Test Strategy. -->
+
+| Use case | Surface | Actor action | System response | Outcome |
+|---|---|---|---|---|
+
 ## Capability Ledger
 <!-- the architect pass (`architect.md`), run BEFORE the Impact below. One row per
      capability the feature requires the system to be able to DO — a verb over a

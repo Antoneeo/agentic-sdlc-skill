@@ -56,8 +56,8 @@ sdlc_core.set_profile(
         "triage", "write_triggers", "workstream_registry", "vision_gate",
         "design_review_gate", "guide_router", "worktree_hygiene",
         # code overlay
-        "architect_pass", "comprehension_guides", "tdd", "subagent_dispatch",
-        "legacy_narrative_handoff", "question_discipline",
+        "architect_pass", "interaction_contract", "comprehension_guides", "tdd",
+        "subagent_dispatch", "legacy_narrative_handoff", "question_discipline",
     ),
     design_gate_between=("### 3. Request Analysis", "### 4. Development and Testing"),
 )

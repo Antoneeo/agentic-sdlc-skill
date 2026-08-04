@@ -4,6 +4,8 @@ Records each independent-review-gate pass (§4.5 tech artifacts, §4.6 code). Th
 
 | date | doc_key | tier | reviewer | findings_raised | findings_real | verdict | revise_rounds |
 |---|---|---|---|---|---|---|---|
+| 2026-08-04 | F-032 implementation diff vs approved ANALYSIS (templates/SKILL/elicitation + spine review.md, sdlc_core, test_skill_invariants ×3 + manifests) | closure | subagent (fresh ctx, read-only, full conformance statement) | 3 WARN | 3 | PASS — W1/W2 fixed, W3 executed at closure | 1 |
+| 2026-08-04 | ANALYSIS_interaction_contract.md (F-032) | design | subagent (fresh ctx, read-only, full conformance statement) | 10 WARN | 10 | PASS — all 10 folded by revision | 1 |
 | 2026-08-03 | F-028 mergeable documentation (diff: sdlc_core ×3, mkt_check, init.js ×3, SKILL/templates ×3, 19 new tests, dogfooded registry) | closure | SELF-PASS (declared; harness forbids unprompted reviewer subagents -- independence reduced) | 5 | 5 | FAIL -> all fixed | 1 |
 | 2026-08-03 | ANALYSIS_mergeable_docs.md (F-028) | design | SELF-PASS (declared; harness forbids unprompted reviewer subagents -- independence reduced) | 5 | 5 | FAIL -> all folded, round 2 PASS | 2 |
 | 2026-08-03 | F-031 exhaustive ingestion (diff: kb distillation/templates/SKILL/sdlc_check + 13 tests + 1 eval + 2 derived docs + 2 changelogs) | closure | SELF-PASS (declared; harness forbids unprompted reviewer subagents -- independence reduced) | 3 | 2 | FAIL -> both fixed | 1 |

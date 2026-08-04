@@ -168,6 +168,20 @@ When you are the reviewer:
   mark ANALYZED, with no searches named**, is the finding that matters most on a
   project the methodology arrived in recently — an unread map reported as an empty
   one is how a duplicate of the existing codebase gets designed.
+- **Interaction Contract (same reviews; fires only in the lens whose template
+  defines the section — the code lens today).** When the change creates or
+  modifies an actor-facing surface (the trigger's owning definition is the code
+  lens's `templates.md` section comment — cite it, never restate it), **an
+  artifact carrying NO `## Interaction Contract` is itself a finding** — "the
+  artifact does not have one" is what a skipped contract looks like, not a reason
+  to skip the check. When the contract is there, four findings live here: a
+  use-case with no named interaction path realizing it; a design or diff element
+  that alters a contracted observable behavior with no explicit renegotiation
+  note (after design approval that is a scope change owed to the user, not a
+  design detail); a contracted path the `## Test Strategy` does not cover; and a
+  new interaction idiom introduced where the contract's own as-is names an
+  existing one, with no declared reason. A lens whose template defines no such
+  section (knowledge, marketing) never fires this clause.
 
 ## Anti-patterns
 

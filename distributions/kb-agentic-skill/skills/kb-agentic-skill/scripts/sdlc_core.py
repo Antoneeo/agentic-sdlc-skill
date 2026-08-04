@@ -245,6 +245,7 @@ REQUIRED_CAPABILITIES = frozenset({
 # Listed here so "this distribution does not claim it" is a visible decision.
 OPTIONAL_CAPABILITIES = frozenset({
     "architect_pass",         # does the component already exist? (code overlay)
+    "interaction_contract",   # actor-facing surface spec between use cases and solution (code overlay)
     "taxonomy_pass",          # do the categories/topics already exist? (knowledge overlay)
     "comprehension_guides",   # source_kind: code maps of complex components
     "tdd",                    # test-first discipline

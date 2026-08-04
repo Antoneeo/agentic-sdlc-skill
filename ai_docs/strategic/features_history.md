@@ -24,3 +24,4 @@
 | F-029 | kb field-report defects — triage units, precondition axis, corpus letter, anchor resolver, overlay help | L3 | COMPLETED | 2026-08-02 | 2026-08-02 | solutions/ANALYSIS_kb_field_report.md |
 | F-030 | Portable knowledge — export a KB subgraph from one project, import it additively into another | L3 | COMPLETED | 2026-08-03 | 2026-08-03 | solutions/ANALYSIS_kb_portable_knowledge.md |
 | F-031 | Exhaustive ingestion — the source is exhausted, not sampled, and the work resumes across sessions | L3 | COMPLETED | 2026-08-03 | 2026-08-03 | solutions/ANALYSIS_kb_exhaustive_ingestion.md |
+| F-032 | Interaction Contract (actor-facing surface spec between use cases and solution) | L3 | COMPLETED | 2026-08-04 | 2026-08-04 | solutions/ANALYSIS_interaction_contract.md |
