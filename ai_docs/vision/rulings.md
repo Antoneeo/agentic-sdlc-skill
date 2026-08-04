@@ -42,3 +42,4 @@ ledger only grows; rows are superseded by an owner ruling, never deleted.
 | r13 | makes the methodology reachable from one more AI client | ADMIT | the client carve-out: the rule does not reach the clients | v8 P3 | — |
 | r14 | fixes a defect with purpose, actors and surface unchanged | exempt | the bounded maintenance exemption | v8 P4 | — |
 | r15 | packaging, installation, distribution, the product's own tests | ADMIT | part of the product, not overhead | v8 P6 | — |
+| r16 | specifies the observable actor-surface interaction (actor action → system response → outcome) binding use cases to surfaces BEFORE the solution is designed | ADMIT | advances "divergence visible before implementation" and the Actors' good-UX clauses; ceremony cost disclosed in full (conditional L3 section + doctrine reading cost) and explicitly accepted by the owner | F-032 (real) | owner acceptance 2026-08-04, ANALYSIS_interaction_contract.md Diary |
