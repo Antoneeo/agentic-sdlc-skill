@@ -47,6 +47,10 @@ npx mkt-sdlc-init        # creates mkt_docs/ + protocol pointers
 | E3 Full Plan | complete marketing plan | full SOSTAC workflow, 9 phases, all gates |
 | Research Spike | time-boxed market question | `mkt_docs/spikes/RESEARCH_[topic].md` |
 
+## Several people, one project
+
+The workstream registry (`audit/handoff.md`) is **generated** from one file per open workstream, so two people opening or closing two workstreams on two branches edit two different files and their merge is clean. Row-per-workstream alone was not enough — a file-global `Date:` header defeats row-level ownership — so the header is derived from the sources and no writer touches it. The generated view can still conflict; that conflict is resolved by re-running `index`, never by hand, and `validate` refuses CLEAN until the file matches its sources. The append-only review log gets `merge=union` (a built-in driver, no per-clone configuration). It all works with no VCS at all: it is files and a generator.
+
 ## Modes
 
 - **Standalone** — everything on the filesystem under `mkt_docs/`.

@@ -232,10 +232,11 @@ class SkillInvariants(unittest.TestCase):
         self.assertNotIn("## 4. SessionStart hook (orientation, optional)", t)
 
     def test_parallel_handoff_wired(self):
-        """F-019: the handoff is a workstream REGISTRY (one row per open
-        workstream, parallel-safe), with volatile resume logistics in ephemeral
-        HANDOFF_[feature].md files deleted at closure. Durable narrative stays in
-        the ANALYSIS Diary (DRY)."""
+        """F-019 + F-028: the handoff is a workstream REGISTRY, and since F-028 a
+        GENERATED one — one authored source file per open workstream, so two
+        writers touch two files. Durable narrative stays in the ANALYSIS Diary
+        (DRY); the source file carries the row plus the resume logistics and is
+        deleted at closure, which is what removes the row."""
         unit = dist.profile()["unit_noun"]
         skill = read("SKILL.md")
         self.assertIn(f"HANDOFF_[{unit}].md", skill)
@@ -244,6 +245,19 @@ class SkillInvariants(unittest.TestCase):
         self.assertIn(f"HANDOFF_[{unit}].md", tpl)
         self.assertIn("resume logistics", tpl,
                       "the Diary/logistics boundary must be stated in the template")
+        # F-028. The registry is generated: saying so in one file and not the
+        # other is how an agent ends up hand-editing a file the validator then
+        # rejects -- the doctrine-vs-machinery defect class, in the document
+        # that describes the machinery.
+        for name, text in (("SKILL.md", skill), ("templates.md", tpl)):
+            self.assertIn("GENERATED" if name == "templates.md" else "generated", text,
+                          f"{name} must say the registry is generated")
+            self.assertIn("index", text)
+        self.assertIn("all at once", tpl.lower(),
+                      "converting one row at a time is the state that loses the "
+                      "others: the template owes the whole-project clause")
+        self.assertIn("workstream:", tpl,
+                      "the frontmatter key that makes a file a source must be shown")
         # A shipped format change without a migration clause strands existing projects
         # -- but only a distribution that HAS shipped one owes the clause.
         if dist.has_capability("legacy_narrative_handoff"):

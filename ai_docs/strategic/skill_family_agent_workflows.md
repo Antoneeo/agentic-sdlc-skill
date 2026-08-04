@@ -45,9 +45,22 @@ Qualunque lente sia attiva, l'agente:
    riga (`Level: L3 · router: no match`) — tre soli verdetti legali, così "non ho
    guardato" è indistinguibile da "ho guardato, niente" solo se menti per iscritto.
 2. **Si orienta prima di creare**: registro dei workstream (`handoff.md`, una riga
-   per lavoro aperto, ≤20 righe), indici generati (mai scritti a mano — il
-   validator fallisce su uno editato), guide operative con fedeltà alla fonte
-   (snapshot verbatim + hash, `stale` rileva il drift).
+   per lavoro aperto), indici generati (mai scritti a mano — il validator
+   fallisce su uno editato), guide operative con fedeltà alla fonte (snapshot
+   verbatim + hash, `stale` rileva il drift).
+   Da F-028 il registro **è** uno degli indici generati: la verità sta in un file
+   per workstream (`HANDOFF_[unit].md`, la frontmatter È la riga) e `index` lo
+   costruisce. Motivo: una riga per workstream non bastava — due lavori aperti
+   dalla stessa base confliggevano lo stesso, perché un campo globale di file
+   (`Date:`) annulla la proprietà per riga. Ora l'intestazione è derivata (il
+   valore `updated:` più recente nelle fonti, mai un timestamp del filesystem, che
+   git non conserva) e due scrittori toccano due file diversi. La vista generata
+   può ancora confliggere al merge: si risolve **rieseguendo `index`**, mai a mano,
+   e `validate` rifiuta CLEAN finché non combacia. Convertire un progetto esistente
+   è pigro ma **tutto in una volta**: `index` si rifiuta di scrivere finché qualcosa
+   nel file non ha una fonte, e lo nomina — convertire una riga alla volta è lo
+   stato che perde le altre. `REVIEW_LOG.md` prende `merge=union` da `init`
+   (driver built-in: nessuna configurazione per clone).
 3. **Passa i gate**: Vision gate (DRAFT informa, APPROVED vincola — promozione solo
    tua, dopo il blind check); **design review indipendente prima di implementare**
    e closure review prima di dichiarare DONE — scala di indipendenza a 3 pioli
@@ -61,8 +74,9 @@ Qualunque lente sia attiva, l'agente:
    Default non-bloccante: assunzione dichiarata (da cosa è presa + l'alternativa
    esclusa), presentata in batch.
 5. **Chiude meccanicamente**: `check` CLEAN, documenti nello stesso commit del
-   lavoro, decisione esplicita di merge (mai branch orfani), riga del registro
-   rimossa e HANDOFF volatile cancellato.
+   lavoro, decisione esplicita di merge (mai branch orfani), `HANDOFF_[unit].md`
+   cancellato e `index` rieseguito — cancellarlo **è** rimuovere la riga, e nessun
+   altro workstream viene toccato.
 6. **Può delegare** (dispatch opt-in): piano validato o niente dispatch
    (`plan validate`, confinamento fail-closed), `verify` stampato mai eseguito,
    escalation di tier solo dopo 2 fail consecutivi.
