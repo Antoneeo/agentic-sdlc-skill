@@ -18,9 +18,14 @@ already published.
 ## How to do a release
 [source: release-runbook-2792f160.md#git-sequence]
 Order: bump → verify → script (commit+tag+push) → verify tag → merge → publish.
-1. Bump THREE places in one commit: `package.json` version,
-   `gemini-extension.json` version, CHANGELOG heading
-   (`[Unreleased - X.Y.Z]` → `[X.Y.Z] - YYYY-MM-DD`). (snapshot §Version bump points)
+1. Bump FOUR places in one commit: `package.json` version,
+   `gemini-extension.json` version, **`SKILL.md` frontmatter `version:`**,
+   CHANGELOG heading (`[Unreleased - X.Y.Z]` → `[X.Y.Z] - YYYY-MM-DD`).
+   (snapshot §Version bump points; the SKILL.md point is the product's own,
+   added 2026-08-03 — an installed skill carries no package.json, so its
+   frontmatter is the only place a reader can see which build they have.
+   Forgetting it fails the battery: `test_the_installed_skill_says_which_
+   version_it_is` asserts all bump points agree.)
 2. Any NEW support file since the last release MUST be in `package.json`
    `files` — it is an allowlist, and `postinstall.js` can only copy what the
    tarball contains. Update README's support-files bullet and Runtime Shape

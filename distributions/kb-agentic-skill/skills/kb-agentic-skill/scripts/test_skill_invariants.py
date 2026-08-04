@@ -137,6 +137,36 @@ class SkillInvariants(unittest.TestCase):
                 f"'{name}' is a declared support file and is NOT packaged: the "
                 f"published skill would cite doctrine its user cannot open")
 
+    def test_the_installed_skill_says_which_version_it_is(self):
+        """F-033: an installed skill carries NO package.json and NO
+        gemini-extension.json — only doctrine and scripts. Without a version in
+        SKILL.md's frontmatter, neither the user nor the agent reading it can
+        tell which build is installed, and diagnosing "is that fix in your copy?"
+        needs `npm view` plus a shasum comparison. That happened, in the field.
+
+        The string alone would rot, so this asserts the SYNC: every bump point
+        must move together. The third bump point (gemini-extension.json) was
+        already skipped for two whole releases with nothing to catch it, which is
+        precisely why the fourth arrives with a test attached."""
+        import json
+        skill = read("SKILL.md")
+        m = re.search(r"^version:\s*(\S+)\s*$", skill, re.M)
+        self.assertIsNotNone(
+            m, "SKILL.md frontmatter must carry `version:` — an installed skill "
+               "has no other file that says which build it is")
+        declared = m.group(1)
+        pkg = SKILL_DIR.parents[1] / "package.json"
+        if not pkg.is_file():
+            self.skipTest("no package.json beside this skill (installed copy)")
+        for rel in ("package.json", "gemini-extension.json"):
+            p = SKILL_DIR.parents[1] / rel
+            if not p.is_file():
+                continue
+            self.assertEqual(
+                json.loads(sc.read_text(p))["version"], declared,
+                f"SKILL.md says {declared} and {rel} disagrees: a version the "
+                f"reader cannot trust is worse than no version at all")
+
     def test_scenarios_only_cite_support_files_this_lens_ships(self):
         """F-029 G: a scenario may not test a construct this distribution lacks.
 

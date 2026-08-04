@@ -2,6 +2,20 @@
 
 Every significant change to this skill is recorded here.
 
+## [1.4.1] - 2026-08-03
+
+### Added
+- **`version:` in every `SKILL.md` frontmatter.** An installed skill carries no
+  `package.json` and no `gemini-extension.json` — only doctrine and scripts — so nothing
+  in it said which build it was. Answering "is that fix in your copy?" took `npm view`
+  plus a shasum comparison; from a user's side it was unanswerable. Now the first thing
+  in the operating contract says it.
+- **A battery invariant asserting every bump point agrees** (`SKILL.md` ↔ `package.json`
+  ↔ `gemini-extension.json`). A hand-maintained version string rots, and this repository
+  has the scar: the third bump point was skipped for two whole releases with nothing to
+  catch it. The fourth arrives with its guard attached, and `GUIDE_release.md` step 1
+  now says FOUR.
+
 ## [1.4.0] - 2026-08-03
 
 F-028 — several people on one project. `templates.md` had claimed the workstream
