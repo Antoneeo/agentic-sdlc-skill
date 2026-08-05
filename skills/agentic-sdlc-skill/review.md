@@ -146,6 +146,19 @@ When you are the reviewer:
   which one is current. The rule bites hardest across domains, where the same slot
   ("threat model", "vision", "handoff") carries a different meaning under each lens and
   a copy looks like an independent second source.
+- **Use-case grounding (same reviews; the two-check gate whose owning definition
+  is the code lens's `templates.md` `## Use Cases / User Needs` comment — cite it,
+  never restate it).** On an L3 impact/solution analysis (Standalone) or `D-UC`
+  (Hybrid), two findings live here and nowhere else: **a product name in no
+  bucket** — the use-cases name a thing that neither EXISTS in the product (called
+  by the term the product itself uses; a renamed existing thing is a phantom), nor
+  is declared NEW in this change, nor is a pure METAPHOR kept out of the interface;
+  it invents system reality that is not there. And **a use-case that traces to no
+  Vision / M-VISION benefit** — a need the vision does not want, which is drift.
+  This gate checks the use-cases are GROUNDED and runs BEFORE the owner's own
+  review, never replacing it; coverage of each use-case by the Impact, and the
+  Actor it serves, stay the conformance-statement clause above. A lens whose
+  template defines no `## Use Cases` section never fires this clause.
 - **Capability Ledger (same reviews).** **An L3 impact/solution analysis or design
   that carries NO Capability Ledger is itself a finding** — the lens's capability
   pass (`architect.md` in the code lens, `taxonomy.md` in the knowledge lens) left

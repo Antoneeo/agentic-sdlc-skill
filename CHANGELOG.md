@@ -2,6 +2,24 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.24.0 / kb 1.4.4 / mkt 0.4.4] - 2026-08-05
+
+### Added
+- **Use-case grounding gate (code lens).** The use-cases / `D-UC` now pass a tight two-check gate
+  before anything builds on them — the top-of-funnel twin of the blast-radius duty: (1) every
+  product name resolves to EXISTS (the product's own term for a real thing) / NEW (declared) /
+  METAPHOR (never an interface element); a name in no bucket invents system reality the project
+  does not have. (2) every use-case traces to a Vision / M-VISION benefit; one that traces to
+  nothing is drift. The gate reads the use-case TEXT and is verified by the **independent design
+  review (moment 1), which precedes and never replaces the owner's own review** — so an ungrounded
+  name or an untraced use-case is caught before the Interface Contract binds it, the threat model
+  assesses it and the Impact maps it. Owning definition: `templates.md` `## Use Cases / User
+  Needs`; enforced by the shared `review.md` use-case-grounding clause (inert in kb/mkt, which
+  define no `## Use Cases` section); `SKILL.md` §3 cites it. The user-need judgement (right need?
+  right actor? good UX?) stays the owner's. Rationale + rejected alternatives:
+  `ai_docs/architecture/ADR_2026-08-05_use_case_grounding_gate.md`. Companion devPNT change
+  (§4.5 D-UC grounding review) ships in that repo's doctrine.
+
 ## [1.23.0 / kb 1.4.3 / mkt 0.4.3] - 2026-08-05
 
 ### Changed

@@ -1,6 +1,6 @@
 {
   "name": "kb-agentic-skill",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Knowledge-Base & Document-First protocol with risk triage, Vision governance, signal distillation and optional devPNT integration.",
   "author": "Antonio Pinto (https://github.com/Antoneeo)"
 }
