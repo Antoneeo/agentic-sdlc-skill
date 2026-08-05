@@ -2,6 +2,14 @@
 
 Every significant change to this skill is recorded here.
 
+## [1.4.4] - 2026-08-05
+
+### Changed
+- **Shared-spine sync: use-case grounding clause (inert in this lens).** The shared `review.md`
+  gains the code lens's use-case-grounding finding — a product name in no EXISTS/NEW/METAPHOR
+  bucket, or a use-case tracing to no Vision benefit. The kb lens defines no `## Use Cases`
+  template section, so the clause stays inert here — spine parity only.
+
 ## [1.4.3] - 2026-08-05
 
 ### Changed

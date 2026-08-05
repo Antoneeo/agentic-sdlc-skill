@@ -248,7 +248,23 @@ checks: [marketing.funnel]      # optional — extra portable checks to run on t
      (the Standalone home for what Hybrid keeps in D-UC). Each use-case NAMES the
      Actor it serves (defined in the Vision's ## Actors) — actor = who they are,
      use-case = what they do. Derived from the elicitation round; the Impact below
-     must cover each, and the closure review checks coverage + actor UX fit. -->
+     must cover each, and the closure review checks coverage + actor UX fit.
+     GROUNDING GATE (two checks, nothing else — this comment is the OWNING
+     definition of the gate; review.md and SKILL.md cite it, never restate it):
+     1. Every product name the use-cases use resolves to exactly ONE bucket:
+        EXISTS — real in the product, called by the term the product itself uses
+        (a renamed existing thing is a phantom, not a citation); NEW — introduced
+        by this change and explicitly declared new; METAPHOR — illustrative only,
+        never named as an interface element an actor acts on. A name in no bucket
+        invents system reality that is not there.
+     2. Every use-case traces to a benefit named in the Vision (Standalone) /
+        M-VISION (Hybrid). A use-case serving no stated benefit is drift, not a need.
+     Both read the use-case TEXT — the author self-applies at drafting, then an
+     independent design review (review.md, moment 1) verifies them BEFORE, and
+     without replacing, the owner's own review. They keep the top of the funnel
+     from proposing what the vision does not want or the project does not have;
+     drafting is grounded in BOTH anchors first — the Vision (benefit + actors)
+     and the real system (summaries / existing features / source). -->
 
 ## Interface Contract
 <!-- [conditional] Fires when the change creates or modifies a surface through

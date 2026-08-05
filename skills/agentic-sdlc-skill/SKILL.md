@@ -1,6 +1,6 @@
 ---
 name: agentic-sdlc
-version: 1.23.0
+version: 1.24.0
 description: Documentation-First SDLC protocol with risk-proportional triage, Vision as a guide, a complete Standalone mode and optional symbiosis with devPNT. Use for features, significant bugs, refactors, audits and documented maintenance.
 author: Antonio Pinto (https://github.com/Antoneeo)
 copyright: (c) 2026 Antonio Pinto
@@ -217,6 +217,8 @@ Hybrid:
 ### 3. Request Analysis
 
 For any L3, run the spec elicitation round in `elicitation.md` BEFORE drafting the analysis (skip path inside — one-line note when the spec is already complete).
+
+**Use cases are grounded before anything builds on them (two checks, nothing else).** The use-cases the elicitation produces pass a tight gate whose owning definition is the `templates.md` `## Use Cases / User Needs` comment — cite it, never restate it: every product name they use resolves to EXISTS (the product's own term for a real thing) / NEW (declared) / METAPHOR (never an interface element), and every use-case traces to a Vision benefit. A name in no bucket invents system reality the project does not have; a use-case tracing to no benefit is drift. It is the top-of-funnel twin of the blast-radius duty below — ground the reasoning artifact in what the system IS and the vision WANTS before the contract, the Ledger and the Impact all inherit it. The author self-applies at drafting; then the independent design review (`review.md` moment 1) verifies the two checks before the owner's own review — it precedes it, never replaces it.
 
 **Interface Contract before the Impact (conditional).** When the change creates or modifies an actor-facing surface — the trigger's owning definition lives in the `templates.md` section comment; cite it, never restate it — the ANALYSIS carries a `## Interface Contract`: the observable behavior the actors get, per use case — the responsibility-level flow each action triggers, naming the components it traverses, and the universal feedback that returns — built by first reading the surfaces and interaction idioms already in place and reusing them by default (a new idiom is a declared decision, never an unmarked invention). It binds observable behavior **and the responsibility-level flow** — it names the components in the flow, never their mechanism; **mechanism and files stay the Impact's vocabulary**. Drafting interleaves with the architect pass below (the contract's feasibility notes are early capability probes), but finalization is ordered: contract and Ledger are both complete before the Impact is drafted. After design approval, a contracted path changes only as a user-approved scope change — the solution proposes, never silently enacts. Trigger not fired → one line in the section stating why. Why it exists: without it the interaction is invented at implementation time, UX is emergent instead of designed, and the review's "actor UX fit" check has no object.
 
