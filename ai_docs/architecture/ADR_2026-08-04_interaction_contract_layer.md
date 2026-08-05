@@ -1,8 +1,10 @@
 ---
-description: Why the actor-facing interaction is contracted between the use cases and the solution — a conditional ANALYSIS section with an authority split, not a new document kind and not a validator rule.
+description: Why the actor-facing interaction is contracted between the use cases and the solution — a conditional ANALYSIS section whose flow names the components it traverses (never their mechanism), not a new document kind and not a validator rule.
 status: CURRENT
 ---
-# ADR: The Interaction Contract layer
+# ADR: The Interface Contract layer
+
+> **Refined 2026-08-05 (v2):** the flat action→response→outcome model + "no components" split were evolved to the responsibility-level flow that names components; see `ai_docs/solutions/ANALYSIS_interaction_contract.md` ## Evolution v2.
 
 **Status:** Accepted
 **Date:** 2026-08-04
@@ -20,22 +22,7 @@ proportional.
 
 ## Decision
 
-A conditional `## Interaction Contract` section in the ANALYSIS, between
-`## Use Cases / User Needs` and `## Capability Ledger` (Hybrid: inside the E-ISP,
-sequenced D-UC → D-IC → P-TM → E-ISP), with:
-
-- **Trigger owned by the `templates.md` section comment** (single home): a surface
-  through which an actor *acts on or perceives* the system; not fired → one line.
-- **Authority split**: the contract binds observable behavior only (actor action →
-  system response → outcome, per use case, plus view states); feasibility notes are
-  non-binding hypotheses the Impact confirms or refutes. After design approval a
-  contracted path changes only as a user-approved scope change.
-- **Pattern reuse by default**: the as-is inventories existing interaction idioms;
-  a new idiom is a declared decision.
-- **Enforcement by review, not by validator**: a lens-keyed clause in the shared
-  `review.md` (fires only in the lens whose template defines the section), plus an
-  invariant test pinning the wiring. The solution inherits the interaction; it
-  never generates it.
+The actor-facing interaction is contracted between the use cases and the solution, as a conditional `## Interface Contract` section in the ANALYSIS (in Hybrid, inside the E-ISP). Per use case whose surface the change touches, the contract states: the actors and surfaces; **the information & processing flow — the actor acts → the flow it triggers, naming the components it traverses as responsibility-holders → what returns** (responsibility level, never mechanism); the required affordances; the required feedback (universal — error and intermediate states, and a software actor's return status); the architectural constraints the surface must coexist with (read, not redesigned); and the surfaced feasibility flags. Authority split: the contract names the components in the flow but never their mechanism or file-level design (that is the Impact's vocabulary); after approval a contracted change is a scope change the user approves. It defines needs, never realization.
 
 ## Alternatives considered
 

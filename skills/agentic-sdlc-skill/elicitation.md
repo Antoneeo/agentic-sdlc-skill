@@ -136,9 +136,10 @@ exists (this narrows the reply and speeds up the round). Cover:
    are what gets filtered out).
 2. **Actors** — who interacts with this: their role, primary goal, what
    "good UX" means to them, and the surfaces they use today for this job
-   (the screens, commands or endpoints they operate — the Interaction
+   (the screens, commands or endpoints they operate — the Interface
    Contract's as-is starts here; skip the surface half when no actor-facing
-   surface is in scope). These become the Vision's `## Actors`; each
+   surface is in scope) and, at responsibility level, what happens when they
+   act (which components respond) — the Interface Contract's flow starts here. These become the Vision's `## Actors`; each
    use-case below attaches to one (actor = who they are, use-case = what
    they do). Skip only when an approved Vision already names them.
 3. **Scope boundaries** — what is explicitly included in this unit of work.

@@ -1,17 +1,55 @@
 ---
 id: F-032
-feature: Interaction Contract (actor-facing surface spec between use cases and solution)
+feature: Interface Contract (was Interaction Contract) — actor-facing surface spec between use cases and solution
 status: COMPLETED
 level: L3
 start_date: 2026-08-04
 end_date: 2026-08-04
+v2_start_date: 2026-08-05
 ---
-# Feature Analysis: Interaction Contract
+# Feature Analysis: Interface Contract
+
+> **v2 (2026-08-05):** the section immediately below (**## Evolution v2**) is the CURRENT unit — it evolves the content model to the owner's `interface-contract-spec.md` and renames Interaction Contract → Interface Contract. Everything from `## Objective` onward is the v1 record (F-032, shipped 2026-08-04), retained for provenance; where v1 and v2 differ, **v2 governs**.
 
 *Scope header — for the design reviewer (cold, repo access) and the implementing
 agent. Answers: "what changes in which doctrine files, and why this shape". Does
 not answer: "why the skill exists" (Vision) nor "the final wording of each edited
 paragraph" (the diff).*
+
+## Evolution v2 (2026-08-05) — Interface Contract: responsibility-level flows + rename
+
+**Field defect (owner, 2026-08-05):** F-032 shipped the flat content model — a `actor action → system response → outcome` table plus states and feasibility notes — and it **omits the heart of the contract**: the information & processing flow. It also carries a now-wrong authority rule ("no components, no files"). The owner's authoring guide (`interface-contract-spec.md`) and the companion **devPNT M47 D-IC** (governed artifact, shipped + reviewed through six §4.5/§4.6 cycles, 2026-08-05) settled the model; this unit ports it back to the skill.
+
+**The gaps (vs the owner's spec — the model is pre-decided; this unit applies it):**
+1. **The flows — the heart (the named defect).** Per use case, the contract must WALK: *actor acts on the surface → the flow it triggers, naming the components it traverses as responsibility-holders → what returns.* Responsibility level ("the auth component validates and responds"), never mechanism. The flat action→response→outcome table skips the traversal — and the traversal is the proof of walkability that surfaces realization problems before code.
+2. **"No components" was an over-correction.** The flow NAMES the components it traverses (as responsibility-holders); it never DESIGNS them (no mechanism, no file-level design — that stays the Impact's vocabulary). Authority split becomes: *names components in the flow, never their mechanism.* (Same distinction settled in the devPNT D-UC/D-IC: "component names absent by construction" was the mirror-image error, corrected there too.)
+3. **Feedback is universal.** Required feedback for every actor — including a software actor's **return status** — with error AND intermediate states explicit. F-032's "states (empty/loading/error/denied)" is human-view-centric.
+4. **Required affordances** — what the actor needs in order to act — becomes an explicit element.
+5. **Rename Interaction Contract → Interface Contract**, reversing F-032's 2026-08-04 naming choice, per the owner's settled spec and the devPNT M47 artifact name.
+
+**Evolved content model** — the owner's seven elements, in the skill's lighter "question, not a form" style, per use case whose surface the change touches: actors + surfaces; **the information & processing flow naming the components traversed** (the heart); required affordances; required feedback (error + intermediate + software-actor return status); architectural constraints touched (existing components, as constraints — read, not redesigned); surfaced feasibility flags / risks (feed the threat model + Impact). Pattern-reuse-by-default and the trigger (act-on-or-perceive) are UNCHANGED.
+
+**Delta files (skill only — the devPNT-side D-IC is done, M47):**
+| Path | Change |
+|---|---|
+| `skills/agentic-sdlc-skill/templates.md` | `## Interaction Contract` → `## Interface Contract`; replace the flat interaction-path table with the responsibility-level flow (naming components) as the heart; add the required-affordances, universal-feedback (incl. software-actor return status), and architectural-constraints elements; fix the authority split to "names components in the flow, never their mechanism". Owning home of the trigger + content model. |
+| `review.md` (shared spine ×3) | Rename; the lens gains three checks: a flow not walkable at responsibility level; a *how* (mechanism / file / algorithm / widget) inside the contract = Solution-leakage finding; feedback that omits error/intermediate or a software actor's return status. **Element 6 (architectural constraints) gets NO fourth check (WARN-4): architecture-awareness is already enforced by the Capability Ledger / Impact review — a fourth clause would bloat the lens (proportionality).** Stays lens-keyed (code lens only). |
+| `skills/agentic-sdlc-skill/SKILL.md` | Rename in the Phase-3 sections list, the IC paragraph, and the Hybrid seam note; the paragraph names the flow-naming-components rule (citing templates.md, never restating). **INVERT the existing clause at ~:221 — "It binds observable behavior only — components and files stay the Impact's vocabulary" → "…mechanism and files stay the Impact's vocabulary" (WARN-2): it currently states the OPPOSITE of the new authority split.** |
+| `skills/agentic-sdlc-skill/elicitation.md` | Rename the citation; the as-is elicitation also seeds the flows (what happens when the actor acts today), not only the surfaces. |
+| `scripts/test_skill_invariants.py` (spine ×3) | Update the IC-wiring invariant — it asserts the EXACT strings `## Interaction Contract` / `Interaction Contract before the Impact` (~:394/:407/:411), which move WITH the section rename even though the internal capability key stays `interaction_contract`; `shared_files.py --update` regenerates the three manifests. |
+| `sdlc_core.py` (spine ×3) + `sdlc_check.py` | **Implementation decision:** KEEP the internal capability key `interaction_contract` (renaming it is pure spine churn on inert plumbing — control-cost > benefit); rename only user-facing surface text. Revisit only if a reviewer shows the key leaks to an actor. |
+| `ai_docs/architecture/ADR_2026-08-04_interaction_contract_layer.md` | **BLOCK-1 disposition — update in place.** F-032 + its ADR are UNRELEASED (branch awaits merge), so correcting a not-yet-shipped decision does not falsify history. Fix the `## Decision` AND the frontmatter `description:` at :2 (both carry the flat table + "no components" authority split → the flow model + "names the components in the flow, never their mechanism"), rename Interaction → Interface in title + prose, add a "Refined 2026-08-05 (v2)" line pointing here. Keep the date-stamped filename (decision date = 2026-08-04). *(Owner may instead prefer a superseding ADR per §6.4 — flagged for approval.)* |
+| `existing_features.md` [032] + the **code** CHANGELOG `### Added` (unreleased 1.22.0) | **Content update, not a term swap (WARN-3):** both DESCRIBE the flat model ("actor action → system response → outcome, with view states") — update the *description* to the evolved model (flow-as-heart, affordances, universal feedback) AND rename. Fold into the existing unreleased 1.22.0 "Added" entry. |
+| kb + mkt CHANGELOGs (`### Changed` spine-sync notes, lens-inert) | **Name-only rename (WARN-6):** these carry NO flat-model description — only a spine-sync note that the shared `review.md`/core changed (inert in these lenses). Rename the user-facing text ONLY; **preserve the `interaction_contract` capability-key token** (keep-key decision). Do NOT inject the evolved-model description — kb/mkt never received the model. |
+| generated / append-only — no manual edit | `INDEX.md` + `features_history.md` regenerate via `sdlc_check.py index` at closure; `rulings.md` r16 gloss gets the identity-note (Vision Gate above); `REVIEW_LOG.md` is append-only history, excluded. |
+
+**Vision Gate:** inherited — the IC is Vision-admitted (rulings r16, F-032). This evolution refines the SAME capability-question; no new admission ruling (r16's gloss `(actor action → system response → outcome)` is the capability *identity* — the question answered — not the content model; swept with a one-line identity-note, not a rewrite — WARN-5). The rename is a naming decision, recorded in the Diary.
+
+**Ceremony (honest disclosure — WARN-1):** net-zero on **gates/triggers/sections** — no new gate, the section stays one conditional block, the trigger is unchanged. But the fired IC gains real cost, disclosed because the Vision counts reading as cost: per use case, **authoring** depth rises (a flow-walk replacing the one-row table; the net-new *required affordances* and *architectural constraints* elements; feedback broadened to universal incl. software-actor return status), and **reading** cost rises (the templates comment + SKILL paragraph grow; the shared `review.md` clause goes 4 → ~7 checks). This is the price of correcting the shipped defect — the omitted flow. **The owner must accept this cost explicitly before sign-off**, as r16 required for v1.
+
+**Reviews (this unit):** an independent design review (moment 1) on this delta before implementation; a closure review (moment 2) on the diff. Per the working rule confirmed with the owner this session, the ANALYSIS and the doctrine edits are authored directly (reasoning artifacts); only the independent reviews are delegated.
+
+---
 
 ## Objective
 
@@ -254,3 +292,17 @@ an eval for it is admissible follow-up work, not a gate for this change.
   E-ISP ("l'E-ISP eredita la UI invece di generarla") — folded into the Impact
   bullet and the SKILL.md Hybrid note. Status → COMPLETED; branch awaits the
   owner's merge call (registry row stays via HANDOFF until merged).
+- 2026-08-05 — **v2 (Interface Contract) implemented + reviewed.** Owner approved
+  the design AND explicitly accepted the disclosed ceremony cost (per-fire
+  authoring depth + the review clause 4→~7 checks; the r16 v2 acceptance); ADR
+  disposition = update-in-place. Two independent reviews, both PASS: design
+  (moment 1) R1 FAIL 1 BLOCK (the ADR home was missed) + 5 WARN → R2 PASS (+WARN-6,
+  folded); closure (moment 2) PASS, 0 BLOCK / 1 WARN (I had *rewritten* the r16
+  gloss vs my own "annotate not rewrite" plan — resolved to an identity-only gloss
+  + the evolution note). `templates.md` (the flow-as-heart content model) and the
+  `review.md` lens were authored directly by the orchestrator; SKILL.md/ADR content
+  was orchestrator-specified, the mechanical propagation delegated. Batteries green
+  (code 162 / kb 240 / mkt 180); spine byte-identical ×3 (sha256-verified); rename
+  complete (no stale name in any doctrine file). Status → COMPLETED; branch awaits
+  the owner's merge + a version bump (release act per `GUIDE_release.md`). Companion:
+  the devPNT M47 D-IC governed artifact shipped the same model (closed 2026-08-05).

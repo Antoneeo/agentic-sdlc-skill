@@ -32,7 +32,7 @@ not manifested here.
 | `architecture/ADR_2026-07-27_declared_router_verdict.md` | CURRENT | Why the guide consult is enforced as a declared output in Rule Zero rather than by another restatement or a hard write-gate. |
 | `architecture/ADR_2026-07-31_multi_domain_core.md` | CURRENT | Why the three lens skills become one shared core with per-domain overlays, on one ai_docs/ tree, with a project-level domain default and a rule set split int... |
 | `architecture/ADR_2026-08-01_kb_topic_graph_claim_ledger.md` | CURRENT | Why kb's knowledge method is a claim ledger under a topic graph, detect-and-hold, inside the entry point. |
-| `architecture/ADR_2026-08-04_interaction_contract_layer.md` | CURRENT | Why the actor-facing interaction is contracted between the use cases and the solution — a conditional ANALYSIS section with an authority split, not a new doc... |
+| `architecture/ADR_2026-08-04_interaction_contract_layer.md` | CURRENT | Why the actor-facing interaction is contracted between the use cases and the solution — a conditional ANALYSIS section whose flow names the components it tra... |
 
 ## functional/
 
