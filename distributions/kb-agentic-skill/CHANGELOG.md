@@ -2,6 +2,24 @@
 
 Every significant change to this skill is recorded here.
 
+## [1.4.2] - 2026-08-05
+
+### Fixed
+- **Registry recognition hard-coded to one entry point.** The workstream-registry
+  header is written with `entry_script()` but was recognized as "already ours" only
+  by the literal `sdlc_check.py`; recognition now matches the generated marker for
+  any family entry point — relevant on mixed-lens projects.
+- **Spine battery isolation.** `test_merge_safety` now pins its docs root in
+  `setUpModule` instead of inheriting whichever overlay was imported first by
+  unittest discovery.
+
+### Changed
+- **Shared-spine sync with code 1.22.0 (Interaction Contract, F-032).** The shared
+  `review.md` gains the Interaction Contract conformance clause and the shared core
+  registers the `interaction_contract` capability — both **inert in this lens**: the
+  clause is keyed on the lens whose template defines the section (the code lens),
+  kb claims no such capability, and no kb workflow gains any new step or artifact.
+
 ## [1.4.1] - 2026-08-03
 
 ### Added

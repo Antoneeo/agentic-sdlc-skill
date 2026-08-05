@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.4.2] - 2026-08-05
+
+### Fixed
+- **Registry recognition hard-coded to one entry point.** The workstream-registry
+  header is written with `entry_script()` (here: `mkt_check.py`) but was recognized
+  as "already ours" only by the literal `sdlc_check.py`: a registry this very lens
+  generated was treated as legacy and re-checked for conversion blockers on every
+  run. Recognition now matches the generated marker for any family entry point.
+- **Battery isolation.** The marketing battery failed 13+1 under full unittest
+  discovery (and passed module-by-module): `test_merge_safety` built `ai_docs`
+  fixtures while the mkt overlay import had flipped the default docs root to
+  `mkt_docs`. The battery now pins its docs root in `setUpModule`; full discovery
+  is green.
+
+### Changed
+- **Shared-spine sync with code 1.22.0 (Interaction Contract, F-032).** The shared
+  `review.md` gains the Interaction Contract conformance clause and the shared core
+  registers the `interaction_contract` capability — both **inert in this lens**: the
+  clause is keyed on the lens whose template defines the section (the code lens),
+  mkt claims no such capability, and no mkt workflow gains any new step or artifact.
+
 ## [0.4.1] - 2026-08-03
 
 ### Added
