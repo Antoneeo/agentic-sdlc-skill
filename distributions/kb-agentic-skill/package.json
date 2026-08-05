@@ -1,6 +1,6 @@
 {
   "name": "@antoneeo/kb-agentic-skill",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Knowledge-Base & Document-First protocol for Claude Code, Gemini CLI, Google Antigravity and Codex with risk triage, Vision governance, signal distillation and optional devPNT integration.",
   "keywords": [
     "claude-code",
