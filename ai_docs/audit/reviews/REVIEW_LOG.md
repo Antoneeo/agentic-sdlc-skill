@@ -4,6 +4,8 @@ Records each independent-review-gate pass (§4.5 tech artifacts, §4.6 code). Th
 
 | date | doc_key | tier | reviewer | findings_raised | findings_real | verdict | revise_rounds |
 |---|---|---|---|---|---|---|---|
+| 2026-08-05 | F-032 **v2** implementation diff (Interface Contract: templates flow-model + review.md lens ×3 + SKILL invert + elicitation + ADR update-in-place + tests ×3 + CHANGELOGs + rulings r16) | closure | subagent (fresh ctx, read-only, full conformance statement) | 1 WARN | 1 | PASS — 0 BLOCK; WARN (r16 gloss rewritten vs "annotate not rewrite") resolved to identity-only gloss | 1 |
+| 2026-08-05 | ANALYSIS_interaction_contract.md (F-032 **v2** — Interface Contract: responsibility-level flows + rename) | design | subagent (fresh ctx, read-only, full conformance statement) | 1 BLOCK + 6 WARN | 7 | PASS — R1 FAIL (BLOCK: ADR home missed from delta; 5 WARN) → R2 PASS (+WARN-6 kb/mkt changelog kind), all folded | 2 |
 | 2026-08-04 | F-032 implementation diff vs approved ANALYSIS (templates/SKILL/elicitation + spine review.md, sdlc_core, test_skill_invariants ×3 + manifests) | closure | subagent (fresh ctx, read-only, full conformance statement) | 3 WARN | 3 | PASS — W1/W2 fixed, W3 executed at closure | 1 |
 | 2026-08-04 | ANALYSIS_interaction_contract.md (F-032) | design | subagent (fresh ctx, read-only, full conformance statement) | 10 WARN | 10 | PASS — all 10 folded by revision | 1 |
 | 2026-08-03 | F-028 mergeable documentation (diff: sdlc_core ×3, mkt_check, init.js ×3, SKILL/templates ×3, 19 new tests, dogfooded registry) | closure | SELF-PASS (declared; harness forbids unprompted reviewer subagents -- independence reduced) | 5 | 5 | FAIL -> all fixed | 1 |

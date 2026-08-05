@@ -384,18 +384,19 @@ class SkillInvariants(unittest.TestCase):
 
     @requires("interaction_contract")
     def test_interaction_contract_wired(self):
-        """F-032: the Interaction Contract binds use cases to actor-facing
-        surfaces BEFORE the solution -- observable behavior only, conditional
+        """F-032 (v2): the Interface Contract binds use cases to actor-facing
+        surfaces BEFORE the solution -- observable behavior AND the
+        responsibility-level flow (naming components), conditional
         on the acts-on-or-perceives trigger. Wired end to end: template section
         in pipeline order, phase-3 invocation ahead of the architect pass, the
         review clause that makes a skipped contract a finding, and the
         elicitation hook that feeds its as-is."""
         tpl = read("templates.md")
-        self.assertIn("## Interaction Contract", tpl)
+        self.assertIn("## Interface Contract", tpl)
         self.assertLess(tpl.index("## Use Cases / User Needs"),
-                        tpl.index("## Interaction Contract"),
+                        tpl.index("## Interface Contract"),
                         "the contract realizes the use cases, so it follows them")
-        self.assertLess(tpl.index("## Interaction Contract"),
+        self.assertLess(tpl.index("## Interface Contract"),
                         tpl.index("## Capability Ledger"),
                         "the contract precedes the ledger and the Impact: "
                         "degrees of freedom shrink monotonically")
@@ -404,18 +405,18 @@ class SkillInvariants(unittest.TestCase):
                       "the templates.md section comment")
         skill = read("SKILL.md")
         minsec = skill.split("Minimum sections:")[1].splitlines()[0]
-        self.assertIn("Interaction Contract", minsec,
+        self.assertIn("Interface Contract", minsec,
                       "the conditional section must be named on the L3 "
                       "minimum-sections line itself")
         phase3 = skill.split("### 3. Request Analysis")[1].split("### 4.")[0]
-        self.assertIn("Interaction Contract before the Impact", phase3)
-        self.assertLess(phase3.index("Interaction Contract before the Impact"),
+        self.assertIn("Interface Contract before the Impact", phase3)
+        self.assertLess(phase3.index("Interface Contract before the Impact"),
                         phase3.index("Architect before you list files"),
                         "pipeline order: contract, then capabilities, then files")
         self.assertNotIn("acts on or perceives", phase3,
                          "SKILL.md cites the trigger's owning home instead of "
                          "restating the verb pair -- two copies drift")
-        self.assertIn("Interaction Contract", read("review.md"),
+        self.assertIn("Interface Contract", read("review.md"),
                       "a skipped contract must be a finding, or the section is "
                       "authored and never checked")
         self.assertIn("the surfaces they use today", read("elicitation.md"),

@@ -2,6 +2,22 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.23.0 / kb 1.4.3 / mkt 0.4.3] - 2026-08-05
+
+### Changed
+- **Interface Contract (F-032 v2, code lens) — evolved content model + renamed.** The flat
+  `actor action → system response → outcome` table shipped in 1.22.0 is replaced by the
+  **information & processing flow — the heart — naming the components it traverses as
+  responsibility-holders** (responsibility level, never mechanism); feedback is now universal
+  (error and intermediate states, and a software actor's return status); the required
+  affordances and the architectural constraints touched are explicit elements. Authority split
+  corrected: the contract NAMES the components in the flow, never their mechanism or files
+  (that stays the Impact's vocabulary). Renamed **Interaction Contract → Interface Contract**
+  throughout. The shared `review.md` lens gains walkability / solution-leakage / universal-
+  feedback checks (inert in kb/mkt). Independent design + closure reviews PASS (REVIEW_LOG);
+  `rulings.md` r16 gloss refreshed to the capability identity; ADR 2026-08-04 updated in place
+  (refined v2). Same capability, no re-ruling; ceremony cost re-disclosed and owner-accepted.
+
 ## [1.22.0 / kb 1.4.2 / mkt 0.4.2] - 2026-08-05
 
 ### Added

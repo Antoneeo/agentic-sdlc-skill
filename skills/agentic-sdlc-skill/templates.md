@@ -250,7 +250,7 @@ checks: [marketing.funnel]      # optional — extra portable checks to run on t
      use-case = what they do. Derived from the elicitation round; the Impact below
      must cover each, and the closure review checks coverage + actor UX fit. -->
 
-## Interaction Contract
+## Interface Contract
 <!-- [conditional] Fires when the change creates or modifies a surface through
      which an actor **acts on or perceives** the system — GUI view, CLI
      command/flags, API endpoint, user-edited config, notification or
@@ -260,26 +260,33 @@ checks: [marketing.funnel]      # optional — extra portable checks to run on t
      (operated by code, not by an actor). Not fired → one line stating why.
      This comment is the OWNING definition of the trigger; SKILL.md and
      review.md cite it, never restate it.
-     Content, in this order:
-     1. As-is — the touched surfaces as they exist, AND the interaction
-        patterns/idioms already in use relevant to these use cases (how the
-        product already does selection, confirmation, errors, navigation).
-     2. Per use case, the interaction path (table below): actor action on
-        surface → system response → outcome. Reuse the as-is idioms by
-        default; a NEW idiom where an existing one covers the job is a
-        declared decision with its reason — never an unmarked invention.
-     3. States for each new/changed view: empty, loading, error, denied.
-     4. Feasibility notes, NON-binding: "path X presupposes reuse of Y",
-        "alternative Z discarded: disproportionate cost" — hypotheses the
-        Impact confirms or refutes (early architect-pass probes).
-     The contract binds OBSERVABLE behavior only — no components, no files
-     (that is the Impact's vocabulary). After design approval, changing a
-     contracted path is a scope change the USER approves: the solution may
-     propose it, never enact it silently. Every contracted path is covered
-     by ## Test Strategy. -->
-
-| Use case | Surface | Actor action | System response | Outcome |
-|---|---|---|---|---|
+     Content, per use case whose surface the change touches (a question, not a form):
+     1. Actors + surfaces — who acts (human OR software, contracted the same way)
+        through which surface, AND the interaction idioms already in use for this
+        job (how the product already does selection, confirmation, errors,
+        navigation).
+     2. The information & processing flow — THE HEART. Walk it: the actor acts
+        here → the flow it triggers, NAMING the components it traverses as
+        responsibility-holders ("the auth component validates and responds") →
+        what returns. Responsibility level only — never the mechanism inside a
+        component. This walk is the proof of walkability: it surfaces realization
+        problems before a line of code exists.
+     3. Required affordances — what the actor needs in order to act.
+     4. Required feedback — UNIVERSAL: what must come back, including error and
+        intermediate states, and the return status a software actor receives
+        (feedback is not human-only). Left implicit, the interface breaks.
+     5. Architectural constraints touched — the existing components/flows the
+        surface must coexist with, named as constraints (read, not redesigned).
+     6. Surfaced feasibility flags / risks — problems the walk revealed; these
+        feed the threat model (## Security) and the Impact.
+     Reuse the as-is idioms by default; a NEW idiom where an existing one covers
+     the job is a declared decision with its reason — never an unmarked invention.
+     Authority split: the contract binds observable behavior AND the
+     responsibility-level flow — it NAMES the components in the flow, never their
+     mechanism or file-level design (that is the Impact's vocabulary). After
+     design approval, changing a contracted surface, flow or feedback is a scope
+     change the USER approves: the solution may propose it, never enact it
+     silently. Every contracted flow is covered by ## Test Strategy. -->
 
 ## Capability Ledger
 <!-- the architect pass (`architect.md`), run BEFORE the Impact below. One row per

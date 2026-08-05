@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.3] - 2026-08-05
+
+### Changed
+- **Shared-spine sync: Interface Contract rename (inert in this lens).** The shared `review.md`
+  Interaction Contract clause is renamed to **Interface Contract** and gains the code lens's
+  evolved checks (responsibility-level flow, solution-leakage, universal feedback); the
+  `interaction_contract` capability key is unchanged. The mkt lens defines no such template
+  section, so the clause stays inert here — spine parity only.
+
 ## [0.4.2] - 2026-08-05
 
 ### Fixed
