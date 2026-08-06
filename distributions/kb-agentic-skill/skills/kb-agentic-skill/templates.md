@@ -447,8 +447,8 @@ adds values to the existing columns rather than a second table.
 
 | date | doc_key | tier | reviewer | findings_raised | findings_real | verdict | revise_rounds |
 |---|---|---|---|---|---|---|---|
-| 2026-06-11 | ANALYSIS_login_sso.md | design | subagent (opus, fresh ctx) | 4 | 3 | PASS | 2 |
-| 2026-06-12 | diff feature/sso-login | closure | self-pass (declared; no subagent facility) | 2 | 2 | PASS | 1 |
+| 2026-06-11 | ANALYSIS_login_sso.md | design | subagent (opus, fresh ctx) | 4 | 3 | FAIL → PASS | 2 |
+| 2026-06-12 | diff feature/sso-login | closure | self-pass (declared; no subagent facility) | 2 | 2 | PASS with findings → corrections re-reviewed, PASS | 2 |
 
 ## Notes
 <!-- One short paragraph per review that found something worth remembering: what
@@ -467,6 +467,13 @@ records the realization actually used — fresh subagent, one-shot client run, o
 honest; writing nothing, or implying independence you did not have, is the failure
 this column exists to prevent. `findings_real` is how many raised findings survived
 triage: over time it is the only evidence of whether the gate earns its cost.
+`revise_rounds` counts **review rounds**, not fix cycles: the first review is round 1
+and every scoped re-review adds one. A review that produced findings which were then
+corrected therefore always reads ≥ 2 — the corrections are unreviewed work until a
+round verifies them (`review.md` §Receiving) — and 3 is the ceiling, past which the
+residue goes to the user rather than into a fourth round. `verdict` carries the
+round-1 verdict and the final one when they differ (`FAIL → PASS`): collapsing a
+first-round FAIL into a bare `PASS` erases the evidence this log exists to keep.
 Concurrent reviews: `init` writes a `.gitattributes` stanza giving this file
 `merge=union` — a **built-in** driver (no per-clone `git config`, unlike
 `merge=ours`, which silently does nothing until every clone configures it).

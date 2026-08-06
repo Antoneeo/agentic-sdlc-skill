@@ -4,6 +4,8 @@ Records each independent-review-gate pass (§4.5 tech artifacts, §4.6 code). Th
 
 | date | doc_key | tier | reviewer | findings_raised | findings_real | verdict | revise_rounds |
 |---|---|---|---|---|---|---|---|
+| 2026-08-06 | ANALYSIS_execution_integrity.md (F-034 Execution Integrity, tranche A) | design (late) | subagent (fresh ctx, read-only, full conformance statement) | R1 4 BLOCK + 6 WARN + 1 CANNOT_VERIFY; R2 +2 BLOCK +3 WARN; R3 +2 WARN | 18 | FAIL → FAIL → **PASS** — R2's two blockers were both in the governance record (this very review logged as prose with no row, so `review_logged()` still saw the design as unreviewed; miscounted findings + the deferred WARN silently dropped); R3 residue: 2 WARN surfaced to the owner at the cap, not carried into a 4th round | 3 |
+| 2026-08-06 | F-034 implementation diff (SKILL.md triage table + Phase-5 claim-to-evidence and destructive guards; review.md ×3 scoped re-review, no-pre-judging, CANNOT VERIFY; devPNT reviewer agents) | closure | subagent (fresh ctx, read-only, full conformance statement) | 5 WARN | 5 | PASS — R1 5 WARN all real and fixed → R2 PASS 5/5 ADDRESSED (+1 new in-scope WARN fixed: taxonomy straggler in the ANALYSIS) | 2 |
 | 2026-08-05 | F-032 **v2** implementation diff (Interface Contract: templates flow-model + review.md lens ×3 + SKILL invert + elicitation + ADR update-in-place + tests ×3 + CHANGELOGs + rulings r16) | closure | subagent (fresh ctx, read-only, full conformance statement) | 1 WARN | 1 | PASS — 0 BLOCK; WARN (r16 gloss rewritten vs "annotate not rewrite") resolved to identity-only gloss | 1 |
 | 2026-08-05 | ANALYSIS_interaction_contract.md (F-032 **v2** — Interface Contract: responsibility-level flows + rename) | design | subagent (fresh ctx, read-only, full conformance statement) | 1 BLOCK + 6 WARN | 7 | PASS — R1 FAIL (BLOCK: ADR home missed from delta; 5 WARN) → R2 PASS (+WARN-6 kb/mkt changelog kind), all folded | 2 |
 | 2026-08-04 | F-032 implementation diff vs approved ANALYSIS (templates/SKILL/elicitation + spine review.md, sdlc_core, test_skill_invariants ×3 + manifests) | closure | subagent (fresh ctx, read-only, full conformance statement) | 3 WARN | 3 | PASS — W1/W2 fixed, W3 executed at closure | 1 |
@@ -179,3 +181,46 @@ Records each independent-review-gate pass (§4.5 tech artifacts, §4.6 code). Th
   spec-review counts live in neither repository, and the orchestrator ran those reviews — V1
   FAIL carried 4 BLOCK + 4 WARN, V2 PASS carried 0 BLOCK + 2 WARN; the two verdicts are
   independently attested in the ANALYSIS. Round total: 2, within the cap of 3.
+
+- **F-034 Execution Integrity — moment 1, `design (late)`** (2026-08-06, tier `design (late)`,
+  independent fresh-context subagent, read-only): round 1 **FAIL**, 4 BLOCK + 6 WARN + 1
+  CANNOT_VERIFY, 11 real. Run under `review.md` §When a review is due row 1b, after the closure
+  review had already passed and v1.26.0 had shipped — the gate had been skipped before
+  implementation and merely declared. Running it late is what proved the deviation was the real
+  defect: **none of the four blockers was findable by the closure review**, which can only ask
+  whether the code matches the design. (1) Non-Goal 3's ceremony budget entered with no cost
+  stated, nothing removed, no recorded owner acceptance — r16/r17 both required it, F-021 is the
+  precedent that omission voids acceptance. (2) The rulings placement never run; the ledger's
+  criterion silently narrowed to "user-facing", and the one item the design itself called NEW got
+  neither row nor distinction line. (3) The claim-to-evidence rule's only promised enforcement
+  point did not exist in `review.md`, so the rule bound the author in a file the reviewer is never
+  handed. (4) `dispatch.md` — shared spine, absent from the Impact — left contradicting the scoped
+  re-review it delegates to `review.md` to define ("never a loop" vs "every correction gets a
+  round"). WARNs: SKILL.md's cleanup imperative contradicting its own destructive guard;
+  PASS-with-findings unruled; one-row logging erasing FAIL visibility; lens scoping undeclared;
+  the chronic `stale` debt unowned; **and — DEFERRED, not fixed — the claim-to-evidence rule
+  sits in `## L3 Workflow` → Phase 5 while declaring itself to fire at every phase and level.**
+  Disposition: moving a cross-cutting rule into Rule Zero is its own unit of change with its own
+  reading cost, and the rule lives in the always-loaded operating contract, so its reach is
+  degraded rather than absent (`SKILL.md` §Technical Values already binds verification at every
+  level). The re-reviewer CONTESTED-then-accepted the deferral on those merits; it is recorded
+  here rather than silently dropped, and reopens with the next SKILL.md structural change.
+  CANNOT_VERIFY: the no-copied-text provenance claim (Superpowers
+  6.2.0 is not in this repo) — dispositioned to the owner, who holds the copy.
+  **Remediation shipped as v1.26.1**; ceremony cost disclosed with real numbers and explicitly
+  accepted by the owner. Round 2 FAILed on two blockers that were themselves instances of the
+  rules being landed: this review had been logged as PROSE with no table row — so
+  `sdlc_core.review_logged()` still reported the design as unreviewed, and "the log has the
+  entry" was an unproven completion claim — and the entry's counts did not add up while the ONE
+  finding deliberately deferred was the one missing from its enumeration, the silent drop
+  §Receiving forbids. Round 3 PASSed with two WARNs left at the cap and surfaced to the owner
+  instead of entering a fourth round (per §When a review is due): a lost paragraph break around
+  the placement table's owner-escape clause (fixed on sight, trivial), and — the one that needs a
+  decision — **`templates.md` defined no meaning for the `revise_rounds` column**, and its own
+  second example row was unreconcilable with the provisional-PASS rule under either reading. The
+  historical rows in this file already used the column both ways, so the ambiguity predated this
+  change and this review made it visible. **Both WARNs were fixed before release** (owner's call,
+  inside 1.26.1): the column now counts review rounds, the verdict format is defined beside it,
+  and the example row teaches both rules. Nothing from this review remains open. Durable lesson: design review and closure review are not
+  interchangeable — one asks if the code matches the design, the other if the design was right;
+  and the record of a review is part of the review, not bookkeeping after it.

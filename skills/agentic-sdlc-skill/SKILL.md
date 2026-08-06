@@ -1,6 +1,6 @@
 ---
 name: agentic-sdlc
-version: 1.26.0
+version: 1.26.1
 description: Documentation-First SDLC protocol with risk-proportional triage, Vision as a guide, a complete Standalone mode and optional symbiosis with devPNT. Use for features, significant bugs, refactors, audits and documented maintenance.
 author: Antonio Pinto (https://github.com/Antoneeo)
 copyright: (c) 2026 Antonio Pinto
@@ -289,7 +289,7 @@ Hybrid L3:
 - If an architectural decision was taken (new pattern, layer or contract change, structural dependency), record an ADR before DONE — Standalone in `architecture/`, Hybrid propose the ADR/KL update in the devPNT DB. No decision, no ADR (Write Triggers).
 - In Standalone, if the project adopts `sdlc_check.py`, run `python <skill_dir>/scripts/sdlc_check.py check --root <project_root>` or the equivalent local copy.
 - Updated documents must travel in the same commit/PR as the code they describe.
-- **Branch/worktree hygiene**: an L3 ran on its own branch (Phase 4) — close it with an explicit merge decision (merge, keep open, or discard) and clean up the branch/worktree; never leave orphan branches. In Hybrid, the running devPNT server locks `.devpnt/*.db`, so the merge is done from a separate git worktree or via a ref-only push, never an in-place branch switch in the primary worktree.
+- **Branch/worktree hygiene**: an L3 ran on its own branch (Phase 4) — close it with an explicit merge decision (merge, keep open, or discard), and once the user has chosen, PROPOSE the branch/worktree cleanup their choice implies; an orphan branch left behind with nothing said is the failure this bullet prevents — the cleanup itself is theirs to authorize (next bullet). In Hybrid, the running devPNT server locks `.devpnt/*.db`, so the merge is done from a separate git worktree or via a ref-only push, never an in-place branch switch in the primary worktree.
 - **Destructive guards (integration is the user's; destruction is explicit).** The integration choice — merge, push/PR, keep — belongs to the user. Discard happens ONLY on the user's explicit request, and the confirmation names exactly what dies: the branch, its commits, the worktree path. Never force-push without explicit authorization; a rejected push means the remote moved — investigate, don't force. Never clean up a worktree this workflow did not create — the host or another workflow owns it. Repository-specific release/finish commands are the project guide layer's (the router in `## Operative Guides`): the skill owns this discipline, the matched `GUIDE_*.md` owns the commands — cite it, never restate it.
 
 ## ai_docs documents: two indexes + lifecycle

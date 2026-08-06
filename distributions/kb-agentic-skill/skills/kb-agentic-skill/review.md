@@ -124,14 +124,20 @@ A fix made in response to a finding is new, unreviewed work — stopping after
 therefore gets a **scoped re-review** before the review can PASS: hand the
 re-reviewer the original findings and ONLY the correction (the fix diff/range
 for code, the amended sections for a document), and require a per-finding
-verdict — `ADDRESSED`, `NOT ADDRESSED`, or `CONTESTED` with evidence. The
-re-review also checks the correction itself for new blocker-level
-breakage — and nothing else: out-of-scope observations become separately
+verdict — `ADDRESSED`, `NOT ADDRESSED`, or `CONTESTED` with evidence. **A PASS
+that carried findings is provisional until its corrections pass that round** —
+the commonest real case is a PASS with non-blocking findings the author then
+fixes, and stopping there ships precisely the unreviewed version this rule
+exists to catch. The re-review also checks the correction itself for new
+blocker-level breakage — and nothing else: out-of-scope observations become separately
 recorded findings, never an extension of the loop. Expect two rounds as the
 norm, not the exception — round 1 finds, round 2 verifies the fixes — inside
 the same cap of 3 (§When a review is due). One logical review stays ONE
-REVIEW_LOG row, its rounds narrated inside; a scoped re-review is a round,
-not a new review.
+REVIEW_LOG row — a scoped re-review is a round, not a new review — with the
+rounds narrated in the row's notes and **the verdict column carrying the
+round-1 verdict and the final one (`FAIL → PASS`), never the final one alone**:
+a first-round FAIL is the highest-value evidence the gate produces (§When a
+review is due), and collapsing it into a bare `PASS` erases exactly that.
 
 ## Reviewing
 
@@ -145,6 +151,15 @@ When you are the reviewer:
   (see `## Requesting`).
 - Cite evidence as `file:line` for every finding — a finding without a
   location is not actionable.
+- **An unproven completion claim is a finding** (closure reviews, on the diff).
+  When the work under review states or implies that something passes, is fixed,
+  is clean or is complete, the evidence must be present and must post-date the
+  final relevant change; a claim resting on a stale run, on a narrower check
+  than the claim needs, or on a delegated agent's own report rather than the
+  diff, is a finding — name the claim and what would prove it. This is the
+  enforcement point of the author-side rule in `SKILL.md` §5 Closure, and the
+  reason a requester hands it over is that the reviewer cannot cite a rule it
+  was never given.
 - **Say what you could NOT verify.** When a claim in the artifact cannot be
   verified from the inputs you were given (it lives in unchanged code, another
   document, or an environment you cannot reach), report it as a

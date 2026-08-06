@@ -2,6 +2,53 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.26.1 / kb 1.4.7 / mkt 0.4.7] - 2026-08-06
+
+The late design review of F-034 (`review.md` row 1b, run after 1.26.0 had shipped because the
+gate had been skipped) returned FAIL with four blockers. Three were defects in the shipped
+doctrine and are fixed here; the fourth was a governance-record gap, fixed in `ai_docs/`.
+
+### Fixed
+- **`dispatch.md` contradicted the scoped re-review it delegates to `review.md` to define.**
+  It said "exactly three review touches per task, never a loop" and "not an extra review slot",
+  while `review.md` requires every review-driven correction to be re-reviewed — so an agent
+  executing a dispatched plan received two irreconcilable instructions. Reconciled: the scoped
+  re-review is a round **inside** slot 2 or 3, never a fourth slot; "never a loop" bounds the
+  slots, not the rounds within one. (Shared spine — the contradiction had shipped in all three
+  distributions; `dispatch.md` was missing from 1.26.0's impact map.)
+- **The claim-to-evidence rule had no enforcement point.** Its acceptance criterion promised a
+  completion claim without fresh proof would be "nameable by the closure review", but
+  `review.md` §Reviewing had no such finding class and the reviewer is never handed `SKILL.md`.
+  Added: an unproven or stale completion claim — including one resting on a narrower check than
+  the claim needs, or on a delegated agent's report rather than the diff — is now a finding.
+- **`SKILL.md`'s branch hygiene contradicted its own destructive guard.** One bullet ordered the
+  agent to "clean up the branch/worktree; never leave orphan branches"; the next reserved
+  destruction for the user's explicit request. The cleanup is now PROPOSED once the user has
+  chosen, with the anti-orphan duty kept as something to raise rather than to perform.
+- **Two gaps in the scoped re-review's own wording:** a PASS that carried findings is now
+  explicitly provisional until its corrections pass a round (the commonest real case, previously
+  unruled — the rule's trigger fired but its gate was already behind the fixes); and the single
+  REVIEW_LOG row now carries the round-1 verdict alongside the final one (`FAIL → PASS`) instead
+  of collapsing a first-round FAIL into a bare PASS, which erased the evidence the same file
+  says logging exists to preserve.
+
+- **`revise_rounds` had no defined meaning**, in the very document `SKILL.md` names as the owner
+  of the review log's schema and column meanings — and the historical rows already used it both
+  ways. Defined: it counts **review rounds**, not fix cycles (the first review is round 1, each
+  scoped re-review adds one), so a review whose findings were corrected always reads ≥ 2 and 3 is
+  the ceiling. The `verdict` column's format is defined alongside it (`FAIL → PASS` when the
+  round-1 and final verdicts differ), and the second example row — which taught a bare `PASS`
+  after two real findings closed in one round — now teaches both rules instead of contradicting
+  one. Raised at the review's round-3 cap and fixed before release rather than deferred.
+
+### Changed
+- `ai_docs/solutions/ANALYSIS_execution_integrity.md` gains what the design review found
+  missing: the **ceremony-cost disclosure** Non-Goal 3 requires (measured on the shipped diff)
+  with the owner's explicit acceptance recorded; the **rulings placement** run per mechanism
+  against the ledger's own criterion (the previous claim used a narrower "user-facing" test the
+  ledger does not define); the **lens-scoping decision** stated; and a named disposition for the
+  chronic `stale` debt. No shipped file changes from these.
+
 ## [1.26.0 / kb 1.4.6 / mkt 0.4.6] - 2026-08-06
 
 ### Added

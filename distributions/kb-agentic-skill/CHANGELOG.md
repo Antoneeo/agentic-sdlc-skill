@@ -2,6 +2,17 @@
 
 Every significant change to this skill is recorded here.
 
+## [1.4.7] - 2026-08-06
+
+### Fixed
+- **Shared-spine sync: the scoped re-review contradicted `dispatch.md` (ACTIVE in this lens).**
+  `dispatch.md` said "exactly three review touches per task, never a loop" while `review.md`
+  required every review-driven correction to be re-reviewed. Reconciled: the scoped re-review is
+  a round inside slot 2 or 3, never a fourth slot. Also in the shared `review.md`: an unproven or
+  stale completion claim is now a reviewer finding; a PASS carrying findings is provisional until
+  its corrections pass a round; the single log row keeps the round-1 verdict (`FAIL → PASS`).
+  Found by the code lens's late design review of F-034.
+
 ## [1.4.6] - 2026-08-06
 
 ### Changed
