@@ -149,3 +149,33 @@ Records each independent-review-gate pass (§4.5 tech artifacts, §4.6 code). Th
   debt honestly; this row is the review-logging the validator flagged as missing. R2 PASS
   on the fixes. Reviewer's verified sweep: 3 review.md copies byte-identical, 12/12
   version points agree, grep sweep for stale authority claims, batteries green.
+
+- **F-034 Execution Integrity Tranche A** (2026-08-06). *Design-review disposition (moment 1),
+  declared:* the ANALYSIS itself was NOT independently design-reviewed — the design was settled
+  through two independent reviews of the upstream external specification (V1 → FAIL, 4 BLOCK:
+  stale/blind baseline, no rulings placement, unweighed total ceremony, under-enumerated
+  shared-spine blast radius; V2 → PASS, 2 WARN) plus a firsthand study of all 14 Superpowers
+  6.2.0 skills and the owner's admission decision on the tranche split. Recorded as a declared
+  gap rather than an implied pass. *Closure review:* independent reviewer (fresh-context
+  subagent, read-only) on the full diff — PASS with 5 WARN, all real, all fixed, then a scoped
+  re-review of the corrections (the discipline this very change lands, dogfooded): (1) the
+  ANALYSIS claimed validate-clean without reporting that `check` is NOT CLEAN — the exact
+  claim-class F-034 exists to close; now discloses the chronic stale/mark debt carried since
+  1.22.0. (2) no design-review row — this row. (3) `CANNOT_VERIFY` entered the three devPNT
+  reviewer schemas with no verdict rule; all three now state it never fails the verdict alone
+  and the orchestrator must resolve it before closing. (4) "Critical/Important" was a severity
+  taxonomy the spine does not define → "blocker-level". (5) the ANALYSIS Functional Spec's
+  acceptance bullet named files/mechanisms, violating its own component-free rule → restated
+  behaviorally, the mechanics left to Test Strategy. Reviewer's provenance note: the red-flag
+  hedge words overlap Superpowers' list at word level (concept-level reuse, MIT attributed in
+  the CHANGELOG and the ADR).
+  *Scoped re-review (round 2):* PASS — all five ADDRESSED, verified against re-derived evidence
+  (fresh check/validate/stale runs, `sdlc_core.py` for the stale-keying claim, git log for the
+  "since 1.22.0" attribution, blob+sha256 of `review.md` ×3 and the three manifests). One new
+  in-scope WARN: the ANALYSIS Functional Spec still said "Critical/Important" after the spine
+  moved to "blocker-level" — the same diverged-second-copy class as F-033's BLOCK, recurring
+  inside the fix for a finding about that very taxonomy; corrected. One `CANNOT_VERIFY` raised
+  and **resolved by the orchestrator** (the disposition the new rule requires): the upstream
+  spec-review counts live in neither repository, and the orchestrator ran those reviews — V1
+  FAIL carried 4 BLOCK + 4 WARN, V2 PASS carried 0 BLOCK + 2 WARN; the two verdicts are
+  independently attested in the ANALYSIS. Round total: 2, within the cap of 3.

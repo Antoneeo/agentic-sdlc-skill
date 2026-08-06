@@ -2,6 +2,35 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.26.0 / kb 1.4.6 / mkt 0.4.6] - 2026-08-06
+
+### Added
+- **Execution Integrity — Tranche A (F-034).** Three observed/irreversible gaps close as
+  wording in existing owners, from a firsthand comparative study of Superpowers 6.2.0 (MIT;
+  concepts reimplemented, no text copied, no dependency) gated by the standing weight
+  criterion: (1) **claim-to-evidence** — every completion claim binds to a proof run AFTER
+  the final relevant edit; a narrower check never supports a broader claim; delegated work is
+  verified on the diff, never on the subagent's report; unavailable proof is reported, never
+  claimed (observed failure: a closure artifact claimed "check clean" while the gate was NOT
+  CLEAN — REVIEW_LOG F-033). (2) **Scoped re-review of review-driven corrections**
+  (`review.md`, shared spine — ACTIVE in kb/mkt too): a fix is unreviewed work; per-finding
+  verdicts ADDRESSED/NOT ADDRESSED/CONTESTED, correction-only scope, new breakage in the fix
+  joins the findings, two rounds are the norm inside the existing cap of 3, one logical
+  review = one REVIEW_LOG row. (3) **Destructive guards** — integration is the user's choice;
+  discard only on explicit request naming branch/commits/worktree; no unauthorized
+  force-push; no foreign-worktree cleanup; project guides own the specific commands.
+- **Enforcement-writing technique** on the touched rules: a triage rationalization table
+  (`Excuse | Reality`) in Rule Zero and red-flag stop-words in the verification rule — the
+  study's key finding was that Superpowers' asset is HOW it writes rules (pre-refuting the
+  escape thought), not any mechanism.
+- **Reviewer output honesty:** `CANNOT VERIFY` is a first-class reviewer output (a claim not
+  checkable from the provided inputs is reported, not silently passed); pre-judging findings
+  in a review request ("don't flag X") is forbidden. Companion change in the devPNT reviewer
+  agents ships in that repo.
+  Tranche B (tdd/debugging) rides the next admitted touch of those overlays; Tranche C
+  (dispatch ledger machinery) stays frozen until an observed failure reopens it. Rationale:
+  `ai_docs/architecture/ADR_2026-08-06_execution_integrity_tranche_a.md`.
+
 ## [1.25.0 / kb 1.4.5 / mkt 0.4.5] - 2026-08-06
 
 ### Added

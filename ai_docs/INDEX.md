@@ -34,6 +34,7 @@ not manifested here.
 | `architecture/ADR_2026-08-01_kb_topic_graph_claim_ledger.md` | CURRENT | Why kb's knowledge method is a claim ledger under a topic graph, detect-and-hold, inside the entry point. |
 | `architecture/ADR_2026-08-04_interaction_contract_layer.md` | CURRENT | Why the actor-facing interaction is contracted between the use cases and the solution — a conditional ANALYSIS section whose flow names the components it tra... |
 | `architecture/ADR_2026-08-05_use_case_grounding_gate.md` | CURRENT | Why the D-UC / use-case grounding gate is two mechanical checks (product-name buckets + benefit-trace), verified by a light independent review that PRECEDES... |
+| `architecture/ADR_2026-08-06_execution_integrity_tranche_a.md` | CURRENT | Why execution-integrity mechanisms inspired by Superpowers enter as evidence-gated tranches (A now, B opportunistic, C frozen), and why the enforcement-writi... |
 | `architecture/ADR_2026-08-06_functional_spec_layer.md` | CURRENT | Why the observable WHAT gets its own component-free section (Functional Spec) between the use cases and the Interface Contract, and why the strategic pass is... |
 
 ## functional/

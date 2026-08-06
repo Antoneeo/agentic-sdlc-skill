@@ -99,6 +99,12 @@ conversation instead of reviewing the change itself. Say which finding
 classes you want covered (correctness, security, conformance to the design,
 test coverage) if the default scope is not obvious.
 
+Never pre-judge findings for the reviewer: do not instruct them to ignore or
+not flag a specific issue ("don't treat X as a defect", "at most minor"). If
+you believe a finding would be a false positive, let the reviewer raise it and
+resolve it with evidence in §Receiving — pre-judging is usually the requester
+sparing themselves a round.
+
 ## Receiving
 
 **MUST answer findings one by one — fix, or justify with evidence; why:
@@ -110,6 +116,22 @@ If you disagree with a finding, say so explicitly with your reasoning; never
 resolve a disagreement by rewording the finding until it goes away. When the
 project keeps a `REVIEW_LOG` (or equivalent), log the outcome of each
 finding there.
+
+### Review-driven corrections (scoped re-review)
+
+A fix made in response to a finding is new, unreviewed work — stopping after
+"I fixed it" ships the one version nobody reviewed. Every review-driven change
+therefore gets a **scoped re-review** before the review can PASS: hand the
+re-reviewer the original findings and ONLY the correction (the fix diff/range
+for code, the amended sections for a document), and require a per-finding
+verdict — `ADDRESSED`, `NOT ADDRESSED`, or `CONTESTED` with evidence. The
+re-review also checks the correction itself for new blocker-level
+breakage — and nothing else: out-of-scope observations become separately
+recorded findings, never an extension of the loop. Expect two rounds as the
+norm, not the exception — round 1 finds, round 2 verifies the fixes — inside
+the same cap of 3 (§When a review is due). One logical review stays ONE
+REVIEW_LOG row, its rounds narrated inside; a scoped re-review is a round,
+not a new review.
 
 ## Reviewing
 
@@ -123,6 +145,12 @@ When you are the reviewer:
   (see `## Requesting`).
 - Cite evidence as `file:line` for every finding — a finding without a
   location is not actionable.
+- **Say what you could NOT verify.** When a claim in the artifact cannot be
+  verified from the inputs you were given (it lives in unchanged code, another
+  document, or an environment you cannot reach), report it as a
+  `CANNOT VERIFY` item instead of silently passing it — the requester holds
+  the context to resolve it, and must do so before closing. A PASS that
+  silently skipped unverifiable claims is review theater.
 - Keep severity honest: do not inflate a style preference to a blocker, and
   do not soften a real correctness or security issue to a nit.
 - No praise padding. A review reports problems and their fixes, not a
