@@ -26,3 +26,4 @@
 | F-031 | Exhaustive ingestion — the source is exhausted, not sampled, and the work resumes across sessions | L3 | COMPLETED | 2026-08-03 | 2026-08-03 | solutions/ANALYSIS_kb_exhaustive_ingestion.md |
 | F-032 | Interface Contract (was Interaction Contract) — actor-facing surface spec between use cases and solution | L3 | COMPLETED | 2026-08-04 | 2026-08-04 | solutions/ANALYSIS_interaction_contract.md |
 | F-033 | Functional Spec — the readable WHAT + the strategic pass as one search with four open buffers | L3 | COMPLETED | 2026-08-06 | 2026-08-06 | solutions/ANALYSIS_functional_spec.md |
+| F-034 | Execution Integrity Tranche A — claim-to-evidence, scoped re-review, destructive guards, rationalization tables | L3 | COMPLETED | 2026-08-06 | 2026-08-06 | solutions/ANALYSIS_execution_integrity.md |

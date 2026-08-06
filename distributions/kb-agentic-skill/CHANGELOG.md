@@ -2,6 +2,16 @@
 
 Every significant change to this skill is recorded here.
 
+## [1.4.6] - 2026-08-06
+
+### Changed
+- **Shared-spine sync: review-driven corrections + reviewer honesty (ACTIVE in this lens).**
+  The shared `review.md` gains the scoped re-review discipline — a fix made in response to a
+  finding is unreviewed work and gets a correction-scoped re-review with per-finding verdicts
+  before PASS — plus the `CANNOT VERIFY` reporting duty and the no-pre-judging rule. Unlike
+  prior spine syncs these are NOT inert here: reviews of knowledge artifacts inherit the
+  correction discipline directly.
+
 ## [1.4.5] - 2026-08-06
 
 ### Changed

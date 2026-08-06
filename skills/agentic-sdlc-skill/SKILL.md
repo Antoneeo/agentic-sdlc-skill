@@ -1,6 +1,6 @@
 ---
 name: agentic-sdlc
-version: 1.25.0
+version: 1.26.0
 description: Documentation-First SDLC protocol with risk-proportional triage, Vision as a guide, a complete Standalone mode and optional symbiosis with devPNT. Use for features, significant bugs, refactors, audits and documented maintenance.
 author: Antonio Pinto (https://github.com/Antoneeo)
 copyright: (c) 2026 Antonio Pinto
@@ -55,6 +55,16 @@ Cross-cutting rules:
 - When in doubt, pick the higher level.
 - **Before asking the user anything — any phase, any level — the question must pass the legality test: search first and name the search with its result; name the decision or fact blocked without the answer.** Blocking the work is the exception, not the default. `elicitation.md` §The question discipline owns the rule and is the only place it is stated — read it before you ask, and do not work from a summary of it.
 - The full audit does not start for L1/L2 unless explicitly requested.
+
+Triage rationalizations — the thought on the left is the signal to STOP and re-triage:
+
+| Excuse | Reality |
+|---|---|
+| "Too simple to need the process" | Simple is where unexamined assumptions bite; L1's process IS proportionally simple — use it, don't skip it |
+| "It's just a fix" | A "fix" that delivers a new capability or client is a new feature wearing a fix label — the framing does not set the level, the criteria do |
+| "It's small, so L2" | Size is one criterion of several: one touched contract, security surface or non-obvious design makes it L3 at any size |
+| "I'll reclassify later if it grows" | Later is after the unscoped edits exist; reclassify the moment the bigger impact emerges, not at closure |
+| "The doubt itself is small" | When in doubt, pick the higher level — that rule exists precisely for this thought |
 
 ## Write Triggers
 
@@ -262,6 +272,7 @@ Hybrid L3:
 ### 5. Closure
 
 - Run the relevant tests/lint/smoke checks.
+- **Claim-to-evidence (fires at EVERY completion claim, any phase, any level).** Before stating or implying that anything passes, works, is fixed, is clean or is complete: name the claim, run the proof that establishes *that* claim **after the final relevant edit**, read the full result, and report the actual status with the evidence. Freshness: a check run before a later relevant change proves nothing about the current tree. Breadth: a narrower check never supports a broader claim — targeted tests ≠ full suite; lint ≠ build; "tests pass" ≠ "requirements complete" (that claim maps to the Functional Spec acceptance criteria where the artifact carries them; "gate clean" maps to a fresh gate run reporting clean). **Delegated work is verified on the diff/files, never on the agent's report** — "the subagent said success" is a claim, not evidence. If the environment cannot run the proof, say so and give the alternative evidence — never claim the unavailable result. Red flags that mean STOP and run the proof: "should", "probably", "seems to", "still passes", "just this once", any satisfaction expressed before verification.
 - For the review itself follow `review.md` (requesting and receiving findings) — the single definition, intended for reuse by the Hybrid review gates (devPNT-side wiring out of this unit's scope).
 - Verify alignment with the local Vision or the devPNT M-VISION.
 - If the work was governed by user-provided indications and is reusable, **PROPOSE distilling a guide** (proactive trigger, `guides.md` §1) — a proposal for the user, never a silent write, never from model knowledge.
@@ -279,6 +290,7 @@ Hybrid L3:
 - In Standalone, if the project adopts `sdlc_check.py`, run `python <skill_dir>/scripts/sdlc_check.py check --root <project_root>` or the equivalent local copy.
 - Updated documents must travel in the same commit/PR as the code they describe.
 - **Branch/worktree hygiene**: an L3 ran on its own branch (Phase 4) — close it with an explicit merge decision (merge, keep open, or discard) and clean up the branch/worktree; never leave orphan branches. In Hybrid, the running devPNT server locks `.devpnt/*.db`, so the merge is done from a separate git worktree or via a ref-only push, never an in-place branch switch in the primary worktree.
+- **Destructive guards (integration is the user's; destruction is explicit).** The integration choice — merge, push/PR, keep — belongs to the user. Discard happens ONLY on the user's explicit request, and the confirmation names exactly what dies: the branch, its commits, the worktree path. Never force-push without explicit authorization; a rejected push means the remote moved — investigate, don't force. Never clean up a worktree this workflow did not create — the host or another workflow owns it. Repository-specific release/finish commands are the project guide layer's (the router in `## Operative Guides`): the skill owns this discipline, the matched `GUIDE_*.md` owns the commands — cite it, never restate it.
 
 ## ai_docs documents: two indexes + lifecycle
 
