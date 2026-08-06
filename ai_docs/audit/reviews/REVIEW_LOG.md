@@ -136,3 +136,16 @@ Records each independent-review-gate pass (§4.5 tech artifacts, §4.6 code). Th
 - **ANALYSIS_multi_domain_core P2b map** (F-022): reviewed as an explicit adversarial self-pass, declared as such because a separate reviewer was not available in this session — independence is reduced and the row says so rather than claiming a four-eyes review that did not happen. 4 findings raised, 3 real, all fixed before the map was accepted: (1) `find_project_root` changing its return type is a signature change to a re-exported public name, enumerated (3 internal call sites, no battery consumer) instead of hidden behind "derive it"; (2) `SKIP_DIRS`, `ORIENT_DOCS` and `REVIEW_LOG_REL` stop being constants — `test_session_start.py:163` reads `ORIENT_DOCS` directly, so the test moves with it; (3) discovery ambiguity was under-specified: it is now per directory level, the nearer root wins, and only a same-level collision refuses. Not real: the concern that listing `mkt_docs` as a candidate leaks marketing into the code lens — the candidate list is core-level, and the core is shared by all three distributions by construction.
 
 - **roadmap.md battery round 11** (Vision maintenance, L2): first standing-battery run on a Vision satellite rather than the gate — three blind sub-rounds (Opus, fresh context, no file access; complete v7 gate pasted per the round-9 rule). PASS-conditional (5 BLOCK/7 WARN) -> FAIL (6 BLOCK: every fix worded against the seen attack fell to a one-word reword) -> PASS-conditional (2 BLOCK, both cured: Priority column removed as a standing work-rank field; the levels note now restates the gate verbatim instead of paraphrasing). Controls behaved in all three rounds (guide-cap REJECT, new-client ACCEPT). 7 new standing fixtures logged in BLIND_VISION_REVIEW_2026-07-27.md Round 11; durable lesson: a DRAFT satellite cannot authorize, but it supplies vocabulary a careless reviewer mistakes for authorization — the battery reaches satellites, not only the gate. Refusals recorded in the Round 11 disposition; the DRAFT-vs-APPROVED delegation question is surfaced to the owner.
+
+- **F-033 Functional Spec + strategic-pass loop** (closure, 2026-08-06): independent
+  reviewer (fresh-context subagent, read-only, full diff + design brief). R1 FAIL — 2
+  findings, both real. (1) BLOCK: SKILL.md's Interface Contract paragraph still claimed
+  "observable behavior" after templates.md ceded behavior semantics to the Functional
+  Spec — the exact diverged-second-copy class review.md's restated-facts rule names, and
+  the same clause F-032 had to rewrite when the authority split last moved; fixed to
+  "observable interaction (behavior semantics are the Functional Spec's)". (2) WARN: the
+  ANALYSIS claimed "`sdlc_check.py check` clean" while stale rc=1 (chronic mark debt from
+  1.22.0, not this change) — claim corrected to name validate-clean and the pre-existing
+  debt honestly; this row is the review-logging the validator flagged as missing. R2 PASS
+  on the fixes. Reviewer's verified sweep: 3 review.md copies byte-identical, 12/12
+  version points agree, grep sweep for stale authority claims, batteries green.

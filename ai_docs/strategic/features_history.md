@@ -25,3 +25,4 @@
 | F-030 | Portable knowledge — export a KB subgraph from one project, import it additively into another | L3 | COMPLETED | 2026-08-03 | 2026-08-03 | solutions/ANALYSIS_kb_portable_knowledge.md |
 | F-031 | Exhaustive ingestion — the source is exhausted, not sampled, and the work resumes across sessions | L3 | COMPLETED | 2026-08-03 | 2026-08-03 | solutions/ANALYSIS_kb_exhaustive_ingestion.md |
 | F-032 | Interface Contract (was Interaction Contract) — actor-facing surface spec between use cases and solution | L3 | COMPLETED | 2026-08-04 | 2026-08-04 | solutions/ANALYSIS_interaction_contract.md |
+| F-033 | Functional Spec — the readable WHAT + the strategic pass as one search with four open buffers | L3 | COMPLETED | 2026-08-06 | 2026-08-06 | solutions/ANALYSIS_functional_spec.md |
