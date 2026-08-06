@@ -65,6 +65,15 @@ Exactly three review touches per task, never a loop:
 If a review FAILs, fix and re-run `verify` — that is a normal loop iteration
 via the ledger's fail path, not an extra review slot.
 
+**The scoped re-review is a round INSIDE slot 2 or 3, never a fourth slot.**
+`review.md` §Receiving requires every review-driven correction to be
+re-reviewed against the correction alone — that round belongs to the slot whose
+findings caused it, and is bounded by the same cap of 3 rounds. "Never a loop"
+bounds the SLOTS (no unbounded re-reviewing of a task), not the rounds inside
+one slot: a fix nobody looked at is the defect the round exists to catch. Slot 1
+is the implementer's own pass, not an independent review, so its fixes carry no
+re-review round. The ledger records the round on the task's fail path as usual.
+
 ## Ledger protocol summary
 
 Read → skip-if-done → dispatch-if-pending → write. The ledger is the only
