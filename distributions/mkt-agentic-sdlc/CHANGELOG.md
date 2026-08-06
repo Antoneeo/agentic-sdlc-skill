@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.5] - 2026-08-06
+
+### Changed
+- **Shared-spine sync: Functional Spec clause (inert in this lens).** The shared
+  `review.md` gains the code lens's Functional Spec findings (absence on behavior change,
+  Solution-leakage inside the spec, uncovered cases, acceptance criteria without tests).
+  The mkt lens defines no `## Functional Spec` template section, so the clause stays inert
+  here — spine parity only.
+
 ## [0.4.4] - 2026-08-05
 
 ### Changed

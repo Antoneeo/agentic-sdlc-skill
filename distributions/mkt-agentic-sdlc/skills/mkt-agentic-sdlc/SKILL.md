@@ -1,6 +1,6 @@
 ---
 name: mkt-agentic-sdlc
-version: 0.4.4
+version: 0.4.5
 description: Evidence-First marketing planning protocol with engagement triage, SOSTAC workflow, evidence ledger, adversarial CMO review, a complete Standalone mode and optional symbiosis with devPNT. Use for marketing plans, go-to-market strategy, campaign planning and market research.
 author: Antonio Pinto (https://github.com/Antoneeo)
 copyright: (c) 2026 Antonio Pinto

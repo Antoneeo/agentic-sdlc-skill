@@ -2,6 +2,37 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.25.0 / kb 1.4.5 / mkt 0.4.5] - 2026-08-06
+
+### Added
+- **Functional Spec — the readable WHAT (code lens, F-033).** A conditional `## Functional
+  Spec` ANALYSIS section between the Use Cases and the Interface Contract: the complete
+  observable behavior — rules, cases (normal/edge/error/state-dependent), acceptance
+  criteria — **component-free by construction**, the one object a person reads to answer
+  "is this what we want?" and the AI reads as the behavior contract the design and closure
+  review conform to. Authority split: Use Cases own WHY, the Functional Spec owns WHAT, the
+  Interface Contract owns THROUGH-WHAT (its authority line now cedes behavior semantics),
+  the Impact owns HOW. Fires on behavior change; internal refactor exempt with one line.
+  The shared `review.md` gains the enforcement clause (absence on behavior change,
+  Solution-leakage inside the spec, uncovered cases, acceptance criteria without tests,
+  UC↔FS↔IC coverage — inert in kb/mkt). Rationale + rejected alternatives:
+  `ai_docs/architecture/ADR_2026-08-06_functional_spec_layer.md`; admission: rulings r17.
+- **The strategic pass is ONE search with four open buffers.** SKILL.md §3 now states the
+  owner's model: find how the Actors (defined in the Vision) obtain from the components
+  what the Vision prescribes — risks mitigated in-loop, architecture and patterns
+  respected, quality/maintainability the objective, Poka-Yoke and DRY the selection
+  criteria between hypotheses. Use Cases / Functional Spec / Interface Contract / Threat
+  Model are open buffers — every thought is captured immediately where it belongs; the
+  order UC → FS → IC → TM binds only finalization and reading. Vision divergence halts
+  the pass.
+
+### Changed
+- **Hybrid section updated to post-M47 reality.** The Interface Contract is devPNT's
+  governed `D-IC` (the "lives in the E-ISP" line was stale); the strategy artifacts
+  (`D-UC`/`D-IC`/`P-TM`) are authored as one bundle pass and approved per-document
+  (devPNT doctrine §4.2 owns the procedure); the Functional Spec rides in the `E-ISP`
+  until a governed `D-FS` exists (devPNT-side work).
+
 ## [1.24.0 / kb 1.4.4 / mkt 0.4.4] - 2026-08-05
 
 ### Added

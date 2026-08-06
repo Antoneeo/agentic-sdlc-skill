@@ -266,6 +266,32 @@ checks: [marketing.funnel]      # optional — extra portable checks to run on t
      drafting is grounded in BOTH anchors first — the Vision (benefit + actors)
      and the real system (summaries / existing features / source). -->
 
+## Functional Spec
+<!-- [conditional] Fires when the change ADDS or ALTERS observable behavior —
+     what the system does, decides or shows. Not fired (pure internal refactor,
+     no behavior change) → one line stating why. This comment is the OWNING
+     definition of the section; SKILL.md and review.md cite it, never restate it.
+     THE validation object: the complete observable WHAT, readable by a person
+     ("is this what we want?") and by the AI (the contract the design and the
+     closure review conform to). Component-free by construction: it names NO
+     components, files or mechanisms — behavior only, in the actor's and the
+     domain's vocabulary. (Product names obey the Use Cases grounding buckets:
+     EXISTS with the product's own term / NEW declared / METAPHOR never an
+     interface element.)
+     Content, per use case whose behavior the change touches (a question, not a form):
+     1. Behavior — the rules and decisions, stated as observable outcomes
+        ("a request with an expired token is rejected and the actor is told the
+        session expired; no partial state persists").
+     2. Cases — normal, edge, error and state-dependent behavior: empty, invalid,
+        concurrent, limits, repeated. Each case states what the actor observes.
+     3. Acceptance criteria — the "done when": checkable statements
+        (given/when/then form welcome), each covered by ## Test Strategy.
+     Authority split: Use Cases own WHY (the need), this section owns WHAT
+     (behavior semantics), the Interface Contract owns THROUGH-WHAT (surfaces,
+     flows, feedback), the Impact owns HOW. A component or mechanism named here
+     is Solution-leakage — move it to the Interface Contract (component names)
+     or the Impact (mechanism). -->
+
 ## Interface Contract
 <!-- [conditional] Fires when the change creates or modifies a surface through
      which an actor **acts on or perceives** the system — GUI view, CLI
@@ -297,9 +323,11 @@ checks: [marketing.funnel]      # optional — extra portable checks to run on t
         feed the threat model (## Security) and the Impact.
      Reuse the as-is idioms by default; a NEW idiom where an existing one covers
      the job is a declared decision with its reason — never an unmarked invention.
-     Authority split: the contract binds observable behavior AND the
-     responsibility-level flow — it NAMES the components in the flow, never their
-     mechanism or file-level design (that is the Impact's vocabulary). After
+     Authority split: behavior semantics (rules, cases, outcomes) are
+     ## Functional Spec's — this contract binds the observable interaction AND
+     the responsibility-level flow that deliver them; it NAMES the components in
+     the flow, never their mechanism or file-level design (that is the Impact's
+     vocabulary). After
      design approval, changing a contracted surface, flow or feedback is a scope
      change the USER approves: the solution may propose it, never enact it
      silently. Every contracted flow is covered by ## Test Strategy. -->

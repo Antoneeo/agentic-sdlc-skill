@@ -159,6 +159,21 @@ When you are the reviewer:
   review, never replacing it; coverage of each use-case by the Impact, and the
   Actor it serves, stay the conformance-statement clause above. A lens whose
   template defines no `## Use Cases` section never fires this clause.
+- **Functional Spec (same reviews; fires only in the lens whose template defines
+  the section — the code lens today).** When the change adds or alters observable
+  behavior (the trigger's owning definition is the code lens's `templates.md`
+  `## Functional Spec` section comment — cite it, never restate it), **an L3
+  artifact carrying NO `## Functional Spec` is itself a finding** — absence is
+  what a skipped spec looks like, not a reason to skip the check. When the spec
+  is there, these findings live here: **a component, file or mechanism named
+  inside it** — the spec is component-free by construction; that is
+  Solution-leakage (component names belong to the Interface Contract, mechanism
+  to the Impact); a behavior whose edge, error or state-dependent cases are
+  absent with no stated reason; an acceptance criterion no `## Test Strategy`
+  item covers; a behavior serving no use case, or a use case whose behavior the
+  spec leaves unstated; and an Interface Contract flow realizing a behavior the
+  spec does not state. A lens whose template defines no such section (knowledge,
+  marketing) never fires this clause.
 - **Capability Ledger (same reviews).** **An L3 impact/solution analysis or design
   that carries NO Capability Ledger is itself a finding** — the lens's capability
   pass (`architect.md` in the code lens, `taxonomy.md` in the knowledge lens) left
