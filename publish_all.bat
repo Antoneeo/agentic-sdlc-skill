@@ -38,12 +38,16 @@ call :pub "%ROOT%distributions\mkt-agentic-sdlc" "@antoneeo/mkt-agentic-sdlc-ski
 
 echo.
 echo === verify (registry versions) ===
-REM --prefer-online: without it npm answers from its metadata cache, which
-REM seconds after a publish still holds the PREVIOUS version. The 1.4.8 release
-REM printed "1.4.7" here and read as a failed publish when it had succeeded.
-call npm view @antoneeo/agentic-sdlc-skill version --prefer-online
-call npm view @antoneeo/kb-agentic-skill version --prefer-online
-call npm view @antoneeo/mkt-agentic-sdlc-skill version --prefer-online
+REM Twice now this block reported the PREVIOUS version after a successful
+REM publish and read as a failure. --prefer-online alone was not enough: it
+REM forces revalidation, but it cannot outrun CDN propagation of the `latest`
+REM tag in the seconds after a publish. So each package is polled until the
+REM registry agrees with the local version, or the attempts run out -- and the
+REM local version is printed beside it, so "did it publish?" is answerable from
+REM this output instead of requiring a manual `npm view` afterwards.
+call :verify "%ROOT%."                              "@antoneeo/agentic-sdlc-skill"
+call :verify "%ROOT%distributions\kb-agentic-skill" "@antoneeo/kb-agentic-skill"
+call :verify "%ROOT%distributions\mkt-agentic-sdlc" "@antoneeo/mkt-agentic-sdlc-skill"
 echo.
 echo All three published.
 exit /b 0
@@ -84,4 +88,26 @@ if errorlevel 1 (
   popd & exit /b 1
 )
 echo [ok] published %~2 @ !VER!.
+popd & exit /b 0
+
+REM ---------------------------------------------------------------------------
+:verify
+REM %~1 = package dir, %~2 = package name. Polls until the registry catches up.
+pushd "%~1" || ( echo [FAIL] cannot enter %~1 & exit /b 1 )
+set "WANT="
+for /f "delims=" %%v in ('npm pkg get version') do set "WANT=%%~v"
+set "GOT="
+for /L %%i in (1,1,10) do (
+  if not "!GOT!"=="!WANT!" (
+    set "GOT="
+    for /f "delims=" %%v in ('npm view %~2 version --prefer-online 2^>nul') do set "GOT=%%v"
+    if not "!GOT!"=="!WANT!" ping -n 4 127.0.0.1 >nul
+  )
+)
+if "!GOT!"=="!WANT!" (
+  echo   [ok] %~2 = !GOT!
+) else (
+  echo   [??] %~2 : local !WANT!, registry reports !GOT! - the registry may still
+  echo        be propagating. Re-check with: npm view %~2 versions --json --prefer-online
+)
 popd & exit /b 0
