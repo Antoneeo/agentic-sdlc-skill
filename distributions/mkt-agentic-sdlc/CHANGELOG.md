@@ -1,5 +1,49 @@
 # Changelog
 
+## [Unreleased]
+
+F-036 — the orientation hook installs itself.
+
+### Fixed
+- **`ENFORCEMENT.md` 4 said "wire it on every project" and nothing ever did.** The
+  SessionStart orientation hook was real, tested and fail-open, but installing it was a
+  manual step, so it was skipped — and a session that never enters Phase 1 explicitly
+  then never meets the guide router at all. Field result: an agent worked a governed
+  project without invoking the process. `init` now wires the hook itself.
+- **The invariant that looked like it guarded this guarded only prose** — it asserted
+  the documentation section exists (`assertIn("## 4. SessionStart hook", t)`) and that
+  `orient` runs. It gains a companion asserting the shipped installer actually CALLS the
+  writer. Mutation-tested: the first draft asserted the bare symbol and passed on a file
+  that imports the writer without invoking it, which is exactly the disabled-installer
+  case it exists to catch.
+
+### Added
+- **A portability rule the doctrine did not have.** The hook command names a validator,
+  and where that validator lives decides which settings file may carry it: a repo that
+  vendors the validator gets a repo-relative command in the shared, committed
+  `.claude/settings.json`; a normal project gets an absolute path, which goes to the
+  git-ignored `.claude/settings.local.json` instead — committing it would hand every
+  teammate a hook naming a directory they do not have. `init` picks the file and adds
+  the local one to `.gitignore`. ENFORCEMENT 4's own worked example showed an absolute
+  path and did not mention the distinction; it now does.
+- **A wired-but-dead hook is detected and reported instead of counted as done.** Found
+  in the field: a repository whose hook named a sibling lens's path, so it ran every
+  session, printed `can't open file`, and emitted nothing. A bare "is a hook present?"
+  check answers "already wired" to that and makes the silence permanent, so the existing
+  command's validator path is checked on disk. Never rewritten — it may be hand-tuned —
+  but never passed off as working either.
+
+### Notes
+- `init` declines rather than guessing: no Python, skill not installed, a settings file
+  that is not valid JSON (never rewritten — a merge would discard what is in it), or a
+  skill path containing a double quote. Each case prints the snippet to paste.
+- Only Claude Code's hook shape is wired. Codex and Gemini keep the manual snippet: this
+  repository has no fixture pinning their schema, and writing a hook file in a shape
+  nobody has verified is how the wired-but-dead defect above was born.
+- A blocking `PreToolUse` gate would be real enforcement rather than a nudge, and it is
+  refused by the Vision's no-ceremony-ratchet Non-Goal. Recorded in the analysis so the
+  next person to have the idea finds the ruling instead of re-deriving it.
+
 ## [0.4.7] - 2026-08-06
 
 ### Fixed

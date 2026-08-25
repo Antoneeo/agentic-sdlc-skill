@@ -65,6 +65,37 @@ Emits the `ai_docs/` orientation — reading guide (`README.md`), manifest (`IND
 
 **Wire it on every project that has `ai_docs/` and a Python interpreter.** It was opt-in until v1.16.0 and the field result was the defect this level exists to prevent: the guide router stayed unread unless the user asked for it by hand, so guides were written and never consulted. Prompt-level placement (Rule Zero declares the router verdict; Phase 1 reads the router) carries the process on its own — this hook is the backstop that survives long contexts, compaction and a session that never enters Phase 1 explicitly. Skip it only where Python is unavailable, and know what you are trading.
 
+**`init` wires it for you (F-036).** Running `init` on a project that has a docs root
+and a Python interpreter now installs this hook itself — it was a manual step until
+2026-08-25, and the field result was exactly the defect this level exists to prevent: an
+agent worked a governed project without ever meeting the router. The snippet below is
+the fallback for the cases init declines, and the list is exhaustive: **any client
+other than Claude Code** (Codex and Gemini keep the manual snippet — no fixture in the
+repository pins their hook schema, and writing one in an unverified shape is how a
+wired-but-dead hook is born), no Python, the skill not installed yet, a settings file
+that is not valid JSON or carries a `hooks`/`SessionStart` shape the writer does not
+recognise (it never rewrites one it cannot read), a validator path holding a character
+that cannot be placed in a command safely, or a settings file it cannot write. `init`
+prints which case applied, per client — a silent skip is what let "documented default
+that nobody installs" survive in the first place.
+
+**Which settings file, and why it is not always the shared one.** The command names a
+validator, and where that validator lives decides where the hook may be written:
+
+| Case | Command | File |
+|---|---|---|
+| The repo vendors the validator (§2) | repo-relative | `.claude/settings.json` — portable, commit it |
+| The validator is only in your skills directory (the normal case) | absolute | `.claude/settings.local.json` — machine-specific, git-ignored; each teammate runs `init` once |
+
+Committing an absolute `C:\Users\<you>\...` path into the shared file hands every teammate a hook naming
+a directory they do not have. `init` picks the file for you, and adds
+`.claude/settings.local.json` to `.gitignore` when it uses the local one.
+
+**A hook that is wired and DEAD is the worst of the three states**: it emits nothing at
+every session AND it looks installed. `init` checks that an existing hook's validator
+still resolves and reports it as BROKEN with the corrected command, rather than
+reporting "already wired". It never rewrites the entry — it may be hand-tuned.
+
 Wire it via each client's SessionStart mechanism — the same command everywhere (add `--hybrid` on devPNT/Hybrid projects):
 
 Claude Code — in the project's `.claude/settings.json`:

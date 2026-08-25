@@ -384,3 +384,270 @@ test('T2/T7 install then uninstall: antigravity + gemini targets round-trip clea
     fs.rmSync(tmpHome, { recursive: true, force: true });
   }
 });
+
+
+// --- F-036: init wires the SessionStart orientation hook -------------------
+// The unit exists because ENFORCEMENT.md §4 said "wire it on every project" and
+// nothing did. Round 2 of these cases comes from an adversarial review that
+// found the first round asserting too little: the cases marked (R2) each pin a
+// defect that shipped past round 1.
+
+const { wireOrientHook, orientHookCommand } = require('./lib');
+
+function fakeSkill(home) {
+  const dir = path.join(home, 'skills', INSTALLED_SKILL_NAME, 'scripts');
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, ENTRY_POINT_FILE), '# stub\n', 'utf8');
+  return dir;
+}
+
+function sandbox(fn) {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'f036-'));
+  const cwd = path.join(tmp, 'project');
+  const home = path.join(tmp, 'home');
+  fs.mkdirSync(cwd, { recursive: true });
+  fakeSkill(home);
+  try {
+    return fn({ tmp, cwd, client: { key: 'claude', home }, python: 'python' });
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+}
+
+const readJson = (p) => JSON.parse(fs.readFileSync(p, 'utf8'));
+const localSettings = (cwd) => path.join(cwd, '.claude', 'settings.local.json');
+const sharedSettings = (cwd) => path.join(cwd, '.claude', 'settings.json');
+const writeSettings = (p, obj) => {
+  fs.mkdirSync(path.dirname(p), { recursive: true });
+  fs.writeFileSync(p, typeof obj === 'string' ? obj : JSON.stringify(obj, null, 2), 'utf8');
+};
+const orientCommands = (p) => readJson(p).hooks.SessionStart
+  // Mirrors findOrientHook: a hook object may sit directly in the array.
+  .flatMap((g) => (Array.isArray(g.hooks) ? g.hooks : [g]).map((h) => h && h.command))
+  .filter((c) => c && c.includes(' orient'));
+// Vendor a validator the way a skill-authoring repo does.
+const vendor = (cwd, dirName) => {
+  const d = path.join(cwd, 'skills', dirName || INSTALLED_SKILL_NAME, 'scripts');
+  fs.mkdirSync(d, { recursive: true });
+  fs.writeFileSync(path.join(d, ENTRY_POINT_FILE), '# stub\n', 'utf8');
+};
+
+test('F-036: a fresh project gets a valid hook in the machine-specific file', () => {
+  sandbox(({ cwd, client, python }) => {
+    const r = wireOrientHook({ cwd, client, python });
+    assert.strictEqual(r.code, 'wired');
+    assert.strictEqual(r.file, 'settings.local.json');
+    assert.ok(!fs.existsSync(sharedSettings(cwd)), 'shared settings untouched');
+    const cmd = orientCommands(localSettings(cwd))[0];
+    // (R2) the old test accepted `python "sdlc_check.py" orient`: assert the
+    // command names the file we just proved exists, absolutely.
+    const quoted = cmd.split('"')[1];
+    assert.ok(path.isAbsolute(quoted), 'non-vendored command must be absolute');
+    assert.ok(fs.existsSync(quoted), 'the command names a validator that exists');
+  });
+});
+
+test('F-036: a vendored validator gets a portable command in the SHARED file', () => {
+  sandbox(({ cwd, client, python }) => {
+    vendor(cwd);
+    const r = wireOrientHook({ cwd, client, python });
+    assert.strictEqual(r.code, 'wired');
+    assert.strictEqual(r.file, 'settings.json');
+    const quoted = orientCommands(sharedSettings(cwd))[0].split('"')[1];
+    assert.ok(!path.isAbsolute(quoted), 'repo-relative, so it survives a clone');
+    assert.ok(fs.existsSync(path.join(cwd, quoted)), 'and it resolves from the repo root');
+  });
+});
+
+test('F-036 (R2): this lens wins over a sibling vendored beside it', () => {
+  sandbox(({ cwd, client, python }) => {
+    vendor(cwd, 'aaa-someone-elses-skill');   // sorts first in readdir order
+    vendor(cwd);
+    const r = wireOrientHook({ cwd, client, python });
+    assert.ok(r.command.includes(INSTALLED_SKILL_NAME),
+      'readdir order must not decide which lens we orient: ' + r.command);
+  });
+});
+
+test('F-036 (R2): the ENFORCEMENT §2 tools/ layout counts as vendored', () => {
+  sandbox(({ cwd, client, python }) => {
+    fs.mkdirSync(path.join(cwd, 'tools'), { recursive: true });
+    fs.writeFileSync(path.join(cwd, 'tools', ENTRY_POINT_FILE), '# stub\n', 'utf8');
+    const r = wireOrientHook({ cwd, client, python });
+    assert.strictEqual(r.file, 'settings.json', 'a repo that followed §2 is vendored');
+  });
+});
+
+test('F-036 (R2): a shell-metacharacter directory name never reaches a command', () => {
+  sandbox(({ cwd, client, python }) => {
+    // The name is repo-controlled and the command is shell-executed.
+    vendor(cwd, '$(echo pwned)');
+    const r = wireOrientHook({ cwd, client, python });
+    assert.ok(!/[$`]/.test(r.command || ''),
+      'injection reached the command: ' + r.command);
+    // It must fall back to the absolute branch, not refuse everything.
+    assert.strictEqual(r.code, 'wired');
+    assert.strictEqual(r.file, 'settings.local.json');
+  });
+});
+
+test('F-036: unrelated keys and foreign hooks survive the merge (T1)', () => {
+  sandbox(({ cwd, client, python }) => {
+    writeSettings(localSettings(cwd), {
+      permissions: { allow: ['Bash(git status)'] },
+      env: { FOO: 'bar' },
+      hooks: { SessionStart: [{ hooks: [{ type: 'command', command: 'echo mine' }] }] },
+    });
+    assert.strictEqual(wireOrientHook({ cwd, client, python }).code, 'wired');
+    const s = readJson(localSettings(cwd));
+    assert.deepStrictEqual(s.permissions, { allow: ['Bash(git status)'] });
+    assert.deepStrictEqual(s.env, { FOO: 'bar' });
+    const all = s.hooks.SessionStart.flatMap((g) => g.hooks.map((h) => h.command));
+    assert.ok(all.includes('echo mine'), "the user's own hook is still there");
+    assert.strictEqual(orientCommands(localSettings(cwd)).length, 1);
+  });
+});
+
+test('F-036 (R2): an unrecognised hooks shape is NEVER rewritten', () => {
+  // Round 1 replaced these with {} and reported success: silent data loss.
+  for (const shape of [
+    { hooks: { SessionStart: { hooks: [{ type: 'command', command: 'echo MINE' }] } } },
+    { hooks: { SessionStart: 'echo MINE' } },
+    { hooks: ['echo MINE'] },
+  ]) {
+    sandbox(({ cwd, client, python }) => {
+      writeSettings(localSettings(cwd), shape);
+      const before = fs.readFileSync(localSettings(cwd), 'utf8');
+      const r = wireOrientHook({ cwd, client, python });
+      assert.strictEqual(r.code, 'malformed', JSON.stringify(shape));
+      assert.strictEqual(fs.readFileSync(localSettings(cwd), 'utf8'), before,
+        'a shape we do not understand is not a shape we may replace');
+    });
+  }
+});
+
+test('F-036: running twice adds exactly one hook (T2)', () => {
+  sandbox(({ cwd, client, python }) => {
+    assert.strictEqual(wireOrientHook({ cwd, client, python }).code, 'wired');
+    assert.strictEqual(wireOrientHook({ cwd, client, python }).code, 'already');
+    assert.strictEqual(orientCommands(localSettings(cwd)).length, 1);
+  });
+});
+
+test('F-036 (R2): vendoring LATER does not add a second hook in the other file', () => {
+  sandbox(({ cwd, client, python }) => {
+    assert.strictEqual(wireOrientHook({ cwd, client, python }).code, 'wired');
+    vendor(cwd);                       // the team adopts the CI gate
+    const r = wireOrientHook({ cwd, client, python });
+    assert.strictEqual(r.code, 'already',
+      'the hook in the other settings layer must still be seen');
+    assert.ok(!fs.existsSync(sharedSettings(cwd)), 'no second hook in the shared file');
+  });
+});
+
+test('F-036 (R2): a hook placed directly in the array is recognised', () => {
+  sandbox(({ cwd, client, python }) => {
+    const abs = path.join(client.home, 'skills', INSTALLED_SKILL_NAME, 'scripts', ENTRY_POINT_FILE);
+    writeSettings(localSettings(cwd), {
+      hooks: { SessionStart: [{ type: 'command', command: 'python "' + abs + '" orient' }] },
+    });
+    assert.strictEqual(wireOrientHook({ cwd, client, python }).code, 'already');
+    assert.strictEqual(orientCommands(localSettings(cwd)).length, 1);
+  });
+});
+
+test('F-036: a hook that is wired but DEAD is reported, not called done (T2b)', () => {
+  sandbox(({ cwd, client, python }) => {
+    writeSettings(localSettings(cwd), {
+      hooks: { SessionStart: [{ hooks: [{ type: 'command',
+        command: 'python "skills/gone-skill/scripts/' + ENTRY_POINT_FILE + '" orient' }] }] },
+    });
+    const r = wireOrientHook({ cwd, client, python });
+    assert.strictEqual(r.code, 'broken');
+    assert.ok(r.existing.includes('gone-skill'));
+  });
+});
+
+test('F-036 (R2): a DEAD hook whose interpreter is quoted is still BROKEN', () => {
+  // Round 1 extracted the FIRST quoted token -- the interpreter, which exists --
+  // and reported a dead hook as healthy.
+  sandbox(({ cwd, client, python }) => {
+    // A real interpreter path: it EXISTS but names no validator, which is what
+    // made the first-quoted-token rule report a dead hook as healthy.
+    const interp = path.join(client.home, 'python.exe');
+    fs.writeFileSync(interp, 'stub', 'utf8');
+    writeSettings(localSettings(cwd), {
+      hooks: { SessionStart: [{ hooks: [{ type: 'command',
+        command: '"' + interp + '" "skills/gone/scripts/' + ENTRY_POINT_FILE + '" orient' }] }] },
+    });
+    assert.strictEqual(wireOrientHook({ cwd, client, python }).code, 'broken');
+  });
+});
+
+test('F-036 (R2): a WORKING hook with no quotes is not called broken', () => {
+  sandbox(({ cwd, client, python }) => {
+    vendor(cwd);
+    writeSettings(localSettings(cwd), {
+      hooks: { SessionStart: [{ hooks: [{ type: 'command',
+        command: 'python3 skills/' + INSTALLED_SKILL_NAME + '/scripts/' + ENTRY_POINT_FILE + ' orient' }] }] },
+    });
+    assert.strictEqual(wireOrientHook({ cwd, client, python }).code, 'already');
+  });
+});
+
+test('F-036 (R2): a hook naming no known validator is unverifiable, not broken', () => {
+  sandbox(({ cwd, client, python }) => {
+    writeSettings(localSettings(cwd), {
+      hooks: { SessionStart: [{ hooks: [{ type: 'command',
+        command: 'my-wrapper.sh ' + ENTRY_POINT_FILE.replace('.py', '') + ' orient' }] }] },
+    });
+    const r = wireOrientHook({ cwd, client, python });
+    assert.ok(['unverifiable', 'wired'].includes(r.code), r.code);
+    assert.notStrictEqual(r.code, 'broken', 'never assert breakage we cannot establish');
+  });
+});
+
+test('F-036: malformed JSON is left byte-identical (T1)', () => {
+  sandbox(({ cwd, client, python }) => {
+    const junk = '{ "permissions": { /* a comment makes this JSONC */ } }';
+    writeSettings(localSettings(cwd), junk);
+    const r = wireOrientHook({ cwd, client, python });
+    assert.strictEqual(r.code, 'malformed');
+    assert.strictEqual(fs.readFileSync(localSettings(cwd), 'utf8'), junk);
+  });
+});
+
+test('F-036: no Python and no validator both refuse to write (T3)', () => {
+  sandbox(({ cwd, client }) => {
+    assert.strictEqual(wireOrientHook({ cwd, client, python: null }).code, 'no-python');
+    assert.ok(!fs.existsSync(localSettings(cwd)));
+  });
+  sandbox(({ cwd, python }) => {
+    const empty = { key: 'claude', home: path.join(os.tmpdir(), 'f036-no-such-home') };
+    assert.strictEqual(wireOrientHook({ cwd, client: empty, python }).code, 'no-validator');
+    assert.ok(!fs.existsSync(localSettings(cwd)));
+  });
+});
+
+test('F-036 (R2): docsLabel reaches the statusMessage', () => {
+  sandbox(({ cwd, client, python }) => {
+    wireOrientHook({ cwd, client, python, docsLabel: 'mkt_docs' });
+    const h = readJson(localSettings(cwd)).hooks.SessionStart[0].hooks[0];
+    assert.match(h.statusMessage, /mkt_docs/);
+    assert.strictEqual(h.timeout, 10);
+  });
+});
+
+test('F-036: --hybrid rides on the option', () => {
+  sandbox(({ cwd, client, python }) => {
+    assert.ok(!wireOrientHook({ cwd, client, python }).command.includes('--hybrid'));
+  });
+  sandbox(({ cwd, client, python }) => {
+    assert.ok(wireOrientHook({ cwd, client, python, hybrid: true }).command.includes('--hybrid'));
+  });
+});
+
+test('F-036 (R2): orientHookCommand is the single command shape', () => {
+  assert.strictEqual(orientHookCommand('python', '/a/b.py', false), 'python "/a/b.py" orient');
+  assert.strictEqual(orientHookCommand('py', 'x.py', true), 'py "x.py" orient --hybrid');
+});
