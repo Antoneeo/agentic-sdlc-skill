@@ -113,6 +113,37 @@ class SkillInvariants(unittest.TestCase):
         self.assertIn("## 4. SessionStart hook", t)
         self.assertIn("## 5. Skill eval battery", t)
 
+    def test_the_installer_actually_wires_the_orient_hook(self):
+        """F-036. The assertion above checks PROSE. Until 2026-08-25 nothing
+        checked that any installer PERFORMED the wiring ENFORCEMENT 4 mandates --
+        and nothing did: `grep -rn "settings.json|SessionStart|hooks" scripts/*.js`
+        came back empty in all three distributions. A governed project therefore
+        ran with no orientation at all, which is the field defect that opened
+        F-036. This is the companion assertion that closes the hole."""
+        init_js = REPO / "scripts" / "init.js"
+        lib_js = REPO / "scripts" / "lib.js"
+        self.assertTrue(init_js.is_file(), "no installer at %s" % init_js)
+        # The CALL, on a LIVE line. Asserting the bare name passes on a file
+        # that only imports the writer; asserting the call text passes on one
+        # where the call is commented out. Both were caught by review, so the
+        # comment lines come off before the match.
+        live = [ln for ln in sc.read_text(init_js).splitlines()
+                if not ln.strip().startswith("//")]
+        self.assertTrue(any("wireOrientHook({" in ln for ln in live),
+                        "init.js does not CALL the SessionStart hook writer that "
+                        "ENFORCEMENT 4 mandates: the manual-step regression")
+        lib_live = [ln for ln in sc.read_text(lib_js).splitlines()
+                    if not ln.strip().startswith("//")]
+        self.assertTrue(any("function wireOrientHook" in ln for ln in lib_live))
+        # The DECISION, not the word: `settings.local.json` also appears in the
+        # helper's own comments, so the earlier assertion passed against an
+        # implementation with the portability split removed.
+        self.assertTrue(
+            any("vendored ? 'settings.json' : 'settings.local.json'" in ln
+                for ln in lib_live),
+            "the portability split is gone: a machine-specific hook path would "
+            "be committed for every teammate to inherit")
+
     def test_skill_consult_trigger(self):
         t = read("SKILL.md")
         self.assertIn("consult the guide router", t)

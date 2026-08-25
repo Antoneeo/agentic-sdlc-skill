@@ -207,6 +207,211 @@ function templateFor(sections, needle, index = 0) {
   return blocks[index];
 }
 
+// --- SessionStart orientation hook (F-036) ---------------------------------
+// ENFORCEMENT.md §4 says to wire this on every project that has a docs root and
+// a Python interpreter. Until F-036 nothing did: it was a manual step, so it was
+// skipped, and the guide router reached no agent that did not already know to
+// look for it. The hook only INJECTS orientation -- it cannot force a skill
+// invocation, and the mechanism that could (a blocking PreToolUse gate) is
+// refused by the Vision's no-ceremony-ratchet Non-Goal.
+
+const ORIENT_HOOK_TIMEOUT = 10;
+
+// The validator's filename is DERIVED, never written here: the marketing lens
+// ships `mkt_check.py` where the others ship `sdlc_check.py`, and this block is
+// copied verbatim into all three distributions. A literal would make two of the
+// three look for an entry point that does not exist.
+const ORIENT_ENTRY_POINTS = ['sdlc_check.py', 'mkt_check.py'];
+const ORIENT_ENTRY_POINT = (() => {
+  for (const name of ORIENT_ENTRY_POINTS) {
+    if (fs.existsSync(path.join(SKILL_SOURCE, 'scripts', name))) return name;
+  }
+  return ORIENT_ENTRY_POINTS[0];
+})();
+
+// Both settings layers are ALWAYS inspected for an existing hook, whichever one
+// we would write to. Scanning only the target file left two holes: a project
+// that starts un-vendored and later vendors flips the target from the local file
+// to the shared one, finds nothing there, and appends a second hook; and a dead
+// hook in the layer we are not writing stays invisible.
+const ORIENT_SETTINGS_FILES = ['settings.json', 'settings.local.json'];
+
+// A vendored path is built from a directory name read out of the TARGET
+// repository, and the result is executed by the client as a shell command. That
+// is repo-controlled input reaching a command line, so each segment must match
+// this exactly -- `$(...)`, backticks and newlines are not "unusual names", they
+// are the payload. The absolute branch cannot reach this input (it is built from
+// os.homedir() and the client roster) but is filtered too, below.
+const ORIENT_SAFE_SEGMENT = /^[A-Za-z0-9._-]+$/;
+// Refused anywhere in a command path. NOT backslash: a Windows path is full of
+// them and the shape this project already commits uses them.
+const ORIENT_UNSAFE_IN_PATH = /["$`\r\n]/;
+
+// Where a repo may legitimately vendor the validator. ENFORCEMENT §2 tells users
+// to copy it next to their CI config (`tools/`), and a skill-authoring repo
+// carries it under `skills/<lens>/scripts/`. Both are checked; the lens matching
+// this distribution wins, so a monorepo vendoring several lenses cannot wire a
+// sibling's validator against this lens's docs root.
+function vendoredValidator(cwd) {
+  const direct = [];
+  for (const dir of ['tools', 'scripts']) {
+    direct.push([dir, ORIENT_ENTRY_POINT].join('/'));
+  }
+  const skillDirs = (() => {
+    let entries;
+    try {
+      entries = fs.readdirSync(path.join(cwd, 'skills'), { withFileTypes: true });
+    } catch (e) {
+      return [];                        // no skills/ here, or it is not a directory
+    }
+    const names = entries.filter((e) => e.isDirectory()).map((e) => e.name)
+      .filter((n) => ORIENT_SAFE_SEGMENT.test(n));
+    // This lens first: readdir order must not decide which lens we orient.
+    names.sort((a, b) => (a === INSTALLED_SKILL_NAME ? -1 : 0)
+      - (b === INSTALLED_SKILL_NAME ? -1 : 0));
+    return names.map((n) => ['skills', n, 'scripts', ORIENT_ENTRY_POINT].join('/'));
+  })();
+  for (const rel of direct.concat(skillDirs)) {
+    if (fs.existsSync(path.join(cwd, rel))) return rel;
+  }
+  return null;
+}
+
+function orientHookCommand(python, validator, hybrid) {
+  return python + ' "' + validator + '" orient' + (hybrid ? ' --hybrid' : '');
+}
+
+// The token in an EXISTING command that names a validator -- quoted or bare, and
+// NOT simply "the first quoted thing". That naive rule failed both ways: a
+// command that quotes the interpreter (`"C:\Py\python.exe" "...sdlc_check.py"`)
+// returned the interpreter, which exists, so a DEAD hook reported as healthy;
+// and a command with no quotes at all returned nothing, so a WORKING hook was
+// reported broken. Returns null when no token names a validator: the caller must
+// then say it cannot tell, never that the hook is broken.
+function orientHookValidator(command) {
+  const cmd = String(command || '');
+  const re = /"([^"]*)"|(\S+)/g;
+  let m;
+  while ((m = re.exec(cmd)) !== null) {
+    const token = m[1] !== undefined ? m[1] : m[2];
+    if (ORIENT_ENTRY_POINTS.some((n) => token.endsWith(n))) return token;
+  }
+  return null;
+}
+
+// Accepts both shapes seen in the wild: the documented groups
+// (`SessionStart: [{ hooks: [...] }]`) and hook objects placed directly in the
+// array. Anything else is reported by the caller rather than silently replaced.
+function findOrientHook(settings) {
+  const groups = settings && settings.hooks && settings.hooks.SessionStart;
+  if (!Array.isArray(groups)) return null;
+  for (const group of groups) {
+    if (!group || typeof group !== 'object') continue;
+    const inner = Array.isArray(group.hooks) ? group.hooks : [group];
+    for (const h of inner) {
+      const cmd = h && typeof h.command === 'string' ? h.command : '';
+      if (ORIENT_ENTRY_POINTS.some((n) => cmd.includes(n)) && / orient(\s|$)/.test(cmd)) {
+        return cmd;
+      }
+    }
+  }
+  return null;
+}
+
+// A settings object we can safely merge into: absent, or carrying the shapes we
+// know. "I do not recognise this" must mean "write nothing", never "treat it as
+// empty" -- the second is how a hand-written hook disappears.
+function orientSettingsState(target) {
+  if (!fs.existsSync(target)) return { ok: true, settings: {} };
+  let settings;
+  try {
+    settings = JSON.parse(fs.readFileSync(target, 'utf8'));
+  } catch (e) {
+    return { ok: false, why: 'unreadable' };
+  }
+  if (!settings || typeof settings !== 'object' || Array.isArray(settings)) {
+    return { ok: false, why: 'not-an-object' };
+  }
+  const hooks = settings.hooks;
+  if (hooks !== undefined
+      && (!hooks || typeof hooks !== 'object' || Array.isArray(hooks))) {
+    return { ok: false, why: 'unexpected-hooks' };
+  }
+  if (hooks && hooks.SessionStart !== undefined && !Array.isArray(hooks.SessionStart)) {
+    return { ok: false, why: 'unexpected-hooks' };
+  }
+  return { ok: true, settings };
+}
+
+// Returns a RESULT CODE, never printed text: the caller owns the wording and the
+// battery asserts on the code. Codes:
+//   wired | already | broken | unverifiable | malformed
+//   no-validator | no-python | unsafe-path | write-failed
+function wireOrientHook(options) {
+  const cwd = options.cwd;
+  const client = options.client;
+  const python = options.python;
+  const hybrid = !!options.hybrid;
+  const docsLabel = options.docsLabel || 'project';
+
+  const vendored = vendoredValidator(cwd);
+  const absolute = path.join(skillTarget(client), 'scripts', ORIENT_ENTRY_POINT);
+  const validator = vendored || absolute;
+  if (!vendored && !fs.existsSync(absolute)) return { code: 'no-validator', validator };
+  if (!python) return { code: 'no-python', validator };
+  if (ORIENT_UNSAFE_IN_PATH.test(validator)) return { code: 'unsafe-path', validator };
+
+  const command = orientHookCommand(python, validator, hybrid);
+
+  // Inspect BOTH layers before deciding to write anything.
+  for (const name of ORIENT_SETTINGS_FILES) {
+    const p = path.join(cwd, '.claude', name);
+    const state = orientSettingsState(p);
+    if (!state.ok) {
+      if (fs.existsSync(p)) return { code: 'malformed', file: name, target: p, why: state.why, command };
+      continue;
+    }
+    const existing = findOrientHook(state.settings);
+    if (!existing) continue;
+    const found = orientHookValidator(existing);
+    if (found === null) {
+      return { code: 'unverifiable', file: name, target: p, existing, command };
+    }
+    const resolves = fs.existsSync(path.isAbsolute(found) ? found : path.join(cwd, found));
+    return resolves
+      ? { code: 'already', file: name, target: p, command: existing }
+      : { code: 'broken', file: name, target: p, existing, command };
+  }
+
+  // A machine-specific command must not reach the shared, committed file.
+  const file = vendored ? 'settings.json' : 'settings.local.json';
+  const target = path.join(cwd, '.claude', file);
+  const state = orientSettingsState(target);
+  if (!state.ok) return { code: 'malformed', file, target, why: state.why, command };
+  const settings = state.settings;
+
+  if (!settings.hooks) settings.hooks = {};
+  if (!Array.isArray(settings.hooks.SessionStart)) settings.hooks.SessionStart = [];
+  settings.hooks.SessionStart.push({
+    hooks: [{
+      type: 'command',
+      command,
+      timeout: ORIENT_HOOK_TIMEOUT,
+      statusMessage: 'Loading ' + docsLabel + ' orientation...',
+    }],
+  });
+
+  // The installer has already written seed files by this point; an unwritable
+  // settings file must not take the whole run down with a stack trace.
+  try {
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.writeFileSync(target, JSON.stringify(settings, null, 2) + String.fromCharCode(10), 'utf8');
+  } catch (e) {
+    return { code: 'write-failed', file, target, command, error: e.message };
+  }
+  return { code: 'wired', file, target, command, local: !vendored };
+}
+
 module.exports = {
   PACKAGE_ROOT,
   SKILL_SOURCE,
@@ -216,6 +421,8 @@ module.exports = {
   commandExists,
   clientDetected,
   skillTarget,
+  wireOrientHook,
+  orientHookCommand,
   copyRecursive,
   loadTemplates,
   templateFor,

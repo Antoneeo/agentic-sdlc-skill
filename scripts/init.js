@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const { SKILL_SOURCE, INSTALLED_SKILL_NAME, SELF_LENS, SIBLING_LENSES, CLIENTS, clientDetected, skillTarget, loadTemplates, templateFor } = require('./lib');
+const { SKILL_SOURCE, INSTALLED_SKILL_NAME, SELF_LENS, SIBLING_LENSES, CLIENTS, clientDetected, skillTarget, wireOrientHook, loadTemplates, templateFor } = require('./lib');
 
 const cwd = process.cwd();
 
@@ -156,8 +156,22 @@ const protocolFiles = {
 // written aside and merged by hand.
 let protocolPreexisting = false;
 
-for (const client of CLIENTS) {
-  if (clientDetected(client)) {
+// Probed ONCE and reused by section 6c: re-filtering CLIENTS there would
+// run every client's detection a second time.
+const detectedClients = CLIENTS.filter(clientDetected);
+const PYTHON_CANDIDATES = ['python', 'python3', 'py'];
+const detectedPython = (() => {
+  for (const py of PYTHON_CANDIDATES) {
+    try {
+      execSync(`${py} --version`, { stdio: 'ignore' });
+      return py;
+    } catch (e) { /* try the next interpreter */ }
+  }
+  return null;
+})();
+
+for (const client of detectedClients) {
+  {
     console.log(`✅ ${client.label} detected.`);
     const created = writeIfNotExists(protocolFiles[client.key], protocolContent, `${client.label} protocol pointer`);
     if (!created) protocolPreexisting = true;
@@ -221,16 +235,119 @@ Delete it once the merge is done.
   }
 }
 
+
+// 6c. SessionStart orientation hook (F-036).
+// ENFORCEMENT.md §4 asks for this on every project with a docs root and Python.
+// It was a manual step until now, so it was skipped -- and a session that never
+// enters Phase 1 explicitly then never meets the guide router at all.
+
+// devPNT projects want `--hybrid`: without it the hook reports audit-plan
+// staleness that devPNT/KL owns, and noise at every session start is how a
+// session-start message stops being read.
+const hybridProject = fs.existsSync(path.join(cwd, '.devpnt'));
+
+// Only touch .gitignore when the wiring landed in the machine-specific file:
+// if that file is not ignored, the absolute path reaches teammates anyway and
+// the whole reason for choosing it is undone. Append-only and marker-guarded,
+// exactly like gitattributes() above. Wrapped, because the installer has already
+// written the seed files and must not die here.
+const ignoreLocalSettings = () => {
+  const marker = '.claude/settings.local.json';
+  if (!fs.existsSync(path.join(cwd, '.git'))) return;
+  const filePath = path.join(cwd, '.gitignore');
+  try {
+    const current = fs.existsSync(filePath) ? fs.readFileSync(filePath, 'utf8') : '';
+    // Line-wise, not substring: a `!.claude/settings.local.json` un-ignore would
+    // satisfy `includes()` and leave the machine-specific path committed.
+    if (current.split(/\r?\n/).some((l) => l.trim() === marker)) return;
+    fs.writeFileSync(filePath, current + [
+      '',
+      '# agentic-sdlc: the orientation hook here names a path on THIS machine.',
+      marker,
+      '',
+    ].join(EOL), 'utf8');
+    console.log(`OK    .gitignore: ${marker} ignored (it names a machine-specific path).`);
+    console.log('      If it is already tracked, run: git rm --cached ' + marker);
+  } catch (e) {
+    console.log(`⚠️  Could not update .gitignore (${e.message}). Add "${marker}" by hand.`);
+  }
+};
+
+const claudeClient = detectedClients.find((c) => c.key === 'claude');
+const otherClients = detectedClients.filter((c) => c.key !== 'claude');
+if (!claudeClient) {
+  console.log('ℹ️  Claude Code not detected: SessionStart orientation hook not wired.');
+} else {
+  const r = wireOrientHook({
+    cwd, client: claudeClient, python: detectedPython,
+    hybrid: hybridProject, docsLabel: 'ai_docs',
+  });
+  switch (r.code) {
+    case 'wired':
+      console.log(`🪝 Wired the SessionStart orientation hook in .claude/${r.file}.`);
+      if (r.local) {
+        console.log('   It names a path on THIS machine, so it went to the git-ignored');
+        console.log('   file: each teammate runs init once to get their own.');
+        ignoreLocalSettings();
+      }
+      break;
+    case 'already':
+      console.log(`⏭️  SessionStart orientation hook already wired (.claude/${r.file}).`);
+      if (r.file === 'settings.local.json') ignoreLocalSettings();
+      break;
+    case 'broken':
+      console.log(`⚠️  The SessionStart orientation hook in .claude/${r.file} is BROKEN —`);
+      console.log('   its validator does not resolve, so it has been emitting nothing:');
+      console.log(`     ${r.existing}`);
+      console.log('   Not overwritten (it may be hand-tuned). Correct it to:');
+      console.log(`     ${r.command}`);
+      break;
+    case 'unverifiable':
+      console.log(`ℹ️  A SessionStart orientation hook exists in .claude/${r.file} but names`);
+      console.log('   no validator this installer recognises, so it was left alone:');
+      console.log(`     ${r.existing}`);
+      break;
+    case 'malformed':
+      console.log(`⚠️  .claude/${r.file} has a shape this installer will not rewrite`);
+      console.log(`   (${r.why}): left untouched. Add the hook by hand — command:`);
+      console.log(`     ${JSON.stringify(r.command)}`);
+      break;
+    case 'write-failed':
+      console.log(`⚠️  Could not write .claude/${r.file} (${r.error}). Add by hand:`);
+      console.log(`     ${JSON.stringify(r.command)}`);
+      break;
+    case 'no-python':
+      console.log('ℹ️  Python not found: SessionStart orientation hook not wired.');
+      break;
+    case 'no-validator':
+      console.log('ℹ️  Skill not installed yet: orientation hook not wired. Install it');
+      console.log('   (below), then re-run init.');
+      break;
+    case 'unsafe-path':
+      console.log('⚠️  The validator path contains a character that cannot be placed in a');
+      console.log(`   hook command safely: ${r.validator}`);
+      console.log('   Refusing to build one. Wire it by hand (ENFORCEMENT.md §4).');
+      break;
+  }
+}
+for (const c of otherClients) {
+  // Said out loud rather than skipped in silence: ENFORCEMENT.md §4's manual
+  // snippet is these clients' only route, and a silent skip is what let the
+  // "documented default nobody installs" defect live in the first place.
+  console.log(`ℹ️  ${c.label}: hook not wired (only Claude Code's shape is verified) —`);
+  console.log('   wire it by hand from ENFORCEMENT.md §4 if that client supports it.');
+}
+
 // 7. Generate ai_docs/INDEX.md so the very first `validate` is already clean.
 // The manifest is generated, never seeded: delegate to the validator if Python is available.
 const validator = path.join(SKILL_SOURCE, 'scripts', 'sdlc_check.py');
 let indexed = false;
-for (const py of ['python', 'python3', 'py']) {
+// detectedPython is probed once, above: one answer for the hook and for this.
+if (detectedPython) {
   try {
-    execSync(`${py} "${validator}" index --root "${cwd}"`, { stdio: 'ignore' });
+    execSync(`${detectedPython} "${validator}" index --root "${cwd}"`, { stdio: 'ignore' });
     console.log('📇 Generated ai_docs/INDEX.md (document manifest).');
     indexed = true;
-    break;
   } catch (e) { /* try the next interpreter */ }
 }
 if (!indexed) {
