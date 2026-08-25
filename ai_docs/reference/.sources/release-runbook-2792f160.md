@@ -5,7 +5,10 @@ Approved by Antonio Pinto, 2026-07-02. Distilled from the v1.8.0 release session
 `git_push_tag.bat` for the commit+tag+push step, and again same day with the
 script's re-run behavior observed in the field; amended 2026-08-01 by Antonio's
 approval — README alignment covers all three distributions plus the family
-document, and `mark` closes the step instead of opening it. This is the verbatim source
+document, and `mark` closes the step instead of opening it; amended 2026-08-25 by
+Antonio's indication — "lo script serve ad evitare errori evitabili.. mettilo pure
+nella guida" — adding `publish_all.bat` as the publish step, its skip semantics and
+its preconditions. This is the verbatim source
 ("book") for `GUIDE_release.md`; detail lives here, the guide is the synthesis.
 
 ## Preconditions
@@ -145,6 +148,55 @@ Verified in the field, 2026-07-02:
 2. `npm publish` — run by the USER (2FA OTP). npm prints the full tarball
    listing before the OTP prompt: check it one last time.
 3. Confirm with `npm view @antoneeo/agentic-sdlc-skill version`.
+
+### publish_all.bat — the three packages in one run
+
+Added 2026-08-25 on Antonio's indication: *"lo script serve ad evitare errori
+evitabili.. mettilo pure nella guida"*. The point of the script is that the
+publish step is where avoidable mistakes happen — publishing the wrong tree,
+publishing from an untagged checkout, forgetting one of the three packages,
+or re-doing a package that is already on the registry — and a script removes
+the ones a human should not have to remember.
+
+`publish_all.bat` (repo root) publishes all three packages in one run, in
+order: `@antoneeo/agentic-sdlc-skill` (repo root),
+`@antoneeo/kb-agentic-skill` (`distributions\kb-agentic-skill`),
+`@antoneeo/mkt-agentic-sdlc-skill` (`distributions\mkt-agentic-sdlc`). It
+prompts once for confirmation, then publishes, then verifies by printing
+`npm view <name> version` for all three.
+
+- **PRECONDITION: bump + commit + tag FIRST** (`git_push_tag.bat`). `npm
+  publish` packs the WORKING TREE, not the tag, so it must run from the clean
+  tagged checkout. This is the error the script exists to prevent and the one
+  it cannot detect for you.
+- **Already-published packages are SKIPPED, not failures.** Before each
+  package the script compares `npm pkg get version` against
+  `npm view <name> version` and skips on a match, reporting
+  `[ok] <ver> is already on the registry - skipped, nothing to do.`
+  Two consequences: a single-package release works (the two unchanged
+  packages are skipped rather than aborting the run), and a run interrupted
+  part-way is resumed by simply re-running it.
+- **The three packages version independently**, so the single-package release
+  is the normal case, not the exception.
+- **2FA is web-based**: npm prints an authorization URL and opens the browser
+  for EACH package published. On an account using an authenticator app
+  instead, append `--otp=CODE` to the `npm publish` line in the script.
+- `access=public` is already in each `package.json` `publishConfig`; no flag
+  is needed.
+- A genuine failure (authorization expired, network, registry refusal) stops
+  the run with `[FAIL] <name> publish failed at <ver>` and a non-zero exit.
+  Re-run after fixing: what already succeeded is skipped.
+
+Field note, 2026-08-25: until that date the script's header promised the skip
+and the code did not implement it — it called `npm publish` unconditionally and
+treated npm's non-zero exit on an already-published version as a failure. Since
+the publish order starts with the code package, a kb-only release aborted on the
+first package and never reached kb. Fixed by asking the registry before
+publishing rather than parsing npm's error text afterwards. Verified against the
+live registry with the publish call replaced by a marker, exercising all three
+branches: versions equal (skipped, no publish attempted), registry holds a
+different version (would publish), package not on the registry at all (would
+publish).
 
 ## Post-release
 
