@@ -2,7 +2,7 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
-## [Unreleased]
+## [1.27.0 / kb 1.5.0 / mkt 0.5.0] - 2026-08-25
 
 F-036 — the orientation hook installs itself.
 

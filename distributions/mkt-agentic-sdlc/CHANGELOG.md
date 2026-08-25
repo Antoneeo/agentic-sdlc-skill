@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [0.5.0] - 2026-08-25
 
 F-036 — the orientation hook installs itself.
 
