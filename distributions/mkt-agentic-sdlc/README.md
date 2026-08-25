@@ -38,6 +38,19 @@ cd my-business-project
 npx mkt-sdlc-init        # creates mkt_docs/ + protocol pointers
 ```
 
+It also **wires the SessionStart orientation hook** into `.claude/`, so an agent opening
+the project is handed the reading guide, the generated manifest, the guide router and the
+last handoff before it does anything — instead of only when it remembers to look. That
+wiring used to be a manual step documented in `ENFORCEMENT.md`; being manual, it was
+skipped, and a project could run fully governed with an agent that never met the process.
+
+The hook command names a validator, so where that validator lives decides which file gets
+it: a repo that vendors it gets a repo-relative command in the shared `.claude/settings.json`
+(portable — commit it); otherwise the path is machine-specific and goes to the git-ignored
+`.claude/settings.local.json`, and each teammate runs `init` once. Re-running `init` never
+duplicates the hook, and a hook whose validator no longer resolves is reported as **broken**
+with the correction rather than counted as installed.
+
 ## Engagement levels (Rule Zero)
 
 | Level | Scope | Process |

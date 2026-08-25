@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.5.1] - 2026-08-25
+
+### Fixed
+- **The three README front pages did not mention the hook wiring that 1.27.0 added.**
+  `init` now changes what every project gets, and the README *is* the npm page, so two
+  of the three said nothing about it and the third barely did. Each now describes the
+  wiring, the settings.json / settings.local.json split and why it exists, and the
+  broken-hook report. `GUIDE_release.md` step 2 already made this a release duty; it was
+  skipped in 1.27.0 and this is the catch-up.
+- **`publish_all.bat`'s verify block reported the previous version after a successful
+  publish — twice.** `--prefer-online` (added in kb 1.4.8) forces revalidation but cannot
+  outrun CDN propagation of the `latest` tag in the seconds after publishing, so the
+  1.27.0 run printed mkt `0.4.7` when `0.5.0` had in fact landed. The flag alone was the
+  wrong fix and the note claiming otherwise is corrected: the block now **polls** each
+  package until the registry agrees with the local version, and prints both when it does
+  not, so "did it publish?" is answerable from the run instead of a manual `npm view`.
+
 ## [0.5.0] - 2026-08-25
 
 F-036 — the orientation hook installs itself.
