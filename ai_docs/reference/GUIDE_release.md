@@ -1,9 +1,9 @@
 ---
 description: How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish.
 status: CURRENT
-source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it).
+source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition).
 distilled_from: ai_docs/reference/.sources/release-runbook-2792f160.md
-source_hash: 49b46d13ee390bb4aa047e58e42f9ac6a0b3cf56f7f28875da870832f07c3e81
+source_hash: 717d334eea1efc6ddfcf31a5e0801e026d8bbcec2fba2837d80959ebec6f0687
 ---
 # Guide: Release
 
@@ -46,8 +46,13 @@ Order: bump → verify → script (commit+tag+push) → verify tag → merge →
    pushed: `git push origin :refs/tags/vX.Y.Z`).
 6. Merge to main: `gh` CLI is not installed on this machine — GitHub web PR,
    or user-authorized direct push.
-7. `npm publish` is the USER's step (2FA). Prepare a clean checkout and hand
-   off. (snapshot §Publish)
+7. Publish with `publish_all.bat` from the repo root — the USER's step (2FA
+   opens a browser per package). It does all three packages in one run and
+   **skips any already on the registry at that version**, so a single-package
+   release is normal: the two that did not change are skipped, not failures,
+   and an interrupted run is resumed by re-running. It packs the WORKING TREE,
+   so run it from the clean tagged checkout — step 4 must have happened first.
+   (snapshot §Publish, §publish_all.bat)
 
 ## How to verify it is done right
 [source: release-runbook-2792f160.md#verification-battery]
@@ -81,6 +86,13 @@ version.
   already points at the release commit; otherwise `git tag -d` and re-tag
   (delete the remote tag too if pushed).
 - **npm publish stops at `EOTP`** — only the user can complete it.
+- **`publish_all.bat` packs the working tree, not the tag.** Publishing before
+  the bump is committed and tagged ships a tree that no tag names, and npm
+  versions are immutable — there is no undo. Bump, commit, tag, THEN publish.
+- **The three packages version independently**, so most releases touch one of
+  them. That is the case the script is built for: it skips the others by
+  comparing the local version against the registry first. (Before 2026-08-25 it
+  did not, and aborted on the first already-published package instead.)
 - **PowerShell 5.1**: no `&&`; `npm pack --dry-run` lists files on stderr —
   use `--json`.
 
