@@ -38,9 +38,12 @@ call :pub "%ROOT%distributions\mkt-agentic-sdlc" "@antoneeo/mkt-agentic-sdlc-ski
 
 echo.
 echo === verify (registry versions) ===
-call npm view @antoneeo/agentic-sdlc-skill version
-call npm view @antoneeo/kb-agentic-skill version
-call npm view @antoneeo/mkt-agentic-sdlc-skill version
+REM --prefer-online: without it npm answers from its metadata cache, which
+REM seconds after a publish still holds the PREVIOUS version. The 1.4.8 release
+REM printed "1.4.7" here and read as a failed publish when it had succeeded.
+call npm view @antoneeo/agentic-sdlc-skill version --prefer-online
+call npm view @antoneeo/kb-agentic-skill version --prefer-online
+call npm view @antoneeo/mkt-agentic-sdlc-skill version --prefer-online
 echo.
 echo All three published.
 exit /b 0
@@ -60,7 +63,7 @@ REM afterwards: an already-published version is a no-op to be reported, not a
 REM failure to be parsed. `npm view` on a never-published package writes to
 REM stderr and leaves PUB empty, which correctly falls through to the publish.
 set "PUB="
-for /f "delims=" %%v in ('npm view %~2 version 2^>nul') do set "PUB=%%v"
+for /f "delims=" %%v in ('npm view %~2 version --prefer-online 2^>nul') do set "PUB=%%v"
 echo.
 echo --- %~2 @ !VER! ---
 if /I "!PUB!"=="!VER!" (
