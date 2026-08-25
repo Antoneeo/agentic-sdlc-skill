@@ -19,6 +19,16 @@ F-036 — the orientation hook installs itself.
   that imports the writer without invoking it, which is exactly the disabled-installer
   case it exists to catch.
 
+### Fixed (also)
+- **ENFORCEMENT 4/2's own worked hook examples named a skill directory that two of
+  the three lenses do not install.** kb and mkt both printed
+  `.claude/skills/agentic-sdlc/scripts/...`; kb installs under `kb-agentic` and mkt
+  under `mkt-agentic-sdlc`, so anyone who copied the snippet got a hook that runs,
+  prints `can't open file`, and emits nothing — the wired-and-dead defect this release
+  detects, sitting in the instructions that produce it. Four paths corrected, and a new
+  invariant derives the expected directory and validator from what the distribution
+  actually ships and fails if an example names anything else. Mutation-tested.
+
 ### Added
 - **A portability rule the doctrine did not have.** The hook command names a validator,
   and where that validator lives decides which settings file may carry it: a repo that

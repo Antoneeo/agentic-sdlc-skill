@@ -144,6 +144,40 @@ class SkillInvariants(unittest.TestCase):
             "the portability split is gone: a machine-specific hook path would "
             "be committed for every teammate to inherit")
 
+    def test_enforcement_hook_examples_name_this_lens(self):
+        """F-036 round 2. Every worked hook example in ENFORCEMENT names a skill
+        directory and a validator, and a reader COPIES it. Both kb and mkt shipped
+        `.claude/skills/agentic-sdlc/scripts/...` -- a directory neither of them
+        installs -- so anyone following the doctrine got a hook that runs, prints
+        `can't open file`, and emits nothing: the wired-and-dead defect F-036
+        exists to detect, sitting in the instructions themselves. Everything is
+        DERIVED from what this distribution actually ships; a literal here is what
+        let three copies assert one lens's identity."""
+        entry = None
+        for name in ("sdlc_check.py", "mkt_check.py"):
+            if (SKILL_DIR / "scripts" / name).is_file():
+                entry = name
+                break
+        self.assertIsNotNone(entry, "no validator entry point beside this battery")
+        # The examples are JSON inside markdown, so each path separator is written
+        # as TWO backslash characters. Split on it rather than escaping a regex.
+        sep = chr(92) * 2
+        text = read("ENFORCEMENT.md")
+        chunks = text.split("skills" + sep)[1:]
+        self.assertTrue(chunks, "ENFORCEMENT shows no worked hook example to check")
+        for chunk in chunks:
+            named_dir = chunk.split(sep)[0]
+            # rstrip the backslash of the escaped quote that closes the JSON string
+            named_script = (chunk.split(sep)[2].split('"')[0].rstrip(chr(92))
+                            if chunk.count(sep) >= 2 else "")
+            self.assertEqual(named_script, entry,
+                             "ENFORCEMENT names %r; this distribution ships %r"
+                             % (named_script, entry))
+            self.assertTrue(SKILL_DIR.name.startswith(named_dir),
+                            "ENFORCEMENT names skills/%s, but this lens lives in "
+                            "%s -- a reader copying that snippet gets a hook that "
+                            "cannot run" % (named_dir, SKILL_DIR.name))
+
     def test_skill_consult_trigger(self):
         t = read("SKILL.md")
         self.assertIn("consult the guide router", t)
