@@ -48,7 +48,7 @@ Blocks Edit/Write on protected paths when no `ANALYSIS_*.md` is `IN_PROGRESS`. I
         "hooks": [
           {
             "type": "command",
-            "command": "python \"C:\\Users\\<user>\\.claude\\skills\\agentic-sdlc\\scripts\\sdlc_check.py\" gate --hook --protected \"src/auth;src/crypto\""
+            "command": "python \"C:\\Users\\<user>\\.claude\\skills\\kb-agentic\\scripts\\sdlc_check.py\" gate --hook --protected \"src/auth;src/crypto\""
           }
         ]
       }
@@ -115,7 +115,7 @@ Claude Code — in the project's `.claude/settings.json`:
         "hooks": [
           {
             "type": "command",
-            "command": "python \"C:\\Users\\<user>\\.claude\\skills\\agentic-sdlc\\scripts\\sdlc_check.py\" orient"
+            "command": "python \"C:\\Users\\<user>\\.claude\\skills\\kb-agentic\\scripts\\sdlc_check.py\" orient"
           }
         ]
       }
