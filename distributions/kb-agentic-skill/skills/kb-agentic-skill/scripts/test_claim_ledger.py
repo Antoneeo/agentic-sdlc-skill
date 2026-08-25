@@ -805,5 +805,356 @@ derived-from: ANALYSIS_manual.md
             self.assertEqual(pending[0], "T2")
 
 
+# ------------------------------------------------------------------ F-035
+# The corpus letter promises every provenance is a real file. Two of the three
+# mechanisms that should enforce it did not run, and one explained itself wrong.
+
+SIDE_GIVEN = "---\nsha256: x\ndate: 2026-08-25\nprovenance: GIVEN\n---\n"
+
+
+def given_and_sidecar(meta_body):
+    """A given/ artifact plus the sidecar that declares it."""
+    return {"c.txt": GIVEN_TXT["c.txt"], "c.txt.meta.md": meta_body}
+
+
+class TL_F035_SidecarIsTheArtifactsFrontmatter(unittest.TestCase):
+    """A -- the four non-GIVEN provenances must be REACHABLE on a given/
+    artifact. Their declaration lives in the sidecar; the claim checker read the
+    artifact itself, got {} rather than None, and errored unconditionally."""
+
+    def _findings(self, prov, meta_body, src=None):
+        rows = [("", "A", "-", "-", "-", src or SRC1, prov, "OK")]
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(rows)},
+                             given=given_and_sidecar(meta_body))
+            return kc.kb_check_claims(docs)
+
+    def test_derived_with_derived_from_in_sidecar_passes(self):
+        errors, _, _ = self._findings(
+            "DERIVED", "---\nprovenance: DERIVED\n"
+                       "derived_from: corpus/given/scan.png\n---\n")
+        self.assertFalse([e for e in errors if "derived_from" in e], errors)
+
+    def test_derived_without_derived_from_still_errors(self):
+        # The gate must keep biting: a DERIVED claim on an artifact that
+        # declares no derivation IS model knowledge disguised as a source.
+        errors, _, _ = self._findings("DERIVED", SIDE_GIVEN)
+        self.assertTrue([e for e in errors if "derived_from" in e], errors)
+
+    def test_ruling_with_basis_in_sidecar_passes(self):
+        errors, _, _ = self._findings(
+            "RULING", "---\nprovenance: RULING\nbasis: measured on site\n---\n")
+        self.assertFalse([e for e in errors if "basis" in e], errors)
+
+    def test_imported_with_imported_from_in_sidecar_passes(self):
+        errors, _, _ = self._findings(
+            "IMPORTED", "---\nprovenance: IMPORTED\n"
+                        "imported_from: other-project\n---\n")
+        self.assertFalse([e for e in errors if "imported_from" in e], errors)
+
+    def test_artifact_with_no_sidecar_at_all_still_errors(self):
+        rows = [("", "A", "-", "-", "-", SRC1, "DERIVED", "OK")]
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(rows)}, given=GIVEN_TXT)
+            errors, _, _ = kc.kb_check_claims(docs)
+        self.assertTrue([e for e in errors if "derived_from" in e], errors)
+
+    def test_the_error_names_the_file_it_actually_read(self):
+        # Bug C's lesson applied here: a finding that does not say WHERE it
+        # looked sends the reader hunting in the wrong file.
+        errors, _, _ = self._findings("DERIVED", SIDE_GIVEN)
+        self.assertTrue([e for e in errors if ".meta.md" in e], errors)
+
+    def test_a_markdown_artifact_in_given_resolves_its_sidecar(self):
+        # The rule is sidecar-first, not "non-.md": a verbatim markdown source
+        # stored in given/ declares itself in x.md.meta.md exactly like a .txt
+        # extraction does, and reading its own frontmatter would read the
+        # SOURCE's, which says nothing about how it was extracted.
+        rows = [("", "A", "-", "-", "-", "corpus/given/d.md#L1-1",
+                 "DERIVED", "OK")]
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(rows)},
+                             given={"d.md": "a line\n",
+                                    "d.md.meta.md":
+                                        "---\nprovenance: DERIVED\n"
+                                        "derived_from: scan.png\n---\n"})
+            errors, _, _ = kc.kb_check_claims(docs)
+        self.assertFalse([e for e in errors if "derived_from" in e], errors)
+
+    def test_a_note_source_is_unaffected(self):
+        # The .md path must keep resolving to its own frontmatter, not to a
+        # sidecar that does not exist.
+        rows = [("", "A", "-", "-", "-", "corpus/notes/n.md#L1-2",
+                 "DERIVED", "OK")]
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(rows)},
+                             notes={"n.md": "---\nderived_from: x\n---\nbody\n"})
+            errors, _, _ = kc.kb_check_claims(docs)
+        self.assertFalse([e for e in errors if "derived_from" in e], errors)
+
+
+class TL_F035_WeakChainIsVisible(unittest.TestCase):
+    """A' -- a GIVEN row resting on an artifact whose own sidecar declares a
+    weaker provenance is the laundering the overlay exists to prevent. It was
+    declarable only in prose, and prose is not a check."""
+
+    def _warnings(self, sidecar_prov):
+        rows = [("", "A", "-", "-", "-", SRC1, "GIVEN", "OK")]
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(rows)},
+                             given=given_and_sidecar(
+                                 "---\nprovenance: %s\n"
+                                 "derived_from: scan.png\n---\n" % sidecar_prov))
+            _, warnings, _ = kc.kb_check_claims(docs)
+        return warnings
+
+    def test_given_row_on_derived_artifact_warns(self):
+        self.assertTrue([w for w in self._warnings("DERIVED")
+                         if "DERIVED" in w], self._warnings("DERIVED"))
+
+    def test_given_row_on_given_artifact_is_silent(self):
+        rows = [("", "A", "-", "-", "-", SRC1, "GIVEN", "OK")]
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(rows)},
+                             given=given_and_sidecar(SIDE_GIVEN))
+            _, warnings, _ = kc.kb_check_claims(docs)
+        self.assertFalse([w for w in warnings if "provenance" in w], warnings)
+
+    def test_artifact_with_no_sidecar_is_silent(self):
+        # Nothing declared, nothing to contradict: silence, not a warning.
+        rows = [("", "A", "-", "-", "-", SRC1, "GIVEN", "OK")]
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(rows)}, given=GIVEN_TXT)
+            _, warnings, _ = kc.kb_check_claims(docs)
+        self.assertFalse([w for w in warnings if "provenance" in w], warnings)
+
+
+class TL_F035_OriginalPathResolves(unittest.TestCase):
+    """B -- `original_sha256` is not checked because we do not hold the bytes.
+    That reason does not extend to the path, which costs one exists()."""
+
+    def _run(self, meta_extra, make_original=None):
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {}, given={
+                "c.txt": GIVEN_TXT["c.txt"],
+                "c.txt.meta.md": "---\nsha256: \ndate: 2026-08-25\n"
+                                 "provenance: GIVEN\n%s---\n" % meta_extra})
+            if make_original:
+                p = Path(tmp) / make_original
+                p.parent.mkdir(parents=True, exist_ok=True)
+                p.write_text("original", encoding="utf-8")
+            return kc.kb_corpus_check(docs)
+
+    def test_dangling_original_path_warns(self):
+        errors, warnings = self._run("original_path: vault/gone.pdf\n")
+        self.assertTrue([w for w in warnings if "original_path" in w], warnings)
+
+    def test_dangling_original_path_is_never_an_error(self):
+        # T3: export never carries originals out of the docs root and import
+        # copies sidecars verbatim, so an imported bundle legitimately dangles.
+        errors, _ = self._run("original_path: vault/gone.pdf\n")
+        self.assertFalse([e for e in errors if "original_path" in e], errors)
+
+    def test_relative_path_resolves_against_the_project_root(self):
+        errors, warnings = self._run("original_path: vault/here.pdf\n",
+                                     make_original="vault/here.pdf")
+        self.assertFalse([w for w in warnings if "original_path" in w], warnings)
+
+    def test_absent_original_path_is_silent(self):
+        errors, warnings = self._run("")
+        self.assertFalse([w for w in warnings if "original_path" in w], warnings)
+
+
+class TL_F035_DuplicateIdNamesItsCause(unittest.TestCase):
+    """C -- one message served two causes. A copied row and a hash collision
+    are different defects with different fixes, and the reader was sent after
+    the wrong one."""
+
+    def test_two_distinct_rows_on_one_span_report_the_collision(self):
+        i1 = kc.kb_claim_id("corpus/given/c.txt", "p=1@0-8", "")
+        rows = [(i1, "delivery slips to Q3", "-", "-", "-", SRC1, "GIVEN", "OK"),
+                (i1, "the module ships enabled", "-", "-", "-", SRC1,
+                 "GIVEN", "OK")]
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(rows)}, given=GIVEN_TXT)
+            errors, _, _ = kc.kb_check_claims(docs)
+        self.assertTrue([e for e in errors if "cannot separate" in e], errors)
+
+    def test_a_genuinely_copied_row_still_reports_uniqueness(self):
+        i1 = kc.kb_claim_id("corpus/given/c.txt", "p=1@0-8", "")
+        row = (i1, "delivery slips to Q3", "-", "-", "-", SRC1, "GIVEN", "OK")
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md([row]),
+                                   "u.md": claims_md([row])}, given=GIVEN_TXT)
+            errors, _, _ = kc.kb_check_claims(docs)
+        self.assertTrue([e for e in errors if "uniqueness" in e], errors)
+        self.assertFalse([e for e in errors if "cannot separate" in e], errors)
+
+    def test_the_id_function_itself_does_not_move(self):
+        # C changes a string, never a hash. portability.md's de-duplication
+        # rests on this value being IDENTICAL in two projects, so the constants
+        # are pinned: a change here breaks every already-exported bundle.
+        self.assertEqual(kc.kb_claim_id("corpus/given/c.txt", "p=1@0-8", ""),
+                         "fa53fcf18ccb")
+        self.assertEqual(kc.kb_claim_id("corpus/given/c.txt", "p=1@0-8",
+                                        "cost:12000:EUR"), "5ddfab538bf6")
+
+
+class TL_F035_R2_PathClassification(unittest.TestCase):
+    """Round 2 -- the independent review found `Path.is_absolute()` was the
+    wrong test: on Windows `/vault/manuals/xyz.pdf` (the form this project's
+    OWN templates print) is not absolute, so it was joined under the docs root
+    and rewritten onto its drive."""
+
+    def test_rooted_driveless_path_is_taken_as_written(self):
+        cands = [str(c) for c in
+                 kc._kb_original_candidates("/vault/manuals/xyz.pdf",
+                                            Path("D:/proj/ai_docs"))]
+        self.assertEqual(len(cands), 1, cands)
+        for c in cands:
+            self.assertNotIn("proj", c, cands)      # never joined under the root
+            self.assertNotIn("ai_docs", c, cands)
+
+    def test_relative_path_offers_project_root_then_docs_root(self):
+        cands = [str(c) for c in
+                 kc._kb_original_candidates("vault/x.pdf",
+                                            Path("D:/proj/ai_docs"))]
+        self.assertEqual(len(cands), 2, cands)
+        self.assertEqual(len(set(cands)), 2, cands)  # never the same path twice
+
+    def test_a_posix_filename_containing_a_backslash_keeps_its_raw_form(self):
+        # The raw string is tried FIRST; the slash-normalised form is only an
+        # additional candidate, because a backslash is legal in a POSIX name.
+        cands = [str(c) for c in
+                 kc._kb_original_candidates(chr(92).join(["/vault/my", "file.pdf"]),
+                                            Path("/proj/ai_docs"))]
+        self.assertTrue(any(chr(92) in c for c in cands), cands)
+
+
+class TL_F035_R2_PointerProbe(unittest.TestCase):
+    def _warnings(self, op, make=None, as_dir=False):
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {}, given={
+                "c.txt": GIVEN_TXT["c.txt"],
+                "c.txt.meta.md": "---\ndate: 2026-08-25\nprovenance: GIVEN\n"
+                                 "original_path: %s\n---\n" % op})
+            if make:
+                p = Path(tmp) / make
+                p.parent.mkdir(parents=True, exist_ok=True)
+                if as_dir:
+                    p.mkdir(exist_ok=True)
+                else:
+                    p.write_text("x", encoding="utf-8")
+            return kc.kb_corpus_check(docs)[1]
+
+    def test_absolute_path_that_resolves_is_silent(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            orig = Path(tmp) / "vault" / "x.pdf"
+            orig.parent.mkdir(parents=True)
+            orig.write_text("x", encoding="utf-8")
+            docs = make_tree(tmp, {}, given={
+                "c.txt": GIVEN_TXT["c.txt"],
+                "c.txt.meta.md": "---\ndate: 2026-08-25\n"
+                                 "original_path: %s\n---\n" % str(orig)})
+            warnings = kc.kb_corpus_check(docs)[1]
+        self.assertFalse([w for w in warnings if "original_path" in w], warnings)
+
+    def test_relative_path_under_the_docs_root_also_resolves(self):
+        # The second candidate: --root and migrate both allow a docs root that
+        # does not sit directly under the project root.
+        w = self._warnings("held/x.pdf", make="ai_docs/held/x.pdf")
+        self.assertFalse([x for x in w if "original_path" in x], w)
+
+    def test_a_directory_is_not_a_resolved_pointer(self):
+        # original_path names a document; a directory sitting there is not it.
+        w = self._warnings("vault/x.pdf", make="vault/x.pdf", as_dir=True)
+        self.assertTrue([x for x in w if "original_path" in x], w)
+
+    def test_the_warning_never_lists_the_same_path_twice(self):
+        w = [x for x in self._warnings("/vault/gone.pdf") if "original_path" in x]
+        self.assertTrue(w, w)
+        tried = w[0].split("tried ", 1)[1].rstrip(")").split(", ")
+        self.assertEqual(len(tried), len(set(tried)), w[0])
+
+
+class TL_F035_R2_WeakChainEdges(unittest.TestCase):
+    def _warnings(self, prov_cell, sidecar_body, given=None):
+        rows = [("", "A", "-", "-", "-", SRC1, prov_cell, "OK")]
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(rows)},
+                             given=given if given is not None else {
+                                 "c.txt": GIVEN_TXT["c.txt"],
+                                 "c.txt.meta.md": sidecar_body})
+            return kc.kb_check_claims(docs)[1]
+
+    def test_lowercase_given_in_the_sidecar_is_silent(self):
+        w = self._warnings("GIVEN", "---\nprovenance: given\n---\n")
+        self.assertFalse([x for x in w if "provenance" in x], w)
+
+    def test_empty_provenance_value_is_silent(self):
+        w = self._warnings("GIVEN", "---\nprovenance: \ndate: 2026-08-25\n---\n")
+        self.assertFalse([x for x in w if "provenance" in x], w)
+
+    def test_a_non_given_row_gets_no_weak_chain_warning(self):
+        # The warning is about a row CLAIMING first-hand evidence. A row that
+        # already declares DERIVED is not laundering anything.
+        w = self._warnings("DERIVED", "---\nprovenance: DERIVED\n"
+                                      "derived_from: scan.png\n---\n")
+        self.assertFalse([x for x in w if "prov GIVEN" in x], w)
+
+    def test_an_orphan_sidecar_says_nothing_about_a_missing_artifact(self):
+        # The artifact is gone and the source loop already errors on it; an
+        # answer read from the surviving sidecar would be a second finding
+        # about a file that is not there.
+        rows = [("", "A", "-", "-", "-", "corpus/given/gone.txt#L1-2",
+                 "GIVEN", "OK")]
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(rows)}, given={
+                "gone.txt.meta.md": "---\nprovenance: DERIVED\n"
+                                    "derived_from: scan.png\n---\n"})
+            errors, warnings, _ = kc.kb_check_claims(docs)
+        self.assertFalse([w for w in warnings if "provenance" in w], warnings)
+        self.assertTrue([e for e in errors if "does not resolve" in e], errors)
+
+
+class TL_F035_R2_NoReadOutsideTheRoot(unittest.TestCase):
+    def test_an_empty_source_path_never_reads_beside_the_docs_root(self):
+        # `#L1-2` with no file before the locator made confine_under return the
+        # docs root itself, and the sidecar name was then formed from
+        # base.parent -- i.e. <docs-root>.meta.md, outside the tree.
+        rows = [("", "A", "-", "-", "-", "#L1-2", "DERIVED", "OK")]
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(rows)}, given=GIVEN_TXT)
+            trap = Path(tmp) / "ai_docs.meta.md"
+            trap.write_text("---\nderived_from: planted\n"
+                            "provenance: DERIVED\n---\n", encoding="utf-8")
+            errors, warnings, _ = kc.kb_check_claims(docs)
+        # The planted file must not be read, satisfy any gate, or be echoed.
+        self.assertFalse([w for w in warnings if "planted" in w or "DERIVED" in w],
+                         warnings)
+        self.assertFalse([e for e in errors if "planted" in e], errors)
+        # The unresolvable source is the finding this row deserves, and the one
+        # it gets -- a second complaint about a missing 'derived_from:' would
+        # be noise about a file that was never there.
+        self.assertTrue([e for e in errors if "does not resolve" in e], errors)
+
+
+class TL_F035_R2_StaleIdIsNotACollision(unittest.TestCase):
+    def test_same_id_different_text_different_span_names_the_stale_id(self):
+        # Two rows sharing a hand-typed id while citing DIFFERENT spans. The
+        # collision wording would assert "they cite the same span", which is
+        # provably false here.
+        i1 = kc.kb_claim_id("corpus/given/c.txt", "p=1@0-8", "")
+        rows = [(i1, "delivery slips to Q3", "-", "-", "-", SRC1, "GIVEN", "OK"),
+                (i1, "the module ships enabled", "-", "-", "-", SRC2,
+                 "GIVEN", "OK")]
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(rows)}, given=GIVEN_TXT)
+            errors, _, _ = kc.kb_check_claims(docs)
+        self.assertTrue([e for e in errors if "was not computed from this row" in e],
+                        errors)
+        self.assertFalse([e for e in errors if "cannot separate" in e], errors)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

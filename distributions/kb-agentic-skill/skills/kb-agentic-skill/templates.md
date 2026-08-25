@@ -668,8 +668,34 @@ original_sha256: <digest at ingest — RECORDED, never checked: we do not hold t
 ---
 ```
 
-Keep `original_sha256`'s limit visible wherever it is written: it lets a human
-re-verify by hand and it dates the ingest, and it detects nothing on its own.
+The two fields are **not** in the same position, and writing them as if they were is
+how a dangling pointer survives a green run:
+
+- `original_sha256` detects nothing on its own — we do not hold the bytes. It lets a
+  human re-verify by hand and it dates the ingest. Keep that limit visible wherever the
+  field is written.
+- `original_path` **is** checked for resolution, and warns when it does not resolve
+  (never errors — an imported bundle carries no originals). **Write it absolute, or
+  relative to the project root**; the validator tries the docs root's parent first and
+  the docs root second, and names both in the warning. The convention was implicit
+  until F-035 and is stated here because a pointer nobody can resolve is worth less
+  than no pointer at all.
+
+Write these two values with **no trailing `# comment`**: the frontmatter reader does
+not strip inline comments, so the comment lands inside the value.
+
+`provenance:` has a consumer too: a claim row filed `prov: GIVEN` whose artifact's
+sidecar declares anything else warns. Declare the chain the artifact actually has —
+an OCR, a transcription from an image, a translation are not first-hand evidence, and
+saying so in the sidecar's prose is not a check.
+
+Two limits of that warning, stated so it is not mistaken for more than it is. It reads
+the row's **first** source, so a weak artifact cited second is not compared. And it can
+only read the **field**: a sidecar that says `provenance: GIVEN` while its prose says
+"transcribed from a photograph" is silent, because prose is not machine-readable — the
+warning catches the author who declared the chain honestly and then filed the row too
+strongly, never the author who declared it wrongly. Nothing requires a `given/` sidecar
+to carry `provenance:` at all; adding that requirement is a new gate, not this one.
 
 ## ai_docs/corpus/notes/RULING_[topic]_[date].md (practitioner ruling)
 

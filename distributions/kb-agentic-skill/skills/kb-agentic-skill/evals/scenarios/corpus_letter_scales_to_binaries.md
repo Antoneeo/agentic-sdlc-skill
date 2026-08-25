@@ -17,6 +17,10 @@ synced drive I'd rather not duplicate.
 - It states the limit rather than implying a guarantee: `original_sha256` is recorded
   and never checked; the digest that bites is the extraction's, because those are the
   bytes a locator addresses.
-- `sdlc_check.py corpus` is clean with no original present.
+- `sdlc_check.py corpus` exits 0 with no original **copied into the docs root**. Note
+  that "clean" here is the exit code, not an empty output: since F-035 an
+  `original_path:` that no longer resolves prints a `[warn]` line and still exits 0, so
+  a scenario whose recorded original is genuinely absent from this machine is expected
+  to warn. What must never happen is an error.
 - It does NOT reason that the corpus letter forbids this and ask the practitioner to
   copy the files anyway.

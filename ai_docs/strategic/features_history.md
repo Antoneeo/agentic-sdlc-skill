@@ -27,3 +27,4 @@
 | F-032 | Interface Contract (was Interaction Contract) — actor-facing surface spec between use cases and solution | L3 | COMPLETED | 2026-08-04 | 2026-08-04 | solutions/ANALYSIS_interaction_contract.md |
 | F-033 | Functional Spec — the readable WHAT + the strategic pass as one search with four open buffers | L3 | COMPLETED | 2026-08-06 | 2026-08-06 | solutions/ANALYSIS_functional_spec.md |
 | F-034 | Execution Integrity Tranche A — claim-to-evidence, scoped re-review, destructive guards, rationalization tables | L3 | COMPLETED | 2026-08-06 | 2026-08-06 | solutions/ANALYSIS_execution_integrity.md |
+| F-035 | kb field report 2 — provenance below GIVEN, unverified original_path, a duplicate-id message that names the wrong cause | L3 | COMPLETED | 2026-08-25 | 2026-08-25 | solutions/ANALYSIS_kb_provenance_pointers.md |

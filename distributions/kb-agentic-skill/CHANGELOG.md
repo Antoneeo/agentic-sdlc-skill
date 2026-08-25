@@ -2,6 +2,92 @@
 
 Every significant change to this skill is recorded here.
 
+## [Unreleased - 1.4.8]
+
+F-035 — second field report from the F-029 practitioner. Three defects in the corpus
+letter's own enforcement: the promise is that every provenance is a real file, and two
+of the three mechanisms that should hold it did not run.
+
+### Fixed
+- **`prov:` below `GIVEN` was structurally impossible for any claim citing
+  `corpus/given/`.** `_note_frontmatter` read frontmatter from the cited file itself. A
+  corpus artifact is bytes and carries none — but it *is* a file, so the helper returned
+  `{}` rather than `None`, which the caller cannot tell apart from "resolved, field
+  absent", and the required-field error fired unconditionally. `DERIVED`, `RULING` and
+  `IMPORTED` were unreachable on any `given/` artifact, so every such claim was forced
+  to `GIVEN` whatever its real extraction chain. The helper now reads the artifact's
+  `.meta.md` **sidecar** when one exists and the cited file otherwise — sidecar-first,
+  not "non-`.md`", so a verbatim `.md` source stored in `given/` resolves the same way
+  as a `.txt` extraction while a `corpus/notes/*.md` note still resolves to its own
+  frontmatter. It also returns the path it actually read, and the three findings now
+  name that file instead of saying "note" about a sidecar.
+- **`original_path:` was never verified.** Zero reads of it in either script: a folder
+  of originals could be moved and sixteen sidecars go dangling behind a green run. It is
+  now checked for resolution — a **warning**, never an error, because a bundle carries
+  artifacts and sidecars and never the originals, so after an import it dangles
+  legitimately. Absolute paths are tested as written; a relative one is tried against
+  the docs root's parent and against the docs root, and warns only if neither resolves.
+  `original_sha256` stays unverified for the reason already stated — we do not hold the
+  bytes — and `distillation.md` now states the two limits separately, because they were
+  never in the same position.
+- **The duplicate-id error named the wrong defect.** "uniqueness is global across
+  topics/" describes a copied row; the reporter's two rows were hand-written and
+  different, and had collided in `kb_claim_id`, which hashes `path#locator#qty` and
+  excludes the text on purpose. The check now branches on the **claim text** — same text
+  is a copied row, different text is the collision — and the collision message explains
+  why the id cannot separate them and prescribes the two legitimate repairs (widen a
+  locator, or merge the rows), explicitly ruling out editing the qty to break the tie.
+  The id function itself is unchanged and its two constants are now pinned by tests:
+  `portability.md`'s cross-project de-duplication rests on them
+  (`ADR_2026-08-25_claim_id_collision.md`).
+
+### Added
+- **A `GIVEN` row whose artifact declares a weaker chain now warns.** `provenance:` was
+  written into every sidecar and read by nothing; this is its first consumer. A
+  conformant corpus (`provenance: GIVEN`, or no field) is silent. **Scope, stated so it
+  is not mistaken for more:** it reads the row's first source and it reads the *field* —
+  a sidecar declaring `provenance: GIVEN` while its prose says "transcribed from a
+  photograph" stays silent, because prose is not machine-readable. The pair's larger
+  half is the fix above, which is what makes the honest declaration possible at all.
+
+### Fixed (second review round)
+- **`original_path` classification was wrong on Windows, and the documented example was
+  the trigger.** `Path.is_absolute()` is False for a rooted-but-driveless path — exactly
+  the `/vault/manuals/xyz.pdf` form these templates print — so it was joined under the
+  docs root and silently rewritten onto the docs root's *drive*. That produced a warning
+  quoting a path nobody wrote (twice, since both candidates collapsed to it), could hide
+  a genuinely dangling pointer behind whatever happened to sit there, and warned falsely
+  whenever the corpus and the original lived on different drives. Rootedness is now
+  decided by `ntpath`/`posixpath`, the candidate list is de-duplicated, and the
+  backslash normalisation is an *additional* candidate rather than a rewrite (a
+  backslash is a legal character in a POSIX filename).
+- **The pointer probe could crash the run.** `Path.exists()` re-raises `PermissionError`
+  and `ENAMETOOLONG`; `original_path` points outside the docs root by design, so the
+  validator must survive whatever is out there. It is now `is_file()` (a directory is not
+  a document) inside an `OSError` guard.
+- **`_note_frontmatter` could read one file outside the docs root.** A source cell of
+  the form `#L1-2` — no path before the locator — made `confine_under` return the docs
+  root itself, and the sidecar name was then built from `base.parent`, i.e.
+  `<docs-root>.meta.md`. Both that case and a sidecar orphaned by a deleted artifact now
+  return "unresolved", which the source loop already reports.
+- **The collision message asserted something it had not checked.** It claimed the two
+  rows "cite the same span with the same qty" — true only for a *computed* id. Two rows
+  sharing a hand-typed or stale id while citing different spans now get their own
+  message, naming the real repair (`claim-id --fill`).
+- Frontmatter resolution is memoized per cited path: it now runs for every row, `GIVEN`
+  included, and a ledger citing one artifact from eighty rows was re-reading its sidecar
+  eighty times.
+- The worked sidecar example carried trailing `# comment`s. The frontmatter reader is a
+  line regex and does not strip them, so the comment landed inside the value — harmless
+  while nothing read `original_path`, and a guaranteed false warning once something did.
+
+### Known limits, stated
+- `ELICITED` is accepted with **no required field at all** — it is named in the
+  provenance branch but has no check below it. Found while fixing the above, deliberately
+  not repaired here: adding one is a new gate, not a repair.
+- `corpus` and `graph` still have no `--errors-only`; on a corpus with many in-progress
+  artifacts the coverage warnings bury a lone error. Ranked last by the reporter.
+
 ## [1.4.7] - 2026-08-06
 
 ### Fixed

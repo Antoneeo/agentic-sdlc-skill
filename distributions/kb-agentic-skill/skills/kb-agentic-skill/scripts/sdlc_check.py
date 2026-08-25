@@ -31,6 +31,8 @@ Pure stdlib. ASCII output only (Windows-console safe).
 """
 import argparse
 import hashlib
+import ntpath
+import posixpath
 import re
 import sys
 from pathlib import Path
@@ -272,10 +274,94 @@ def kb_fill_ids(text):
 
 
 def _note_frontmatter(root, rel):
-    p = root / rel
-    if not p.is_file():
-        return None
-    return sdlc_core.load_frontmatter(sdlc_core.read_text(p).splitlines()) or {}
+    """The frontmatter that DECLARES the cited file, and the path it came from.
+
+    A corpus artifact carries none of its own: `given/x.txt` is bytes, and what
+    says how those bytes were obtained is the `x.txt.meta.md` sidecar beside it.
+    Resolving the cited path alone returned `{}` for such a file -- which the
+    caller cannot tell apart from "resolved, field absent" -- and that made
+    DERIVED, RULING and IMPORTED impossible for every claim citing `given/`.
+
+    Sidecar FIRST when one exists, the cited file otherwise. Not "non-.md ->
+    sidecar": a verbatim `.md` source stored in `given/` is declared by its
+    sidecar exactly like a `.txt` extraction, and reading its own frontmatter
+    would read the SOURCE's, which says nothing about how it was extracted. A
+    `corpus/notes/*.md` note has no sidecar and still resolves to its own.
+
+    Returns `(meta, label)`. The label names the file actually read, so a
+    finding can say where it looked instead of sending the reader to the wrong
+    file -- the same defect this release fixes in the duplicate-id message.
+    """
+    base = sdlc_core.confine_under(root, rel)
+    if base is None or base == root.resolve():
+        # None: the path escapes the docs root, and the source loop said so.
+        # Equal to the root: an empty or dot-only path cell (a source written
+        # `#L1-2`, with no file before the locator). Forming a sidecar name
+        # from that would step back OUT of the root through `base.parent` and
+        # read `<docs-root>.meta.md` -- outside the tree this helper confines.
+        return None, rel
+    if not base.is_file():
+        # The cited file is gone. Its sidecar may still be lying there, but a
+        # claim on a missing artifact is already an error from the source loop,
+        # and answering from an orphan sidecar would add a second finding about
+        # a file that is not there.
+        return None, rel
+    side = base.parent / (base.name + ".meta.md")
+    if side.is_file():
+        return (sdlc_core.load_frontmatter(
+            sdlc_core.read_text(side).splitlines()) or {}, rel + ".meta.md")
+    return (sdlc_core.load_frontmatter(
+        sdlc_core.read_text(base).splitlines()) or {}, rel)
+
+
+def _kb_pointer_resolves(p):
+    """A recorded pointer resolves when it names a FILE we can stat.
+
+    `is_file()` and not `exists()`: `original_path` names a document, so a
+    directory that happens to sit at that path is not the original. Any OSError
+    is "does not resolve" and never a traceback -- the field points OUTSIDE the
+    docs root by design, so the validator has to survive whatever lives there
+    (an unreadable parent on a network vault, a name too long, a reparse point).
+    """
+    try:
+        return p.is_file()
+    except OSError:
+        return False
+
+
+def _kb_original_candidates(op, root):
+    """Every place a recorded `original_path` could legitimately be, in order.
+
+    `Path.is_absolute()` is NOT the test, and using it was a real defect: on
+    Windows a rooted-but-driveless path -- `/vault/manuals/xyz.pdf`, the exact
+    form this project's own templates print -- is not absolute, so it was
+    joined under the docs root and silently rewritten onto the docs root's
+    DRIVE. That produced a warning quoting a path nobody wrote, and could hide
+    a genuinely dangling pointer behind a file that happened to exist there.
+    Anything EITHER platform calls rooted is now taken as written; only a
+    genuinely relative pointer is joined.
+
+    A relative pointer is tried against the docs root's parent (the project
+    root in the standard layout) and against the docs root itself, because
+    `--root` and `migrate` both allow a docs root that does not sit directly
+    under the project root.
+    """
+    raw = (op or "").strip()
+    forms = [raw]
+    if "\\" in raw:
+        # A path authored on Windows and read anywhere. Tried as a SECOND form,
+        # never instead of the first: a backslash is a legal character in a
+        # POSIX filename, and rewriting it unconditionally invented a path.
+        forms.append(raw.replace("\\", "/"))
+    out, seen = [], set()
+    for f in forms:
+        cands = ([Path(f)] if (ntpath.isabs(f) or posixpath.isabs(f))
+                 else [root.parent / f, root / f])
+        for c in cands:
+            if str(c) not in seen:
+                seen.add(str(c))
+                out.append(c)
+    return out
 
 
 def kb_check_claims(root):
@@ -287,6 +373,15 @@ def kb_check_claims(root):
         return errors, warnings, notes
     all_ids = {}     # id -> "file:line"
     all_rows = {}    # id -> (row, rel)
+    # Frontmatter is now resolved for every row, GIVEN included, so a ledger
+    # citing one artifact from 80 rows would otherwise stat and decode that
+    # artifact's sidecar 80 times. Keyed by the cited path, per run.
+    fm_cache = {}
+
+    def _declaring_frontmatter(rel):
+        if rel not in fm_cache:
+            fm_cache[rel] = _note_frontmatter(root, rel)
+        return fm_cache[rel]
     per_file_rows = []
     for p in sorted(topics.glob("*.md")):
         rel = "topics/" + p.name
@@ -320,25 +415,46 @@ def kb_check_claims(root):
                 kb_check_locator(target, loc, where, errors)
             # --- provenance ---
             prov = row["prov"]
+            # Resolved ONCE, for every provenance: the non-GIVEN classes read it
+            # for their required field, and GIVEN reads it to notice that the
+            # artifact declares a weaker chain than the row claims.
+            meta, meta_where = (None, "")
+            if "#" in first:
+                meta, meta_where = _declaring_frontmatter(first.rsplit("#", 1)[0])
             if prov not in PROVENANCES:
                 errors.append("%s: prov %r not in %s" % (where, prov, "/".join(PROVENANCES)))
             elif prov in ("DERIVED", "RULING", "ELICITED", "IMPORTED"):
-                meta = _note_frontmatter(root, first.rsplit("#", 1)[0])
                 if meta is None:
                     pass  # unresolvable source already reported
                 elif prov == "DERIVED" and not meta.get("derived_from"):
-                    errors.append("%s: DERIVED claim's note carries no 'derived_from:' "
-                                  "— model knowledge disguised as a source" % where)
+                    errors.append("%s: DERIVED claim's source (%s) carries no "
+                                  "'derived_from:' — model knowledge disguised as "
+                                  "a source" % (where, meta_where))
                 elif prov == "RULING" and not meta.get("basis"):
-                    errors.append("%s: RULING note carries no 'basis:' — a preference "
-                                  "is not a fact; no basis, no ruling" % where)
+                    errors.append("%s: RULING source (%s) carries no 'basis:' — a "
+                                  "preference is not a fact; no basis, no ruling"
+                                  % (where, meta_where))
                 elif prov == "IMPORTED" and not meta.get("imported_from"):
                     # F-030: IMPORTED exists so a foreign decision cannot pass for
                     # a local one. Without the origin the class says nothing and
                     # the row is a RULING with the label filed off.
-                    errors.append("%s: IMPORTED note carries no 'imported_from:' — "
-                                  "the class exists to name whose decision this "
-                                  "was; unnamed, it is a RULING in disguise" % where)
+                    errors.append("%s: IMPORTED source (%s) carries no "
+                                  "'imported_from:' — the class exists to name "
+                                  "whose decision this was; unnamed, it is a "
+                                  "RULING in disguise" % (where, meta_where))
+            elif prov == "GIVEN":
+                # F-035: a row resting on an OCR, a transcription or a
+                # translation is not the same evidence as one resting on a
+                # deterministic text layer. The sidecar could say so only in
+                # prose, and prose is not a check -- which is how three rows
+                # whose evidence was a reading of an image passed as GIVEN.
+                declared = ((meta or {}).get("provenance") or "").strip()
+                if declared and declared.upper() != "GIVEN":
+                    warnings.append(
+                        "%s: prov GIVEN, but %s declares 'provenance: %s' — the "
+                        "row reads as first-hand evidence and its artifact does "
+                        "not. File the row at the provenance the chain actually "
+                        "has, or correct the sidecar" % (where, meta_where, declared))
             # --- grammar cells ---
             try:
                 kb_parse_scope(row["valid"])
@@ -368,9 +484,49 @@ def kb_check_claims(root):
                                   "moved silently" % (where, row["id"], expect))
             if row["id"]:
                 if row["id"] in all_ids:
-                    errors.append("%s: duplicate id %s (also at %s) — uniqueness "
-                                  "is global across topics/" % (where, row["id"],
-                                                                all_ids[row["id"]]))
+                    # F-035: one message served two different defects. Same id
+                    # with the SAME text is a copied row. Same id with DIFFERENT
+                    # text is a collision: kb_claim_id hashes path#locator#qty
+                    # and excludes the text on purpose, so two distinct
+                    # assertions about one span cannot be told apart. The source
+                    # and qty do NOT discriminate -- the id already implies them.
+                    prev_row = all_rows[row["id"]][0]
+
+                    def _cell(r, k):
+                        return (r[k] or "").strip()
+
+                    def _first_src(r):
+                        return (r["source"] or "").split(";")[0].strip()
+
+                    same_text = _cell(prev_row, "claim") == _cell(row, "claim")
+                    same_span = (_first_src(prev_row) == _first_src(row)
+                                 and _cell(prev_row, "qty") == _cell(row, "qty"))
+                    if same_text:
+                        errors.append("%s: duplicate id %s (also at %s) — uniqueness "
+                                      "is global across topics/" % (where, row["id"],
+                                                                    all_ids[row["id"]]))
+                    elif same_span:
+                        errors.append(
+                            "%s: id %s collides with the row at %s — two "
+                            "DIFFERENT rows cite the same span with the same "
+                            "qty, and the id function cannot separate them (it "
+                            "hashes path#locator#qty and excludes the text on "
+                            "purpose). Widen one locator to the span that "
+                            "actually carries its assertion, or merge the two "
+                            "rows — do not edit the qty to break the tie"
+                            % (where, row["id"], all_ids[row["id"]]))
+                    else:
+                        # Same id, different text AND different span: the id
+                        # cannot have been computed from both rows, so it was
+                        # hand-typed or left stale after a source was repointed.
+                        # Saying "they cite the same span" here would name a
+                        # cause that is provably not this one.
+                        errors.append(
+                            "%s: id %s is also on the row at %s, which cites a "
+                            "different span — the id was not computed from this "
+                            "row (hand-typed, or left stale after its source "
+                            "moved). Run 'sdlc_check.py claim-id --fill %s'"
+                            % (where, row["id"], all_ids[row["id"]], rel))
                 else:
                     all_ids[row["id"]] = where
                     all_rows[row["id"]] = (row, rel)
@@ -889,6 +1045,24 @@ def kb_corpus_check(root):
                     errors.append("%s: raw-byte digest changed since ingest — "
                                   "given/ is never edited; this is the check, "
                                   "not a convention" % rel)
+            # F-035: `original_sha256` is not verified because we do not hold
+            # the bytes -- a limit stated out loud in distillation.md. That
+            # reason does not extend to the PATH, which costs one exists(). A
+            # corpus whose premise is "every provenance is a real file" cannot
+            # let 16 sidecars go dangling behind a green run.
+            op = (meta.get("original_path") or "").strip()
+            if op:
+                cands = _kb_original_candidates(op, root)
+                tried = [str(c) for c in cands]
+                resolved = any(_kb_pointer_resolves(c) for c in cands)
+                if not resolved:
+                    warnings.append(
+                        "%s: original_path %r does not resolve (tried %s) — the "
+                        "extraction is intact, the pointer to the original is "
+                        "not. A warning and not an error: a bundle carries "
+                        "artifacts and sidecars, never the originals, so after "
+                        "an import this dangles legitimately"
+                        % (rel, op, ", ".join(tried)))
             sup = (meta.get("supersedes") or "").strip()
             if sup:
                 superseded.add(sup)

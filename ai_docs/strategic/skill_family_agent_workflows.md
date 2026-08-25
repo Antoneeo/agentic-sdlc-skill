@@ -131,14 +131,25 @@ validator la rifiuta.**
 Su corpus binari grandi vale la variante **estrazione-come-artefatto** (F-029): in
 `given/` entra solo l'estrazione, `sha256:` è il suo digest — l'immutabilità resta
 imposta sui byte che i locator indirizzano — e l'originale resta dov'è, registrato
-come `original_path:` + `original_sha256:`. Quei due campi sono **registrati e mai
-verificati**, e il limite va scritto dove stanno: 233 MB di PDF non entrano nel
-docs root per proteggere byte che nessun locator tocca.
+come `original_path:` + `original_sha256:`. I due campi **non hanno lo stesso
+statuto**, e scriverli come se lo avessero e' il modo in cui un puntatore rotto
+sopravvive a un run verde (F-035): `original_sha256` non e' verificato — i byte non
+li teniamo, quindi nulla puo' verificarlo — mentre `original_path` **e' verificato
+che risolva**, con un warning (mai un errore: un bundle importato non porta gli
+originali). Il limite va scritto dove stanno, per campo: 233 MB di PDF non entrano
+nel docs root per proteggere byte che nessun locator tocca.
 
 **2. Estrazione — l'unità è il claim.** Righe
 `id | claim | valid | qty | about | source | prov | state`. L'**id** =
 hash(posizione+quantità), **mai del testo** — una riformulazione LLM non conia
-identità nuove. Il **locator** (`p=17@412-509`) è verificato: il validator apre
+identità nuove. Il prezzo, dichiarato (F-035): **uno stesso span non puo' portare
+due asserzioni diverse alla stessa qty** — l'id non le distingue e il validator
+rifiuta la coppia, nominando la collisione invece di accusare un copia-incolla. Si
+allarga un locator o si fondono le righe; non si ritocca la qty per far divergere
+l'hash. La `prov` della riga viene ora confrontata con la `provenance:` dichiarata
+dal sidecar dell'artefatto: una riga `GIVEN` su un'estrazione debole (un OCR, una
+trascrizione da immagine) produce un warning, perche' dichiararlo nella prosa del
+sidecar non e' un controllo. Il **locator** (`p=17@412-509`) è verificato: il validator apre
 l'estrazione e controlla che lo span esista; `anchor <path> <frase>` lo produce
 (F-029), matchando gli spazi come `\s+` perché l'estrazione PDF spezza le frasi a
 metà riga. **Copri i gate, non solo i poteri**: per ogni riga che dice cosa il

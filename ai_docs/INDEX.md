@@ -36,6 +36,7 @@ not manifested here.
 | `architecture/ADR_2026-08-05_use_case_grounding_gate.md` | CURRENT | Why the D-UC / use-case grounding gate is two mechanical checks (product-name buckets + benefit-trace), verified by a light independent review that PRECEDES... |
 | `architecture/ADR_2026-08-06_execution_integrity_tranche_a.md` | CURRENT | Why execution-integrity mechanisms inspired by Superpowers enter as evidence-gated tranches (A now, B opportunistic, C frozen), and why the enforcement-writi... |
 | `architecture/ADR_2026-08-06_functional_spec_layer.md` | CURRENT | Why the observable WHAT gets its own component-free section (Functional Spec) between the use cases and the Interface Contract, and why the strategic pass is... |
+| `architecture/ADR_2026-08-25_claim_id_collision.md` | CURRENT | Why two distinct assertions about one span are refused rather than disambiguated — the claim id stays a pure function of (path, locator, qty), and the collis... |
 
 ## functional/
 
@@ -52,7 +53,7 @@ not manifested here.
 | Document | Status | Description |
 |---|---|---|
 | `strategic/architecture.md` | CURRENT | Stack, package structure, component map and architectural patterns of the skill repository. |
-| `strategic/capabilities_and_positioning.md` | CURRENT | Honest catalog of agentic-sdlc's current advantages (explained), parity points, and positioning vs superpowers (through v6.0.x). Owns the four-layer (A/B/C/D... |
+| `strategic/capabilities_and_positioning.md` | CURRENT | Dated, evidence-based comparison of agentic-sdlc 1.26.1 and Superpowers 6.2.0: advantages, parity, remaining gaps and deliberate non-adoptions. |
 | `strategic/existing_features.md` | CURRENT | Concise catalog of the skill's existing features. |
 | `strategic/process_agentic_sdlc_devpnt.md` | CURRENT | The joint agentic-sdlc × devPNT governance process — pipeline, documents, human vs agent reviews, mandatory checks, and why it works. Read to understand how... |
 | `strategic/skill_family_agent_workflows.md` | CURRENT | How the three skills differ in the way an AGENT actually works under each — from a full three-way doctrine inventory. For the owner; body in Italian. |
