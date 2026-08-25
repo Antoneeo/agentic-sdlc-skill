@@ -2,7 +2,7 @@
 
 Every significant change to this skill is recorded here.
 
-## [Unreleased - 1.4.8]
+## [1.4.8] - 2026-08-25
 
 F-035 — second field report from the F-029 practitioner. Three defects in the corpus
 letter's own enforcement: the promise is that every provenance is a real file, and two
