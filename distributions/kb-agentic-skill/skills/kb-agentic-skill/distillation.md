@@ -43,16 +43,39 @@ corpus artifact on its own. Then `sha256:` is the extraction's digest — immuta
 enforced exactly as before — and the original is recorded, not copied:
 
 ```yaml
-sha256: <digest of this extraction>      # enforced: the bytes locators address
-original_path: /vault/manuals/xyz.pdf    # recorded: where the original lives
-original_sha256: <digest at ingest>      # recorded, NOT verified — we do not hold it
+sha256: <digest of this extraction>
+original_path: /vault/manuals/xyz.pdf
+original_sha256: <digest at ingest>
 ```
 
+`sha256:` is the enforced one — the bytes the locators address. `original_path:` says
+where the original lives and is checked to still resolve. `original_sha256:` is recorded
+and never verified. **Write no trailing `# comment` on these lines**: the frontmatter
+reader is a line regex and does not strip them, so the comment becomes part of the
+value — which on `original_path:` now means a pointer that cannot resolve.
+
 Say the limit out loud, because a field that looks like a guarantee and is not is worse
-than an absent one: **`original_sha256` is never checked.** It lets a human re-verify by
-hand and it dates the ingest; it detects nothing on its own. The digest that bites is
-`sha256:`. Same honesty as a guide's `source_hash`, which proves the source is unchanged
-and never that the guide described it correctly.
+than an absent one — and say it **per field**, because the two are not in the same
+position:
+
+- **`original_sha256` is never checked.** We do not hold the bytes, so nothing can. It
+  lets a human re-verify by hand and it dates the ingest; it detects nothing on its own.
+  Same honesty as a guide's `source_hash`, which proves the source is unchanged and
+  never that the guide described it correctly.
+- **`original_path` IS checked — for resolution only.** "We do not hold it" was never a
+  reason to leave the *pointer* unverified: it costs one `exists()`, and on a corpus
+  whose whole premise is that every provenance is a real file, a pointer that has gone
+  dangling in silence is the failure this design most wants to catch. A path that does
+  not resolve is a **warning**, never an error: a bundle carries artifacts and sidecars
+  and never the originals (`portability.md` §1), so after an import it dangles
+  legitimately. Absolute paths are tested as written; a relative one is tried against
+  the docs root's parent (the project root in the standard layout) and against the docs
+  root itself, and warns only if neither resolves. "Absolute" here means what either
+  platform calls rooted, `/vault/...` included: testing it with `Path.is_absolute()`
+  alone was a real defect, because on Windows a rooted path with no drive letter is not
+  absolute and got silently joined onto the docs root's drive.
+
+The digest that bites is `sha256:`, on the bytes the locators actually address.
 
 ## 2. The claim — one falsifiable assertion
 
@@ -69,6 +92,15 @@ Claims live in the owning topic's `## Claims` table (`templates.md` has the temp
 - **id** — leave empty when writing by hand; `sdlc_check.py claim-id --fill <file>`
   computes it (`sha256(path#locator#qty)`, text excluded — a paraphrase must not mint a
   new identity). An empty id is a `[note]`, never an error.
+  **Its limit, stated as plainly as `original_sha256`'s:** excluding the text is what
+  makes the same assertion mint the same id in another project, which is what makes
+  `portability.md`'s de-duplication mechanical instead of a judgement call. The price is
+  that **one span cannot carry two different assertions at the same qty** — the id
+  cannot tell them apart, and the validator refuses the pair. The fix is to widen one
+  locator to the span that actually carries its assertion, or to merge the two rows.
+  It is **not** to edit the qty or nudge the locator until the hash differs: that
+  distorts the evidence to satisfy a hash function, which is the one repair this
+  ledger exists to prevent.
 - **valid** — `-`, `from X`, `until X`, `from X until Y`, `if <condition>`. Half-open:
   `until 2026-03-01` and `from 2026-03-01` do NOT overlap. A time-bounded fact is not a
   conflict with its successor — write the scope, or reconciliation will manufacture one.
