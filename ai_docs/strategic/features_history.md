@@ -29,3 +29,4 @@
 | F-034 | Execution Integrity Tranche A — claim-to-evidence, scoped re-review, destructive guards, rationalization tables | L3 | COMPLETED | 2026-08-06 | 2026-08-06 | solutions/ANALYSIS_execution_integrity.md |
 | F-035 | kb field report 2 — provenance below GIVEN, unverified original_path, a duplicate-id message that names the wrong cause | L3 | COMPLETED | 2026-08-25 | 2026-08-25 | solutions/ANALYSIS_kb_provenance_pointers.md |
 | F-036 | init.js wires the SessionStart orientation hook, so the recommended default stops being a manual step | L3 | COMPLETED | 2026-08-25 | 2026-08-25 | solutions/ANALYSIS_init_wires_orient_hook.md |
+| F-037 | a review rung that exists but needs the user's authorization is not "unavailable" — ask at the gate instead of descending | L3 | CANCELLED | 2026-08-25 | 2026-08-25 | solutions/ANALYSIS_permission_gated_rung.md |
