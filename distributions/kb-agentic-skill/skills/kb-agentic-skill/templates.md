@@ -448,7 +448,7 @@ adds values to the existing columns rather than a second table.
 | date | doc_key | tier | reviewer | findings_raised | findings_real | verdict | revise_rounds |
 |---|---|---|---|---|---|---|---|
 | 2026-06-11 | ANALYSIS_login_sso.md | design | subagent (opus, fresh ctx) | 4 | 3 | FAIL → PASS | 2 |
-| 2026-06-12 | diff feature/sso-login | closure | self-pass (declared; no subagent facility) | 2 | 2 | PASS with findings → corrections re-reviewed, PASS | 2 |
+| 2026-06-12 | diff feature/sso-login | closure | self-pass (declared; absent) | 2 | 2 | PASS with findings → corrections re-reviewed, PASS | 2 |
 
 ## Notes
 <!-- One short paragraph per review that found something worth remembering: what
@@ -463,9 +463,17 @@ and `closure` (Standalone); `deep`, `light`, `code`, `guide`, `vision` (devPNT g
 and the Vision blind check). The validator reads this column by its header name, so
 extra or reordered columns are fine — but the header must say `tier`. `reviewer`
 records the realization actually used — fresh subagent, one-shot client run, or a
-**declared** self-pass. Writing `self-pass` where independence was unavailable is
-honest; writing nothing, or implying independence you did not have, is the failure
-this column exists to prevent. `findings_real` is how many raised findings survived
+**declared** self-pass — and, for any rung below rung 1, WHY the rung(s) above did
+not run, in the ladder's reason words (`review.md`): `absent` — the client has no
+such facility (a claim about the client, never about a policy); `gated, declined` —
+usable only with the user's assent at this gate, withheld (a standing policy
+answered no, or a per-call prompt denied); `gated, unattended` — a standing policy
+gates it, no user reachable; `gated, pre-empted` — gated, nothing asked, an ungated
+lower rung ran the review. A rung-1 row owes nothing. `gated` here is the ROW
+word — it also covers a denied per-call prompt, which never triggers `review.md`'s
+stop. Writing `self-pass` with its
+true reason is honest; writing nothing, or implying independence you did not have,
+is the failure this column exists to prevent. `findings_real` is how many raised findings survived
 triage: over time it is the only evidence of whether the gate earns its cost.
 `revise_rounds` counts **review rounds**, not fix cycles: the first review is round 1
 and every scoped re-review adds one. A review that produced findings which were then

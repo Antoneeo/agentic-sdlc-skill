@@ -83,9 +83,11 @@ re-running a DONE task.
 
 ## Degradation
 
-No subagent-spawning tool available → the orchestrator runs each task in the
-same session, against the same plan and ledger, with the same one-shot review
-slots. No capability is lost, only the parallelism/isolation subagents would
+No subagent-spawning tool available — absent, or permission-gated with no grant
+in context (`review.md`'s gated-rung stop owns the asking; task dispatch never
+asks; the broad final pass IS `review.md` moment 2 and asks there) → the
+orchestrator runs each task in the same session, against the same plan and ledger,
+with the same one-shot review slots. No capability is lost, only the parallelism/isolation subagents would
 have added.
 
 ## Hybrid note
