@@ -2,9 +2,9 @@
 workstream: F-038 Gated-Rung Vocabulary
 level: L3
 branch: feat/gated-rung-vocabulary
-status: RELEASED, AWAITING PUBLISH
+status: DONE
 since: 2026-08-25
-next: publish_all.bat from main (2FA, owner's act) -> polling verify 1.28.0 / 1.6.0 / 0.6.0
+next: nothing outstanding -- published and verified 2026-08-26 (1.28.0 / 1.6.0 / 0.6.0)
 details: ANALYSIS_gated_rung_vocabulary.md
 updated: 2026-08-26
 
