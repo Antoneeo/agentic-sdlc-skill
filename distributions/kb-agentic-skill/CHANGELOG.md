@@ -2,7 +2,7 @@
 
 Every significant change to this skill is recorded here.
 
-## [Unreleased]
+## [1.6.0] - 2026-08-26
 
 F-038 — the gated rung: truthful log vocabulary and a mandated ask, no grant memory.
 

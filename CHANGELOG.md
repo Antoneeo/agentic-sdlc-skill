@@ -2,7 +2,7 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
-## [Unreleased]
+## [1.28.0] - 2026-08-26
 
 F-038 — the gated rung: truthful log vocabulary and a mandated ask, no grant memory.
 
