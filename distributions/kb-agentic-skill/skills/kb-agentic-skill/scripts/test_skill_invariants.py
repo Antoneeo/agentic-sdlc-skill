@@ -178,6 +178,39 @@ class SkillInvariants(unittest.TestCase):
                             "%s -- a reader copying that snippet gets a hook that "
                             "cannot run" % (named_dir, SKILL_DIR.name))
 
+    def test_the_ladder_names_the_gated_rung(self):
+        """F-038. A rung that exists behind a standing permission policy had no
+        truthful word: F-035's log row wrote 'unavailable' for a facility that
+        was present, and rung 3's reason string hard-coded 'no subagent
+        facility'. The ladder must carry the gated state, its definition, the
+        rung-2 precedence, the unattended bound and the no-memory rule -- and
+        THIS lens's templates.md must define the reason words (per-lens file:
+        the drift guard cannot check it)."""
+        ladder = read("review.md")
+        start = ladder.index("Independence, best realization")
+        end = ladder.index("Rounds are capped")
+        # Whitespace-normalized: prose reflows, and an anchor that depends on
+        # where a line happens to wrap is a test of the formatter, not the rule.
+        section = " ".join(ladder[start:end].split())
+        for anchor in ("permission-gated", 'rung 2 is not "usable"',
+                       "Unattended", "asks again", "gated, declined",
+                       "gated, unattended", "gated, pre-empted",
+                       "forbidding its use absent a user request",
+                       "approval prompt is NOT this",
+                       "wherever a higher rung is usable",
+                       "DECLINED is not usable"):
+            self.assertIn(anchor, section,
+                          "the ladder lost its gated-rung clause: %r" % anchor)
+        # The retired reason string must not return: 'no subagent facility' as a
+        # parenthesised reason claims absence where the truthful word may be
+        # gated -- the exact F-035 defect this vocabulary exists to end.
+        self.assertNotIn("(declared; no subagent facility", section,
+                         "the retired reason string is back in the ladder")
+        tpl = read("templates.md")
+        for word in ("gated, declined", "gated, unattended", "gated, pre-empted"):
+            self.assertIn(word, tpl,
+                          "templates.md does not define reason word %r" % word)
+
     def test_skill_consult_trigger(self):
         t = read("SKILL.md")
         self.assertIn("consult the guide router", t)
@@ -702,7 +735,7 @@ class SkillInvariants(unittest.TestCase):
                 "| 2026-07-28 | ANALYSIS_y.md + diff | closure | subagent - "
                 "conformance to the design | 1 | 1 | PASS | 1 |\n"
                 "| 2026-07-28 | ANALYSIS_w.md | design (late) | self-pass "
-                "(declared; no subagent facility) | 2 | 2 | FAIL | 1 |\n",
+                "(declared; absent) | 2 | 2 | FAIL | 1 |\n",
                 encoding="utf-8")
             self.assertTrue(sc.review_logged(root, "ANALYSIS_x.md"))
             self.assertFalse(sc.review_logged(root, "ANALYSIS_y.md"),
