@@ -64,8 +64,11 @@ Qualunque lente sia attiva, l'agente:
 3. **Passa i gate**: Vision gate (DRAFT informa, APPROVED vincola — promozione solo
    tua, dopo il blind check); **design review indipendente prima di implementare**
    e closure review prima di dichiarare DONE — scala di indipendenza a 3 pioli
-   (subagent fresco > run one-shot > self-pass dichiarato, illegittimo se esistono
-   i primi due), cap a 3 round poi i findings aperti arrivano a te, una riga di log
+   (subagent fresco > run one-shot > self-pass dichiarato, illegittimo se un piolo
+   superiore è utilizzabile; un piolo presente ma dietro un permesso non è assente
+   — il gate si ferma e chiede, una domanda per gate a contesto integro, e il log
+   distingue absent / gated, declined / gated, unattended / gated, pre-empted),
+   cap a 3 round poi i findings aperti arrivano a te, una riga di log
    per ogni review, PASS invalido su "non ho trovato niente" (serve il conformance
    statement).
 4. **Rispetta la question discipline**: ogni domanda a te è legale solo se (a) ha
