@@ -12,7 +12,7 @@ Two moments, and they review different things:
 |---|---|---|---|
 | **1. Design review** | End of Phase 3 — **before any implementation** | the ANALYSIS (Standalone) / the `E-ISP`+`E-TDD` (Hybrid) | L3 |
 | **1b. Late arrival** | Work that became L3 *after* code existed — an L1/L2 reclassified mid-flight, or a design increment on a feature already implemented — runs moment 1 **now**, before any further implementation, logged `design (late)` | same | L3 |
-| **2. Closure review** | Phase 5, before DONE | the actual diff, against that approved design | L2 / L3 — the L2 row is optional |
+| **2. Closure review** | Phase 5, before DONE | the actual diff, against that approved design | L2 / L3 — the L2 closure review is optional; every review that runs logs its row |
 
 **Why the design review is its own moment, and not a nicety.** The closure review
 can only tell you the code matches the design; it cannot tell you the design was
@@ -30,16 +30,55 @@ blind to it, which is why independence, not effort, is what this gate buys.
    a SELF-CONTAINED prompt — the reviewer session has no other context, which is
    exactly what makes it independent.
 3. **A declared self-pass** — a separate, explicitly adversarial pass by you,
-   against the same checklist. **Rung 3 is illegitimate wherever rung 1 or 2
-   exists**: on a client with a subagent facility or a one-shot CLI, descending to
-   it is choosing zero independence, which is the one thing this gate buys. When
-   you do use it, the log row must carry *why* — `self-pass (declared; no subagent
-   facility on this client)` — not merely that you did. A rung named without its
+   against the same checklist. **Rung 3 is illegitimate wherever a higher rung
+   is usable**: on a client with a working subagent facility or one-shot CLI,
+   descending to it is choosing zero independence, which is the one thing this
+   gate buys. A gated rung the user DECLINED is not usable — see *The gated
+   rung* below; a gated rung nobody asked about is not declined (unattended is
+   its own case below). When
+   you do use it, the log row must carry *why*, in the reason words below —
+   `self-pass (declared; absent — the client has no such facility)` — not merely
+   that you did. A rung named without its
    reason is indistinguishable from a rung chosen for convenience.
 
 Rung 3 stays in the ladder deliberately: it is what keeps the methodology
 completable with no network, no account and no subagent facility. It is a floor,
 never a default.
+
+**The gated rung — present is not absent (F-038).** A rung that exists behind a
+standing policy or instruction forbidding its use absent a user request is
+**permission-gated**, not unavailable. An interactive per-call approval prompt is
+NOT this: answering the prompt IS the grant. With an ungated rung usable — rung 1
+free, or a one-shot CLI that works (try it, or show it failed) — the prohibition
+above is already satisfiable and no stop fires (the row still carries
+`gated, pre-empted` when a gated rung sat above the one that ran); a gated
+rung 2 is not "usable" for this clause, it joins the question instead. When the best rung is gated and no
+ungated rung works, the gate STOPS and asks: descending to rung 3 on silence is
+illegal while a user is reachable. The stop is doctrine-mandated (legal by mandate,
+`elicitation.md` §Blocking is reserved) and carries that file's five-bullet
+blocking form — its closed-list exemption covers this file's round-cap hand-over
+only, not this stop. The question offers the gated rung(s) against the fallback, with what each
+buys; states each higher rung's status (tried / unusable / gated) with the
+standing instruction quoted and "no grant visible in my current context"; says
+why no assumption survives (assuming either way writes a false log row); says
+why it is the USER'S call — their tokens (~130-175k per deep review, measured
+2026-08) against a benefit only they can price, stated with what independence
+last bought; and names what stays blocked — which reviewer runs, nothing else.
+**No grant memory exists**: the answer holds while the conversation does, and an
+agent that cannot recall a grant asks again — one question per gate per intact
+context; re-asking is a smaller defect than a false row. Unattended
+(`elicitation.md`'s Unattended path — the user is not reachable), no question is
+emitted: rung 2 is still owed a try, then rung 3 runs with its reason logged.
+
+**The reason words.** A below-rung-1 row carries why the rung(s) above did not
+run; a rung-1 row owes nothing. `absent` — the client has no such facility (a
+claim about the client, never about a policy); `gated, declined` — usable only
+with the user's assent at this gate, and the user withheld it (a standing policy
+answered no, or a per-call prompt denied); `gated, unattended` — a standing policy
+gates it and no user is reachable to ask; `gated, pre-empted` — gated, nothing
+asked: an ungated lower rung ran the review instead. `gated` always appears with
+its outcome. The trigger term "permission-gated" scopes the STOP; the row word
+`gated` additionally covers a denied per-call prompt, which never triggers one.
 
 Use a different model from the author's where the client allows it.
 

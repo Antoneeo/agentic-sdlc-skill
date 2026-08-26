@@ -165,7 +165,7 @@ Deliverable language: ask for (or infer) the target market's language in Discove
 - The user approves objectives before strategy. Objectives the user did not set are proposals, and say so.
 
 ### 6. Strategy — **REVIEW + USER GATE**
-- **Design review gate:** the strategy is reviewed by somebody other than its author before any tactic is executed — a subagent with fresh context, or a declared self-pass when none is available. Follow `review.md`; log the outcome in `audit/reviews/REVIEW_LOG.md` under the docs root. A strategy reviewed only by the person who wrote it is not reviewed.
+- **Design review gate:** the strategy is reviewed by somebody other than its author before any tactic is executed — a subagent with fresh context, or a declared self-pass when no higher rung is usable — a permission-gated rung is asked about, never silently skipped (`review.md`). Follow `review.md`; log the outcome in `audit/reviews/REVIEW_LOG.md` under the docs root. A strategy reviewed only by the person who wrote it is not reviewed.
 - Draft `STRATEGY.md`: segmentation, targeting choice with rationale, positioning (Dunford components + statement), messaging house.
 - **Adversarial review** (`review.md`) before the user sees it. Fix or answer every finding.
 - The user approves the strategy. Hybrid: propose as governed doc, user accepts in devPNT.

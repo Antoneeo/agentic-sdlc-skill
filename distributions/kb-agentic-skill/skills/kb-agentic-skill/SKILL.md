@@ -120,7 +120,7 @@ Use this mode when `devpnt_*` tools are available and point at the current proje
 - Run spec elicitation round (`elicitation.md`) before drafting analysis.
 - Run taxonomy pass (`taxonomy.md`): verify whether topics, categories, or SOPs already exist in `ai_docs/`. Avoid duplication.
 - Create or update `ai_docs/solutions/ANALYSIS_[topic].md`.
-- **Design review gate (end of Phase 3, before any drafting):** the analysis is reviewed by somebody other than its author — a subagent with fresh context, or a declared self-pass when none is available. Follow `review.md`; log the outcome in `audit/reviews/REVIEW_LOG.md`. A knowledge structure reviewed only by the person who chose it is not reviewed.
+- **Design review gate (end of Phase 3, before any drafting):** the analysis is reviewed by somebody other than its author — a subagent with fresh context, or a declared self-pass when no higher rung is usable — a permission-gated rung is asked about, never silently skipped (`review.md`). Follow `review.md`; log the outcome in `audit/reviews/REVIEW_LOG.md`. A knowledge structure reviewed only by the person who chose it is not reviewed.
 
 ### 4. Knowledge Processing & Distillation
 - **Isolate the work (Branch/worktree hygiene).** Distillation rewrites existing notes: do it on a branch or a worktree, never directly on the shared corpus, so a half-finished reconciliation is never what the next reader finds.

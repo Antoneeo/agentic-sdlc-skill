@@ -1,5 +1,36 @@
 # Changelog
 
+## [Unreleased]
+
+F-038 — the gated rung: truthful log vocabulary and a mandated ask, no grant memory.
+
+### Fixed
+- **A review rung that exists behind a permission policy is no longer logged as
+  "unavailable".** The ladder knew two states (the client supports the rung, or not)
+  and hard-coded rung 3's reason as "no subagent facility on this client" — so a gated
+  facility produced false log rows, and the ladder's own prohibition ("rung 3 is
+  illegitimate wherever rung 1 or 2 exists") was unsatisfiable on a gated client: the
+  agent could not obey it without asking, and no rule said to ask.
+
+### Added
+- **The gated-rung stop.** At a due review gate (design; closure), when the best rung is
+  permission-gated (a standing policy — an interactive per-call prompt is NOT this) and
+  no ungated rung works (a working one-shot CLI pre-empts the stop; a gated rung 2 joins
+  the question instead), the gate stops and asks ONE question in the five-bullet blocking
+  form: the gated rung(s) vs the fallback, each higher rung's status, the quoted policy,
+  the cost (~130-175k subagent tokens per deep review, measured 2026-08) AND what
+  independence last bought, and what stays blocked. **No grant memory**: the answer holds
+  while the conversation does; an agent that cannot recall a grant asks again. Unattended
+  runs never emit the question — rung 2 is still owed a try, then rung 3 with its reason.
+  (Successor to a design CANCELLED at the review cap after grant memory failed three
+  ways; rulings r18/r19.)
+- **The reason words.** A below-rung-1 row says why the rung(s) above did not run:
+  `absent` (the client has no such facility — a claim about the client, never a policy),
+  `gated, declined`, `gated, unattended`, `gated, pre-empted` (nothing asked — an
+  ungated lower rung ran the review). A rung-1 row owes nothing. For rung 3 this
+  re-words an existing duty; for rung 2 it is a new one-word duty, disclosed and
+  accepted with the rest.
+
 ## [0.5.1] - 2026-08-25
 
 ### Fixed
