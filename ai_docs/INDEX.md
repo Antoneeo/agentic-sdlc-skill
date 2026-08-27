@@ -11,7 +11,7 @@ not manifested here.
 | Document | Status | Description |
 |---|---|---|
 | `vision/features/VISION_agentic_sdlc_vnext.md` | CURRENT | Feature vision for the vNext evolution (triage, support files, mechanical validation, devPNT symbiosis) delivered in 1.5.0/1.6.0. |
-| `vision/features/VISION_kb_second_brain.md` | DRAFT | Feature vision for the kb-agentic "second brain" milestone - governed recall, the daily gesture, and the time cycle that keep a project KB honest over months... |
+| `vision/features/VISION_kb_second_brain.md` | DRAFT | Feature vision for the kb-agentic "second brain" milestone - the recall reflex, the daily gesture, and the time cycle that keep a project KB honest over mont... |
 | `vision/features/VISION_vision_governance.md` | CURRENT | Feature vision for the Vision governance layer (ai_docs/vision/, Vision Gate) delivered in 1.4.0. |
 | `vision/principles.md` | DRAFT | Vision Principles |
 | `vision/project_vision.md` | APPROVED | (by Antonio Pinto — v6 2026-07-27, v7 amendment 2026-07-31, **v8 amendment 2026-08-01**) |
