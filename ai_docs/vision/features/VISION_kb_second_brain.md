@@ -1,7 +1,9 @@
 ---
 description: Feature vision for the kb-agentic "second brain" milestone - the recall reflex, the daily gesture, and the time cycle that keep a project KB honest over months of daily use with an agent colleague.
-status: DRAFT
+status: APPROVED
 ---
+<!-- Approved by Antonio Pinto, 2026-08-27 (in-session confirmation). -->
+
 # Vision Feature: KB Second Brain
 
 ## Problema
