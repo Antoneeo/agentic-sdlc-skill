@@ -16,7 +16,7 @@ Un agente-collega quotidiano su un progetto: KB consultata per riflesso, aliment
 
 ## Sequenza - tre unita', in quest'ordine
 1. **Il riflesso di recall + regola anti-eco.** Estendere il consult (oggi solo guide router) ai topic: all'ingresso in un tema, la discesa di `taxonomy.md` gira in modalita' risposta - stessa dottrina, nuovo trigger. Un DERIVED che fonda una decisione richiede il re-touch della fonte (l'anti-eco E' una regola di recall).
-2. **Il diario quotidiano.** Il gesto da trenta secondi (decisione + perche') che alimenta il ledger senza aprire un L3.
+2. **Il momento di cattura quotidiano.** I binari esistono gia' (un claim su topic esistente e' L1; `corpus/notes/*` accetta elicited/derived/ruling): manca il MOMENTO - un trigger di fine sessione che chiede "decisioni di oggi da registrare?" e le incanala sui binari esistenti. Nessun formato nuovo.
 3. **Il ciclo del tempo.** Staleness per claim, supersede esplicito, invalidation cascade sulle catene, consolidamento periodico. Progettato per ultimo, sui DATI che le prime due unita' generano - come cresce il ledger, cosa invecchia, con che ritmo.
 
 ## Segnali di Successo
