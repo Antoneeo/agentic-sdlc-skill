@@ -2,7 +2,7 @@
 
 Every significant change to this skill is recorded here.
 
-## [Unreleased]
+## [1.8.0] - 2026-08-28
 
 F-041 -- the mid-session drift field report, both items.
 
