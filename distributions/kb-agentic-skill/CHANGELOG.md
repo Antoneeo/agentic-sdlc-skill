@@ -2,7 +2,7 @@
 
 Every significant change to this skill is recorded here.
 
-## [Unreleased]
+## [1.10.0] - 2026-08-28
 
 F-043 -- the revision doctrine: documents read as current state.
 
