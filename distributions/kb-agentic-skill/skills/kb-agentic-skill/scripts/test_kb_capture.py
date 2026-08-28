@@ -129,6 +129,59 @@ class TestNotesRecency(unittest.TestCase):
             rc, out = run_main(["orient", "--root", tmp], tmp)
             self.assertIn("newest note: 0 days old", out)
 
+    def test_quoted_date_is_parsed_not_mtimed(self):
+        # Field defect (2026-08-28): a YAML-quoted date fell through to the
+        # mtime fallback, so a note rewritten today read "0 days old" against
+        # SKILL.md's date-first promise.
+        import datetime as dt
+        with tempfile.TemporaryDirectory() as tmp:
+            notes = self._notes(tmp)
+            old = (dt.date.today() - dt.timedelta(days=20)).isoformat()
+            (notes / "q.md").write_text(
+                '---\norigin: elicited\ndate: "%s"\n---\nx\n' % old,
+                encoding="utf-8")
+            rc, out = run_main(["orient", "--root", tmp], tmp)
+            self.assertIn("20 days old", out)
+            self.assertNotIn("mtime", out)
+
+    def test_mtime_fallback_discloses_itself(self):
+        # When no date: decided the winner the line must SAY so -- a silently
+        # fresh "0 days" after a rewrite/checkout is the lie the field report
+        # caught; the degraded basis becomes visible, not mute.
+        with tempfile.TemporaryDirectory() as tmp:
+            notes = self._notes(tmp)
+            (notes / "n.md").write_text(
+                "---\norigin: elicited\n---\nx\n", encoding="utf-8")
+            rc, out = run_main(["orient", "--root", tmp], tmp)
+            self.assertIn("newest note: 0 days old", out)
+            self.assertIn("mtime", out)
+
+    def test_undated_winner_over_dated_note_discloses(self):
+        # The field scenario's shape: an mtime-stamped note WINS over a dated
+        # one -- the disclosure rides the stamp that actually won.
+        import datetime as dt
+        with tempfile.TemporaryDirectory() as tmp:
+            notes = self._notes(tmp)
+            old = (dt.date.today() - dt.timedelta(days=20)).isoformat()
+            (notes / "dated.md").write_text(
+                "---\norigin: elicited\ndate: %s\n---\nx\n" % old,
+                encoding="utf-8")
+            (notes / "undated.md").write_text(
+                "---\norigin: elicited\n---\nx\n", encoding="utf-8")
+            rc, out = run_main(["orient", "--root", tmp], tmp)
+            self.assertIn("0 days old", out)
+            self.assertIn("mtime", out)
+
+    def test_dated_winner_carries_no_mtime_marker(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            notes = self._notes(tmp)
+            (notes / "n.md").write_text(
+                "---\norigin: elicited\ndate: 2026-08-28\n---\nx\n",
+                encoding="utf-8")
+            rc, out = run_main(["orient", "--root", tmp], tmp)
+            self.assertIn("newest note:", out)
+            self.assertNotIn("mtime", out)
+
     def test_empty_notes_dir_says_no_notes_yet(self):
         with tempfile.TemporaryDirectory() as tmp:
             self._notes(tmp)

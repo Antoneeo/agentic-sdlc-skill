@@ -1,6 +1,21 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
+**Unreleased kb fix awaiting owner merge (branch `fix/kb-quoting-recency`, off main):**
+fifth and sixth field data, 2026-08-28, same external corpus -- (a) YAML-quoted
+`original_path:` values (paths with spaces) produced 102 FALSE dangling-pointer
+warns; root cause: `load_frontmatter` keeps values verbatim by design and the
+consumers never unquoted -- fixed with `kb_unquote` at the three reading sites
+(original_path, supersedes x2 incl. the corpus-INDEX display; a quoted
+`supersedes:` would have silently MISSED a supersession, worse than the reported
+warn-noise). (b) The orient recency line fell back to mtime IN SILENCE whenever
+a note's `date:` failed to parse (quoted dates did) -- "0 days old" on a note
+dated days earlier, against SKILL.md's date-first promise; now quoted dates
+parse, dated stamps win same-day ties, and an mtime-decided line SAYS SO
+(`; mtime -- date: not parsed`). Releasable as kb 1.10.1; `feat/kb-time-cycle`
+(F-044, design committed) must merge this in before GREEN -- its collector
+parses the same fields.
+
 **Published on npm (registry-verified 2026-08-28):** code **1.28.0**, kb **1.10.0**,
 mkt **0.6.0** -- kb 1.10.0 (tag `kb-v1.10.0`) carries F-043: the revision doctrine
 (documents read as current state; full re-read, never append a delta). Before that,
