@@ -2,9 +2,9 @@
 workstream: F-042 Global orient hook at install time (UX fix of the F-041 note)
 level: L3
 branch: feat/global-orient-hook
-status: DONE, AWAITING MERGE
+status: DONE, MERGED
 since: 2026-08-28
-next: the owner's merge call (closure PASS in 1 round, 0 BLOCK, 3 WARN folded; JS 50x3, python 184/316/202, gate CLEAN)
+next: publish kb 1.9.0 (owner's act, publish_all.bat) -> polling verify
 details: ANALYSIS_global_orient_hook.md; the owner's design ruling is below
 updated: 2026-08-28
 ---
