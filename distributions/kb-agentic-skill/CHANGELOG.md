@@ -2,7 +2,7 @@
 
 Every significant change to this skill is recorded here.
 
-## [Unreleased]
+## [1.11.1] - 2026-08-28
 
 ### Fixed
 - **The recency date probe reads the real frontmatter, not a 600-byte
