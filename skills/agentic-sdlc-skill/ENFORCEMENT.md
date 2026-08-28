@@ -93,6 +93,23 @@ not see them, because the wired hook legitimately lives in the git-ignored
 mechanism (Gemini today) keeps the note -- read it as the manual-reads reminder; a
 `.codex/hooks.json` wired in a shape other than the documented one keeps it too.
 
+**Installing the package wires the hook machine-wide (F-042).** On Claude Code
+with Python, `npm i -g` (and every update) wires a SessionStart orient hook into
+the USER-level settings (`$CLAUDE_CONFIG_DIR/settings.json` when set, else
+`~/.claude/settings.json`), covering every project on the machine -- `orient` is
+fail-open, so projects without a docs root see nothing. The install itself is
+the consent: no question is asked. **Removing that hook entry is a standing
+opt-out**: a per-target marker (`<agentic-sdlc root>/orient-hook-wired`,
+default `~/.agentic-sdlc/`) remembers each settings file ever wired, and no
+install or update ever re-adds a removed hook; deleting the marker file is the
+re-enable gesture. `npm uninstall` removes the entries it can attribute to the
+removed skill (and only those), so no hook is left pointing at deleted files.
+Notes: the global command carries no `--hybrid` (a machine-global hook cannot
+know per-project mode -- on Hybrid projects only the devPNT pointer line is
+absent); a project wired per-project AND globally prints its orientation twice
+-- remove one of the two entries; `init` reports "covered by the machine-global
+hook" instead of wiring a project-level duplicate.
+
 **Which settings file, and why it is not always the shared one.** The command names a
 validator, and where that validator lives decides where the hook may be written:
 

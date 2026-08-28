@@ -14,6 +14,12 @@ the spine's check pipeline entirely.
   so CI is unaffected). `init` wires the hook only at init time; projects
   initialized before F-036 or bootstrapped without `init` were silently unwired.
 
+### Added (F-042, parked with the above)
+- Install/update wires the session-orientation hook machine-wide (Claude Code
+  with Python; user-level settings; removal is a standing per-target opt-out;
+  uninstall surgically removes what it wired). The check note is global-aware
+  and reworded in consequence-first user language.
+
 ## [0.6.0] - 2026-08-26
 
 F-038 — the gated rung: truthful log vocabulary and a mandated ask, no grant memory.

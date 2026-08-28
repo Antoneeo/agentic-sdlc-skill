@@ -71,7 +71,12 @@ kb-agentic-init
 
 Run it inside a project to create `ai_docs/`, Vision documents, strategic docs, audit plan, and agent protocol files (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursorrules`).
 
-It also **wires the SessionStart orientation hook** into `.claude/`, so an agent opening
+Installing or updating the npm package **wires the session-orientation hook
+machine-wide** (user-level `~/.claude/settings.json`, Claude Code with Python):
+every project with a docs root greets its agent already oriented, and removing
+the entry is a standing opt-out that no update ever overrides. `init` still
+wires per-project where that is the better shape (a vendored validator, a
+shared team file), so an agent opening
 the project is handed the reading guide, the generated manifest, the guide router and the
 last handoff before it does anything — instead of only when it remembers to look. That
 wiring used to be a manual step documented in `ENFORCEMENT.md`; being manual, it was
@@ -82,8 +87,8 @@ it: a repo that vendors it gets a repo-relative command in the shared `.claude/s
 (portable — commit it); otherwise the path is machine-specific and goes to the git-ignored
 `.claude/settings.local.json`, and each teammate runs `init` once. Re-running `init` never
 duplicates the hook, and a hook whose validator no longer resolves is reported as **broken**
-with the correction rather than counted as installed. Since F-041, `check` also
-prints a one-line note when a project has no orientation hook wired (or a dead
+with the correction rather than counted as installed. `check` prints a one-line
+note when a machine has no orientation hook at project or user level (or a dead
 one), and an opt-in per-turn reminder exists for long sessions: `sdlc_check.py
 remind`, one constant line via UserPromptSubmit -- documented in `ENFORCEMENT.md`
 par.4, never wired by default.
