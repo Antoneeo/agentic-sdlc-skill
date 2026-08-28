@@ -23,7 +23,7 @@ Support files in the skill directory:
 - `review.md`: the review discipline — when a review is due, how to request one, how to receive findings, how to review.
 - `dispatch.md`: opt-in subagent execution of an approved plan.
 - `routing.md`: which lens owns this unit of work. Read ONLY when a sibling lens skill is installed alongside this one; a single-lens install never reads it.
-- `scripts/sdlc_check.py` + `scripts/sdlc_core.py`: the mechanical validator for the docs root (`check`, `validate`, `index`, `stale`, `mark`, `gate`, `plan`, `orient`, `migrate`, and the knowledge overlay: `graph`, `corpus`, `claim-id`, `anchor`, `export`, `import`, plus `remind` — the opt-in per-turn one-line reminder, ENFORCEMENT §4). Two files: the core is the family's shared spine; the entry point IS the knowledge overlay — the claim ledger and topic-graph checks live inside it, so the core alone runs none of them. Copy both, or neither.
+- `scripts/sdlc_check.py` + `scripts/sdlc_core.py`: the mechanical validator for the docs root (`check`, `validate`, `index`, `mark`, `gate`, `plan`, `orient`, `migrate`, and the knowledge overlay: `graph`, `corpus`, `claim-id`, `anchor`, `export`, `import`, `stale` (spine staleness plus `## claims` -- the time cycle's consolidated view), plus `remind` — the opt-in per-turn one-line reminder, ENFORCEMENT §4). Two files: the core is the family's shared spine; the entry point IS the knowledge overlay — the claim ledger and topic-graph checks live inside it, so the core alone runs none of them. Copy both, or neither.
 - `ENFORCEMENT.md`: optional setup for CI and hooks.
 
 Read these files only when needed. `SKILL.md` is the operating contract; the support files are progressive resources.
@@ -132,6 +132,10 @@ Use this mode when `devpnt_*` tools are available and point at the current proje
 
 ### 5. Closure & Indexing
 - Run verification checks (`sdlc_check.py check --root <project_root>`).
+- If the session recorded any supersession, run `sdlc_check.py stale`: its
+  `## claims` section is the revision worklist (superseded-cited documents,
+  expired windows, superseded derivation chains), worked per `## Revision`
+  -- one document, one full re-read.
 - If the work was governed by user-provided indications and is reusable, **PROPOSE distilling a guide** (proactive trigger, `guides.md` §1) — a proposal for the user, never a silent write, never from model knowledge.
 - Update `audit/handoff.md`.
 - Regenerate manifests: `python <skill_dir>/scripts/sdlc_check.py index --root <project_root>`.
@@ -265,3 +269,6 @@ reads as CURRENT state — is never re-verified. The gesture:
 - `scripts/sdlc_check.py index`: updates `ai_docs/INDEX.md` and `ai_docs/reference/INDEX.md`.
 - `scripts/sdlc_check.py validate`: validates YAML frontmatter (`status`, `description`).
 - `scripts/sdlc_check.py check`: checks dirty closures and missing indexes.
+- `scripts/sdlc_check.py stale`: spine staleness plus `## claims` --
+  superseded-cited documents, expired `valid` windows, superseded
+  derivation chains (the time cycle's consolidated view).

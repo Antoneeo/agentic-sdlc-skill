@@ -41,6 +41,15 @@ dangling ids are errors, duplicates are errors.
    is now the assertion, and no row lingers contested against rows that no longer
    contest it.
 
+3. **The cascade runs.** Recording a supersession ends by running
+   `sdlc_check.py stale`: its `## claims` section lists every living
+   document still citing the fallen id without naming its successor(s)
+   and every derivation resting on a superseded source -- the revision
+   worklist, worked per the kb `## Revision` doctrine, one document at a
+   time. The citation warn also stands in `check` until each document is
+   revised (or an append-only correction naming the successors lands),
+   so the worklist cannot be silently forgotten.
+
 **No basis, no ruling.** A preference is not a fact; the validator refuses a ruling note
 without `basis:` exactly as it refuses a DERIVED note without `derived_from:`. If the
 practitioner knows nothing new, the set stays `CONTESTED` — a legitimate, permanent,
