@@ -1,8 +1,12 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**Published on npm (publish_all.bat polling verify, 2026-08-28):** code **1.28.0**,
-kb **1.7.0**, mkt **0.6.0** — kb 1.7.0 (tag `kb-v1.7.0`) carries the second brain's
+**Published on npm (registry-verified 2026-08-28):** code **1.28.0**, kb **1.8.0**,
+mkt **0.6.0** -- kb 1.8.0 (tag `kb-v1.8.0`) carries F-041: the check wiring/dead-hook
+notes (spine x3, parked in code/mkt CHANGELOGs for their next release) + the kb
+`remind` per-turn opt-in. Field datum the same day: an external session's check
+surfaced its missing orient hook via the new note and offered the wiring -- the
+note doing exactly its designed job. Before that: kb **1.7.0** — kb 1.7.0 (tag `kb-v1.7.0`) carries the second brain's
 units 1-2: F-039 recall reflex + F-040 capture moment; code and mkt unchanged,
 skipped by the script. Before that: F-038 (gated-rung vocabulary + mandated ask,
 tag `v1.28.0`, merged to main) in all three. Before that: F-036 (init wires the

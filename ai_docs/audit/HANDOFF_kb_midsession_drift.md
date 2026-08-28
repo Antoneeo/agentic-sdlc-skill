@@ -4,7 +4,7 @@ level: L3
 branch: feat/kb-midsession-drift
 status: DONE, MERGED
 since: 2026-08-28
-next: publish kb 1.8.0 (owner's act, publish_all.bat) -> polling verify
+next: nothing outstanding -- published in kb 1.8.0 (2026-08-28, registry-verified); field datum same day: an external session's check surfaced the missing orient hook and offered the wiring
 details: ANALYSIS_kb_midsession_drift.md (+ this file: evidence verbatim)
 updated: 2026-08-28
 ---
