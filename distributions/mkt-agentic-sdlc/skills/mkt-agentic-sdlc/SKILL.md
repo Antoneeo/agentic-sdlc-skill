@@ -1,6 +1,6 @@
 ---
 name: mkt-agentic-sdlc
-version: 0.6.0
+version: 0.7.0
 description: Evidence-First marketing planning protocol with engagement triage, SOSTAC workflow, evidence ledger, adversarial CMO review, a complete Standalone mode and optional symbiosis with devPNT. Use for marketing plans, go-to-market strategy, campaign planning and market research.
 author: Antonio Pinto (https://github.com/Antoneeo)
 copyright: (c) 2026 Antonio Pinto
@@ -50,7 +50,7 @@ Always classify the request before choosing the process. Declare the chosen leve
 | Level | Criteria | Required process |
 |---|---|---|
 | **E1 - Quick** | Single question or asset feedback: a positioning opinion, copy critique, one channel question | Answer directly. Numbers still need a source or an explicit "assumption" label. No new documents. |
-| **E2 - Campaign** | One campaign or one channel plan, bounded budget, existing strategy context | Mini-brief in the message (objective, audience, budget, KPI), targeted research, `mkt_docs/tactics/CAMPAIGN_[name].md`. Evidence ledger discipline applies. |
+| **E2 - Campaign** | One campaign or one channel plan, bounded budget, existing strategy context | Mini-brief in the message (objective, audience, budget, KPI), targeted research, `mkt_docs/tactics/CAMPAIGN_[name].md`. Evidence ledger discipline applies. Updating an existing strategy or campaign doc is a rewrite: full re-read, body to current state -- never an appended delta section. |
 | **E3 - Full Plan** | Complete marketing plan, go-to-market for a launch, entering a new market, or no prior strategy exists | Full workflow: all nine phases, all gates, full deliverable pack. |
 | **Research Spike** | Time-boxed market question that reduces uncertainty ("is there demand for X in market Y?") | Outcome in `mkt_docs/spikes/RESEARCH_[topic].md`. Ledger discipline applies. For strategy decisions, feed into E2/E3. |
 

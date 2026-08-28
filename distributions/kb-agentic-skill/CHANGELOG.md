@@ -2,7 +2,7 @@
 
 Every significant change to this skill is recorded here.
 
-## [Unreleased]
+## [1.11.0] - 2026-08-28
 
 F-044 -- the time cycle (second-brain unit 3): claims age, fall, and their fall
 reaches whoever cites or derives from them. Plus two field-reported defects.

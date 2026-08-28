@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [0.7.0] - 2026-08-28
 
 Spine + overlay delta parked for the next release of this lens (shipped first
 in kb; the spine stays byte-identical x3 in the repo while packages publish
@@ -19,6 +19,13 @@ the spine's check pipeline entirely.
   with Python; user-level settings; removal is a standing per-target opt-out;
   uninstall surgically removes what it wired). The check note is global-aware
   and reworded in consequence-first user language.
+
+### Added (F-043 port, with the above)
+- **The revision sentence.** Updating an existing strategy or campaign doc (the E2 row) is a REWRITE, not an
+  append: full re-read, body rewritten to current state -- never an appended
+  delta section. Ported from the kb lens's `## Revision` doctrine (kb 1.10.0),
+  born from a field post-mortem where delta-append revisions left stale
+  sentences standing as printed truth.
 
 ## [0.6.0] - 2026-08-26
 
