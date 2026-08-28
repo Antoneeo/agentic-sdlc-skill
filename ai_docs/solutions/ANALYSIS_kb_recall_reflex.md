@@ -92,6 +92,11 @@ Battery RED→GREEN on the new invariant; mutation bites both ways; orient inter
 6. Closure: kb battery, check --hybrid, REVIEW_LOG, handoff.
 
 ## Diary
+- 2026-08-28 (closure PASS): round 3 PASS, zero open findings — the residue was exactly
+  the one cell disclosed as unverified (locator form), ruled by the reviewer against the
+  validator's own grammar and fixed as three deterministic cells. Full arc: design
+  FAIL(12)→FAIL(1)→PASS, closure FAIL(8)→FAIL(1)→PASS, 25 verified findings across six
+  rounds, both reviews rung 1 with the F-038 ask at each gate. Unit DONE, awaiting merge.
 - 2026-08-28 (closure R2): closure review round 1 FAIL — 1 BLOCK + 7 WARN, all real. The
   BLOCK was this unit's own disease in its own fixture: the eval scenario's claim table
   was written from model memory (4 columns, supersession in the wrong column) instead of
