@@ -20,10 +20,12 @@
 ===== check (rc=0) =====
 [WARN]  ledger: ledger EV-06: ASSUMPTION value looks like a point estimate, expected a range
 [OK] check clean (1 warning(s))
+[note] no session-orientation hook wired (.claude/settings.json, .claude/settings.local.json, .codex/hooks.json): sessions start unoriented -- run the installer's init or wire it per ENFORCEMENT.md par.4
 
 ===== check --strict (rc=1) =====
 [WARN]  ledger: ledger EV-06: ASSUMPTION value looks like a point estimate, expected a range
 [FAIL] check: 0 error(s), 1 warning(s)
+[note] no session-orientation hook wired (.claude/settings.json, .claude/settings.local.json, .codex/hooks.json): sessions start unoriented -- run the installer's init or wire it per ENFORCEMENT.md par.4
 
 ===== index (rc=0) =====
 [OK] wrote mkt_docs/INDEX.md

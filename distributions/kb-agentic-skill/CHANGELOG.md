@@ -2,6 +2,26 @@
 
 Every significant change to this skill is recorded here.
 
+## [Unreleased]
+
+F-041 -- the mid-session drift field report, both items.
+
+### Added
+- **`check` notes an unwired or dead session-orientation hook.** `init` wires the
+  hook at init time only; pre-F-036 and agent-bootstrapped projects never got it,
+  silently. `check` now prints, right after its summary line, a one-line `[note]` when no hook is detectable
+  in `.claude/settings.json` / `.claude/settings.local.json` / `.codex/hooks.json`,
+  and a distinct note when a hook is wired but its validator does not resolve
+  (any-resolves aggregation across entries; BOM-tolerant reads; fail-open on
+  malformed config). Informational only: never the exit code, never a `validate`
+  warning -- CI stays green because the wired hook legitimately lives in the
+  git-ignored local settings file.
+- **`remind` -- an opt-in per-turn one-line reminder (UserPromptSubmit).** orient
+  fires once; mid-session drift had no mechanical guard. One constant, zero-read
+  line re-arms the kb minimum (triage levels, the topics/INDEX.md recall trigger,
+  the capture moment) at every prompt. Never wired by `init`, never a default:
+  ENFORCEMENT par.4 documents the snippet and the ~50 tokens/prompt cost.
+
 ## [1.7.0] - 2026-08-28
 
 F-040 — the capture moment (second-brain unit 2): the day's decisions reach the

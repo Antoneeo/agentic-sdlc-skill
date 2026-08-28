@@ -1646,6 +1646,109 @@ def cmd_mark(root, paths):
     return 0
 
 
+# ------------------------------------------------- orientation-hook wiring
+# F-041: read-only mirror of the installer-side detection in lib.js
+# (findOrientHook + orientHookValidator). The JS owns WRITING hooks, with its
+# injection guards; this side only DETECTS, at `check`, so a project whose
+# sessions start unoriented hears about it in-project (ENFORCEMENT par.4: the
+# hook is wired at init only -- pre-F-036 and agent-bootstrapped projects never
+# got it, and a wired-but-dead hook is "the worst of the three states").
+# The file list is a SUPERSET of the JS one: .codex/hooks.json is documented in
+# ENFORCEMENT par.4 but never written by init. Entry-point names are pinned
+# equal on both sides.
+ORIENT_HOOK_ENTRY_POINTS = ("sdlc_check.py", "mkt_check.py")
+ORIENT_HOOK_CONFIG_FILES = (".claude/settings.json",
+                            ".claude/settings.local.json",
+                            ".codex/hooks.json")
+ORIENT_HOOK_CONFIG_CAP = 1024 * 1024  # settings are tiny; cap pathological files
+_ORIENT_HOOK_CMD_RE = re.compile(r" orient(\s|$)")
+_ORIENT_HOOK_TOKEN_RE = re.compile(r'"([^"]*)"|(\S+)')
+
+
+def _orient_hook_commands(root):
+    """Yield the command strings of SessionStart entries invoking an orient
+    entry point, across every known client config under root. Fail-open: an
+    unreadable, oversized, malformed or directory-shaped file contributes
+    nothing. Reads are utf-8-sig -- a BOM'd settings.json (PowerShell/Notepad)
+    must not read as unwired (declared divergence from Node's JSON.parse)."""
+    for rel in ORIENT_HOOK_CONFIG_FILES:
+        p = Path(root) / rel
+        try:
+            if not p.is_file() or p.stat().st_size > ORIENT_HOOK_CONFIG_CAP:
+                continue
+            data = json.loads(p.read_text(encoding="utf-8-sig"))
+        except Exception:
+            continue
+        if not isinstance(data, dict):
+            continue
+        hooks = data.get("hooks")
+        groups = hooks.get("SessionStart") if isinstance(hooks, dict) else None
+        if groups is None:
+            groups = data.get("SessionStart")  # the .codex/hooks.json shape
+        if not isinstance(groups, list):
+            continue
+        for group in groups:
+            if not isinstance(group, dict):
+                continue
+            inner = group.get("hooks")
+            for h in inner if isinstance(inner, list) else [group]:
+                cmd = h.get("command") if isinstance(h, dict) else None
+                if (isinstance(cmd, str)
+                        and any(n in cmd for n in ORIENT_HOOK_ENTRY_POINTS)
+                        and _ORIENT_HOOK_CMD_RE.search(cmd)):
+                    yield cmd
+
+
+def orient_hook_state(root):
+    """'wired' | 'dead' | 'unwired'.
+
+    A matching entry whose tokens name no validator is "cannot tell" and counts
+    as wired (the lib.js contract: never report broken on cannot-tell). 'dead'
+    requires every matching entry to name a validator that does not resolve:
+    the client runs ALL SessionStart hooks, so one live entry beside a dead one
+    still orients the session (any-resolves aggregation). Relative tokens
+    resolve against the project root -- the vendored-validator convention."""
+    matched = False
+    for cmd in _orient_hook_commands(root):
+        matched = True
+        token = None
+        for m in _ORIENT_HOOK_TOKEN_RE.finditer(cmd):
+            tok = m.group(1) if m.group(1) is not None else m.group(2)
+            if any(tok.endswith(n) for n in ORIENT_HOOK_ENTRY_POINTS):
+                token = tok
+                break
+        if token is None:
+            return "wired"
+        tp = Path(token)
+        if not tp.is_absolute():
+            tp = Path(root) / tp
+        if tp.exists():
+            return "wired"
+    return "dead" if matched else "unwired"
+
+
+def print_orient_hook_note(root):
+    """Print the FS-A wiring note (unwired / dead), or nothing when wired.
+
+    Informational only, by contract: never an exit code, never a validate
+    warning (--strict CI must not fail on a hook that legitimately lives in
+    git-ignored settings.local.json). Called by the spine's cmd_check AND by
+    an overlay that replaces check with its own pipeline (the marketing lens
+    does): the note is check-layer behaviour, whoever owns the check."""
+    try:
+        state = orient_hook_state(root)
+        if state == "unwired":
+            print("[note] no session-orientation hook wired (.claude/settings.json, "
+                  ".claude/settings.local.json, .codex/hooks.json): sessions start "
+                  "unoriented -- run the installer's init or wire it per ENFORCEMENT.md par.4")
+        elif state == "dead":
+            print("[note] a session-orientation hook is wired but the validator it names "
+                  "does not resolve: sessions start unoriented -- re-run init or fix the "
+                  "command (ENFORCEMENT.md par.4)")
+    except Exception:
+        pass  # detection must never break check
+
+
 def cmd_check(root, strict=False, hybrid=False):
     print("===== validate =====")
     rc_v = cmd_validate(root, strict=strict, hybrid=hybrid)
@@ -1653,6 +1756,7 @@ def cmd_check(root, strict=False, hybrid=False):
     rc_s = cmd_stale(root, hybrid=hybrid)
     print(f"\ncheck: {'CLEAN' if not (rc_v or rc_s) else 'NOT CLEAN'} "
           f"(validate rc={rc_v}, stale rc={rc_s})")
+    print_orient_hook_note(root)
     return 1 if (rc_v or rc_s) else 0
 
 

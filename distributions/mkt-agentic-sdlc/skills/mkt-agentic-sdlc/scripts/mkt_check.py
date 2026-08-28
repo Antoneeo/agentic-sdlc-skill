@@ -714,6 +714,11 @@ def main(argv=None):
               f"({len(rep.warnings)} warning(s))" if rep.warnings else f"[OK] {args.command} clean")
     else:
         print(f"[FAIL] {args.command}: {len(rep.errors)} error(s), {len(rep.warnings)} warning(s)")
+    if args.command == "check":
+        # This overlay REPLACES the spine's cmd_check, so the F-041 wiring note
+        # must be re-attached here: it is check-layer behaviour, whoever owns
+        # the check (fail-open and informational -- never the exit code).
+        sdlc_core.print_orient_hook_note(root)
     return code
 
 

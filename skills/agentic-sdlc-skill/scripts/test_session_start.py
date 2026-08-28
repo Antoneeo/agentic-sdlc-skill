@@ -14,6 +14,7 @@ Covers the P-TM consolidation Unit-1 [MILESTONE] requirements:
   T8 fail-open       -> test_missing_ai_docs_silent_exit0 / test_unreadable_doc_skipped
   no-dup (M-VISION)  -> test_hybrid_pointer_no_dup
 """
+import json
 import os
 import sys
 import tempfile
@@ -177,6 +178,182 @@ class OrientTests(unittest.TestCase):
                 sdlc_core.confine_under = real
             self.assertEqual(rc, 0)
             self.assertEqual(calls, [rel for _, rel in sc.orient_docs()])
+
+
+def run_check(root):
+    """Run cmd_check capturing stdout. Returns (rc, stdout)."""
+    buf = StringIO()
+    with redirect_stdout(buf):
+        rc = sc.cmd_check(Path(root))
+    return rc, buf.getvalue()
+
+
+def grouped_hook(cmd):
+    # The documented shape: SessionStart groups carrying a hooks: [] array.
+    return {"hooks": {"SessionStart": [{"hooks": [{"type": "command", "command": cmd}]}]}}
+
+
+def direct_hook(cmd):
+    # The in-the-wild shape: hook objects placed directly in the SessionStart array.
+    return {"hooks": {"SessionStart": [{"type": "command", "command": cmd}]}}
+
+
+# Output fragments of FS-A's two notes (F-041). Fragments, not full lines: the
+# goldens freeze the exact wording; these tests pin the behavioral contract.
+UNWIRED_NOTE = "no session-orientation hook wired"
+DEAD_NOTE = "does not resolve"
+
+
+class HookDetectionTests(unittest.TestCase):
+    """F-041 FS-A: `check` notes the unwired and the dead orientation-hook
+    states. The notes never move the exit code and never leak into validate."""
+
+    def _docs(self, d):
+        seed(d, "ai_docs/README.md", "x")  # a docs root, so check has a tree to walk
+
+    def _live_cmd(self, d, name="sdlc_check.py"):
+        vp = Path(d) / "hookbin" / name
+        vp.parent.mkdir(parents=True, exist_ok=True)
+        vp.write_text("# validator stub", encoding="utf-8")
+        return 'python "%s" orient' % vp
+
+    def _wire(self, d, rel, payload):
+        seed(d, rel, payload if isinstance(payload, str) else json.dumps(payload))
+
+    def test_no_config_notes_unwired_and_rc_unchanged(self):
+        with tempfile.TemporaryDirectory() as d:
+            self._docs(d)
+            rc_bare, out_bare = run_check(d)
+            self.assertIn(UNWIRED_NOTE, out_bare)
+            self.assertNotIn(DEAD_NOTE, out_bare)
+            self._wire(d, ".claude/settings.json", grouped_hook(self._live_cmd(d)))
+            rc_wired, out_wired = run_check(d)
+            self.assertNotIn(UNWIRED_NOTE, out_wired)
+            self.assertEqual(rc_bare, rc_wired)  # the note is informational only
+
+    def test_wired_direct_shape_in_local_settings_silent(self):
+        with tempfile.TemporaryDirectory() as d:
+            self._docs(d)
+            self._wire(d, ".claude/settings.local.json", direct_hook(self._live_cmd(d)))
+            _, out = run_check(d)
+            self.assertNotIn(UNWIRED_NOTE, out)
+            self.assertNotIn(DEAD_NOTE, out)
+
+    def test_wired_codex_hooks_silent(self):
+        # .codex/hooks.json documents SessionStart at top level (ENFORCEMENT par.4).
+        with tempfile.TemporaryDirectory() as d:
+            self._docs(d)
+            self._wire(d, ".codex/hooks.json",
+                       {"SessionStart": [{"type": "command", "command": self._live_cmd(d)}]})
+            _, out = run_check(d)
+            self.assertNotIn(UNWIRED_NOTE, out)
+
+    def test_wired_bom_settings_silent(self):
+        # PowerShell/Notepad write BOM'd JSON: a wired project must not read as
+        # unwired (utf-8-sig; declared divergence from Node's JSON.parse).
+        with tempfile.TemporaryDirectory() as d:
+            self._docs(d)
+            body = "\ufeff" + json.dumps(grouped_hook(self._live_cmd(d)))
+            self._wire(d, ".claude/settings.json", body)
+            _, out = run_check(d)
+            self.assertNotIn(UNWIRED_NOTE, out)
+
+    def test_dead_hook_notes_distinctly(self):
+        with tempfile.TemporaryDirectory() as d:
+            self._docs(d)
+            rc_bare, _ = run_check(d)
+            missing = str(Path(d) / "gone" / "sdlc_check.py")
+            self._wire(d, ".claude/settings.json",
+                       grouped_hook('python "%s" orient' % missing))
+            rc, out = run_check(d)
+            self.assertIn(DEAD_NOTE, out)
+            self.assertNotIn(UNWIRED_NOTE, out)
+            self.assertEqual(rc, rc_bare)  # the dead note never moves rc
+
+    def test_dead_beside_live_is_silent(self):
+        # Any-resolves aggregation: the client runs ALL SessionStart hooks, so a
+        # live entry beside a dead one means sessions ARE oriented.
+        with tempfile.TemporaryDirectory() as d:
+            self._docs(d)
+            missing = str(Path(d) / "gone" / "sdlc_check.py")
+            self._wire(d, ".claude/settings.json",
+                       grouped_hook('python "%s" orient' % missing))
+            self._wire(d, ".claude/settings.local.json", direct_hook(self._live_cmd(d)))
+            _, out = run_check(d)
+            self.assertNotIn(DEAD_NOTE, out)
+            self.assertNotIn(UNWIRED_NOTE, out)
+
+    def test_cannot_tell_is_silent_never_dead(self):
+        # Matching command whose tokens name no validator: the lib.js contract --
+        # say nothing, never "broken".
+        with tempfile.TemporaryDirectory() as d:
+            self._docs(d)
+            self._wire(d, ".claude/settings.json",
+                       grouped_hook("run --mode=sdlc_check.py:legacy orient"))
+            _, out = run_check(d)
+            self.assertNotIn(DEAD_NOTE, out)
+            self.assertNotIn(UNWIRED_NOTE, out)
+
+    def test_session_start_without_orient_notes_unwired(self):
+        with tempfile.TemporaryDirectory() as d:
+            self._docs(d)
+            self._wire(d, ".claude/settings.json", grouped_hook("python other.py lint"))
+            _, out = run_check(d)
+            self.assertIn(UNWIRED_NOTE, out)
+
+    def test_malformed_settings_notes_unwired_no_crash(self):
+        with tempfile.TemporaryDirectory() as d:
+            self._docs(d)
+            self._wire(d, ".claude/settings.json", "{not json")
+            rc, out = run_check(d)
+            self.assertIn(UNWIRED_NOTE, out)
+
+    def test_settings_path_is_directory_no_crash(self):
+        with tempfile.TemporaryDirectory() as d:
+            self._docs(d)
+            (Path(d) / ".claude" / "settings.json").mkdir(parents=True)
+            rc, out = run_check(d)
+            self.assertIn(UNWIRED_NOTE, out)
+
+    def test_oversized_settings_counts_as_unwired(self):
+        with tempfile.TemporaryDirectory() as d:
+            self._docs(d)
+            pad = json.dumps(grouped_hook(self._live_cmd(d)))
+            self._wire(d, ".claude/settings.json",
+                       pad + " " * (2 * 1024 * 1024))  # past the read cap
+            _, out = run_check(d)
+            self.assertIn(UNWIRED_NOTE, out)
+
+    def test_vendored_relative_command_silent(self):
+        # ENFORCEMENT par.2/par.4: a vendored validator is named root-relative.
+        with tempfile.TemporaryDirectory() as d:
+            self._docs(d)
+            seed(d, "tools/sdlc_check.py", "# vendored stub")
+            self._wire(d, ".claude/settings.json",
+                       grouped_hook('python "tools/sdlc_check.py" orient'))
+            _, out = run_check(d)
+            self.assertNotIn(UNWIRED_NOTE, out)
+            self.assertNotIn(DEAD_NOTE, out)
+
+    def test_mkt_entry_point_name_matches(self):
+        # Family predicate: the marketing lens ships mkt_check.py.
+        with tempfile.TemporaryDirectory() as d:
+            self._docs(d)
+            self._wire(d, ".claude/settings.json",
+                       grouped_hook(self._live_cmd(d, name="mkt_check.py")))
+            _, out = run_check(d)
+            self.assertNotIn(UNWIRED_NOTE, out)
+
+    def test_validate_never_prints_the_notes(self):
+        # The CI path (validate, incl. --strict) must stay silent on wiring.
+        with tempfile.TemporaryDirectory() as d:
+            self._docs(d)
+            buf = StringIO()
+            with redirect_stdout(buf):
+                sc.cmd_validate(Path(d), strict=True)
+            out = buf.getvalue()
+            self.assertNotIn(UNWIRED_NOTE, out)
+            self.assertNotIn(DEAD_NOTE, out)
 
 
 if __name__ == "__main__":

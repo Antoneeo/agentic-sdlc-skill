@@ -86,6 +86,20 @@ that cannot be placed in a command safely, or a settings file it cannot write. `
 prints which case applied, per client — a silent skip is what let "documented default
 that nobody installs" survive in the first place.
 
+**Older and agent-bootstrapped projects are silently unwired -- `check` now tells you (F-041).**
+`init` wires the hook at init time only: a project initialized before F-036, or whose
+docs root was bootstrapped by the agent (which runs `index`, never `init`), never
+received it retroactively -- and until F-041 nothing said so. `check` now prints, right after its summary line, a
+one-line `[note]` when no orientation hook is detectable (`.claude/settings.json`,
+`.claude/settings.local.json`, `.codex/hooks.json`), and a DISTINCT note when a hook is
+wired but the validator it names does not resolve (the wired-and-DEAD state below --
+silence there would bless the worst of the three states). The notes are informational
+only: never the exit code, never a `validate` warning -- CI (`validate --strict`) does
+not see them, because the wired hook legitimately lives in the git-ignored
+`settings.local.json`. Known residuals, accepted as honest: a client with no hook
+mechanism (Gemini today) keeps the note -- read it as the manual-reads reminder; a
+`.codex/hooks.json` wired in a shape other than the documented one keeps it too.
+
 **Which settings file, and why it is not always the shared one.** The command names a
 validator, and where that validator lives decides where the hook may be written:
 
@@ -132,6 +146,38 @@ Gemini CLI — wire the same command into its startup-hook mechanism if present;
 - The hook assumes the working directory is the project root (standard Claude Code hook behavior); it also accepts `--root <path>`.
 - **Hybrid/devPNT projects**: add `--hybrid` — the hook then appends a one-line pointer to run `devpnt_mcp_get_bootstrap` for the Master Plan / Knowledge Layer and does not replicate them; the filesystem orientation (router + handoff + README) still emits.
 - Like the CI gate (§2), if you copied `sdlc_check.py` into the repo, the hook references that copy — keep it current when you update the skill.
+
+### Per-turn reminder: `remind` (UserPromptSubmit -- opt-in, NEVER a default)
+
+`orient` fires once, at session start; a long session drifts after it (a compaction,
+ten turns of other work -- the F-041 field report). `sdlc_check.py remind` prints ONE
+constant line -- the kb minimum: the triage levels, the topic-index recall trigger, the
+capture moment -- for the client to inject at every prompt. Cost: ~50 tokens per
+prompt, which is exactly why `init` never wires it and never will by default: the
+per-turn cost is the project's choice. The line is constant and zero-read, so nothing
+repo-controlled can ride into the agent's context through it, and the vision's
+no-per-turn-graph-queries non-goal stays honored -- the line re-arms the
+entry-into-topic trigger; it never runs the reading itself.
+
+Claude Code -- in the project's `.claude/settings.json` (or `settings.local.json` when
+the validator path is machine-specific, same rule as the orientation hook above):
+
+```json
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"C:\\Users\\<user>\\.claude\\skills\\kb-agentic\\scripts\\sdlc_check.py\" remind"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
 
 ## 5. Skill eval battery (release gate)
 

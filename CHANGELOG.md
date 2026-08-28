@@ -2,6 +2,17 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [Unreleased]
+
+Spine delta parked for the next release of this lens (shipped first in kb; the
+spine stays byte-identical x3 in the repo while packages publish independently).
+
+### Added
+- **F-041: `check` notes an unwired or dead session-orientation hook** (one
+  informational `[note]` line -- never the exit code, never a `validate` warning,
+  so CI is unaffected). `init` wires the hook only at init time; projects
+  initialized before F-036 or bootstrapped without `init` were silently unwired.
+
 ## [1.28.0] - 2026-08-26
 
 F-038 — the gated rung: truthful log vocabulary and a mandated ask, no grant memory.

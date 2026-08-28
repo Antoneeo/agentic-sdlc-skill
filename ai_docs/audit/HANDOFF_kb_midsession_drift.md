@@ -1,11 +1,11 @@
 ---
 workstream: F-041 KB Mid-Session Drift (field report, 2 items)
 level: L3
-branch: (not yet cut)
-status: OPEN, NOT STARTED
+branch: feat/kb-midsession-drift
+status: DONE, AWAITING MERGE
 since: 2026-08-28
-next: cut a branch, write the ANALYSIS from the evidence below, design review
-details: this file (evidence verbatim); ANALYSIS to be written
+next: the owner's merge call (closure PASS in 1 round, 0 BLOCK, all 5 WARN folded; batteries 179/311/197 OK)
+details: ANALYSIS_kb_midsession_drift.md (+ this file: evidence verbatim)
 updated: 2026-08-28
 ---
 
