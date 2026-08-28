@@ -1491,6 +1491,53 @@ def kb_cmd_import(args):
     return 0
 
 
+def kb_cmd_orient(argv):
+    """Forward `orient` to the spine untouched, then append the topic router.
+
+    The recall reflex (SKILL.md section "Topic Recall") needs the graph in
+    sight at session start -- by construction, not exhortation (F-039). The
+    spine's orient is never re-implemented here: the raw argv goes through
+    (the --help pattern below), and orient's flags are never mirrored into an
+    overlay argparse -- the drift class the forward-by-default comment warns
+    about. parse_known_args reads ONLY the two root flags the overlay itself
+    needs to locate topics/, and ignores everything else.
+
+    The append fails open: a broken graph read must never break orient itself.
+    """
+    try:
+        rc = sdlc_core.main(argv)
+    except SystemExit as e:
+        rc = e.code if isinstance(e.code, int) else 1
+    try:
+        probe = argparse.ArgumentParser(add_help=False)
+        probe.add_argument("--root")
+        probe.add_argument("--docs-dir")
+        known, _ = probe.parse_known_args(argv[1:])
+        discovered, name = sdlc_core.resolve_docs_dir(known, known.root)
+        root = (Path(known.root).resolve() if known.root
+                else (discovered or sdlc_core.find_project_root()))
+        topics = root / name / "topics"
+        index = topics / "INDEX.md"
+        if index.is_file():
+            lines = sdlc_core.read_text(index).splitlines()
+            print("\n## Topic router")
+            cap = 30
+            for line in lines[:cap]:
+                print(line)
+            if len(lines) > cap:
+                print("(+%d more lines -- read topics/INDEX.md)" % (len(lines) - cap))
+        elif topics.is_dir():
+            nodes = [p for p in topics.glob("*.md") if p.name != "INDEX.md"]
+            if nodes:
+                print("\n## Topic router")
+                print("index absent (%d node files) -- regenerate: sdlc_check.py index"
+                      % len(nodes))
+        # no topics/ at all: the project has no graph; print nothing.
+    except Exception:
+        pass
+    return rc
+
+
 def kb_cmd_help():
     """The spine's usage, then the overlay's own commands.
 
@@ -1525,6 +1572,10 @@ def main(argv=None):
     # 2026-08-02). Intercepted at argv[0] ONLY.
     if argv and argv[0] in ("-h", "--help"):
         return kb_cmd_help()
+    # `orient` is special-cased BEFORE the overlay argparse, like --help: the
+    # spine runs it on the raw argv, the overlay only appends the topic router.
+    if argv and argv[0] == "orient":
+        return kb_cmd_orient(argv)
     # Forward-by-default: anything not intercepted goes to the spine untouched.
     # Never a hand-copied command tuple - that is how a spine command gets
     # silently dropped (mkt_check.py ships that exact defect with `migrate`).

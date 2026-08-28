@@ -78,3 +78,12 @@ unreachable nodes as errors, but the refusal at write time is what prevents them
 A merged or renamed topic keeps its file: `status: SUPERSEDED`, `redirect_to: <slug>`,
 body emptied. Inbound references resolve through it; a claim re-placed from an old
 source lands on the survivor instead of resurrecting the dead slug.
+
+## 6. The same descent, answer mode
+
+The descent above also serves ANSWERING (`SKILL.md` §Topic Recall): when a reply would
+assert facts about the project's domain, descend before answering from model memory.
+Differences only — no placement verdicts, no writes; the descent stops at reading the
+matched node's claims; coverage (found / not found) replaces the five verdicts; UNPLACED
+does not exist when reading. Everything else applies unchanged: descend don't scan,
+follow every parent, synonyms, tombstone redirects resolve to the survivor.
