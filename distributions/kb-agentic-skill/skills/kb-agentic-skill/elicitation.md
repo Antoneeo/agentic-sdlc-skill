@@ -21,8 +21,10 @@ record is reviewable; a guess folded silently into a design is not.
 ## The question discipline
 
 A question to the practitioner spends their attention and stalls the work; the
-round below is the only place the process *plans* that cost. Everywhere, a
-question is legal only when BOTH hold:
+process *plans* that cost in exactly two places — the round below, and the
+Capture Moment sweep at a user-signed closing (`SKILL.md`), a scheduled
+elicitation in the same family that carries its search result inline and stalls
+nothing. Everywhere, a question is legal only when BOTH hold:
 
 1. **Searched first, and the search is named — with its result.** The answer is
    not on record and not derivable from the corpus, the topic graph, `ai_docs/`,
