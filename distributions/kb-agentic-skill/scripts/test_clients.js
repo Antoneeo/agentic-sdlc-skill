@@ -651,3 +651,282 @@ test('F-036 (R2): orientHookCommand is the single command shape', () => {
   assert.strictEqual(orientHookCommand('python', '/a/b.py', false), 'python "/a/b.py" orient');
   assert.strictEqual(orientHookCommand('py', 'x.py', true), 'py "x.py" orient --hybrid');
 });
+
+// --- F-042: global orient hook at install time ------------------------------
+// The installer wires the USER-level settings once per machine; removal is a
+// standing opt-out (per-target marker); uninstall is surgical and symmetric.
+
+const {
+  wireGlobalOrientHook, removeGlobalOrientHooks, detectPython, pathsEqual,
+} = require('./lib');
+
+function gsandbox(fn) {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'f042-'));
+  const home = path.join(tmp, 'home');
+  const kbroot = path.join(tmp, 'kbroot');
+  fakeSkill(home);
+  const saved = process.env.AGENTIC_SDLC_KB_ROOT;
+  process.env.AGENTIC_SDLC_KB_ROOT = kbroot;
+  try {
+    return fn({ tmp, home, kbroot, client: { key: 'claude', home }, python: 'python' });
+  } finally {
+    if (saved === undefined) delete process.env.AGENTIC_SDLC_KB_ROOT;
+    else process.env.AGENTIC_SDLC_KB_ROOT = saved;
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+}
+const userSettings = (home) => path.join(home, 'settings.json');
+// Tolerant twin of orientCommands: after a surgical removal the pruning may
+// legitimately drop `hooks` entirely, and a missing file counts as zero.
+const orientCount = (p) => {
+  if (!fs.existsSync(p)) return 0;
+  const groups = ((readJson(p).hooks || {}).SessionStart) || [];
+  return groups
+    .flatMap((g) => (Array.isArray(g.hooks) ? g.hooks : [g]).map((h) => h && h.command))
+    .filter((c) => c && c.includes(' orient')).length;
+};
+const markerOf = (kbroot) => path.join(kbroot, 'orient-hook-wired');
+const markerLines = (kbroot) => (fs.existsSync(markerOf(kbroot))
+  ? fs.readFileSync(markerOf(kbroot), 'utf8').split(/\r?\n/).filter(Boolean) : []);
+
+test('F-042: fresh machine wires the user settings and records the target', () => {
+  gsandbox(({ home, kbroot, client, python }) => {
+    const r = wireGlobalOrientHook({ client, python });
+    assert.strictEqual(r.code, 'wired');
+    const cmds = orientCommands(userSettings(home));
+    assert.strictEqual(cmds.length, 1);
+    const quoted = cmds[0].split('"')[1];
+    assert.ok(path.isAbsolute(quoted) && fs.existsSync(quoted), 'absolute, existing validator');
+    assert.ok(!/--hybrid/.test(cmds[0]), 'a machine-global hook cannot know per-project mode');
+    assert.strictEqual(markerLines(kbroot).length, 1, 'one marker line for the target');
+  });
+});
+
+test('F-042: second run is already, byte-identical file, marker still one line', () => {
+  gsandbox(({ home, kbroot, client, python }) => {
+    wireGlobalOrientHook({ client, python });
+    const before = fs.readFileSync(userSettings(home));
+    const r = wireGlobalOrientHook({ client, python });
+    assert.strictEqual(r.code, 'already');
+    assert.ok(before.equals(fs.readFileSync(userSettings(home))), 'settings untouched');
+    assert.strictEqual(markerLines(kbroot).length, 1, 'already never duplicates the line');
+  });
+});
+
+test('F-042: hand-removed hook with the target listed stays opted-out forever', () => {
+  gsandbox(({ home, kbroot, client, python }) => {
+    wireGlobalOrientHook({ client, python });
+    writeSettings(userSettings(home), { hooks: { SessionStart: [] } });  // the user removes it
+    const r = wireGlobalOrientHook({ client, python });
+    assert.strictEqual(r.code, 'opted-out');
+    assert.strictEqual(orientCommands(userSettings(home)).length, 0, 'nothing re-added');
+  });
+});
+
+test('F-042: a marker line for ANOTHER target does not block a fresh world', () => {
+  gsandbox(({ home, kbroot, client, python }) => {
+    fs.mkdirSync(kbroot, { recursive: true });
+    fs.writeFileSync(markerOf(kbroot), path.join(home, 'elsewhere', 'settings.json') + '\n', 'utf8');
+    const r = wireGlobalOrientHook({ client, python });
+    assert.strictEqual(r.code, 'wired', 'per-target opt-out, never boolean');
+    assert.strictEqual(markerLines(kbroot).length, 2, 'the new target appended');
+  });
+});
+
+test('F-042: pathsEqual folds case and separators exactly like the platform', () => {
+  if (process.platform === 'win32') {
+    assert.ok(pathsEqual('C:\\Cfg\\settings.json', 'c:\\cfg\\SETTINGS.JSON'));
+  } else {
+    assert.ok(!pathsEqual('/cfg/A', '/cfg/a'), 'POSIX paths differing by case are distinct (T3a)');
+  }
+  assert.ok(pathsEqual(path.join('a', 'b'), path.join('a', '.', 'b')));
+});
+
+test('F-042: a sibling lens hook counts as wired (already) and is remembered', () => {
+  gsandbox(({ home, kbroot, client, python }) => {
+    const sib = path.join(home, 'sibling', 'mkt_check.py');
+    fs.mkdirSync(path.dirname(sib), { recursive: true });
+    fs.writeFileSync(sib, '# stub\n', 'utf8');
+    writeSettings(userSettings(home), {
+      hooks: { SessionStart: [{ hooks: [{ type: 'command', command: 'python "' + sib + '" orient' }] }] },
+    });
+    const r = wireGlobalOrientHook({ client, python });
+    assert.strictEqual(r.code, 'already');
+    assert.strictEqual(orientCommands(userSettings(home)).length, 1, 'no second entry');
+    assert.strictEqual(markerLines(kbroot).length, 1, 'already records the target too');
+  });
+});
+
+test('F-042: malformed settings and missing python write nothing', () => {
+  gsandbox(({ home, kbroot, client, python }) => {
+    writeSettings(userSettings(home), '{not json');
+    assert.strictEqual(wireGlobalOrientHook({ client, python }).code, 'malformed');
+    fs.rmSync(userSettings(home));
+    assert.strictEqual(wireGlobalOrientHook({ client, python: null }).code, 'no-python');
+    assert.ok(!fs.existsSync(userSettings(home)), 'nothing written');
+    assert.strictEqual(markerLines(kbroot).length, 0, 'no marker without a wire');
+  });
+});
+
+test('F-042: a dead existing global hook reports broken and adds no marker line', () => {
+  gsandbox(({ home, kbroot, client, python }) => {
+    writeSettings(userSettings(home), {
+      hooks: { SessionStart: [{ type: 'command', command: 'python "' + path.join(home, 'gone', ENTRY_POINT_FILE) + '" orient' }] },
+    });
+    const r = wireGlobalOrientHook({ client, python });
+    assert.strictEqual(r.code, 'broken');
+    assert.strictEqual(markerLines(kbroot).length, 0, 'a dead hook is not remembered as wired');
+  });
+});
+
+test('F-042 FS-2: a live global hook makes project init report global', () => {
+  gsandbox(({ tmp, home, client, python }) => {
+    wireGlobalOrientHook({ client, python });
+    const cwd = path.join(tmp, 'project');
+    fs.mkdirSync(cwd, { recursive: true });
+    const r = wireOrientHook({ cwd, client, python });
+    assert.strictEqual(r.code, 'global');
+    assert.ok(!fs.existsSync(path.join(cwd, '.claude')), 'project files untouched');
+  });
+});
+
+test('F-042 FS-2: a BROKEN project hook is reported before the global cover', () => {
+  gsandbox(({ tmp, home, client, python }) => {
+    wireGlobalOrientHook({ client, python });
+    const cwd = path.join(tmp, 'project');
+    writeSettings(sharedSettings(cwd), {
+      hooks: { SessionStart: [{ hooks: [{ type: 'command', command: 'python "' + path.join(cwd, 'gone', ENTRY_POINT_FILE) + '" orient' }] }] },
+    });
+    const r = wireOrientHook({ cwd, client, python });
+    assert.strictEqual(r.code, 'broken', 'a dead project hook must never be masked by global');
+  });
+});
+
+test('F-042 FS-2: a DEAD global hook falls through to the project write', () => {
+  gsandbox(({ tmp, home, client, python }) => {
+    writeSettings(userSettings(home), {
+      hooks: { SessionStart: [{ type: 'command', command: 'python "' + path.join(home, 'gone', ENTRY_POINT_FILE) + '" orient' }] },
+    });
+    const cwd = path.join(tmp, 'project');
+    fs.mkdirSync(cwd, { recursive: true });
+    const r = wireOrientHook({ cwd, client, python });
+    assert.strictEqual(r.code, 'wired', 'a dead wrapper must not leave the project unoriented');
+    assert.strictEqual(r.globalNote, 'dead', 'and the caller can print the correction');
+  });
+});
+
+test('F-042 FS-3: uninstall removes only attributable entries, prunes, clears the line', () => {
+  gsandbox(({ home, kbroot, client, python }) => {
+    wireGlobalOrientHook({ client, python });
+    // A foreign hook beside ours must survive the surgery.
+    const s = readJson(userSettings(home));
+    s.hooks.SessionStart.push({ type: 'command', command: 'echo unrelated' });
+    s.otherKey = 'preserved';
+    writeSettings(userSettings(home), s);
+    const removedRoot = path.join(home, 'skills', INSTALLED_SKILL_NAME);
+    removeGlobalOrientHooks([removedRoot]);
+    const after = readJson(userSettings(home));
+    assert.strictEqual(orientCommands(userSettings(home)).length, 0, 'family entry removed');
+    assert.strictEqual(after.otherKey, 'preserved');
+    const flat = (after.hooks && after.hooks.SessionStart) || [];
+    assert.ok(flat.every((g) => (Array.isArray(g.hooks) ? g.hooks.length : true)), 'no emptied groups');
+    assert.strictEqual(markerLines(kbroot).length, 0, 'marker line cleared: an entry WAS removed');
+  });
+});
+
+test('F-042 FS-3: uninstall with no attributable entry keeps the opt-out', () => {
+  gsandbox(({ home, kbroot, client, python }) => {
+    wireGlobalOrientHook({ client, python });
+    writeSettings(userSettings(home), { hooks: { SessionStart: [] } });  // user removed it
+    removeGlobalOrientHooks([path.join(home, 'skills', INSTALLED_SKILL_NAME)]);
+    assert.strictEqual(markerLines(kbroot).length, 1, 'opt-out memory survives uninstall');
+    assert.strictEqual(wireGlobalOrientHook({ client, python }).code, 'opted-out',
+      'reinstall after uninstall still honors the removal');
+  });
+});
+
+test('F-042 FS-3: marker-listed targets from another world are cleaned too', () => {
+  gsandbox(({ tmp, home, kbroot, client, python }) => {
+    // Wire a CLAUDE_CONFIG_DIR world whose hook names THIS machine's validator...
+    const otherHome = path.join(tmp, 'cfgworld');
+    const r = wireGlobalOrientHook({ client: { key: 'claude', home: otherHome }, python });
+    assert.strictEqual(r.code, 'no-validator', 'that world has no skill copy of its own');
+    // ...so simulate the real shared-machine case: hook in the OTHER world's
+    // settings naming the CURRENT world's validator.
+    const validator = path.join(home, 'skills', INSTALLED_SKILL_NAME, 'scripts', ENTRY_POINT_FILE);
+    writeSettings(userSettings(otherHome), {
+      hooks: { SessionStart: [{ hooks: [{ type: 'command', command: 'python "' + validator + '" orient' }] }] },
+    });
+    fs.mkdirSync(kbroot, { recursive: true });
+    fs.appendFileSync(markerOf(kbroot), userSettings(otherHome) + '\n', 'utf8');
+    removeGlobalOrientHooks([path.join(home, 'skills', INSTALLED_SKILL_NAME)]);
+    assert.strictEqual(orientCount(userSettings(otherHome)), 0,
+      'the marker remembers the other world, so it is cleaned from any shell');
+  });
+});
+
+test('F-042 FS-3: unrecognized settings are left alone', () => {
+  gsandbox(({ home, kbroot, client }) => {
+    writeSettings(userSettings(home), '{broken');
+    assert.doesNotThrow(() => removeGlobalOrientHooks([path.join(home, 'skills', INSTALLED_SKILL_NAME)]));
+    assert.strictEqual(fs.readFileSync(userSettings(home), 'utf8'), '{broken');
+  });
+});
+
+test('F-042: detectPython finds an interpreter on this machine', () => {
+  // The dev machine running this battery has python (the release gate needs it),
+  // so the moved helper must find it; the no-python path is covered above by
+  // passing python: null explicitly.
+  assert.ok(detectPython(), 'detectPython() returns a runnable interpreter name');
+});
+
+test('F-042: postinstall wires the user settings in a stubbed home (child process)', () => {
+  const tmpHome = fs.mkdtempSync(path.join(os.tmpdir(), 'f042-post-'));
+  try {
+    fs.mkdirSync(path.join(tmpHome, '.claude', 'skills'), { recursive: true });
+    const childEnv = {
+      ...process.env,
+      HOME: tmpHome,
+      USERPROFILE: tmpHome,
+      AGENTIC_SDLC_KB_ROOT: path.join(tmpHome, 'kbroot'),
+    };
+    delete childEnv.CLAUDE_CONFIG_DIR;
+    delete childEnv.GEMINI_HOME;
+    delete childEnv.CODEX_HOME;
+    delete childEnv.ANTIGRAVITY_HOME;
+    execFileSync(process.execPath, [POSTINSTALL], { env: childEnv, stdio: 'ignore' });
+    const settingsPath = path.join(tmpHome, '.claude', 'settings.json');
+    assert.strictEqual(orientCount(settingsPath), 1, 'postinstall wired the user settings');
+    execFileSync(process.execPath, [PREUNINSTALL], { env: childEnv, stdio: 'ignore' });
+    assert.strictEqual(orientCount(settingsPath), 0, 'preuninstall removed it');
+  } finally {
+    fs.rmSync(tmpHome, { recursive: true, force: true });
+  }
+});
+
+test('F-042 FS-2: an UNVERIFIABLE global hook falls through to the project write', () => {
+  gsandbox(({ tmp, home, client, python }) => {
+    writeSettings(userSettings(home), {
+      hooks: { SessionStart: [{ type: 'command', command: 'python "tools/sdlc_check.py" orient' }] },
+    });
+    const cwd = path.join(tmp, 'project');
+    fs.mkdirSync(cwd, { recursive: true });
+    const r = wireOrientHook({ cwd, client, python });
+    assert.strictEqual(r.code, 'wired', 'an unverifiable wrapper must not leave the project unoriented');
+    assert.strictEqual(r.globalNote, 'unverifiable', 'and the caller can print the info line');
+  });
+});
+
+test('F-042 T3b: attribution folds case on win32 (a lowercased hook is still ours)', () => {
+  if (process.platform !== 'win32') return; // POSIX: distinct paths, nothing to fold
+  gsandbox(({ home, kbroot, client, python }) => {
+    wireGlobalOrientHook({ client, python });
+    const s = readJson(userSettings(home));
+    const cmd = s.hooks.SessionStart[0].hooks[0].command;
+    s.hooks.SessionStart[0].hooks[0].command = cmd.toLowerCase();
+    writeSettings(userSettings(home), s);
+    removeGlobalOrientHooks([path.join(home, 'skills', INSTALLED_SKILL_NAME)]);
+    assert.strictEqual(orientCount(userSettings(home)), 0,
+      'case variance must never miss the removal (the manufactured-dead-hook false negative)');
+  });
+});

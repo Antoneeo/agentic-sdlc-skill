@@ -389,6 +389,31 @@ function wireOrientHook(options) {
       : { code: 'broken', file: name, target: p, existing, command };
   }
 
+  // F-042: a resolving MACHINE-GLOBAL hook (user-level settings) already
+  // orients every project. Checked AFTER the project scan on purpose: a
+  // project-level broken/malformed/unverifiable must be reported first — a
+  // pre-check would mask a dead project hook behind "covered globally", the
+  // wired-and-DEAD state F-041 calls the worst of the three. A dead or
+  // unverifiable global hook falls through to the project write (the wrapper
+  // may be emitting nothing) and the caller gets `globalNote` to print the
+  // correction. A user-level token that is not absolute has no cwd to resolve
+  // against, so it is treated as unverifiable.
+  let globalNote;
+  {
+    const userTarget = path.join(client.home, 'settings.json');
+    const ustate = orientSettingsState(userTarget);
+    if (ustate.ok) {
+      const uexisting = findOrientHook(ustate.settings);
+      if (uexisting) {
+        const ufound = orientHookValidator(uexisting);
+        if (ufound !== null && path.isAbsolute(ufound) && fs.existsSync(ufound)) {
+          return { code: 'global', target: userTarget, command: uexisting };
+        }
+        globalNote = (ufound === null || !path.isAbsolute(ufound)) ? 'unverifiable' : 'dead';
+      }
+    }
+  }
+
   // A machine-specific command must not reach the shared, committed file.
   const file = vendored ? 'settings.json' : 'settings.local.json';
   const target = path.join(cwd, '.claude', file);
@@ -415,7 +440,209 @@ function wireOrientHook(options) {
   } catch (e) {
     return { code: 'write-failed', file, target, command, error: e.message };
   }
-  return { code: 'wired', file, target, command, local: !vendored };
+  return { code: 'wired', file, target, command, local: !vendored, globalNote };
+}
+
+// --- F-042: the machine-global hook (install-time wiring) -------------------
+// The F-041 field lesson: the check note asked a question a normal user cannot
+// evaluate. The owner's ruling: the hook is wired by the act the user already
+// performs — installing/updating the package — at the USER level, which the
+// installer knows exactly. `orient` is fail-open (no docs root ⇒ silent), so a
+// global hook is safe by construction on unmanaged projects. Removal is a
+// STANDING opt-out: a per-target marker remembers every settings file ever
+// wired, and no install or update ever re-adds a removed hook. Deleting the
+// marker file is the documented re-enable gesture (ENFORCEMENT §4).
+
+// Python detection, shared by init (project wiring + index) and postinstall
+// (global wiring). One list, one probe.
+const PYTHON_CANDIDATES = ['python', 'python3', 'py'];
+function detectPython() {
+  for (const py of PYTHON_CANDIDATES) {
+    try {
+      execSync(`${py} --version`, { stdio: 'ignore' });
+      return py;
+    } catch (e) { /* try the next interpreter */ }
+  }
+  return null;
+}
+
+// Case/separator normalization uses the PLATFORM'S OWN path.relative: win32
+// folds case and separators; forcing win32 semantics on POSIX would fold
+// genuinely distinct paths (a false positive). One helper guards BOTH the
+// uninstall attribution and the marker lookup — a naive prefix/string match
+// misses `c:\` vs `C:\`, which on attribution re-manufactures the dead hook
+// and on the marker re-wires against a standing opt-out.
+function pathsEqual(a, b) {
+  try {
+    return path.relative(String(a), String(b)) === '';
+  } catch (e) {
+    return false;
+  }
+}
+function pathInside(child, parent) {
+  try {
+    const rel = path.relative(String(parent), String(child));
+    return rel !== '' && !rel.startsWith('..') && !path.isAbsolute(rel);
+  } catch (e) {
+    return false;
+  }
+}
+
+// The marker lives under the family's agent-global root (the same root the
+// validator's AGENTIC_SDLC_KB_ROOT seam names), read at call time so the test
+// battery's stubbed env applies. Every helper is fail-open: a broken marker
+// must never break an install, and a failed marker write never undoes a wire.
+function orientMarkerPath() {
+  const root = process.env.AGENTIC_SDLC_KB_ROOT
+    || path.join(os.homedir(), '.agentic-sdlc');
+  return path.join(root, 'orient-hook-wired');
+}
+function orientMarkerTargets() {
+  try {
+    return fs.readFileSync(orientMarkerPath(), 'utf8')
+      .split(/\r?\n/).map((s) => s.trim()).filter(Boolean);
+  } catch (e) {
+    return [];
+  }
+}
+function orientMarkerHas(target) {
+  return orientMarkerTargets().some((t) => pathsEqual(t, target));
+}
+function orientMarkerAdd(target) {
+  try {
+    if (orientMarkerHas(target)) return;
+    fs.mkdirSync(path.dirname(orientMarkerPath()), { recursive: true });
+    fs.appendFileSync(orientMarkerPath(), target + String.fromCharCode(10), 'utf8');
+  } catch (e) { /* fail-open */ }
+}
+function orientMarkerRemove(target) {
+  try {
+    const rest = orientMarkerTargets().filter((t) => !pathsEqual(t, target));
+    if (rest.length) {
+      fs.writeFileSync(orientMarkerPath(), rest.join(String.fromCharCode(10)) + String.fromCharCode(10), 'utf8');
+    } else {
+      fs.rmSync(orientMarkerPath(), { force: true });
+    }
+  } catch (e) { /* fail-open */ }
+}
+
+// Wire the machine-global hook into client.home/settings.json — exactly ONE
+// file (user level has no local split; the path is machine-local by nature).
+// Codes follow the wireOrientHook contract, plus `opted-out`.
+function wireGlobalOrientHook(options) {
+  const client = options.client;
+  const python = options.python;
+
+  const validator = path.join(skillTarget(client), 'scripts', ORIENT_ENTRY_POINT);
+  if (!fs.existsSync(validator)) return { code: 'no-validator', validator };
+  if (!python) return { code: 'no-python', validator };
+  if (ORIENT_UNSAFE_IN_PATH.test(validator)) return { code: 'unsafe-path', validator };
+  const command = orientHookCommand(python, validator, false);
+
+  const target = path.join(client.home, 'settings.json');
+  const state = orientSettingsState(target);
+  if (!state.ok) return { code: 'malformed', target, why: state.why, command };
+
+  const existing = findOrientHook(state.settings);
+  if (existing) {
+    const found = orientHookValidator(existing);
+    if (found === null || !path.isAbsolute(found)) {
+      // No cwd exists at user level, so an unresolvable token is "cannot
+      // tell" — left alone, never remembered as ours.
+      return { code: 'unverifiable', target, existing, command };
+    }
+    if (fs.existsSync(found)) {
+      // A hand-wired live hook, once removed, deserves the same respect as
+      // one this installer wrote: remember the target.
+      orientMarkerAdd(target);
+      return { code: 'already', target, command: existing };
+    }
+    return { code: 'broken', target, existing, command };
+  }
+
+  if (orientMarkerHas(target)) return { code: 'opted-out', target };
+
+  const settings = state.settings;
+  if (!settings.hooks) settings.hooks = {};
+  if (!Array.isArray(settings.hooks.SessionStart)) settings.hooks.SessionStart = [];
+  settings.hooks.SessionStart.push({
+    hooks: [{
+      type: 'command',
+      command,
+      timeout: ORIENT_HOOK_TIMEOUT,
+      statusMessage: 'Loading docs orientation...',
+    }],
+  });
+  try {
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.writeFileSync(target, JSON.stringify(settings, null, 2) + String.fromCharCode(10), 'utf8');
+  } catch (e) {
+    return { code: 'write-failed', target, command, error: e.message };
+  }
+  orientMarkerAdd(target);
+  return { code: 'wired', target, command };
+}
+
+// Uninstall symmetry: removing the skill dirs would leave any global hook
+// naming them wired-and-DEAD. So, across EVERY settings target the marker
+// remembers (a hook wired under CLAUDE_CONFIG_DIR=/x must be cleaned from a
+// shell without that env) unioned with the current client.home, remove ONLY
+// the SessionStart entries whose validator token resolves INTO a root being
+// removed. Foreign or unverifiable entries are never touched. The marker line
+// is cleared ONLY when an entry was actually removed — when the user had
+// already removed the hook, the line stays and the opt-out survives uninstall,
+// reinstall, and sibling-lens uninstalls.
+function removeGlobalOrientHooks(removedRoots) {
+  const targets = [];
+  const claude = CLIENTS.find((c) => c.key === 'claude');
+  if (claude) targets.push(path.join(claude.home, 'settings.json'));
+  for (const t of orientMarkerTargets()) {
+    if (!targets.some((x) => pathsEqual(x, t))) targets.push(t);
+  }
+  const removedFrom = [];
+  for (const target of targets) {
+    try {
+      const state = orientSettingsState(target);
+      if (!state.ok || !fs.existsSync(target)) continue;
+      const hooks = state.settings.hooks;
+      if (!hooks || !Array.isArray(hooks.SessionStart)) continue;
+      let removedHere = false;
+      const ours = (h) => {
+        const cmd = h && typeof h.command === 'string' ? h.command : '';
+        if (!(ORIENT_ENTRY_POINTS.some((n) => cmd.includes(n)) && / orient(\s|$)/.test(cmd))) return false;
+        const tok = orientHookValidator(cmd);
+        if (tok === null || !path.isAbsolute(tok)) return false;   // cannot attribute: keep
+        return removedRoots.some((root) => pathInside(tok, root));
+      };
+      const kept = [];
+      for (const group of hooks.SessionStart) {
+        if (!group || typeof group !== 'object') { kept.push(group); continue; }
+        if (Array.isArray(group.hooks)) {
+          const inner = group.hooks.filter((h) => {
+            if (ours(h)) { removedHere = true; return false; }
+            return true;
+          });
+          if (inner.length) kept.push({ ...group, hooks: inner });
+          else if (inner.length !== group.hooks.length) { /* emptied: prune */ }
+          else kept.push(group);
+        } else if (ours(group)) {
+          removedHere = true;                      // direct-object shape: prune
+        } else {
+          kept.push(group);
+        }
+      }
+      if (!removedHere) continue;
+      state.settings.hooks.SessionStart = kept;
+      if (!kept.length) delete state.settings.hooks.SessionStart;
+      if (state.settings.hooks && !Object.keys(state.settings.hooks).length) {
+        delete state.settings.hooks;
+      }
+      fs.writeFileSync(target, JSON.stringify(state.settings, null, 2) + String.fromCharCode(10), 'utf8');
+      orientMarkerRemove(target);
+      removedFrom.push(target);
+    } catch (e) { /* fail-open per target: never abort an uninstall */ }
+  }
+  return removedFrom;
 }
 
 module.exports = {
@@ -428,6 +655,10 @@ module.exports = {
   clientDetected,
   skillTarget,
   wireOrientHook,
+  wireGlobalOrientHook,
+  removeGlobalOrientHooks,
+  detectPython,
+  pathsEqual,
   orientHookCommand,
   copyRecursive,
   loadTemplates,

@@ -17,6 +17,7 @@ reviewed. Silently refreshing it turns the whole test into decoration.
 """
 
 import argparse
+import os
 import re
 import shutil
 import subprocess
@@ -63,9 +64,16 @@ def run_corpus():
     with tempfile.TemporaryDirectory() as tmp:
         root = Path(tmp) / "project"
         materialize(root)
+        # F-042: check's hook detection also reads the machine-global user
+        # settings; without the seam the baseline would differ on any dev
+        # machine that has a real global hook -- nondeterminism by construction.
+        env = {**os.environ,
+               "AGENTIC_SDLC_USER_SETTINGS": str(root / "no-user-settings.json")}
+        env.pop("CLAUDE_CONFIG_DIR", None)
         for label, argv in COMMANDS:
             proc = subprocess.run(
                 [sys.executable, str(VALIDATOR), *argv, "--root", str(root)],
+                env=env,
                 capture_output=True, text=True, encoding="utf-8", errors="replace",
             )
             body = normalize((proc.stdout or "") + (proc.stderr or ""), root)

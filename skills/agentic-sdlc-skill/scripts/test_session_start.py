@@ -180,11 +180,32 @@ class OrientTests(unittest.TestCase):
             self.assertEqual(calls, [rel for _, rel in sc.orient_docs()])
 
 
-def run_check(root):
-    """Run cmd_check capturing stdout. Returns (rc, stdout)."""
+def run_check(root, user_settings=None, config_dir=None):
+    """Run cmd_check capturing stdout. Returns (rc, stdout).
+
+    Hermetic by default: the user-level detection (F-042) is pointed through
+    the AGENTIC_SDLC_USER_SETTINGS seam at a nonexistent fixture path, so a
+    real global hook on the developer's machine can never decide a verdict.
+    Pass user_settings to exercise the global states, or config_dir to pin the
+    real CLAUDE_CONFIG_DIR derivation (the seam is then left unset)."""
     buf = StringIO()
-    with redirect_stdout(buf):
-        rc = sc.cmd_check(Path(root))
+    saved = {k: os.environ.pop(k, None)
+             for k in ("AGENTIC_SDLC_USER_SETTINGS", "CLAUDE_CONFIG_DIR")}
+    if config_dir is not None:
+        os.environ["CLAUDE_CONFIG_DIR"] = str(config_dir)
+    else:
+        os.environ["AGENTIC_SDLC_USER_SETTINGS"] = str(
+            user_settings if user_settings is not None
+            else Path(root) / "no-user-settings.json")
+    try:
+        with redirect_stdout(buf):
+            rc = sc.cmd_check(Path(root))
+    finally:
+        for k, v in saved.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
     return rc, buf.getvalue()
 
 
@@ -198,10 +219,11 @@ def direct_hook(cmd):
     return {"hooks": {"SessionStart": [{"type": "command", "command": cmd}]}}
 
 
-# Output fragments of FS-A's two notes (F-041). Fragments, not full lines: the
-# goldens freeze the exact wording; these tests pin the behavioral contract.
-UNWIRED_NOTE = "no session-orientation hook wired"
-DEAD_NOTE = "does not resolve"
+# Output fragments of the two notes (F-041 mechanics, F-042 wording).
+# Fragments, not full lines: the goldens freeze the exact wording; these tests
+# pin the behavioral contract. The two fragments are disjoint by design.
+UNWIRED_NOTE = "without automatic orientation"
+DEAD_NOTE = "validator that no longer exists"
 
 
 class HookDetectionTests(unittest.TestCase):
@@ -343,6 +365,72 @@ class HookDetectionTests(unittest.TestCase):
                        grouped_hook(self._live_cmd(d, name="mkt_check.py")))
             _, out = run_check(d)
             self.assertNotIn(UNWIRED_NOTE, out)
+
+    def test_global_hook_silences_the_note(self):
+        # F-042: the machine-global user settings are part of the detection --
+        # without this, every project on a fixed machine reads unwired forever.
+        with tempfile.TemporaryDirectory() as d:
+            self._docs(d)
+            us = Path(d) / "userworld" / "settings.json"
+            us.parent.mkdir(parents=True)
+            us.write_text(json.dumps(grouped_hook(self._live_cmd(d))),
+                          encoding="utf-8")
+            _, out = run_check(d, user_settings=us)
+            self.assertNotIn(UNWIRED_NOTE, out)
+            self.assertNotIn(DEAD_NOTE, out)
+
+    def test_global_dead_alone_notes_dead(self):
+        with tempfile.TemporaryDirectory() as d:
+            self._docs(d)
+            us = Path(d) / "userworld" / "settings.json"
+            us.parent.mkdir(parents=True)
+            missing = str(Path(d) / "gone" / "sdlc_check.py")
+            us.write_text(json.dumps(grouped_hook('python "%s" orient' % missing)),
+                          encoding="utf-8")
+            _, out = run_check(d, user_settings=us)
+            self.assertIn(DEAD_NOTE, out)
+            self.assertNotIn(UNWIRED_NOTE, out)
+
+    def test_global_dead_beside_live_project_silent(self):
+        # Any-resolves aggregation ACROSS levels: project + user hooks merge.
+        with tempfile.TemporaryDirectory() as d:
+            self._docs(d)
+            us = Path(d) / "userworld" / "settings.json"
+            us.parent.mkdir(parents=True)
+            missing = str(Path(d) / "gone" / "sdlc_check.py")
+            us.write_text(json.dumps(grouped_hook('python "%s" orient' % missing)),
+                          encoding="utf-8")
+            self._wire(d, ".claude/settings.json", grouped_hook(self._live_cmd(d)))
+            _, out = run_check(d, user_settings=us)
+            self.assertNotIn(DEAD_NOTE, out)
+            self.assertNotIn(UNWIRED_NOTE, out)
+
+    def test_user_level_relative_token_is_cannot_tell(self):
+        # No cwd exists at user level: a relative token can never be judged
+        # dead (the lib.js contract, re-instantiated across the level split).
+        with tempfile.TemporaryDirectory() as d:
+            self._docs(d)
+            us = Path(d) / "userworld" / "settings.json"
+            us.parent.mkdir(parents=True)
+            us.write_text(json.dumps(
+                grouped_hook('python "tools/sdlc_check.py" orient')),
+                encoding="utf-8")
+            _, out = run_check(d, user_settings=us)
+            self.assertNotIn(DEAD_NOTE, out)
+            self.assertNotIn(UNWIRED_NOTE, out)
+
+    def test_claude_config_dir_derivation(self):
+        # With the seam unset, the production path rule must apply:
+        # CLAUDE_CONFIG_DIR when set, else ~/.claude.
+        with tempfile.TemporaryDirectory() as d:
+            self._docs(d)
+            cfg = Path(d) / "cfgworld"
+            cfg.mkdir(parents=True)
+            (cfg / "settings.json").write_text(
+                json.dumps(grouped_hook(self._live_cmd(d))), encoding="utf-8")
+            _, out = run_check(d, config_dir=cfg)
+            self.assertNotIn(UNWIRED_NOTE, out)
+            self.assertNotIn(DEAD_NOTE, out)
 
     def test_validate_never_prints_the_notes(self):
         # The CI path (validate, incl. --strict) must stay silent on wiring.

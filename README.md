@@ -94,6 +94,10 @@ skills/agentic-sdlc-skill/
 
 The validator is **two files**: `sdlc_core.py` is the family's shared spine, `sdlc_check.py` is this lens's entry point. Copy both, or neither — the entry point is useless alone.
 
+Installing or updating the npm package wires the session-orientation hook
+machine-wide (user-level Claude Code settings; removal is a standing opt-out
+that no update overrides -- ENFORCEMENT.md par.4).
+
 ## The family: three lenses, one spine
 
 Same process, three fidelity disciplines — what the agent's assertions must be faithful to:

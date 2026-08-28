@@ -2,6 +2,28 @@
 
 Every significant change to this skill is recorded here.
 
+## [Unreleased]
+
+F-042 -- the install wires the hook; the incomprehensible question dies.
+
+### Added
+- **Installing or updating the package wires the session-orientation hook
+  machine-wide** (Claude Code with Python; user-level settings). The npm install
+  is the consent -- no question is ever asked. Removal is a standing opt-out: a
+  per-target marker remembers every settings file ever wired and no update
+  re-adds a removed hook; deleting the marker re-enables. `npm uninstall`
+  surgically removes only the entries attributable to the removed skill, across
+  every world the marker remembers, so no dead hook is left behind. `init` now
+  reports "covered by the machine-global hook" instead of wiring a duplicate,
+  and still reports a dead or unverifiable global wrapper while wiring the
+  project.
+- **The check note is global-aware and speaks user language.** Detection now
+  also reads the user-level settings (`CLAUDE_CONFIG_DIR` honored;
+  `AGENTIC_SDLC_USER_SETTINGS` is the test seam), so a fixed machine stops
+  being nagged; the two notes are reworded consequence-first ("agent sessions
+  start without automatic orientation...") so the agent relaying them can ask a
+  question a normal user understands.
+
 ## [1.8.0] - 2026-08-28
 
 F-041 -- the mid-session drift field report, both items.

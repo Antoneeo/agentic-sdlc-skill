@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const { SKILL_SOURCE, INSTALLED_SKILL_NAME, SELF_LENS, SIBLING_LENSES, CLIENTS, clientDetected, skillTarget, wireOrientHook, loadTemplates, templateFor } = require('./lib');
+const { SKILL_SOURCE, INSTALLED_SKILL_NAME, SELF_LENS, SIBLING_LENSES, CLIENTS, clientDetected, skillTarget, wireOrientHook, detectPython, loadTemplates, templateFor } = require('./lib');
 
 const cwd = process.cwd();
 
@@ -150,16 +150,8 @@ let protocolPreexisting = false;
 // Probed ONCE and reused by section 6c: re-filtering CLIENTS there would
 // run every client's detection a second time.
 const detectedClients = CLIENTS.filter(clientDetected);
-const PYTHON_CANDIDATES = ['python', 'python3', 'py'];
-const detectedPython = (() => {
-  for (const py of PYTHON_CANDIDATES) {
-    try {
-      execSync(`${py} --version`, { stdio: 'ignore' });
-      return py;
-    } catch (e) { /* try the next interpreter */ }
-  }
-  return null;
-})();
+// One probe, shared with postinstall's global wiring (F-042): lib owns it.
+const detectedPython = detectPython();
 
 for (const client of detectedClients) {
   {
@@ -273,8 +265,21 @@ if (!claudeClient) {
     hybrid: hybridProject, docsLabel: 'mkt_docs',
   });
   switch (r.code) {
+    case 'global':
+      // F-042: a resolving machine-global hook already orients every project.
+      console.log('⏭️  Covered by the machine-global orientation hook — no project-level');
+      console.log(`   hook needed (${r.target}).`);
+      break;
     case 'wired':
       console.log(`🪝 Wired the SessionStart orientation hook in .claude/${r.file}.`);
+      if (r.globalNote === 'dead') {
+        console.log('⚠️  Note: a machine-global orientation hook exists but its validator');
+        console.log('   does not resolve — it emits nothing. Fix or remove it in your user');
+        console.log('   settings (ENFORCEMENT.md §4).');
+      } else if (r.globalNote === 'unverifiable') {
+        console.log('ℹ️  Note: your user settings carry an orientation hook this installer');
+        console.log('   cannot verify; the project-level hook above covers this project.');
+      }
       if (r.local) {
         console.log('   It names a path on THIS machine, so it went to the git-ignored');
         console.log('   file: each teammate runs init once to get their own.');
@@ -317,6 +322,12 @@ if (!claudeClient) {
       console.log('⚠️  The validator path contains a character that cannot be placed in a');
       console.log(`   hook command safely: ${r.validator}`);
       console.log('   Refusing to build one. Wire it by hand (ENFORCEMENT.md §4).');
+      break;
+    default:
+      // A lens port missing a case must be loud, never a silent skip — the
+      // exact defect class the manual-snippet note below exists to prevent.
+      console.log(`ℹ️  Orientation hook: unhandled result '${r.code}'. Wire it by hand`);
+      console.log('   per ENFORCEMENT.md §4.');
       break;
   }
 }

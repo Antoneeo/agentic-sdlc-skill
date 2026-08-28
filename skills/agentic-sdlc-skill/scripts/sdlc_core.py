@@ -1654,8 +1654,10 @@ def cmd_mark(root, paths):
 # hook is wired at init only -- pre-F-036 and agent-bootstrapped projects never
 # got it, and a wired-but-dead hook is "the worst of the three states").
 # The file list is a SUPERSET of the JS one: .codex/hooks.json is documented in
-# ENFORCEMENT par.4 but never written by init. Entry-point names are pinned
-# equal on both sides.
+# ENFORCEMENT par.4 but never written by init. Pinned equal on both sides:
+# the entry-point names, and (F-042) the user-settings path derivation --
+# CLAUDE_CONFIG_DIR when set, else <home>/.claude -- empty-string env falsy
+# on both sides.
 ORIENT_HOOK_ENTRY_POINTS = ("sdlc_check.py", "mkt_check.py")
 ORIENT_HOOK_CONFIG_FILES = (".claude/settings.json",
                             ".claude/settings.local.json",
@@ -1665,38 +1667,63 @@ _ORIENT_HOOK_CMD_RE = re.compile(r" orient(\s|$)")
 _ORIENT_HOOK_TOKEN_RE = re.compile(r'"([^"]*)"|(\S+)')
 
 
+def _orient_entries_in(p):
+    """Yield the SessionStart commands invoking an orient entry point from ONE
+    client config file. Fail-open: an unreadable, oversized, malformed or
+    directory-shaped file contributes nothing. Reads are utf-8-sig -- a BOM'd
+    settings.json (PowerShell/Notepad) must not read as unwired (declared
+    divergence from Node's JSON.parse)."""
+    try:
+        if not p.is_file() or p.stat().st_size > ORIENT_HOOK_CONFIG_CAP:
+            return
+        data = json.loads(p.read_text(encoding="utf-8-sig"))
+    except Exception:
+        return
+    if not isinstance(data, dict):
+        return
+    hooks = data.get("hooks")
+    groups = hooks.get("SessionStart") if isinstance(hooks, dict) else None
+    if groups is None:
+        groups = data.get("SessionStart")  # the .codex/hooks.json shape
+    if not isinstance(groups, list):
+        return
+    for group in groups:
+        if not isinstance(group, dict):
+            continue
+        inner = group.get("hooks")
+        for h in inner if isinstance(inner, list) else [group]:
+            cmd = h.get("command") if isinstance(h, dict) else None
+            if (isinstance(cmd, str)
+                    and any(n in cmd for n in ORIENT_HOOK_ENTRY_POINTS)
+                    and _ORIENT_HOOK_CMD_RE.search(cmd)):
+                yield cmd
+
+
+def _orient_user_settings_path():
+    """The machine-global settings file (F-042 wires it at install time).
+
+    Read at CALL time -- a DECLARED divergence from AGENTIC_SDLC_KB_ROOT's
+    import-time read: unittest imports this module once before any test runs,
+    so an import-time seam would be frozen before the matrix could set it.
+    AGENTIC_SDLC_USER_SETTINGS is the test-isolation seam (python-side only);
+    the production derivation mirrors lib.js: CLAUDE_CONFIG_DIR || ~/.claude."""
+    seam = os.environ.get("AGENTIC_SDLC_USER_SETTINGS")
+    if seam:
+        return Path(seam)
+    cfg = os.environ.get("CLAUDE_CONFIG_DIR")
+    return (Path(cfg) if cfg else Path.home() / ".claude") / "settings.json"
+
+
 def _orient_hook_commands(root):
-    """Yield the command strings of SessionStart entries invoking an orient
-    entry point, across every known client config under root. Fail-open: an
-    unreadable, oversized, malformed or directory-shaped file contributes
-    nothing. Reads are utf-8-sig -- a BOM'd settings.json (PowerShell/Notepad)
-    must not read as unwired (declared divergence from Node's JSON.parse)."""
+    """Yield (command, at_user_level) across every known client config: the
+    three project-relative files, then the machine-global user settings --
+    the file the installer wires (F-042), without which a fixed machine's
+    projects would read as unwired forever."""
     for rel in ORIENT_HOOK_CONFIG_FILES:
-        p = Path(root) / rel
-        try:
-            if not p.is_file() or p.stat().st_size > ORIENT_HOOK_CONFIG_CAP:
-                continue
-            data = json.loads(p.read_text(encoding="utf-8-sig"))
-        except Exception:
-            continue
-        if not isinstance(data, dict):
-            continue
-        hooks = data.get("hooks")
-        groups = hooks.get("SessionStart") if isinstance(hooks, dict) else None
-        if groups is None:
-            groups = data.get("SessionStart")  # the .codex/hooks.json shape
-        if not isinstance(groups, list):
-            continue
-        for group in groups:
-            if not isinstance(group, dict):
-                continue
-            inner = group.get("hooks")
-            for h in inner if isinstance(inner, list) else [group]:
-                cmd = h.get("command") if isinstance(h, dict) else None
-                if (isinstance(cmd, str)
-                        and any(n in cmd for n in ORIENT_HOOK_ENTRY_POINTS)
-                        and _ORIENT_HOOK_CMD_RE.search(cmd)):
-                    yield cmd
+        for cmd in _orient_entries_in(Path(root) / rel):
+            yield cmd, False
+    for cmd in _orient_entries_in(_orient_user_settings_path()):
+        yield cmd, True
 
 
 def orient_hook_state(root):
@@ -1705,11 +1732,13 @@ def orient_hook_state(root):
     A matching entry whose tokens name no validator is "cannot tell" and counts
     as wired (the lib.js contract: never report broken on cannot-tell). 'dead'
     requires every matching entry to name a validator that does not resolve:
-    the client runs ALL SessionStart hooks, so one live entry beside a dead one
-    still orients the session (any-resolves aggregation). Relative tokens
-    resolve against the project root -- the vendored-validator convention."""
+    the client runs ALL SessionStart hooks -- project-level AND user-level
+    merge -- so one live entry at either level still orients the session
+    (any-resolves aggregation across levels). Relative tokens resolve against
+    the project root (the vendored-validator convention); a USER-level relative
+    token has no cwd to resolve against and is treated as cannot-tell."""
     matched = False
-    for cmd in _orient_hook_commands(root):
+    for cmd, at_user_level in _orient_hook_commands(root):
         matched = True
         token = None
         for m in _ORIENT_HOOK_TOKEN_RE.finditer(cmd):
@@ -1721,6 +1750,8 @@ def orient_hook_state(root):
             return "wired"
         tp = Path(token)
         if not tp.is_absolute():
+            if at_user_level:
+                return "wired"  # cannot tell: no cwd exists at user level
             tp = Path(root) / tp
         if tp.exists():
             return "wired"
@@ -1738,13 +1769,16 @@ def print_orient_hook_note(root):
     try:
         state = orient_hook_state(root)
         if state == "unwired":
-            print("[note] no session-orientation hook wired (.claude/settings.json, "
-                  ".claude/settings.local.json, .codex/hooks.json): sessions start "
-                  "unoriented -- run the installer's init or wire it per ENFORCEMENT.md par.4")
+            print("[note] agent sessions start without automatic orientation on this "
+                  "machine (no session-orientation hook found at project or user level). "
+                  "Fix once: update or reinstall the skill npm package (on Claude Code "
+                  "with Python it wires the hook machine-wide), or wire it per "
+                  "ENFORCEMENT.md par.4")
         elif state == "dead":
-            print("[note] a session-orientation hook is wired but the validator it names "
-                  "does not resolve: sessions start unoriented -- re-run init or fix the "
-                  "command (ENFORCEMENT.md par.4)")
+            print("[note] a session-orientation hook is configured but points at a "
+                  "validator that no longer exists, so sessions start unoriented. Fix: "
+                  "update or reinstall the skill npm package, or correct the command. "
+                  "Details: ENFORCEMENT.md par.4")
     except Exception:
         pass  # detection must never break check
 

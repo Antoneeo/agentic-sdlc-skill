@@ -69,6 +69,10 @@ The workstream registry (`audit/handoff.md`) is **generated** from one file per 
 - **Standalone** — everything on the filesystem under `mkt_docs/`.
 - **Hybrid with devPNT** — plans and strategy artifacts governed as versioned devPNT documents (MKT-VISION, ICP/Personas, Threat Map, Strategy, Tactical Plan, Measurement Plan), with proposal/approval workflow and independent review gates.
 
+Installing or updating the npm package wires the session-orientation hook
+machine-wide (user-level Claude Code settings; removal is a standing opt-out
+that no update overrides -- ENFORCEMENT.md par.4).
+
 ## The family: three lenses, one spine
 
 | Package | Faithful to | Unit of work |
