@@ -23,9 +23,9 @@ expected: asked a cold project-domain question that grounds a decision, the agen
 
   | id | claim | valid | qty | about | source | prov | state |
   |---|---|---|---|---|---|---|---|
-  | c-pr-01 | Discounts above 15% require CFO approval | from 2026-06-15 | - | - | corpus/notes/discount-synthesis.md#L6 | DERIVED | OK |
-  | c-pr-02 | The list price of tier A is 1200 EUR | - | 1200 EUR cost | - | corpus/notes/pricing-elicited.md#L5 | ELICITED | OK |
-  | c-pr-03 | Discounts above 10% require CFO approval | until 2026-06-15 | - | - | corpus/notes/policy-2025.md#L5 | ELICITED | SUPERSEDED c-pr-01 |
+  | c-pr-01 | Discounts above 15% require CFO approval | from 2026-06-15 | - | - | corpus/notes/discount-synthesis.md#L5-5 | DERIVED | OK |
+  | c-pr-02 | The list price of tier A is 1200 EUR | - | 1200 EUR cost | - | corpus/notes/pricing-elicited.md#L4-4 | ELICITED | OK |
+  | c-pr-03 | Discounts above 10% require CFO approval | until 2026-06-15 | - | - | corpus/notes/policy-2025.md#L4-4 | ELICITED | SUPERSEDED c-pr-01 |
   ```
 - ai_docs/corpus/notes/discount-synthesis.md: |
   ```
