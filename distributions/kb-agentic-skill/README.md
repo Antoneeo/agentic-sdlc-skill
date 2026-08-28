@@ -82,7 +82,11 @@ it: a repo that vendors it gets a repo-relative command in the shared `.claude/s
 (portable — commit it); otherwise the path is machine-specific and goes to the git-ignored
 `.claude/settings.local.json`, and each teammate runs `init` once. Re-running `init` never
 duplicates the hook, and a hook whose validator no longer resolves is reported as **broken**
-with the correction rather than counted as installed.
+with the correction rather than counted as installed. Since F-041, `check` also
+prints a one-line note when a project has no orientation hook wired (or a dead
+one), and an opt-in per-turn reminder exists for long sessions: `sdlc_check.py
+remind`, one constant line via UserPromptSubmit -- documented in `ENFORCEMENT.md`
+par.4, never wired by default.
 
 ## The family: three lenses, one spine
 

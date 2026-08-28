@@ -33,3 +33,4 @@
 | F-038 | the gated rung — truthful log vocabulary and a mandated ask, with NO grant memory | L3 | COMPLETED | 2026-08-25 | 2026-08-26 | solutions/ANALYSIS_gated_rung_vocabulary.md |
 | F-039 | F-039 | L3 | COMPLETED | 2026-08-27 | 2026-08-28 | solutions/ANALYSIS_kb_recall_reflex.md |
 | F-040 | F-040 | L3 | COMPLETED | 2026-08-28 | 2026-08-28 | solutions/ANALYSIS_kb_capture_moment.md |
+| F-041 | F-041 | L3 | COMPLETED | 2026-08-28 | 2026-08-28 | solutions/ANALYSIS_kb_midsession_drift.md |

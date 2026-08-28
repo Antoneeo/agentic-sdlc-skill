@@ -29,6 +29,7 @@ Areas modified after the last recorded analysis:
 After re-analyzing, record it with: sdlc_check.py mark <path>
 
 check: NOT CLEAN (validate rc=0, stale rc=1)
+[note] no session-orientation hook wired (.claude/settings.json, .claude/settings.local.json, .codex/hooks.json): sessions start unoriented -- run the installer's init or wire it per ENFORCEMENT.md par.4
 
 ===== check --hybrid (rc=0) =====
 ===== validate =====
@@ -42,6 +43,7 @@ Validation: 0 errors, 1 warnings, 1 advisories.
 [info] hybrid mode: audit-plan staleness is delegated to devPNT/KL, skipping.
 
 check: CLEAN (validate rc=0, stale rc=0)
+[note] no session-orientation hook wired (.claude/settings.json, .claude/settings.local.json, .codex/hooks.json): sessions start unoriented -- run the installer's init or wire it per ENFORCEMENT.md par.4
 
 ===== stale (rc=1) =====
 Areas modified after the last recorded analysis:

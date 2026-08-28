@@ -1598,6 +1598,26 @@ def kb_cmd_orient(argv):
     return rc
 
 
+def kb_cmd_remind(_argv):
+    """F-041 item B: the per-turn one-line reminder (UserPromptSubmit, opt-in).
+
+    A CONSTANT, zero-read line -- the kb minimum an agent needs re-armed every
+    prompt: triage, the recall trigger, the capture moment. Constant by
+    contract: nothing repo-controlled may ride a line injected into the agent's
+    context every turn, and zero reads is what keeps the per-turn cost flat.
+    The vision's non-goal bans per-turn GRAPH queries; this line only re-arms
+    the entry-into-topic criterion, it never runs the descent. Never wired by
+    init and never a default: ENFORCEMENT par.4 documents the manual snippet
+    and the ~50 tokens/prompt cost -- the project chooses. Fail-open like every
+    hook surface: argv is ignored whole, the exit code is always 0."""
+    print("kb-agentic: triage before acting -- L1 quick fact, L2 propagation of "
+          "settled knowledge, L3 new knowledge unit, Spike exploration; declare "
+          "the level. Answering about this project's domain? Read topics/INDEX.md "
+          "under the docs root first and cite claim ids, or state no coverage. "
+          "Decisions made today get recorded in the KB at session close.")
+    return 0
+
+
 def kb_cmd_help():
     """The spine's usage, then the overlay's own commands.
 
@@ -1619,6 +1639,8 @@ knowledge overlay (kb-agentic) -- also available:
   anchor <path> <phrase>      resolve a phrase to a verified locator span
   export --out <dir>          bundle a subgraph WITH the bytes its claims cite
   import <dir>                merge a bundle in additively (never overwrites)
+  remind                      one-line per-turn reminder (UserPromptSubmit hook,
+                              opt-in -- ENFORCEMENT par.4; constant, zero-read)
 
   index / validate / check    the spine's behaviour PLUS the claim ledger and
                               the topic graph""")
@@ -1636,6 +1658,10 @@ def main(argv=None):
     # spine runs it on the raw argv, the overlay only appends the topic router.
     if argv and argv[0] == "orient":
         return kb_cmd_orient(argv)
+    # `remind` too: it is a hook surface (UserPromptSubmit), so a stray flag
+    # must print the line, not an argparse usage error into someone's prompt.
+    if argv and argv[0] == "remind":
+        return kb_cmd_remind(argv)
     # Forward-by-default: anything not intercepted goes to the spine untouched.
     # Never a hand-copied command tuple - that is how a spine command gets
     # silently dropped (mkt_check.py ships that exact defect with `migrate`).

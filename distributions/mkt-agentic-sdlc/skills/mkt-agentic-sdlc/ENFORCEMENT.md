@@ -79,6 +79,20 @@ that cannot be placed in a command safely, or a settings file it cannot write. `
 prints which case applied, per client — a silent skip is what let "documented default
 that nobody installs" survive in the first place.
 
+**Older and agent-bootstrapped projects are silently unwired -- `check` now tells you (F-041).**
+`init` wires the hook at init time only: a project initialized before F-036, or whose
+docs root was bootstrapped by the agent (which runs `index`, never `init`), never
+received it retroactively -- and until F-041 nothing said so. `check` now prints, right after its summary line, a
+one-line `[note]` when no orientation hook is detectable (`.claude/settings.json`,
+`.claude/settings.local.json`, `.codex/hooks.json`), and a DISTINCT note when a hook is
+wired but the validator it names does not resolve (the wired-and-DEAD state below --
+silence there would bless the worst of the three states). The notes are informational
+only: never the exit code, never a `validate` warning -- CI (`validate --strict`) does
+not see them, because the wired hook legitimately lives in the git-ignored
+`settings.local.json`. Known residuals, accepted as honest: a client with no hook
+mechanism (Gemini today) keeps the note -- read it as the manual-reads reminder; a
+`.codex/hooks.json` wired in a shape other than the documented one keeps it too.
+
 **Which settings file, and why it is not always the shared one.** The command names a
 validator, and where that validator lives decides where the hook may be written:
 
