@@ -169,8 +169,8 @@ Gemini CLI — wire the same command into its startup-hook mechanism if present;
 `orient` fires once, at session start; a long session drifts after it (a compaction,
 ten turns of other work -- the F-041 field report). `sdlc_check.py remind` prints ONE
 constant line -- the kb minimum: the triage levels, the topic-index recall trigger, the
-capture moment -- for the client to inject at every prompt. Cost: ~50 tokens per
-prompt, which is exactly why `init` never wires it and never will by default: the
+capture moment, the revision gesture -- for the client to inject at every prompt.
+Cost: 443 characters, ~75 tokens per prompt, which is exactly why `init` never wires it and never will by default: the
 per-turn cost is the project's choice. The line is constant and zero-read, so nothing
 repo-controlled can ride into the agent's context through it, and the vision's
 no-per-turn-graph-queries non-goal stays honored -- the line re-arms the

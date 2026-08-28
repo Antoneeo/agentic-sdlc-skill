@@ -13,7 +13,7 @@ Date: 2026-08-28 (UTC)
 | F-040 KB Capture Moment (second-brain unit 2) | L3 | feat/kb-capture-moment | DONE, MERGED | 2026-08-28 | nothing outstanding -- published in kb 1.7.0 (2026-08-28) | HANDOFF_kb_capture_moment.md · ANALYSIS_kb_capture_moment.md |
 | F-041 KB Mid-Session Drift (field report, 2 items) | L3 | feat/kb-midsession-drift | DONE, MERGED | 2026-08-28 | nothing outstanding -- published in kb 1.8.0 (2026-08-28, registry-verified); field datum same day: an external session's check surfaced the missing orient hook and offered the wiring | HANDOFF_kb_midsession_drift.md · ANALYSIS_kb_midsession_drift.md (+ this file: evidence verbatim) |
 | F-042 Global orient hook at install time (UX fix of the F-041 note) | L3 | feat/global-orient-hook | DONE, MERGED | 2026-08-28 | nothing outstanding -- published in kb 1.9.0 (2026-08-28 12:13Z, registry-verified); live-verified on the dev machine: the update wired the user-level hook and the per-target marker | HANDOFF_global_orient_hook.md · ANALYSIS_global_orient_hook.md; the owner's design ruling is below |
-| F-043 Revision doctrine (delta-append is the failure; full re-read is the gesture) | L3 | (not yet cut) | OPEN, NOT STARTED | 2026-08-28 | cut a branch when the owner calls it; ANALYSIS from the evidence below; design review | HANDOFF_revision_doctrine.md · this file (post-mortem verbatim); ANALYSIS to be written |
+| F-043 Revision doctrine (delta-append is the failure; full re-read is the gesture) | L3 | feat/revision-doctrine | DONE, AWAITING MERGE | 2026-08-28 | the owner's merge call (design FAIL->FAIL->FAIL-at-cap with all 19 findings folded; closure PASS in 1 round; kb 322 OK) | HANDOFF_revision_doctrine.md · ANALYSIS_revision_doctrine.md (+ this file: post-mortem verbatim) |
 | Release 1.19.0 (Architect Pass + Design Review Gate) | — | feat/architect-pass (tag v1.19.0) | AWAITING OWNER | 2026-07-28 | `npm publish` (2FA, owner's act), then verify `npm view` → 1.19.0 | HANDOFF_release_1_19_0.md · CHANGELOG `[1.19.0]`/`[1.18.0]` · ANALYSIS_architect_pass.md · ANALYSIS_design_review_gate.md |
 | Release of the three packages | — | feat/kb-knowledge-method | AWAITING OWNER | 2026-08-01 | publish code 1.21.0, kb 1.4.0 and mkt 0.4.0 (2FA, owner's act) — F-028 ships in all three | HANDOFF_release_three_packages.md · ANALYSIS_kb_knowledge_method.md · ANALYSIS_claim_ledger.md · ADR_2026-08-01_kb_topic_graph_claim_ledger.md |
 
@@ -33,8 +33,12 @@ produce. Evidence stream for the vision's unit 3. Third datum, same day (the str
 session's post-mortem on a 12-document realignment -- delta-append revisions left
 pre-call sentences standing as printed truth, and the session itself named the
 claim-ledger cascade (claim superseded -> citing documents mechanically stale)
-as the designed answer to exactly that failure. Discipline half registered as
-F-043 (HANDOFF_revision_doctrine.md); the mechanical half stays unit 3. The F-042 JS touches ALL THREE packages' lifecycle scripts --
+as the designed answer to exactly that failure. Discipline half shipped as
+F-043 (the kb `## Revision` doctrine + remind clause). **Declared follow-up (durable
+home):** the code AND mkt lenses share the revision failure surface on their own
+triage rows (mkt's vocabulary is E-rows) and can port the doctrine sentence when
+they next release; the kb SKILL.md section is the reference text. The mechanical
+half stays unit 3. The F-042 JS touches ALL THREE packages' lifecycle scripts --
 code and mkt have a concrete reason to release soon. Before that: kb 1.8.0 (tag
 `kb-v1.8.0`) carries F-041: the check wiring/dead-hook
 notes (spine x3, parked in code/mkt CHANGELOGs for their next release) + the kb

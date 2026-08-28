@@ -1,11 +1,11 @@
 ---
 workstream: F-043 Revision doctrine (delta-append is the failure; full re-read is the gesture)
 level: L3
-branch: (not yet cut)
-status: OPEN, NOT STARTED
+branch: feat/revision-doctrine
+status: DONE, AWAITING MERGE
 since: 2026-08-28
-next: cut a branch when the owner calls it; ANALYSIS from the evidence below; design review
-details: this file (post-mortem verbatim); ANALYSIS to be written
+next: the owner's merge call (design FAIL->FAIL->FAIL-at-cap with all 19 findings folded; closure PASS in 1 round; kb 322 OK)
+details: ANALYSIS_revision_doctrine.md (+ this file: post-mortem verbatim)
 updated: 2026-08-28
 ---
 

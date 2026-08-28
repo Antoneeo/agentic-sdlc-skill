@@ -46,7 +46,7 @@ Always classify the request before choosing the process. Declare the chosen leve
 | Level | Criteria | Required process |
 |---|---|---|
 | **L1 - Quick Fact / Snippet** | One claim row added to an existing topic; a typo; a preference update. No node created, no source entering the corpus, no frontmatter change. | Implement edit directly in existing note. No new documents. |
-| **L2 - Propagation of settled knowledge** | The fact is **already settled** in the corpus and the work carries it into existing documents — restating, correcting a stale copy, updating an SOP that quotes it. No node created or superseded, no hierarchy change, no node frontmatter change, no new source ingested. | Mini-analysis in message: objective, impact, sources, validation. Update existing document or create single SOP/note. |
+| **L2 - Propagation of settled knowledge** | The fact is **already settled** in the corpus and the work carries it into existing documents — restating, correcting a stale copy, updating an SOP that quotes it. No node created or superseded, no hierarchy change, no node frontmatter change, no new source ingested. | Mini-analysis in message: objective, impact, sources, validation. Update existing document (full re-read per `## Revision`) or create single SOP/note. |
 | **L3 - New knowledge unit / Corpus** | A source enters the corpus; a topic node is created or superseded; the hierarchy moves; a conflict must be reconciled; or what a claim asserts changes. | Full workflow: Vision Gate, Spec Elicitation, Taxonomy Pass, Knowledge Analysis, Distillation, Review, Indexing. |
 | **Spike - Exploration** | Time-boxed exploratory research or draft without merging into official KB. | Outcome in `ai_docs/solutions/SPIKE_[topic].md`. |
 
@@ -124,7 +124,7 @@ Use this mode when `devpnt_*` tools are available and point at the current proje
 - **Design review gate (end of Phase 3, before any drafting):** the analysis is reviewed by somebody other than its author — a subagent with fresh context, or a declared self-pass when no higher rung is usable — a permission-gated rung is asked about, never silently skipped (`review.md`). Follow `review.md`; log the outcome in `audit/reviews/REVIEW_LOG.md`. A knowledge structure reviewed only by the person who chose it is not reviewed.
 
 ### 4. Knowledge Processing & Distillation
-- **Isolate the work (Branch/worktree hygiene).** Distillation rewrites existing notes: do it on a branch or a worktree, never directly on the shared corpus, so a half-finished reconciliation is never what the next reader finds.
+- **Isolate the work (Branch/worktree hygiene).** Distillation rewrites existing notes — full re-read per `## Revision` — and does it on a branch or a worktree, never directly on the shared corpus, so a half-finished reconciliation is never what the next reader finds.
 - Before drafting (L2/L3; L1 exempt), **consult the guide router** for a guide covering the task and read it first (the consult trigger, `guides.md` §0). A targeted description match, not a blanket read. Its result is the router verdict already declared with the triage level (Rule Zero).
 - Execute knowledge extraction using **Signal Distillation** (`distillation.md`).
 - **Opt-in subagent execution**: for an L3 with an approved analysis, the work MAY be executed via subagents per `dispatch.md`; default stays same-session.
@@ -242,6 +242,24 @@ exist — this section adds only the MOMENT.
   CONTEST, never silently overwrite.
 - **Silence stays legal where no one signed off**: no closing signal → no question,
   no ritual line.
+
+## Revision — the full re-read
+
+Incorporating new knowledge into an existing document is a rewrite, not an
+append: anchored edits are each correct while the global invariant — the body
+reads as CURRENT state — is never re-verified. The gesture:
+- Re-read the WHOLE document before editing; then rewrite the body so it reads
+  as written today — new knowledge fused, never quarantined in dated
+  sections — never append a delta.
+- History goes to the Diary/notes, never an inline chronicle — and past Diary
+  entries are never rewritten: a correction is a new entry.
+- A SUPERSEDED banner is a tombstone, never a revision device in a living doc.
+- Claim tables are EXEMPT (rows move only per `reconciliation.md`) and node
+  frontmatter moves only per `taxonomy.md` — a revision never re-parents; the
+  rewrite governs prose, never the ledger or the graph edges.
+- A multi-document pass re-reads PER DOCUMENT; set coverage is not integrity.
+- The re-read raises the probability of catching a false premise; it cannot
+  guarantee it — domain judgment stays the human's.
 
 ## Mechanical Enforcement
 - `scripts/sdlc_check.py index`: updates `ai_docs/INDEX.md` and `ai_docs/reference/INDEX.md`.

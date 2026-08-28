@@ -1602,7 +1602,7 @@ def kb_cmd_remind(_argv):
     """F-041 item B: the per-turn one-line reminder (UserPromptSubmit, opt-in).
 
     A CONSTANT, zero-read line -- the kb minimum an agent needs re-armed every
-    prompt: triage, the recall trigger, the capture moment. Constant by
+    prompt: triage, the recall trigger, the capture moment, the revision gesture. Constant by
     contract: nothing repo-controlled may ride a line injected into the agent's
     context every turn, and zero reads is what keeps the per-turn cost flat.
     The vision's non-goal bans per-turn GRAPH queries; this line only re-arms
@@ -1614,7 +1614,7 @@ def kb_cmd_remind(_argv):
           "settled knowledge, L3 new knowledge unit, Spike exploration; declare "
           "the level. Answering about this project's domain? Read topics/INDEX.md "
           "under the docs root first and cite claim ids, or state no coverage. "
-          "Decisions made today get recorded in the KB at session close.")
+          "Decisions made today get recorded in the KB at session close. Revising an existing document? Re-read it whole and rewrite it to current state -- never append a delta.")
     return 0
 
 
