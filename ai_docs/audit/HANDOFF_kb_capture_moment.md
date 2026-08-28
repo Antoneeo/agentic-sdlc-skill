@@ -2,9 +2,9 @@
 workstream: F-040 KB Capture Moment (second-brain unit 2)
 level: L3
 branch: feat/kb-capture-moment
-status: IN REVIEW
+status: DONE, AWAITING MERGE
 since: 2026-08-28
-next: closure review on the diff, then the owner's merge call
+next: the owner's merge call (closure FAIL->FAIL->PASS at round 3, zero open findings)
 details: ANALYSIS_kb_capture_moment.md
 updated: 2026-08-28
 ---

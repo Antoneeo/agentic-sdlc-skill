@@ -1,6 +1,7 @@
 ---
 description: F-040 unit 2 of VISION_kb_second_brain - the daily capture moment. The rails exist (claim row is L1, notes take elicited/derived/ruling); this unit adds the sweep MOMENT the vision mandates at user-signed closings, plus a notes-recency line in the kb orient.
-status: IN_PROGRESS
+status: COMPLETED
+end_date: 2026-08-28
 feature: F-040
 id: F-040
 start_date: 2026-08-28
@@ -91,6 +92,13 @@ Battery RED→GREEN on the new module; mutation bites both ways; recency probe u
 6. Closure: kb battery, check --hybrid, REVIEW_LOG, handoff.
 
 ## Diary
+- 2026-08-28 (closure PASS): round 3 PASS, zero open findings — the pre-bind fix
+  verified delivered with a full control-flow walk (post-binding throws keep root,
+  recency prints; pre-binding throws skip cleanly). Full arc: design FAIL(10+1)→PASS
+  in 2 rounds (the lead BLOCK vision-level, owner ruled), closure FAIL(7)→FAIL(1)→PASS
+  in 3. The R2 keeper: a fix can satisfy a finding's wording while preserving its
+  defect — the fix needs the same adversarial eye as the original code. Unit DONE,
+  awaiting merge.
 - 2026-08-28 (closure R3): closure round 1 FAIL (1 BLOCK + 6 WARN) — the BLOCK was the
   SAME class as F-039's: the fixture copied from the F-039 scenario gained a `date:`
   line without advancing its locator (L4-4 pointed at the closing fence). Round 2
