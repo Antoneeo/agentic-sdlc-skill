@@ -35,7 +35,7 @@ Decisions — thresholds chosen, rules adopted, preferences stated, including OF
 - **The channeling — existing rails, explicit provenance**:
   - the user's words → `corpus/notes/*` with `origin: elicited` and a `date:`; a claim row distilled from it carries `prov: ELICITED`, source = that note with a legal `L<a>-<b>` locator;
   - a synthesis of the day's discussion → note with `derived_from:` → claim `prov: DERIVED`;
-  - RULING **only when the decision resolves an existing contested set** — then `reconciliation.md` §2 applies in full (mandatory `basis:`, supersession of the losing set). A fresh conflict-free decision is captured elicited: a preference is not a fact, and `basis:` is reserved for the fact the corpus lacks.
+  - RULING **only when the decision resolves an existing contested set** — then `reconciliation.md` §2 applies in full (mandatory `basis:`, supersession of the whole prior set). A fresh conflict-free decision is captured elicited: a preference is not a fact, and `basis:` is reserved for the fact the corpus lacks.
   - fact on an existing topic → claim row, L1 (`id` empty; `claim-id --fill`);
   - no owning topic → the note is written NOW; the placement is declared as the next kb unit. Capture never smuggles an L3 hierarchy change, and `topics/unplaced.md` is never a decision park (UNPLACED is for topic-less scraps and is invisible to recall).
 - **Reconciliation is wired**: a captured claim meeting an existing claim on the node classifies per `reconciliation.md` — capture can confirm, refine, coexist or CONTEST, never silently overwrite.
@@ -68,6 +68,7 @@ kb `README.md`: capability point 7 (the capture moment, one short paragraph incl
 | `.../evals/scenarios/capture_stays_silent_with_nothing_to_record.md` | new |
 | `distributions/kb-agentic-skill/README.md` | capability point 7 |
 | `distributions/kb-agentic-skill/CHANGELOG.md` | [Unreleased] F-040 entry |
+| `.../elicitation.md` | one clause: the intro now counts BOTH planned asks (closure-review fold — the sweep left "the round is the only place the process plans that cost" under-counting) |
 
 All kb-lens; no shared-spine file; `taxonomy.md`, `templates.md`, `reconciliation.md` untouched (rails reused, not changed). Code and mkt lenses unaffected.
 
@@ -90,6 +91,16 @@ Battery RED→GREEN on the new module; mutation bites both ways; recency probe u
 6. Closure: kb battery, check --hybrid, REVIEW_LOG, handoff.
 
 ## Diary
+- 2026-08-28 (closure R3): closure round 1 FAIL (1 BLOCK + 6 WARN) — the BLOCK was the
+  SAME class as F-039's: the fixture copied from the F-039 scenario gained a `date:`
+  line without advancing its locator (L4-4 pointed at the closing fence). Round 2
+  narrowly FAIL: six of seven cured, but the "own try" restructure still killed the
+  recency line on a post-binding router throw (the except reset root to None) — the
+  reviewer falsified it with a live UnicodeEncodeError repro on this machine. Fixed by
+  pre-binding root/name before the router try and letting the except pass. Review-round
+  folds beyond the approved Impact, declared: `elicitation.md` gained the two-planned-
+  asks clause (Impact row added); the recency-limit sentence entered SKILL.md; the
+  spec's "losing set" gloss corrected to "whole prior set" here and in the shipped text.
 - 2026-08-28 (implemented): design PASS at round 2 (0 open; 1 WARN folded during
   implementation: the sweep classified as a scheduled elicitation with its search
   result inline in the ask, anchored in the battery; the closing-signal wording nit
