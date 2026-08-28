@@ -1,7 +1,7 @@
 ---
 name: kb-agentic
 version: 1.6.0
-description: Knowledge-Base & Document-First protocol with risk-proportional triage, Vision as a guide, Signal Distillation, a complete Standalone mode and optional symbiosis with devPNT. Use for user documentation, knowledge extraction, SOPs, research notes, decision logs and knowledge management.
+description: Knowledge-Base & Document-First protocol with risk-proportional triage, Vision as a guide, Signal Distillation, a complete Standalone mode and optional symbiosis with devPNT. Use for user documentation, knowledge extraction, SOPs, research notes, decision logs, knowledge management — and for answering project questions from the claim ledger and topic graph.
 author: Antonio Pinto (https://github.com/Antoneeo)
 copyright: (c) 2026 Antonio Pinto
 ---
@@ -15,7 +15,7 @@ This skill guides knowledge management and documentation with a Document-First p
 Support files in the skill directory:
 - `templates.md`: templates for Vision, Knowledge ANALYSIS, Research SPIKE, SOP GUIDE, audit plan, and handoff.
 - `portability.md`: carrying knowledge between projects — what a bundle is, why export is a closure rather than a selection, and the rule that knowledge crosses a project boundary while authority does not (`prov: IMPORTED`). Read before `export`/`import`.
-- `taxonomy.md`: placing a claim in the topic graph — descent over the generated index, the five verdicts (EXISTS / INADEQUATE / MISSING / GENERALIZES / UNPLACED), the sibling rule, guarded re-parenting, canonicalization. Run at L3 before drafting.
+- `taxonomy.md`: placing a claim in the topic graph — descent over the generated index, the five verdicts (EXISTS / INADEQUATE / MISSING / GENERALIZES / UNPLACED), the sibling rule, guarded re-parenting, canonicalization — and the answer-mode descent (`§6`). Run at L3 before drafting.
 - `guides.md`: pipeline for distilling user-provided indications into `ai_docs/reference/GUIDE_[topic].md`.
 - `vision.md`: how to write a Vision a cold reviewer can actually apply — the properties that make a rule hold, the minimum operable sections, and the blind check.
 - `distillation.md`: from a source to claim rows — intake (content-addressed originals, stored canonical extraction, every provenance a real file), the claim table, extraction discipline, signal rules (symbiosis with `distill`).
@@ -35,7 +35,7 @@ Read these files only when needed. `SKILL.md` is the operating contract; the sup
 - **Signal & Distillation:** eliminate fluff, filler, and speculative statements; keep deterministic facts, constraints, decisions, and clear SOP steps (symbiosis with `distill`).
 - **Lifecycle & Freshness:** mark superseded knowledge (`status: SUPERSEDED` or `DEPRECATED`) so outdated information does not cause hallucination.
 - **Protect the Vision & User Style:** align all knowledge work with user strategic goals, operational preferences, and expected outcomes.
-- **Map-First Navigation:** rely on `ai_docs/README.md`, `INDEX.md`, and `reference/INDEX.md` router for targeted retrieval before creating new documents.
+- **Map-First Navigation:** rely on `ai_docs/README.md`, `INDEX.md`, and `reference/INDEX.md` router for targeted retrieval before creating new documents — and before *answering from model memory* on the project's domain (`## Topic Recall`).
 
 ## Rule Zero: Triage
 
@@ -141,6 +141,54 @@ Guides are consulted, created, and distilled per `guides.md`.
 - **Consult (before acting)**: check `ai_docs/reference/INDEX.md` — the guide router — and declare the verdict with the triage level.
 - **Propose proactively**: when the user hands over indications that will govern future work, propose distilling them into a guide. A proposal, never a silent write, and never from model knowledge — a guide's whole value is that every claim traces to what the user actually provided.
 - Distill from user instructions into `ai_docs/reference/GUIDE_[topic].md`.
+
+## Topic Recall — the answer-side consult
+
+The graph is only a second brain if it is READ when answering, not only written when
+distilling. The descent (`taxonomy.md`) fires here with a new trigger — the answer-side
+twin of the guide consult above.
+
+- **Trigger — unconditional scan on domain assertions.** Whenever the reply would assert
+  facts about the PROJECT'S domain (its topics, decisions, sources, constraints), scan
+  `topics/INDEX.md`. Plausibility of coverage is judged ON the scanned top rows, never
+  before them — "the KB probably doesn't have this" is model memory talking, the exact
+  judgement this reflex removes. Exempt: pure mechanics (running a command, editing per
+  explicit instruction), general knowledge outside the project's domain, L1 gestures.
+- **Once per topic per SESSION.** The dedup key is the matched slug (known ex post); a
+  question plainly within an already-descended branch reuses that consult, and a
+  placement descent already run this session counts. A compaction starts a new session.
+- **The act.** Descend per `taxonomy.md` §6 (same doctrine, answer mode). On claims,
+  answer FROM them citing claim ids; a `status: SUPERSEDED` claim is never cited without
+  naming its successor.
+- **The declared verdict — only when the recall ran**, never a per-turn ritual. Four
+  legal values:
+  - `kb: <slug> → N claims cited`
+  - `kb: <slug> → node matched, no claims` — surface the node's `gaps:` when it answers
+    the question: "the KB knows it doesn't know" is a first-class answer.
+  - `kb: no coverage` — index read, nothing fits.
+  - `kb: index absent — regenerate (sdlc_check.py index)` — the INDEX is missing, not
+    necessarily the graph (nodes routinely exist while the index lags); regenerate and
+    rescan.
+  Never fake the verdict: an always-"no coverage" verdict certifies a lookup that did
+  not happen. The `router:` and `kb:` verdicts are independent and may co-occur, one
+  line each — a how-to question can match a guide AND carry claims.
+- **Anti-echo — the re-touch rule.** When a DERIVED claim grounds a decision the user is
+  about to take, walk its chain to non-DERIVED ground — a GIVEN artifact, an ELICITED or
+  RULING note — and cite that ground beside the claim id; re-opening only the immediate
+  target may re-read the agent's own synthesis, which is the echo chamber itself. If the
+  ground does not resolve (imported bundle without originals, external `original_path:`,
+  tombstone): say so beside the claim id and treat the claim as **unverified for
+  decision-grounding** — surfaced, never silently cited. Per-provenance stance: GIVEN's
+  source column is already the direct citation; ELICITED/RULING carry the practitioner's
+  own authority; an IMPORTED claim grounding a decision is named as un-re-ratified
+  foreign authority.
+- **The trace persists.** When the decision is recorded (a ruling note, a diary entry),
+  that record cites the claim id AND the re-touched ground — the trace survives in the
+  corpus, not in ephemeral chat.
+- **Under dispatch**, recall is an orchestrator concern: the orchestrator runs the
+  descent itself; a context-free subagent never runs its own. The task schema has no
+  claims field today, so until a dispatch-focused unit adds one, the orchestrator
+  inlines the cited claim rows in the task's free text — an explicit interim.
 
 ## Mechanical Enforcement
 - `scripts/sdlc_check.py index`: updates `ai_docs/INDEX.md` and `ai_docs/reference/INDEX.md`.

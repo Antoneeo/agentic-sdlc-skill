@@ -1,6 +1,7 @@
 ---
 description: F-039 unit 1 of VISION_kb_second_brain - the topic-recall reflex and the anti-echo rule in the kb lens. The reading doctrine exists (taxonomy descent); this unit gives it the answer-side trigger the guide router already has, plus a by-construction limb in the kb orient.
-status: PLANNED
+status: COMPLETED
+end_date: 2026-08-28
 feature: F-039
 id: F-039
 start_date: 2026-08-27
@@ -91,6 +92,7 @@ Battery RED→GREEN on the new invariant; mutation bites both ways; orient inter
 6. Closure: kb battery, check --hybrid, REVIEW_LOG, handoff.
 
 ## Diary
+- 2026-08-28 (closure): implemented per the PASS design, in plan order. test_kb_recall.py 7/7 with the mutation verified RED->GREEN on a doctrine anchor; kb battery 281 OK; the eval harness smoke found one real defect (fence bodies carried the bullet indentation and broke YAML frontmatter — common-dedent added, re-smoked clean). REVIEW_LOG row written; handoff registered DONE, AWAITING MERGE.
 - 2026-08-27: unit opened on `feat/kb-recall-reflex` off main@45ad7c3 (vision APPROVED same day). Design modeled on `guides.md` §0 read whole; anchors verified against the 1.6.0 tree (the session's loaded copy was 1.4.1 — home copy updated during the vision phase, a live instance of T3). Schema pass: a PowerShell in-place patch mojibake'd the UTF-8; rewritten via Write — string patches on UTF-8 files go through Python or Write, never Set-Content.
 - 2026-08-28 (R3): round 2 FAIL, narrow — 11/12 resolved, one new BLOCK the reviewer flagged as latent since round 1: `test_skill_invariants.py` is shared-manifest (x3), so the battery row contradicted the isolation claim. Folded: the invariant moves to a NEW kb-only `test_kb_recall.py` (with the orient test); the interception shape is pinned (special-case before argparse, raw argv, never re-parse flags); the dispatch vehicle is an explicit interim (claims inlined in task free text until a dispatch unit adds a schema field); the §0→§1 pointer fixed.
 - 2026-08-28: design review round 1 (fresh subagent, rung 1 granted at the gate): FAIL, 6 BLOCK + 6 WARN, all verified real (provenance is five values with GIVEN — distillation.md:118 checked; orient lives in the spine but the overlay intercept pattern permits a kb-only limb — sdlc_check.py:1521-1532 checked). All 12 folded into this revision: unconditional scan (plausibility judged ON the index), four-verdict vocabulary with index-absent semantics + regenerate, chain-to-ground + unresolvable-ground branch, by-construction orient limb, harness multi-line seeding, five-value ledger with per-provenance stance, session dedup, dispatch clause, verdict composition, trace persistence, capability-narrative carrier + description surface.
