@@ -2,6 +2,26 @@
 
 Every significant change to this skill is recorded here.
 
+## [Unreleased]
+
+Two field-reported defects (2026-08-28), both in the frontmatter-value substrate.
+
+### Fixed
+- **YAML-quoted values are unquoted at the point of use** (`kb_unquote`).
+  `original_path:` values quoted because the path contains spaces produced
+  false "does not resolve" warnings -- 102 on one real corpus; the pointers
+  resolved all along. Worse, a quoted `supersedes:` silently MISSED the
+  supersession (no warning at all, and the claims-resting-on-superseded check
+  never fired). Both readers, plus the corpus-INDEX display, now strip one
+  pair of wrapping quotes; a genuinely dangling quoted path still warns.
+- **The orient recency line discloses when mtime decided it.** The line is
+  date-first as documented, but any note whose `date:` failed to parse fell
+  back to file mtime IN SILENCE -- and mtime lies after a rewrite or checkout,
+  so a note dated days ago could read "0 days old" with nothing marking the
+  degraded basis. Quoted dates now parse, a dated stamp beats an mtime stamp
+  on a same-day tie, and when the winning stamp still came from mtime the line
+  says so: `(corpus/notes; mtime -- date: not parsed)`.
+
 ## [1.10.0] - 2026-08-28
 
 F-043 -- the revision doctrine: documents read as current state.
