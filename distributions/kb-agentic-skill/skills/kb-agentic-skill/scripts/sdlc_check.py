@@ -1538,6 +1538,37 @@ def kb_cmd_orient(argv):
                 print("index absent (%d node files) -- regenerate: sdlc_check.py index"
                       % len(nodes))
         # no topics/ at all: the project has no graph; print nothing.
+        # Notes recency (F-040) -- independent of the router: prints whenever
+        # corpus/notes/ exists. It measures NOTES recency, not full ledger
+        # freshness (an ingest feeding claims from given/ leaves it unmoved).
+        # Date source: frontmatter `date:` first; per-note mtime as fallback --
+        # mtime LIES after clone/worktree (the skill's own worktree hygiene
+        # makes that routine), which is why the frontmatter date is primary.
+        notes_dir = root / name / "corpus" / "notes"
+        if notes_dir.is_dir():
+            import datetime as _dt
+            newest = None
+            for p in notes_dir.glob("*.md"):
+                stamp = None
+                try:
+                    head = sdlc_core.read_text(p)[:600]
+                    m = re.search(r"^date:\s*(\d{4}-\d{2}-\d{2})", head, re.M)
+                    if m:
+                        stamp = _dt.date.fromisoformat(m.group(1))
+                except Exception:
+                    pass
+                if stamp is None:
+                    try:
+                        stamp = _dt.date.fromtimestamp(p.stat().st_mtime)
+                    except Exception:
+                        continue
+                if newest is None or stamp > newest:
+                    newest = stamp
+            if newest is None:
+                print("\nno notes yet (corpus/notes)")
+            else:
+                days = (_dt.date.today() - newest).days
+                print("\nnewest note: %d days old (corpus/notes)" % max(days, 0))
     except (Exception, SystemExit):
         # SystemExit included: the probe parser raises it on a dangling flag
         # value ("orient --root" at end of argv) -- the spine already reported

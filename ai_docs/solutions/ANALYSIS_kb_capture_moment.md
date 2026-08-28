@@ -1,6 +1,6 @@
 ---
 description: F-040 unit 2 of VISION_kb_second_brain - the daily capture moment. The rails exist (claim row is L1, notes take elicited/derived/ruling); this unit adds the sweep MOMENT the vision mandates at user-signed closings, plus a notes-recency line in the kb orient.
-status: PLANNED
+status: IN_PROGRESS
 feature: F-040
 id: F-040
 start_date: 2026-08-28
@@ -90,5 +90,12 @@ Battery RED→GREEN on the new module; mutation bites both ways; recency probe u
 6. Closure: kb battery, check --hybrid, REVIEW_LOG, handoff.
 
 ## Diary
+- 2026-08-28 (implemented): design PASS at round 2 (0 open; 1 WARN folded during
+  implementation: the sweep classified as a scheduled elicitation with its search
+  result inline in the ask, anchored in the battery; the closing-signal wording nit
+  fixed). Implemented in plan order; battery 289 OK first run after the module's 8/8
+  (mutation verified RED->GREEN); both scenarios seed canonically under the fenced
+  harness. One editorial slip caught by re-reading: the README point landed above
+  point 6 and was moved below it.
 - 2026-08-28 (R2): design review round 1 FAIL — 4 BLOCK + 6 WARN, all verified. The lead BLOCK was vision-level and went to the owner: the draft had silently reinterpreted the vision's mandated ASK into ambiguity-only questioning; the owner ruled to honor the wording (sweep question at user-signed closings). Also folded: operable closing points with the declared unsignaled-end residual (the phase-4 note duty is the real protection); recency from `date:` frontmatter with the mtime-lies-after-clone limit named (the skill's own worktree hygiene makes resets routine); unplaced-as-decision-park dropped (UNPLACED is topic-less scraps, invisible to recall); idempotent-sweep clause resolving the double-capture event overlap; explicit prov mapping; RULING bounded to contested-set resolution; reconciliation pointer; second (negative-branch) eval scenario; Write Triggers row anchored.
 - 2026-08-28: unit opened on `feat/kb-capture-moment` off main@43dbea1. Design decision made before drafting: no SessionEnd/Stop hook — SessionEnd cannot reach the model and a Stop hook is per-turn noise; the honest by-construction limb is recency visibility in the F-039 orient append.
