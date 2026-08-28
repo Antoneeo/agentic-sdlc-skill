@@ -171,6 +171,18 @@ def kb_claim_id(source_path, locator, qty_key=""):
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:12]
 
 
+def kb_unquote(value):
+    """Strip ONE pair of wrapping YAML quotes (then re-strip whitespace).
+    load_frontmatter keeps values verbatim by design; paths with spaces force
+    quoting, so value-consuming readers unquote at the point of use. Field
+    defect 2026-08-28: 102 false dangling original_path warns on one real
+    corpus, and a quoted supersedes: would silently MISS the supersession."""
+    v = (value or "").strip()
+    if len(v) >= 2 and v[0] == v[-1] and v[0] in ('"', "'"):
+        return v[1:-1].strip()
+    return v
+
+
 def kb_parse_scope(text):
     """'-' | 'from X' | 'until X' | 'from X until Y' | 'if <cond>' ->
     ('always',) | ('window', from, until) | ('if', cond). Raises on junk."""
@@ -891,7 +903,7 @@ def kb_build_corpus_index(root):
         for meta_p in sorted(given.glob("*.meta.md")):
             meta = sdlc_core.load_frontmatter(sdlc_core.read_text(meta_p).splitlines()) or {}
             orig = meta_p.name[:-len(".meta.md")]
-            sup = (meta.get("supersedes") or "").strip()
+            sup = kb_unquote(meta.get("supersedes"))
             lines.append("- `%s` — %s%s — %s" % (
                 orig, (meta.get("date") or "undated"),
                 (" — supersedes `%s`" % sup) if sup else "",
@@ -1050,7 +1062,7 @@ def kb_corpus_check(root):
             # reason does not extend to the PATH, which costs one exists(). A
             # corpus whose premise is "every provenance is a real file" cannot
             # let 16 sidecars go dangling behind a green run.
-            op = (meta.get("original_path") or "").strip()
+            op = kb_unquote(meta.get("original_path"))
             if op:
                 cands = _kb_original_candidates(op, root)
                 tried = [str(c) for c in cands]
@@ -1063,7 +1075,7 @@ def kb_corpus_check(root):
                         "artifacts and sidecars, never the originals, so after "
                         "an import this dangles legitimately"
                         % (rel, op, ", ".join(tried)))
-            sup = (meta.get("supersedes") or "").strip()
+            sup = kb_unquote(meta.get("supersedes"))
             if sup:
                 superseded.add(sup)
                 if not (given / sup).is_file():
@@ -1563,17 +1575,22 @@ def kb_cmd_orient(argv):
         if notes_dir.is_dir():
             import datetime as _dt
             newest = None
+            newest_mtime = False
             for p in notes_dir.glob("*.md"):
                 stamp = None
+                from_mtime = False
                 try:
                     head = sdlc_core.read_text(p)[:600]
                     # `date:` counts only INSIDE the frontmatter block: a
                     # column-0 date: in a note's body must not misdate it.
+                    # The optional quote: YAML-quoted dates are legal and the
+                    # silent mtime fallback is exactly the clone-reset lie.
                     if head.startswith("---"):
                         end = head.find("\n---", 3)
                         if end != -1:
-                            m = re.search(r"^date:\s*(\d{4}-\d{2}-\d{2})",
-                                          head[:end], re.M)
+                            m = re.search(
+                                r"^date:\s*[\"']?(\d{4}-\d{2}-\d{2})",
+                                head[:end], re.M)
                             if m:
                                 stamp = _dt.date.fromisoformat(m.group(1))
                 except Exception:
@@ -1581,15 +1598,27 @@ def kb_cmd_orient(argv):
                 if stamp is None:
                     try:
                         stamp = _dt.date.fromtimestamp(p.stat().st_mtime)
+                        from_mtime = True
                     except Exception:
                         continue
-                if newest is None or stamp > newest:
+                # Strict newer wins; on a tie a DATED stamp beats an mtime one,
+                # so the disclosure below never fires beside a validated date
+                # proving the same day.
+                if (newest is None or stamp > newest
+                        or (stamp == newest and newest_mtime
+                            and not from_mtime)):
                     newest = stamp
+                    newest_mtime = from_mtime
             if newest is None:
                 print("\nno notes yet (corpus/notes)")
             else:
                 days = (_dt.date.today() - newest).days
-                print("\nnewest note: %d days old (corpus/notes)" % max(days, 0))
+                # The basis is disclosed when mtime decided the winner: the
+                # field-reported lie was a rewritten note reading "0 days old"
+                # against SKILL.md's date-first promise -- degraded, and mute.
+                basis = "; mtime -- date: not parsed" if newest_mtime else ""
+                print("\nnewest note: %d days old (corpus/notes%s)"
+                      % (max(days, 0), basis))
     except (Exception, SystemExit):
         # Fail-open: nothing in the recency append may break orient. (The
         # probe parser lives in the router try above; this guard covers the
