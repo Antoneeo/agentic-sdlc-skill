@@ -4,7 +4,7 @@ level: L3
 branch: feat/global-orient-hook
 status: DONE, MERGED
 since: 2026-08-28
-next: publish kb 1.9.0 (owner's act, publish_all.bat) -> polling verify
+next: nothing outstanding -- published in kb 1.9.0 (2026-08-28 12:13Z, registry-verified); live-verified on the dev machine: the update wired the user-level hook and the per-target marker
 details: ANALYSIS_global_orient_hook.md; the owner's design ruling is below
 updated: 2026-08-28
 ---

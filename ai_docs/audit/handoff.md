@@ -12,7 +12,7 @@ Date: 2026-08-28 (UTC)
 | F-039 KB Recall Reflex (second-brain unit 1) | L3 | feat/kb-recall-reflex | DONE, MERGED | 2026-08-27 | nothing outstanding -- published in kb 1.7.0 (2026-08-28); unit 3 waits for usage data per the vision | HANDOFF_kb_recall_reflex.md · ANALYSIS_kb_recall_reflex.md |
 | F-040 KB Capture Moment (second-brain unit 2) | L3 | feat/kb-capture-moment | DONE, MERGED | 2026-08-28 | nothing outstanding -- published in kb 1.7.0 (2026-08-28) | HANDOFF_kb_capture_moment.md · ANALYSIS_kb_capture_moment.md |
 | F-041 KB Mid-Session Drift (field report, 2 items) | L3 | feat/kb-midsession-drift | DONE, MERGED | 2026-08-28 | nothing outstanding -- published in kb 1.8.0 (2026-08-28, registry-verified); field datum same day: an external session's check surfaced the missing orient hook and offered the wiring | HANDOFF_kb_midsession_drift.md · ANALYSIS_kb_midsession_drift.md (+ this file: evidence verbatim) |
-| F-042 Global orient hook at install time (UX fix of the F-041 note) | L3 | feat/global-orient-hook | DONE, MERGED | 2026-08-28 | publish kb 1.9.0 (owner's act, publish_all.bat) -> polling verify | HANDOFF_global_orient_hook.md · ANALYSIS_global_orient_hook.md; the owner's design ruling is below |
+| F-042 Global orient hook at install time (UX fix of the F-041 note) | L3 | feat/global-orient-hook | DONE, MERGED | 2026-08-28 | nothing outstanding -- published in kb 1.9.0 (2026-08-28 12:13Z, registry-verified); live-verified on the dev machine: the update wired the user-level hook and the per-target marker | HANDOFF_global_orient_hook.md · ANALYSIS_global_orient_hook.md; the owner's design ruling is below |
 | Release 1.19.0 (Architect Pass + Design Review Gate) | — | feat/architect-pass (tag v1.19.0) | AWAITING OWNER | 2026-07-28 | `npm publish` (2FA, owner's act), then verify `npm view` → 1.19.0 | HANDOFF_release_1_19_0.md · CHANGELOG `[1.19.0]`/`[1.18.0]` · ANALYSIS_architect_pass.md · ANALYSIS_design_review_gate.md |
 | Release of the three packages | — | feat/kb-knowledge-method | AWAITING OWNER | 2026-08-01 | publish code 1.21.0, kb 1.4.0 and mkt 0.4.0 (2FA, owner's act) — F-028 ships in all three | HANDOFF_release_three_packages.md · ANALYSIS_kb_knowledge_method.md · ANALYSIS_claim_ledger.md · ADR_2026-08-01_kb_topic_graph_claim_ledger.md |
 
@@ -21,8 +21,13 @@ Date: 2026-08-28 (UTC)
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**Published on npm (registry-verified 2026-08-28):** code **1.28.0**, kb **1.8.0**,
-mkt **0.6.0** -- kb 1.8.0 (tag `kb-v1.8.0`) carries F-041: the check wiring/dead-hook
+**Published on npm (registry-verified 2026-08-28):** code **1.28.0**, kb **1.9.0**,
+mkt **0.6.0** -- kb 1.9.0 (tag `kb-v1.9.0`) carries F-042: install-time global orient
+hook (user-level settings; removal = standing per-target opt-out; surgical uninstall)
++ the user-aware, user-language check note; live-verified on the dev machine (update
+wired hook + marker). The F-042 JS touches ALL THREE packages' lifecycle scripts --
+code and mkt have a concrete reason to release soon. Before that: kb 1.8.0 (tag
+`kb-v1.8.0`) carries F-041: the check wiring/dead-hook
 notes (spine x3, parked in code/mkt CHANGELOGs for their next release) + the kb
 `remind` per-turn opt-in. Field datum the same day: an external session's check
 surfaced its missing orient hook via the new note and offered the wiring -- the

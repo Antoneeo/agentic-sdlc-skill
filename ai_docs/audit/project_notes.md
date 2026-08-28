@@ -1,8 +1,13 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**Published on npm (registry-verified 2026-08-28):** code **1.28.0**, kb **1.8.0**,
-mkt **0.6.0** -- kb 1.8.0 (tag `kb-v1.8.0`) carries F-041: the check wiring/dead-hook
+**Published on npm (registry-verified 2026-08-28):** code **1.28.0**, kb **1.9.0**,
+mkt **0.6.0** -- kb 1.9.0 (tag `kb-v1.9.0`) carries F-042: install-time global orient
+hook (user-level settings; removal = standing per-target opt-out; surgical uninstall)
++ the user-aware, user-language check note; live-verified on the dev machine (update
+wired hook + marker). The F-042 JS touches ALL THREE packages' lifecycle scripts --
+code and mkt have a concrete reason to release soon. Before that: kb 1.8.0 (tag
+`kb-v1.8.0`) carries F-041: the check wiring/dead-hook
 notes (spine x3, parked in code/mkt CHANGELOGs for their next release) + the kb
 `remind` per-turn opt-in. Field datum the same day: an external session's check
 surfaced its missing orient hook via the new note and offered the wiring -- the
