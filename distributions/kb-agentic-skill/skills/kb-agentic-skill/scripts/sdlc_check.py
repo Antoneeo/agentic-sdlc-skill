@@ -1538,12 +1538,21 @@ def kb_cmd_orient(argv):
                 print("index absent (%d node files) -- regenerate: sdlc_check.py index"
                       % len(nodes))
         # no topics/ at all: the project has no graph; print nothing.
-        # Notes recency (F-040) -- independent of the router: prints whenever
-        # corpus/notes/ exists. It measures NOTES recency, not full ledger
-        # freshness (an ingest feeding claims from given/ leaves it unmoved).
-        # Date source: frontmatter `date:` first; per-note mtime as fallback --
-        # mtime LIES after clone/worktree (the skill's own worktree hygiene
-        # makes that routine), which is why the frontmatter date is primary.
+    except (Exception, SystemExit):
+        # SystemExit included: the probe parser raises it on a dangling flag
+        # value -- the spine already reported that usage error; the append must
+        # never turn it into an escape.
+        root = name = None
+    try:
+        # Notes recency (F-040) -- its OWN try, genuinely independent of the
+        # router: a router throw must not kill this line. It measures NOTES
+        # recency, not full ledger freshness (an ingest feeding claims from
+        # given/ leaves it unmoved). Date source: frontmatter `date:` first;
+        # per-note mtime as fallback -- mtime LIES after clone/worktree (the
+        # skill's own worktree hygiene makes that routine), which is why the
+        # frontmatter date is primary.
+        if root is None:
+            return rc
         notes_dir = root / name / "corpus" / "notes"
         if notes_dir.is_dir():
             import datetime as _dt
@@ -1552,9 +1561,15 @@ def kb_cmd_orient(argv):
                 stamp = None
                 try:
                     head = sdlc_core.read_text(p)[:600]
-                    m = re.search(r"^date:\s*(\d{4}-\d{2}-\d{2})", head, re.M)
-                    if m:
-                        stamp = _dt.date.fromisoformat(m.group(1))
+                    # `date:` counts only INSIDE the frontmatter block: a
+                    # column-0 date: in a note's body must not misdate it.
+                    if head.startswith("---"):
+                        end = head.find("\n---", 3)
+                        if end != -1:
+                            m = re.search(r"^date:\s*(\d{4}-\d{2}-\d{2})",
+                                          head[:end], re.M)
+                            if m:
+                                stamp = _dt.date.fromisoformat(m.group(1))
                 except Exception:
                     pass
                 if stamp is None:
