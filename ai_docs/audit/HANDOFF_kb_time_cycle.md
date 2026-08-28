@@ -1,11 +1,11 @@
 ---
 workstream: F-044 KB Time Cycle (second-brain unit 3 - per-claim staleness, supersede, invalidation cascade)
 level: L3
-branch: (not yet cut)
-status: OPEN, NOT STARTED
+branch: feat/kb-time-cycle
+status: OPEN, IN DESIGN
 since: 2026-08-28
-next: cut a branch, elicitation + ANALYSIS from the vision charter and the four field data, design review
-details: this file; ANALYSIS to be written; VISION_kb_second_brain.md unit 3 is the charter
+next: design review of ANALYSIS_kb_time_cycle.md (subagent, fresh context), then RED (test_kb_time_cycle.py)
+details: ANALYSIS_kb_time_cycle.md (design + Diary); this file keeps the charter and the evidence dossier; elicitation resolved 2026-08-28 (WARN, existing valid window, stale+orient, subagent grant)
 updated: 2026-08-28
 ---
 
