@@ -2,7 +2,7 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
-## [Unreleased]
+## [1.29.0] - 2026-08-28
 
 Spine delta parked for the next release of this lens (shipped first in kb; the
 spine stays byte-identical x3 in the repo while packages publish independently).
@@ -18,6 +18,13 @@ spine stays byte-identical x3 in the repo while packages publish independently).
   with Python; user-level settings; removal is a standing per-target opt-out;
   uninstall surgically removes what it wired). The check note is global-aware
   and reworded in consequence-first user language.
+
+### Added (F-043 port, with the above)
+- **The revision sentence.** Updating an existing analysis (the L2 row and the ANALYSIS write trigger) is a REWRITE, not an
+  append: full re-read, body rewritten to current state -- never an appended
+  delta section. Ported from the kb lens's `## Revision` doctrine (kb 1.10.0),
+  born from a field post-mortem where delta-append revisions left stale
+  sentences standing as printed truth.
 
 ## [1.28.0] - 2026-08-26
 
