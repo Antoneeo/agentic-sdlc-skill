@@ -2,7 +2,7 @@
 workstream: F-039 KB Recall Reflex (second-brain unit 1)
 level: L3
 branch: feat/kb-recall-reflex
-status: DONE, AWAITING MERGE
+status: DONE, MERGED
 since: 2026-08-27
 next: the owner's merge call; release rides the next kb minor (units 2-3 of the vision may share it)
 details: ANALYSIS_kb_recall_reflex.md
