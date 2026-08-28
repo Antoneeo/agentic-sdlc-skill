@@ -75,10 +75,21 @@ def _confined(rel):
 
 
 def seed(scenario, dest):
-    """Write each '## Setup' '- <relpath>: <content>' entry under dest."""
+    """Write each '## Setup' entry under dest. Two forms (F-039):
+
+      - <relpath>: <content>     one line, the original form
+      - <relpath>: |             multi-line: the next fenced block (```...```)
+                                 becomes the file, lines verbatim
+
+    The fenced form exists because a claims table, a topic node with
+    frontmatter, or a note cannot live on one line. Limit: a body cannot
+    itself contain ``` fence lines -- the first one closes the block."""
     dest = Path(dest)
-    for line in scenario["setup"].splitlines():
-        line = line.strip()
+    lines = scenario["setup"].splitlines()
+    i = 0
+    while i < len(lines):
+        line = lines[i].strip()
+        i += 1
         if not line.startswith("- "):
             continue
         rel, _, content = line[2:].partition(":")
@@ -87,9 +98,33 @@ def seed(scenario, dest):
             continue
         if not _confined(rel):
             _fail(f"unsafe setup path (absolute or '..'): {rel}")
+        if content.strip() == "|":
+            while i < len(lines) and not lines[i].strip().startswith("```"):
+                if lines[i].strip().startswith("- "):
+                    # A forgotten fence must not silently steal the NEXT
+                    # entry's block and swallow everything in between.
+                    _fail(f"multi-line entry without a fenced block: {rel}")
+                i += 1
+            if i >= len(lines):
+                _fail(f"multi-line entry without a fenced block: {rel}")
+            i += 1
+            body = []
+            while i < len(lines) and not lines[i].strip().startswith("```"):
+                body.append(lines[i])
+                i += 1
+            if i >= len(lines):
+                _fail(f"unclosed fenced block for: {rel}")
+            i += 1
+            # Common-dedent: scenario authors indent the fence under its bullet;
+            # written verbatim that indentation would break YAML frontmatter.
+            pad = min((len(b) - len(b.lstrip(" ")) for b in body if b.strip()),
+                      default=0)
+            text = "\n".join(b[pad:] for b in body) + "\n"
+        else:
+            text = content.strip()
         target = dest / rel
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(content.strip(), encoding="utf-8")
+        target.write_text(text, encoding="utf-8")
 
 
 def main(argv):
