@@ -1508,6 +1508,10 @@ def kb_cmd_orient(argv):
         rc = sdlc_core.main(argv)
     except SystemExit as e:
         rc = e.code if isinstance(e.code, int) else 1
+    # Pre-bind so a throw INSIDE the router print (after root was validly
+    # bound) does not erase it -- the recency block below must survive a
+    # router failure with the bound root intact (closure R2 finding).
+    root = name = None
     try:
         probe = argparse.ArgumentParser(add_help=False)
         probe.add_argument("--root")
@@ -1541,8 +1545,10 @@ def kb_cmd_orient(argv):
     except (Exception, SystemExit):
         # SystemExit included: the probe parser raises it on a dangling flag
         # value -- the spine already reported that usage error; the append must
-        # never turn it into an escape.
-        root = name = None
+        # never turn it into an escape. root/name keep whatever binding they
+        # reached: pre-binding throws leave them None (recency skips), a throw
+        # inside the router print leaves them valid (recency still runs).
+        pass
     try:
         # Notes recency (F-040) -- its OWN try, genuinely independent of the
         # router: a router throw must not kill this line. It measures NOTES
@@ -1585,9 +1591,9 @@ def kb_cmd_orient(argv):
                 days = (_dt.date.today() - newest).days
                 print("\nnewest note: %d days old (corpus/notes)" % max(days, 0))
     except (Exception, SystemExit):
-        # SystemExit included: the probe parser raises it on a dangling flag
-        # value ("orient --root" at end of argv) -- the spine already reported
-        # that usage error; the append must never turn it into an escape.
+        # Fail-open: nothing in the recency append may break orient. (The
+        # probe parser lives in the router try above; this guard covers the
+        # date/mtime walk and the print itself.)
         pass
     return rc
 
