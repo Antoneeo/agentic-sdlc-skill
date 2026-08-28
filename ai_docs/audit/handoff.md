@@ -40,7 +40,15 @@ F-043 (the kb `## Revision` doctrine + remind clause). **Declared follow-up (dur
 home):** the code AND mkt lenses share the revision failure surface on their own
 triage rows (mkt's vocabulary is E-rows) and can port the doctrine sentence when
 they next release; the kb SKILL.md section is the reference text. The mechanical
-half stays unit 3. The F-042 JS touches ALL THREE packages' lifecycle scripts --
+half stays unit 3. Fourth field datum, same day: an external session VALIDATED
+1.10.0 against its own post-mortem (doctrine lands at the right points; the
+mechanical gap correctly left to unit 3) and filed one cosmetic item, half-true
+on inspection: `--help` DOES print the overlay block (graph/corpus/.../remind),
+but the argparse USAGE LINE and the unknown-command ERROR path list only the
+nine spine commands. **Backlog (small):** after the spine's unknown-command
+error, the kb overlay dispatch appends one pointer line to the overlay commands
+-- forward-by-default intact (the spine still rules validity); the usage first
+line stays spine-owned (lens-neutral by design). The F-042 JS touches ALL THREE packages' lifecycle scripts --
 code and mkt have a concrete reason to release soon. Before that: kb 1.8.0 (tag
 `kb-v1.8.0`) carries F-041: the check wiring/dead-hook
 notes (spine x3, parked in code/mkt CHANGELOGs for their next release) + the kb
