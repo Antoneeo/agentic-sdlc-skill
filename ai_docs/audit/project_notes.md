@@ -1,8 +1,10 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**Published on npm (registry-verified 2026-08-28):** code **1.28.0**, kb **1.9.0**,
-mkt **0.6.0** -- kb 1.9.0 (tag `kb-v1.9.0`) carries F-042: install-time global orient
+**Published on npm (registry-verified 2026-08-28):** code **1.28.0**, kb **1.10.0**,
+mkt **0.6.0** -- kb 1.10.0 (tag `kb-v1.10.0`) carries F-043: the revision doctrine
+(documents read as current state; full re-read, never append a delta). Before that,
+same day: kb 1.9.0 (tag `kb-v1.9.0`) carries F-042: install-time global orient
 hook (user-level settings; removal = standing per-target opt-out; surgical uninstall)
 + the user-aware, user-language check note; live-verified on the dev machine (update
 wired hook + marker). Second field datum, same day: an external session

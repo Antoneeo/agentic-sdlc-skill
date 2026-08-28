@@ -4,7 +4,7 @@ level: L3
 branch: feat/revision-doctrine
 status: DONE, MERGED
 since: 2026-08-28
-next: publish kb 1.10.0 (owner's act, publish_all.bat) -> polling verify
+next: nothing outstanding -- published in kb 1.10.0 (2026-08-28 13:24Z, registry-verified)
 details: ANALYSIS_revision_doctrine.md (+ this file: post-mortem verbatim)
 updated: 2026-08-28
 ---
