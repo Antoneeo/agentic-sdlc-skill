@@ -4,6 +4,33 @@ Every significant change to this skill is recorded here.
 
 ## [Unreleased]
 
+F-040 — the capture moment (second-brain unit 2): the day's decisions reach the
+ledger before they evaporate.
+
+### Added
+- **`SKILL.md` §The Capture Moment.** At a user-signed closing (phase 5 of a governed
+  unit, or any closing signal in an un-governed session), ONE sweep question carrying
+  its own inline search result: "today I recorded [...] — any other decisions from
+  today?". Scoped to TODAY, so it reaches decisions taken outside the session — facts
+  only the practitioner owns. A scheduled elicitation (the phase-3 round's family),
+  not a blocking question. The sweep is idempotent: a decision already noted at
+  phase 4 is verified, never re-captured. Channeling with explicit provenance
+  (elicited → ELICITED, synthesis → DERIVED, RULING only when resolving a contested
+  set per reconciliation §2); capture never creates topics (`unplaced.md` is never a
+  decision park); a no-topic decision is noted NOW with the placement declared as the
+  next kb unit. Declared residual: an unsignaled end captures nothing — the phase-4
+  note-when-said duty is the protection for sessions that never close.
+- **Notes recency in the kb `orient`.** Whenever `corpus/notes/` exists: `newest
+  note: N days old` (or `no notes yet`), dated from note frontmatter `date:` with
+  mtime as fallback — named limit: mtime lies after clone/worktree, and the line
+  measures notes recency, not full ledger freshness. A missed capture is visible at
+  the next session's start.
+- **`test_kb_capture.py`** — kb-only battery module (doctrine anchors + the five
+  recency states), outside the shared x3 manifest.
+- Eval scenarios `capture_channels_the_days_decisions.md` and
+  `capture_stays_silent_with_nothing_to_record.md` (the negative branch: "niente"
+  writes nothing).
+
 F-039 — the recall reflex (second-brain unit 1): the graph is read when answering,
 not only written when distilling.
 
