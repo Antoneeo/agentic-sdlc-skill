@@ -1,8 +1,10 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**Published on npm (verified `versions --json --prefer-online` 2026-08-26):** code
-**1.28.0**, kb **1.6.0**, mkt **0.6.0** — F-038 (gated-rung vocabulary + mandated ask,
+**Published on npm (publish_all.bat polling verify, 2026-08-28):** code **1.28.0**,
+kb **1.7.0**, mkt **0.6.0** — kb 1.7.0 (tag `kb-v1.7.0`) carries the second brain's
+units 1-2: F-039 recall reflex + F-040 capture moment; code and mkt unchanged,
+skipped by the script. Before that: F-038 (gated-rung vocabulary + mandated ask,
 tag `v1.28.0`, merged to main) in all three. Before that: F-036 (init wires the
 SessionStart orientation hook) in 1.27.0/1.5.0/0.5.0, then the README front pages and
 the publish-verify poll in the .1s — the first three-package release since the packages

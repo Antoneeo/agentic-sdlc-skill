@@ -4,7 +4,7 @@ level: L3
 branch: feat/kb-capture-moment
 status: DONE, MERGED
 since: 2026-08-28
-next: publish kb 1.7.0 (owner's act) -> polling verify
+next: nothing outstanding -- published in kb 1.7.0 (2026-08-28)
 details: ANALYSIS_kb_capture_moment.md
 updated: 2026-08-28
 ---
