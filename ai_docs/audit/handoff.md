@@ -25,7 +25,10 @@ battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Visi
 mkt **0.6.0** -- kb 1.9.0 (tag `kb-v1.9.0`) carries F-042: install-time global orient
 hook (user-level settings; removal = standing per-target opt-out; surgical uninstall)
 + the user-aware, user-language check note; live-verified on the dev machine (update
-wired hook + marker). The F-042 JS touches ALL THREE packages' lifecycle scripts --
+wired hook + marker). Second field datum, same day: an external session
+self-discovered `remind` in 1.9.0, tested it, honored the opt-in and asked the
+owner a COMPREHENSIBLE consent question -- the exact UX F-042 was ruled to
+produce. Evidence stream for the vision's unit 3. The F-042 JS touches ALL THREE packages' lifecycle scripts --
 code and mkt have a concrete reason to release soon. Before that: kb 1.8.0 (tag
 `kb-v1.8.0`) carries F-041: the check wiring/dead-hook
 notes (spine x3, parked in code/mkt CHANGELOGs for their next release) + the kb
