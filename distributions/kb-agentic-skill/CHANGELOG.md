@@ -4,6 +4,40 @@ Every significant change to this skill is recorded here.
 
 ## [Unreleased]
 
+F-044 -- the time cycle (second-brain unit 3): claims age, fall, and their fall
+reaches whoever cites or derives from them. Plus two field-reported defects.
+
+### Added
+- **Citation staleness (WARN).** A living document citing a `SUPERSEDED` claim
+  id without naming EVERY successor id warns per (document, id) in
+  `check`/`graph` -- the vision sentence made mechanical ("no superseded claim
+  cited without the supersede visible"). Self-clearing two doctrine-conform
+  ways: a full-re-read revision that replaces the id, or an append-only
+  correction naming the successors -- history is never rewritten to satisfy a
+  check. Generated files (any lens's marker), `corpus/given/` + sidecars, and
+  `status: SUPERSEDED` tombstones are exempt; the owning topic self-clears by
+  construction.
+- **Expired windows (report-only).** A `valid` window whose half-open `until`
+  has passed marks the claim EXPIRED in `stale`'s `## claims` and the orient
+  count line -- computed at report time, never written into `state`, never a
+  check warning (no successor could clear it: a warn would be an unfixable
+  ratchet).
+- **Chain cascade + walkability.** A superseded `given/` artifact now reaches
+  every TRANSITIVE derivation through both `derived_from` carriers (note
+  frontmatter and `given/*.meta.md` sidecars -- the OCR/extraction class),
+  extending the direct-claims warn; and any `derived_from` entry that resolves
+  to nothing warns STANDING, supersession or not -- a chain must be walkable
+  before anything falls.
+- **`stale` intercepted: the consolidated view.** Spine output, flags and exit
+  code preserved (`--hybrid` included), then `## claims` -- superseded-cited
+  docs, expired windows, superseded chains -- appended only when nonempty and
+  never moving the rc. One staleness door per lens.
+- **Orient count line.** `kb time: N docs cite superseded claims; M claims
+  expired; K derivations on superseded sources -- run sdlc_check.py stale` --
+  once per session, only when dirty, always fail-open. Event-driven by design:
+  reconciliation ends a supersession by running `stale`; nothing polls per
+  turn.
+
 Two field-reported defects (2026-08-28), both in the frontmatter-value substrate.
 
 ### Fixed

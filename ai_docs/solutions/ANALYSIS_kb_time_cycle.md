@@ -2,8 +2,9 @@
 id: F-044
 level: L3
 description: F-044 — the time cycle (kb second-brain unit 3): per-claim staleness from the existing `valid` window, citation-staleness WARN keyed on "successor not named", transitive derived_from cascade on superseded sources, and a consolidated `stale` view with an orient count line. kb-only; the spine stays untouched.
-status: PLANNED
+status: COMPLETED
 start_date: 2026-08-28
+end_date: 2026-08-28
 ---
 
 # ANALYSIS: KB Time Cycle (F-044)
@@ -158,8 +159,10 @@ door per lens.
 
 **FS-5 — The orient count line.** In the kb orient append (after the note
 recency line), one line, ONLY when at least one count is nonzero:
-`"kb time: N docs cite superseded claims; M claims expired; K notes on
-superseded sources — run sdlc_check.py stale"`. Silent when clean (distill
+`"kb time: N docs cite superseded claims; M claims expired; K derivations on
+superseded sources — run sdlc_check.py stale"` ("derivations", not "notes":
+since the R2 fold the chain list includes derived given/ artifacts too).
+Silent when clean (distill
 lesson: noise is failure one), fail-open like the recency line (nothing in it
 may break orient). Cost, stated honestly: this is one full collector run at
 session start — a real walk the recency probe does not do today — accepted as
@@ -339,3 +342,21 @@ supersession anywhere (standing walkability warn, no crash).
   both in the exact substrate this unit's collector parses; fixed as a
   separate L2 unit off main (this branch inherits by merge), and FS-3's edge
   parse now pins quote-stripping explicitly. Design phase CLOSED; next: RED.
+- 2026-08-28 — Implemented and CLOSED. RED 31 tests → GREEN (shared collector
+  `kb_time_cycle` + `kb_time_cycle_warns`; graph/corpus/check wiring with the
+  cycle computed once per check; `stale` intercepted with the full flag
+  mirror; orient count line fail-open) → doctrine carriers (SKILL ×3 spots,
+  reconciliation §2 step 3, templates `valid` bullet, ENFORCEMENT §1
+  subsection, README, CHANGELOG). Declared deviation folded back here: the
+  FS-5 label is "derivations", not "notes" (the chain list includes derived
+  given/ artifacts since the R2 fold). Closure review: PASS, 0 BLOCK, 3 WARN,
+  all folded same turn — WARN-1 (correctness residual): a RESOLVING but
+  non-canonical `derived_from` spelling (`./x`, `a//b`, `a/../b`) silently
+  broke the walk with neither a chain entry nor a dangling warn — fixed with
+  `posixpath.normpath` before resolution (backslashed spellings stay loudly
+  dangling; Windows case-variants remain the declared residual); WARN-2: five
+  promised-but-unpinned behaviors (id at file start/end, `## claims` expired+
+  chain line shapes, `stale --docs-dir`, orient counts DISTINCT docs, real
+  `check` on a dirty tree) — six tests added, battery 37; WARN-3: the check
+  conformance test actually ran `graph` — renamed, and a real `check` test
+  added. Batteries: kb 367 OK, code 184 OK, mkt 202 OK, goldens byte-identical.

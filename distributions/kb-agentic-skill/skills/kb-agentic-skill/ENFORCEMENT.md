@@ -10,7 +10,45 @@ The agent runs a single gate at closure (Phase 5):
 python "<skill_dir>/scripts/sdlc_check.py" check
 ```
 
-(`check` = validate + stale in one command.) Exit code ≠ 0 ⇒ the feature is not declared closed. This is the minimum level the skill expects.
+(`check` = validate + stale in one command -- the SPINE's stale: the kb
+`## claims` section prints only under the overlay's own `stale` command,
+while `check` carries the same findings as warn lines.) Exit code ≠ 0
+⇒ the feature is not declared closed. This is the minimum level the
+skill expects.
+
+### The time cycle (F-044): superseded citations, expired windows, chains
+
+Three read-only checks share one collector and never touch exit-code
+semantics beyond ordinary warnings:
+
+- **Citation staleness (WARN, in `check`/`graph`).** A living document
+  citing a `SUPERSEDED` claim id without naming EVERY successor id warns
+  per (document, id). Self-clearing: a full-re-read revision that
+  replaces the id, or an append-only correction naming the successors,
+  both end the warn -- history is never rewritten to satisfy a check.
+  Exempt: generated files (header marker, any lens), `corpus/given/` and
+  its sidecars, `status: SUPERSEDED` tombstones. The owning topic file
+  self-clears by construction (its state cell carries the successors).
+  WARN and not ERROR by owner ruling: the vision demands the supersede
+  be VISIBLE where cited, not that closures block on unrelated debt.
+- **Expired windows (report-only).** A `valid` window whose half-open
+  `until` has passed marks the claim EXPIRED in `stale`'s `## claims`
+  and the orient count -- never a state write, never a check warning:
+  expiry is honest self-declaration with no successor whose naming
+  could clear a warn, so a warn would be an unfixable ratchet.
+- **Chain cascade + walkability (WARN, in `check`/`corpus`).** A
+  superseded `given/` artifact reaches every transitive derivation
+  through both `derived_from` carriers (note frontmatter and sidecars);
+  a `derived_from` entry that resolves to nothing warns STANDING --
+  supersession or not -- because a chain must be walkable before
+  anything falls.
+
+The consolidated view is `sdlc_check.py stale` (the overlay intercepts
+the spine command, preserves its output, flags and exit code --
+`--hybrid` included -- and appends `## claims` only when nonempty). The
+orient append prints one count line at session start, only when dirty
+and always fail-open. Event-driven by design: reconciliation §2 runs
+`stale` after recording a supersession; nothing polls per turn.
 
 ## 2. Check in CI (recommended for teams)
 

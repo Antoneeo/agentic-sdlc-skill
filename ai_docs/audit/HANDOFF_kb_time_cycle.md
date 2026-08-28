@@ -2,10 +2,10 @@
 workstream: F-044 KB Time Cycle (second-brain unit 3 - per-claim staleness, supersede, invalidation cascade)
 level: L3
 branch: feat/kb-time-cycle
-status: OPEN, IN DESIGN
+status: DONE, AWAITING RELEASE
 since: 2026-08-28
-next: design review of ANALYSIS_kb_time_cycle.md (subagent, fresh context), then RED (test_kb_time_cycle.py)
-details: ANALYSIS_kb_time_cycle.md (design + Diary); this file keeps the charter and the evidence dossier; elicitation resolved 2026-08-28 (WARN, existing valid window, stale+orient, subagent grant)
+next: the combined release (owner order 2026-08-28, "concludi F-044 poi rilascia tutto"): kb 1.11.0 (F-044 + the quoting/recency fix), code + mkt with their parked F-041/F-042 entries plus the F-043 revision-sentence port; then publish_all.bat (owner's act) and registry verify
+details: ANALYSIS_kb_time_cycle.md (design + Diary, COMPLETED); design review FAIL->PASS 2 rounds; closure review PASS 1 round, 3 WARN folded (normpath hardening, six test pins, check-test rename); batteries kb 367 / code 184 / mkt 202, goldens byte-identical
 updated: 2026-08-28
 ---
 

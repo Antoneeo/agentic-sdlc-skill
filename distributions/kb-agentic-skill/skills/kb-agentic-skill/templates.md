@@ -625,6 +625,9 @@ status: CURRENT
 
 - `id` empty when writing by hand: `sdlc_check.py claim-id --fill <file>` computes it.
 - `valid` half-open: `from` inclusive, `until` exclusive; `if <cond>` for conditionals.
+  Expiry against today is COMPUTED by the reports (`stale`'s `## claims`,
+  the orient count line) -- never written into `state`: state transitions
+  belong to reconciliation.
 - `qty`: `<value> <unit> <kind>` — effort in person-days (h/d/w/mo/fte-mo; 8h=1d, 1w=5d,
   1mo=21d), duration in calendar days (h/d/w/mo), cost within one currency, count unit-matched.
 - `about`: `<predicate> -> <slug>` for relationship claims; stored once, under the subject.
