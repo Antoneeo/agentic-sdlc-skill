@@ -8,7 +8,12 @@ hook (user-level settings; removal = standing per-target opt-out; surgical unins
 wired hook + marker). Second field datum, same day: an external session
 self-discovered `remind` in 1.9.0, tested it, honored the opt-in and asked the
 owner a COMPREHENSIBLE consent question -- the exact UX F-042 was ruled to
-produce. Evidence stream for the vision's unit 3. The F-042 JS touches ALL THREE packages' lifecycle scripts --
+produce. Evidence stream for the vision's unit 3. Third datum, same day (the strongest): an external
+session's post-mortem on a 12-document realignment -- delta-append revisions left
+pre-call sentences standing as printed truth, and the session itself named the
+claim-ledger cascade (claim superseded -> citing documents mechanically stale)
+as the designed answer to exactly that failure. Discipline half registered as
+F-043 (HANDOFF_revision_doctrine.md); the mechanical half stays unit 3. The F-042 JS touches ALL THREE packages' lifecycle scripts --
 code and mkt have a concrete reason to release soon. Before that: kb 1.8.0 (tag
 `kb-v1.8.0`) carries F-041: the check wiring/dead-hook
 notes (spine x3, parked in code/mkt CHANGELOGs for their next release) + the kb
