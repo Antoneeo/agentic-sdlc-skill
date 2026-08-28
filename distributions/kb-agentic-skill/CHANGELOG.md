@@ -2,6 +2,21 @@
 
 Every significant change to this skill is recorded here.
 
+## [Unreleased]
+
+### Fixed
+- **The recency date probe reads the real frontmatter, not a 600-byte
+  window.** Seventh field datum (2026-08-28, on 1.11.0): a note whose
+  frontmatter (edge lists, basis lines) pushed the closing fence past the
+  probe's head cap lost its ENTIRE `date:` probe and fell to mtime -- a note
+  dated days back read "0 days old (mtime -- date: not parsed)". The 1.11.0
+  disclosure did its job (the lie became visible and named its basis); the
+  source is now fixed: the probe uses `load_frontmatter` -- the same
+  authoritative reader as every other consumer, fence-bounded so a body
+  `date:` still cannot misdate -- plus `kb_unquote` and a
+  datetime-suffix-tolerant prefix match. The cap bought nothing: the file was
+  already fully read.
+
 ## [1.11.0] - 2026-08-28
 
 F-044 -- the time cycle (second-brain unit 3): claims age, fall, and their fall

@@ -1817,19 +1817,20 @@ def kb_cmd_orient(argv):
                 stamp = None
                 from_mtime = False
                 try:
-                    head = sdlc_core.read_text(p)[:600]
-                    # `date:` counts only INSIDE the frontmatter block: a
-                    # column-0 date: in a note's body must not misdate it.
-                    # The optional quote: YAML-quoted dates are legal and the
-                    # silent mtime fallback is exactly the clone-reset lie.
-                    if head.startswith("---"):
-                        end = head.find("\n---", 3)
-                        if end != -1:
-                            m = re.search(
-                                r"^date:\s*[\"']?(\d{4}-\d{2}-\d{2})",
-                                head[:end], re.M)
-                            if m:
-                                stamp = _dt.date.fromisoformat(m.group(1))
+                    # Field datum 7 (on 1.11.0): the old 600-byte head window
+                    # silently skipped the WHOLE probe when a real frontmatter
+                    # (edge lists, basis lines) pushed the closing fence past
+                    # it -- the file was already fully read, so the cap bought
+                    # only failure. load_frontmatter is the authoritative
+                    # reader (fence-bounded, so a column-0 date: in the body
+                    # still cannot misdate the note); kb_unquote covers quoted
+                    # dates; the prefix match tolerates a datetime suffix.
+                    meta = sdlc_core.load_frontmatter(
+                        sdlc_core.read_text(p).splitlines()) or {}
+                    m = re.match(r"(\d{4}-\d{2}-\d{2})",
+                                 kb_unquote(meta.get("date")))
+                    if m:
+                        stamp = _dt.date.fromisoformat(m.group(1))
                 except Exception:
                     pass
                 if stamp is None:

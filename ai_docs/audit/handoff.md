@@ -23,19 +23,29 @@ Date: 2026-08-28 (UTC)
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**Triple release in flight (branch `feat/kb-time-cycle`, tags pending, owner
-order 2026-08-28 "concludi F-044 poi rilascia tutto"):** kb **1.11.0** = F-044
-the time cycle (citation-staleness WARN, EXPIRED from the existing `valid`
-window, transitive chain cascade over both `derived_from` carriers, `stale`
-intercepted with `## claims`, orient count line) PLUS the fifth/sixth field
-data fixes (YAML-quoted values unquoted at consumption -- 102 false dangling
-`original_path` warns, and a quoted `supersedes:` would have silently MISSED a
-supersession; the orient recency line now parses quoted dates and DISCLOSES an
-mtime-decided stamp). code **1.29.0** and mkt **0.7.0** = their parked
-F-041/F-042 spine+lifecycle entries plus the F-043 revision-sentence port
-(code: L2 row + ANALYSIS write trigger; mkt: E2 row). After tags: merge to
-main, then `publish_all.bat` is the OWNER's act (2FA + final-ENTER trap),
-then registry-poll verify.
+**Unreleased kb fix on `fix/kb-recency-source` (seventh field datum,
+2026-08-28, reported against 1.11.0 same day):** the recency `date:` probe read
+only the first 600 bytes of the note; a REAL frontmatter (edge lists, basis
+lines) pushed the closing fence past the cap and the WHOLE probe silently
+skipped -- a note dated 3 days back read "0 days old (mtime -- date: not
+parsed)". The 1.11.0 disclosure marker did its designed job (made the lie
+visible and NAMED the failing source -- that is what let the field session
+diagnose it); the source is now fixed: `load_frontmatter` (the authoritative
+reader) + `kb_unquote` + datetime-suffix-tolerant prefix. Root cause
+REPRODUCED in RED before fixing (long-frontmatter fixture). Releasable as kb
+1.11.1 on the owner's order. Field lesson attached by the reporting session
+itself: it had approved the mtime behavior twice on plausible reasoning
+before testing it against the case in view -- evidence for the review rule
+"a PASS is invalid on found-nothing" extending to APPROVALS.
+
+**Published on npm (registry-verified 2026-08-28, second wave):** code
+**1.29.0**, kb **1.11.0**, mkt **0.7.0** -- tags `v1.29.0` / `kb-v1.11.0` /
+`mkt-v0.7.0`, one commit (`c97a4b5`), merged to main. kb 1.11.0 = F-044 the
+time cycle + the fifth/sixth field-data fixes (YAML unquoting, recency
+disclosure); code/mkt = parked F-041/F-042 + the F-043 revision-sentence port
+(code: L2 row + ANALYSIS write trigger; mkt: E2 row). First field report on
+1.11.0 arrived within hours: the quoting fix VERIFIED (124 -> 22 warnings,
+the 22 all legitimate incomplete-ingestion warns; zero false dangling).
 
 **Published on npm (registry-verified 2026-08-28):** code **1.28.0**, kb **1.10.0**,
 mkt **0.6.0** -- kb 1.10.0 (tag `kb-v1.10.0`) carries F-043: the revision doctrine

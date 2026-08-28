@@ -144,6 +144,36 @@ class TestNotesRecency(unittest.TestCase):
             self.assertIn("20 days old", out)
             self.assertNotIn("mtime", out)
 
+    def test_long_frontmatter_date_is_still_parsed(self):
+        # Field datum 7 (2026-08-28, on 1.11.0): a REAL note's frontmatter
+        # (derived_from lists, basis lines) pushed the closing fence past the
+        # probe's 600-byte head window, so the WHOLE date: probe silently
+        # skipped and a note dated days back read "0 days old (mtime)". The
+        # cap bought nothing -- the file was already fully read.
+        import datetime as dt
+        with tempfile.TemporaryDirectory() as tmp:
+            notes = self._notes(tmp)
+            old = (dt.date.today() - dt.timedelta(days=20)).isoformat()
+            filler = "\n".join("k%03d: %s" % (i, "x" * 40) for i in range(20))
+            (notes / "big.md").write_text(
+                "---\norigin: elicited\n%s\ndate: %s\n---\nx\n" % (filler, old),
+                encoding="utf-8")
+            rc, out = run_main(["orient", "--root", tmp], tmp)
+            self.assertIn("20 days old", out)
+            self.assertNotIn("mtime", out)
+
+    def test_datetime_suffix_still_parses_the_date(self):
+        import datetime as dt
+        with tempfile.TemporaryDirectory() as tmp:
+            notes = self._notes(tmp)
+            old = (dt.date.today() - dt.timedelta(days=20)).isoformat()
+            (notes / "n.md").write_text(
+                "---\norigin: elicited\ndate: %s 10:30\n---\nx\n" % old,
+                encoding="utf-8")
+            rc, out = run_main(["orient", "--root", tmp], tmp)
+            self.assertIn("20 days old", out)
+            self.assertNotIn("mtime", out)
+
     def test_mtime_fallback_discloses_itself(self):
         # When no date: decided the winner the line must SAY so -- a silently
         # fresh "0 days" after a rewrite/checkout is the lie the field report
