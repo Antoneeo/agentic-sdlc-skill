@@ -4,7 +4,7 @@ level: L3
 branch: feat/kb-recall-reflex
 status: DONE, MERGED
 since: 2026-08-27
-next: the owner's merge call; release rides the next kb minor (units 2-3 of the vision may share it)
+next: publish kb 1.7.0 (owner's act); unit 3 waits for usage data per the vision
 details: ANALYSIS_kb_recall_reflex.md
 updated: 2026-08-28
 ---
