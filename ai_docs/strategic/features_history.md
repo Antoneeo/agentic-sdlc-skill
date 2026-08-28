@@ -35,3 +35,4 @@
 | F-040 | F-040 | L3 | COMPLETED | 2026-08-28 | 2026-08-28 | solutions/ANALYSIS_kb_capture_moment.md |
 | F-041 | F-041 | L3 | COMPLETED | 2026-08-28 | 2026-08-28 | solutions/ANALYSIS_kb_midsession_drift.md |
 | F-042 | F-042 | L3 | COMPLETED | 2026-08-28 | 2026-08-28 | solutions/ANALYSIS_global_orient_hook.md |
+| F-043 | F-043 | L3 | COMPLETED | 2026-08-28 | 2026-08-28 | solutions/ANALYSIS_revision_doctrine.md |

@@ -82,7 +82,11 @@ class RemindContractTests(unittest.TestCase):
         # path, the claim currency and the capture moment in the line itself.
         _, out = run_remind(["remind"])
         low = out.lower()
-        for anchor in ("l1", "l2", "l3", "spike", "topics/index.md", "claim"):
+        # F-043: the payload is the one revision-clause carrier outside the
+        # DRY pin's file set, so its own battery guards BOTH halves of the
+        # gesture ("re-read" and "never append").
+        for anchor in ("l1", "l2", "l3", "spike", "topics/index.md", "claim",
+                       "re-read", "never append"):
             self.assertIn(anchor, low)
 
     def test_no_skill_internal_jargon(self):

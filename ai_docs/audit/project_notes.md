@@ -12,8 +12,12 @@ produce. Evidence stream for the vision's unit 3. Third datum, same day (the str
 session's post-mortem on a 12-document realignment -- delta-append revisions left
 pre-call sentences standing as printed truth, and the session itself named the
 claim-ledger cascade (claim superseded -> citing documents mechanically stale)
-as the designed answer to exactly that failure. Discipline half registered as
-F-043 (HANDOFF_revision_doctrine.md); the mechanical half stays unit 3. The F-042 JS touches ALL THREE packages' lifecycle scripts --
+as the designed answer to exactly that failure. Discipline half shipped as
+F-043 (the kb `## Revision` doctrine + remind clause). **Declared follow-up (durable
+home):** the code AND mkt lenses share the revision failure surface on their own
+triage rows (mkt's vocabulary is E-rows) and can port the doctrine sentence when
+they next release; the kb SKILL.md section is the reference text. The mechanical
+half stays unit 3. The F-042 JS touches ALL THREE packages' lifecycle scripts --
 code and mkt have a concrete reason to release soon. Before that: kb 1.8.0 (tag
 `kb-v1.8.0`) carries F-041: the check wiring/dead-hook
 notes (spine x3, parked in code/mkt CHANGELOGs for their next release) + the kb

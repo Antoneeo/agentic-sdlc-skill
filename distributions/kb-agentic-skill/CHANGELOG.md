@@ -2,6 +2,26 @@
 
 Every significant change to this skill is recorded here.
 
+## [Unreleased]
+
+F-043 -- the revision doctrine: documents read as current state.
+
+### Added
+- **`## Revision — the full re-read` (SKILL.md).** Incorporating new knowledge
+  into an existing document is a rewrite, not an append: full re-read first,
+  body rewritten to current state, history in the Diary (past entries never
+  rewritten -- a correction is a new entry), claim tables exempt (rows move only
+  per reconciliation), node frontmatter exempt (a revision never re-parents),
+  and a multi-document pass re-reads PER DOCUMENT. Wired where the trigger
+  fires: the L2 triage row and the L3 Phase-4 flow (citation-only pointers);
+  the honest limit is in the doctrine's own text. Born from a field post-mortem
+  (12 documents realigned by delta-append; stale sentences left standing) --
+  and completed by its own review: three rounds, each catching the doctrine's
+  failure mode inside its own ANALYSIS.
+- **The `remind` line carries the gesture** ("Re-read it whole and rewrite it
+  to current state ..."): 443 chars, ~75 tokens per prompt, still one constant
+  zero-read line.
+
 ## [1.9.0] - 2026-08-28
 
 F-042 -- the install wires the hook; the incomprehensible question dies.
