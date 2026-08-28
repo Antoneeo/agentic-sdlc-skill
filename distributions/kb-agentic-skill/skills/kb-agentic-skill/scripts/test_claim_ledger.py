@@ -965,6 +965,61 @@ class TL_F035_OriginalPathResolves(unittest.TestCase):
         self.assertFalse([w for w in warnings if "original_path" in w], warnings)
 
 
+class TL_QuotedFrontmatterValues(unittest.TestCase):
+    """Field defect (2026-08-28): YAML-quoted values consumed verbatim.
+    A quoted original_path (paths with spaces force quoting) produced false
+    dangling-pointer warns -- 102 on one real corpus -- and a quoted
+    supersedes: would silently MISS the supersession (worse than the reported
+    defect: no warn at all, and the resting-claims check never fires).
+    load_frontmatter keeps values verbatim by design; unquoting is the
+    consumer's duty."""
+
+    def _op_run(self, meta_extra, make_original=None):
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {}, given={
+                "c.txt": GIVEN_TXT["c.txt"],
+                "c.txt.meta.md": "---\nsha256: \ndate: 2026-08-25\n"
+                                 "provenance: GIVEN\n%s---\n" % meta_extra})
+            if make_original:
+                p = Path(tmp) / make_original
+                p.parent.mkdir(parents=True, exist_ok=True)
+                p.write_text("original", encoding="utf-8")
+            return kc.kb_corpus_check(docs)
+
+    def test_double_quoted_path_with_spaces_resolves(self):
+        _, warnings = self._op_run(
+            'original_path: "vault/my docs/here.pdf"\n',
+            make_original="vault/my docs/here.pdf")
+        self.assertFalse([w for w in warnings if "original_path" in w], warnings)
+
+    def test_single_quoted_path_resolves(self):
+        _, warnings = self._op_run(
+            "original_path: 'vault/here.pdf'\n",
+            make_original="vault/here.pdf")
+        self.assertFalse([w for w in warnings if "original_path" in w], warnings)
+
+    def test_quoted_dangling_path_still_warns(self):
+        # Unquoting must never blind the check itself.
+        _, warnings = self._op_run('original_path: "vault/gone.pdf"\n')
+        self.assertTrue([w for w in warnings if "original_path" in w], warnings)
+
+    def test_quoted_supersedes_is_detected(self):
+        i1 = kc.kb_claim_id("corpus/given/old.txt", "p=1@0-4", "")
+        rows = [(i1, "A", "-", "-", "-", "corpus/given/old.txt#p=1@0-4",
+                 "GIVEN", "OK")]
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(rows)},
+                             given={"old.txt": "old text",
+                                    "new.txt": "new text",
+                                    "new.txt.meta.md":
+                                        '---\ndate: 2026-08-01\n'
+                                        'supersedes: "old.txt"\n---\n'})
+            _, warnings = kc.kb_corpus_check(docs)
+        self.assertTrue(any("newer version" in w for w in warnings), warnings)
+        self.assertFalse([w for w in warnings if "not in given/" in w],
+                         warnings)
+
+
 class TL_F035_DuplicateIdNamesItsCause(unittest.TestCase):
     """C -- one message served two causes. A copied row and a hash collision
     are different defects with different fixes, and the reader was sent after
