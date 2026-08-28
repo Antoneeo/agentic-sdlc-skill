@@ -82,7 +82,8 @@ def seed(scenario, dest):
                                  becomes the file, lines verbatim
 
     The fenced form exists because a claims table, a topic node with
-    frontmatter, or a note cannot live on one line."""
+    frontmatter, or a note cannot live on one line. Limit: a body cannot
+    itself contain ``` fence lines -- the first one closes the block."""
     dest = Path(dest)
     lines = scenario["setup"].splitlines()
     i = 0

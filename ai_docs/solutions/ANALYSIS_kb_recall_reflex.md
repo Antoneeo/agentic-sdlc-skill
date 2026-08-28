@@ -31,7 +31,7 @@ The descent fires only inside a kb unit of work (placing claims). Nothing trigge
 ### 1. `SKILL.md` (kb): new section `## Topic Recall — the answer-side consult`, after `## Operative Guides & Router`
 - **Trigger — unconditional scan on domain assertions**: whenever the reply would assert facts about the PROJECT'S domain (its topics, decisions, sources, constraints), scan `topics/INDEX.md`. Plausibility of coverage is judged ON the scanned top rows, never before them — "the KB probably doesn't have this" is model memory talking, the exact judgement this reflex removes. Exempt: pure mechanics (running a command, editing per explicit instruction), general knowledge outside the project's domain, L1 gestures.
 - **Dedup — once per topic per SESSION**: the key is the matched slug (known ex post); a question plainly within an already-descended branch reuses that consult, and a placement descent already run this session counts. Session vocabulary, aligned with SessionStart/session-end; a compaction starts a new session.
-- **The act**: descend per `taxonomy.md` §6 (same doctrine, answer mode). On claims, answer FROM them citing claim ids; a `status: SUPERSEDED` claim is never cited without naming its successor.
+- **The act**: descend per `taxonomy.md` §6 (same doctrine, answer mode). On claims, answer FROM them citing claim ids; a claim whose `state` is `SUPERSEDED <id>` is never cited without naming its successor.
 - **The declared verdict, only when the recall ran** (never a per-turn ritual) — four legal values:
   - `kb: <slug> → N claims cited`
   - `kb: <slug> → node matched, no claims` — surfacing the node's `gaps:` when it answers the question: "the KB knows it doesn't know" is a first-class answer.
