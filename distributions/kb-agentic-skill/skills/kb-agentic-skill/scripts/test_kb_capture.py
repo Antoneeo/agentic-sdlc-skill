@@ -61,7 +61,10 @@ class TestCaptureDoctrine(unittest.TestCase):
             "## The Capture Moment",
             "user-signed closings, once per session",
             "any other decisions from today to record",
+            "carrying its own search result inline",
+            "the inline result satisfies the search-first duty",
             "scheduled elicitation",
+            "`derived_from:` → claim `prov: DERIVED`",
             "The sweep is idempotent",
             "never re-captured",
             "prov: ELICITED",
@@ -85,7 +88,10 @@ class TestCaptureDoctrine(unittest.TestCase):
                           "the Write Triggers sweep row lost a clause: %r" % anchor)
 
     def test_the_recency_limit_is_named_where_the_line_is_defined(self):
-        src = (SKILL_DIR / "scripts" / "sdlc_check.py").read_text(encoding="utf-8")
+        # Comment-marker + whitespace normalized: a re-wrapped comment line
+        # must not decide this verdict (the F-038 line-wrap lesson).
+        raw = (SKILL_DIR / "scripts" / "sdlc_check.py").read_text(encoding="utf-8")
+        src = " ".join(raw.replace("#", " ").split())
         self.assertIn("mtime LIES after clone/worktree", src,
                       "the recency line lost its named limit")
         self.assertIn("NOTES recency, not full ledger", src,

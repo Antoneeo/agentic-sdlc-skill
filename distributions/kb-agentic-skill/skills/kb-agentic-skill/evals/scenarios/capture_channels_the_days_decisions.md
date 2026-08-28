@@ -23,7 +23,7 @@ expected: at a user-signed closing, the sweep question fires once with its inlin
 
   | id | claim | valid | qty | about | source | prov | state |
   |---|---|---|---|---|---|---|---|
-  | c-pr-01 | Discounts above 15% require CFO approval | from 2026-06-15 | - | - | corpus/notes/discount-note.md#L4-4 | ELICITED | OK |
+  | c-pr-01 | Discounts above 15% require CFO approval | from 2026-06-15 | - | - | corpus/notes/discount-note.md#L5-5 | ELICITED | OK |
   ```
 - ai_docs/corpus/notes/discount-note.md: |
   ```

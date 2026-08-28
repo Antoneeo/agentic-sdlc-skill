@@ -204,7 +204,9 @@ exist — this section adds only the MOMENT.
   residual**: an unsignaled end (the user simply stops writing) captures nothing —
   the phase-4 duty (a decision stated mid-session owes its note WHEN SAID) is the
   protection for sessions that never close, and the orient's recency line makes the
-  miss visible next time.
+  miss visible next time. That line measures NOTES recency, not full ledger
+  freshness, and trusts frontmatter `date:` over file mtimes — mtimes lie after a
+  clone or worktree.
 - **The sweep question.** At the closing, ONE question, carrying its own search
   result inline: "today I recorded: [what the sweep found already on the rails] —
   any other decisions from today to record?". Scoped to TODAY, so it reaches
@@ -228,7 +230,7 @@ exist — this section adds only the MOMENT.
     `prov: DERIVED`.
   - **RULING only when the decision resolves an existing contested set** — then
     `reconciliation.md` §2 applies in full (mandatory `basis:`, supersession of the
-    losing set). A fresh conflict-free decision is captured elicited: a preference
+    whole prior set). A fresh conflict-free decision is captured elicited: a preference
     is not a fact, and `basis:` is reserved for the fact the corpus lacks.
   - A fact on an existing topic → claim row, L1 (`id` empty; `claim-id --fill`).
   - No owning topic → the note is written NOW and the placement is declared as the
