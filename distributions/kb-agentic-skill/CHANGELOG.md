@@ -2,7 +2,7 @@
 
 Every significant change to this skill is recorded here.
 
-## [Unreleased]
+## [1.9.0] - 2026-08-28
 
 F-042 -- the install wires the hook; the incomprehensible question dies.
 
