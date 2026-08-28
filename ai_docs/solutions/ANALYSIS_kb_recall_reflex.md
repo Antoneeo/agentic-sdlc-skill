@@ -92,6 +92,17 @@ Battery RED→GREEN on the new invariant; mutation bites both ways; orient inter
 6. Closure: kb battery, check --hybrid, REVIEW_LOG, handoff.
 
 ## Diary
+- 2026-08-28 (closure R2): closure review round 1 FAIL — 1 BLOCK + 7 WARN, all real. The
+  BLOCK was this unit's own disease in its own fixture: the eval scenario's claim table
+  was written from model memory (4 columns, supersession in the wrong column) instead of
+  the canonical 8-column `## Claims` schema with `state = SUPERSEDED <id>` —
+  templates.md:621 read this time, scenario reseeded canonical with the two-hop chain
+  grounding in a GIVEN artifact and every source seeded. Also folded: claim-state
+  vocabulary fixed in SKILL.md (`state`, not `status:`); probe SystemExit + AmbiguousDocsRoot
+  fallback in kb_cmd_orient; the forward itself now anchored by an ORIENT_MARKER assert
+  (a mutation deleting the spine call reddens); five more doctrine anchors (dispatch
+  interim, trace persistence, superseded-successor, co-occurrence, exemptions); fence-hunt
+  fails fast on a forgotten fence. Recall tests 7/7, battery 281 OK.
 - 2026-08-28 (closure): implemented per the PASS design, in plan order. test_kb_recall.py 7/7 with the mutation verified RED->GREEN on a doctrine anchor; kb battery 281 OK; the eval harness smoke found one real defect (fence bodies carried the bullet indentation and broke YAML frontmatter — common-dedent added, re-smoked clean). REVIEW_LOG row written; handoff registered DONE, AWAITING MERGE.
 - 2026-08-27: unit opened on `feat/kb-recall-reflex` off main@45ad7c3 (vision APPROVED same day). Design modeled on `guides.md` §0 read whole; anchors verified against the 1.6.0 tree (the session's loaded copy was 1.4.1 — home copy updated during the vision phase, a live instance of T3). Schema pass: a PowerShell in-place patch mojibake'd the UTF-8; rewritten via Write — string patches on UTF-8 files go through Python or Write, never Set-Content.
 - 2026-08-28 (R3): round 2 FAIL, narrow — 11/12 resolved, one new BLOCK the reviewer flagged as latent since round 1: `test_skill_invariants.py` is shared-manifest (x3), so the battery row contradicted the isolation claim. Folded: the invariant moves to a NEW kb-only `test_kb_recall.py` (with the orient test); the interception shape is pinned (special-case before argparse, raw argv, never re-parse flags); the dispatch vehicle is an explicit interim (claims inlined in task free text until a dispatch unit adds a schema field); the §0→§1 pointer fixed.

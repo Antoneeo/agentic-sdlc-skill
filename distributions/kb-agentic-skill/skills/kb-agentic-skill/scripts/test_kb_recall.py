@@ -33,11 +33,17 @@ def normalized(path):
     return " ".join(path.read_text(encoding="utf-8").split())
 
 
+ORIENT_MARKER = "ORIENT-CORE-RAN-9f3a"
+
+
 def seed_project(tmp):
-    """Minimal valid-enough docs root for orient to run against."""
+    """Minimal valid-enough docs root for orient to run against. The README
+    carries a marker so tests can assert the SPINE's orient actually ran —
+    the forward is load-bearing (a mutation deleting it must redden)."""
     docs = Path(tmp) / "ai_docs"
     docs.mkdir(parents=True)
-    (docs / "README.md").write_text("# ai_docs\n", encoding="utf-8")
+    (docs / "README.md").write_text("# ai_docs\n%s\n" % ORIENT_MARKER,
+                                    encoding="utf-8")
     return docs
 
 
@@ -75,6 +81,11 @@ class TestRecallDoctrine(unittest.TestCase):
             "walk its chain to non-DERIVED ground",
             "unverified for decision-grounding",
             "un-re-ratified foreign authority",
+            "`SUPERSEDED <id>` is never cited without naming its successor",
+            "may co-occur",
+            "Exempt: pure mechanics",
+            "cites the claim id AND the re-touched ground",
+            "inlines the cited claim rows",
         ):
             self.assertIn(anchor, text,
                           "SKILL.md lost a recall clause: %r" % anchor)
@@ -110,8 +121,12 @@ class TestOrientTopicRouter(unittest.TestCase):
                 "| slug | description |\n|---|---|\n| pricing | d |\n",
                 encoding="utf-8")
             rc, out = run_main(["orient", "--root", tmp], tmp)
+            self.assertIn(ORIENT_MARKER, out,
+                          "the spine's orient did not run: the forward is gone")
             self.assertIn("## Topic router", out)
             self.assertIn("pricing", out)
+            self.assertLess(out.index(ORIENT_MARKER), out.index("## Topic router"),
+                            "the router must be APPENDED after the spine's output")
 
     def test_orient_reports_a_lagging_index_with_node_count(self):
         with tempfile.TemporaryDirectory() as tmp:
