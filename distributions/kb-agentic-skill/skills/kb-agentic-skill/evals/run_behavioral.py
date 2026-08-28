@@ -99,6 +99,10 @@ def seed(scenario, dest):
             _fail(f"unsafe setup path (absolute or '..'): {rel}")
         if content.strip() == "|":
             while i < len(lines) and not lines[i].strip().startswith("```"):
+                if lines[i].strip().startswith("- "):
+                    # A forgotten fence must not silently steal the NEXT
+                    # entry's block and swallow everything in between.
+                    _fail(f"multi-line entry without a fenced block: {rel}")
                 i += 1
             if i >= len(lines):
                 _fail(f"multi-line entry without a fenced block: {rel}")

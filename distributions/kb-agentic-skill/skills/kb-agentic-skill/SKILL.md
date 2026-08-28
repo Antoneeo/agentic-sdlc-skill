@@ -158,8 +158,8 @@ twin of the guide consult above.
   question plainly within an already-descended branch reuses that consult, and a
   placement descent already run this session counts. A compaction starts a new session.
 - **The act.** Descend per `taxonomy.md` §6 (same doctrine, answer mode). On claims,
-  answer FROM them citing claim ids; a `status: SUPERSEDED` claim is never cited without
-  naming its successor.
+  answer FROM them citing claim ids; a claim whose `state` is `SUPERSEDED <id>` is never
+  cited without naming its successor.
 - **The declared verdict — only when the recall ran**, never a per-turn ritual. Four
   legal values:
   - `kb: <slug> → N claims cited`

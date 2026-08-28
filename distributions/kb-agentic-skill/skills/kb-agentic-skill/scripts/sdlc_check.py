@@ -1513,7 +1513,12 @@ def kb_cmd_orient(argv):
         probe.add_argument("--root")
         probe.add_argument("--docs-dir")
         known, _ = probe.parse_known_args(argv[1:])
-        discovered, name = sdlc_core.resolve_docs_dir(known, known.root)
+        try:
+            discovered, name = sdlc_core.resolve_docs_dir(known, known.root)
+        except sdlc_core.AmbiguousDocsRoot:
+            # Mirror the spine's degraded orient: fall back to the default
+            # docs dir rather than losing the router on a half-migrated tree.
+            discovered, name = None, sdlc_core.DEFAULT_DOCS_DIR
         root = (Path(known.root).resolve() if known.root
                 else (discovered or sdlc_core.find_project_root()))
         topics = root / name / "topics"
@@ -1533,7 +1538,10 @@ def kb_cmd_orient(argv):
                 print("index absent (%d node files) -- regenerate: sdlc_check.py index"
                       % len(nodes))
         # no topics/ at all: the project has no graph; print nothing.
-    except Exception:
+    except (Exception, SystemExit):
+        # SystemExit included: the probe parser raises it on a dangling flag
+        # value ("orient --root" at end of argv) -- the spine already reported
+        # that usage error; the append must never turn it into an escape.
         pass
     return rc
 
