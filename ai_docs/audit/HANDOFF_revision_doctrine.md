@@ -2,9 +2,9 @@
 workstream: F-043 Revision doctrine (delta-append is the failure; full re-read is the gesture)
 level: L3
 branch: feat/revision-doctrine
-status: DONE, AWAITING MERGE
+status: DONE, MERGED
 since: 2026-08-28
-next: the owner's merge call (design FAIL->FAIL->FAIL-at-cap with all 19 findings folded; closure PASS in 1 round; kb 322 OK)
+next: publish kb 1.10.0 (owner's act, publish_all.bat) -> polling verify
 details: ANALYSIS_revision_doctrine.md (+ this file: post-mortem verbatim)
 updated: 2026-08-28
 ---
