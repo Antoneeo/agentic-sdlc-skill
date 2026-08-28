@@ -32,8 +32,9 @@ parsed)". The 1.11.0 disclosure marker did its designed job (made the lie
 visible and NAMED the failing source -- that is what let the field session
 diagnose it); the source is now fixed: `load_frontmatter` (the authoritative
 reader) + `kb_unquote` + datetime-suffix-tolerant prefix. Root cause
-REPRODUCED in RED before fixing (long-frontmatter fixture). Releasable as kb
-1.11.1 on the owner's order. Field lesson attached by the reporting session
+REPRODUCED in RED before fixing (long-frontmatter fixture). Released as kb
+1.11.1 (tag `kb-v1.11.1`, 2026-08-28; publish = owner's act, then poll
+verify). Field lesson attached by the reporting session
 itself: it had approved the mtime behavior twice on plausible reasoning
 before testing it against the case in view -- evidence for the review rule
 "a PASS is invalid on found-nothing" extending to APPROVALS.
