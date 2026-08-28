@@ -2,9 +2,9 @@
 workstream: F-041 KB Mid-Session Drift (field report, 2 items)
 level: L3
 branch: feat/kb-midsession-drift
-status: DONE, AWAITING MERGE
+status: DONE, MERGED
 since: 2026-08-28
-next: the owner's merge call (closure PASS in 1 round, 0 BLOCK, all 5 WARN folded; batteries 179/311/197 OK)
+next: publish kb 1.8.0 (owner's act, publish_all.bat) -> polling verify
 details: ANALYSIS_kb_midsession_drift.md (+ this file: evidence verbatim)
 updated: 2026-08-28
 ---
