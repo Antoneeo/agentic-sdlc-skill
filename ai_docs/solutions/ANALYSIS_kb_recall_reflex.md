@@ -19,7 +19,7 @@ The descent fires only inside a kb unit of work (placing claims). Nothing trigge
 
 ## Capability Ledger (what already exists — this unit extends, never duplicates)
 - `guides.md` §0 — the consult trigger for GUIDES: unconditional scan at L2/L3, scan-the-router-not-the-content, targeted match, declared verdict with named legal values, never faked, "regenerate when you report absent". THE model to twin.
-- `taxonomy.md` §1 — the descent (top rows of `topics/INDEX.md` → branch → every parent → synonyms → open only final candidates). Written for PLACEMENT; reusable for answering. §0 also states mid-run truth: the FILES are the state; `topics/INDEX.md` is written at closure, so nodes routinely exist while the index lags.
+- `taxonomy.md` §1 — the descent (top rows of `topics/INDEX.md` → branch → every parent → synonyms → open only final candidates). Written for PLACEMENT; reusable for answering. §1's batch paragraph also states mid-run truth: the FILES are the state; `topics/INDEX.md` is written at closure, so nodes routinely exist while the index lags.
 - Claim provenance — **five values**: `GIVEN | ELICITED | DERIVED | RULING | IMPORTED` (`distillation.md` §claim-table), with the IMPORTED rule: foreign authority, "may not supersede a local row until re-ratified".
 - Derivation chains (F-035): `derived_from:` may point at other notes — derived-on-derived is legal, so a chain's immediate target is NOT necessarily ground.
 - kb overlay dispatch (`sdlc_check.py`): intercepted commands run overlay logic, everything else forwards to the spine — the pattern that lets `orient` gain kb behavior without touching `sdlc_core.py`.
@@ -39,7 +39,7 @@ The descent fires only inside a kb unit of work (placing claims). Nothing trigge
   Never fake — an always-"no coverage" verdict certifies a lookup that did not happen (guide router's clause, re-instantiated for this namespace). The `router:` and `kb:` verdicts are independent and may co-occur, one line each — a how-to question can legitimately match a guide AND carry claims.
 - **Anti-echo (the re-touch rule)**: when a DERIVED claim grounds a decision the user is about to take, walk its chain to non-DERIVED ground — a GIVEN artifact, an ELICITED or RULING note — and cite that ground beside the claim id; re-opening only the immediate target may re-read the agent's own synthesis, which is the echo chamber itself. If the ground does not resolve (imported bundle without originals, external `original_path:`, tombstone): say so beside the claim id and treat the claim as **unverified for decision-grounding** — surfaced, never silently cited. Per-provenance stance: GIVEN's source column is already the direct citation; ELICITED/RULING carry the practitioner's own authority (exempt); an IMPORTED claim grounding a decision is named as un-re-ratified foreign authority.
 - **Persistence of the trace (vision signal 5)**: when the decision is recorded (a ruling note, a diary entry), that record cites the claim id AND the re-touched ground — the trace survives in the corpus, not in ephemeral chat.
-- **Under dispatch**: recall is an orchestrator concern — relevant claims are handed in the task brief; a context-free subagent never runs its own descent (mirror of the guide consult's dispatch clause).
+- **Under dispatch**: recall is an orchestrator concern — the orchestrator runs the descent itself and a context-free subagent never runs its own (mirror of the guide consult's dispatch clause). Vehicle: the task schema has no claims field today, so until a dispatch-focused unit adds one, the orchestrator inlines the cited claim rows in the task's free text — an explicit interim, not a silent gap.
 - One line added to the "Map-First Navigation" value: retrieval also before *answering from model memory* on the project's domain.
 - **Frontmatter `description`** gains the answering surface ("...and answering project questions from the claim ledger") — vision signal 1 is a cold question session; if the skill never loads for a pure question, the doctrine is not in context when its case arrives.
 
@@ -47,13 +47,13 @@ The descent fires only inside a kb unit of work (placing claims). Nothing trigge
 Differences only: no placement verdicts, no writes, the descent stops at reading claims; coverage replaces the five verdicts; UNPLACED does not exist when reading. Everything else — descend don't scan, every parent, synonyms, tombstone redirects — applies unchanged.
 
 ### 3. By-construction limb: kb `orient` surfaces the topic router
-`sdlc_check.py` (kb overlay) intercepts `orient`: forward to the spine as today, THEN append a `## Topic router` section — the top rows of `topics/INDEX.md` when present, `index absent (N node files) — regenerate` when nodes exist unindexed, nothing when the project has no graph. Recall per costruzione (vision constraint): every session opens with the graph in sight, so the reflex has its map before the first question. Spine untouched — overlay interception only.
+`sdlc_check.py` (kb overlay) intercepts `orient` as a special case BEFORE its own argparse (the `--help` pattern): pass the raw argv to `sdlc_core.main` untouched — never re-parse or hand-mirror orient's flags, the exact drift class the file warns about — capture the return code, THEN append a `## Topic router` section — the top rows of `topics/INDEX.md` when present, `index absent (N node files) — regenerate` when nodes exist unindexed, nothing when the project has no graph. Recall per costruzione (vision constraint): every session opens with the graph in sight, so the reflex has its map before the first question. Spine untouched — overlay interception only.
 
 ### 4. Eval scenario (kb only): `evals/scenarios/recall_descends_before_answering.md`
 Setup: small `topics/` tree + claims — one DERIVED with a two-hop chain (note → note → GIVEN artifact), one SUPERSEDED. Prompt: a cold question the KB covers, framed as grounding a decision. Pass: descent + claim ids cited; SUPERSEDED not cited bare; the DERIVED's chain walked to GROUND (not the intermediate note) and cited. **Harness prerequisite**: `run_behavioral.py` `seed()` today writes one line per file; it gains fenced-block multi-line seeding (kb-only file, in Impact).
 
-### 5. Battery (kb `test_skill_invariants.py`): new invariant
-Whitespace-normalized anchors on SKILL.md (section present; the four verdict forms; "never fake"; chain-to-ground; the unresolvable-ground branch) and taxonomy.md (§6 present). Mutation bites both ways. Plus a kb-only test for the orient interception (topic router appended when INDEX exists / node-count line when unindexed).
+### 5. Battery: new kb-only test module `test_kb_recall.py`
+One NEW file, picked up by the battery's discover, carrying BOTH the doctrine invariant (whitespace-normalized anchors on SKILL.md — section present, the four verdict forms, "never fake", chain-to-ground, the unresolvable-ground branch — and taxonomy.md §6) AND the orient-interception test (topic router appended when INDEX exists / node-count line when unindexed). Mutation bites both ways. NOT in `test_skill_invariants.py`: that file is shared-manifest (x3, drift-guarded) — kb-only doctrine takes a kb-only vehicle, which is what keeps the Impact's isolation claim true.
 
 ### 6. Carriers
 kb `README.md`: the capability narrative ("What it does") gains answer-side recall — the milestone's headline, not a per-file description line. kb SKILL.md support-files list: taxonomy row gains "and the answer-mode descent". CHANGELOG `[Unreleased]`.
@@ -64,8 +64,7 @@ kb `README.md`: the capability narrative ("What it does") gains answer-side reca
 | `distributions/kb-agentic-skill/skills/kb-agentic-skill/SKILL.md` | new section, value line, frontmatter description |
 | `.../taxonomy.md` | new §6 |
 | `.../scripts/sdlc_check.py` | `orient` interception: topic-router section |
-| `.../scripts/test_skill_invariants.py` | new invariant |
-| `.../scripts/test_kb_graph.py` (or small new kb-only test file) | orient interception test |
+| `.../scripts/test_kb_recall.py` | NEW kb-only module: doctrine invariant + orient test |
 | `.../evals/run_behavioral.py` | multi-line (fenced-block) seeding |
 | `.../evals/scenarios/recall_descends_before_answering.md` | new |
 | `distributions/kb-agentic-skill/README.md` | capability narrative |
@@ -93,4 +92,5 @@ Battery RED→GREEN on the new invariant; mutation bites both ways; orient inter
 
 ## Diary
 - 2026-08-27: unit opened on `feat/kb-recall-reflex` off main@45ad7c3 (vision APPROVED same day). Design modeled on `guides.md` §0 read whole; anchors verified against the 1.6.0 tree (the session's loaded copy was 1.4.1 — home copy updated during the vision phase, a live instance of T3). Schema pass: a PowerShell in-place patch mojibake'd the UTF-8; rewritten via Write — string patches on UTF-8 files go through Python or Write, never Set-Content.
+- 2026-08-28 (R3): round 2 FAIL, narrow — 11/12 resolved, one new BLOCK the reviewer flagged as latent since round 1: `test_skill_invariants.py` is shared-manifest (x3), so the battery row contradicted the isolation claim. Folded: the invariant moves to a NEW kb-only `test_kb_recall.py` (with the orient test); the interception shape is pinned (special-case before argparse, raw argv, never re-parse flags); the dispatch vehicle is an explicit interim (claims inlined in task free text until a dispatch unit adds a schema field); the §0→§1 pointer fixed.
 - 2026-08-28: design review round 1 (fresh subagent, rung 1 granted at the gate): FAIL, 6 BLOCK + 6 WARN, all verified real (provenance is five values with GIVEN — distillation.md:118 checked; orient lives in the spine but the overlay intercept pattern permits a kb-only limb — sdlc_check.py:1521-1532 checked). All 12 folded into this revision: unconditional scan (plausibility judged ON the index), four-verdict vocabulary with index-absent semantics + regenerate, chain-to-ground + unresolvable-ground branch, by-construction orient limb, harness multi-line seeding, five-value ledger with per-provenance stance, session dedup, dispatch clause, verdict composition, trace persistence, capability-narrative carrier + description surface.
