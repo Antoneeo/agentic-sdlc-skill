@@ -9,8 +9,8 @@ Date: 2026-08-28 (UTC)
 | F-022 Multi-Domain Core | L3 | feat/multi-domain-core | DONE, HELD | 2026-07-31 | nothing outstanding — the release hold is lifted by the owner | HANDOFF_multi_domain_core.md · ANALYSIS_multi_domain_core.md |
 | F-026 Question Discipline | L3 | claude/agitated-blackburn-62f5cf | DONE, AWAITING MERGE | 2026-08-01 | the owner's merge call: rebase onto `feat/kb-knowledge-method`, or cherry-pick 50c5cf7+a0072cf onto main | HANDOFF_question_discipline.md · ANALYSIS_question_discipline.md |
 | F-038 Gated-Rung Vocabulary | L3 | feat/gated-rung-vocabulary | DONE | 2026-08-25 | nothing outstanding -- published and verified 2026-08-26 (1.28.0 / 1.6.0 / 0.6.0) | HANDOFF_gated_rung_vocabulary.md · ANALYSIS_gated_rung_vocabulary.md |
-| F-039 KB Recall Reflex (second-brain unit 1) | L3 | feat/kb-recall-reflex | DONE, MERGED | 2026-08-27 | publish kb 1.7.0 (owner's act); unit 3 waits for usage data per the vision | HANDOFF_kb_recall_reflex.md · ANALYSIS_kb_recall_reflex.md |
-| F-040 KB Capture Moment (second-brain unit 2) | L3 | feat/kb-capture-moment | DONE, MERGED | 2026-08-28 | publish kb 1.7.0 (owner's act) -> polling verify | HANDOFF_kb_capture_moment.md · ANALYSIS_kb_capture_moment.md |
+| F-039 KB Recall Reflex (second-brain unit 1) | L3 | feat/kb-recall-reflex | DONE, MERGED | 2026-08-27 | nothing outstanding -- published in kb 1.7.0 (2026-08-28); unit 3 waits for usage data per the vision | HANDOFF_kb_recall_reflex.md · ANALYSIS_kb_recall_reflex.md |
+| F-040 KB Capture Moment (second-brain unit 2) | L3 | feat/kb-capture-moment | DONE, MERGED | 2026-08-28 | nothing outstanding -- published in kb 1.7.0 (2026-08-28) | HANDOFF_kb_capture_moment.md · ANALYSIS_kb_capture_moment.md |
 | Release 1.19.0 (Architect Pass + Design Review Gate) | — | feat/architect-pass (tag v1.19.0) | AWAITING OWNER | 2026-07-28 | `npm publish` (2FA, owner's act), then verify `npm view` → 1.19.0 | HANDOFF_release_1_19_0.md · CHANGELOG `[1.19.0]`/`[1.18.0]` · ANALYSIS_architect_pass.md · ANALYSIS_design_review_gate.md |
 | Release of the three packages | — | feat/kb-knowledge-method | AWAITING OWNER | 2026-08-01 | publish code 1.21.0, kb 1.4.0 and mkt 0.4.0 (2FA, owner's act) — F-028 ships in all three | HANDOFF_release_three_packages.md · ANALYSIS_kb_knowledge_method.md · ANALYSIS_claim_ledger.md · ADR_2026-08-01_kb_topic_graph_claim_ledger.md |
 
@@ -19,8 +19,10 @@ Date: 2026-08-28 (UTC)
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**Published on npm (verified `versions --json --prefer-online` 2026-08-26):** code
-**1.28.0**, kb **1.6.0**, mkt **0.6.0** — F-038 (gated-rung vocabulary + mandated ask,
+**Published on npm (publish_all.bat polling verify, 2026-08-28):** code **1.28.0**,
+kb **1.7.0**, mkt **0.6.0** — kb 1.7.0 (tag `kb-v1.7.0`) carries the second brain's
+units 1-2: F-039 recall reflex + F-040 capture moment; code and mkt unchanged,
+skipped by the script. Before that: F-038 (gated-rung vocabulary + mandated ask,
 tag `v1.28.0`, merged to main) in all three. Before that: F-036 (init wires the
 SessionStart orientation hook) in 1.27.0/1.5.0/0.5.0, then the README front pages and
 the publish-verify poll in the .1s — the first three-package release since the packages
