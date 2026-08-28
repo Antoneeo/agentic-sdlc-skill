@@ -2,6 +2,34 @@
 
 Every significant change to this skill is recorded here.
 
+## [Unreleased]
+
+F-039 — the recall reflex (second-brain unit 1): the graph is read when answering,
+not only written when distilling.
+
+### Added
+- **`SKILL.md` §Topic Recall — the answer-side consult.** Whenever a reply would
+  assert facts about the project's domain, the topic index is scanned and the descent
+  (`taxonomy.md` §6, new) runs in answer mode — plausibility of coverage is judged ON
+  the scanned index, never before it. Four declared verdicts (claims cited / node
+  matched no claims, surfacing `gaps:` / no coverage / index absent + regenerate),
+  emitted only when the recall ran; never faked. Once per topic per session.
+- **The anti-echo re-touch rule.** A DERIVED claim that grounds a decision has its
+  chain walked to non-DERIVED ground (GIVEN artifact, ELICITED or RULING note) and
+  that ground cited; an unresolvable ground marks the claim unverified for
+  decision-grounding — surfaced, never silently cited. IMPORTED grounding a decision
+  is named as un-re-ratified foreign authority.
+- **By construction: kb `orient` appends the topic router.** The overlay special-cases
+  `orient` (raw argv forwarded to the spine, never re-parsed) and appends the top of
+  `topics/INDEX.md` — or `index absent (N node files)` with the regenerate command —
+  so every session opens with the graph in sight. Fails open; spine untouched.
+- **`test_kb_recall.py`** — new kb-only battery module (doctrine anchors + orient
+  interception), deliberately outside the shared x3 manifest.
+- **`run_behavioral.py` fenced-block seeding** — a scenario setup entry ending in `|`
+  takes its file body from the following fenced block (common-dedented), so claims
+  tables and frontmatter'd nodes can be seeded; one-line entries unchanged.
+- Eval scenario `recall_descends_before_answering.md`.
+
 ## [1.6.0] - 2026-08-26
 
 F-038 — the gated rung: truthful log vocabulary and a mandated ask, no grant memory.

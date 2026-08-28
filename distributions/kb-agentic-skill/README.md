@@ -20,6 +20,8 @@ Two axes are kept apart on purpose — **abstraction** (a topic made of topics: 
 
 5. **Escalation in one batch at the end of the run**, in legal form (the claims, the reopenable sources, the dates, why the machine cannot decide). Ingestion never stops to interrogate you.
 
+6. **Recall — the graph is read when answering, not only written when distilling.** Whenever a reply would assert facts about the project's domain, the agent scans the topic index and descends before answering from model memory — plausibility of coverage is judged ON the scanned index, never before it. Answers cite claim ids; a superseded claim is never cited without its successor; the verdict is declared only when the recall ran (`kb: <slug> → N claims cited`, a matched node with no claims surfaces its `gaps:`, and a missing index is reported as index-absent — not as a missing graph — with the regenerate command). When a DERIVED claim grounds a decision, its chain is walked to non-DERIVED ground (the given artifact or the elicited/ruled note) and that ground is cited — re-reading the agent's own synthesis is the echo chamber this rule exists to break. By construction, not exhortation: the kb `orient` opens every session with the topic router in sight.
+
 Deliberately absent: any per-node coverage or completion state. `gaps:` says what a node lacks; nothing collects it into a dashboard. A **source** does record how far it has been read, but on its own sidecar and nowhere else — the corpus index prints that fact for every artifact, including the finished ones, because a list of only what is behind is the dashboard this method refuses.
 
 ## Key features
