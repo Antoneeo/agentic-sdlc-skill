@@ -11,7 +11,7 @@ Date: 2026-08-28 (UTC)
 | F-038 Gated-Rung Vocabulary | L3 | feat/gated-rung-vocabulary | DONE | 2026-08-25 | nothing outstanding -- published and verified 2026-08-26 (1.28.0 / 1.6.0 / 0.6.0) | HANDOFF_gated_rung_vocabulary.md · ANALYSIS_gated_rung_vocabulary.md |
 | F-039 KB Recall Reflex (second-brain unit 1) | L3 | feat/kb-recall-reflex | DONE, MERGED | 2026-08-27 | nothing outstanding -- published in kb 1.7.0 (2026-08-28); unit 3 waits for usage data per the vision | HANDOFF_kb_recall_reflex.md · ANALYSIS_kb_recall_reflex.md |
 | F-040 KB Capture Moment (second-brain unit 2) | L3 | feat/kb-capture-moment | DONE, MERGED | 2026-08-28 | nothing outstanding -- published in kb 1.7.0 (2026-08-28) | HANDOFF_kb_capture_moment.md · ANALYSIS_kb_capture_moment.md |
-| F-041 KB Mid-Session Drift (field report, 2 items) | L3 | feat/kb-midsession-drift | DONE, MERGED | 2026-08-28 | publish kb 1.8.0 (owner's act, publish_all.bat) -> polling verify | HANDOFF_kb_midsession_drift.md · ANALYSIS_kb_midsession_drift.md (+ this file: evidence verbatim) |
+| F-041 KB Mid-Session Drift (field report, 2 items) | L3 | feat/kb-midsession-drift | DONE, MERGED | 2026-08-28 | nothing outstanding -- published in kb 1.8.0 (2026-08-28, registry-verified); field datum same day: an external session's check surfaced the missing orient hook and offered the wiring | HANDOFF_kb_midsession_drift.md · ANALYSIS_kb_midsession_drift.md (+ this file: evidence verbatim) |
 | Release 1.19.0 (Architect Pass + Design Review Gate) | — | feat/architect-pass (tag v1.19.0) | AWAITING OWNER | 2026-07-28 | `npm publish` (2FA, owner's act), then verify `npm view` → 1.19.0 | HANDOFF_release_1_19_0.md · CHANGELOG `[1.19.0]`/`[1.18.0]` · ANALYSIS_architect_pass.md · ANALYSIS_design_review_gate.md |
 | Release of the three packages | — | feat/kb-knowledge-method | AWAITING OWNER | 2026-08-01 | publish code 1.21.0, kb 1.4.0 and mkt 0.4.0 (2FA, owner's act) — F-028 ships in all three | HANDOFF_release_three_packages.md · ANALYSIS_kb_knowledge_method.md · ANALYSIS_claim_ledger.md · ADR_2026-08-01_kb_topic_graph_claim_ledger.md |
 
@@ -20,8 +20,12 @@ Date: 2026-08-28 (UTC)
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**Published on npm (publish_all.bat polling verify, 2026-08-28):** code **1.28.0**,
-kb **1.7.0**, mkt **0.6.0** — kb 1.7.0 (tag `kb-v1.7.0`) carries the second brain's
+**Published on npm (registry-verified 2026-08-28):** code **1.28.0**, kb **1.8.0**,
+mkt **0.6.0** -- kb 1.8.0 (tag `kb-v1.8.0`) carries F-041: the check wiring/dead-hook
+notes (spine x3, parked in code/mkt CHANGELOGs for their next release) + the kb
+`remind` per-turn opt-in. Field datum the same day: an external session's check
+surfaced its missing orient hook via the new note and offered the wiring -- the
+note doing exactly its designed job. Before that: kb **1.7.0** — kb 1.7.0 (tag `kb-v1.7.0`) carries the second brain's
 units 1-2: F-039 recall reflex + F-040 capture moment; code and mkt unchanged,
 skipped by the script. Before that: F-038 (gated-rung vocabulary + mandated ask,
 tag `v1.28.0`, merged to main) in all three. Before that: F-036 (init wires the
