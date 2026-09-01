@@ -2,9 +2,9 @@
 workstream: F-045 Review convergence doctrine (Execute-Before-Specify + review-loop hardening, spine ported)
 level: L3
 branch: main
-status: RELEASED PENDING PUBLISH
+status: DONE, PUBLISHED
 since: 2026-09-01
-next: owner runs publish_all.bat from repo root (2FA per package) for code 1.30.0 + kb 1.12.0 + mkt 0.8.0, then npm view verifies; Write Triggers row for harness_[feature]/ still open (scoped out on 2026-09-01, recorded in the ADR's Con)
+next: nothing outstanding -- code 1.30.0 + kb 1.12.0 + mkt 0.8.0 on the registry (npm view verified 2026-09-01); only deferred item: Write Triggers row for harness_[feature]/ (scoped out, recorded in the ADR's Con)
 details: ANALYSIS_review_convergence_doctrine.md (full unit record + Diary)
 updated: 2026-09-01
 ---
