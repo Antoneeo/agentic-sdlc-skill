@@ -68,7 +68,12 @@ Qualunque lente sia attiva, l'agente:
    superiore è utilizzabile; un piolo presente ma dietro un permesso non è assente
    — il gate si ferma e chiede, una domanda per gate a contesto integro, e il log
    distingue absent / gated, declined / gated, unattended / gated, pre-empted),
-   cap a 3 round poi i findings aperti arrivano a te, una riga di log
+   cap a 3 round poi i findings aperti arrivano a te (revisionare = convergere:
+   riscrittura lean al più tardi prima del round 3, mai patch-su-patch, e
+   l'archeologia delle revisioni vive nel REVIEW_LOG, mai nell'artefatto;
+   blocker = solo evidenza unfit-to-proceed, dichiarato con la richiesta;
+   pre-audit scriptato delle ancore `file:line` prima di chiedere la review),
+   una riga di log
    per ogni review, PASS invalido su "non ho trovato niente" (serve il conformance
    statement).
 4. **Rispetta la question discipline**: ogni domanda a te è legale solo se (a) ha
@@ -99,6 +104,15 @@ Ciò che solo qui l'agente fa:
   chiamante, l'elenco COMPLETO dei consumatori (call hierarchy, mai grep),
   ancorato all'identità del simbolo, scritto nell'Impact — così la review non
   scopre "manca un consumatore" un round alla volta.
+- **Execute-Before-Specify**: ogni claim "il codice oggi fa X" in un artefatto di
+  design L3 deriva da una sonda ESEGUITA contro il sistema reale nei suoi stati
+  reali, mai da sola lettura. La sonda deve poter fallire (rossa prima, poi verde
+  — il gesto RED del TDD applicato all'esperimento) e vive in repo come harness
+  accanto all'artefatto (`ai_docs/solutions/harness_[feature]/`): il reviewer
+  ri-esegue le asserzioni invece di ri-derivare i claim (clausola lens-gated in
+  `review.md`, spara solo qui). Proporzionale: copre i claim su cui il design
+  POGGIA; i fatti strutturali (un file esiste, una firma, i chiamanti) restano
+  al blast radius.
 - **TDD di default** (L2/L3): UN test che fallisce, visto fallire, prima del
   codice; l'esenzione va scritta nel Diary ("un'esenzione non registrata è
   indistinguibile dal dimenticarsene").
