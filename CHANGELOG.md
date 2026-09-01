@@ -2,6 +2,32 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.30.0] - 2026-09-01
+
+### Added
+- **F-045: Execute-Before-Specify (SKILL.md, Phase 3).** Every behavioural
+  claim about existing code in an L3 design ("the code today does X") derives
+  from an EXECUTED probe against the real system in its real states, never
+  from reading alone. Probes ship with the artifact as a repo harness
+  (`ai_docs/solutions/harness_[feature]/`) so the reviewer re-runs assertions
+  instead of re-deriving claims. Proportionality bound (only claims the design
+  rests on; structural facts stay with blast radius) and RED-first
+  falsifiability guard (show the probe red, then green -- a probe you cannot
+  make fail establishes nothing). Field measurement: eight consecutive
+  design-review FAILs converged to PASS in one round once claims were executed
+  first. ADR: `adr_2026-09-01_executed_probe_harness`.
+- **F-045 (shared spine `review.md`, byte-identical x3): review-loop
+  convergence.** Three request/loop disciplines: *revise means converge, not
+  accrete* (lean rewrite at the latest before round 3, revision archaeology
+  lives in REVIEW_LOG, never in the artifact); *severity contract* stated with
+  every review request (blocker = unfit-to-proceed evidence only; wishes are
+  WARN at most -- calibrates the scale without pre-judging findings); *scripted
+  author pre-audit* (resolve every `file:line`/symbol anchor and recount every
+  count before requesting). Plus the lens-gated *behavioural-claim-probes*
+  reviewer clause (three findings: claim without probe, harness absent, probe
+  no longer passing) -- fires only in the lens whose SKILL.md defines
+  Execute-Before-Specify, i.e. this one.
+
 ## [1.29.0] - 2026-08-28
 
 Spine delta parked for the next release of this lens (shipped first in kb; the

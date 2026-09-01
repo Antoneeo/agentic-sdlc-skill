@@ -2,6 +2,21 @@
 
 Every significant change to this skill is recorded here.
 
+## [1.12.0] - 2026-09-01
+
+Spine-only release: `review.md` updated byte-identical across the family
+(authored in the code lens, F-045 / code 1.30.0).
+
+### Added
+- **Review-loop convergence (shared spine `review.md`).** *Revise means
+  converge, not accrete*: lean rewrite at the latest before round 3, revision
+  archaeology lives in REVIEW_LOG, never in the artifact. *Severity contract*
+  stated with every review request: blocker = unfit-to-proceed evidence only,
+  wishes are WARN at most. *Scripted author pre-audit*: resolve every anchor
+  and recount every count before requesting. The new *behavioural-claim-probes*
+  reviewer clause is lens-gated and self-disarmed in this lens (this SKILL.md
+  defines no Execute-Before-Specify duty).
+
 ## [1.11.1] - 2026-08-28
 
 ### Fixed
