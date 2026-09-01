@@ -94,6 +94,23 @@ Hybrid project's devPNT gates write to the same file.
 The log is how the gate's value is measured over time; skipping it makes the gate
 unfalsifiable, the same defect as an unnamed EXISTS or a faked router verdict.
 
+**Revise means converge, not accrete.** Two revision failure modes generate their
+own findings and can make the cap unreachable honestly. (1) *Patch-on-patch*:
+each round's fixes are grafted onto the previous text until stale counts,
+duplicated sections and internal contradictions are findings the revisions
+themselves created. When a round's findings are of that artifact-consistency
+class — and at the latest before a round-3 attempt — rewrite the artifact lean
+and operative against the checklist instead of patching again; a from-scratch
+rewrite is cheaper than a burned round. (2) *Revision narrative in the
+artifact*: the artifact under review carries its own review archaeology
+("v1.2 fixed…", "as the round-2 review noted…"). An artifact states what IS,
+once; how it got there lives in the REVIEW_LOG row's notes, never in the
+artifact — archaeology bloats the object under review and every stale
+self-reference is a future finding. Field measurement (2026-08): an artifact
+that had grown to ~1,250 lines across eight failing rounds passed on the round
+after a ~500-line operative rewrite moved the history out — the rewrite removed
+an entire finding class.
+
 **The reviewer is read-only and advisory.** It never edits, never commits, never
 marks anything DONE, and a PASS is not an approval to merge — the human owns that.
 
@@ -123,6 +140,26 @@ When you hand work to a reviewer (human or agent), give them:
   code review only verifies the requirements that are there, never the ones that
   should have been. The design reviewer checks that every threat surface the change
   touches has a matching security requirement.
+
+- **The severity contract**: state with the request what counts as a blocker
+  versus a lesser finding. A blocker is *unfit-to-proceed* evidence only — a
+  false claim about existing code, a published falsehood, a missing impacted
+  file, an unresolvable internal contradiction, a real regression; an
+  improvement idea, a wish, or a style preference is at most a WARN and never
+  fails the artifact. An uncalibrated "hunt hard" mandate produces
+  blocker-inflated rounds that fail artifacts on wishes — each one burns a
+  round from the cap of 3 and patches the artifact for prose, the accretion
+  failure the round-cap rule names. Stating the taxonomy calibrates the
+  *scale*; it never pre-judges any specific finding (that stays forbidden
+  below) — the reviewer still decides where every finding lands.
+
+**Pre-audit before you request.** Before handing the artifact over, run a
+scripted author pre-audit: mechanically resolve every `file:line` / symbol
+anchor the artifact cites against the real tree, and recount every count it
+states — with a script, not by eye. Anchors rot between drafts, and a reviewer
+that trips on a broken anchor spends its round proving your citation instead of
+your design. Measured cost is near zero (one grep-loop); measured catch: four
+rotted anchors in a single artifact, pre-review.
 
 **The verdict travels back as the reviewer's own final output** — the text it
 returns when it finishes, nothing else. A reviewer that tries to message the
@@ -301,6 +338,20 @@ When you are the reviewer:
   NOT checked here — architecture-awareness is the Capability Ledger / Impact
   review's job; a clause for it would duplicate that.) A lens whose template
   defines no such section (knowledge, marketing) never fires this clause.
+- **Behavioural-claim probes (same reviews; fires only in the lens whose
+  SKILL.md defines Execute-Before-Specify — the code lens today; that paragraph
+  is the owning definition — cite it, never restate it).** On an L3 design
+  artifact, a claim of the form "the code today does X" must trace to an
+  assertion in the artifact's shipped harness
+  (`ai_docs/solutions/harness_[feature]/`): the check is mechanical — re-run
+  the harness and compare, instead of re-deriving the claims by reading. Three
+  findings live here and nowhere else: a behavioural claim backed by no probe
+  (report it as unproven — reading the source yourself is the same
+  insufficient evidence the rule bans for the author); a harness absent while
+  the prose carries behavioural claims; and a probe that no longer passes
+  against the current tree. Structural facts (a file exists, a symbol's
+  signature, its callers) are the blast-radius clause's territory, never probe
+  findings. A lens whose SKILL.md defines no such duty never fires this clause.
 
 ## Anti-patterns
 

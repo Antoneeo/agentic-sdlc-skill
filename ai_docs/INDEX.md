@@ -39,6 +39,7 @@ not manifested here.
 | `architecture/ADR_2026-08-06_functional_spec_layer.md` | CURRENT | Why the observable WHAT gets its own component-free section (Functional Spec) between the use cases and the Interface Contract, and why the strategic pass is... |
 | `architecture/ADR_2026-08-25_claim_id_collision.md` | CURRENT | Why two distinct assertions about one span are refused rather than disambiguated — the claim id stays a pure function of (path, locator, qty), and the collis... |
 | `architecture/ADR_2026-08-28_hook_detection_two_runtime_subset.md` | CURRENT | Why orientation-hook detection is re-implemented in the Python spine as a read-only subset of the installer's JS contract, and why the wiring note belongs to... |
+| `architecture/ADR_2026-09-01_executed_probe_harness.md` | CURRENT | ADR - behavioural claims in L3 designs derive from executed probes kept as a repo-shipped harness (ai_docs/solutions/harness_[feature]/), with a lens-gated r... |
 
 ## functional/
 
