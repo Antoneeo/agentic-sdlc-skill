@@ -2,6 +2,30 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.31.0] - 2026-09-05
+
+### Changed
+- **Execute-Before-Specify now covers text-about-text (SKILL.md, Phase 3).** A
+  deliverable that is itself text -- doctrine, a schema, a prompt, a reviewer
+  definition -- is probed the same way as code: replay it against the recorded
+  case that motivated it (the incident artifact, the tool-usage transcript, the
+  review that missed the defect), red under the old text, green under the new.
+  "No probe is possible" is shown, never declared. The exemption an earlier
+  proposal would have granted was rejected on evidence: the unit cited as
+  unprobeable text was a code unit that modified six production modules and
+  shipped four assertion harnesses, while doctrine and prompt changes have been
+  measured here by replay (three headless probes of a prompt change; an ad-hoc
+  checklist that caught in one round what ten rounds missed). Paid for per this
+  skill's own `vision.md` cumulative-ratchet rule: 67 words of illustration and
+  rationale deleted from the same paragraph, net -2 words.
+- **Form budget belongs to the first draft (shared spine `review.md`,
+  byte-identical x3).** The lean operative form is the FIRST draft's form, not
+  the round-3 rescue: the review request states the artifact's line count
+  against a budget the author fixed before drafting, and an artifact over budget
+  is the reviewer's first finding, before content. The ~1,250 -> ~500 line
+  measurement already in the file is its anchor. Spine delta is synced in the
+  repo; kb and mkt ship it at their next release.
+
 ## [1.30.0] - 2026-09-01
 
 ### Added

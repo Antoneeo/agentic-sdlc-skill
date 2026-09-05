@@ -98,10 +98,12 @@ unfalsifiable, the same defect as an unnamed EXISTS or a faked router verdict.
 own findings and can make the cap unreachable honestly. (1) *Patch-on-patch*:
 each round's fixes are grafted onto the previous text until stale counts,
 duplicated sections and internal contradictions are findings the revisions
-themselves created. When a round's findings are of that artifact-consistency
-class — and at the latest before a round-3 attempt — rewrite the artifact lean
-and operative against the checklist instead of patching again; a from-scratch
-rewrite is cheaper than a burned round. (2) *Revision narrative in the
+themselves created. The lean operative form is the FIRST draft's form, not the
+round-3 rescue: the review request states the artifact's line count against a
+budget the author fixed before drafting (default: the measured figure below), and
+an artifact over budget is the reviewer's first finding, before content. When a
+round's findings are of that artifact-consistency class, rewrite lean instead of
+patching again. (2) *Revision narrative in the
 artifact*: the artifact under review carries its own review archaeology
 ("v1.2 fixed…", "as the round-2 review noted…"). An artifact states what IS,
 once; how it got there lives in the REVIEW_LOG row's notes, never in the
