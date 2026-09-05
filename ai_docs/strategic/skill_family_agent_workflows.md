@@ -69,8 +69,11 @@ Qualunque lente sia attiva, l'agente:
    — il gate si ferma e chiede, una domanda per gate a contesto integro, e il log
    distingue absent / gated, declined / gated, unattended / gated, pre-empted),
    cap a 3 round poi i findings aperti arrivano a te (revisionare = convergere:
-   riscrittura lean al più tardi prima del round 3, mai patch-su-patch, e
-   l'archeologia delle revisioni vive nel REVIEW_LOG, mai nell'artefatto;
+   la forma lean è quella della PRIMA stesura — la richiesta di review dichiara
+   il conteggio righe dell'artefatto contro un budget fissato prima di scrivere,
+   e un artefatto fuori budget è il primo finding del reviewer, prima del
+   contenuto — mai patch-su-patch, e l'archeologia delle revisioni vive nel
+   REVIEW_LOG, mai nell'artefatto;
    blocker = solo evidenza unfit-to-proceed, dichiarato con la richiesta;
    pre-audit scriptato delle ancore `file:line` prima di chiedere la review),
    una riga di log
@@ -112,7 +115,11 @@ Ciò che solo qui l'agente fa:
   ri-esegue le asserzioni invece di ri-derivare i claim (clausola lens-gated in
   `review.md`, spara solo qui). Proporzionale: copre i claim su cui il design
   POGGIA; i fatti strutturali (un file esiste, una firma, i chiamanti) restano
-  al blast radius.
+  al blast radius. Vale anche per un deliverable che è esso stesso testo
+  (dottrina, uno schema, un prompt, una definizione di reviewer): si prova
+  per replay contro il caso registrato che l'ha motivato — rosso sotto il
+  testo vecchio, verde sotto il nuovo. «È impossibile sondarlo» si dimostra,
+  non si dichiara.
 - **TDD di default** (L2/L3): UN test che fallisce, visto fallire, prima del
   codice; l'esenzione va scritta nel Diary ("un'esenzione non registrata è
   indistinguibile dal dimenticarsene").
