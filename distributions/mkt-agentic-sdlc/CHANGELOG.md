@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.9.0] - 2026-09-05
+
+Spine-only release: `review.md` updated byte-identical across the family
+(authored in the code lens, code 1.31.0).
+
+### Changed
+- **The form budget belongs to the FIRST draft (shared spine `review.md`).**
+  The lean operative form is the first draft's form, not the round-3 rescue:
+  the review request states the artifact's line count against a budget the
+  author fixed before drafting, and an artifact over budget is the reviewer's
+  first finding, before content. This replaces "rewrite lean at the latest
+  before round 3", which paid for the form only after two rounds had already
+  been spent reading a bloated artifact. The ~1,250 -> ~500 line measurement
+  already in the file is the budget's anchor.
+
 ## [0.8.0] - 2026-09-01
 
 Spine-only release: `review.md` updated byte-identical across the family

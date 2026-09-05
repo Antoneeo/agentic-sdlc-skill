@@ -4,7 +4,7 @@ level: L3
 branch: main
 status: DONE, PUBLISHED
 since: 2026-09-01
-next: publish code 1.31.0 with publish_all.bat (owner's act, 2FA), then verify on the registry; kb/mkt unchanged and skipped, their spine delta ships at their next release. Deferred item unchanged: Write Triggers row for harness_[feature]/
+next: publish code 1.31.0 + kb 1.13.0 + mkt 0.9.0 with publish_all.bat (owner's act, 2FA), then verify on the registry. Deferred item unchanged: Write Triggers row for harness_[feature]/
 details: ANALYSIS_review_convergence_doctrine.md (full unit record + Diary)
 updated: 2026-09-05
 ---
@@ -43,7 +43,11 @@ and a measured number: the lean operative form is the FIRST draft's form, stated
 as a line count in the review request, and an over-budget artifact is the
 reviewer's first finding. Spine synced byte-identical ×3 and the shared
 manifests regenerated in all three distributions (the drift guard caught the
-one-lens edit — `test_no_shared_file_has_diverged`). Derived documents refreshed
+one-lens edit — `test_no_shared_file_has_diverged`). All three packages ship it
+in the same run on the owner's call (kb 1.13.0, mkt 0.9.0, spine-only, minor per
+the 1.12.0/0.8.0 precedent): parking the delta would have left kb and mkt users
+on the superseded round-3 rule for an unbounded time, since npm versions are
+immutable. Derived documents refreshed
 before `mark`: `strategic/skill_family_agent_workflows.md` (both the
 Execute-Before-Specify bullet and the review-loop line the old text falsified).
 

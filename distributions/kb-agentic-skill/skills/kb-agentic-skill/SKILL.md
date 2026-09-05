@@ -1,6 +1,6 @@
 ---
 name: kb-agentic
-version: 1.12.0
+version: 1.13.0
 description: Knowledge-Base & Document-First protocol with risk-proportional triage, Vision as a guide, Signal Distillation, a complete Standalone mode and optional symbiosis with devPNT. Use for user documentation, knowledge extraction, SOPs, research notes, decision logs, knowledge management — and for answering project questions from the claim ledger and topic graph.
 author: Antonio Pinto (https://github.com/Antoneeo)
 copyright: (c) 2026 Antonio Pinto
