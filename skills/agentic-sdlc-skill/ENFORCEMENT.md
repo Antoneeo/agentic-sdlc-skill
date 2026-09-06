@@ -157,6 +157,46 @@ Gemini CLI — wire the same command into its startup-hook mechanism if present;
 - **Hybrid/devPNT projects**: add `--hybrid` — the hook then appends a one-line pointer to run `devpnt_mcp_get_bootstrap` for the Master Plan / Knowledge Layer and does not replicate them; the filesystem orientation (router + handoff + README) still emits.
 - Like the CI gate (§2), if you copied the validator into the repo, the hook references that copy — keep both files current when you update the skill.
 
+### Per-turn reminder: `remind` (UserPromptSubmit -- wired by default)
+
+`orient` fires once, at session start; a long session drifts after it, and a session
+that never loads the skill never had the protocol at all. Measured (F-046, 2026-09-06):
+a release ran against a `GUIDE_release.md` the session never consulted, because
+`SKILL.md` -- where the duty is written -- had not been read. `sdlc_check.py remind` prints
+ONE constant line at every prompt, and its first duty is that one: decide whether the
+skill governs the work in front of you and, if it does, load it once.
+
+Cost: 478 characters, ~80 tokens per prompt, paid on every turn including
+trivial ones. That is admissible only because the owner accepted it explicitly
+(`ai_docs/vision/rulings.md` r19, the "no ceremony ratchet" Non-Goal's second door) --
+and the acceptance was for a FLAT cost. Hence the contract, guarded by
+`scripts/test_remind.py`: the line is **constant and reads nothing** (so nothing repo-
+or session-controlled rides into the agent's context through it, and the cost cannot
+grow with the session), it is **one line under 500 characters**, and it **can never
+break a prompt** (argv ignored whole, always exit 0). A trivial turn pays a yes/no
+judgement, never a load.
+
+Installing the package wires it machine-wide on Claude Code, alongside the orientation
+hook and never instead of it; **removing that hook entry is a standing opt-out.** To
+wire it by hand:
+
+```json
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"C:\Users\<user>\.claude\skills\agentic-sdlc\scripts\sdlc_check.py\" remind"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
 ## 5. Skill eval battery (release gate)
 
 **Skill development only.** `test_*.py` and `evals/` are deliberately absent from the npm `files` allowlist — they never reach an installed consumer, so this section applies to whoever builds the skill, not to a project that uses it. (Consumers get `sdlc_check.py` + `sdlc_core.py`; §1–§4 are theirs.)

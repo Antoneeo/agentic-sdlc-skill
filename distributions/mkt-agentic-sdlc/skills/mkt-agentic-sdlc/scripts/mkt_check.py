@@ -69,6 +69,14 @@ sdlc_core.set_profile(
         # marketing overlay
         "subagent_dispatch", "question_discipline",
     ),
+    remind_line=(
+        "first decide if this skill governs the work; if yes, LOAD it once -- an "
+        "unread protocol cannot be applied. Declare the engagement level and the "
+        "guide-router verdict before acting. Every claim about the market, the "
+        "audience or a competitor carries its evidence -- an unsourced assertion "
+        "is a finding, not a premise. Replay governing text -- a brief, a "
+        "positioning line, a template -- against the case that motivated it."
+    ),
     # The strategy is reviewed before any tactic is executed: nine phases, but the
     # ordering the gate cares about is the same one every domain owes.
     design_gate_between=("### 6. Strategy", "### 8. Action"),

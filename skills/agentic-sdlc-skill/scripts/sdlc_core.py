@@ -268,16 +268,18 @@ _PROFILE = {
     "support_files": (),
     "capabilities": frozenset(),
     "design_gate_between": (),
+    "remind_line": "",
 }
 
 
 def set_profile(skill_name, support_files=(), capabilities=(), unit_noun="feature",
-                design_gate_between=()):
+                design_gate_between=(), remind_line=""):
     _PROFILE.update(skill_name=skill_name,
                     unit_noun=unit_noun,
                     support_files=tuple(support_files),
                     capabilities=frozenset(capabilities),
-                    design_gate_between=tuple(design_gate_between))
+                    design_gate_between=tuple(design_gate_between),
+                    remind_line=remind_line)
 
 
 def profile():
@@ -1796,6 +1798,43 @@ def cmd_check(root, strict=False, hybrid=False):
 
 # --------------------------------------------------------------------- gate
 
+# --- UserPromptSubmit reminder hook (F-046) --------------------------------
+# `orient` fires once per session and decays; a session that never invokes the
+# skill never had the protocol at all. Measured 2026-09-06: a release ran in
+# this repo against a `GUIDE_release.md` the session never consulted, because
+# SKILL.md -- where the duty is written -- had not been read.
+#
+# The carrier is kb's (F-041 item B), lifted here so all three lenses share one
+# machine instead of two that do the same thing. Its contract is kept: the line
+# is CONSTANT and reads NOTHING -- nothing repo- or session-controlled may ride
+# text injected every turn, and zero reads is what keeps the per-turn cost flat.
+# What changed is the payload's first duty and the wiring. First duty: decide
+# whether the skill governs this work and, if it does, read it once -- an
+# unread protocol cannot be applied, which is the failure above. Wiring: a
+# default instead of opt-in, on the owner's explicit acceptance of the per-turn
+# cost (`vision/rulings.md` r19; the "no ceremony ratchet" Non-Goal admits a
+# never-zero cost by that acceptance, and a trivial turn pays a yes/no
+# judgement, never a load).
+
+REMIND_FALLBACK = (
+    "decide whether the {skill} skill governs this work; if it does, load it "
+    "once before acting -- an unread protocol cannot be applied."
+)
+
+
+def cmd_remind(args):
+    """UserPromptSubmit hook: print the lens's constant per-turn line. Always 0.
+
+    argv is ignored whole and nothing is read: a hook surface must not fail, and
+    a flag typo must not cost a turn's context."""
+    try:
+        prof = profile()
+        line = prof.get("remind_line") or REMIND_FALLBACK.format(skill=prof["skill_name"])
+        print(f"{prof['skill_name']}: {line}")
+    except Exception:
+        pass
+    return 0
+
 def cmd_gate(args):
     file_path = args.file or ""
     if args.hook:
@@ -2229,6 +2268,12 @@ def cmd_migrate(root, args):
 # --------------------------------------------------------------------- main
 
 def main(argv=None):
+    # `remind` is intercepted BEFORE argparse (kb's F-041 rule, kept): it is a
+    # hook surface fired on every prompt, so a stray flag must cost a usage
+    # message and a non-zero exit on a turn, not the turn itself.
+    if (argv if argv is not None else sys.argv[1:])[:1] == ["remind"]:
+        return cmd_remind(None)
+
     common = argparse.ArgumentParser(add_help=False)
     common.add_argument("--root", help="project root (default: walk up until a docs root is found)")
     common.add_argument("--docs-dir", dest="docs_dir",
@@ -2273,6 +2318,10 @@ def main(argv=None):
     sub.add_parser("orient", parents=[common, hybrid_opt],
                    help="SessionStart hook: emit docs-root orientation to stdout (fail-open, zero-execution)")
 
+    sub.add_parser("remind", parents=[common],
+                   help="UserPromptSubmit hook: print the constant per-turn line "
+                        "(fail-open, zero-read, zero-execution)")
+
     pp = sub.add_parser("plan", parents=[common],
                         help="Subagent Execution: validate/brief a PLAN_[feature].md (zero-execution)")
     pp_sub = pp.add_subparsers(dest="plan_cmd", required=True)
@@ -2296,7 +2345,7 @@ def main(argv=None):
             # nothing is being guessed. Refusing here would make the guard block the
             # one command that ends the ambiguity.
             discovered, name = None, args.from_dir
-        elif args.cmd == "orient":
+        elif args.cmd in ("orient", "remind"):
             # The SessionStart hook is fail-open by contract: it must never block a
             # session, not even on a half-migrated tree. It orients on the default
             # and says so rather than exiting non-zero.
@@ -2311,6 +2360,8 @@ def main(argv=None):
         return cmd_gate(args)
     if args.cmd == "orient":
         return cmd_orient(args)
+    if args.cmd == "remind":
+        return cmd_remind(args)
 
     root = Path(args.root).resolve() if args.root else (discovered or find_project_root())
     if args.cmd == "check":

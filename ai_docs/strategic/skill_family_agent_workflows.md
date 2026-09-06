@@ -107,6 +107,14 @@ Ciò che solo qui l'agente fa:
   chiamante, l'elenco COMPLETO dei consumatori (call hierarchy, mai grep),
   ancorato all'identità del simbolo, scritto nell'Impact — così la review non
   scopre "manca un consumatore" un round alla volta.
+- **Il protocollo arriva a ogni turno** (F-046): un hook `UserPromptSubmit`
+  inietta UNA riga costante a ogni prompt, e il suo primo dovere è decidere se
+  la skill governa il lavoro davanti a te e, in quel caso, CARICARLA una volta —
+  un protocollo non letto non può essere applicato. `orient` parte una volta
+  sola e decade; questa riga no. Testo costante e zero letture per contratto,
+  sotto i 500 caratteri, cablata di default all'installazione e disattivabile
+  togliendo la voce di hook. Costo per turno accettato dal proprietario
+  (`vision/rulings.md` r19).
 - **Execute-Before-Specify**: ogni claim "il codice oggi fa X" in un artefatto di
   design L3 deriva da una sonda ESEGUITA contro il sistema reale nei suoi stati
   reali, mai da sola lettura. La sonda deve poter fallire (rossa prima, poi verde

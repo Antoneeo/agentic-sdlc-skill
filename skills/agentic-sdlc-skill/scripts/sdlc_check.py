@@ -60,6 +60,15 @@ sdlc_core.set_profile(
         "subagent_dispatch", "legacy_narrative_handoff", "question_discipline",
     ),
     design_gate_between=("### 3. Request Analysis", "### 4. Development and Testing"),
+    remind_line=(
+        "first decide if this skill governs the work; if yes, LOAD it once -- an "
+        "unread protocol cannot be applied. Declare the level (L1/L2/L3/Spike) "
+        "and the guide-router verdict before acting; an imperative is a request "
+        "to triage. Name the mechanism before fixing the first defect you can "
+        "measure -- symptom patches recur and stack. Replay governing text -- "
+        "doctrine, a prompt, a schema -- against the case that motivated it: red "
+        "under the old text, green under the new."
+    ),
 )
 
 

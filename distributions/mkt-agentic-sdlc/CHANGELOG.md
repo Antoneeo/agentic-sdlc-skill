@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.10.0] - 2026-09-06
+
+### Added
+- **F-046: the protocol reaches every turn (`remind`, UserPromptSubmit, wired by
+  default).** `orient` fires once at session start and decays; a session that
+  never loads the skill never had the protocol at all. Measured 2026-09-06: a
+  release ran against a `GUIDE_release.md` the session never consulted, because
+  `SKILL.md` -- where the duty is written -- had not been read. `remind` prints
+  ONE constant line at every prompt, and its first duty is that one: decide
+  whether the skill governs the work in front of you and, if it does, LOAD it
+  once. The carrier is kb's F-041 item B, LIFTED into the shared spine rather
+  than duplicated, so all three lenses share one machine; each lens declares its
+  own line in `set_profile(remind_line=...)`. Installing the package wires it
+  machine-wide on Claude Code alongside the orientation hook, never instead of
+  it; removing the hook entry is a standing opt-out. Per-turn cost disclosed and
+  accepted by the owner (`vision/rulings.md` r19, the "no ceremony ratchet"
+  Non-Goal's second door), and bounded to stay flat by a contract the new shared
+  `scripts/test_remind.py` guards: constant text, zero reads, one line under 500
+  characters, argv ignored whole, always exit 0.
+
+### Changed
+- **`guides.md` said something false about code guides.** It claimed `stale`
+  works unchanged for `source_kind: code` because "the code-excerpt snapshot
+  drifts when the code changes". A snapshot is a frozen copy and never drifts:
+  freshness is NOT mechanized there, and the duty is the author's twice -- when
+  you MODIFY code a comprehension guide describes, and when you merely READ one
+  before trusting it. Measured 2026-09-06: the guided module had gained 388
+  lines and lost 71 across four commits with `stale` silent.
+
 ## [0.9.0] - 2026-09-05
 
 Spine-only release: `review.md` updated byte-identical across the family

@@ -3,7 +3,7 @@
 const fs = require('fs');
 const {
   SKILL_SOURCE, CLIENTS, clientDetected, skillTarget, copyRecursive,
-  wireGlobalOrientHook, detectPython,
+  wireGlobalOrientHook, wireGlobalRemindHook, detectPython,
 } = require('./lib');
 
 function installSkill(client) {
@@ -39,6 +39,18 @@ for (const client of CLIENTS) {
     // marker remembers. A convenience must never fail an npm install: wrapped.
     if (client.key === 'claude' && installed) {
       try {
+        // F-046: the per-turn reminder, wired alongside and never instead of
+        // the session hook. `orient` decays; this one re-arms one constant line
+        // every prompt, and its first duty is the one that was missing -- decide
+        // whether the skill governs the work and, if so, load it once, because
+        // an unread protocol cannot be applied. Owner-accepted per-turn cost:
+        // ai_docs/vision/rulings.md r19.
+        const rr = wireGlobalRemindHook({ client, python: detectPython() });
+        if (rr.code === 'wired') {
+          console.log('🔗 Per-turn protocol reminder wired for every project on this machine');
+          console.log(`   (${rr.target}). One constant line per prompt; remove that hook`);
+          console.log('   entry to opt out — it will not be re-added.');
+        }
         const r = wireGlobalOrientHook({ client, python: detectPython() });
         if (r.code === 'wired') {
           console.log('🔗 Session orientation wired for every project on this machine');

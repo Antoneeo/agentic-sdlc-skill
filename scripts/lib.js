@@ -639,6 +639,73 @@ function removeGlobalOrientHooks(removedRoots) {
   return removedFrom;
 }
 
+// --- Per-turn reminder hook (F-046) ----------------------------------------
+// `orient` fires once and decays; a session that never loads the skill never
+// had the protocol at all. This hook re-arms one constant line every prompt.
+// It is wired ALONGSIDE the orient hook and never instead of it, and it is its
+// own function because `wireOrientHook` returns early when the session hook is
+// already there -- which is the state of every existing installation.
+// Owner-accepted per-turn cost: `ai_docs/vision/rulings.md` r19.
+
+const REMIND_HOOK_TIMEOUT = 5;
+
+function remindHookCommand(python, validator) {
+  return python + ' "' + validator + '" remind';
+}
+
+function findRemindHook(settings) {
+  const groups = settings && settings.hooks && settings.hooks.UserPromptSubmit;
+  if (!Array.isArray(groups)) return null;
+  for (const group of groups) {
+    if (!group || typeof group !== 'object') continue;
+    const inner = Array.isArray(group.hooks) ? group.hooks : [group];
+    for (const h of inner) {
+      const cmd = h && typeof h.command === 'string' ? h.command : '';
+      if (ORIENT_ENTRY_POINTS.some((n) => cmd.includes(n)) && / remind(\s|$)/.test(cmd)) {
+        return cmd;
+      }
+    }
+  }
+  return null;
+}
+
+// Writes the hook into `target` (an already-chosen settings file) unless it is
+// there or the user opted out. Returns a code, never throws: an installer must
+// not die on someone's settings file.
+function wireRemindHookInto(target, python, validator) {
+  if (!python) return { code: 'no-python' };
+  if (!validator || ORIENT_UNSAFE_IN_PATH.test(validator)) return { code: 'unsafe-path', validator };
+  const state = orientSettingsState(target);
+  if (!state.ok) return { code: 'malformed', target, why: state.why };
+  if (orientMarkerHas(target)) return { code: 'opted-out', target };
+  const settings = state.settings;
+  const existing = findRemindHook(settings);
+  if (existing) return { code: 'already', target, command: existing };
+  const command = remindHookCommand(python, validator);
+  if (!settings.hooks) settings.hooks = {};
+  if (!Array.isArray(settings.hooks.UserPromptSubmit)) settings.hooks.UserPromptSubmit = [];
+  settings.hooks.UserPromptSubmit.push({
+    hooks: [{ type: 'command', command, timeout: REMIND_HOOK_TIMEOUT }],
+  });
+  try {
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.writeFileSync(target, JSON.stringify(settings, null, 2) + String.fromCharCode(10), 'utf8');
+  } catch (e) {
+    return { code: 'write-failed', target, command, error: e.message };
+  }
+  return { code: 'wired', target, command };
+}
+
+
+// The machine-global twin of wireGlobalOrientHook, same target and validator.
+function wireGlobalRemindHook(options) {
+  const client = options.client;
+  const validator = path.join(skillTarget(client), 'scripts', ORIENT_ENTRY_POINT);
+  if (!fs.existsSync(validator)) return { code: 'no-validator', validator };
+  return wireRemindHookInto(path.join(client.home, 'settings.json'), options.python, validator);
+}
+
+
 module.exports = {
   PACKAGE_ROOT,
   SKILL_SOURCE,
@@ -649,6 +716,10 @@ module.exports = {
   clientDetected,
   skillTarget,
   wireOrientHook,
+  wireRemindHookInto,
+  wireGlobalRemindHook,
+  remindHookCommand,
+  findRemindHook,
   wireGlobalOrientHook,
   removeGlobalOrientHooks,
   detectPython,

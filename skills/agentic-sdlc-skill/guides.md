@@ -60,6 +60,10 @@ already cover how to do this well?*
   match was not targeted (T7). Two guides are legitimate only when they cover
   distinct concerns — typically an operative guide plus the comprehension map of
   the component being touched; three is a smell, not a thorough lookup.
+- **Check a `code` guide against the code before you trust it.** No check can do
+  this for you (§6): the reader is the only one who sees that the map and the
+  component have parted. A divergence you observe is yours to close in the same
+  unit of work.
 - **Under subagent dispatch** the consult happens at plan-authoring time (the
   orchestrator populates each task's `guides` field); a context-free subagent
   reads the pointers it was handed and does not run its own router lookup. See
@@ -271,17 +275,17 @@ state it explicitly when handing off a newly created guide.
 
 ## 6. Maintenance
 
-- **Source changed**: create a new snapshot (new hash), regenerate the guide
-  from it (new `source_hash`), and if the guide is replacing a prior guide
-  rather than updating in place, mark the old one `status: SUPERSEDED`.
-- **`stale` flags hash drift**: `sdlc_check.py stale` (also under `--hybrid`)
-  compares each guide's recorded `source_hash` against the live snapshot file
-  and reports `[stale]` when they diverge — that is the signal to regenerate,
-  not a manual freshness check.
-- **`source_kind: code` freshness**: `stale` works unchanged (the code-excerpt
-  snapshot drifts when the code changes → regenerate). ADDITIONALLY, when you modify
-  the code a comprehension guide describes, refresh that guide in the SAME closure
-  (docs travel with the code) — do not wait for `stale` to catch it. A stale
-  comprehension guide is a confident-wrong map, worse than none.
+- **Source changed**: new snapshot, regenerate the guide from it (new
+  `source_hash`); a guide REPLACING another is `status: SUPERSEDED` on the old
+  one. `sdlc_check.py stale` (also under `--hybrid`) reports `[stale]` when a
+  guide's recorded hash and its snapshot file diverge — the signal to regenerate.
+- **`source_kind: code` freshness is NOT mechanized.** `stale` compares the guide
+  to its snapshot, and a code snapshot is a frozen copy — so a map whose component
+  was rewritten reports FRESH forever (measured 2026-09-06: +388/-71 lines in the
+  guided module, `stale` silent). The duty is therefore the author's, twice: when
+  you MODIFY code a comprehension guide describes, refresh the guide in the same
+  closure (docs travel with the code); when you merely READ one, check it against
+  the code before trusting it. Too large to absorb → mark it `SUPERSEDED` rather
+  than leave a confident-wrong map badged CURRENT, which is worse than none.
 - **Agent-global KB guides** use the same pipeline and validator via
   `--root ~/.agentic-sdlc`; freshness via the same `stale` engine.
