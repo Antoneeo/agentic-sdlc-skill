@@ -672,14 +672,45 @@ function findRemindHook(settings) {
 // Writes the hook into `target` (an already-chosen settings file) unless it is
 // there or the user opted out. Returns a code, never throws: an installer must
 // not die on someone's settings file.
+function remindMarkerPath() {
+  const root = process.env.AGENTIC_SDLC_KB_ROOT
+    || path.join(os.homedir(), '.agentic-sdlc');
+  return path.join(root, 'remind-hook-wired');
+}
+function remindMarkerTargets() {
+  try {
+    return fs.readFileSync(remindMarkerPath(), 'utf8')
+      .split(/\r?\n/).map((x) => x.trim()).filter(Boolean);
+  } catch (e) {
+    return [];
+  }
+}
+function remindMarkerHas(target) {
+  return remindMarkerTargets().some((t) => pathsEqual(t, target));
+}
+function remindMarkerAdd(target) {
+  try {
+    if (remindMarkerHas(target)) return;
+    fs.mkdirSync(path.dirname(remindMarkerPath()), { recursive: true });
+    fs.appendFileSync(remindMarkerPath(), target + String.fromCharCode(10), 'utf8');
+  } catch (e) { /* fail-open */ }
+}
+
 function wireRemindHookInto(target, python, validator) {
   if (!python) return { code: 'no-python' };
   if (!validator || ORIENT_UNSAFE_IN_PATH.test(validator)) return { code: 'unsafe-path', validator };
   const state = orientSettingsState(target);
   if (!state.ok) return { code: 'malformed', target, why: state.why };
-  if (orientMarkerHas(target)) return { code: 'opted-out', target };
-  const settings = state.settings;
-  const existing = findRemindHook(settings);
+  const settings0 = state.settings;
+  // Order matters, and the first version had it wrong too: the hook being
+  // PRESENT is `already`, and only its ABSENCE plus our marker means the user
+  // removed it -- a standing opt-out. Marker-first would refuse to re-check a
+  // hook someone still has.
+  const present = findRemindHook(settings0);
+  if (present) return { code: 'already', target, command: present };
+  if (remindMarkerHas(target)) return { code: 'opted-out', target };
+  const settings = settings0;
+  const existing = null;
   if (existing) return { code: 'already', target, command: existing };
   const command = remindHookCommand(python, validator);
   if (!settings.hooks) settings.hooks = {};
@@ -693,6 +724,7 @@ function wireRemindHookInto(target, python, validator) {
   } catch (e) {
     return { code: 'write-failed', target, command, error: e.message };
   }
+  remindMarkerAdd(target);
   return { code: 'wired', target, command };
 }
 
@@ -718,6 +750,8 @@ module.exports = {
   wireOrientHook,
   wireRemindHookInto,
   wireGlobalRemindHook,
+  remindMarkerHas,
+  remindMarkerAdd,
   remindHookCommand,
   findRemindHook,
   wireGlobalOrientHook,

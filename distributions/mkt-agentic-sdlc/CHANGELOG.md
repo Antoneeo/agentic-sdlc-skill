@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.10.1] - 2026-09-06
+
+### Fixed
+- **F-046 shipped a hook that wired nowhere.** `wireRemindHookInto` used the
+  ORIENT hook's opt-out marker (`orient-hook-wired`) as its own. That file is
+  present on every machine that ever installed the skill, so the installer read
+  it as "the user opted out of the per-turn reminder" and never wrote the hook —
+  for everyone. Two smaller faults in the same function: the marker was checked
+  BEFORE testing whether the hook was already present, and no marker was ever
+  written after a successful wire, so the real opt-out could never arm. The hook
+  now has its own `remind-hook-wired` marker, checked after the presence test and
+  written only on success. Regression pinned in `scripts/test_clients.js` (red
+  against 1.32.0: an orient-marked machine got no hook).
+
 ## [0.10.0] - 2026-09-06
 
 ### Added

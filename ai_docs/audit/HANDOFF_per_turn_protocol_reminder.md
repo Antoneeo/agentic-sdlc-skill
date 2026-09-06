@@ -4,7 +4,7 @@ level: L3
 branch: main
 status: DONE, AWAITING PUBLISH
 since: 2026-09-06
-next: publish code 1.32.0 + kb 1.14.0 + mkt 0.10.0 with publish_all.bat (owner's act, 2FA), then verify on the registry
+next: publish code 1.32.1 + kb 1.14.1 + mkt 0.10.1 with publish_all.bat (owner's act, 2FA), then verify on the registry. 1.32.0/1.14.0/0.10.0 are published and wire nothing -- see the defect record below
 details: this file (the unit record); rulings ledger row r19
 updated: 2026-09-06
 ---
@@ -85,3 +85,28 @@ The downstream check the owner named as the third component exists only for
 writes (`PreToolUse` gate). Nothing verifies that a declared router verdict or a
 declared level matches what the turn then did. That is the next unit, not this
 one.
+
+## The defect 1.32.0 shipped, and how it was caught
+
+The hook wired NOWHERE. `wireRemindHookInto` used the orient hook's opt-out
+marker (`orient-hook-wired`) as its own; that file exists on every machine that
+ever installed the skill, so the installer read it as "the user opted out" and
+never wrote the entry. Two smaller faults in the same function: the marker was
+tested BEFORE checking whether the hook was already present, and no marker was
+written after a successful wire, so the real opt-out could never arm.
+
+Caught the same day by the owner asking whether the hook worked -- not by any
+check. Reproduced on the dev machine (`opted-out`), then pinned RED in
+`scripts/test_clients.js`: three F-046 cases, the central one being "an existing
+orient install still gets the per-turn hook". They fail against 1.32.0 and pass
+against 1.32.1.
+
+Fixed with its own `remind-hook-wired` marker, tested after the presence check
+and written only on success. Verified by a REAL local install, not only by the
+battery: the machine was returned to the failing precondition (orient marker
+present, remind hook and marker absent), `npm i -g` of the 1.32.1 tarball wired
+the hook, wrote the marker, and a second install did not duplicate it.
+
+Lesson recorded because it is the unit's own subject: the wiring had no test at
+all when it shipped. The batteries covered the LINE (`test_remind.py`) and never
+the DELIVERY.

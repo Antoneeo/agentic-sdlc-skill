@@ -658,6 +658,7 @@ test('F-036 (R2): orientHookCommand is the single command shape', () => {
 
 const {
   wireGlobalOrientHook, removeGlobalOrientHooks, detectPython, pathsEqual,
+  wireGlobalRemindHook, remindMarkerHas,
 } = require('./lib');
 
 function gsandbox(fn) {
@@ -689,6 +690,58 @@ const markerOf = (kbroot) => path.join(kbroot, 'orient-hook-wired');
 const markerLines = (kbroot) => (fs.existsSync(markerOf(kbroot))
   ? fs.readFileSync(markerOf(kbroot), 'utf8').split(/\r?\n/).filter(Boolean) : []);
 
+// --- F-046: the per-turn reminder hook ------------------------------------
+const remindCount = (p) => {
+  if (!fs.existsSync(p)) return 0;
+  const groups = ((readJson(p).hooks || {}).UserPromptSubmit) || [];
+  return groups
+    .flatMap((g) => (Array.isArray(g.hooks) ? g.hooks : [g]).map((h) => h && h.command))
+    .filter((c) => c && c.includes(' remind')).length;
+};
+
+test('F-046: fresh machine wires the per-turn hook and records its own marker', () => {
+  gsandbox(({ home, kbroot, client, python }) => {
+    const r = wireGlobalRemindHook({ client, python });
+    assert.strictEqual(r.code, 'wired');
+    assert.strictEqual(remindCount(userSettings(home)), 1);
+    assert.ok(remindMarkerHas(userSettings(home)), 'the remind marker must be recorded');
+    assert.ok(!fs.existsSync(markerOf(kbroot)),
+      'the ORIENT marker must not be touched: they are separate opt-outs');
+  });
+});
+
+test('F-046 REGRESSION: an existing orient install still gets the per-turn hook', () => {
+  // The 1.32.0 defect, exactly: the orient marker (present on every machine that
+  // ever installed the skill) was read as "the user opted out of remind", so the
+  // hook wired NOWHERE. Reproduced here before the fix; green after it.
+  gsandbox(({ home, kbroot, client, python }) => {
+    const first = wireGlobalOrientHook({ client, python });
+    assert.strictEqual(first.code, 'wired');
+    assert.ok(fs.existsSync(markerOf(kbroot)), 'precondition: orient marker present');
+
+    const r = wireGlobalRemindHook({ client, python });
+    assert.strictEqual(r.code, 'wired',
+      'an orient-marked machine must still receive the per-turn hook');
+    assert.strictEqual(remindCount(userSettings(home)), 1);
+    assert.strictEqual(orientCount(userSettings(home)), 1,
+      'the session hook must survive untouched: alongside, never instead of');
+  });
+});
+
+test('F-046: wiring twice is idempotent, and removal is a standing opt-out', () => {
+  gsandbox(({ home, client, python }) => {
+    assert.strictEqual(wireGlobalRemindHook({ client, python }).code, 'wired');
+    assert.strictEqual(wireGlobalRemindHook({ client, python }).code, 'already');
+    assert.strictEqual(remindCount(userSettings(home)), 1);
+
+    // The user removes the entry: the marker remembers, so we never re-add it.
+    const settings = readJson(userSettings(home));
+    delete settings.hooks.UserPromptSubmit;
+    fs.writeFileSync(userSettings(home), JSON.stringify(settings, null, 2), 'utf8');
+    assert.strictEqual(wireGlobalRemindHook({ client, python }).code, 'opted-out');
+    assert.strictEqual(remindCount(userSettings(home)), 0);
+  });
+});
 test('F-042: fresh machine wires the user settings and records the target', () => {
   gsandbox(({ home, kbroot, client, python }) => {
     const r = wireGlobalOrientHook({ client, python });
