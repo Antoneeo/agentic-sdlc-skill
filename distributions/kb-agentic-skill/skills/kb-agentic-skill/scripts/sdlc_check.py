@@ -187,6 +187,13 @@ def kb_claim_id(source_path, locator, qty_key=""):
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:12]
 
 
+# F-047: bundling tells for the atomicity note in kb_check_claims. Literal
+# substrings, deliberately few and conservative: the note is a hint, and a
+# noisy hint trains readers to skip notes. Field-calibrated on the motivating
+# reviewer-comment shape ("states X, that Y, and that Z").
+KB_BUNDLE_HINTS = (", and that ", "; ", ", while ", " and also ")
+
+
 def kb_unquote(value):
     """Strip ONE pair of wrapping YAML quotes (then re-strip whitespace).
     load_frontmatter keeps values verbatim by design; paths with spaces force
@@ -498,6 +505,20 @@ def kb_check_claims(root):
                 if not m:
                     errors.append("%s: about must be '<predicate> -> <slug>' or '-'"
                                   % where)
+            # --- atomicity hint (F-047): a row atomic as provenance can be
+            # plural as meaning. Text cannot PROVE plurality, so this is a
+            # note — never a warning or an error, never the exit code.
+            hints = [h for h in KB_BUNDLE_HINTS if h in row["claim"]]
+            if hints:
+                notes.append("%s: claim text of %s reads like more than one "
+                             "assertion (matched %s) — one row asserts one "
+                             "thing; if it is a bundle, split it "
+                             "(distillation.md section 3, reconciliation.md "
+                             "section 'Splitting a bundled row'). Heuristic "
+                             "only: a genuinely "
+                             "single assertion needs no change"
+                             % (where, row["id"] or "(id pending)",
+                                ", ".join(repr(h) for h in hints)))
             # --- id: recompute, or note fill-pending ---
             if not row["id"]:
                 notes.append("%s: id missing — fill-pending, run "
@@ -534,14 +555,22 @@ def kb_check_claims(root):
                                       "is global across topics/" % (where, row["id"],
                                                                     all_ids[row["id"]]))
                     elif same_span:
+                        # F-047: recommending a merge here was a trap — merging
+                        # distinct assertions manufactures a bundled row, trading
+                        # this mechanical error for a semantic one no check sees.
                         errors.append(
                             "%s: id %s collides with the row at %s — two "
                             "DIFFERENT rows cite the same span with the same "
                             "qty, and the id function cannot separate them (it "
                             "hashes path#locator#qty and excludes the text on "
-                            "purpose). Widen one locator to the span that "
-                            "actually carries its assertion, or merge the two "
-                            "rows — do not edit the qty to break the tie"
+                            "purpose). Narrow each locator to the sub-span that "
+                            "carries its own assertion — narrow spans make "
+                            "atomic rows id-distinct (on a stored .txt, "
+                            "p=<page>@<a>-<b> reaches below a line). Merge ONLY "
+                            "if the two rows state the same single assertion; "
+                            "merging distinct assertions trades this mechanical "
+                            "error for a semantic one no check can see — do not "
+                            "edit the qty to break the tie"
                             % (where, row["id"], all_ids[row["id"]]))
                     else:
                         # Same id, different text AND different span: the id
@@ -570,7 +599,7 @@ def kb_check_claims(root):
             m = re.match(r"^(CONTESTED|SUPERSEDED) ([0-9a-f, ]+)$", state)
             if not m:
                 errors.append("%s: state must be OK, 'CONTESTED <id>[,..]' or "
-                              "'SUPERSEDED <id>': %r" % (where, state))
+                              "'SUPERSEDED <id>[,..]': %r" % (where, state))
                 continue
             kind = m.group(1)
             targets = [t.strip() for t in m.group(2).split(",") if t.strip()]

@@ -206,7 +206,15 @@ dichiarata → contraddizione; copertura corta rispetto alla fine → warning fi
 non ci arriva. Il limite sta scritto dove sta il campo: **niente dimostra che una
 pagina sia stata letta**; cambia che la scorciatoia ora va scritta per passare. E
 esaustivo vuol dire *letto*, mai *una riga per pagina*: una pagina che non
-asserisce nulla non produce nulla.
+asserisce nulla non produce nulla. E **una riga asserisce una cosa sola**
+(F-047): lo span è l'unità di estrazione, non di significato — il commento di un
+reviewer sotto un heading porta spesso più asserzioni su più soggetti, e
+estratto come una riga produce citazioni fedeli al testo che asseriscono ciò che
+la fonte non dice (capability presa a prestito, attore sbagliato, referente
+ambiguo). Una riga per asserzione, locator ristretto allo span che la sostiene
+(`p=1@a-b` scende sotto la riga su un `.txt` conservato); in risposta, il test
+della citazione è lo **scope**, non la fedeltà — cita la parte, di' dove vive il
+resto, mai tacere la parte fuori tema.
 
 **3. Collocazione — cinque verdetti** (`taxonomy.md`): discesa sull'indice
 generato seguendo OGNI parent (poligerarchia), sinonimi nell'indice ("listino"
@@ -222,7 +230,10 @@ nuovo / **conferma** (fonte appesa alla riga, mai una seconda riga — la base s
 rafforza, non si allunga) / raffinamento (vecchia riga `SUPERSEDED`, testo
 intatto) / coesistenza (scope disgiunti) / **conflitto** → tutto il set
 `CONTESTED`, **simmetrico** (girare una cella a mano fa fallire il check — il
-laundering più economico). Risolve solo **informazione nuova**: una fonte più
+laundering più economico) / **split di una riga bundled** (F-047: N righe
+atomiche su span ristretti, il bundle → `SUPERSEDED <id1>, <id2>..` a testo
+intatto, la cascata raggiunge ogni citante — non è informazione nuova: la fonte
+diceva N cose da sempre). Risolve solo **informazione nuova**: una fonte più
 recente, o un tuo **ruling con `basis:`** — il fatto che conosci e il corpus no.
 Senza basis niente ruling (una preferenza non è un fatto). Il ruling supera
 l'intero set, ed è **sfidabile**: un documento successivo riapre il caso col tuo

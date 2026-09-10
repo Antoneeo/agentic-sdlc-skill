@@ -187,6 +187,16 @@ twin of the guide consult above.
   source column is already the direct citation; ELICITED/RULING carry the practitioner's
   own authority; an IMPORTED claim grounding a decision is named as un-re-ratified
   foreign authority.
+- **Citation scope — the row's test is scope, not fidelity.** Before citing a claim in
+  an answer or a document, verify every part of the row belongs to the question: a row
+  can be atomic as provenance and plural as meaning (`distillation.md` §3), and a
+  faithful quote of the whole row then asserts what the source did not — a capability
+  borrowed across subjects, another actor's surface, a silently switched referent.
+  If part of the row is out of scope, **cite the part and say where the rest
+  belongs** — never cite the whole row on the grounds that it "says what I quoted",
+  and never silently drop the off-topic part (that loses an assertion — the other
+  half of the north star). A row that keeps forcing this test is a split candidate
+  (`reconciliation.md` §Splitting a bundled row).
 - **The trace persists.** When the decision is recorded (a ruling note, a diary entry),
   that record cites the claim id AND the re-touched ground — the trace survives in the
   corpus, not in ephemeral chat.

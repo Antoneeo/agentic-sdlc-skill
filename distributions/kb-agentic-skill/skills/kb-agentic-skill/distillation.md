@@ -96,11 +96,19 @@ Claims live in the owning topic's `## Claims` table (`templates.md` has the temp
   makes the same assertion mint the same id in another project, which is what makes
   `portability.md`'s de-duplication mechanical instead of a judgement call. The price is
   that **one span cannot carry two different assertions at the same qty** — the id
-  cannot tell them apart, and the validator refuses the pair. The fix is to widen one
-  locator to the span that actually carries its assertion, or to merge the two rows.
-  It is **not** to edit the qty or nudge the locator until the hash differs: that
-  distorts the evidence to satisfy a hash function, which is the one repair this
-  ledger exists to prevent.
+  cannot tell them apart, and the validator refuses the pair. That refusal is a
+  symptom of a non-atomic row (§3): the fix is to **narrow each locator to the
+  sub-span that carries its own assertion** — narrow spans make atomic rows
+  id-distinct by construction. Merge ONLY when the two rows state the same single
+  assertion twice; merging distinct assertions manufactures a bundled row (§3),
+  trading the mechanical error for a semantic one no check can see. Narrowing is
+  not nudging: a narrowed locator still addresses exactly the words that support
+  its assertion, and the validator still opens the span. What stays forbidden is
+  editing the qty, or moving a locator onto bytes that do NOT carry the assertion,
+  until the hash differs — that distorts the evidence to satisfy a hash function,
+  which is the one repair this ledger exists to prevent. A locator edit mints a
+  NEW id; citers of the old one are reached by the cascade (`reconciliation.md`
+  §Splitting a bundled row).
 - **valid** — `-`, `from X`, `until X`, `from X until Y`, `if <condition>`. Half-open:
   `until 2026-03-01` and `from 2026-03-01` do NOT overlap. A time-bounded fact is not a
   conflict with its successor — write the scope, or reconciliation will manufacture one.
@@ -117,8 +125,8 @@ Claims live in the owning topic's `## Claims` table (`templates.md` has the temp
   the file and checks.
 - **prov** — `GIVEN | ELICITED | DERIVED | RULING | IMPORTED`. `IMPORTED` is a ruling that came from another project (`portability.md`): it keeps its text and original `basis:`, its note must say `imported_from:`, and it may not supersede a local row until you re-ratify it. Information for whoever resolves a
   conflict; never a rank.
-- **state** — `OK`, `CONTESTED <ids>`, `SUPERSEDED <id>` (`reconciliation.md` owns the
-  transitions).
+- **state** — `OK`, `CONTESTED <id>[,..]`, `SUPERSEDED <id>[,..]` (`reconciliation.md`
+  owns the transitions; a split bundle names ALL its successors).
 
 ## 3. Extraction discipline
 
@@ -126,6 +134,29 @@ Read the stored extraction (not the original) and emit one row per assertion, ea
 the offset span it came from. The extractor **invents nothing**: no labels, no
 summaries-as-claims, no filling of gaps from model knowledge. What the source does not
 assert does not become a row — it may become a `gaps:` entry on the topic.
+
+**One row asserts one thing — the span is not the unit.** The extraction unit is a
+source span; the unit of use is one assertion, and they are not the same size: a row
+can be atomic as provenance and plural as meaning. The common source of plurality is
+the **reviewer-comment shape** — one comment under one feature heading asserting
+several facts about several subjects (a capability at the door, another actor's
+console, a verification flow). Extracted as one span it becomes one legal row, and
+every downstream citation of it is faithful to the text while asserting what the
+source did not: the off-topic part is read as applying to the citing context
+(borrowed capability), another actor's surface counts as this actor's (wrong actor),
+an ambiguous subject silently switches referent — and the writer who avoids all
+three by quoting only the on-topic part has lost an assertion instead. Both halves
+of the north star, violated by one bundled row. So **emit one row per assertion even
+when the source packs several into one sentence**, and **cite the narrowest span
+that supports the assertion, not the paragraph that contains it** — narrow spans are
+also what make atomic rows id-distinct (§2). Sub-line precision needs no
+re-extraction on a stored `.txt`: a form-feed-free file is one page, so
+`p=1@<a>-<b>` addresses character offsets below the line; re-extraction is needed
+only for a source with no character-addressable stored form. A bundled row already
+in the ledger is repaired by splitting (`reconciliation.md` §Splitting a bundled
+row), never edited in place. The validator can only hint here — a `[note]` on
+suspicious claim text, heuristic and fallible, never an error: atomicity is
+meaning, and meaning is verified at the ingestion review.
 
 **Exhaust the source; never sample it.** *Invents nothing* is a floor, and a floor is not
 a target: an extractor that stops the moment nothing it wrote is false stops on page

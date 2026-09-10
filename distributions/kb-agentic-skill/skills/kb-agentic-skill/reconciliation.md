@@ -69,6 +69,28 @@ premise: signed amendments arrive later.
 | newer source vs a ruling | new set {new row, ruling row}; escalation shows the `basis:` |
 | member refined | the refining row inherits the member's contested relations (re-judged); counterparts rewritten to the new id |
 | corroboration of a contested member | source appended; the set untouched — more evidence is not new information, and the escalation form shows source counts |
+| bundled row split (`distillation.md` §3) | N atomic rows `OK`, each on its narrowed span; the bundle → `SUPERSEDED <id1>[, <id2> ..]`, text intact; contested relations re-judged per successor |
+
+## 3-bis. Splitting a bundled row
+
+A row carrying more than one assertion (`distillation.md` §3 — atomic as provenance,
+plural as meaning) is repaired by supersession, never in place:
+
+1. Write one atomic row per assertion, each citing the **narrowed span** that carries
+   it (`p=1@<a>-<b>` reaches below a line on a stored `.txt`). Narrow spans mint
+   distinct ids by construction.
+2. The bundled row becomes `SUPERSEDED <id1>, <id2>, ...` — every successor named,
+   its text intact, exactly as refinement keeps superseded text.
+3. Contested relations of the bundle are **re-judged per successor**: a counterpart
+   usually contests ONE of the assertions, not all of them.
+4. The cascade runs (§2, *the cascade runs*): every living document citing the fallen
+   id joins the revision worklist, and each citer is revised to the successor in ITS
+   scope — the moment a borrowed-capability citation dies.
+
+This is not new information arriving (§2): the source said N things all along; the
+ledger only now says them one at a time. No ruling and no `basis:` is needed — the
+split is a repair of our own extraction, and it travels with its own diary/commit
+record like any claim-table edit.
 
 ## 4. Escalation — batched, and in the legal form only
 

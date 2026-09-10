@@ -1211,5 +1211,68 @@ class TL_F035_R2_StaleIdIsNotACollision(unittest.TestCase):
         self.assertFalse([e for e in errors if "cannot separate" in e], errors)
 
 
+class TL_F047_RowAtomicity(unittest.TestCase):
+    """F-047: a row atomic as provenance can be plural as meaning."""
+
+    BUNDLED = ("The reviewer states the system already allows biometric login, "
+               "that account creation requires email verification, and that "
+               "the calling station already offers two-factor authentication")
+
+    def _run(self, rows):
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(rows)}, given=GIVEN_TXT)
+            return kc.kb_check_claims(docs)
+
+    def test_collision_remedy_narrows_and_never_recommends_merging(self):
+        i1 = kc.kb_claim_id("corpus/given/c.txt", "p=1@0-8", "")
+        rows = [(i1, "assertion one", "-", "-", "-", SRC1, "GIVEN", "OK"),
+                (i1, "assertion two", "-", "-", "-", SRC1, "GIVEN", "OK")]
+        errors, _, _ = self._run(rows)
+        hit = [e for e in errors if "collides" in e]
+        self.assertTrue(hit, errors)
+        self.assertIn("Narrow each locator", hit[0])
+        self.assertIn("same single assertion", hit[0])
+        self.assertNotIn("or merge the two", hit[0])
+
+    def test_state_grammar_message_documents_the_list_form(self):
+        i1 = kc.kb_claim_id("corpus/given/c.txt", "p=1@0-8", "")
+        rows = [(i1, "A", "-", "-", "-", SRC1, "GIVEN", "SUPERSEDED bogus!!")]
+        errors, _, _ = self._run(rows)
+        hit = [e for e in errors if "state must be" in e]
+        self.assertTrue(hit, errors)
+        self.assertIn("'SUPERSEDED <id>[,..]'", hit[0])
+
+    def test_bundled_claim_text_draws_a_note_never_an_error(self):
+        i1 = kc.kb_claim_id("corpus/given/c.txt", "p=1@0-8", "")
+        rows = [(i1, self.BUNDLED, "-", "-", "-", SRC1, "GIVEN", "OK")]
+        errors, warnings, notes = self._run(rows)
+        self.assertTrue(any("more than one assertion" in n and i1 in n
+                            for n in notes), notes)
+        self.assertEqual(errors, [], errors)
+        self.assertEqual([w for w in warnings if i1 in w], [], warnings)
+
+    def test_atomic_claim_text_draws_no_note(self):
+        i1 = kc.kb_claim_id("corpus/given/c.txt", "p=1@0-8", "")
+        rows = [(i1, "the retry runs 3 times with backoff", "-", "-", "-",
+                 SRC1, "GIVEN", "OK")]
+        _, _, notes = self._run(rows)
+        self.assertEqual([n for n in notes if "more than one assertion" in n],
+                         [], notes)
+
+    def test_split_bundle_multi_successor_state_is_legal(self):
+        i1 = kc.kb_claim_id("corpus/given/c.txt", "p=1@0-8", "")
+        i2 = kc.kb_claim_id("corpus/given/c.txt", "p=2@0-10", "")
+        i3 = kc.kb_claim_id("corpus/given/c.txt", "p=2@2-9", "")
+        rows = [(i1, self.BUNDLED, "-", "-", "-", SRC1, "GIVEN",
+                 "SUPERSEDED %s, %s" % (i2, i3)),
+                (i2, "atomic part one", "-", "-", "-", SRC2, "GIVEN", "OK"),
+                (i3, "atomic part two", "-", "-", "-",
+                 "corpus/given/c.txt#p=2@2-9", "GIVEN", "OK")]
+        errors, _, _ = self._run(rows)
+        self.assertEqual([e for e in errors
+                          if "state must be" in e or "resolves to no row" in e],
+                         [], errors)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)
