@@ -40,6 +40,8 @@ not manifested here.
 | `architecture/ADR_2026-08-25_claim_id_collision.md` | CURRENT | Why two distinct assertions about one span are refused rather than disambiguated — the claim id stays a pure function of (path, locator, qty), and the collis... |
 | `architecture/ADR_2026-08-28_hook_detection_two_runtime_subset.md` | CURRENT | Why orientation-hook detection is re-implemented in the Python spine as a read-only subset of the installer's JS contract, and why the wiring note belongs to... |
 | `architecture/ADR_2026-09-01_executed_probe_harness.md` | CURRENT | ADR - behavioural claims in L3 designs derive from executed probes kept as a repo-shipped harness (ai_docs/solutions/harness_[feature]/), with a lens-gated r... |
+| `architecture/ADR_2026-09-08_row_atomicity_by_doctrine.md` | CURRENT | ADR - kb claim-row atomicity is enforced by doctrine + a fallible note, never by changing the id function; bundled rows are repaired by split-as-supersession... |
+| `architecture/ADR_2026-09-10_capability_floor_and_delegation_boundary.md` | CURRENT | ADR - the capability dimension gets an owner. review.md owns a capability floor (independence wins when it conflicts), dispatch.md owns the delegation bounda... |
 
 ## functional/
 

@@ -496,16 +496,18 @@ Date: 2026-06-11 (UTC)
 
 One row per completed review (`review.md` §When a review is due). Append-only; it
 is the record that the gate ran and what it was worth. **One schema for both
-modes** — a Hybrid project's devPNT gates write to this same file, so Standalone
-adds values to the existing columns rather than a second table.
+modes** — one required CORE (`date`, `doc_key`, `tier`, `model`, `findings_raised`,
+`findings_real`, `verdict`, `revise_rounds`) plus each mode's own realization
+columns: Standalone adds `reviewer`, a Hybrid devPNT row adds `instrument` and
+`notes` and carries no `reviewer` at all. Both modes write this same file.
 
 ```markdown
 # Independent Review Log
 
-| date | doc_key | tier | reviewer | findings_raised | findings_real | verdict | revise_rounds |
-|---|---|---|---|---|---|---|---|
-| 2026-06-11 | ANALYSIS_login_sso.md | design | subagent (opus, fresh ctx) | 4 | 3 | FAIL → PASS | 2 |
-| 2026-06-12 | diff feature/sso-login | closure | self-pass (declared; absent) | 2 | 2 | PASS with findings → corrections re-reviewed, PASS | 2 |
+| date | doc_key | tier | model | reviewer | findings_raised | findings_real | verdict | revise_rounds |
+|---|---|---|---|---|---|---|---|---|
+| 2026-06-11 | ANALYSIS_login_sso.md | design | deep | subagent (fresh ctx) | 4 | 3 | FAIL → PASS | 2 |
+| 2026-06-12 | diff feature/sso-login | closure | deep | self-pass (declared; absent) | 2 | 2 | PASS with findings → corrections re-reviewed, PASS | 2 |
 
 ## Notes
 <!-- One short paragraph per review that found something worth remembering: what
@@ -517,7 +519,12 @@ adds values to the existing columns rather than a second table.
 
 `tier` is the moment plus, in Hybrid, the reviewer weight: `design`, `design (late)`
 and `closure` (Standalone); `deep`, `light`, `code`, `guide`, `vision` (devPNT gates
-and the Vision blind check). The validator reads this column by its header name, so
+and the Vision blind check). `model` is a different question about the same review: `tier` says WHICH GATE ran,
+`model` says WHAT CAPABILITY ran it (`deep`, `light`, `economy`,
+`single (client exposes no choice)`, `below floor: <reason>` — the floor and its
+arbitration are `review.md` §The capability floor). The two columns share the words
+`deep`/`light` and mean different things by them, which is why they are read by
+header and never by position. The validator reads this column by its header name, so
 extra or reordered columns are fine — but the header must say `tier`. `reviewer`
 records the realization actually used — fresh subagent, one-shot client run, or a
 **declared** self-pass — and, for any rung below rung 1, WHY the rung(s) above did

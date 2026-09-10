@@ -45,11 +45,49 @@ below — so it needs no separate dispatch hook.)
 
 ## Model tiers (client-relative, no provider names)
 
-- Default dispatch: **economy** implementer tier.
+- Default dispatch: **economy** implementer tier. This is legal precisely
+  because a dispatched task carries `task.verify` — the threshold signal that
+  makes a wrong cheap answer visible. **The floor that governs every role, and
+  the rule that a tier may be lowered only where such a signal exists, is
+  `review.md` §The capability floor** — cited, never restated here.
 - After **two** consecutive `verify_result: fail` on the same task: escalate
   to the **deep** tier for the retry (ADR 2026-07-02). Do not escalate on the
   first failure — a single fail is often a brief or environment issue, not a
   capability gap.
+
+## What may be delegated at all
+
+The sections above govern the opt-in PLAN loop; **this one is family-wide** and
+applies to any pass, at any level, dispatch or no dispatch. Delegation is not a
+token-saving technique — a second context re-reads, re-briefs and reports back,
+so the total spend goes UP. What it buys is a main context that stays clean, and
+independence where independence is the point. Judge a pass on two axes:
+
+| | output falsifiable cheaply (`file:line`, an assertion result, a diff) | output is judgement |
+|---|---|---|
+| **reads ≫ report** | **delegate** — the whole win lives here | **never**: the biggest apparent win is where plausible-but-wrong enters |
+| **reads ≈ report** | keep it: the brief costs more than the pass | keep it |
+
+- **Delegate**: locating and verifying (a pass that returns citable facts and
+  discards its exploration trace), executing a probe or battery and reporting
+  the assertion table, and every independent review — the last for correctness,
+  not economy, and it is mandatory regardless of what it costs.
+- **Never delegate**: authoring a governed artifact (Vision, ANALYSIS/E-ISP,
+  threat model, use cases, the Interface Contract), the triage level and router
+  verdict, a reconciliation or scope decision, and any pass whose result the
+  orchestrator must hold across many later turns — delegating that one just
+  moves the reading into the main context via the report.
+- **The delegability condition**: a task whose brief cannot be expressed as
+  **pointers** — paths, ids, a command — is **not delegable** yet; a brief that
+  must carry the content pays those tokens twice, once to write it and once to
+  read it. `plan brief` is this rule already realized for the PLAN loop (it
+  prints `guides` as paths, never pasted content); the condition generalizes it.
+
+**Declared residual**, so the silence is not read as prohibition: this section
+settles the CLASSIFICATION. *When* to reach for a delegated search or
+orientation pass — the trigger, its brief format and its output contract — is a
+separate unit and is not answered here; until it lands, reaching for one is the
+orchestrator's judgement against the table above, not a rule.
 
 ## Review slots — one-shot, not iterative
 

@@ -437,18 +437,20 @@ Date: 2026-06-11 (UTC)
 
 ## ai_docs/audit/reviews/REVIEW_LOG.md
 
-One row per completed review (`review.md` Â§When a review is due). Append-only; it
+One row per completed review (`review.md` §When a review is due). Append-only; it
 is the record that the gate ran and what it was worth. **One schema for both
-modes** â€” a Hybrid project's devPNT gates write to this same file, so Standalone
-adds values to the existing columns rather than a second table.
+modes** — one required CORE (`date`, `doc_key`, `tier`, `model`, `findings_raised`,
+`findings_real`, `verdict`, `revise_rounds`) plus each mode's own realization
+columns: Standalone adds `reviewer`, a Hybrid devPNT row adds `instrument` and
+`notes` and carries no `reviewer` at all. Both modes write this same file.
 
 ```markdown
 # Independent Review Log
 
-| date | doc_key | tier | reviewer | findings_raised | findings_real | verdict | revise_rounds |
-|---|---|---|---|---|---|---|---|
-| 2026-06-11 | ANALYSIS_login_sso.md | design | subagent (opus, fresh ctx) | 4 | 3 | FAIL â†’ PASS | 2 |
-| 2026-06-12 | diff feature/sso-login | closure | self-pass (declared; absent) | 2 | 2 | PASS with findings â†’ corrections re-reviewed, PASS | 2 |
+| date | doc_key | tier | model | reviewer | findings_raised | findings_real | verdict | revise_rounds |
+|---|---|---|---|---|---|---|---|---|
+| 2026-06-11 | ANALYSIS_login_sso.md | design | deep | subagent (fresh ctx) | 4 | 3 | FAIL → PASS | 2 |
+| 2026-06-12 | diff feature/sso-login | closure | deep | self-pass (declared; absent) | 2 | 2 | PASS with findings → corrections re-reviewed, PASS | 2 |
 
 ## Notes
 <!-- One short paragraph per review that found something worth remembering: what

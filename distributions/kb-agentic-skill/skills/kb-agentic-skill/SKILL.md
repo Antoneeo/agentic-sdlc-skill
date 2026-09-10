@@ -21,7 +21,7 @@ Support files in the skill directory:
 - `distillation.md`: from a source to claim rows — intake (content-addressed originals, stored canonical extraction, every provenance a real file), the claim table, extraction discipline, signal rules (symbiosis with `distill`).
 - `reconciliation.md`: what happens when two claims meet — five outcomes, detect-and-hold (the machine never decides), rulings with mandatory `basis:`, the claim state machine, the batched escalation form.
 - `review.md`: the review discipline — when a review is due, how to request one, how to receive findings, how to review.
-- `dispatch.md`: opt-in subagent execution of an approved plan.
+- `dispatch.md`: opt-in subagent execution of an approved plan, plus the family-wide delegation boundary (what may be delegated at all) — that part applies at any level.
 - `routing.md`: which lens owns this unit of work. Read ONLY when a sibling lens skill is installed alongside this one; a single-lens install never reads it.
 - `scripts/sdlc_check.py` + `scripts/sdlc_core.py`: the mechanical validator for the docs root (`check`, `validate`, `index`, `mark`, `gate`, `plan`, `orient`, `migrate`, and the knowledge overlay: `graph`, `corpus`, `claim-id`, `anchor`, `export`, `import`, `stale` (spine staleness plus `## claims` -- the time cycle's consolidated view), plus `remind` — the opt-in per-turn one-line reminder, ENFORCEMENT §4). Two files: the core is the family's shared spine; the entry point IS the knowledge overlay — the claim ledger and topic-graph checks live inside it, so the core alone runs none of them. Copy both, or neither.
 - `ENFORCEMENT.md`: optional setup for CI and hooks.
@@ -127,7 +127,7 @@ Use this mode when `devpnt_*` tools are available and point at the current proje
 - **Isolate the work (Branch/worktree hygiene).** Distillation rewrites existing notes — full re-read per `## Revision` — and does it on a branch or a worktree, never directly on the shared corpus, so a half-finished reconciliation is never what the next reader finds.
 - Before drafting (L2/L3; L1 exempt), **consult the guide router** for a guide covering the task and read it first (the consult trigger, `guides.md` §0). A targeted description match, not a blanket read. Its result is the router verdict already declared with the triage level (Rule Zero).
 - Execute knowledge extraction using **Signal Distillation** (`distillation.md`).
-- **Opt-in subagent execution**: for an L3 with an approved analysis, the work MAY be executed via subagents per `dispatch.md`; default stays same-session.
+- **Opt-in subagent execution**: for an L3 with an approved analysis, the work MAY be executed via subagents per `dispatch.md`; default stays same-session. `dispatch.md` also carries the family-wide **delegation boundary** (what may be delegated at all, and what never may) — that section is not gated by the opt-in trigger and applies at any level, dispatch or no dispatch.
 - Handle conflicting or outdated information via **Reconciliation** (`reconciliation.md`). Mark obsolete files `status: SUPERSEDED`.
 
 ### 5. Closure & Indexing

@@ -82,15 +82,62 @@ its outcome. The trigger term "permission-gated" scopes the STOP; the row word
 
 Use a different model from the author's where the client allows it.
 
+**The capability floor — which tier may run this gate.** Independence says the
+reviewer must not be the author; it says nothing about whether the reviewer *can
+do the job*. A gate run below the capability its judgement needs produces the
+myopia the gate exists to catch, **while reporting as an independent review** —
+worse than no gate, because it certifies. So each role carries a minimum tier.
+Tiers are **client-relative capability levels, never provider names** (a name
+rots at the next model release; the tier→model binding lives in the client's own
+agent definition, never in this file):
+
+| Role | Floor | Why there |
+|---|---|---|
+| design review, closure review, any verdict on judgement | **deep** | the output is a judgement whose wrongness no check can see |
+| a light conformance or consistency pass (schema, coverage, citation resolution) | **light** | the criterion is stated and mechanical |
+| implementer dispatch, probe execution, anchor resolution, index regeneration | **economy** | a threshold signal catches a wrong cheap answer |
+
+The rule underneath the table: **a tier may be lowered only where a threshold
+signal exists** — `task.verify`, a test, a diff against a spec, an assertion
+harness — because that is what makes a wrong cheap answer visible instead of
+plausible. Where the output is judgement and nothing scores it, there is no
+signal to lower against, and the floor is the whole policy.
+
+**When independence and capability conflict, independence wins.** A client whose
+only independent rung is bound below the floor (a single-model client, or a
+subagent facility whose agent definition fixes a cheap model) still runs the
+gate: a below-floor *independent* reviewer catches the class the author is
+structurally blind to, while a self-pass catches none of it. What the floor then
+requires is **disclosure, not abstention** — the row records the tier that
+actually ran (`below floor: <reason>`), and that record IS the remedy. Where a
+higher-capability path exists but is permission-gated, nothing new applies: *The
+gated rung* above already governs, one question per gate per intact context.
+Where the client exposes no capability choice at all, the row says
+`single (client exposes no choice)` and the floor is satisfied by construction —
+it is a routing rule, and a routing rule with one route is not a failure.
+
 **Rounds are capped at 3.** FAIL → revise → re-review. If findings still stand
 after the third, stop and surface them to the user with the artifact — a gate that
 can block forever gets removed. **Log one row per completed review, PASS or FAIL**
 — a FAIL surfaced to the user is the highest-value outcome the gate produces, and
 logging only passes would erase exactly that evidence. The row goes in
 `ai_docs/audit/reviews/REVIEW_LOG.md` (create it if absent — `templates.md`):
-`| date | doc_key | tier | reviewer | findings_raised | findings_real | verdict | revise_rounds |`,
-with `tier` = `design` or `closure` in Standalone. One schema for both modes: a
-Hybrid project's devPNT gates write to the same file.
+`| date | doc_key | tier | model | reviewer | findings_raised | findings_real | verdict | revise_rounds |`,
+with `tier` = `design` or `closure` in Standalone. **`model` records the capability
+tier that actually ran** — `deep`, `light`, `economy`, `single (client exposes no
+choice)`, or `below floor: <reason>` — never a provider name in doctrine (a project
+may of course write its own model names in its own log). Without it the floor above
+is a belief: the row would say a gate ran and never whether it could do its job, and
+the correlation with `revise_rounds` and `findings_real` — the only evidence the
+policy pays — could not be drawn.
+
+**One schema for both modes**, meaning one required CORE plus each mode's own
+**mode-specific** realization columns. The core is what both modes actually share: `date`, `doc_key`,
+`tier`, `model`, `findings_raised`, `findings_real`, `verdict`, `revise_rounds`.
+Around it, Standalone adds `reviewer` and Hybrid adds `instrument` and `notes` —
+a devPNT row carries no `reviewer` column at all, so "one identical column list"
+was never true of the two modes. This costs nothing for the reason `templates.md`
+§`ai_docs/audit/reviews/REVIEW_LOG.md` owns and states.
 The log is how the gate's value is measured over time; skipping it makes the gate
 unfalsifiable, the same defect as an unnamed EXISTS or a faked router verdict.
 

@@ -178,7 +178,7 @@ Deliverable language: ask for (or infer) the target market's language in Discove
 ### 8. Action
 - **Isolate the work (Branch/worktree hygiene).** Execution rewrites plan documents other people are reading: do it on a branch or a worktree, never directly on the shared plan.
 - **Consult (before acting)**: **consult the guide router** for a guide covering the task and read it first (the consult trigger, `guides.md` §0). A targeted description match, not a blanket read.
-- **Opt-in subagent execution**: for an approved plan, the work MAY be executed via subagents per `dispatch.md`; default stays same-session.
+- **Opt-in subagent execution**: for an approved plan, the work MAY be executed via subagents per `dispatch.md`; default stays same-session. `dispatch.md` also carries the family-wide **delegation boundary** (what may be delegated at all, and what never may) — that section is not gated by the opt-in trigger and applies at any level, dispatch or no dispatch.
 - Draft `ACTION_90D.md`: sequenced 90-day plan (what starts when, owner, dependency), first 2 weeks day-level, rest weekly.
 
 ### 9. Control & Packaging — **FINAL REVIEW GATE**

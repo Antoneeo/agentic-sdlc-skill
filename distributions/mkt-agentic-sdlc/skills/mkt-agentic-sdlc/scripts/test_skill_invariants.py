@@ -757,6 +757,95 @@ class SkillInvariants(unittest.TestCase):
                             "an extra leading column must not produce a permanent, "
                             "unclearable 'you skipped the review'")
 
+    def test_capability_floor_and_delegation_boundary(self):
+        """F-048: independence says the reviewer is not the author; it never said
+        the reviewer CAN do the job. The floor binds gates, so review.md owns it
+        (dispatch.md is surfaced everywhere as opt-in-L3-only); the delegation
+        boundary is family-wide and says what may leave the authoring context."""
+        r, d = read("review.md"), read("dispatch.md")
+        # the floor lives where the gates live, and dispatch points at it
+        self.assertIn("capability floor", r.lower(),
+                      "review.md must own the floor: it owns the gates it binds")
+        self.assertIn("capability floor", d.lower(),
+                      "dispatch.md must CITE the floor, not restate it (DRY)")
+        self.assertIn("threshold signal", r.lower(),
+                      "a tier may be lowered only where a wrong cheap answer is "
+                      "catchable -- that rule IS the floor's justification")
+        # the arbitration: the case where the only independent rung is below it
+        self.assertIn("independence wins", r.lower(),
+                      "a client whose only independent rung is below the floor "
+                      "must not be left with two rules pointing opposite ways")
+        # no provider names in shared doctrine -- they rot at the next release
+        for name in ("Opus", "Sonnet", "Haiku", "GPT-4", "Gemini"):
+            self.assertNotIn(name, r + d,
+                             f"{name} is a provider name in shared doctrine")
+        # the boundary, and the condition that makes a task delegable at all
+        self.assertIn("delegated at all", d.lower())
+        self.assertIn("never delegate", d.lower(),
+                      "without a never-list the boundary is advice, not a rule")
+        self.assertIn("not delegable", d.lower(),
+                      "a brief that cannot be pointers pays the tokens twice")
+        # structural, not a spelling pin: the never-list must actually enumerate,
+        # and it must name the authoring case -- the expensive mistake it exists
+        # to prevent. A boundary whose never-list is one vague line is advice.
+        never = d.split("**Never delegate**", 1)
+        self.assertEqual(len(never), 2, "the never-list must be its own item")
+        block = never[1].split("- **")[0]
+        self.assertGreaterEqual(len([c for c in block.split(",") if c.strip()]), 4,
+                                "the never-list must enumerate what it forbids")
+        self.assertTrue(re.search(r"authoring a governed artifact", block, re.I),
+                        "delegated authoring is the mistake the boundary exists "
+                        "to name; a never-list omitting it names nothing")
+
+    def test_review_log_records_which_capability_ran(self):
+        """F-048: `model` is what makes the floor falsifiable -- a row that says a
+        gate ran but not whether it could do its job proves nothing. Owner
+        accepted the ceremony cost 2026-09-10 (Vision 'no ceremony ratchet')."""
+        r, t = read("review.md"), read("templates.md")
+        self.assertIn("| tier | model |", r,
+                      "the core schema must carry `model` after `tier`")
+        self.assertIn("| tier | model |", t,
+                      "this lens's templates.md must state the same schema")
+        # Every value the spine declares must be documented in the template.
+        # Two values carry a tail (`single (client exposes no choice)`,
+        # `below floor: <reason>`), so match the whole backticked token and
+        # compare on its key -- a regex ending at the word drops both and the
+        # coverage check then silently under-covers.
+        key = lambda v: v.split(":")[0].split("(")[0].strip()
+        declared = sorted({key(v) for v in re.findall(
+            r"`(deep|light|economy|single[^`]*|below floor[^`]*)`", r)})
+        self.assertGreaterEqual(len(declared), 5, declared)
+        for v in declared:
+            self.assertIn(v, t, f"`{v}` declared in review.md, absent from "
+                                "templates.md -- the writer cannot use it")
+        # the floor must be a parseable table, not prose: >=2 role->tier rows
+        floor_rows = [ln for ln in r.splitlines()
+                      if ln.startswith("|")
+                      and re.search(r"\*\*(deep|light|economy)\*\*", ln)]
+        self.assertGreaterEqual(len(floor_rows), 2,
+                                "a floor stated only in prose cannot be "
+                                "checked against a role")
+        # `model` must not be sold as a second schema: core + mode-specific
+        self.assertIn("mode-specific", r.lower(),
+                      "Standalone and Hybrid never had one identical column "
+                      "list -- a devPNT row carries no `reviewer` column")
+        # behaviour: the widened schema still resolves, and a mixed log too
+        with tempfile.TemporaryDirectory() as dtmp:
+            root = Path(dtmp)
+            (root / "ai_docs" / "audit" / "reviews").mkdir(parents=True)
+            (root / sc.review_log_rel()).write_text(
+                "| date | doc_key | tier | model | reviewer | r | r | verdict | n |\n"
+                "|---|---|---|---|---|---|---|---|---|\n"
+                "| 2026-09-10 | ANALYSIS_new.md | design | deep | subagent | 1 | 1 | PASS | 1 |\n"
+                # a historical row, one cell narrower, under the widened header
+                "| 2026-07-28 | ANALYSIS_old.md | design | subagent | 2 | 2 | PASS | 1 |\n",
+                encoding="utf-8")
+            self.assertTrue(sc.review_logged(root, "ANALYSIS_new.md"),
+                            "the widened schema broke the gate's tier lookup")
+            self.assertTrue(sc.review_logged(root, "ANALYSIS_old.md"),
+                            "historical rows must keep their meaning: `model` "
+                            "goes AFTER `tier`, so `tier` stays at index 2")
+
     def test_design_review_advisory_end_to_end(self):
         """F-021 closure review F2: the unit tests never exercised cmd_validate,
         so a reviewer's mutation run showed the advisory could be DELETED and the

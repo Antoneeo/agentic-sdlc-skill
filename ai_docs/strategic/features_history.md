@@ -38,3 +38,5 @@
 | F-043 | F-043 | L3 | COMPLETED | 2026-08-28 | 2026-08-28 | solutions/ANALYSIS_revision_doctrine.md |
 | F-044 | kb_time_cycle | L3 | COMPLETED | 2026-08-28 | 2026-08-28 | solutions/ANALYSIS_kb_time_cycle.md |
 | F-045 | F-045 | L3 | COMPLETED | 2026-09-01 | 2026-09-01 | solutions/ANALYSIS_review_convergence_doctrine.md |
+| F-047 | F-047 | L3 | COMPLETED | 2026-09-08 | 2026-09-08 | solutions/ANALYSIS_kb_row_atomicity.md |
+| F-048 | F-048 | L3 | COMPLETED | 2026-09-10 | 2026-09-10 | solutions/ANALYSIS_capability_tiers.md |

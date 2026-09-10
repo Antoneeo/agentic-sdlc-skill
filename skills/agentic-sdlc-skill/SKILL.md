@@ -271,7 +271,7 @@ Hybrid L3:
 - For bugs (L2/L3), follow the systematic debugging method in `debugging.md`.
 - Circuit breaker: after 3 consecutive runs without progress on the tests, stop, switch to the systematic method in `debugging.md`, and ask for instructions if still stuck. `debugging.md` also covers **chronic fragility** — a component that breaks repeatedly across sessions is a comprehension + complexity signal (write the `source_kind: code` guide AND escalate a refactor), not a fourth patch.
 - Update the ANALYSIS Diary or the Action Plan when you complete milestones, hit blockers, change decisions, or a session ends with work unfinished.
-- **Opt-in subagent execution**: for an L3 with an approved design, the orchestrator MAY execute the work via subagents per `dispatch.md`, gated by `sdlc_check.py plan validate` ("no valid plan, no dispatch"); default stays same-session. Hybrid: the executable `PLAN_[feature].md` is `derived-from` the accepted E-TDD, never independently authored.
+- **Opt-in subagent execution**: for an L3 with an approved design, the orchestrator MAY execute the work via subagents per `dispatch.md`, gated by `sdlc_check.py plan validate` ("no valid plan, no dispatch"); default stays same-session. Hybrid: the executable `PLAN_[feature].md` is `derived-from` the accepted E-TDD, never independently authored. `dispatch.md` also carries the family-wide **delegation boundary** (what may be delegated at all, and what never may) — that section is not gated by the opt-in trigger and applies at any level, dispatch or no dispatch.
 
 ### 5. Closure
 
