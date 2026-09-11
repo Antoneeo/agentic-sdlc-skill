@@ -13,7 +13,7 @@ image, copy BOTH (`ENFORCEMENT.md` §2 has the recipe); copying this one alone
 fails at import, loudly and immediately, which is the intended failure.
 
 Usage is `sdlc_core.py`'s: check / validate / index / stale / mark / gate /
-orient / plan.
+orient / benefit / plan.
 """
 import sys
 from pathlib import Path

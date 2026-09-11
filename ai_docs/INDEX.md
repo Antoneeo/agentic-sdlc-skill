@@ -42,6 +42,7 @@ not manifested here.
 | `architecture/ADR_2026-09-01_executed_probe_harness.md` | CURRENT | ADR - behavioural claims in L3 designs derive from executed probes kept as a repo-shipped harness (ai_docs/solutions/harness_[feature]/), with a lens-gated r... |
 | `architecture/ADR_2026-09-08_row_atomicity_by_doctrine.md` | CURRENT | ADR - kb claim-row atomicity is enforced by doctrine + a fallible note, never by changing the id function; bundled rows are repaired by split-as-supersession... |
 | `architecture/ADR_2026-09-10_capability_floor_and_delegation_boundary.md` | CURRENT | ADR - the capability dimension gets an owner. review.md owns a capability floor (independence wins when it conflicts), dispatch.md owns the delegation bounda... |
+| `architecture/ADR_2026-09-11_benefit_is_a_report.md` | CURRENT | ADR - the benefit measure reads REVIEW_LOG by header name, reports three coverage buckets, and never carries a verdict. Rejected - a CI gate, width-keyed par... |
 
 ## functional/
 

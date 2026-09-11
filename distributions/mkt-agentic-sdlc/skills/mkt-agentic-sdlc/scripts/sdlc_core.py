@@ -2052,6 +2052,208 @@ def cmd_plan(root, args):
     return 0
 
 
+# --- F-050: the benefit report -------------------------------------------
+# The process's central claim is that it makes divergence visible BEFORE
+# implementation. That claim lived in prose for four months while the evidence
+# for it sat unread in REVIEW_LOG. This reads it.
+#
+# Columns are resolved BY HEADER NAME, never by width. `templates.md` states
+# that contract ("extra or reordered columns are fine -- but the header must
+# say `tier`") and three widths are legal today: the original 8, Standalone's 9
+# (F-048 added `model`), and Hybrid's 10 (`instrument` + `notes`, and no
+# `reviewer` at all). A width whitelist reads none of the last, and silently
+# reports a devPNT-governed project as having no data at all.
+#
+# Two honesty rules, both learned from this unit's own review: whatever cannot
+# be read is COUNTED and NAMED, at the row level AND at the cell level. A ratio
+# over a silently shrunken denominator is worse than no ratio.
+REVIEW_CORE = ("date", "doc_key", "tier", "findings_real", "verdict")
+REVIEW_POSITIONAL = {
+    8: ("date", "doc_key", "tier", "reviewer", "findings_raised",
+        "findings_real", "verdict", "revise_rounds"),
+    9: ("date", "doc_key", "tier", "model", "reviewer", "findings_raised",
+        "findings_real", "verdict", "revise_rounds"),
+    10: ("date", "doc_key", "tier", "model", "instrument", "findings_raised",
+         "findings_real", "verdict", "revise_rounds", "notes"),
+}
+
+
+def _table_cells(line):
+    """Cells of a Markdown table row, or None when the line is not one.
+    Separator rows (---, :---:, any alignment colons) are not data."""
+    s = line.strip()
+    if not s.startswith("|"):
+        return None
+    if set(s) <= set("|-: "):
+        return None
+    return [c.strip() for c in s.strip("|").split("|")]
+
+
+def parse_review_log(text):
+    """-> (rows, unparsed). Columns come from the header when there is one.
+
+    Falls back to the positional maps only for a table with no header, so a
+    hand-kept log still reads. A row whose cell count does not match the
+    header's is unparsed and named -- never dropped."""
+    rows, unparsed, names = [], [], None
+    for n, line in enumerate(text.splitlines(), 1):
+        cells = _table_cells(line)
+        if cells is None:
+            continue
+        lowered = [c.lower() for c in cells]
+        if names is None and "tier" in lowered and "verdict" in lowered:
+            names = lowered                      # the header IS the column map
+            continue
+        # The header supplies the map -- that is what makes reordered and extra
+        # columns readable. But a log legitimately carries MIXED widths (F-048
+        # widened the schema and did not rewrite history), so a row that does
+        # not match the header is read by the positional map for its own width
+        # before it is given up on. Only a width no map knows is unparsed.
+        if names is not None and len(cells) == len(names):
+            row = dict(zip(names, cells))
+        else:
+            positional = REVIEW_POSITIONAL.get(len(cells))
+            if positional is None:
+                unparsed.append((n, "%d cells: %s" % (
+                    len(cells),
+                    "header declares %d and no positional map fits"
+                    % len(names) if names else "no header, and no map fits")))
+                continue
+            row = dict(zip(positional, cells))
+        missing = [c for c in REVIEW_CORE if c not in row]
+        if missing:
+            unparsed.append((n, "no %s column" % "/".join(missing)))
+            continue
+        if not re.match(r"^\d{4}-\d{2}-\d{2}$", row["date"]):
+            unparsed.append((n, "date cell %r is not a date" % row["date"][:24]))
+            continue
+        rows.append(row)
+    return rows, unparsed
+
+
+def review_findings(value):
+    """The count in a `findings_real` cell, or None when it states no number.
+
+    None is NOT zero. `all` and `VOID -- instrument error` appear in real logs,
+    and counting them as zero findings silently deflates the one ratio this
+    report exists to state. Anchored at the START of the cell so a prose cell
+    like `R1 4 BLOCK + 8 WARN` does not yield a confident 4."""
+    m = re.match(r"^(\d+)\b", (value or "").strip())
+    return int(m.group(1)) if m else None
+
+
+def _is_fail(verdict):
+    """FAIL as a WORD, so `PASS (no failures)` is not counted as a failure."""
+    return re.search(r"\bFAIL\b", (verdict or "").upper()) is not None
+
+
+def _is_pass(verdict):
+    return re.search(r"\bPASS\b", (verdict or "").upper()) is not None
+
+
+def _print_read_cost():
+    """The cost side, printed with the benefit and NEVER without it: a catch
+    rate with no cost term justifies unbounded doctrine, and a cost term with
+    no catch rate justifies deleting the process. When it cannot be measured
+    the line still prints, saying so -- silence here IS the catch rate quoted
+    alone, which is the thing this report exists to prevent."""
+    skill_dir = Path(__file__).resolve().parent.parent
+    contract = skill_dir / "SKILL.md"
+    print()
+    if not contract.is_file():
+        print("Read cost: unavailable -- SKILL.md not found beside this "
+              "validator (%s)" % skill_dir)
+        return
+    support = sum(p.stat().st_size for p in sorted(skill_dir.glob("*.md"))
+                  if p.name != "SKILL.md")
+    print("Read cost of %s: SKILL.md %d bytes (every session) + %d bytes of "
+          "support files (read on trigger)"
+          % (skill_dir.name, contract.stat().st_size, support))
+
+
+def cmd_benefit(root):
+    """Report what the process caught, beside what it costs to read.
+
+    ALWAYS exits 0 and emits no warning or advisory. This number is the
+    criterion future units are judged by; a measurement that can fail a build
+    becomes a target, and a targeted measurement stops measuring."""
+    log = root / review_log_rel()
+    print("=== benefit: what the process caught, and what it costs to read ===")
+    if not log.is_file():
+        print("[info] no %s yet: nothing to report. The number appears once "
+              "reviews are logged." % review_log_rel())
+        _print_read_cost()
+        return 0
+    rows, unparsed = parse_review_log(read_text(log))
+    # `tier` carries the MOMENT in Standalone (design / closure) and the
+    # reviewer WEIGHT in Hybrid (deep / light / code / guide / vision). A
+    # Hybrid row is a real review whose moment this column does not state, so
+    # it is counted and named, never folded into a moment by guesswork.
+    moments = {"design": [], "closure": []}
+    unstated = {}
+    for r in rows:
+        tier = r["tier"].lower()
+        if tier.startswith("design"):
+            moments["design"].append(r)
+        elif tier.startswith("closure"):
+            moments["closure"].append(r)
+        else:
+            unstated[tier] = unstated.get(tier, 0) + 1
+    classified = moments["design"] + moments["closure"]
+    print("rows parsed: %d   rows unparsed: %d%s"
+          % (len(rows), len(unparsed),
+             ("  -> " + "; ".join("line %d: %s" % u for u in unparsed[:5]))
+             if unparsed else ""))
+    print("reviews with a stated moment: %d   moment not stated by `tier`: %d%s"
+          % (len(classified), sum(unstated.values()),
+             ("  (" + ", ".join("%s x%d" % (t, n) for t, n
+                                in sorted(unstated.items())) + ")")
+             if unstated else ""))
+    if not classified:
+        _print_read_cost()
+        return 0
+    dates = sorted(r["date"] for r in classified)
+    print("span of the reviews counted below: %s -> %s" % (dates[0], dates[-1]))
+
+    print()
+    print("%-9s %6s %10s %11s %10s" % ("moment", "rows", "findings",
+                                       "FAIL verdict", "per review"))
+    totals, uncounted = {}, 0
+    for m in ("design", "closure"):
+        rs = moments[m]
+        counts = [review_findings(r["findings_real"]) for r in rs]
+        uncounted += sum(1 for c in counts if c is None)
+        found = sum(c for c in counts if c is not None)
+        failed = sum(1 for r in rs if _is_fail(r["verdict"]))
+        totals[m] = found
+        print("%-9s %6d %10d %11d %10.1f"
+              % (m, len(rs), found, failed, (found / len(rs)) if rs else 0.0))
+    total = sum(totals.values())
+    if uncounted:
+        print("findings cells stating no number: %d (counted as unknown, "
+              "never as zero)" % uncounted)
+    if total:
+        print()
+        print("Caught BEFORE the code existed: %d / %d findings = %.0f%%"
+              % (totals["design"], total, 100.0 * totals["design"] / total))
+    failed_all = sum(1 for r in classified if _is_fail(r["verdict"]))
+    inconclusive = sum(1 for r in classified if not _is_fail(r["verdict"])
+                       and not _is_pass(r["verdict"]))
+    print("Reviews whose verdict contains FAIL: %d / %d = %.0f%%%s"
+          % (failed_all, len(classified), 100.0 * failed_all / len(classified),
+             ("   (+%d inconclusive)" % inconclusive) if inconclusive else ""))
+    print("(both figures are over the %d reviews whose moment `tier` states)"
+          % len(classified))
+    if unstated:
+        known = sum(n for t, n in unstated.items() if t.startswith("code"))
+        if known:
+            print("(the unstated set is NOT moment-neutral -- %d `code` rows "
+                  "are known post-implementation -- so the share above is a "
+                  "floor, not a ceiling)" % known)
+    _print_read_cost()
+    return 0
+
+
 def cmd_orient(args):
     """SessionStart hook: emit a bounded, repo-sourced ai_docs/ orientation to
     stdout and ALWAYS return 0 (fail-open, P-TM T8) -- a session hook must never
@@ -2315,6 +2517,11 @@ def main(argv=None):
     gp.add_argument("--file", help="file path to evaluate (alternative to --hook)")
     gp.add_argument("--protected", default="", help="protected prefixes separated by ';' (e.g. \"src/auth;src/crypto\")")
 
+    sub.add_parser("benefit", parents=[common],
+                   help="report what the review gates caught (and what the "
+                        "doctrine costs to read) -- a report, never a gate: "
+                        "always exits 0")
+
     sub.add_parser("orient", parents=[common, hybrid_opt],
                    help="SessionStart hook: emit docs-root orientation to stdout (fail-open, zero-execution)")
 
@@ -2374,6 +2581,8 @@ def main(argv=None):
         return cmd_stale(root, hybrid=args.hybrid)
     if args.cmd == "mark":
         return cmd_mark(root, args.paths)
+    if args.cmd == "benefit":
+        return cmd_benefit(root)
     if args.cmd == "migrate":
         return cmd_migrate(root, args)
     if args.cmd == "plan":

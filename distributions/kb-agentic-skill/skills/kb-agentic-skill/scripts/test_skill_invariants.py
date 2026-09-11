@@ -757,6 +757,74 @@ class SkillInvariants(unittest.TestCase):
                             "an extra leading column must not produce a permanent, "
                             "unclearable 'you skipped the review'")
 
+    def test_benefit_reports_and_never_gates(self):
+        """F-050: the process's central claim is measurable from REVIEW_LOG, and
+        the measure must never become a gate. The parser's one real risk is
+        silently dropping rows -- the log legally carries two widths, and the
+        one-off analysis that motivated this unit lost 61 of 63 rows that way."""
+        both_widths = (
+            "| date | doc_key | tier | model | reviewer | findings_raised | "
+            "findings_real | verdict | revise_rounds |\n"
+            "|---|---|---|---|---|---|---|---|---|\n"
+            "| 2026-09-10 | A.md | design | deep | subagent | 5 | 4 | FAIL -> PASS | 2 |\n"
+            "| 2026-07-28 | B.md | closure | subagent | 3 | 3 | PASS | 1 |\n"
+            "| 2026-08-01 | C.md | deep | subagent | 9 | 9 | PASS | 1 |\n"
+            "| junk | not | a row |\n")
+        rows, unparsed = sc.parse_review_log(both_widths)
+        self.assertEqual(len(rows), 3,
+                         "a log legitimately carries mixed widths: 9-cell "
+                         "(post-F-048) beside 8-cell (original)")
+        # The Hybrid row review.md mandates has 10 cells and NO `reviewer`.
+        # Reading by width alone reports a whole devPNT log as unparsed.
+        hyb, hyb_un = sc.parse_review_log(
+            "| date | doc_key | tier | model | instrument | findings_raised "
+            "| findings_real | verdict | revise_rounds | notes |\n"
+            "|---|---|---|---|---|---|---|---|---|---|\n"
+            "| 2026-09-01 | E-ISP x | design | deep | graph | 5 | 4 | FAIL | 2 |  |\n")
+        self.assertEqual((len(hyb), len(hyb_un)), (1, 0), hyb_un)
+        self.assertNotIn("reviewer", hyb[0])
+        # templates.md promises reordered/extra columns are fine when the
+        # header says `tier` -- so the header, not the width, is the map.
+        reo, reo_un = sc.parse_review_log(
+            "| tier | date | doc_key | findings_real | verdict |\n"
+            "|---|---|---|---|---|\n"
+            "| design | 2026-09-01 | X | 3 | PASS |\n")
+        self.assertEqual((len(reo), len(reo_un)), (1, 0), reo_un)
+        # an alignment separator is not data and must not become a phantom
+        # entry in the counter that exists to signal data loss
+        _, ali_un = sc.parse_review_log(
+            "| date | doc_key | tier | verdict | findings_real |\n"
+            "|:---|:---:|---:|---|---|\n"
+            "| 2026-09-01 | X | design | PASS | 2 |\n")
+        self.assertEqual(ali_un, [], ali_un)
+        # a findings cell stating no number is UNKNOWN, never zero
+        self.assertIsNone(sc.review_findings("all"))
+        self.assertIsNone(sc.review_findings("R1 4 BLOCK + 8 WARN"),
+                          "a prose cell must not yield a confident count")
+        self.assertEqual(sc.review_findings("7 confirmed"), 7)
+        # FAIL is a word: `PASS (no failures)` is not a failure
+        self.assertFalse(sc._is_fail("PASS (no failures)"))
+        self.assertTrue(sc._is_fail("FAIL -> PASS"))
+        self.assertEqual(len(unparsed), 1,
+                         "a row that parses as neither width is COUNTED, never "
+                         "skipped -- a shrunken denominator inflates every ratio")
+        self.assertEqual([r["tier"] for r in rows], ["design", "closure", "deep"])
+        self.assertEqual(rows[0]["model"], "deep")
+        self.assertNotIn("model", rows[1],
+                         "a narrow row has no model cell; reading one would "
+                         "sample `reviewer` instead")
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            # no log at all -> still a clean report, still exit 0
+            self.assertEqual(sc.cmd_benefit(root), 0,
+                             "a measurement that can fail a build becomes a target")
+            (root / "ai_docs" / "audit" / "reviews").mkdir(parents=True)
+            (root / sc.review_log_rel()).write_text(both_widths, encoding="utf-8")
+            self.assertEqual(sc.cmd_benefit(root), 0)
+        self.assertIn("never a CI gate", read("ENFORCEMENT.md"),
+                      "unstated, someone wires it into CI and the number "
+                      "stops measuring")
+
     def test_capability_floor_and_delegation_boundary(self):
         """F-048: independence says the reviewer is not the author; it never said
         the reviewer CAN do the job. The floor binds gates, so review.md owns it

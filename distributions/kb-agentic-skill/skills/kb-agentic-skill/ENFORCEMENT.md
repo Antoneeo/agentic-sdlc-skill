@@ -261,3 +261,12 @@ It aggregates the three test files (`test_plan.py` + `test_session_start.py` + `
 **Optional CI** (same shape as §2, not mandatory): add a `run:` step invoking the `unittest discover` command above.
 
 **T10 note:** if you copied `sdlc_check.py` and the `test_*.py` battery into the repo for CI, that copy is authoritative — keep it current when you update the skill.
+
+## `benefit` is a report, never a CI gate
+
+`sdlc_check.py benefit` reports what the review gates caught and what the
+doctrine costs to read. It always exits 0 and emits no warning: **never wire
+it into CI**. It is the criterion by which future units are judged, and a
+measurement that can fail a build becomes a target -- a targeted measurement
+stops measuring. Run it when deciding whether a proposed rule is worth its
+ceremony, not on every push.

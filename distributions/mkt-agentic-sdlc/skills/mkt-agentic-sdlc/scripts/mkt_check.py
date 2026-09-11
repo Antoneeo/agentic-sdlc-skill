@@ -18,7 +18,7 @@ From the overlay (unchanged behaviour, unchanged exit codes):
   index    [--root R]              (re)generate INDEX.md
 
 From the shared core (new to this distribution):
-  stale / mark / gate / orient / plan / migrate   -- the spine commands, identical everywhere
+  stale / mark / gate / orient / benefit / plan / migrate   -- the spine commands, identical everywhere
 
 Both files must sit in the same directory. Copying only this one fails at import,
 loudly, which is the intended failure.
