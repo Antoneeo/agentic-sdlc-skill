@@ -33,6 +33,14 @@ HYBRID = CODE / "hybrid.md"
 # with one ruler or the saving is an artifact of line endings.
 BYTES_BEFORE = 50001
 
+# sha256 of the Hybrid region as it stands at b14f266^ -- i.e. BEFORE the move --
+# recomputed with an explicit UTF-8 decode. The first value recorded here was
+# taken from the moved file itself, which at that moment was mojibake-corrupted
+# by a `git show` decoded through the console codepage: the probe would have
+# certified the corruption forever. A reference must come from the source, not
+# from the artifact it is supposed to check.
+MOVED_BLOCK_SHA256 = "f11e6d5b9cd4710849fa9d3701f16ff0da39f2d163e8ffdb8adbff6a119b3614"
+
 # Anchors that MUST end up in hybrid.md and leave SKILL.md's body.
 MOVED = (
     "### Ownership matrix",
@@ -135,23 +143,21 @@ def main():
     check("P5b the README lists hybrid.md among the support files",
           "hybrid.md" in readme, "GUIDE_release.md step 2")
 
-    # --- P3c: conservation at BYTE level, not heading level -----------------
-    # Headings can all be present while every row under them is gone. The
-    # strong form is that the pre-move region survives as one contiguous,
-    # character-identical substring.
-    import subprocess
-    head = subprocess.run(["git", "show", "HEAD:skills/agentic-sdlc-skill/SKILL.md"],
-                          capture_output=True, text=True, cwd=str(REPO)).stdout
-    ok = False
-    if "### Hybrid in symbiosis with devPNT" in head and "## L3 Workflow" in head:
-        block = head[head.index("### Hybrid in symbiosis with devPNT"):
-                     head.index("## L3 Workflow")]
-        body = block.split("\n", 1)[1].strip()      # drop the mode heading
-        ok = body and body in hybrid
-    check("P3c the moved region survives as one contiguous, identical block",
-          bool(ok),
-          "headings may be present while their content is not -- this is the "
-          "check that a move is not a deletion wearing its costume")
+    # --- P3c: conservation at BYTE level, against a RECORDED digest ---------
+    # Two earlier cuts of this probe were wrong in instructive ways: the first
+    # compared headings only (content can vanish beneath a heading that stays),
+    # the second compared against `git show HEAD:` -- which stops meaning
+    # anything the moment the unit is committed, because HEAD then IS the
+    # post-move state, and which decodes git's UTF-8 through the console
+    # codepage on Windows. The reference must not move and must not depend on
+    # the environment: it is the digest of the block as two independent
+    # reviewers certified it byte-identical to the pre-move region.
+    import hashlib
+    i = hybrid.find("### Hybrid in symbiosis with devPNT")
+    cand = hybrid[i:].split("\n", 1)[1].strip() if i >= 0 else ""
+    check("P3c the moved block still hashes to its certified digest",
+          hashlib.sha256(cand.encode("utf-8")).hexdigest() == MOVED_BLOCK_SHA256,
+          "hybrid.md's block has drifted from the content that was moved")
 
     # --- P6: the price actually went down ----------------------------------
     now = SKILL.stat().st_size

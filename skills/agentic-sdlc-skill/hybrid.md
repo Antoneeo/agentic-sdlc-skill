@@ -11,6 +11,7 @@ Moved out of `SKILL.md` by F-051 so a Standalone session stops paying for a seam
 it cannot reach. **The content below is unchanged**: this file is a relocation,
 not a rewrite.
 
+<!-- moved-block-sha256: f11e6d5b9cd4710849fa9d3701f16ff0da39f2d163e8ffdb8adbff6a119b3614 -->
 ### Hybrid in symbiosis with devPNT
 
 Use this mode when the `devpnt_*` tools are available and point at the current project.
@@ -49,10 +50,10 @@ process; it never replaces it.
 | Feature state | ANALYSIS frontmatter `status` | Action Plan node status | mapping table below; at closure both must move together |
 | ADR | `architecture/` (canonical dir) | devPNT DB (`adr_YYYY-MM-DD_slug`) | optional filesystem shadow `SHADOW_adr_*` exported at closure for grep-ability |
 | Audit / freshness | `audit/audit_plan.md` + `stale`/`mark` | devPNT KL coverage + summary status | run `check --hybrid` (skips audit-plan staleness) |
-| Design review (pre-implementation) | `review.md` moment 1, on the ANALYSIS | devPNT Â§4.5 gate on `E-ISP`/`E-TDD` | same slot, richer backend â€” run ONE of them, never both |
+| Design review (pre-implementation) | `review.md` moment 1, on the ANALYSIS | devPNT §4.5 gate on `E-ISP`/`E-TDD` | same slot, richer backend — run ONE of them, never both |
 | *(mode is per unit of change, not per project)* | a Hybrid-capable project may work one feature Standalone: the slot follows the ARTIFACT the design lives in, and the mode is declared in that artifact. `validate --hybrid` suppresses the Standalone design-review backstop, since devPNT owns the slot there | | |
 | Review log | `audit/reviews/REVIEW_LOG.md` | devPNT `REVIEW_LOG.md` (same path) | always filesystem |
-| Operative guides | `ai_docs/reference/` | `ai_docs/reference/` â€” **filesystem-first even in Hybrid** | devPNT bootstrap may point at their index; it never copies their content |
+| Operative guides | `ai_docs/reference/` | `ai_docs/reference/` — **filesystem-first even in Hybrid** | devPNT bootstrap may point at their index; it never copies their content |
 | Handoff | `audit/handoff.md` | `audit/handoff.md` | always filesystem |
 
 ### Triage equivalence (one threshold, two vocabularies)
@@ -63,7 +64,7 @@ run two classifications:
 | Skill triage | devPNT equivalent | Governed artifacts |
 |---|---|---|
 | L1 Trivial | trivial exempt | none |
-| L2 Small | localized obvious edit | none â€” but see escalation |
+| L2 Small | localized obvious edit | none — but see escalation |
 | L3 Significant | governed unit of change | D-UC/P-TM/E-ISP/E-TDD per the devPNT trigger policy |
 | Spike | exempt (non-mergeable) | `SPIKE_[topic].md` only |
 
@@ -97,9 +98,9 @@ IN_PROGRESS, or vice versa. They move in the same closure step.
 
 ### Validator in Hybrid
 
-Pass `--hybrid` explicitly (never auto-detected â€” an explicit flag beats a guessed
+Pass `--hybrid` explicitly (never auto-detected — an explicit flag beats a guessed
 mode): `check --hybrid` and `stale --hybrid` skip audit-plan staleness (mapping is
-delegated to devPNT/KL) â€” guide-drift checking still runs (`ai_docs/reference/`
+delegated to devPNT/KL) — guide-drift checking still runs (`ai_docs/reference/`
 is filesystem-first even in Hybrid, see the ownership matrix above); `gate --hybrid`
 also unlocks on the presence of an E-TDD shadow in `solutions/` (the Hybrid design
 gate) instead of requiring an IN_PROGRESS ANALYSIS.

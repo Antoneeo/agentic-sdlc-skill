@@ -9,6 +9,7 @@ a real regression, never flakiness (P-TM T9). Runs as part of
 `python -m unittest discover -s scripts -p "test_*.py"`.
 """
 import contextlib
+import hashlib
 import io
 import os
 import re
@@ -767,15 +768,42 @@ class SkillInvariants(unittest.TestCase):
         if not hybrid_path.is_file():
             self.skipTest("this lens has not extracted its Hybrid seam yet")
         hybrid = hybrid_path.read_text(encoding="utf-8")
-        for anchor in ("### Ownership matrix", "### Shadow discipline (Hybrid)",
-                       "### Triage equivalence", "### Feature state mapping",
-                       "Authoritative hierarchy:", "Hybrid rules:"):
-            self.assertIn(anchor, hybrid,
-                          f"{anchor!r} left SKILL.md and is in no support file "
-                          "-- that is a deletion, not a move")
-            self.assertNotIn(anchor, skill,
-                             f"{anchor!r} is in both files: the move did not "
+        # CONSERVATION, the direction that matters: the moved block must still
+        # hash to the digest recorded when it left SKILL.md. Deriving anchors
+        # FROM hybrid.md can only ever check for duplicates -- delete a section
+        # and the derived list simply stops mentioning it, so the gate goes
+        # green on the one failure it exists to catch (mutation-proved at
+        # F-052). The digest is per-lens DATA in the lens's own file, so the
+        # shared check carries no lens's headings and still proves the content
+        # survived.
+        stamp = re.search(r"<!--\s*moved-block-sha256:\s*([0-9a-f]{64})\s*-->",
+                          hybrid)
+        self.assertIsNotNone(
+            stamp, "hybrid.md must record the digest of the block it received, "
+                   "or nothing in any battery guards that content")
+        i = hybrid.index("### Hybrid in symbiosis with devPNT")
+        body = hybrid[i:].split("\n", 1)[1].strip()
+        self.assertEqual(hashlib.sha256(body.encode("utf-8")).hexdigest(),
+                         stamp.group(1),
+                         "the moved block has drifted from what was moved: "
+                         "content was edited or deleted after the relocation")
+        # and no duplicate: whatever moved must be gone from the contract.
+        # Anchors DERIVED, so no lens's headings live in this shared file.
+        moved = [ln.strip() for ln in hybrid.splitlines()
+                 if ln.startswith("### ")
+                 and ln.strip() != "### Hybrid in symbiosis with devPNT"]
+        self.assertTrue(moved, "hybrid.md carries no section: nothing moved")
+        for heading in moved:
+            self.assertNotIn(heading, skill,
+                             f"{heading!r} is in BOTH files: the move did not "
                              "happen, and the reader now has two copies")
+        # A heading can survive while its substance does not, so the rows go
+        # too: every table row that moved must be absent from the contract.
+        rows = [ln.strip() for ln in hybrid.splitlines()
+                if ln.startswith("| ") and ln.count("|") >= 3]
+        for row in rows:
+            self.assertNotIn(row, skill,
+                             "a moved table row is still in SKILL.md")
         # the pointer must carry its trigger and its consequence, or it is a
         # filename and a Hybrid session has no reason to follow it
         self.assertIn("hybrid.md", skill)

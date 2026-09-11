@@ -60,7 +60,7 @@ sdlc_core.set_profile(
     skill_name="mkt-agentic-sdlc",
     unit_noun="engagement",
     support_files=("templates.md", "frameworks.md", "research.md", "elicitation.md",
-                   "review.md", "routing.md", "guides.md", "vision.md", "dispatch.md",
+                   "review.md", "routing.md", "guides.md", "vision.md", "hybrid.md", "dispatch.md",
                    "ENFORCEMENT.md"),
     capabilities=(
         # spine

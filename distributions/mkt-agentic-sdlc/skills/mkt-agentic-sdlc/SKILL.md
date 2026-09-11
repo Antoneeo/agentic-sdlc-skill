@@ -17,6 +17,7 @@ Support files in the skill directory:
 - `templates.md`: templates for every artifact and deliverable.
 - `review.md`: the family's shared review discipline (independence ladder, rounds, log). The marketing-specific attack surface — swap test, untraced numbers, orphan tactics, missing kill/scale — lives in `frameworks.md`'s falsification rules; the adversarial CMO review applies them through `review.md`'s procedure.
 - `scripts/mkt_check.py` + `scripts/sdlc_core.py`: the mechanical validator (`check`, `validate`, `ledger`, `benefit`, `budget`, `funnel`, `trace`, `index`, plus the spine's `stale`/`mark`/`gate`/`orient`/`plan`/`migrate`). Two files: the core is the family's shared spine, the entry point is this domain's overlay. Copy both, or neither.
+- `hybrid.md`: the devPNT seam — the authoritative hierarchy, the ownership matrix (which artifact is mastered where), and the Hybrid rules. Read it when the `devpnt_*` tools point at this project; a Standalone engagement never needs it.
 - `ENFORCEMENT.md`: optional setup for CI and hooks.
 
 Read these files only when needed. `SKILL.md` is the operating contract; the support files are progressive resources.
@@ -94,38 +95,16 @@ Standalone mode is not reduced: it must handle full plans, campaigns, research s
 
 ### Hybrid in symbiosis with devPNT
 
-Use this mode when the `devpnt_*` tools are available and point at the current project.
+Use this mode when the `devpnt_*` tools are available and point at the current
+project. **Read `hybrid.md` before touching a governed artifact or a plan.** It
+carries the authoritative hierarchy, the **ownership matrix** naming which
+marketing artifact is mastered where (and which stay filesystem-only in both
+modes), and the Hybrid rules.
 
-Authoritative hierarchy:
-1. **devPNT M-VISION**: strategic beacon of the plan cycle. Before strategy or tactics, read it and verify benefits, success signals, scope-in and non-goals.
-2. **devPNT Master Plan**: the marketing roadmap; milestones are plan cycles (a quarter, a launch, a market entry).
-3. **devPNT Action Plan**: the nine phases of the active engagement as tactical nodes.
-4. **devPNT governed artifacts**: the marketing artifact set (table below).
-5. **Local `mkt_docs/`**: readable context, Standalone fallback, evidence ledger home, shadow/mirror when useful.
-
-### Ownership matrix (the Hybrid seam)
-
-The skill owns the **process** (triage, phases, gates, lifecycle); devPNT owns the **machinery** (governed storage, versioned proposals, review wiring). The marketing artifacts occupy the same governance slots the software artifacts occupy in the sibling skill:
-
-| Artifact | Standalone master | Hybrid master (devPNT slot) | Mirror rule |
-|---|---|---|---|
-| Marketing vision | `vision/MKT_VISION.md` | M-VISION (`milestone_vision_<slug>`) | filesystem copy is a shadow; DB wins |
-| ICP & Personas | `strategy/ICP_PERSONAS.md` | `mkt_icp_personas` (D-UC slot) | shadow `SHADOW_[doc_key]_vX.Y.md` |
-| Threat map | `strategy/THREAT_MAP.md` | `mkt_threat_map` (P-TM slot) | shadow |
-| Objectives | `strategy/OBJECTIVES.md` | `mkt_objectives` | shadow |
-| Strategy | `strategy/STRATEGY.md` | `mkt_strategy` (E-ISP slot) | shadow, exported BEFORE tactics work |
-| Tactical plan | `tactics/TACTICAL_PLAN.md` | `mkt_tactical_plan` (E-TDD slot) | shadow, exported BEFORE action phase |
-| Measurement plan | `tactics/MEASUREMENT_PLAN.md` | `mkt_measurement_plan` (E-TP slot) | shadow |
-| Evidence ledger | `research/evidence_ledger.md` | `research/evidence_ledger.md` — **filesystem-first even in Hybrid** | validator needs it on disk; devPNT may reference, never copies |
-| Final plan + one-pager | `deliverables/` | assembled from ACCEPTED artifact versions | PDF via `devpnt_generate_document_pdf` when available |
-| Handoff | `audit/handoff.md` | `audit/handoff.md` | always filesystem |
-
-Hybrid rules:
-- devPNT is the governed source for plans and strategy artifacts; do not create a second truth in `mkt_docs/`.
-- The skill stays autonomous: if devPNT is not there, switch to Standalone without losing capability.
-- If the user request, the local vision and the M-VISION diverge, stop and make the conflict explicit.
-- Never auto-accept devPNT proposals: present the preview and wait for explicit confirmation.
-- Where the local devPNT protocol imposes stricter gates (vision creation/amendment gates, independent review gates), follow them: they are the same discipline this skill encodes.
+Skipping it is how a **second source of truth** gets created in `mkt_docs/` — the
+one failure this seam exists to prevent — and it is where the rule **never
+auto-accept a devPNT proposal without explicit confirmation** lives. The skill stays autonomous
+either way: with no devPNT present, work Standalone and nothing is lost.
 
 ## The Three Engineered Guarantees
 
