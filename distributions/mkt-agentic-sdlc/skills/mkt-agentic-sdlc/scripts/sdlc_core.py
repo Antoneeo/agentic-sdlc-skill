@@ -2164,11 +2164,17 @@ def _print_read_cost():
         print("Read cost: unavailable -- SKILL.md not found beside this "
               "validator (%s)" % skill_dir)
         return
-    support = sum(p.stat().st_size for p in sorted(skill_dir.glob("*.md"))
-                  if p.name != "SKILL.md")
-    print("Read cost of %s: SKILL.md %d bytes (every session) + %d bytes of "
-          "support files (read on trigger)"
-          % (skill_dir.name, contract.stat().st_size, support))
+    files = [p for p in sorted(skill_dir.glob("*.md")) if p.name != "SKILL.md"]
+    support = sum(p.stat().st_size for p in files)
+    head = contract.stat().st_size
+    # The TOTAL, and the files itemised. Printing only the two terms lets the
+    # one that fell be quoted while the one that grew stays lumped -- which is
+    # exactly how a -7.8% headline coexisted with a read surface that grew.
+    print("Read cost of %s: SKILL.md %d bytes (every session) + %d bytes "
+          "across %d support files (read on trigger) = %d bytes total"
+          % (skill_dir.name, head, support, len(files), head + support))
+    for p in files:
+        print("    %-24s %8d" % (p.name, p.stat().st_size))
 
 
 def cmd_benefit(root):
@@ -2191,6 +2197,7 @@ def cmd_benefit(root):
     # it is counted and named, never folded into a moment by guesswork.
     moments = {"design": [], "closure": []}
     unstated = {}
+    unstated_found = unstated_code = unstated_uncounted = 0
     for r in rows:
         tier = r["tier"].lower()
         if tier.startswith("design"):
@@ -2199,6 +2206,13 @@ def cmd_benefit(root):
             moments["closure"].append(r)
         else:
             unstated[tier] = unstated.get(tier, 0) + 1
+            n = review_findings(r["findings_real"])
+            if n is None:
+                unstated_uncounted += 1
+            else:
+                unstated_found += n
+                if tier.startswith("code"):
+                    unstated_code += n
     classified = moments["design"] + moments["closure"]
     print("rows parsed: %d   rows unparsed: %d%s"
           % (len(rows), len(unparsed),
@@ -2236,6 +2250,27 @@ def cmd_benefit(root):
         print()
         print("Caught BEFORE the code existed: %d / %d findings = %.0f%%"
               % (totals["design"], total, 100.0 * totals["design"] / total))
+        # The residue, stated as a BOUND rather than as a direction. The
+        # sentence this replaces claimed the share was "a floor, not a
+        # ceiling" because `code` rows are post-implementation -- which is
+        # backwards, since folding them LOWERS the design share. But the fact
+        # was right and only the direction wrong, so `code` findings sit on
+        # the closure side of the upper bound instead of being discarded with
+        # it. No direction is printed at all: the unstated set pushes both
+        # ways, and only an interval is true of all of it.
+        if unstated_found:
+            denom = total + unstated_found
+            print("Bounded by the %d findings in rows whose moment `tier` "
+                  "does not state: %.0f%%-%.0f%% (`code` rows are "
+                  "post-implementation by definition, so their findings sit "
+                  "on the closure side of the upper bound)"
+                  % (unstated_found, 100.0 * totals["design"] / denom,
+                     100.0 * (totals["design"] + unstated_found - unstated_code)
+                     / denom))
+        if unstated_uncounted:
+            print("%d unstated rows state no findings count (`all`, `VOID`): "
+                  "neither zero nor countable, so they lie outside both "
+                  "bounds" % unstated_uncounted)
     failed_all = sum(1 for r in classified if _is_fail(r["verdict"]))
     inconclusive = sum(1 for r in classified if not _is_fail(r["verdict"])
                        and not _is_pass(r["verdict"]))
@@ -2244,12 +2279,6 @@ def cmd_benefit(root):
              ("   (+%d inconclusive)" % inconclusive) if inconclusive else ""))
     print("(both figures are over the %d reviews whose moment `tier` states)"
           % len(classified))
-    if unstated:
-        known = sum(n for t, n in unstated.items() if t.startswith("code"))
-        if known:
-            print("(the unstated set is NOT moment-neutral -- %d `code` rows "
-                  "are known post-implementation -- so the share above is a "
-                  "floor, not a ceiling)" % known)
     _print_read_cost()
     return 0
 

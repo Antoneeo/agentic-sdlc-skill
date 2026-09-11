@@ -17,10 +17,13 @@ trigger and consequence in its place, declared in the lens profile, the package
 allowlist and the README's `## Modes` section; the dangling
 `ENFORCEMENT.md` citation repointed; the shared conservation check generalized.
 
-mkt mandatory read: **23,120 → 21,215 bytes (−8.2%)** Standalone; Hybrid rises to
-24,653 (+6.6%). Run the probe rather than trusting these lines — the first draft of
-this file carried a figure taken before the last pointer edit, which the closure
-review caught.
+mkt mandatory read: **22,880 → 20,995 bytes (−8.2%)** Standalone; Hybrid rises to
+24,527 (+7.2%), git blob (LF) at `8d4d41b`. Run the probe rather than trusting
+these lines — this file has now carried a stale figure twice: once taken before
+the last pointer edit (caught by the closure review) and once taken before the
+94-byte stamp that same review's correction added (caught by F-053's overdue
+scoped re-review). The probe prints the Standalone figure only; the Hybrid term
+is the sum above.
 
 ## The gravest finding of the unit, and it was mine
 

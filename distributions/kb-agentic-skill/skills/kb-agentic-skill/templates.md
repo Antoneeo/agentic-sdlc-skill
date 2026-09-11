@@ -469,7 +469,7 @@ arbitration are `review.md` §The capability floor). The two columns share the w
 `deep`/`light` and mean different things by them, which is why they are read by
 header and never by position. The validator reads this column by its header name, so
 extra or reordered columns are fine — but the header must say `tier`. `reviewer`
-records the realization actually used — fresh subagent, one-shot client run, or a
+also carries the AUTHORING session's own below-floor disclosure where one is owed (the log has no column for the authoring tier, so `review.md` §The capability floor routes it here; Hybrid rows use `notes`). Otherwise it records the realization actually used — fresh subagent, one-shot client run, or a
 **declared** self-pass — and, for any rung below rung 1, WHY the rung(s) above did
 not run, in the ladder's reason words (`review.md`): `absent` — the client has no
 such facility (a claim about the client, never about a policy); `gated, declined` —

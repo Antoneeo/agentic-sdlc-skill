@@ -38,8 +38,14 @@ are the shipped figures, printed by the unit's own probe:
 
 | mkt session | Before | After | Delta |
 |---|---|---|---|
-| **Standalone** | 23,120 B | 21,215 B | **−1,905 B (−8.2%)** |
-| **Hybrid** | 23,120 B | 21,215 + 3,438 = 24,653 B | **+1,533 B (+6.6%)** |
+| **Standalone** | 22,880 B | 20,995 B | **−1,885 B (−8.2%)** |
+| **Hybrid** | 22,880 B | 20,995 + 3,532 = 24,527 B | **+1,647 B (+7.2%)** |
+
+Ruler: the **git blob** (LF), so every figure is reproducible at this unit's own commit with `git cat-file -s`. `benefit` prints `st_size`, which on a CRLF checkout is larger by one byte per line — F-053 corrected these tables after a review found them reproducing under neither. The Hybrid figure also grew by the 94-byte
+`moved-block-sha256` stamp that this unit's OWN review-driven correction added:
+the fix to the conservation reference invalidated the figure the same review
+had just corrected, which is precisely why a number is re-measured after the
+last edit and not before it.
 
 The Hybrid surcharge is proportionally larger here than the code lens's +3.9%,
 because mkt's pointer costs nearly as much while its contract is half the size.
@@ -103,7 +109,7 @@ generalizes one check. Nothing is constructed.
 | `distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/hybrid.md` | ADD | the moved block, verbatim |
 | `distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/mkt_check.py` | MODIFY | the lens profile's `support_files` — the battery enforces it in both directions |
 | `distributions/mkt-agentic-sdlc/package.json` | MODIFY | `files` allowlist |
-| `distributions/mkt-agentic-sdlc/README.md` | MODIFY | support-files bullet and Runtime Shape tree |
+| `distributions/mkt-agentic-sdlc/README.md` | MODIFY | the `## Modes` paragraph (this row promised a support-files bullet and a Runtime Shape tree that the mkt README does not have — copied from F-051's row; corrected by F-053) |
 | `distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/ENFORCEMENT.md` | MODIFY | the dangling citation |
 | `scripts/test_skill_invariants.py` **(shared battery, port ×3)** | MODIFY | conservation check derived, not hardcoded |
 | `harness_mkt_read_diet/probe.py` | ADD | P1-P7 |

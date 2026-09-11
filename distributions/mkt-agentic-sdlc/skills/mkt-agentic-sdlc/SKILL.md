@@ -124,6 +124,8 @@ Deliverable language: ask for (or infer) the target market's language in Discove
 - Declare the level. Read `mkt_docs/audit/handoff.md` and `mkt_docs/README.md`/`INDEX.md` if they exist; if handoff dates are inconsistent, treat it as history.
 - Hybrid: bootstrap devPNT, restore Master/Action Plan and any existing marketing artifacts before asking the user anything they already answered.
 
+**Before authoring, know which tier is authoring.** Authoring the MKT-VISION, the strategy or a deliverable is a **deep-floor role** — its output is judgement and nothing downstream scores it — and `review.md` §The capability floor owns the rule: where this session can determine that it is below that floor, say so once, before drafting, rather than producing a confident artifact nobody flags. Where it cannot determine its own tier it owes nothing. The reliably working half of that rule is addressed to the user, in the package README.
+
 ### 2. Discovery (Situation — internal)
 - Run elicitation **Wave 1** (`elicitation.md`): business facts only, plain language, max 4 questions per round, options where a real choice exists.
 - Every fact captured becomes a `FACT` ledger entry. Draft `MKT_VISION.md` (Status: DRAFT) from the answers.

@@ -758,6 +758,48 @@ class SkillInvariants(unittest.TestCase):
                             "an extra leading column must not produce a permanent, "
                             "unclearable 'you skipped the review'")
 
+    def test_human_approval_rule_in_every_lens(self):
+        """F-053: the never-auto-accept rule is a human-approval guarantee, and
+        it must be readable in EVERY lens's own package.
+
+        It was missing from kb entirely -- behind a green battery, because the
+        only assertion lived inside the seam test, which `skipTest()`s any lens
+        without a `hybrid.md`: the one lens that did not have the rule was the
+        one lens nothing checked. This test skips nothing. Lens-agnostic by
+        construction: it reads whichever of the two files this lens keeps its
+        Hybrid seam in, and carries no lens's headings."""
+        text = read("SKILL.md")
+        hybrid = SKILL_DIR / "hybrid.md"
+        if hybrid.is_file():
+            text += hybrid.read_text(encoding="utf-8")
+        self.assertRegex(text, r"(?i)auto-accept",
+                         "a package whose Hybrid mode proposes governed "
+                         "artifacts must say the human resolves them")
+        self.assertRegex(
+            text, r"(?i)explicit confirmation|wait for[^.]{0,24}confirm",
+            "naming auto-accept without saying what to do instead is a label, "
+            "not a guarantee: the duty is to present and wait")
+
+    def test_authoring_pointer_in_the_contract(self):
+        """F-053: the authoring floor must reach the AUTHOR before it drafts.
+
+        `review.md` is loaded at the design-review gate -- one phase after the
+        artifact exists -- so the rule needs a pointer in the always-read
+        contract. F-049 put one in the code lens only; this pins it in each.
+
+        Presence and ownership only: whether the pointer sits BEFORE that
+        lens's first authoring instruction is a per-lens question, and a shared
+        file carrying three lenses' anchors is the failure the conservation ADR
+        rejected. That position check lives in the repo's own harness."""
+        text = read("SKILL.md")
+        self.assertIn("know which tier is authoring", text,
+                      "without a pointer in SKILL.md the rule is unreachable "
+                      "at the only moment it could change what gets written")
+        after = text.split("know which tier is authoring", 1)[1][:600]
+        self.assertIn("`review.md`", after,
+                      "the pointer must CITE the rule's owner; a pointer that "
+                      "restates it is a second source of truth")
+
     def test_hybrid_seam_moved_not_deleted(self):
         """F-051: the Hybrid seam left the mandatory read for a triggered support
         file. A pruning unit has one catastrophic failure mode -- a quiet deletion

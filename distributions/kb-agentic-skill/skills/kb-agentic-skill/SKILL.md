@@ -105,6 +105,7 @@ Use this mode when devPNT is unavailable, not configured for the current project
 Use this mode when `devpnt_*` tools are available and point at the current project.
 - devPNT governs `M-VISION`, Master Plan, Action Plan, and versioned artifacts.
 - Local `ai_docs/` serves as readable context, Standalone fallback, local handoff, or shadow copy.
+- **Never auto-accept a devPNT proposal**: present the preview and wait for the user's explicit confirmation. This is a human-approval guarantee, not a convenience — an agent that resolves its own proposal has removed the only step where a person can refuse.
 
 ## L3 Workflow
 
@@ -118,6 +119,9 @@ Use this mode when `devpnt_*` tools are available and point at the current proje
 - Verify request aligns with expected benefits, user goals, and success signals.
 
 ### 3. Request Analysis & Taxonomy Pass
+
+**Before authoring, know which tier is authoring.** Authoring an analysis, a taxonomy or a claim ledger is a **deep-floor role** — its output is judgement and nothing downstream scores it — and `review.md` §The capability floor owns the rule: where this session can determine that it is below that floor, say so once, before drafting, rather than producing a confident artifact nobody flags. Where it cannot determine its own tier it owes nothing. The reliably working half of that rule is addressed to the user, in the package README.
+
 - Run spec elicitation round (`elicitation.md`) before drafting analysis.
 - Run taxonomy pass (`taxonomy.md`): verify whether topics, categories, or SOPs already exist in `ai_docs/`. Avoid duplication.
 - Create or update `ai_docs/solutions/ANALYSIS_[topic].md`.

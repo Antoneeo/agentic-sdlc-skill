@@ -6,7 +6,7 @@ status: DONE, UNRELEASED
 since: 2026-09-10
 next: owner's integration call - three reviews spent (design FAIL, closure FAIL, both folded, final re-review pending); the SKILL.md pruning pass is the unit AFTER this one and is measured by it
 details: ANALYSIS_benefit_report.md; harness_benefit_report/probe.py
-updated: 2026-09-10
+updated: 2026-09-11
 ---
 
 ## Resume logistics
@@ -26,21 +26,28 @@ writing:
 
 ```
 === benefit: what the process caught, and what it costs to read ===
-rows parsed: 109   rows unparsed: 0
-reviews with a stated moment: 63   moment not stated by `tier`: 46  (code x8, deep x13, deep (escalated from light: security design) x1, deep (escalated from light: t1 critical rce invariant) x1, guide x1, light x9, review x1, vision x12)
-span of the reviews counted below: 2026-07-28 -> 2026-09-10
+rows parsed: 119   rows unparsed: 0
+reviews with a stated moment: 73   moment not stated by `tier`: 46  (code x8, deep x13, deep (escalated from light: security design) x1, deep (escalated from light: t1 critical rce invariant) x1, guide x1, light x9, review x1, vision x12)
+span of the reviews counted below: 2026-07-28 -> 2026-09-11
 
 moment      rows   findings FAIL verdict per review
-design        34        402          31       11.8
-closure       29        188          18        6.5
+design        39        472          36       12.1
+closure       34        247          22        7.3
 
-Caught BEFORE the code existed: 402 / 590 findings = 68%
-Reviews whose verdict contains FAIL: 49 / 63 = 78%   (+2 inconclusive)
-(both figures are over the 63 reviews whose moment `tier` states)
-(the unstated set is NOT moment-neutral -- 8 `code` rows are known post-implementation -- so the share above is a floor, not a ceiling)
+Caught BEFORE the code existed: 472 / 719 findings = 66%
+Bounded by the 129 findings in rows whose moment `tier` does not state: 56%-69% (`code` rows are post-implementation by definition, so their findings sit on the closure side of the upper bound)
+7 unstated rows state no findings count (`all`, `VOID`): neither zero nor countable, so they lie outside both bounds
+Reviews whose verdict contains FAIL: 58 / 73 = 79%   (+2 inconclusive)
+(both figures are over the 73 reviews whose moment `tier` states)
 
-Read cost of agentic-sdlc-skill: SKILL.md 50001 bytes (every session) + 159104 bytes of support files (read on trigger)
+Read cost of agentic-sdlc-skill: SKILL.md 45801 bytes (every session) + 168376 bytes across 12 support files (read on trigger) = 214177 bytes total
+    architect.md                12890
+    debugging.md                 4143
+    dispatch.md                  7710
+    [... 9 more support files, each with its size ...]
 ```
+
+*(Captured 2026-09-11 by running the command, after F-053's last edit. It is a capture, not a claim about today: every figure above moves the moment anyone logs a review, which is exactly how this block went stale twice — once quoting F-050's numbers under a claim that they were F-053's, and once quoting a read cost taken before the last 222-byte edit. Run `benefit` for current figures; what this block is here to show is the SHAPE.)*
 
 ## What the two reviews changed
 

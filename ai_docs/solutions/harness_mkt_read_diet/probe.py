@@ -62,9 +62,15 @@ def main():
           "the moved content is unreachable")
     check("P2b the pointer names the mechanical trigger", "devpnt_" in blk,
           "a pointer with no trigger is a filename")
+    # F-053: `|ownership` made this unfailable. mkt's own content-inventory
+    # sentence sits after the filename and contains the word, so deleting the
+    # whole consequence paragraph left the probe green -- the exact defect
+    # F-051's design review raised as a BLOCK, re-introduced here with a
+    # comment claiming the opposite. Anchor on the consequence only.
     check("P2c the pointer names what is lost by skipping it",
-          re.search(r"second source of truth|ownership", after, re.I) is not None,
-          "anchored AFTER the filename so the content inventory cannot satisfy it")
+          re.search(r"second source of truth", after, re.I) is not None,
+          "anchored AFTER the filename and on the CONSEQUENCE, so the "
+          "pointer's own inventory of what it contains cannot satisfy it")
 
     # --- P3: CONSERVATION, byte level against a recorded digest ------------
     # Anchored on a digest rather than on `git show HEAD:` -- a moving

@@ -16,7 +16,8 @@ Elicitation: skip path — the spec is the owner's directive of 2026-09-11 ("pro
 ## The weighing, before the cut
 
 `benefit` (F-050) prints the cost side: **SKILL.md is 49,645 bytes every session
-must read**, against a catch rate of 68% that has not moved in three releases.
+must read** (git blob, LF — the ruler used throughout this document; `benefit`
+itself prints `st_size`, larger by one byte per line on a CRLF checkout), against a catch rate of 68% that has not moved in three releases.
 But the byte count is the only measure that exists. There is **no per-paragraph
 benefit measure**, so "this reads verbose" is exactly the unmeasured judgement
 this sequence spent three units learning to distrust. The rule for the cut is
@@ -52,8 +53,12 @@ relocated cost must be counted and r8 resolves omission against the proposal:**
 
 | Session | Before | After | Delta |
 |---|---|---|---|
-| **Standalone** (the common case) | 50,001 B | 45,279 B | **−4,722 B (−9.4%)** |
-| **Hybrid** | 50,001 B | 45,279 + 6,657 = 51,936 B | **+1,935 B (+3.9%)** |
+| **Standalone** (the common case) | 49,645 B | 44,998 B | **−4,647 B (−9.4%)** |
+| **Hybrid** | 49,645 B | 44,998 + 6,579 = 51,577 B | **+1,932 B (+3.9%)** |
+
+Ruler: the **git blob** (LF), so every figure is reproducible at this unit's own commit with `git cat-file -s`. `benefit` prints `st_size`, which on a CRLF checkout is larger by one byte per line — F-053 corrected these tables after a review found them reproducing under neither. The earlier cut of this table mixed `st_size`
+(50,001) with the blob figure quoted above (49,645) and gave `hybrid.md` a size
+(6,657) that reproduced under neither.
 
 So this is a Standalone saving **paid for by a small Hybrid surcharge** — the
 pointer and the new file's preamble are real bytes, and the gross 11.9% removed

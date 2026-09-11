@@ -19,14 +19,20 @@ one new battery test; two inbound citations repointed. Live figure at the time
 of writing (run `benefit` rather than trusting this line):
 
 ```
-Read cost of agentic-sdlc-skill: SKILL.md 45279 bytes (every session)
-+ 165684 bytes of support files (read on trigger)
+Read cost of agentic-sdlc-skill: SKILL.md 45801 bytes (every session) + 168376 bytes across 12 support files (read on trigger) = 214177 bytes total
+    [... each support file and its size ...]
 ```
 
-Standalone read: 50,001 → 45,279 bytes, **−4,722 B (−9.4%)**. Hybrid read:
-45,279 + 6,657 = 51,936 bytes, **+1,935 B (+3.9%)** — a Standalone saving paid
+*(A capture taken 2026-09-11 after the last edit, not a claim about today: the byte figures move whenever a support file changes. F-053 reshaped this line to print the TOTAL and itemise the files, because printing only the two terms let the one that FELL be quoted while the one that GREW stayed lumped.)*
+
+*(A capture taken 2026-09-11 after the last edit, not a claim about today: the byte figures move whenever a support file changes. F-053 reshaped this line to print the TOTAL and itemise the files, because printing only the two terms let the one that FELL be quoted while the one that GREW stayed lumped.)*
+
+
+Standalone read: 49,645 → 44,998 bytes, **−4,647 B (−9.4%)**. Hybrid read:
+44,998 + 6,579 = 51,577 bytes, **+1,932 B (+3.9%)** — a Standalone saving paid
 for by a small Hybrid surcharge, stated because the Vision's ceremony clause
-requires relocated cost to be counted.
+requires relocated cost to be counted. Figures are the git blob (LF) at
+`b14f266`; the earlier cut of this file mixed two rulers.
 
 ## What the two reviews changed
 
