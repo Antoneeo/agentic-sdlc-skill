@@ -115,3 +115,32 @@ Triage, the Vision Gate, the review gates, the guide router, question discipline
 Created by **Antonio Pinto** ([GitHub](https://github.com/Antoneeo)).
 
 MIT (c) 2026 Antonio Pinto.
+
+## Which model to run it on
+
+The skill names **capability tiers**, never providers — a model name in doctrine
+rots at the next release. The binding is yours to make, and the rule is one line:
+
+> **A session's floor is the highest floor among the roles it performs itself.**
+
+Authoring a governed artifact — the vision, the analysis, the use cases, the
+threat model — is a **deep-tier** role: its output is judgement, and nothing
+downstream scores it. So a session that will DESIGN wants your strongest model.
+A session that only executes an already-approved plan, or does small maintenance,
+can sit a tier lower. The cheapest tier is the wrong choice for the main session
+whatever the task, because the failure there is not a wrong answer — it is
+**silently not applying the process**: a triage never run, a router verdict
+declared without the lookup, a gate nobody noticed. That failure is invisible to
+every check in here.
+
+**The reviewer's tier is not automatically yours.** On some clients a subagent
+inherits the session's model; on others it takes one from its own definition, so
+a strong session can be reviewed by a weak one — and a weak session can buy a
+strong review. Set it deliberately; the
+`model` column in the review log is where the choice becomes visible.
+
+**Avoid one combination**: authoring below the floor AND reviewing below the floor
+on the same unit. One disclosed weakness is a disclosed weakness; two is an
+artifact nobody competent ever read. Where your client offers nothing better, the
+review still runs and both facts are recorded — a disclosed worst case beats
+skipping the review.

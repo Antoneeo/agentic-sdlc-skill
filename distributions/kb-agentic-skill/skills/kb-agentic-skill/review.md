@@ -82,7 +82,7 @@ its outcome. The trigger term "permission-gated" scopes the STOP; the row word
 
 Use a different model from the author's where the client allows it.
 
-**The capability floor — which tier may run this gate.** Independence says the
+**The capability floor — which tier may run this role.** Independence says the
 reviewer must not be the author; it says nothing about whether the reviewer *can
 do the job*. A gate run below the capability its judgement needs produces the
 myopia the gate exists to catch, **while reporting as an independent review** —
@@ -93,6 +93,7 @@ agent definition, never in this file):
 
 | Role | Floor | Why there |
 |---|---|---|
+| **authoring a governed artifact** (Vision, the analysis/design, use cases, the Interface Contract, threat model — `dispatch.md`'s never-list owns the enumeration) | **deep** | the purest case of the rule below: the output is judgement, nothing scores it, and `dispatch.md`'s never-list forbids moving it elsewhere — so the session's own capability IS this work's capability |
 | design review, closure review, any verdict on judgement | **deep** | the output is a judgement whose wrongness no check can see |
 | a light conformance or consistency pass (schema, coverage, citation resolution) | **light** | the criterion is stated and mechanical |
 | implementer dispatch, probe execution, anchor resolution, index regeneration | **economy** | a threshold signal catches a wrong cheap answer |
@@ -102,6 +103,35 @@ signal exists** — `task.verify`, a test, a diff against a spec, an assertion
 harness — because that is what makes a wrong cheap answer visible instead of
 plausible. Where the output is judgement and nothing scores it, there is no
 signal to lower against, and the floor is the whole policy.
+
+**A session's floor is the highest floor among the roles it performs itself.** The
+table above binds reviewers and dispatched subagents, chosen per call — but the
+session doing the authoring was chosen by the USER before the agent existed, and
+an agent cannot re-tier itself mid-session. So the rule that reaches it is not
+routing, it is **disclosure**: where a session can determine that it is below the
+floor for a role it performs itself, it says so **once per session, at the first
+such role** — not once per unit — and the disclosure is repeated in the review
+row's existing `reviewer` cell (Hybrid: `notes`), which is what makes the pair
+below visible without adding a column.
+
+**Say plainly how thin this reach is.** A session knows its model NAME; tiers here
+are deliberately client-relative and this file maps no name to a tier, so the
+antecedent is satisfiable only where a session can recognize its own tier — which
+is also the session least likely to run the check. Where a session **cannot
+determine its own tier**, it owes nothing: the rule binds what an agent can know
+and say, never a capability it cannot acquire. **The reliably working half of this
+rule is the one addressed to the user, not to the agent** — which is why the
+package READMEs carry the tier-selection guidance, and why that is not a footnote.
+
+**Never both below the floor on the same unit — except when nothing better
+exists.** Where the authoring session ran below floor, the independent review's
+floor becomes non-negotiable and the same unit should not ALSO run a below-floor
+review. **The exception is the case *When independence and capability conflict*
+governs below**: where no independent rung at or above the floor exists at all,
+that rule wins, the review still runs, BOTH disclosures are recorded, and the
+result is not a violation but the worst admissible state — honestly labelled.
+Forbidding it outright would push the agent toward the abstention that rule
+explicitly rejects.
 
 **When independence and capability conflict, independence wins.** A client whose
 only independent rung is bound below the floor (a single-model client, or a

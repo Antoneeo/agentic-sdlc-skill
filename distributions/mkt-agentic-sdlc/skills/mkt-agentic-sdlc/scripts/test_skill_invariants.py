@@ -902,6 +902,32 @@ class SkillInvariants(unittest.TestCase):
         self.assertIn("threshold signal", r.lower(),
                       "a tier may be lowered only where a wrong cheap answer is "
                       "catchable -- that rule IS the floor's justification")
+        # F-049: the floor must reach the AUTHOR, not only the gates. Parsed as a
+        # table row, because a floor a reader cannot look a role up in is advice.
+        # scoped to the FLOOR TABLE's rows, not every pipe line in the file:
+        # a future table elsewhere containing "author" would false-fail.
+        author_rows = [ln for ln in r.splitlines()
+                       if ln.startswith("|")
+                       and re.search(r"\*\*(deep|light|economy)\*\*", ln)
+                       and re.search(r"author", ln, re.I)]
+        self.assertEqual(len(author_rows), 1,
+                         "authoring a governed artifact is the purest deep-floor "
+                         "role: its output is judgement and nothing scores it")
+        self.assertIn("highest floor among the roles it performs itself", r,
+                      "a session performing several roles has no floor without it")
+        flat = re.sub(r"\s+", " ", r)
+        self.assertRegex(flat, r"(?i)cannot determine its own tier",
+                         "the rule binds disclosure, never a capability an agent "
+                         "cannot acquire -- it must fail open and say so")
+        self.assertRegex(flat, r"(?i)should not ALSO run a below-floor",
+                         "authoring below floor AND reviewing below floor on one "
+                         "unit is the combination that must be named")
+        self.assertRegex(flat, r"(?i)The exception is the case",
+                         "forbidding it outright contradicts `independence wins` "
+                         "and pushes toward the abstention that rule rejects")
+        self.assertRegex(flat, r"`reviewer` cell",
+                         "the log has no column for the authoring tier, so the "
+                         "rule must name the cell the disclosure lands in")
         # the arbitration: the case where the only independent rung is below it
         self.assertIn("independence wins", r.lower(),
                       "a client whose only independent rung is below the floor "
