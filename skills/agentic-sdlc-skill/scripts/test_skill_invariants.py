@@ -757,6 +757,41 @@ class SkillInvariants(unittest.TestCase):
                             "an extra leading column must not produce a permanent, "
                             "unclearable 'you skipped the review'")
 
+    def test_hybrid_seam_moved_not_deleted(self):
+        """F-051: the Hybrid seam left the mandatory read for a triggered support
+        file. A pruning unit has one catastrophic failure mode -- a quiet deletion
+        wearing the costume of a move -- so this pins CONSERVATION, not bytes.
+        Skipped in a lens that has not done the move (SKILL.md is per-lens)."""
+        skill = read("SKILL.md")
+        hybrid_path = SKILL_DIR / "hybrid.md"
+        if not hybrid_path.is_file():
+            self.skipTest("this lens has not extracted its Hybrid seam yet")
+        hybrid = hybrid_path.read_text(encoding="utf-8")
+        for anchor in ("### Ownership matrix", "### Shadow discipline (Hybrid)",
+                       "### Triage equivalence", "### Feature state mapping",
+                       "Authoritative hierarchy:", "Hybrid rules:"):
+            self.assertIn(anchor, hybrid,
+                          f"{anchor!r} left SKILL.md and is in no support file "
+                          "-- that is a deletion, not a move")
+            self.assertNotIn(anchor, skill,
+                             f"{anchor!r} is in both files: the move did not "
+                             "happen, and the reader now has two copies")
+        # the pointer must carry its trigger and its consequence, or it is a
+        # filename and a Hybrid session has no reason to follow it
+        self.assertIn("hybrid.md", skill)
+        block = skill[skill.index("### Hybrid in symbiosis with devPNT"):]
+        block = block[:block.index("\n## ")]
+        self.assertIn("devpnt_", block, "the pointer must name its trigger")
+        # Anchored AFTER the filename and on the consequence itself: matching
+        # "ownership" alone is satisfied by the pointer's own content inventory,
+        # so deleting the whole consequence paragraph would leave it green.
+        after = block.split("hybrid.md", 1)[-1]
+        self.assertRegex(after, r"(?i)second source of truth",
+                         "the reader must be able to price skipping it")
+        self.assertRegex(after, r"(?i)auto-accept",
+                         "the human-approval rule now lives ONLY in the moved "
+                         "file; the pointer must say so")
+
     def test_benefit_reports_and_never_gates(self):
         """F-050: the process's central claim is measurable from REVIEW_LOG, and
         the measure must never become a gate. The parser's one real risk is

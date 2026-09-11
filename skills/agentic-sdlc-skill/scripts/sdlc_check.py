@@ -50,7 +50,7 @@ sdlc_core.set_profile(
     unit_noun="feature",
     support_files=("templates.md", "architect.md", "guides.md", "vision.md", "tdd.md",
                    "debugging.md", "elicitation.md", "review.md", "dispatch.md",
-                   "routing.md", "ENFORCEMENT.md"),
+                   "routing.md", "hybrid.md", "ENFORCEMENT.md"),
     capabilities=(
         # spine
         "triage", "write_triggers", "workstream_registry", "vision_gate",

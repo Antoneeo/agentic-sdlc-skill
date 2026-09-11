@@ -1320,7 +1320,7 @@ def cmd_validate(root, strict=False, hybrid=False):
         # comment-stripped, anchored: a '<!-- TODO: the ## Capability Ledger -->'
         # must not read as the section being present
         # Hybrid: the design lives in devPNT and its §4.5 gate owns this slot
-        # (SKILL.md ownership matrix: "run ONE of them, never both"), and its log
+        # (the Hybrid ownership matrix: "run ONE of them, never both"), and its log
         # rows are keyed on e_isp_/e_tdd_ doc_keys, not on this filename -- so
         # firing here would be a permanent, unfixable false positive.
         if not hybrid and design_review_due(meta) and not review_logged(root, p.name):

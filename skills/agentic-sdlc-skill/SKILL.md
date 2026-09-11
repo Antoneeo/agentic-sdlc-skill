@@ -17,6 +17,7 @@ Support files in the skill directory:
 - `architect.md`: the architect pass — do the components and services this feature needs already exist? Run at L3 before drafting the Impact.
 - `guides.md`: pipeline for distilling user-provided indications into `ai_docs/reference/GUIDE_[topic].md`.
 - `vision.md`: how to write a Vision a cold reviewer can actually apply — the properties that make a rule hold, the minimum operable sections, and the blind check run before promoting one to APPROVED.
+- `hybrid.md`: the devPNT seam — the authoritative hierarchy, the ownership matrix (who owns what when both authorities are live), the triage equivalence, the feature-state mapping and the shadow discipline. Read it when the `devpnt_*` tools point at this project; a Standalone session never needs it.
 - `routing.md`: which lens owns this unit of work. Read ONLY when a sibling lens skill is installed alongside this one; a single-lens install never reads it.
 - `scripts/sdlc_check.py` + `scripts/sdlc_core.py`: the mechanical validator for the docs root (`check`, `validate`, `index`, `stale`, `mark`, `benefit`, `gate`, `plan`, `orient`, `migrate`). Two files: the core is the family's shared spine, the entry point names this domain. Copy both, or neither.
 - `ENFORCEMENT.md`: optional setup for CI and hooks.
@@ -105,96 +106,20 @@ Standalone mode is not reduced: it must handle audits, features, significant bug
 
 ### Hybrid in symbiosis with devPNT
 
-Use this mode when the `devpnt_*` tools are available and point at the current project.
+Use this mode when the `devpnt_*` tools are available and point at the current
+project. **Read `hybrid.md` before touching a governed artifact or a plan.** It
+carries the authoritative hierarchy (M-VISION → Master Plan → Action Plan →
+governed artifacts → local `ai_docs/`), the **ownership matrix** naming who owns
+what when both authorities are live, the triage equivalence between the two
+vocabularies, the feature-state mapping, the shadow discipline and the validator's
+`--hybrid` behaviour.
 
-Authoritative hierarchy:
-1. **devPNT M-VISION**: strategic beacon of the milestone. Before design or code, read it and verify benefits, success signals, scope-in and non-goals.
-2. **devPNT Master Plan**: strategic roadmap and milestones.
-3. **devPNT Action Plan**: current tactical work for the active goal.
-4. **devPNT governed artifacts**: `D-UC`, `P-TM`, `E-ISP`, `E-TDD`, `E-TP`, ADR.
-5. **Local `ai_docs/`**: readable context, Standalone fallback, local handoff or shadow/mirror when useful.
-
-Hybrid rules:
-- devPNT is the governed source for plans and artifacts; do not create a second truth in `ai_docs/`.
-- The skill stays autonomous: if devPNT is not there, switch to Standalone without losing capability.
-- If the user request, the local Vision and the M-VISION diverge, stop and make the conflict explicit.
-- Do not create or modify milestones without respecting the M-VISION.
-- Never auto-accept devPNT proposals: present the preview and wait for explicit confirmation.
-- If the local devPNT protocol imposes stricter bootstrap, plans or gates, follow them.
-
-## Coexistence with devPNT (the Hybrid seam)
-
-This section is the single authoritative answer to "who owns what" when both the
-skill and devPNT are active. The skill owns the **process** (triage, phases, Vision
-Gate, lifecycle); devPNT owns the **machinery** (governed storage, versioned
-proposals, semantic analysis, independent reviewers). devPNT strengthens the
-process; it never replaces it.
-
-### Ownership matrix
-
-| Artifact | Standalone master | Hybrid master | Mirror rule |
-|---|---|---|---|
-| Product vision | `vision/project_vision.md` | `vision/project_vision.md` (product scope) | devPNT KL vision is regenerated from it, never edited independently |
-| Milestone vision | `vision/roadmap.md` milestones | devPNT M-VISION | `roadmap.md` may reference the M-VISION key; it never restates its content |
-| Feature design | `solutions/ANALYSIS_[feature].md` | devPNT E-ISP/E-TDD (+ D-UC/P-TM) | shadow exported from the ACCEPTED DB version as `SHADOW_[doc_key]_vX.Y.md`; on divergence the DB wins and the shadow is regenerated |
-| Plans | `## Action Plan` inside the ANALYSIS | devPNT Master/Action Plan | none |
-| Feature state | ANALYSIS frontmatter `status` | Action Plan node status | mapping table below; at closure both must move together |
-| ADR | `architecture/` (canonical dir) | devPNT DB (`adr_YYYY-MM-DD_slug`) | optional filesystem shadow `SHADOW_adr_*` exported at closure for grep-ability |
-| Audit / freshness | `audit/audit_plan.md` + `stale`/`mark` | devPNT KL coverage + summary status | run `check --hybrid` (skips audit-plan staleness) |
-| Design review (pre-implementation) | `review.md` moment 1, on the ANALYSIS | devPNT §4.5 gate on `E-ISP`/`E-TDD` | same slot, richer backend — run ONE of them, never both |
-| *(mode is per unit of change, not per project)* | a Hybrid-capable project may work one feature Standalone: the slot follows the ARTIFACT the design lives in, and the mode is declared in that artifact. `validate --hybrid` suppresses the Standalone design-review backstop, since devPNT owns the slot there | | |
-| Review log | `audit/reviews/REVIEW_LOG.md` | devPNT `REVIEW_LOG.md` (same path) | always filesystem |
-| Operative guides | `ai_docs/reference/` | `ai_docs/reference/` — **filesystem-first even in Hybrid** | devPNT bootstrap may point at their index; it never copies their content |
-| Handoff | `audit/handoff.md` | `audit/handoff.md` | always filesystem |
-
-### Triage equivalence (one threshold, two vocabularies)
-
-devPNT's "significance threshold" and the skill's triage are the SAME test. Do not
-run two classifications:
-
-| Skill triage | devPNT equivalent | Governed artifacts |
-|---|---|---|
-| L1 Trivial | trivial exempt | none |
-| L2 Small | localized obvious edit | none — but see escalation |
-| L3 Significant | governed unit of change | D-UC/P-TM/E-ISP/E-TDD per the devPNT trigger policy |
-| Spike | exempt (non-mergeable) | `SPIKE_[topic].md` only |
-
-Escalation triggers (any one of these makes it L3, in BOTH vocabularies): touches
-more than one module, changes a public API/contract/message format, changes a data
-model or state machine, has a security surface, risks duplicating existing logic,
-or the design choice is non-obvious. An L2 that trips one of these is not an L2.
-
-### Feature state mapping
-
-| ANALYSIS frontmatter | devPNT plan node |
-|---|---|
-| PLANNED | READY (or BLOCKED / ON_HOLD while waiting) |
-| IN_PROGRESS | PROGRESS |
-| COMPLETED | DONE |
-| CANCELLED | CANCELLED |
-
-Closure discipline: never mark the node DONE while the shadow/ANALYSIS still says
-IN_PROGRESS, or vice versa. They move in the same closure step.
-
-### Shadow discipline (Hybrid)
-
-- Shadow filename: `SHADOW_[doc_key]_vX.Y.md`, first line
-  `<!-- SHADOW generated from devPNT (doc_key vX.Y) - do not edit by hand -->`.
-  Never save a shadow under an `ANALYSIS_*` name: that name means "authoritative
-  Standalone document" and the validator treats it as such.
-- **Export the approved E-TDD shadow BEFORE implementation** (not only at closure).
-  It gives context-free subagents their design input, unlocks `gate --hybrid`, and
-  guarantees the filesystem fallback if devPNT becomes unavailable mid-feature.
-- At closure, refresh all shadows from the accepted DB versions.
-
-### Validator in Hybrid
-
-Pass `--hybrid` explicitly (never auto-detected — an explicit flag beats a guessed
-mode): `check --hybrid` and `stale --hybrid` skip audit-plan staleness (mapping is
-delegated to devPNT/KL) — guide-drift checking still runs (`ai_docs/reference/`
-is filesystem-first even in Hybrid, see the ownership matrix above); `gate --hybrid`
-also unlocks on the presence of an E-TDD shadow in `solutions/` (the Hybrid design
-gate) instead of requiring an IN_PROGRESS ANALYSIS.
+Skipping it is how a **second source of truth** gets created in `ai_docs/` — the
+one failure this seam exists to prevent — and it is where the rule **never
+auto-accept a devPNT proposal: present the preview and wait for explicit
+confirmation** now lives, which is a human-approval guarantee and exists nowhere
+else in this package. The skill stays autonomous either way: if
+devPNT is not there, work Standalone and nothing is lost.
 
 ## L3 Workflow
 
