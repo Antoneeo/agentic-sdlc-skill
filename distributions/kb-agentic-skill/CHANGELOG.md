@@ -2,6 +2,44 @@
 
 Every significant change to this skill is recorded here.
 
+## [1.15.0] - 2026-09-12
+
+### Fixed
+- **F-047: one row asserts one thing.** Field report: a bundled claim row
+  ("X, and also Y") made the checker's remedies point in opposite directions —
+  the collision message told the author to merge rows that assert different
+  things, and the state-grammar message denied a multi-successor `SUPERSEDED`
+  that every documented site also denied. The collision message is now
+  narrow-first and proposes a merge only where a single assertion is shared;
+  the grammar message states the form it accepts; and a plurality hint
+  (notes tier, never the exit code) flags a row that reads as more than one
+  claim. NOT demonstrated: a pre-registered blind A/B of the citation-scope
+  rule on the field's own row returned NULL (3/3 correct in both arms —
+  ceiling effect, the row names its off-topic subject explicitly), and the
+  Diary records it as such.
+- **F-053: kb had no human-approval rule.** "Never auto-accept a devPNT
+  proposal: present the preview and wait for explicit confirmation" existed in
+  both sibling packages and nowhere in this one — invisible because the only
+  battery assertion sat inside a test that skips every lens without a
+  `hybrid.md`, which is exactly the lens that lacked the rule. The rule is now
+  in kb's Hybrid block, and the battery test that pins it skips no lens and
+  goes red when the rule is stripped from a whole-lens copy.
+- **F-053: the authoring-floor pointer reached one lens of three.** It is now
+  in this contract too, before the instruction to write the analysis — where
+  the rule can still change what gets written, rather than at the design-review
+  gate one phase too late.
+
+### Added
+- **The shared spine gains the capability floor, the delegation boundary and
+  `benefit`** (F-048, F-049, F-050 — see the code lens's changelog for the
+  reasoning; the files are byte-identical across the three packages).
+
+### Read cost
+- This lens's mandatory contract GREW **+7.1%** (27,516 -> 29,471 B): it
+  received the spine's new doctrine and the two rules above, and no diet. The
+  Hybrid seam was measured for extraction and DECLINED — kb's block is 299 B
+  against a 1,282 B pointer, so moving it would grow the file it should shrink.
+
 ## [1.14.1] - 2026-09-06
 
 ### Fixed

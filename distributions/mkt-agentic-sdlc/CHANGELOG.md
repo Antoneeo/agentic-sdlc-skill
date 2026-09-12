@@ -1,5 +1,39 @@
 # Changelog
 
+## [0.11.0] - 2026-09-12
+
+### Added
+- **F-052: the Hybrid seam leaves the mandatory read.** The devPNT ownership
+  matrix and its neighbours move to a triggered `hybrid.md`; `SKILL.md` keeps a
+  pointer carrying the trigger and what is lost by skipping it. Conservation is
+  guarded by a `moved-block-sha256` digest computed from the PRE-MOVE source —
+  never from the artifact under test, after a first attempt recorded the digest
+  of a mojibake-corrupted file and would have frozen the corruption permanently.
+- **The shared spine gains the capability floor, the delegation boundary and
+  `benefit`** (F-048, F-049, F-050 — see the code lens's changelog; the files
+  are byte-identical across the three packages).
+- **F-053: the authoring-floor pointer**, before this lens's instruction to
+  draft the MKT-VISION.
+
+### Fixed
+- **F-053: a probe in this lens's own harness could not fail.** Its conservation
+  check accepted the word `ownership` after the filename, and the pointer's own
+  content inventory contains it — so deleting the entire consequence paragraph
+  left the harness green. That is the defect the previous unit's review had
+  already blocked once, re-introduced in the next unit's probe with a comment
+  claiming the opposite. Anchored on the consequence alone, and
+  mutation-verified red.
+- **F-053: figures that reproduced under no ruler.** This lens's read-diet
+  numbers omitted the 94-byte stamp line that its own review-driven correction
+  had added, so the corrected figure was invalidated by the correction beside
+  it. Re-measured on one declared ruler: Standalone 22,880 -> 20,995 B
+  (**-8.2%**), Hybrid 24,527 B (**+7.2%**).
+
+### Read cost
+- `SKILL.md` **-4.9%** (22,648 -> 21,541 B) Standalone. A Hybrid session reads
+  **+10.7%**, proportionally the largest surcharge of the three lenses, because
+  a pointer costs about the same in a contract half the size.
+
 ## [0.10.1] - 2026-09-06
 
 ### Fixed

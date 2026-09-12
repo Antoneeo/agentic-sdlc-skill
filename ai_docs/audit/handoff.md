@@ -119,3 +119,26 @@ pass). The registry `time` field settles WHEN each version actually landed.
 
 Companion workstream still owed in the devPNT repo: the governed D-IC artifact
 (sequence D-UC → D-IC → P-TM → E-ISP), from F-032.
+
+## Release 2026-09-12 — v1.33.0 / kb 1.15.0 / mkt 0.11.0
+
+Seven units in one tranche: F-047 (kb row atomicity, the only field-reported
+defect of the set), F-048 (capability floor + delegation boundary), F-050
+(`benefit`), F-051 and F-052 (the Hybrid seam leaves the mandatory read, code
+and mkt; DECLINED for kb on measurement), F-049 (the floor reaches the author),
+F-053 (nine defects a review on a different model found after the other six had
+shipped).
+
+**Next step: publish.** `publish_all.bat` from the repo root is the USER's step
+— 2FA opens a browser per package — and it packs the WORKING TREE, so run it
+from the clean tagged checkout. It skips any package already on the registry at
+its version. Then `npm view` each of the three.
+
+**What this release does NOT claim.** The read surface GREW in all three lenses
+(+6.2% code, +8.2% kb, +7.8% mkt across all `.md`), even though the code and mkt
+contracts shrank: the cost moved out of the file `benefit` prints rather than
+falling, and kb received doctrine with no diet at all. The one blind A/B in the
+tranche returned NULL (ceiling effect), so no claim here rests on an external
+criterion. Three WARNs and four nits in F-053 were folded after the review cap
+and are, by the doctrine's own rule, unreviewed — they are listed in that unit's
+closure REVIEW_LOG row.

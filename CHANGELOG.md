@@ -2,6 +2,66 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.33.0] - 2026-09-12
+
+### Added
+- **F-048: the capability floor, and what may be delegated at all.** A review
+  run below the capability its judgement needs certifies the omission it was
+  there to catch. `review.md` now carries a floor — which tier may run which
+  role — with the rule that a tier may be lowered only where a **threshold
+  signal** scores the cheap answer, and an arbitration for the case where the
+  only independent rung sits under it (independence wins, both facts recorded).
+  `dispatch.md` gains the family-wide delegation boundary, keyed on whether a
+  pass's output is falsifiable and on its read/report ratio: a task whose brief
+  cannot be expressed as POINTERS is not delegable. `REVIEW_LOG` gains a
+  `model` column — tiers are client-relative capability levels, never provider
+  names. External evidence: cascade routing pays only where a threshold signal
+  exists, and multi-agent execution costs 3-15x the tokens and buys context
+  isolation rather than savings.
+- **F-049: the floor reaches the AUTHOR, not only the gates.** A session's
+  floor is the highest floor among the roles it performs itself, and authoring
+  a governed artifact is a deep-floor role — its output is judgement and
+  nothing downstream scores it. Fails open by construction: a session that
+  cannot determine its own tier owes nothing. The reliably working half is
+  addressed to the user, in each package's README.
+- **F-050: `benefit` — what the process caught, beside what it costs to read.**
+  The product's central claim becomes computable instead of asserted. It always
+  exits 0 and carries no verdict: a measurement that can fail a build becomes a
+  target, and a targeted measurement stops measuring.
+- **F-051: the Hybrid seam leaves the mandatory read.** The devPNT ownership
+  matrix, triage equivalence, feature-state mapping and shadow discipline move
+  to a triggered `hybrid.md`; `SKILL.md` keeps a pointer carrying the trigger
+  and the consequence. Conservation is guarded by a digest stamped in the moved
+  file and computed from the PRE-MOVE source.
+
+### Fixed
+- **F-053: nine defects a review on a DIFFERENT model found after six units
+  shipped.** Each of those six was reviewed in isolation, and each by the same
+  model family as its author; six rows reading "all findings folded" are one
+  loop, not two eyes. The scoped re-review `review.md` mandates had never been
+  run for seven unreleased rows — it has been now, late, and each row states
+  both verdicts WITH its limitation, because 35 findings across six of them
+  have no surviving per-finding record and no late round can certify them.
+  `benefit` printed "the share above is a floor, not a ceiling", which is
+  backwards — folding the post-implementation rows LOWERS the design share —
+  and excluded 46 of 117 rows in silence; it now prints a computed interval,
+  names the rows that state no count, and prints the read-cost TOTAL with the
+  support files itemised, because printing only the two terms let the one that
+  FELL be quoted while the one that GREW stayed lumped.
+- **The mechanism behind five of those units' probes, recorded as an ADR.** Ten
+  assertions across six units were satisfiable by a LITERAL, because the probe
+  looked for a SHAPE in the output instead of recomputing the VALUE and
+  comparing. Every probe over a computed output now recomputes and compares and
+  carries a positive control on synthetic data; every probe over prose is
+  labelled a wording anchor.
+
+### Read cost
+- `SKILL.md` **-7.9%** (49,413 -> 45,518 B) for a Standalone session. A Hybrid
+  L3 session reads **+5.6%** (`SKILL.md` + `hybrid.md`), and the package's
+  support files grow **+10.8%**: the cost did not fall so much as MOVE out of
+  the file the report prints. Stated here because the Vision's ceremony clause
+  counts relocated cost.
+
 ## [1.32.1] - 2026-09-06
 
 ### Fixed
