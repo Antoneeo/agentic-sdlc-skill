@@ -171,9 +171,15 @@ twin of the guide consult above.
   cited without naming its successor.
 - **The declared verdict — only when the recall ran**, never a per-turn ritual. Four
   legal values:
-  - `kb: <slug> → N claims cited`
-  - `kb: <slug> → node matched, no claims` — surface the node's `gaps:` when it answers
-    the question: "the KB knows it doesn't know" is a first-class answer.
+  - `kb: <slug>[, <slug> …] → N claims cited` — **every** slug the descent opened, not
+    only the one that answered. The descent is multi-branch by mandate (`taxonomy.md`
+    §1: follow every parent, open the final candidates), so a single-slug form cannot
+    state what a correct descent did: the agent either under-reports the branches it
+    read or invents a shape for them, and both make a thorough descent
+    indistinguishable from a lucky one. Which branches were opened is the part of this
+    verdict a reader can actually check.
+  - `kb: <slug>[, <slug> …] → node matched, no claims` — surface the node's `gaps:` when
+    it answers the question: "the KB knows it doesn't know" is a first-class answer.
   - `kb: no coverage` — index read, nothing fits.
   - `kb: index absent — regenerate (sdlc_check.py index)` — the INDEX is missing, not
     necessarily the graph (nodes routinely exist while the index lags); regenerate and

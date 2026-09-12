@@ -86,9 +86,28 @@ class TestRecallDoctrine(unittest.TestCase):
             "Exempt: pure mechanics",
             "cites the claim id AND the re-touched ground",
             "inlines the cited claim rows",
+            "**every** slug the descent opened, not only the one that answered",
+            "indistinguishable from a lucky one",
         ):
             self.assertIn(anchor, text,
                           "SKILL.md lost a recall clause: %r" % anchor)
+
+    def test_the_verdict_form_admits_every_branch_the_descent_opened(self):
+        """F-054: the descent is multi-branch by mandate (`taxonomy.md` §1), so
+        both node-naming verdicts must be expressible with more than one slug.
+        A single-slug template leaves a mandated act with no legal way to declare
+        its result, and the agent invents a shape for it (replay 2026-09-12).
+
+        The count is pinned too: the repair is in the FORM, not in the
+        vocabulary — a fifth legal value would be a contract change, not a fix."""
+        text = normalized(SKILL_DIR / "SKILL.md")
+        for value in ("N claims cited", "node matched, no claims"):
+            self.assertIn("`kb: <slug>[, <slug> …] → %s`" % value, text,
+                          "the %r verdict is not expressible for a multi-branch "
+                          "descent" % value)
+        self.assertIn("Four legal values", text,
+                      "the verdict vocabulary changed size: the multi-slug "
+                      "repair adds a form, never a fifth value")
 
     def test_taxonomy_carries_the_answer_mode_descent(self):
         text = normalized(SKILL_DIR / "taxonomy.md")

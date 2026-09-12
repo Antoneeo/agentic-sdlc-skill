@@ -128,6 +128,16 @@ def seed(scenario, dest):
 
 
 def main(argv):
+    # Scenarios are UTF-8 and their pass criteria quote the verdict forms
+    # verbatim, arrows included. A Windows console defaults to cp1252, which has
+    # no mapping for U+2192 -- so printing a shipped scenario raised
+    # UnicodeEncodeError and the driver died before its own output. Replace
+    # rather than fail: a console that cannot render a glyph is not a reason to
+    # withhold the scenario.
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, OSError, ValueError):
+        pass  # exotic or already-wrapped stream: print what it accepts
     if len(argv) != 1:
         _fail("usage: run_behavioral.py scenarios/<scenario>.md")
     scenario = load_scenario(argv[0])
