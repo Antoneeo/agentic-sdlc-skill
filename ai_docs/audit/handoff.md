@@ -6,140 +6,64 @@ Date: 2026-09-12 (UTC)
 | Workstream | Level | Branch | Status | Since | Next step | Details |
 |---|---|---|---|---|---|---|
 | F-015 Code-Comprehension Guides | L3 | main | PAUSED | 2026-07-19 | dogfood #8: write one real `source_kind: code` guide | HANDOFF_comprehension_guides.md · ANALYSIS_comprehension_guides.md |
-| F-022 Multi-Domain Core | L3 | feat/multi-domain-core | DONE, HELD | 2026-07-31 | nothing outstanding — the release hold is lifted by the owner | HANDOFF_multi_domain_core.md · ANALYSIS_multi_domain_core.md |
-| F-026 Question Discipline | L3 | claude/agitated-blackburn-62f5cf | DONE, AWAITING MERGE | 2026-08-01 | the owner's merge call: rebase onto `feat/kb-knowledge-method`, or cherry-pick 50c5cf7+a0072cf onto main | HANDOFF_question_discipline.md · ANALYSIS_question_discipline.md |
-| F-038 Gated-Rung Vocabulary | L3 | feat/gated-rung-vocabulary | DONE | 2026-08-25 | nothing outstanding -- published and verified 2026-08-26 (1.28.0 / 1.6.0 / 0.6.0) | HANDOFF_gated_rung_vocabulary.md · ANALYSIS_gated_rung_vocabulary.md |
-| F-039 KB Recall Reflex (second-brain unit 1) | L3 | feat/kb-recall-reflex | DONE, MERGED | 2026-08-27 | nothing outstanding -- published in kb 1.7.0 (2026-08-28); unit 3 waits for usage data per the vision | HANDOFF_kb_recall_reflex.md · ANALYSIS_kb_recall_reflex.md |
-| F-040 KB Capture Moment (second-brain unit 2) | L3 | feat/kb-capture-moment | DONE, MERGED | 2026-08-28 | nothing outstanding -- published in kb 1.7.0 (2026-08-28) | HANDOFF_kb_capture_moment.md · ANALYSIS_kb_capture_moment.md |
-| F-041 KB Mid-Session Drift (field report, 2 items) | L3 | feat/kb-midsession-drift | DONE, MERGED | 2026-08-28 | nothing outstanding -- published in kb 1.8.0 (2026-08-28, registry-verified); field datum same day: an external session's check surfaced the missing orient hook and offered the wiring | HANDOFF_kb_midsession_drift.md · ANALYSIS_kb_midsession_drift.md (+ this file: evidence verbatim) |
-| F-042 Global orient hook at install time (UX fix of the F-041 note) | L3 | feat/global-orient-hook | DONE, MERGED | 2026-08-28 | nothing outstanding -- published in kb 1.9.0 (2026-08-28 12:13Z, registry-verified); live-verified on the dev machine: the update wired the user-level hook and the per-target marker | HANDOFF_global_orient_hook.md · ANALYSIS_global_orient_hook.md; the owner's design ruling is below |
-| F-043 Revision doctrine (delta-append is the failure; full re-read is the gesture) | L3 | feat/revision-doctrine | DONE, MERGED | 2026-08-28 | nothing outstanding -- published in kb 1.10.0 (2026-08-28 13:24Z, registry-verified) | HANDOFF_revision_doctrine.md · ANALYSIS_revision_doctrine.md (+ this file: post-mortem verbatim) |
-| F-044 KB Time Cycle (second-brain unit 3 - per-claim staleness, supersede, invalidation cascade) | L3 | feat/kb-time-cycle | DONE, AWAITING RELEASE | 2026-08-28 | the combined release (owner order 2026-08-28, "concludi F-044 poi rilascia tutto"): kb 1.11.0 (F-044 + the quoting/recency fix), code + mkt with their parked F-041/F-042 entries plus the F-043 revision-sentence port; then publish_all.bat (owner's act) and registry verify | HANDOFF_kb_time_cycle.md · ANALYSIS_kb_time_cycle.md (design + Diary, COMPLETED); design review FAIL->PASS 2 rounds; closure review PASS 1 round, 3 WARN folded (normpath hardening, six test pins, check-test rename); batteries kb 367 / code 184 / mkt 202, goldens byte-identical |
-| F-045 Review convergence doctrine (Execute-Before-Specify + review-loop hardening, spine ported) | L3 | main | DONE, PUBLISHED | 2026-09-01 | publish code 1.31.0 + kb 1.13.0 + mkt 0.9.0 with publish_all.bat (owner's act, 2FA), then verify on the registry. Deferred item unchanged: Write Triggers row for harness_[feature]/ | HANDOFF_review_convergence_doctrine.md · ANALYSIS_review_convergence_doctrine.md (full unit record + Diary) |
-| F-046 Per-turn protocol reminder (the protocol reaches every turn, not only the first) | L3 | main | DONE, AWAITING PUBLISH | 2026-09-06 | publish code 1.32.1 + kb 1.14.1 + mkt 0.10.1 with publish_all.bat (owner's act, 2FA), then verify on the registry. 1.32.0/1.14.0/0.10.0 are published and wire nothing -- see the defect record below | HANDOFF_per_turn_protocol_reminder.md · this file (the unit record); rulings ledger row r19 |
-| F-047 kb row atomicity (bundled claim rows - atomicity doctrine, split move, citation-scope rail, de-trapped collision remedy, plurality note) | L3 | main | DONE, UNRELEASED | 2026-09-08 | kb release (bump + CHANGELOG per GUIDE_release) on the owner's call — the spine delta is kb-only, so a single-package release | HANDOFF_kb_row_atomicity.md · ANALYSIS_kb_row_atomicity.md (unit record + Diary); harness_kb_row_atomicity/probe.py (all probes green) |
-| F-048 capability tiers + delegation boundary (floor no gate may start below, what may be delegated at all, REVIEW_LOG `model` column) | L3 | main | DONE, UNRELEASED | 2026-09-10 | nothing outstanding except the owner's integration call - all three reviews PASS, everything green and uncommitted on main; release (bump + CHANGELOG per GUIDE_release, all three packages) deferred to the owner | HANDOFF_capability_tiers.md · ANALYSIS_capability_tiers.md (unit record, precedent placement, ceremony disclosure); harness_capability_tiers/probe.py; ADR_2026-09-10_capability_floor_and_delegation_boundary.md |
-| F-049 the floor reaches the author (authoring is a deep-floor role; disclosure, not routing) | L3 | main | DONE, UNRELEASED | 2026-09-10 | owner's integration call; six commits now sit unpushed | HANDOFF_authoring_floor.md · ANALYSIS_authoring_floor.md; harness_authoring_floor/probe.py; ADR_2026-09-11_authoring_floor.md |
-| F-050 the benefit report (`sdlc_check.py benefit` - what the gates caught, beside what the doctrine costs to read) | L3 | main | DONE, UNRELEASED | 2026-09-10 | owner's integration call - three reviews spent (design FAIL, closure FAIL, both folded, final re-review pending); the SKILL.md pruning pass is the unit AFTER this one and is measured by it | HANDOFF_benefit_report.md · ANALYSIS_benefit_report.md; harness_benefit_report/probe.py |
-| F-051 the mandatory-read diet (the Hybrid seam moves out of SKILL.md into a triggered support file) | L3 | main | DONE, UNRELEASED | 2026-09-11 | owner's integration call; the NAMED FOLLOW-UP is the same extraction for kb and mkt, which still carry their Hybrid material inline | HANDOFF_mandatory_read_diet.md · ANALYSIS_mandatory_read_diet.md; harness_mandatory_read_diet/probe.py; ADR_2026-09-11_mandatory_read_diet.md |
-| F-052 the read diet applied per lens (mkt extracted; kb measured and deliberately NOT extracted) | L3 | main | DONE, UNRELEASED | 2026-09-11 | owner's integration call; four commits now sit unpushed | HANDOFF_mkt_read_diet.md · ANALYSIS_mkt_read_diet.md; harness_mkt_read_diet/probe.py |
 | F-054 kb recall multi-slug verdict (the false-negative claim was refuted; the verdict form was the real gap) | L2 | main | DONE, AWAITING PUBLISH | 2026-09-12 | publish_all.bat from the repo root (owner's act, 2FA opens a browser per package; it skips code and mkt, unchanged), then npm view @antoneeo/kb-agentic-skill version returns 1.16.0 | HANDOFF_kb_recall_verdict.md · SPIKE_kb_recall_second_instrument.md (the negative spike this unit came out of); harness_kb_recall_probe/{probe.py,replay_2026-09-12.md} |
-| Release 1.19.0 (Architect Pass + Design Review Gate) | — | feat/architect-pass (tag v1.19.0) | AWAITING OWNER | 2026-07-28 | `npm publish` (2FA, owner's act), then verify `npm view` → 1.19.0 | HANDOFF_release_1_19_0.md · CHANGELOG `[1.19.0]`/`[1.18.0]` · ANALYSIS_architect_pass.md · ANALYSIS_design_review_gate.md |
-| Release of the three packages | — | feat/kb-knowledge-method | AWAITING OWNER | 2026-08-01 | publish code 1.21.0, kb 1.4.0 and mkt 0.4.0 (2FA, owner's act) — F-028 ships in all three | HANDOFF_release_three_packages.md · ANALYSIS_kb_knowledge_method.md · ANALYSIS_claim_ledger.md · ADR_2026-08-01_kb_topic_graph_claim_ledger.md |
 
 ## Project-wide notes
 
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**Unreleased kb fix on `fix/kb-recency-source` (seventh field datum,
-2026-08-28, reported against 1.11.0 same day):** the recency `date:` probe read
-only the first 600 bytes of the note; a REAL frontmatter (edge lists, basis
-lines) pushed the closing fence past the cap and the WHOLE probe silently
-skipped -- a note dated 3 days back read "0 days old (mtime -- date: not
-parsed)". The 1.11.0 disclosure marker did its designed job (made the lie
-visible and NAMED the failing source -- that is what let the field session
-diagnose it); the source is now fixed: `load_frontmatter` (the authoritative
-reader) + `kb_unquote` + datetime-suffix-tolerant prefix. Root cause
-REPRODUCED in RED before fixing (long-frontmatter fixture). Released as kb
-1.11.1 (tag `kb-v1.11.1`, 2026-08-28; publish = owner's act, then poll
-verify). Field lesson attached by the reporting session
-itself: it had approved the mtime behavior twice on plausible reasoning
-before testing it against the case in view -- evidence for the review rule
-"a PASS is invalid on found-nothing" extending to APPROVALS.
+**Release state (registry-verified 2026-09-12).** Published: code **1.33.0**, kb
+**1.15.0**, mkt **0.11.0**. Tagged and awaiting the owner's publish: kb **1.16.0**
+(`kb-v1.16.0`, commit `cbc141c`) — F-054, the multi-slug recall verdict. Per-release
+history belongs to the three `CHANGELOG.md` files and is not restated here.
 
-**Published on npm (registry-verified 2026-08-28, second wave):** code
-**1.29.0**, kb **1.11.0**, mkt **0.7.0** -- tags `v1.29.0` / `kb-v1.11.0` /
-`mkt-v0.7.0`, one commit (`c97a4b5`), merged to main. kb 1.11.0 = F-044 the
-time cycle + the fifth/sixth field-data fixes (YAML unquoting, recency
-disclosure); code/mkt = parked F-041/F-042 + the F-043 revision-sentence port
-(code: L2 row + ANALYSIS write trigger; mkt: E2 row). First field report on
-1.11.0 arrived within hours: the quoting fix VERIFIED (124 -> 22 warnings,
-the 22 all legitimate incomplete-ingestion warns; zero false dangling).
+**What the 2026-09-12 tranche does NOT claim.** The read surface GREW in all three
+lenses (+6.2% code, +8.2% kb, +7.8% mkt across all `.md`), even though the code and mkt
+contracts shrank: the cost moved out of the file `benefit` prints rather than falling,
+and kb received doctrine with no diet at all. The one blind A/B in the tranche returned
+NULL (ceiling effect), so no claim there rests on an external criterion. Three WARNs and
+four nits in F-053 were folded after the review cap and are, by the doctrine's own rule,
+unreviewed — they are listed in that unit's closure REVIEW_LOG row.
 
-**Published on npm (registry-verified 2026-08-28):** code **1.28.0**, kb **1.10.0**,
-mkt **0.6.0** -- kb 1.10.0 (tag `kb-v1.10.0`) carries F-043: the revision doctrine
-(documents read as current state; full re-read, never append a delta). Before that,
-same day: kb 1.9.0 (tag `kb-v1.9.0`) carries F-042: install-time global orient
-hook (user-level settings; removal = standing per-target opt-out; surgical uninstall)
-+ the user-aware, user-language check note; live-verified on the dev machine (update
-wired hook + marker). Second field datum, same day: an external session
-self-discovered `remind` in 1.9.0, tested it, honored the opt-in and asked the
-owner a COMPREHENSIBLE consent question -- the exact UX F-042 was ruled to
-produce. Evidence stream for the vision's unit 3. Third datum, same day (the strongest): an external
-session's post-mortem on a 12-document realignment -- delta-append revisions left
-pre-call sentences standing as printed truth, and the session itself named the
-claim-ledger cascade (claim superseded -> citing documents mechanically stale)
-as the designed answer to exactly that failure. Discipline half shipped as
-F-043 (the kb `## Revision` doctrine + remind clause). **Declared follow-up (durable
-home):** the code AND mkt lenses share the revision failure surface on their own
-triage rows (mkt's vocabulary is E-rows) and can port the doctrine sentence when
-they next release; the kb SKILL.md section is the reference text. The mechanical
-half stays unit 3. Fourth field datum, same day: an external session VALIDATED
-1.10.0 against its own post-mortem (doctrine lands at the right points; the
-mechanical gap correctly left to unit 3) and filed one cosmetic item, half-true
-on inspection: `--help` DOES print the overlay block (graph/corpus/.../remind),
-but the argparse USAGE LINE and the unknown-command ERROR path list only the
-nine spine commands. **Backlog (small):** after the spine's unknown-command
-error, the kb overlay dispatch appends one pointer line to the overlay commands
--- forward-by-default intact (the spine still rules validity); the usage first
-line stays spine-owned (lens-neutral by design). The F-042 JS touches ALL THREE packages' lifecycle scripts --
-code and mkt have a concrete reason to release soon. Before that: kb 1.8.0 (tag
-`kb-v1.8.0`) carries F-041: the check wiring/dead-hook
-notes (spine x3, parked in code/mkt CHANGELOGs for their next release) + the kb
-`remind` per-turn opt-in. Field datum the same day: an external session's check
-surfaced its missing orient hook via the new note and offered the wiring -- the
-note doing exactly its designed job. Before that: kb **1.7.0** — kb 1.7.0 (tag `kb-v1.7.0`) carries the second brain's
-units 1-2: F-039 recall reflex + F-040 capture moment; code and mkt unchanged,
-skipped by the script. Before that: F-038 (gated-rung vocabulary + mandated ask,
-tag `v1.28.0`, merged to main) in all three. Before that: F-036 (init wires the
-SessionStart orientation hook) in 1.27.0/1.5.0/0.5.0, then the README front pages and
-the publish-verify poll in the .1s — the first three-package release since the packages
-began versioning independently. `v1.16.0` was tagged and never published — it stays as
-history, and no pushed tag is ever moved. kb 1.4.2 was bumped and never published
-either; the registry goes 1.4.1 → 1.4.3.
+**Version numbers that exist only as intentions.** `v1.16.0` (code) was tagged and never
+published; kb 1.4.2 was bumped and never published (the registry goes 1.4.1 → 1.4.3);
+and code 1.32.1 / kb 1.14.1 / mkt 0.10.1 were named as F-046's release and never existed
+— its fix reached users inside the next tranche instead, because `publish_all.bat` packs
+the working tree. No pushed tag is ever moved. Since kb 1.4.8 tags are **package-scoped**
+(`kb-v1.4.8`), because the three packages version independently and a bare `vX.Y.Z` is
+ambiguous against the code lens's own tags.
 
-**kb 1.4.8 released 2026-08-25** (F-035 provenance chains + pointer integrity, tag
-`kb-v1.4.8`, merged to main as a fast-forward). First release tagged with a
-package-scoped name: the three packages version independently, so a bare `vX.Y.Z` is
-ambiguous against the code lens's own tags. code and mkt were unchanged and were
-skipped by `publish_all.bat` rather than re-published.
+**The publish-verify trap, recorded the days it bit.** `npm view` answers from a metadata
+cache, so a post-publish verify printed the PREVIOUS version and read as a failure when
+the publish had succeeded. `--prefer-online` was added — and it bit a SECOND time (the
+1.27.0 run reported mkt 0.4.7 when 0.5.0 had landed), because the flag forces
+revalidation but cannot outrun CDN propagation of the `latest` tag. Since 1.27.1 the
+block **polls** until the registry agrees with the local version. When in doubt,
+`npm view <pkg> versions --json --prefer-online` settles it. Third bite, different organ:
+the per-package 2FA flow waits on an ENTER before the last publish — a run abandoned at
+that prompt looks complete while the remaining package never shipped (mkt 0.6.0 landed
+two minutes after the other two, on a second pass). The registry `time` field settles
+WHEN each version actually landed.
 
-**Trap recorded the day it bit, and the fix that was not enough.** `npm view` answers
-from a metadata cache, so the post-publish verify printed the PREVIOUS version and read
-as a failure when the publish had succeeded. `--prefer-online` was added — and it bit a
-SECOND time (the 1.27.0 run reported mkt 0.4.7 when 0.5.0 had landed), because the flag
-forces revalidation but cannot outrun CDN propagation of the `latest` tag. Since 1.27.1
-the block **polls** until the registry agrees with the local version; the 1.27.1 run was
-the first whose own output could be trusted. When in doubt,
-`npm view <pkg> versions --json --prefer-online` still settles it. Third bite,
-different organ (2026-08-26): the per-package 2FA flow waits on an ENTER before the
-last publish — a run abandoned at that prompt looks complete while the remaining
-package never shipped (mkt 0.6.0 landed 2 minutes after the other two, on a second
-pass). The registry `time` field settles WHEN each version actually landed.
+**A field lesson worth more than the fix it came from.** The kb recency probe read only
+the first 600 bytes of a note, so a real frontmatter pushed the closing fence past the
+cap and the whole probe silently skipped — a note dated three days back read "0 days old"
+(fixed in kb 1.11.1). The reporting session had approved that behaviour twice on
+plausible reasoning before testing it against the case in view: evidence that the review
+rule "a PASS is invalid on found-nothing" extends to APPROVALS.
 
-Companion workstream still owed in the devPNT repo: the governed D-IC artifact
-(sequence D-UC → D-IC → P-TM → E-ISP), from F-032.
+**Still owed in the devPNT repo**, not here: the governed `D-IC` artifact (sequence
+D-UC → D-IC → P-TM → E-ISP), from F-032.
 
-## Release 2026-09-12 — v1.33.0 / kb 1.15.0 / mkt 0.11.0
-
-Seven units in one tranche: F-047 (kb row atomicity, the only field-reported
-defect of the set), F-048 (capability floor + delegation boundary), F-050
-(`benefit`), F-051 and F-052 (the Hybrid seam leaves the mandatory read, code
-and mkt; DECLINED for kb on measurement), F-049 (the floor reaches the author),
-F-053 (nine defects a review on a different model found after the other six had
-shipped).
-
-**Next step: publish.** `publish_all.bat` from the repo root is the USER's step
-— 2FA opens a browser per package — and it packs the WORKING TREE, so run it
-from the clean tagged checkout. It skips any package already on the registry at
-its version. Then `npm view` each of the three.
-
-**What this release does NOT claim.** The read surface GREW in all three lenses
-(+6.2% code, +8.2% kb, +7.8% mkt across all `.md`), even though the code and mkt
-contracts shrank: the cost moved out of the file `benefit` prints rather than
-falling, and kb received doctrine with no diet at all. The one blind A/B in the
-tranche returned NULL (ceiling effect), so no claim here rests on an external
-criterion. Three WARNs and four nits in F-053 were folded after the review cap
-and are, by the doctrine's own rule, unreviewed — they are listed in that unit's
-closure REVIEW_LOG row.
+**Registry cleanup, 2026-09-12.** Nineteen workstream rows were closed at once: each had
+been verified against the npm registry, the git tags and the merge state, and each was
+released or superseded while its row still said UNRELEASED, AWAITING MERGE or AWAITING
+PUBLISH. Their durable narrative is in the matching `solutions/ANALYSIS_*.md` Diary, and
+the deleted `HANDOFF_*.md` files are in git history at `cbc141c`. Two exceptions worth
+knowing: F-026's original branch commits (`50c5cf7`, `a0072cf`) are still NOT ancestors
+of `main` although the question-discipline doctrine itself shipped in `elicitation.md`;
+and F-046 had no ANALYSIS at all, so its record was promoted to
+`solutions/ANALYSIS_per_turn_protocol_reminder.md` before its row was closed. The rows
+had accumulated because closure deletes the file and closure had been deferred to an
+"integration call" that the releases then made moot.
