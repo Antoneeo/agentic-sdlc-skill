@@ -2,6 +2,46 @@
 
 Every significant change to this skill is recorded here.
 
+## [1.16.0] - 2026-09-12
+
+### Changed
+- **F-054: the recall verdict names every branch the descent opened.** The
+  descent is multi-branch by mandate (`taxonomy.md` §1: follow every parent,
+  open the final candidates), and the verdict vocabulary assumed exactly one
+  matched slug — so a mandated act had no legal way to declare its result, and
+  an agent facing two legitimate branches invented a shape for it. Both
+  node-naming verdicts now read `kb: <slug>[, <slug> …] → …`, naming every slug
+  opened and not only the one that answered, because which branches were read is
+  the part of the verdict a reader can check. **Four legal values, unchanged**:
+  the repair is the form, never a fifth value, and the count is pinned against
+  creep. Found by replaying the doctrine against a real question rather than by
+  reading it.
+
+### Fixed
+- **The behavioural eval driver died on its own scenarios.** `run_behavioral.py`
+  read scenarios as UTF-8 and printed them to a console that, on Windows,
+  defaults to cp1252 — which has no mapping for `→`. The shipped scenario
+  `recall_descends_before_answering.md` has contained that character since 1.7.0,
+  so on a default Windows console that eval was un-runnable and the driver
+  exited before printing its own pass criteria. stdout is now reconfigured to
+  UTF-8 with `errors="replace"`: a console that cannot render a glyph is not a
+  reason to withhold the scenario.
+
+### Not demonstrated
+- **The defect this release was opened to fix does not exist, as stated.** The
+  claim was that the recall's four verdicts all sit downstream of one instrument,
+  so a descent picking the wrong branch declares `kb: no coverage` on a corpus
+  that holds the answer — a false negative indistinguishable from real absence.
+  Two agent-level replays refuted it, including a fixture built to be hostile
+  (eight topics, the answering claim under `gdpr_compliance` while
+  `observability` was the more plausible branch): both returned the right claim,
+  and one ran a `grep` cross-check unprompted. A mandated text probe and a
+  generated claims inventory were therefore abandoned rather than shipped, and no
+  assertion pins them — a probe pinning what was decided against is red by
+  construction. Standing limit: two runs, one subject model, fixtures authored by
+  the session that made the claim. Record in
+  `ai_docs/solutions/SPIKE_kb_recall_second_instrument.md`.
+
 ## [1.15.0] - 2026-09-12
 
 ### Fixed

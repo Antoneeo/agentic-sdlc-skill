@@ -2,16 +2,16 @@
 workstream: F-054 kb recall multi-slug verdict (the false-negative claim was refuted; the verdict form was the real gap)
 level: L2
 branch: main
-status: DONE, UNRELEASED
+status: DONE, AWAITING PUBLISH
 since: 2026-09-12
-next: owner's integration call; kb-only delta, so a single-package release when they call it
+next: publish_all.bat from the repo root (owner's act, 2FA opens a browser per package; it skips code and mkt, unchanged), then npm view @antoneeo/kb-agentic-skill version returns 1.16.0
 details: SPIKE_kb_recall_second_instrument.md (the negative spike this unit came out of); harness_kb_recall_probe/{probe.py,replay_2026-09-12.md}
 updated: 2026-09-12
 ---
 
 ## Resume logistics
 
-Implemented, uncommitted on `main`, kb lens only — the recall verdicts live in
+Implemented and committed on `main` (`06eebb0`, pushed), kb lens only — the recall verdicts live in
 `distributions/kb-agentic-skill/skills/kb-agentic-skill/SKILL.md` and in no other
 lens, so code and mkt are untouched and this is a single-package release.
 
@@ -61,7 +61,27 @@ scenario could not be verified without it.
 
 ## Not done here, deliberately
 
-No CHANGELOG entry and no version bump — the release is the owner's act per
-`GUIDE_release.md`, as with every other UNRELEASED row. No ADR: the multi-slug form
-took no architectural decision, it repaired a form the doctrine already required
-producing (no decision, no ADR).
+No ADR: the multi-slug form took no architectural decision, it repaired a form the
+doctrine already required producing (no decision, no ADR). The **publish** is not
+done here either and is not ours to do — `npm publish` stops at `EOTP` and only the
+owner completes it (`GUIDE_release.md` §What to watch out for).
+
+## Release kb 1.16.0 (2026-09-12)
+
+Bumped in all four points (`package.json`, `gemini-extension.json`, `SKILL.md`
+frontmatter, CHANGELOG heading), tagged `kb-v1.16.0`. Single-package release:
+the recall verdicts live in the kb lens and nowhere else, so `publish_all.bat`
+skips code and mkt by comparing local versions against the registry.
+
+Verification battery, all four green before the tag: `npm pack --dry-run --json`
+23 files at 1.16.0 with no `__pycache__`, `.sources/`, `test_*.py` or `evals/`
+in the tarball; `init.js` smoke on a scratch dir CLEAN; `check --hybrid` CLEAN;
+kb battery 383 tests OK (14 skipped).
+
+**Numbering note, because it recurs.** kb's own line (1.0.0 → ) sits above the
+inherited code-lens history (1.6.0 → 1.19.0) in this CHANGELOG, so `[1.16.0]`
+now appears twice — this release, and the code lens's 2026-07-27 entry below the
+provenance banner that already states those numbers are the code lens's. The
+registry never held kb 1.16.0, so the collision is documentary, not a publish
+conflict. It will repeat at 1.17.0, 1.18.0 and 1.19.0; the owner's ruling on
+2026-09-12 was to keep the number and rely on that banner.
