@@ -247,7 +247,7 @@ all 18 pass after. `sdlc_check.py validate` rc=0.
 *What is NOT clean, stated rather than smoothed over.* `check` reports
 `NOT CLEAN (validate rc=0, stale rc=1)`. The single remaining stale area is
 `skills/agentic-sdlc-skill/` (7 files) and **this change touched none of them**: they
-were last modified by `61f1425` (F-034, v1.26.1) and `1af3bef` (v1.23.0), both already
+were last modified by `445a71f` (F-034, v1.26.1) and `35b40b3` (v1.23.0), both already
 on main and both after that row's recorded reference of 2026-08-05T03:32:48Z. So the
 gate was already red at HEAD, before this branch existed. It is deliberately left that
 way: `mark` on that row would assert a re-analysis of F-034's work that did not happen,

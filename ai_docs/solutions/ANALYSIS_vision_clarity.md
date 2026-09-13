@@ -125,7 +125,7 @@ authorization boundary, and this change edits it.
 | Threat | Mitigation |
 |---|---|
 | V1 — **Silent authority swap.** A rewritten Vision could quietly become the binding gate without the owner ever approving it, which is precisely how vision drift is laundered. | The rewrite ships `Status: DRAFT` with an explicit pointer to the still-binding APPROVED version and its git ref. Only the owner promotes. The skill's own rule ("never promote a Vision to APPROVED without the user's confirmation") is honored, not narrated. |
-| V2 — **Scope smuggling under cover of a clarity edit.** A "clarity" rewrite is the ideal vehicle for inserting or dropping a commitment. | Every Non-Goal in the new text is either a restatement of an old one or a documented finding-driven addition, listed one by one in `## Findings and disposition`. Nothing was removed on style grounds. The old text stays retrievable at `b35b36e`. |
+| V2 — **Scope smuggling under cover of a clarity edit.** A "clarity" rewrite is the ideal vehicle for inserting or dropping a commitment. | Every Non-Goal in the new text is either a restatement of an old one or a documented finding-driven addition, listed one by one in `## Findings and disposition`. Nothing was removed on style grounds. The old text stays retrievable at `a0d54e8`. |
 | V3 — **Weakening the rejection surface.** Rewriting Non-Goals could accidentally *widen* what is admissible. | The new Non-Goals were written against the five test proposals: all five now rule decidably, and the two previously-admissible ones (metering, cloud-tier) are explicit REJECTs. The reword attack (work-item ledger dressed in `ai_docs/` conventions) is closed twice — by dropping the `"full"` qualifier and by the affirmative admission test. |
 | V4 — **Enforcement theater.** A Vision that reads better but is not actually more decidable. | The claim is falsifiable and is stated as feature success signal 1: re-run the blind reviewers against the new text. Until that re-run, the improvement is asserted, not proven — recorded as such below. |
 | V5 — **Loss of the competitive record.** Moving the comparison out could destroy it. | It moves to a file that already contained it in fuller, dated form; nothing is deleted, and that file now declares itself its owner. |
@@ -311,7 +311,7 @@ Honest limits of what is delivered:
 - The improvement is **not yet proven**. The blind re-run (feature success signal 1)
   happens after promotion; today the claim rests on the fixes mapping 1:1 onto findings.
 - The Vision is **DRAFT**, so this repository currently has no APPROVED Vision at HEAD.
-  The previous APPROVED text stays binding via `b35b36e` until the owner promotes —
+  The previous APPROVED text stays binding via `a0d54e8` until the owner promotes —
   stated in the document itself so a cold reader is not misled.
 - One finding (APPROVED has no version or expiry) is deliberately left open.
 

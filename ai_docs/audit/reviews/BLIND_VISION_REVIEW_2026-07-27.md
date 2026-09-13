@@ -2,7 +2,7 @@
 
 Evidence for F-017 (`solutions/ANALYSIS_vision_clarity.md`). Three reviewers, fresh
 context, **no project knowledge and no repository access** — each received only the
-verbatim text of the APPROVED Vision (`git show b35b36e:ai_docs/vision/project_vision.md`)
+verbatim text of the APPROVED Vision (`git show a0d54e8:ai_docs/vision/project_vision.md`)
 and was explicitly forbidden to open, search or look up anything. Their inability to
 resolve a term is therefore a property of the document, not of their access.
 

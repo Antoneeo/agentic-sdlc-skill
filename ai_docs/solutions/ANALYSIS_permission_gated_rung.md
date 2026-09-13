@@ -309,7 +309,7 @@ two carriers of the same framing were missing from the Impact, and the question 
 cost without benefit.
 
 **2026-08-25 — opened.** Standalone, devPNT off. `Level: L3 · router: no match`.
-Branch `feat/permission-gated-rung` off `main`@5f2edcf.
+Branch `feat/permission-gated-rung` off `main`@cdb7f7f.
 
 Trigger: the owner asked whether the skill should tell the agent to propose subagent use,
 warning about token cost. The answer is narrower than the question. The doctrine already

@@ -54,7 +54,7 @@ L3 only:
 5. **One log row** per completed review, PASS or FAIL.
 6. **255 words** added to the always-loaded `SKILL.md` — the Phase-3 gate
    paragraph (103), the Write-Triggers row (56) and three ownership-matrix rows
-   (96). Measured, not estimated: `git diff 94b9bd9..9aa6a06 -- SKILL.md`, added
+   (96). Measured, not estimated: `git diff 29c5268..37841e4 -- SKILL.md`, added
    lines only. The Vision counts what the agent must read as cost, and this is the
    one item in the list that is a number rather than a step.
 

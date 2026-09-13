@@ -3,7 +3,7 @@ battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Visi
 
 **Release state (registry-verified 2026-09-12).** Published: code **1.33.0**, kb
 **1.15.0**, mkt **0.11.0**. Tagged and awaiting the owner's publish: kb **1.16.0**
-(`kb-v1.16.0`, commit `cbc141c`) — F-054, the multi-slug recall verdict. Per-release
+(`kb-v1.16.0`, commit `08cd6c2`) — F-054, the multi-slug recall verdict. Per-release
 history belongs to the three `CHANGELOG.md` files and is not restated here.
 
 **What the 2026-09-12 tranche does NOT claim.** The read surface GREW in all three
@@ -48,7 +48,7 @@ D-UC → D-IC → P-TM → E-ISP), from F-032.
 been verified against the npm registry, the git tags and the merge state, and each was
 released or superseded while its row still said UNRELEASED, AWAITING MERGE or AWAITING
 PUBLISH. Their durable narrative is in the matching `solutions/ANALYSIS_*.md` Diary, and
-the deleted `HANDOFF_*.md` files are in git history at `cbc141c`. Two exceptions worth
+the deleted `HANDOFF_*.md` files are in git history at `08cd6c2`. Two exceptions worth
 knowing: F-026's original branch commits (`50c5cf7`, `a0072cf`) are still NOT ancestors
 of `main` although the question-discipline doctrine itself shipped in `elicitation.md`;
 and F-046 had no ANALYSIS at all, so its record was promoted to

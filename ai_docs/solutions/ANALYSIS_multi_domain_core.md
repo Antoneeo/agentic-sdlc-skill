@@ -397,7 +397,7 @@ case refuses, and `--strict` still fails on a missing root. TS15 is the proof.
 | `skills/kb-agentic-skill/package.json` | MODIFY | `sdlc_core.py` in `files[]` |
 | `skills/kb-agentic-skill/evals/scenarios/architect_rules_before_impact.md`, `unmapped_never_grounds_missing.md` | REPLACE | they assert on `src/notify.py#Notifier`; replaced by knowledge scenarios |
 
-kb carries zero field projects and its work is preserved (commit `77ce756`; verified
+kb carries zero field projects and its work is preserved (commit `b1e0be6`; verified
 bundle `skill_sdlc/kb-agentic-skill_2026-07-31.bundle`), so it proves the core first.
 
 ### Phases 4-7 — targets *(own impact map required before each)*
@@ -453,7 +453,7 @@ becomes domain-resolved).
 | T2 | Domain-resolving the mandatory risk check silently disables it. | Resolution is **project-level and deterministic** (C1): same answer from every entry point — the round-3 counter-case (two lenses, two verdicts on one file) is structurally closed. Absent everything → `code`, asserted by TS2. Each rule set names its own risk section (C2); TS4 asserts the **positive** case (a knowledge/marketing analysis missing *its* risk section errors). TS1 catches any change on existing artifacts. Imported checks are monotonic — they can add findings, never relax the owner's requirements. |
 | T3 | Cross-domain retrieval returns the wrong document. | C5 naming; the syntactic, tree-determined domain column in `features_history.md`. Unreached surfaces are the declared residuals above, severity stated honestly (the guide router is the mandatory-path one). |
 | T4 | Publishing ships the wrong content. | `files[]` stays an explicit per-file allowlist, **updated in the same phase that adds each file** (P1 `routing.md`, P2/P3/P4 `sdlc_core.py`); packed-file assertion joins the P2 gate; full TS7 at P7. |
-| T5 | Consolidation loses history. | mkt: `git subtree`, archive only after merge. kb: preserved by a verified bundle plus commit `77ce756`; the single-machine retention residual was assessed and **accepted by the owner (2026-07-31)** — recorded because an accepted risk is a decision, not an oversight. The deleted GitHub remote was empty; that fact says nothing about the local work, and the two must not be conflated. |
+| T5 | Consolidation loses history. | mkt: `git subtree`, archive only after merge. kb: preserved by a verified bundle plus commit `b1e0be6`; the single-machine retention residual was assessed and **accepted by the owner (2026-07-31)** — recorded because an accepted risk is a decision, not an oversight. The deleted GitHub remote was empty; that fact says nothing about the local work, and the two must not be conflated. |
 | T7 | A wrong docs root silently validates an empty tree and prints CLEAN (P2b). | Resolution is explicit-first (`--docs-dir` > env > discovery > `ai_docs`); `require_ai_docs` keeps failing fast, which is the reason it exists; two candidate roots in one tree refuse with both named rather than picking one; `--strict` still fails on a missing root. TS15 is the proof. The agent-global KB store never follows the parameter (TS16). |
 | T6 | Drift guard bypassed. | Guard fails CI over a named core file present in every distribution; per-file manifest; P3→P5 window declared with per-file hash checkpoints. |
 
@@ -462,7 +462,7 @@ surface.
 
 ## Action Plan
 
-- [x] **P0 — Safety.** kb work committed (`77ce756`) and bundled; single-machine
+- [x] **P0 — Safety.** kb work committed (`b1e0be6`) and bundled; single-machine
       retention risk assessed and **accepted by the owner, 2026-07-31**. Remaining
       before any repository action: confirm mkt's clone retains 3 commits + 2 tags.
 - [x] **P1 — Contract.** Vision v7 blind-checked and APPROVED; `routing.md` (C0+C3)
@@ -473,7 +473,7 @@ surface.
       (3 cases, 11/11 green); Component Map rows (Doctrine, Template source, Project
       seeder) + C5 under `## Patterns`; ADR; both indexes regenerated. Batteries 75/75.
 - [x] **P2 — Core + rule sets.** TS1 corpus + baseline captured from the pre-change
-      validator and committed BEFORE the first edit (`25a2367`), then green through
+      validator and committed BEFORE the first edit (`db35180`), then green through
       every step after it. `sdlc_core.py` carries the spine (sections-data ×3, check
       registry, project-level default resolution, per-domain ids, syntactic column
       predicate, `section_body`); `sdlc_check.py` is the thin code entry point and
@@ -594,7 +594,7 @@ who did nothing are not paying for this refactor.
   installed, and the untouched sentinel pointer when one is.
 - **2026-07-31 — P2 shipped.** The order was the point: the golden corpus and its
   baseline were captured from the **pre-change** validator and committed on their own
-  (`25a2367`) before `sdlc_check.py` was touched, so every later step had something
+  (`db35180`) before `sdlc_check.py` was touched, so every later step had something
   real to be measured against. The split itself is a `git mv` — `sdlc_check.py` became
   `sdlc_core.py` and a new thin entry point took the old name — which keeps the history
   on the code and makes the diff readable. TS1 stayed byte-identical through it.

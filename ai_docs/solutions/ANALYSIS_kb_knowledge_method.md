@@ -301,7 +301,7 @@ evals); CONTESTED integrity incl. symmetry (F-025); claims on superseded sources
 Claim rows own it. A kb ANALYSIS's `## Sources and Verification` **cites** the nodes and
 sidecars the unit rests on — it does not restate rows (two provenance tables in one
 project is `review.md`'s restated-fact finding). The `templates.md` block was converted
-to this citation form on this branch (commit `0a1bbae`).
+to this citation form on this branch (commit `22144ee`).
 
 ## Impact
 

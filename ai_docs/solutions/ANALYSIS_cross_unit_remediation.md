@@ -120,7 +120,7 @@ Four enter this unit's scope by the FAIL branch below.
    real Hybrid read is 24,746 B (+7.0%) on the `st_size` ruler, or 24,527 B (+7.2%) on the git blob, which is the ruler the corrected document declares. `ANALYSIS_mandatory_read_diet.md:18`
    carries 49,645 (LF blob) beside `:55`'s 50,001 (`st_size`) — the two-ruler
    WARN fixed in the probe and not in the document — and its 6,657 B for
-   `hybrid.md` reproduces under neither (6,579 at `b14f266`, 6,646 at HEAD).
+   `hybrid.md` reproduces under neither (6,579 at `b69c8a4`, 6,646 at HEAD).
    `ANALYSIS_mkt_read_diet.md:106` promises mkt README surfaces that do not
    exist.
 8. **Two citations that resolve to the wrong thing.** kb's

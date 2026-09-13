@@ -261,7 +261,7 @@ legitimately matched. Corrected rather than accommodated.
 
 **2026-08-25 — opened.** Standalone, devPNT off. `Level: L3 · router: no match`
 (`GUIDE_release.md` is the only guide and governs publishing).
-Branch `feat/init-wires-orient-hook` off `main`@5f14f24.
+Branch `feat/init-wires-orient-hook` off `main`@7a1ffe2.
 
 Trigger: the owner reported an agent working a governed project without invoking the
 skill. Rather than designing a new enforcement mechanism, the first move was to ask

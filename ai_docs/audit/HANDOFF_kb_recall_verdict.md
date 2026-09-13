@@ -11,7 +11,7 @@ updated: 2026-09-12
 
 ## Resume logistics
 
-Implemented and committed on `main` (`06eebb0`, pushed), kb lens only — the recall verdicts live in
+Implemented and committed on `main` (`9961512`, pushed), kb lens only — the recall verdicts live in
 `distributions/kb-agentic-skill/skills/kb-agentic-skill/SKILL.md` and in no other
 lens, so code and mkt are untouched and this is a single-package release.
 

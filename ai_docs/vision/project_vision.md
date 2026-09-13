@@ -586,6 +586,6 @@ entry says was once drafted.
   the previous text undecidable to a cold reader — most sharply, a proposal to
   meter a free user's operative guides was admissible on its literal text.
 - **Superseded — approved 2026-07-02.** Retrievable at
-  `git show b35b36e:ai_docs/vision/project_vision.md`.
+  `git show a0d54e8:ai_docs/vision/project_vision.md`.
 - Evidence for both blind rounds: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`.
   Finding-by-finding disposition: `solutions/ANALYSIS_vision_clarity.md`.

@@ -33,7 +33,7 @@ HYBRID = CODE / "hybrid.md"
 # with one ruler or the saving is an artifact of line endings.
 BYTES_BEFORE = 50001
 
-# sha256 of the Hybrid region as it stands at b14f266^ -- i.e. BEFORE the move --
+# sha256 of the Hybrid region as it stands at b69c8a4^ -- i.e. BEFORE the move --
 # recomputed with an explicit UTF-8 decode. The first value recorded here was
 # taken from the moved file itself, which at that moment was mojibake-corrupted
 # by a `git show` decoded through the console codepage: the probe would have

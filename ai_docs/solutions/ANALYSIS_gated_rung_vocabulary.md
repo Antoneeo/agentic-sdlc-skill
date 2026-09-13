@@ -385,7 +385,7 @@ unattended bound scheduled into the plan, the criteria and the invariant; the ev
 scoped to spine+kb with the mkt reason recorded and the seed covering both rungs.
 
 **2026-08-25 — opened.** Standalone, devPNT off. `Level: L3 · router: no match`.
-Branch `feat/gated-rung-vocabulary` off `main`@dda8d3a. Successor to F-037 (CANCELLED,
+Branch `feat/gated-rung-vocabulary` off `main`@57cd86f. Successor to F-037 (CANCELLED,
 same day): three review rounds validated the diagnosis and killed grant memory three
 ways; this unit keeps the validated parts and encodes the refusal. The working proof is
 this session itself: one AskUserQuestion at the first gate, a voluntary "standing yes",

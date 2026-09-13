@@ -167,7 +167,7 @@ The Vision has no mechanical validator, so its tests are the batteries:
   decisive observation is the reviewer's anatomy note, now the organising principle
   here: rules that defeated every attack define by question, counterfactual or
   foreclosed evasion; rules that fell define by shape.
-- **2026-08-01 — C1–C4 + C6 drafted as the v8 amendment** (commit `c750668`), Status
+- **2026-08-01 — C1–C4 + C6 drafted as the v8 amendment** (commit `1855551`), Status
   line marks it PENDING the blind check; the v7 text binds until promotion. C1 one
   scoped default (silence in Non-Goal territory is a NO; silence elsewhere is the
   admission test's question); C2 re-admission on scope growth (purpose/actors/surface);

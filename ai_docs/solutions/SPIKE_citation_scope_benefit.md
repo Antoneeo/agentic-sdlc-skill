@@ -43,7 +43,7 @@ the 2FA is at the door, a different subject.
 
 Written before any run; nothing below is adjusted after seeing results.
 
-- **Conditions.** OLD = the kb doctrine at `75ccdc5^` (immediately before F-047). NEW =
+- **Conditions.** OLD = the kb doctrine at `fc422d6^` (immediately before F-047). NEW =
   the doctrine at `HEAD`. The only difference handed to the agent is the doctrine text.
 - **Blinding.** Each run is a fresh context. The prompt never mentions bundling,
   atomicity, citation scope, F-047, or that an experiment is running. The agent is
@@ -84,7 +84,7 @@ the error.
 
 ## Setup decisions, recorded before any result was seen
 
-- **Condition B is `75ccdc5`, not `HEAD`.** HEAD carries F-048 as well, and comparing
+- **Condition B is `fc422d6`, not `HEAD`.** HEAD carries F-048 as well, and comparing
   against it would attribute any difference to two units instead of one. Verified by
   diff: the only change between A and B in `SKILL.md` is the ten-line citation-scope
   block; `distillation.md` differs by the atomicity rule and the de-trapped collision
