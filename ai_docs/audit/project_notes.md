@@ -1,9 +1,11 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**Release state (registry-verified 2026-09-12).** Published: code **1.33.0**, kb
-**1.15.0**, mkt **0.11.0**. Tagged and awaiting the owner's publish: kb **1.16.0**
-(`kb-v1.16.0`, commit `08cd6c2`) — F-054, the multi-slug recall verdict. Per-release
+**Release state (registry-verified 2026-09-14).** Published: code **1.33.0**, kb
+**1.16.0**, mkt **0.11.0**, all MIT. Tagged and awaiting the owner's publish: code
+**1.34.0**, kb **1.17.0**, mkt **0.12.0** (`v1.34.0`, `kb-v1.17.0`, `mkt-v0.12.0`) — F-055,
+Apache-2.0 with a NOTICE; distill **0.9.0** (`v0.9.0`) ships the same change from its own
+repository. Per-release
 history belongs to the three `CHANGELOG.md` files and is not restated here.
 
 **What the 2026-09-12 tranche does NOT claim.** The read surface GREW in all three

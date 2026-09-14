@@ -2,7 +2,7 @@
 
 Every significant change to this skill is recorded here.
 
-## [Unreleased - 1.17.0]
+## [1.17.0] - 2026-09-14
 
 ### Changed
 - **F-055: Apache-2.0 with a NOTICE, in place of MIT.** The package root and the

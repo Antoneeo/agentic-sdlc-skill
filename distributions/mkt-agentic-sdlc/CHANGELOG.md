@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased - 0.12.0]
+## [0.12.0] - 2026-09-14
 
 ### Changed
 - **F-055: Apache-2.0 with a NOTICE, in place of MIT.** The package root and the
