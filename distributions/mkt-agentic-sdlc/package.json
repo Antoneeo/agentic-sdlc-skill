@@ -13,7 +13,7 @@
     "ai-agent"
   ],
   "author": "Antonio Pinto (https://github.com/Antoneeo)",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "publishConfig": {
     "access": "public"
   },
@@ -40,9 +40,12 @@
     "skills/mkt-agentic-sdlc/hybrid.md",
     "skills/mkt-agentic-sdlc/ENFORCEMENT.md",
     "skills/mkt-agentic-sdlc/scripts/mkt_check.py",
+    "skills/mkt-agentic-sdlc/LICENSE",
+    "skills/mkt-agentic-sdlc/NOTICE",
     "gemini-extension.json",
     "README.md",
     "CHANGELOG.md",
+    "NOTICE",
     "scripts/lib.js",
     "scripts/init.js",
     "scripts/postinstall.js",

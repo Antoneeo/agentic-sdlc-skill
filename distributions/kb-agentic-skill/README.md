@@ -38,7 +38,7 @@ Deliberately absent: any per-node coverage or completion state. `gaps:` says wha
 - **Question discipline**: a question is legal only when the agent searched first, names the search with its result, and names the decision it unblocks; otherwise it proceeds on a declared assumption, batched.
 - **Operative guides + agent-global KB**: distil user-provided indications into source-faithful `GUIDE_*.md` (`source_kind: document`) — verbatim snapshot plus hash, so drift is detected mechanically.
 - **Mechanical checks**: `check`, `validate`, `index`, `graph`, `corpus`, `claim-id`, `anchor`, `export`, `import`, `stale` (spine staleness plus `## claims` -- superseded-cited documents, expired `valid` windows, superseded derivation chains), plus the spine's `mark`/`benefit`/`gate`/`plan`/`orient`/`migrate`. `benefit` reports what the review gates have already caught, beside what the doctrine costs to read; it always exits 0 and carries no verdict. The graph and corpus checks verify spans against the stored extraction, recompute every id, refuse cycles and unreachable nodes, and enforce `CONTESTED` symmetry.
-- **Installed support files**: Claude, Codex, Gemini and Google Antigravity receive the full skill folder — `SKILL.md`, `templates.md`, `taxonomy.md`, `distillation.md`, `reconciliation.md`, `guides.md`, `vision.md`, `elicitation.md`, `review.md`, `dispatch.md`, `routing.md`, `ENFORCEMENT.md`, and the validator's two files, `scripts/sdlc_check.py` + `scripts/sdlc_core.py` (the core is the family's shared spine — copy both, or neither).
+- **Installed support files**: Claude, Codex, Gemini and Google Antigravity receive the full skill folder — `SKILL.md`, `templates.md`, `taxonomy.md`, `distillation.md`, `reconciliation.md`, `guides.md`, `vision.md`, `elicitation.md`, `review.md`, `dispatch.md`, `routing.md`, `ENFORCEMENT.md`, and the validator's two files, `scripts/sdlc_check.py` + `scripts/sdlc_core.py` (the core is the family's shared spine — copy both, or neither) — plus the `LICENSE` and `NOTICE` it ships under.
 
 ## Installation
 
@@ -114,7 +114,21 @@ Triage, the Vision Gate, the review gates, the guide router, question discipline
 
 Created by **Antonio Pinto** ([GitHub](https://github.com/Antoneeo)).
 
-MIT (c) 2026 Antonio Pinto.
+## License
+
+Apache-2.0 — the full terms are in the `LICENSE` file, the attribution in `NOTICE`. Copyright 2026 Antonio Pinto.
+
+If you redistribute this skill, or a version you modified, keep `LICENSE` and `NOTICE` with it.
+
+Using the skill in your own project carries no obligation: the documents it creates or templates there are yours, and so is a copy of the validator and its tests placed in that project to check its own documents.
+
+Versions up to 1.16.0 were released under the MIT license and remain available under it.
+
+If you use the skill in commercial work, a mention on your product page or website is appreciated. It is a request, not a condition of the license. A ready-made badge:
+
+```markdown
+[![Made with kb-agentic](https://img.shields.io/badge/made%20with-kb--agentic-blue)](https://www.npmjs.com/package/@antoneeo/kb-agentic-skill)
+```
 
 ## Which model to run it on
 

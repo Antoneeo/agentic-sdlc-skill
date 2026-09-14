@@ -102,6 +102,64 @@ class SharedProfileInvariants(unittest.TestCase):
                       "the profile and SKILL.md disagree about which skill this is")
 
 
+class ShippedLicense(unittest.TestCase):
+    """F-055: the package says Apache-2.0 and carries the terms that say it.
+
+    The skill folder is what travels -- postinstall copies it into every client and
+    a fork copies it whole -- so the terms sit beside SKILL.md; the package root
+    carries them too, where scanners and the repository page look. Skipped where no
+    package.json sits beside the skill (an installed copy)."""
+
+    def setUp(self):
+        import json
+        pkg = SKILL_DIR.parents[1] / "package.json"
+        if not pkg.is_file():
+            self.skipTest("no package.json beside this skill (installed copy)")
+        self.root = pkg.parent
+        self.manifest = json.loads(sc.read_text(pkg))
+
+    def test_the_package_states_one_license(self):
+        m = re.search(r"^license:\s*(\S+)\s*$", read("SKILL.md"), re.M)
+        self.assertIsNotNone(m, "SKILL.md frontmatter must carry `license:` -- an installed "
+                                "skill has no package.json to say which terms it ships under")
+        self.assertEqual((self.manifest.get("license"), m.group(1)), ("Apache-2.0", "Apache-2.0"),
+                         "package.json and SKILL.md must both say Apache-2.0")
+
+    def test_the_license_text_is_the_canonical_apache_2(self):
+        # SHA-256 of https://www.apache.org/licenses/LICENSE-2.0.txt, LF line endings.
+        canonical = "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        for where in (self.root, SKILL_DIR):
+            path = where / "LICENSE"
+            self.assertTrue(path.is_file(), f"no LICENSE in {where}")
+            text = path.read_bytes().replace(b"\r\n", b"\n")
+            self.assertEqual(hashlib.sha256(text).hexdigest(), canonical,
+                             f"{path} is not the canonical Apache-2.0 text")
+
+    def test_the_package_root_and_the_skill_folder_carry_one_notice(self):
+        notices = []
+        for where in (self.root, SKILL_DIR):
+            path = where / "NOTICE"
+            self.assertTrue(path.is_file(), f"no NOTICE in {where}")
+            notices.append(path.read_bytes().replace(b"\r\n", b"\n"))
+        self.assertEqual(notices[0], notices[1],
+                         "the package root and the skill folder carry different NOTICEs")
+
+    def test_the_tarball_carries_the_terms(self):
+        # `files` is an allowlist: npm packs a root LICENSE unasked, and nothing else.
+        listed = set(self.manifest.get("files", []))
+        folder = "skills/%s/" % SKILL_DIR.name
+        for rel in ("NOTICE", folder + "LICENSE", folder + "NOTICE"):
+            self.assertIn(rel, listed, f"'{rel}' is not in package.json `files`: "
+                                       "the published package would ship without it")
+
+    def test_the_readme_keeps_the_permission_for_use_in_your_own_project(self):
+        # The grant that keeps the Vision's user guarantee whole is published in the README,
+        # the package's npm page. Whitespace-normalized, so a rewrap cannot hide it.
+        readme = " ".join(sc.read_text(self.root / "README.md").split())
+        self.assertTrue("Using the skill in your own project carries no obligation" in readme,
+                        "the README lost the permission for use inside a user's own project")
+
+
 class SkillInvariants(unittest.TestCase):
 
     def test_orient_registered(self):

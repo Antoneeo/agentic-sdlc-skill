@@ -119,4 +119,16 @@ skipping the review.
 
 ## License
 
-MIT — Antonio Pinto
+Apache-2.0 — the full terms are in the `LICENSE` file, the attribution in `NOTICE`. Copyright 2026 Antonio Pinto.
+
+If you redistribute this skill, or a version you modified, keep `LICENSE` and `NOTICE` with it.
+
+Using the skill in your own project carries no obligation: the documents it creates or templates there are yours, and so is a copy of the validator and its tests placed in that project to check its own documents.
+
+Versions up to 0.11.0 were released under the MIT license and remain available under it.
+
+If you use the skill in commercial work, a mention on your product page or website is appreciated. It is a request, not a condition of the license. A ready-made badge:
+
+```markdown
+[![Made with mkt-agentic-sdlc](https://img.shields.io/badge/made%20with-mkt--agentic--sdlc-blue)](https://www.npmjs.com/package/@antoneeo/mkt-agentic-sdlc-skill)
+```

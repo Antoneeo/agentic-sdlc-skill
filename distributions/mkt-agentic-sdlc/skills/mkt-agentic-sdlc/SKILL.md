@@ -4,6 +4,7 @@ version: 0.11.0
 description: Evidence-First marketing planning protocol with engagement triage, SOSTAC workflow, evidence ledger, adversarial CMO review, a complete Standalone mode and optional symbiosis with devPNT. Use for marketing plans, go-to-market strategy, campaign planning and market research.
 author: Antonio Pinto (https://github.com/Antoneeo)
 copyright: (c) 2026 Antonio Pinto
+license: Apache-2.0
 ---
 
 # Marketing Agentic SDLC

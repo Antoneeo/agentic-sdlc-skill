@@ -2,6 +2,19 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [Unreleased - 1.34.0]
+
+### Changed
+- **F-055: Apache-2.0 with a NOTICE, in place of MIT.** The package root and the
+  installed skill folder now carry `LICENSE` (the Apache-2.0 text) and `NOTICE`
+  (the attribution), and `package.json` and the `SKILL.md` frontmatter say
+  `Apache-2.0`. Redistributing the skill, or a version you modified, means keeping
+  both files. Using it in your own project carries no obligation: the documents it
+  creates or templates there are yours, and so is a copy of the validator and its
+  tests placed there to check them (README, License). Versions up to 1.33.0 remain
+  available under MIT. The README also asks, as a request and not a condition,
+  for a mention when the skill is used in commercial work.
+
 ## [1.33.0] - 2026-09-12
 
 ### Added

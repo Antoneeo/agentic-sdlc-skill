@@ -16,7 +16,7 @@
 - **devPNT symbiosis**: when devPNT is available, Master Plan, Action Plan, M-VISION, and governed artifacts become the authoritative planning layer, with independent fresh-context reviews of technical artifacts and diffs.
 - **Independent review, twice**: the design is reviewed before it is implemented and the diff before the work is declared done — by somebody other than its author. Three rungs of independence (fresh-context subagent > one-shot run > a declared self-pass, legal only when no higher rung is usable: absent, or permission-gated and declined — a gated rung is asked about, never silently skipped, and the log says which), capped at 3 rounds, one log line per review, and a PASS is invalid on "found nothing" — it must state where each constraint is satisfied.
 - **Question discipline**: a question to the user is legal only when the agent searched first and names the search with its result, and names the decision the answer unblocks. Otherwise it proceeds on a declared assumption — same evidence duty, batched, never a stream of "shall I proceed?".
-- **Installed support files**: Claude, Codex, Gemini, and Google Antigravity receive the full skill folder, including `templates.md`, `architect.md`, `guides.md`, `vision.md`, `tdd.md`, `debugging.md`, `elicitation.md`, `review.md`, `dispatch.md`, `routing.md`, `hybrid.md`, `ENFORCEMENT.md`, and the validator's two files, `scripts/sdlc_check.py` + `scripts/sdlc_core.py`.
+- **Installed support files**: Claude, Codex, Gemini, and Google Antigravity receive the full skill folder, including `templates.md`, `architect.md`, `guides.md`, `vision.md`, `tdd.md`, `debugging.md`, `elicitation.md`, `review.md`, `dispatch.md`, `routing.md`, `hybrid.md`, `ENFORCEMENT.md`, and the validator's two files, `scripts/sdlc_check.py` + `scripts/sdlc_core.py` — plus the `LICENSE` and `NOTICE` it ships under.
 - **Mechanical checks**: optional validator for document structure, generated feature history, stale audit areas, and protected-path gates — `check`, `validate`, `index`, `stale`, `mark`, `benefit`, `gate`, `plan`, `orient`, `migrate`. `benefit` reports what the review gates have already caught, beside what the doctrine costs to read — it always exits 0 and carries no verdict, because a measurement that can fail a build becomes a target.
 
 ## Installation
@@ -86,6 +86,8 @@ skills/agentic-sdlc-skill/
 ├── routing.md
 ├── hybrid.md
 ├── ENFORCEMENT.md
+├── LICENSE
+├── NOTICE
 └── scripts/
     ├── sdlc_check.py
     └── sdlc_core.py
@@ -138,7 +140,21 @@ For native Gemini Agent Skills, the npm installer now copies the skill folder in
 
 Created by **Antonio Pinto** ([GitHub](https://github.com/Antoneeo)).
 
-MIT (c) 2026 Antonio Pinto.
+## License
+
+Apache-2.0 — the full terms are in the `LICENSE` file, the attribution in `NOTICE`. Copyright 2026 Antonio Pinto.
+
+If you redistribute this skill, or a version you modified, keep `LICENSE` and `NOTICE` with it.
+
+Using the skill in your own project carries no obligation: the documents it creates or templates there are yours, and so is a copy of the validator and its tests placed in that project to check its own documents.
+
+Versions up to 1.33.0 were released under the MIT license and remain available under it.
+
+If you use the skill in commercial work, a mention on your product page or website is appreciated. It is a request, not a condition of the license. A ready-made badge:
+
+```markdown
+[![Made with agentic-sdlc](https://img.shields.io/badge/made%20with-agentic--sdlc-blue)](https://www.npmjs.com/package/@antoneeo/agentic-sdlc-skill)
+```
 
 ## Which model to run it on
 
