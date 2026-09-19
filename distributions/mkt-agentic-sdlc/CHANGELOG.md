@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [0.13.0] - 2026-09-19
 
 ### Added
 - F-057: shared project memory in every lens, no sibling installation required.

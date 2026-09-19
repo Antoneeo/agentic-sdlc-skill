@@ -2,7 +2,7 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
-## [Unreleased]
+## [1.35.0] - 2026-09-19
 
 ### Added
 - F-057: shared project memory in every lens, no sibling installation required.
