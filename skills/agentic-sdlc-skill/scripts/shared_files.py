@@ -37,6 +37,9 @@ MANIFEST = HERE / "shared_manifest.json"
 SHARED_FILES = (
     # the spine itself
     "scripts/sdlc_core.py",
+    "scripts/knowledge.py",
+    "scripts/test_project_memory.py",
+    "memory.md",
     "scripts/entry_point.py",
     "scripts/shared_files.py",
     # the shared batteries: a test that differs between distributions is a test

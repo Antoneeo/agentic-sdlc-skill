@@ -90,7 +90,7 @@ class TestCaptureDoctrine(unittest.TestCase):
     def test_the_recency_limit_is_named_where_the_line_is_defined(self):
         # Comment-marker + whitespace normalized: a re-wrapped comment line
         # must not decide this verdict (the F-038 line-wrap lesson).
-        raw = (SKILL_DIR / "scripts" / "sdlc_check.py").read_text(encoding="utf-8")
+        raw = (SKILL_DIR / "scripts" / "knowledge.py").read_text(encoding="utf-8")
         src = " ".join(raw.replace("#", " ").split())
         self.assertIn("mtime LIES after clone/worktree", src,
                       "the recency line lost its named limit")

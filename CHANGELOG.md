@@ -4,6 +4,13 @@ Tutte le modifiche significative a questa skill saranno documentate in questo fi
 
 ## [Unreleased]
 
+### Added
+- F-057: shared project memory in every lens, no sibling installation required.
+  `index` catalogs original documents; `recall QUERY` searches live metadata.
+  KB integrity is shared; domain ownership and marketing numerical checks remain.
+  Vendored validators now require entry point + sdlc_core.py + knowledge.py.
+
+
 ### Fixed
 - **F-056: `stale` no longer reports an area fresh when it cannot evaluate it.** An
   `audit_plan.md` row whose reference no longer resolves (the commit was amended,

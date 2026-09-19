@@ -144,10 +144,13 @@ Stdlib only: no dependency may be added without an ADR.
 
 Triage every request (Rule Zero): L1 trivial - L2 small - L3 significant - Spike. When in doubt, pick the higher level.
 
+Project memory: memory/INDEX.md; use recall QUERY for live metadata. Read sources for authority and status.
+
 ===== index (rc=0) =====
 [ok] ANALYSIS index regenerated: <ROOT>/ai_docs/strategic/features_history.md
 [ok] document manifest regenerated: <ROOT>/ai_docs/INDEX.md
 [ok] guide router regenerated: <ROOT>/ai_docs/reference/INDEX.md
+[ok] project memory regenerated: <ROOT>/ai_docs/memory/INDEX.md
 
 ===== graph (rc=0) =====
 [ok] no topics/ - nothing to check

@@ -127,7 +127,7 @@ test('TS11 sibling lens installed: the note is additive and the protocol pointer
     const note = fs.readFileSync(path.join(proj, 'AGENTIC_MULTI_LENS.md'), 'utf8');
     assert.match(note, new RegExp(A_SIBLING), 'the note names the detected sibling');
     assert.match(note, /routing\.md/, 'the note points at the domain router');
-    assert.match(note, /Merge step owed/, 'a pre-existing pointer means a merge is owed');
+    assert.match(note, /memory\.md/, 'the integration note points to shared memory');
     // The note must name THIS lens. The self row used to be the literal
     // "`agentic-sdlc` — the **code** lens", copied verbatim into every distribution:
     // kb and mkt announced themselves as their sibling and never named themselves,
@@ -198,6 +198,8 @@ test('TS7 package files[] lists exactly the shipped skill files, and they all ex
   const skillDir = path.relative(pkgRoot, require('./lib').SKILL_SOURCE).split(path.sep).join('/');
   for (const rel of [`${skillDir}/scripts/${ENTRY_POINT_FILE}`,
                      `${skillDir}/scripts/sdlc_core.py`,
+                     `${skillDir}/scripts/knowledge.py`,
+                     `${skillDir}/memory.md`,
                      `${skillDir}/routing.md`]) {
     assert.ok(pkg.files.includes(rel), `files[] must list ${rel}`);
   }

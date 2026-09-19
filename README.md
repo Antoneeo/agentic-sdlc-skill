@@ -1,5 +1,21 @@
 # Agentic SDLC Skill for Claude Code, Gemini CLI, Google Antigravity & Codex
 
+## Shared project memory
+
+All three lenses include project memory by default; install the lens you need,
+not a second skill just for recall. `index` registers guides, decisions and plans
+in the docs root's `memory/INDEX.md`, linking originals without copying them.
+`recall "onboarding"` finds related metadata across domains; optional
+`topics: [onboarding]` links documents by subject. Read the originals for authority,
+status and evidence: discovery is not approval or proof of implementation.
+
+Registration happens at `index`/documentation closure, not through a background
+watcher. Existing projects acquire the catalog on their next `index`; `recall`
+also sees live metadata. The KB lens remains the specialist for ingestion and
+taxonomy. Marketing retains its numerical validators. See the skill's `memory.md`.
+Vendoring requires all three files: the entry point, `sdlc_core.py`, `knowledge.py`.
+
+
 `agentic-sdlc` is a Documentation-First SDLC protocol for AI coding agents. It supports Claude Code, Codex, Gemini CLI, Google Antigravity 2.0, Cursor/Windsurf-style project instructions, and optional devPNT governance.
 
 ## Key Features
@@ -16,7 +32,7 @@
 - **devPNT symbiosis**: when devPNT is available, Master Plan, Action Plan, M-VISION, and governed artifacts become the authoritative planning layer, with independent fresh-context reviews of technical artifacts and diffs.
 - **Independent review, twice**: the design is reviewed before it is implemented and the diff before the work is declared done — by somebody other than its author. Three rungs of independence (fresh-context subagent > one-shot run > a declared self-pass, legal only when no higher rung is usable: absent, or permission-gated and declined — a gated rung is asked about, never silently skipped, and the log says which), capped at 3 rounds, one log line per review, and a PASS is invalid on "found nothing" — it must state where each constraint is satisfied.
 - **Question discipline**: a question to the user is legal only when the agent searched first and names the search with its result, and names the decision the answer unblocks. Otherwise it proceeds on a declared assumption — same evidence duty, batched, never a stream of "shall I proceed?".
-- **Installed support files**: Claude, Codex, Gemini, and Google Antigravity receive the full skill folder, including `templates.md`, `architect.md`, `guides.md`, `vision.md`, `tdd.md`, `debugging.md`, `elicitation.md`, `review.md`, `dispatch.md`, `routing.md`, `hybrid.md`, `ENFORCEMENT.md`, and the validator's two files, `scripts/sdlc_check.py` + `scripts/sdlc_core.py` — plus the `LICENSE` and `NOTICE` it ships under.
+- **Installed support files**: Claude, Codex, Gemini, and Google Antigravity receive the full skill folder, including `templates.md`, `architect.md`, `guides.md`, `vision.md`, `tdd.md`, `debugging.md`, `elicitation.md`, `review.md`, `dispatch.md`, `routing.md`, `hybrid.md`, `ENFORCEMENT.md`, `memory.md`, and the validator's three files, `scripts/sdlc_check.py` + `scripts/sdlc_core.py` + `scripts/knowledge.py` — plus the `LICENSE` and `NOTICE` it ships under.
 - **Mechanical checks**: optional validator for document structure, generated feature history, stale audit areas, and protected-path gates — `check`, `validate`, `index`, `stale`, `mark`, `benefit`, `gate`, `plan`, `orient`, `migrate`. `benefit` reports what the review gates have already caught, beside what the doctrine costs to read — it always exits 0 and carries no verdict, because a measurement that can fail a build becomes a target.
 
 ## Installation
@@ -85,17 +101,19 @@ skills/agentic-sdlc-skill/
 ├── dispatch.md
 ├── routing.md
 ├── hybrid.md
+├── memory.md
 ├── ENFORCEMENT.md
 ├── LICENSE
 ├── NOTICE
 └── scripts/
     ├── sdlc_check.py
-    └── sdlc_core.py
+    ├── sdlc_core.py
+    └── knowledge.py
 ```
 
 `SKILL.md` is the entrypoint. Supporting files are loaded or executed only when the agent needs them.
 
-The validator is **two files**: `sdlc_core.py` is the family's shared spine, `sdlc_check.py` is this lens's entry point. Copy both, or neither — the entry point is useless alone.
+The validator is **three files**: `sdlc_check.py` selects the lens, `sdlc_core.py` owns structural checks, and `knowledge.py` adds shared memory and KB integrity. Copy all three; core alone is not equivalent.
 
 Installing or updating the npm package wires the session-orientation hook
 machine-wide (user-level Claude Code settings; removal is a standing opt-out
@@ -111,7 +129,7 @@ Same process, three fidelity disciplines — what the agent's assertions must be
 | [`@antoneeo/kb-agentic-skill`](https://www.npmjs.com/package/@antoneeo/kb-agentic-skill) | the documents you supply | topic | `taxonomy.md`, `distillation.md`, `reconciliation.md` |
 | [`@antoneeo/mkt-agentic-sdlc-skill`](https://www.npmjs.com/package/@antoneeo/mkt-agentic-sdlc-skill) | market evidence | engagement | `frameworks.md`, `research.md` |
 
-Triage, the Vision Gate, the review gates, the guide router, question discipline and the validator spine are byte-identical across the three. Install only the one you need; when two live in the same project, `routing.md` decides which lens owns a given piece of work and any of the three validators gives the same verdict on the same tree.
+The three lenses share the process spine and knowledge-integrity engine. Install only the one you need; when two live in the same project, `routing.md` decides which lens owns a given piece of work. Marketing additionally runs its numerical checks: code/KB do not certify marketing arithmetic.
 
 ## Standalone vs Hybrid
 

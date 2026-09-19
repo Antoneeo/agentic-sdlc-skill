@@ -1,6 +1,14 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
+**F-057 release handoff (2026-09-19).** Shared project memory is complete on
+`codex/f057-shared-project-memory`, after F-056 commit `cb6352c`. Feature work does
+not bump versions, tag, push or publish. Follow `reference/GUIDE_release.md` before
+publishing: existing package versions are unchanged and `publish_all.bat` may skip
+them. The owner performs publication. Installer tests pass in temporary homes
+outside the sandbox; sandbox-only code checkout crashes were isolated to native
+Node `fs.cpSync` on its denied `.pytest_cache`, not repaired by changing the product.
+
 **Release state (registry-verified 2026-09-14).** Published: code **1.33.0**, kb
 **1.16.0**, mkt **0.11.0**, all MIT. Tagged and awaiting the owner's publish: code
 **1.34.0**, kb **1.17.0**, mkt **0.12.0** (`v1.34.0`, `kb-v1.17.0`, `mkt-v0.12.0`) — F-055,

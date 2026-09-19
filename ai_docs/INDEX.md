@@ -25,6 +25,7 @@ not manifested here.
 | Document | Status | Description |
 |---|---|---|
 | `reference/GUIDE_release.md` | CURRENT | How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish. |
+| `reference/GUIDE_shared_project_memory.md` | CURRENT | Consult before changing shared-memory discovery, docs-root resolution, or validator composition across the three distributions. |
 
 ## architecture/
 
@@ -47,6 +48,7 @@ not manifested here.
 | `architecture/ADR_2026-09-11_conservation_reference.md` | CURRENT | ADR - a conservation check's reference is per-lens DATA (a digest stamped in the moved file) and must come from the SOURCE, never from the artifact it checks... |
 | `architecture/ADR_2026-09-11_mandatory_read_diet.md` | CURRENT | ADR - doctrine leaves the mandatory read by RELOCATION behind a triggered pointer, never by deletion, and a relocation must enumerate its inbound citations.... |
 | `architecture/ADR_2026-09-11_probes_that_cannot_fail.md` | CURRENT | ADR - a probe over a computed output must RECOMPUTE the expected value and compare; a probe over prose must be labelled a wording anchor. Adopted after the s... |
+| `architecture/ADR_2026-09-19_shared_project_memory.md` | CURRENT | Why project memory is shared by every lens while document authority and specialist workflows remain separate. |
 
 ## functional/
 

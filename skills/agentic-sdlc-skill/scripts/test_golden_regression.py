@@ -152,13 +152,13 @@ class CopiedFileRecipe(unittest.TestCase):
             capture_output=True, text=True, encoding="utf-8", errors="replace",
         )
 
-    def test_both_files_copied_behaves_like_the_installed_validator(self):
+    def test_three_files_copied_behaves_like_the_installed_validator(self):
         with tempfile.TemporaryDirectory() as tmp:
             corpus = Path(tmp) / "project"
             materialize(corpus)
             tools = Path(tmp) / "tools"
             tools.mkdir()
-            for name in ("sdlc_check.py", "sdlc_core.py"):
+            for name in ("sdlc_check.py", "sdlc_core.py", "knowledge.py"):
                 shutil.copy2(HERE / name, tools / name)
             copied = self._run(tools, corpus)
             in_place = subprocess.run(

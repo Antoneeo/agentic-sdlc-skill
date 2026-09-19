@@ -84,6 +84,12 @@ Run the steps in order. Stop at the first one that decides.
 
 ## 3. Acting on the verdict
 
+Memory is not a competing verdict. Every lens ships `memory.md` and the shared
+knowledge machinery: consult across domains without switching the work's owner or
+running a second workflow. Resolve an ambiguous owner before applying its definitive
+risk scale; a provisional level is not a second mandatory triage. Split only distinct
+deliverables, not the act of reading another domain's evidence.
+
 The verdict binds the **method and the validation rules**, not the storage:
 
 - **Verdict = the loaded lens** → continue; nothing changes.

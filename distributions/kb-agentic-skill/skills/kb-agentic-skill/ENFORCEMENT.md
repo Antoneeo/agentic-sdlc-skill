@@ -52,13 +52,13 @@ and always fail-open. Event-driven by design: reconciliation §2 runs
 
 ## 2. Check in CI (recommended for teams)
 
-Copy **both** validator files into the repository — `scripts/sdlc_check.py` (the entry point) **and** `scripts/sdlc_core.py` (the shared core it imports) — keeping them side by side, e.g. `tools/sdlc_check.py` + `tools/sdlc_core.py`. Then add to the pipeline:
+Copy all three validator files into the repository: `scripts/sdlc_check.py`, `scripts/sdlc_core.py`, and `scripts/knowledge.py`, keeping them side by side. Then add to the pipeline:
 
 ```
 python tools/sdlc_check.py validate --strict
 ```
 
-The validator ships as two files: the core carries the family's shared behaviour and is identical in every distribution; the entry point IS the knowledge overlay — since F-024/F-025 it carries the claim ledger and the topic-graph checks. Copying only `sdlc_check.py` fails immediately with a message saying so — loudly, never as a silently green pipeline. Copying `sdlc_core.py` alone still runs, but **no longer behaves identically for kb**: it validates the family surface and runs NONE of the claim or graph checks (`graph`, `corpus`, the claim-table integrity inside `check`), so a kb project whose CI copies one file is green while its knowledge surface is unchecked. Copy both. For a kb project, add the graph step to CI:
+The validator ships as **three files**: the domain entry point, `sdlc_core.py` and `knowledge.py`. Keep all three together. The core alone still runs but omits shared-memory/KB checks and domain-specific overlays; it is not an equivalent CI gate. `check` includes the knowledge surface when present.
 
 ```
 python tools/sdlc_check.py graph --root .
@@ -69,7 +69,7 @@ python tools/sdlc_check.py corpus --root .
 
 Effect: an unregenerated index, invalid frontmatter, a missing security section or incoherent states **block the pipeline** instead of relying on the agent's memory. `--strict` also fails on warnings and on a missing `ai_docs/`, so a wrong working directory cannot produce a green pipeline. This works because documents travel in the same PR as the code (Phase 5 rule).
 
-Note: the copy in the repo is the authoritative one for CI; update it when you update the skill — both files, together.
+Note: the copy in the repo is the authoritative one for CI; update it when you update the skill — all three files, together.
 
 **Projects whose docs root is not `ai_docs/`.** Pass `--docs-dir <name>` (e.g. `--docs-dir mkt_docs`) on any subcommand, or set `AGENTIC_SDLC_DOCS_DIR`. Without either, the validator walks up from the working directory and takes the nearest root it recognizes. If it finds two side by side — the shape of a half-finished migration — it refuses and names both rather than validating half a project and printing a verdict. `ai_docs/` remains the default and the recommended root: the parameter exists so a legacy tree can be read and migrated, not so a second one can be kept.
 

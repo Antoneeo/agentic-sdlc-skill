@@ -20,7 +20,7 @@ Support files in the skill directory:
 - `vision.md`: how to write a Vision a cold reviewer can actually apply — the properties that make a rule hold, the minimum operable sections, and the blind check run before promoting one to APPROVED.
 - `hybrid.md`: the devPNT seam — the authoritative hierarchy, the ownership matrix (who owns what when both authorities are live), the triage equivalence, the feature-state mapping and the shadow discipline. Read it when the `devpnt_*` tools point at this project; a Standalone session never needs it.
 - `routing.md`: which lens owns this unit of work. Read ONLY when a sibling lens skill is installed alongside this one; a single-lens install never reads it.
-- `scripts/sdlc_check.py` + `scripts/sdlc_core.py`: the mechanical validator for the docs root (`check`, `validate`, `index`, `stale`, `mark`, `benefit`, `gate`, `plan`, `orient`, `migrate`). Two files: the core is the family's shared spine, the entry point names this domain. Copy both, or neither.
+- `scripts/sdlc_check.py` + `scripts/sdlc_core.py`: the mechanical validator for the docs root (`check`, `validate`, `index`, `stale`, `mark`, `benefit`, `gate`, `plan`, `orient`, `migrate`).  Keep the entry point, `scripts/sdlc_core.py` and `scripts/knowledge.py` together; the last supplies common memory and KB integrity.
 - `ENFORCEMENT.md`: optional setup for CI and hooks.
 
 Read these files only when needed. `SKILL.md` is the operating contract; the support files are progressive resources.
@@ -36,6 +36,14 @@ Read these files only when needed. `SKILL.md` is the operating contract; the sup
 - **Protect the Vision:** every decision must stay aligned with expected benefits, the actors it serves (and the UX they expect), non-goals and success signals.
 
 If a patch looks easy but you do not understand why the current code is shaped the way it is, investigate first.
+
+## Shared project memory
+
+Project memory is available by default, independently of installed sibling lenses.
+Read `memory.md` for the common consult/capture contract during orientation and
+closure. Use `recall` for cross-domain discovery; `index` registers original guides,
+plans and decisions without copying them. One owner still governs each unit.
+The validator now ships as three files: entry point, `sdlc_core.py`, `knowledge.py`.
 
 ## Rule Zero: Triage
 

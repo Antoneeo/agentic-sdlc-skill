@@ -15,4 +15,9 @@ Directory purposes: `vision/` (project direction and feature visions),
 structural decision was taken, and what was rejected), `functional/`
 (devPNT-generated functional snapshots), `reference/` (operative guides),
 `solutions/` (per-feature analyses, discovery-by-grep), `audit/` (audit plan and
-handoff).
+handoff), `memory/` (generated cross-domain discovery catalog).
+
+For a project question, use `sdlc_check.py recall QUERY --root .` or consult
+`memory/INDEX.md`, then read the relevant originals. Recall searches live metadata;
+the catalog is refreshed by `index`, not by a background watcher. Neither certifies
+approval or implementation, nor requires reading the entire corpus.

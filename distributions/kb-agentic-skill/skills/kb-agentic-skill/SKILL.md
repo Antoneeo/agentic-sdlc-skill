@@ -24,7 +24,7 @@ Support files in the skill directory:
 - `review.md`: the review discipline — when a review is due, how to request one, how to receive findings, how to review.
 - `dispatch.md`: opt-in subagent execution of an approved plan, plus the family-wide delegation boundary (what may be delegated at all) — that part applies at any level.
 - `routing.md`: which lens owns this unit of work. Read ONLY when a sibling lens skill is installed alongside this one; a single-lens install never reads it.
-- `scripts/sdlc_check.py` + `scripts/sdlc_core.py`: the mechanical validator for the docs root (`check`, `validate`, `index`, `mark`, `benefit`, `gate`, `plan`, `orient`, `migrate`, and the knowledge overlay: `graph`, `corpus`, `claim-id`, `anchor`, `export`, `import`, `stale` (spine staleness plus `## claims` -- the time cycle's consolidated view), plus `remind` — the opt-in per-turn one-line reminder, ENFORCEMENT §4). Two files: the core is the family's shared spine; the entry point IS the knowledge overlay — the claim ledger and topic-graph checks live inside it, so the core alone runs none of them. Copy both, or neither.
+- `scripts/sdlc_check.py` + `scripts/sdlc_core.py`: the mechanical validator for the docs root (`check`, `validate`, `index`, `mark`, `benefit`, `gate`, `plan`, `orient`, `migrate`, and the knowledge overlay: `graph`, `corpus`, `claim-id`, `anchor`, `export`, `import`, `stale` (spine staleness plus `## claims` -- the time cycle's consolidated view), plus `remind` — the opt-in per-turn one-line reminder, ENFORCEMENT §4).  Keep the entry point, `scripts/sdlc_core.py` and `scripts/knowledge.py` together; the last supplies common memory and KB integrity.
 - `ENFORCEMENT.md`: optional setup for CI and hooks.
 
 Read these files only when needed. `SKILL.md` is the operating contract; the support files are progressive resources.
@@ -37,6 +37,14 @@ Read these files only when needed. `SKILL.md` is the operating contract; the sup
 - **Lifecycle & Freshness:** mark superseded knowledge (`status: SUPERSEDED` or `DEPRECATED`) so outdated information does not cause hallucination.
 - **Protect the Vision & User Style:** align all knowledge work with user strategic goals, operational preferences, and expected outcomes.
 - **Map-First Navigation:** rely on `ai_docs/README.md`, `INDEX.md`, and `reference/INDEX.md` router for targeted retrieval before creating new documents — and before *answering from model memory* on the project's domain (`## Topic Recall`).
+
+## Shared project memory
+
+Project memory is available by default, independently of installed sibling lenses.
+Read `memory.md` for the common consult/capture contract during orientation and
+closure. Use `recall` for cross-domain discovery; `index` registers original guides,
+plans and decisions without copying them. One owner still governs each unit.
+The validator now ships as three files: entry point, `sdlc_core.py`, `knowledge.py`.
 
 ## Rule Zero: Triage
 

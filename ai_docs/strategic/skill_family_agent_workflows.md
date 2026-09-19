@@ -4,6 +4,21 @@ status: CURRENT
 ---
 # La famiglia di skill: come lavora un agente sotto ognuna
 
+## Memoria comune, metodo specializzato (F-057)
+
+La scelta della lente determina il workflow e l'autorità, non limita ciò che
+l'agente può conoscere. Tutti i pacchetti includono `memory.md` e `knowledge.py`:
+consultazione trasversale, catalogo degli originali e integrità topic/claim/fonti.
+Una sola installazione basta per questa memoria. La KB resta la disciplina per
+acquisire corpus e progettare tassonomie; il marketing conserva ledger e controlli
+numerici; SDLC verifica il codice reale.
+
+`index` registra guide, piani e decisioni in `memory/INDEX.md` senza copiarli.
+`recall` cerca metadati correnti per argomento; i tag `topics:` sono facoltativi.
+Il catalogo non è un quadro degli stati del lavoro: l'agente apre le fonti per
+distinguere proposta, approvazione e comportamento osservato. Nessun watcher,
+nessuna estrazione automatica di claim, nessuna nuova autorità sulla Vision.
+
 **Per chi**: il proprietario, e chiunque debba scegliere quale skill installare o
 capire perché un agente si comporta diversamente in tre progetti.
 **Risponde a**: "cosa fa *concretamente* di diverso un agente sotto ogni lente".
@@ -34,8 +49,8 @@ gate, il vocabolario, i controlli — discende da quella scelta.
 | **Slot di rischio (obbligatorio, il validator lo esige)** | `## Security and Threat Model` | `## Sources and Verification` | `## Threat Map / Plan Risks` |
 | **Albero documenti** | `ai_docs/` | `ai_docs/` + `corpus/` + `topics/` | `mkt_docs/` (vision/strategy/tactics/deliverables) — `ai_docs/` su albero migrato con `migrate` |
 | **File di dottrina propri** | `architect.md`, `tdd.md`, `debugging.md` | `taxonomy.md`, `distillation.md`, `reconciliation.md` | `frameworks.md`, `research.md` |
-| **Comandi validator propri** | (spina, entry sottile) | `graph`, `corpus`, `claim-id`, `anchor`, `export`, `import` | `ledger`, `budget`, `funnel`, `trace` |
-| **Cosa valida in più** | struttura + Component Map anti-rot | **il grafo e i claim** (span, digest, id, simmetrie, cicli) | **l'aritmetica** (budget ±1%, funnel ±5%, catena obiettivo→tattica→KPI) |
+| **Comandi validator** | spina + memoria/KB condivisa | spina + memoria/KB condivisa | stessi comandi condivisi + `ledger`, `budget`, `funnel`, `trace` |
+| **Validazione** | struttura, Component Map, memoria e integrità KB | struttura, memoria e integrità KB | memoria e integrità KB + **aritmetica** (budget ±1%, funnel ±5%, catena obiettivo→tattica→KPI) |
 
 ## La spina comune (identica byte per byte, su tutte e tre)
 
@@ -353,7 +368,9 @@ due forme: si esegue UNA volta, mai due.
 
 - **Un solo albero, un solo default**: `default_domain:` nel README della docs
   root; ogni artefatto può dichiarare la sua lente (`domain:`). Qualunque
-  validator della famiglia dà **lo stesso verdetto** sullo stesso albero.
+  pacchetto include il core comune e l'integrità KB. Gli entry point compongono
+  i controlli: marketing usa la propria validazione documentale e numerica, non
+  esegue lo stesso check strutturale completo di code/KB.
 - **Il router** (`routing.md`, letto solo se c'è una sorella installata): per ogni
   L2/L3/Spike, il test di fedeltà — *a cosa deve essere fedele questo lavoro?*
   Con la deroga market-facing: scopo persuasivo verso il mercato → mkt,
@@ -362,7 +379,7 @@ due forme: si esegue UNA volta, mai due.
 - **DRY fra lenti**: un fatto ha una casa sola; le altre lo **citano, mai lo
   copiano** — un fatto ricopiato è un finding di review. I nomi ambigui per lente
   ("threat model", "vision", `handoff.md`) si qualificano sempre.
-- **La spina non può divergere**: 15 file condivisi byte-identici verificati dal
+- **La spina non può divergere**: 22 file condivisi byte-identici verificati dal
   drift guard a ogni build; i check portabili (`marketing.budget` su un documento
   kb con una tabella di budget, `knowledge.sources` altrove) si importano per
   nome e **aggiungono findings, mai autorità**.

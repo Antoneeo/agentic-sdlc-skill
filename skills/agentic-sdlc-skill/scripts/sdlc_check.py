@@ -1,19 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Agentic SDLC — the CODE domain entry point.
+"""Domain entry point with shared project memory.
 
-Thin by design. Every behaviour lives in `sdlc_core.py`, the spine shipped
-verbatim in every distribution of the family; this file only says which domain
-this distribution implements and which portable checks it exposes. Command
-names, flags, output and exit codes are unchanged — an existing project sees the
-same tool it always had.
-
-Both files must sit in the same directory. If you copy the validator into a CI
-image, copy BOTH (`ENFORCEMENT.md` §2 has the recipe); copying this one alone
-fails at import, loudly and immediately, which is the intended failure.
-
-Usage is `sdlc_core.py`'s: check / validate / index / stale / mark / gate /
-orient / benefit / plan.
+Ship this file, sdlc_core.py and knowledge.py together. The core alone omits
+knowledge integrity and this entry point\'s domain-specific behavior.
 """
 import sys
 from pathlib import Path
@@ -25,14 +15,15 @@ try:
 except ImportError as exc:  # pragma: no cover - exercised by TS12, not by unit tests
     sys.stderr.write(
         "[ERROR] sdlc_check.py cannot find sdlc_core.py next to it: " + str(exc) + "\n"
-        "        The validator ships as TWO files since the multi-domain core.\n"
-        "        Copy both, or run sdlc_core.py directly.\n")
+        "        The validator needs entry point, sdlc_core.py and knowledge.py.\n"
+        "        Copy all three together; core alone omits memory and overlay checks.\n")
     sys.exit(1)
 
 # Re-export the core's surface: existing importers (`import sdlc_check as sc`)
 # and the test batteries reach for these names on this module.
 from sdlc_core import *            # noqa: F401,F403
 from sdlc_core import _map_refs    # noqa: F401  underscore helper used by the batteries
+import knowledge
 
 # The domain this distribution implements. It does NOT decide any document's
 # owning domain -- that is resolved per project (`default_domain:` in the docs
@@ -50,7 +41,7 @@ sdlc_core.set_profile(
     unit_noun="feature",
     support_files=("templates.md", "architect.md", "guides.md", "vision.md", "tdd.md",
                    "debugging.md", "elicitation.md", "review.md", "dispatch.md",
-                   "routing.md", "hybrid.md", "ENFORCEMENT.md"),
+                   "routing.md", "hybrid.md", "ENFORCEMENT.md", "memory.md"),
     capabilities=(
         # spine
         "triage", "write_triggers", "workstream_registry", "vision_gate",
@@ -73,7 +64,7 @@ sdlc_core.set_profile(
 
 
 def main(argv=None):
-    return sdlc_core.main(argv)
+    return knowledge.main(argv)
 
 
 if __name__ == "__main__":

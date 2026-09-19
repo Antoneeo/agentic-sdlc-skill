@@ -4,6 +4,8 @@ status: CURRENT
 ---
 # Existing Features
 
+- [057] **Shared Project Memory**: Every distribution includes a catalog of original project documents, live metadata `recall`, and shared topic/claim/corpus integrity. One installed skill suffices; workflow ownership remains domain-specific. No status aggregation, automatic claims, semantic search or watcher. See `reference/GUIDE_shared_project_memory.md` for implementation boundaries.
+
 - [000] **Project Initialization**: Creates baseline `ai_docs/` governance files and agent protocol instructions for supported AI tools.
 - [001] **Vision Governance**: Adds `ai_docs/vision/`, Vision templates, and a mandatory Vision Gate before feature analysis.
 - [002] **Agentic SDLC vNext**: Adds risk triage, installed support files, Gemini native skill installation, mechanical validation, and devPNT M-VISION symbiosis while preserving full Standalone operation.

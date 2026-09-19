@@ -17,7 +17,7 @@ Support files in the skill directory:
 - `research.md`: the research playbook and the evidence ledger discipline.
 - `templates.md`: templates for every artifact and deliverable.
 - `review.md`: the family's shared review discipline (independence ladder, rounds, log). The marketing-specific attack surface — swap test, untraced numbers, orphan tactics, missing kill/scale — lives in `frameworks.md`'s falsification rules; the adversarial CMO review applies them through `review.md`'s procedure.
-- `scripts/mkt_check.py` + `scripts/sdlc_core.py`: the mechanical validator (`check`, `validate`, `ledger`, `benefit`, `budget`, `funnel`, `trace`, `index`, plus the spine's `stale`/`mark`/`gate`/`orient`/`plan`/`migrate`). Two files: the core is the family's shared spine, the entry point is this domain's overlay. Copy both, or neither.
+- `scripts/mkt_check.py` + `scripts/sdlc_core.py`: the mechanical validator (`check`, `validate`, `ledger`, `benefit`, `budget`, `funnel`, `trace`, `index`, plus the spine's `stale`/`mark`/`gate`/`orient`/`plan`/`migrate`).  Keep the entry point, `scripts/sdlc_core.py` and `scripts/knowledge.py` together; the last supplies common memory and KB integrity.
 - `hybrid.md`: the devPNT seam — the authoritative hierarchy, the ownership matrix (which artifact is mastered where), and the Hybrid rules. Read it when the `devpnt_*` tools point at this project; a Standalone engagement never needs it.
 - `ENFORCEMENT.md`: optional setup for CI and hooks.
 
@@ -39,6 +39,14 @@ No process guarantees market success, and this skill never claims one. What it g
 - **Protect the Marketing Vision:** every downstream choice must serve a stated expected benefit or success signal; unauthorized scope is a vision divergence, not initiative.
 
 If a strategic choice looks obvious but you cannot trace it to evidence, research first.
+
+## Shared project memory
+
+Project memory is available by default, independently of installed sibling lenses.
+Read `memory.md` for the common consult/capture contract during orientation and
+closure. Use `recall` for cross-domain discovery; `index` registers original guides,
+plans and decisions without copying them. One owner still governs each unit.
+The validator now ships as three files: entry point, `sdlc_core.py`, `knowledge.py`.
 
 ## Rule Zero: Triage
 

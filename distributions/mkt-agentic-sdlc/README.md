@@ -1,5 +1,21 @@
 # Marketing Agentic SDLC Skill
 
+## Shared project memory
+
+All three lenses include project memory by default; install the lens you need,
+not a second skill just for recall. `index` registers guides, decisions and plans
+in the docs root's `memory/INDEX.md`, linking originals without copying them.
+`recall "onboarding"` finds related metadata across domains; optional
+`topics: [onboarding]` links documents by subject. Read the originals for authority,
+status and evidence: discovery is not approval or proof of implementation.
+
+Registration happens at `index`/documentation closure, not through a background
+watcher. Existing projects acquire the catalog on their next `index`; `recall`
+also sees live metadata. The KB lens remains the specialist for ingestion and
+taxonomy. Marketing retains its numerical validators. See the skill's `memory.md`.
+Vendoring requires all three files: the entry point, `sdlc_core.py`, `knowledge.py`.
+
+
 Evidence-First marketing planning protocol for AI coding agents (Claude Code, Gemini CLI, Google Antigravity, Codex). The sibling of [`@antoneeo/agentic-sdlc-skill`](https://www.npmjs.com/package/@antoneeo/agentic-sdlc-skill), transplanted from software engineering to marketing strategy.
 
 ## What it does
@@ -7,7 +23,7 @@ Evidence-First marketing planning protocol for AI coding agents (Claude Code, Ge
 Turns an AI agent into a disciplined marketing strategist that produces a professional, professionally-recognized marketing plan (SOSTAC structure) with three engineered guarantees:
 
 1. **Evidence ledger** — every market number is classified FACT / BENCHMARK / ASSUMPTION and carries an `[EV-nn]` reference to its source. No invented numbers.
-2. **Mechanical validator** (`mkt_check.py` + `sdlc_core.py` — the entry point plus the family's shared spine; copy both, or neither) — budget sums (±1%), funnel math recomputed cell by cell (±5%) and the objective→tactic→KPI chain are checked mechanically, not rhetorically: `check`, `validate`, `ledger`, `budget`, `funnel`, `trace`, `index`, plus the spine's `stale`/`mark`/`benefit`/`gate`/`plan`/`orient`/`migrate`. `benefit` reports what the review gates have already caught, beside what the doctrine costs to read; it always exits 0 and carries no verdict.
+2. **Mechanical validator** (`mkt_check.py` + `sdlc_core.py` + `knowledge.py` — entry point, shared spine and memory; copy all three) — budget sums (±1%), funnel math recomputed cell by cell (±5%) and the objective→tactic→KPI chain are checked mechanically, not rhetorically: `check`, `validate`, `ledger`, `budget`, `funnel`, `trace`, `index`, plus the spine's `stale`/`mark`/`benefit`/`gate`/`plan`/`orient`/`migrate`. `benefit` reports what the review gates have already caught, beside what the doctrine costs to read; it always exits 0 and carries no verdict.
 3. **Adversarial CMO review** — an independent, fresh-context reviewer attacks the strategy before the user sees it (generic-positioning swap test, untraced claims, orphan tactics).
 
 The agent asks the user only for facts the user uniquely owns (product, price, budget, capacity); everything else — market sizing, competitor analysis, channel benchmarks — is derived from real web research.

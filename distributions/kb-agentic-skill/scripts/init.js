@@ -196,27 +196,16 @@ in the skill's \`routing.md\`: it decides which lens's method and validation rul
 that unit. L1 never reaches it. Never refer to a document whose meaning differs by lens
 ("threat model", "vision", \`principles.md\`, \`handoff.md\`) by its bare name.
 
-${protocolPreexisting ? `**Merge step owed.** The always-on protocol pointer of this project (\`CLAUDE.md\` /
-\`GEMINI.md\` / \`AGENTS.md\` / \`.cursorrules\`) was written by another lens's init and
-carries ITS triage ladder. This init did not overwrite it. Add the knowledge lens's ladder
-to that file by hand — the pointer below — so both are always loaded.
-
-## Rule Zero — Triage every request (knowledge lens)
-- L1 Quick fact: a small update to an existing note, 1-2 files.
-- L2 Local note / SOP update: at most 1-2 files, low risk, sources named.
-- L3 Major knowledge unit: large document sets, multi-topic research, corpus
-  restructuring. Full workflow via the skill.
-- Spike: time-boxed exploration; outcome in \`ai_docs/solutions/SPIKE_[topic].md\`.
-` : `The always-on protocol pointer for the knowledge lens was created by this init. When you
-install another lens over this project, its init will leave its own ladder here for you
-to merge.
-`}
+Select the owning lens by the unit's purpose, then apply only its risk scale.
+The project's always-on pointer stays intact: consult the selected skill rather than
+merging multiple mandatory ladders. All lenses already carry shared project memory
+(\`memory.md\`); another installation is not needed for cross-domain recall.
 This file is NOT auto-loaded by any client: it is a note for you, deliberately additive.
-Delete it once the merge is done.
+Delete this note once the routing pointer is integrated.
 `, 'multi-lens routing note');
   if (wrote && protocolPreexisting) {
     console.log('   ⚠️  A protocol pointer already existed and was NOT overwritten.');
-    console.log(`       Merge the ${SELF_LENS}-lens ladder from AGENTIC_MULTI_LENS.md into it by hand.`);
+    console.log('       Integrate the routing pointer from AGENTIC_MULTI_LENS.md; keep one risk scale per unit.');
   }
 }
 

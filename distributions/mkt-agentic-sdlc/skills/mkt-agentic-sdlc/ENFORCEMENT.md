@@ -14,17 +14,17 @@ python "<skill_dir>/scripts/mkt_check.py" check
 
 ## 2. Check in CI (recommended for teams)
 
-Copy **both** validator files into the repository — `scripts/mkt_check.py` (the entry point) **and** `scripts/sdlc_core.py` (the shared core it imports) — keeping them side by side, e.g. `tools/mkt_check.py` + `tools/sdlc_core.py`. Then add to the pipeline:
+Copy all three validator files into the repository: `scripts/mkt_check.py`, `scripts/sdlc_core.py`, and `scripts/knowledge.py`, keeping them side by side. Then add to the pipeline:
 
 ```
 python tools/mkt_check.py validate --strict
 ```
 
-The validator ships as two files: the core carries the behaviour and is identical in every distribution of the family, the entry point names the domain. Copying only `mkt_check.py` fails immediately with a message saying so — loudly, never as a silently green pipeline. (Copying `sdlc_core.py` alone also works: `python tools/sdlc_core.py validate --strict` behaves identically, defaulting to the code domain.)
+The validator ships as **three files**: the domain entry point, `sdlc_core.py` and `knowledge.py`. Keep all three together. The core alone still runs but omits shared-memory/KB checks and domain-specific overlays; it is not an equivalent CI gate. `check` includes the knowledge surface when present.
 
 Effect: an unregenerated index, invalid frontmatter, a missing security section or incoherent states **block the pipeline** instead of relying on the agent's memory. `--strict` also fails on warnings and on a missing `ai_docs/`, so a wrong working directory cannot produce a green pipeline. This works because documents travel in the same PR as the code (Phase 5 rule).
 
-Note: the copy in the repo is the authoritative one for CI; update it when you update the skill — both files, together.
+Note: the copy in the repo is the authoritative one for CI; update it when you update the skill — all three files, together.
 
 **Projects whose docs root is not `ai_docs/`.** Pass `--docs-dir <name>` (e.g. `--docs-dir mkt_docs`) on any subcommand, or set `AGENTIC_SDLC_DOCS_DIR`. Without either, the validator walks up from the working directory and takes the nearest root it recognizes. If it finds two side by side — the shape of a half-finished migration — it refuses and names both rather than validating half a project and printing a verdict. `ai_docs/` remains the default and the recommended root: the parameter exists so a legacy tree can be read and migrated, not so a second one can be kept.
 
@@ -155,7 +155,7 @@ Gemini CLI — wire the same command into its startup-hook mechanism if present;
 **Usage notes:**
 - The hook assumes the working directory is the project root (standard Claude Code hook behavior); it also accepts `--root <path>`.
 - **Hybrid/devPNT projects**: add `--hybrid` — the hook then appends a one-line pointer to run `devpnt_mcp_get_bootstrap` for the Master Plan / Knowledge Layer and does not replicate them; the filesystem orientation (router + handoff + README) still emits.
-- Like the CI gate (§2), if you copied the validator into the repo, the hook references that copy — keep both files current when you update the skill.
+- Like the CI gate (§2), if you copied the validator into the repo, the hook references that copy — keep all three files current when you update the skill.
 
 ### Per-turn reminder: `remind` (UserPromptSubmit -- wired by default)
 
@@ -215,7 +215,7 @@ It aggregates the test files (`test_plan.py` + `test_session_start.py` + `test_s
 
 **Optional CI** (same shape as §2, not mandatory): add a `run:` step invoking the `unittest discover` command above.
 
-**T10 note:** if you copied the validator (both files) and the `test_*.py` battery into the repo for CI, that copy is authoritative — keep it current when you update the skill.
+**T10 note:** if you copied the validator (all three files) and the `test_*.py` battery into the repo for CI, that copy is authoritative — keep it current when you update the skill.
 
 ## `benefit` is a report, never a CI gate
 

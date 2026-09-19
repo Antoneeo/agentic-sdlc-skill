@@ -40,6 +40,8 @@
     "skills/kb-agentic-skill/ENFORCEMENT.md",
     "skills/kb-agentic-skill/scripts/sdlc_check.py",
     "skills/kb-agentic-skill/scripts/sdlc_core.py",
+    "skills/kb-agentic-skill/scripts/knowledge.py",
+    "skills/kb-agentic-skill/memory.md",
     "skills/kb-agentic-skill/LICENSE",
     "skills/kb-agentic-skill/NOTICE",
     "gemini-extension.json",
