@@ -569,6 +569,36 @@ def git_changed_since(root, ref, rel_path):
         return None
 
 
+def git_ref_state(root, ref):
+    """Where a recorded commit stands against HEAD (F-056).
+
+    'ancestor' -- in HEAD's history; 'orphan' -- a commit HEAD's history does not
+    contain (amended, rebased or squash-merged away, or marked on another branch:
+    it stops resolving once pruned, and on any fresh clone); 'missing' -- not a
+    commit in this repository; 'unknown' -- git gave no yes/no answer.
+    Callers pass a hash-shaped ref only: that check is what keeps document
+    content from reaching git's argv as an option."""
+    try:
+        r = subprocess.run(["git", "cat-file", "-e", ref + "^{commit}"],
+                           cwd=str(root), capture_output=True, text=True, timeout=30)
+        if r.returncode != 0:
+            return "missing"
+        r = subprocess.run(["git", "merge-base", "--is-ancestor", ref, "HEAD"],
+                           cwd=str(root), capture_output=True, text=True, timeout=30)
+    except Exception:
+        return "unknown"
+    return {0: "ancestor", 1: "orphan"}.get(r.returncode, "unknown")
+
+
+def git_is_shallow(root):
+    try:
+        r = subprocess.run(["git", "rev-parse", "--is-shallow-repository"],
+                           cwd=str(root), capture_output=True, text=True, timeout=10)
+        return r.returncode == 0 and r.stdout.strip() == "true"
+    except Exception:
+        return False
+
+
 # -------------------------------------------------------------------- index
 
 def build_index(root):
@@ -1543,6 +1573,11 @@ def cmd_stale(root, hybrid=False):
               "(audit not initialized, or Hybrid mode where mapping is delegated to devPNT).")
         return rc                                  # was: return 0 — MUST carry guide rc
     use_git = git_available(root)
+    entry = entry_script()
+    # F-056: an ANALYZED row whose reference cannot be evaluated is UNVERIFIED,
+    # never fresh. Each `continue` below that skips such a row records it here;
+    # skipping silently is how a pruned reference printed `[ok]` over three areas.
+    unverifiable = []
     stale = []
     for row in rows:
         if row["status"] != "ANALYZED":
@@ -1561,16 +1596,42 @@ def cmd_stale(root, hybrid=False):
             print(f"[warn]  {rel}: path does not exist")
             continue
         changed = []
-        if use_git and re.fullmatch(r"[0-9a-fA-F]{7,40}", ref or ""):
+        remark = f"re-analyze the area, then run: {entry} mark {rel}"
+        if re.fullmatch(r"[0-9a-fA-F]{7,40}", ref or ""):
+            if not use_git:
+                print(f"[stale] {rel}: reference '{ref}' is a git commit, but git is not usable "
+                      "here (not a git work tree, git missing, or the repository refused): its "
+                      "freshness cannot be evaluated. Run stale inside the git work tree, or "
+                      + remark)
+                unverifiable.append(rel)
+                continue
+            state = git_ref_state(root, ref)
+            if state == "missing":
+                shallow = (" This clone is shallow: full history may hold it "
+                           "(git fetch --unshallow)." if git_is_shallow(root) else "")
+                print(f"[stale] {rel}: git ref '{ref}' is not a commit in this repository "
+                      "(amended, rebased or squash-merged away and pruned, or never fetched "
+                      f"here): its freshness cannot be evaluated.{shallow} To fix, " + remark)
+                unverifiable.append(rel)
+                continue
+            if state == "orphan":
+                print(f"[warn]  {rel}: git ref '{ref}' is not an ancestor of HEAD (amended, "
+                      "rebased, squash-merged, or marked on another branch): it stops "
+                      "resolving once git prunes it, and on any fresh clone. Re-mark now: "
+                      f"{entry} mark {rel}")
             res = git_changed_since(root, ref, rel.replace("\\", "/"))
             if res is None:
-                print(f"[warn]  {rel}: git ref '{ref}' unresolvable, cannot evaluate")
+                print(f"[stale] {rel}: git could not compare against ref '{ref}': its "
+                      "freshness cannot be evaluated. To fix, " + remark)
+                unverifiable.append(rel)
                 continue
             changed = res
         else:
             ts = parse_iso(ref)
             if ts is None:
-                print(f"[warn]  {rel}: reference '{ref}' not parseable (neither git hash nor ISO UTC)")
+                print(f"[stale] {rel}: reference '{ref}' is neither a git commit nor an ISO "
+                      "UTC timestamp: its freshness cannot be evaluated. To fix, " + remark)
+                unverifiable.append(rel)
                 continue
             for fp in iter_files(target):
                 mtime = datetime.fromtimestamp(fp.stat().st_mtime, tz=timezone.utc)
@@ -1583,8 +1644,11 @@ def cmd_stale(root, hybrid=False):
         if changed:
             stale.append((rel, changed))
 
+    if unverifiable:
+        rc = 1                                     # unverified is not fresh (F-056)
     if not stale:
-        print("[ok] no analyzed area was modified after its last recorded analysis.")
+        if not unverifiable:
+            print("[ok] no analyzed area was modified after its last recorded analysis.")
         return rc                                  # was: return 0 — MUST carry guide rc
     print("Areas modified after the last recorded analysis:")
     for rel, changed in stale:
@@ -1593,7 +1657,7 @@ def cmd_stale(root, hybrid=False):
             print(f"    - {c}")
         if len(changed) > 10:
             print(f"    ... and {len(changed) - 10} more")
-    print("\nAfter re-analyzing, record it with: sdlc_check.py mark <path>")
+    print(f"\nAfter re-analyzing, record it with: {entry} mark <path>")
     return 1                                       # stale areas dominate: rc already implied
 
 
@@ -1645,6 +1709,13 @@ def cmd_mark(root, paths):
 
     f.parent.mkdir(parents=True, exist_ok=True)
     f.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    if use_git_ref:
+        # F-056: the reference is born here, so this is where the gestures that
+        # orphan it are named. An amend was the observed one.
+        print(f"[info] {ref} is the current HEAD. Commit this audit plan change as a new "
+              "commit: amending, rebasing or squash-merging that commit orphans the "
+              f"reference, and `{entry_script()} stale` fails once it no longer resolves. "
+              "After a squash or rebase merge, re-mark on the integration branch.")
     return 0
 
 

@@ -376,7 +376,7 @@ remains is derived — the next window is the next pending task.
 
 ## ai_docs/audit/audit_plan.md (Standalone mode only)
 
-The `Reference` field (git hash or ISO UTC timestamp) is managed by `sdlc_check.py mark` — do not fill it by hand. Freshness is verified with `sdlc_check.py stale`.
+The `Reference` field (git hash or ISO UTC timestamp) is managed by `sdlc_check.py mark` — do not fill it by hand. Freshness is verified with `sdlc_check.py stale`. Commit the `mark` result as a new commit: amending, rebasing or squash-merging the commit it recorded orphans the reference, and `stale` fails once it no longer resolves — after a squash or rebase merge, re-mark on the integration branch.
 
 ```markdown
 # Audit Plan

@@ -2,6 +2,20 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [Unreleased]
+
+### Fixed
+- **F-056: `stale` no longer reports an area fresh when it cannot evaluate it.** An
+  `audit_plan.md` row whose reference no longer resolves (the commit was amended,
+  rebased or squash-merged away, or the clone is shallow), whose reference is a git
+  hash where git is unusable, or whose reference is unparseable used to print a
+  warning, then `[ok]`, and exit 0. It now prints `[stale]` with the re-mark command
+  and exits 1, so `check` is NOT CLEAN. A reference that still resolves but is no
+  longer an ancestor of HEAD gets a warning before it dangles, and `mark` says to
+  commit its result as a new commit. **Teams that squash- or rebase-merge:** a
+  reference recorded on a feature branch never reaches the integration branch, so
+  re-mark those areas after the merge.
+
 ## [1.34.0] - 2026-09-14
 
 ### Changed
