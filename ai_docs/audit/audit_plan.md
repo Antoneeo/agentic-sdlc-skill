@@ -9,5 +9,5 @@ States: PENDING (to analyze) | ANALYZED (analyzed, with reference) | SKIPPED (wi
 | skills/agentic-sdlc-skill/ | ANALYZED | 3d15e62a329e | re-analysis here is not complete until the two DERIVED documents say the same thing: `strategic/skill_family_agent_workflows.md` (what an agent does differently under each lens) and the distribution's `README.md` (the npm front page — support-files bullet, Runtime Shape tree, validator commands). `mark` is the last step, not the first |
 | scripts/ | ANALYZED | 2026-09-19T11:06:12Z |  |
 | distributions/ | ANALYZED | 3d15e62a329e | same duty as the row above, per distribution: doctrine changed here means `strategic/skill_family_agent_workflows.md` and that distribution's `README.md` are stale until refreshed. `stale` fires on this row at the first doctrine edit — that is the prompt |
-| ai_docs/ | ANALYZED | 3d15e62a329e | the governance tree itself, not an analyzable area: marking it rewrites this file, which sits inside it, so a hash-based row chases its own tail forever. Its freshness is what `check` already verifies directly |
+| ai_docs/ | ANALYZED | 88965bb65bb2 | the governance tree itself, not an analyzable area: marking it rewrites this file, which sits inside it, so a hash-based row chases its own tail forever. Its freshness is what `check` already verifies directly |
 | skills/ | ANALYZED | 3d15e62a329e |  |
