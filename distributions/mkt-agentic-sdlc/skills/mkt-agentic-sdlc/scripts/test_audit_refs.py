@@ -245,5 +245,54 @@ class DanglingReference(unittest.TestCase):
         self.assertUnverifiable(rc, out, "comparison failure")
 
 
+def docs_area_project(root):
+    """A git project whose analyzed area is the docs root itself, which holds the
+    audit plan: marked at a clean HEAD, so the reference is a commit hash."""
+    root.mkdir(parents=True, exist_ok=True)
+    (root / "ai_docs" / "audit").mkdir(parents=True)
+    (root / "ai_docs" / "notes.md").write_text("one\n", encoding="utf-8")
+    (root / "ai_docs" / "audit" / "audit_plan.md").write_text(
+        PLAN + "| ai_docs/ | PENDING | - | |\n", encoding="utf-8")
+    git(root, "init", "-q")
+    git(root, "add", "-A")
+    git(root, "commit", "-q", "-m", "base")
+    rc, out = run(sc.cmd_mark, root, ["ai_docs"])
+    assert rc == 0, out
+    return root
+
+
+@unittest.skipUnless(HAS_GIT, "git not available")
+class AuditPlanSelfReference(unittest.TestCase):
+    """The audit plan records the marks; its own edit is not a change to the area
+    that contains it. Before the fix, committing a hash mark of `ai_docs/` made that
+    area stale again, and re-marking repeated the loop (2026-09-25, acd4cf0)."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.tmp = Path(self._tmp.name)
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def test_committing_the_mark_leaves_the_area_fresh(self):
+        root = docs_area_project(self.tmp / "p")
+        _, _, rows = sc.parse_audit_plan(root)
+        ref = next(r["ref"] for r in rows if r["path"] == "ai_docs/")
+        self.assertRegex(ref, r"^[0-9a-f]{7,40}$", "fixture: a clean tree marks a hash")
+        git(root, "commit", "-q", "-a", "-m", "record analysis")
+        rc, out = run(sc.cmd_stale, root)
+        self.assertEqual(rc, 0, f"the mark's own commit made its area stale\n{out}")
+        self.assertIn("[ok]", out)
+
+    def test_any_other_change_in_the_area_is_still_stale(self):
+        root = docs_area_project(self.tmp / "p")
+        git(root, "commit", "-q", "-a", "-m", "record analysis")
+        (root / "ai_docs" / "notes.md").write_text("two\n", encoding="utf-8")
+        rc, out = run(sc.cmd_stale, root)
+        self.assertEqual(rc, 1, out)
+        self.assertIn("ai_docs/notes.md", out)
+        self.assertNotIn("audit_plan.md", out, "the plan itself is never a change")
+
+
 if __name__ == "__main__":
     unittest.main()

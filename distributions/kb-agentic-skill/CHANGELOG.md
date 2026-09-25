@@ -15,6 +15,13 @@ Every significant change to this skill is recorded here.
   or delegated work. `review.md` makes an unasked doubt a design-review finding; `dispatch.md`
   tells a subagent to return its real doubts instead of deciding them.
 
+### Fixed
+- **`stale` no longer counts the audit plan against the area that holds it.**
+  Committing a hash mark of `ai_docs/` changed `ai_docs/audit/audit_plan.md` after
+  the recorded commit, so the area went stale again and every re-mark repeated the
+  loop. The plan's own edits are now excluded; any other change in the area still
+  counts.
+
 ## [1.18.0] - 2026-09-19
 
 ### Added

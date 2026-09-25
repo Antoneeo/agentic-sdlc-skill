@@ -1574,6 +1574,13 @@ def cmd_stale(root, hybrid=False):
         return rc                                  # was: return 0 — MUST carry guide rc
     use_git = git_available(root)
     entry = entry_script()
+    # The audit plan records the marks: its own edits are not a change to the area
+    # that contains it. Counting them made a committed hash mark of that area
+    # stale again, and every re-mark repeated the loop.
+    try:
+        plan_rel = f.resolve().relative_to(Path(root).resolve()).as_posix()
+    except ValueError:
+        plan_rel = None
     # F-056: an ANALYZED row whose reference cannot be evaluated is UNVERIFIED,
     # never fresh. Each `continue` below that skips such a row records it here;
     # skipping silently is how a pruned reference printed `[ok]` over three areas.
@@ -1641,6 +1648,7 @@ def cmd_stale(root, hybrid=False):
                     except ValueError:   # symlink out of the tree: report absolute, never crash
                         name = str(fp)
                     changed.append(name)
+        changed = [c for c in changed if c != plan_rel]
         if changed:
             stale.append((rel, changed))
 
