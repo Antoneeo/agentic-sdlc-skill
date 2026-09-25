@@ -3,10 +3,10 @@
   "files": {
     "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
     "NOTICE": "8414f424f7c1db19d89d74286fd2d6b1acdd9eedde910fa57a16d6835602e4bd",
-    "dispatch.md": "3b3a77dc1466cc25b277ac57d4d33240e27f6f7b2369db5b629947f6e0836be1",
+    "dispatch.md": "febdfdda36405438b6bde6e95ed38ea7bc2c6639d557ef435fb9411432e868f7",
     "guides.md": "651c150ad3014edbbbc1908dfdca2404db2a877e3d0cbf5cc7921d9be31c187f",
     "memory.md": "5907be5f99b18eb66ffda2c25815f4fa266fff4b3767f4c142d601b146271167",
-    "review.md": "a819179da736550e2194ac2f32e7dc24a33edd52c001340bc1e0b149d8b3d119",
+    "review.md": "ea86123d1dace3e9e55b6c2c5f149f2e43818e1e552779a68a77100a2c8563df",
     "routing.md": "0d6a0b688c28088d900f06141ed8958e03caec98832bb8adbabbc20596568f67",
     "scripts/entry_point.py": "4a560d4d41db989d3426182f1b24270cbb934b3db0f3246c700578a4ed93089b",
     "scripts/knowledge.py": "a1be56e7ad55d53bd221cf47e21dd398d9c0643cf62666067ba54feee5d4c8de",
@@ -21,7 +21,7 @@
     "scripts/test_plan.py": "4c011a63aa834b55e9c5d13fb4ea76b131b742356001364b0a508435ba013e27",
     "scripts/test_project_memory.py": "4f3c463a7a52c5a0d3ff88dc71dcbe7ebc9b5add69ada5948365d204054df36d",
     "scripts/test_session_start.py": "203fa72b87fb263663ce7fcd737460530b75fd5e76e883f25cd849e6cca98275",
-    "scripts/test_skill_invariants.py": "2585ba724ec117744b94aed0b512f79c9dba2b0c8c4c3ed64dbcc6d868246a67",
+    "scripts/test_skill_invariants.py": "03996911a12443306206d46797839abf804f1d8685f273f50cf2540056ce61db",
     "vision.md": "191696a8283b2873fea6e57d16fbb3b4f24b82bf0c79bcfd77d52141a9ca2a5b"
   }
 }

@@ -55,7 +55,7 @@ above is already satisfiable and no stop fires (the row still carries
 rung 2 is not "usable" for this clause, it joins the question instead. When the best rung is gated and no
 ungated rung works, the gate STOPS and asks: descending to rung 3 on silence is
 illegal while a user is reachable. The stop is doctrine-mandated (legal by mandate,
-`elicitation.md` §Blocking is reserved) and carries that file's five-bullet
+`elicitation.md` §The form of a question) and carries that file's five-bullet
 blocking form — its closed-list exemption covers this file's round-cap hand-over
 only, not this stop. The question offers the gated rung(s) against the fallback, with what each
 buys; states each higher rung's status (tried / unusable / gated) with the
@@ -335,6 +335,13 @@ When you are the reviewer:
   statement is the proof the check ran; an unfalsifiable "I checked" is the review
   theater this discipline exists to prevent (the reviewer-side twin of §Receiving's
   silent-drop rule). Plain code reviews stay findings-only.
+- **An unasked doubt is a finding (impact/solution-analysis & design reviews).** An
+  intent choice written with no owner-authored source and no weighing, a weighing
+  that names no rejected option or turns on an owner priority not on record, and a
+  fact or owner-held datum settled by a weighing instead of evidence are findings;
+  so is a cited source that does not say what the line claims. What makes a ground
+  or an assumption legal is each lens's `elicitation.md` §The question discipline —
+  cite it, never restate it. The fix is the question, not a better justification.
 - **Restated facts (cite, never copy).** Every governance slot has ONE owning document
   per project. A fact restated in the artifact under review when another document owns
   it is a **finding**: the fix is a citation naming the owner, not a better copy. This

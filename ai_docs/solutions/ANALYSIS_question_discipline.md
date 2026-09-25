@@ -1,209 +1,516 @@
 ---
 id: F-026
-feature: Question discipline (when a question to the user is legal)
+feature: Question discipline (a real doubt is asked when it emerges; a question is legal only after the search)
 status: COMPLETED
 level: L3
 start_date: 2026-08-01
-end_date: 2026-08-01
+end_date: 2026-09-25
 ---
 # Feature Analysis: Question Discipline
 
 ## Objective
 
-Field defect, reported by the owner: agents following the skill ask useless questions —
-generic confirmations ("shall I proceed?"), questions the repo already answers, questions
-that never say what is blocked without the reply ("spesso l'agente fa domande inutili
-all'utente e non si capisce per quale ragione").
+Two field reports from the owner, pointing in opposite directions, govern this feature.
 
-Where the doctrine invites it today:
+- **2026-08-01, too many questions.** Agents asked useless ones: generic
+  confirmations, questions the repo answers, questions that never say what they
+  unblock.
+- **2026-09-25, doubts kept silent.** Doubts never surface, flow into the written
+  documents, and stay there unless the owner notices ("ci sono dei dubbi che non
+  emergono e che si riversano nei documenti scritti e se non me ne accorgo restano
+  lì").
 
-- `elicitation.md` mandates a six-question round for every L3 whose skip path fires only
-  when "an approved Vision or explicit user requirements already answer" — it never asks
-  the agent to *derive* answers from the repo or the conversation first, so four of the
-  six get asked even when the record answers them.
-- The declared-assumption mechanism (proceed under a written assumption) exists only on
-  the Unattended path. When the user IS reachable, the doctrine offers no alternative to
-  asking, so agents interrupt for facts that could have been assumed and reviewed.
-- No text anywhere states what makes a question legal. `SKILL.md` says "stop and ask" at
-  several gates (Vision conflict, circuit breaker) with no form: nothing requires naming
-  the blocked decision, so "ask for instructions" degenerates to "shall I proceed?".
-- Contrast: the mkt sibling's `elicitation.md` already carries the cardinal rule ("ask
-  only what the user uniquely owns; everything derivable from research comes from
-  research") — the code skill never received its equivalent. And F-025's conflict ladder
-  (kb) makes escalation non-blocking, batched, and formed (both claims, their sources,
-  dates, why the machine cannot decide) — the same shape, never generalized.
+The first report produced the legality test that `elicitation.md` carries in all three
+lenses. That test stays. The second report comes from three leaks in the text that
+answered the first:
 
-**The fix**: a question-legality discipline in `elicitation.md`, governing every question
-at every phase, discoverable via one cross-cutting line in `SKILL.md`.
+1. **Nothing defines when a doubt has emerged.** An agent that settles an ambiguity
+   by picking a plausible reading sees no doubt, so it neither asks nor declares an
+   assumption. Nothing requires it to state what the reading rests on, so the choice
+   enters the artifact indistinguishable from the owner's intent.
+2. **Intent can be "derived" from the repo.** The code lens's skip path and "derive
+   before asking" let goal, scope and constraints be derived from the repo and the
+   code. That includes the parts only the owner can state.
+3. **The default hands doubts to the deliverable.** "Default non-blocking" writes an
+   unknown into the artifact as an assumption, "answered by exception" with the
+   deliverable. The owner has to find it inside the document to answer it. The code
+   lens's Rule Zero repeats the bias on the always-read path: "Blocking the work is
+   the exception, not the default."
+
+**The fix: ask on real indecision, ground everything else.**
+
+- **A real doubt is asked before any write that would embed its answer**, together
+  with the other doubts open at that point. A real doubt is either a fact or an
+  owner-held datum that the search leaves open and that changes the work, or two or
+  more options that change the work, where weighing their pros and cons does not
+  settle the choice.
+- **Facts and information only the owner holds are never weighed.** They are
+  settled by evidence, cited, or asked.
+- **A choice whose pros clearly outweigh its cons is taken without asking.** The
+  weighing and the option it rejects are written next to it ("I take X over Z: pro …,
+  contro …"), so the document shows both the choice and what it rests on.
+- **Every question explains the pros and cons of each answer it offers.**
+- **Reserved approvals and doctrine-mandated stops are always asked.** They are
+  legal by mandate and never pass through the weighing test.
+- **A real doubt that passes the legality test is owed**, not merely allowed.
+- **Declared assumptions stay only where no question can be asked:** the owner is
+  unreachable, or the owner delegated the choice.
+- **The independent design review is the second line.** An intent choice written
+  without its ground is a finding.
+
+**Elicitation (2026-09-25, two rounds, owner's replies).**
+
+- **When:** as soon as the doubt emerges, all the doubts of that moment in one set.
+  The owner rejected both the one-question-per-turn drip and a single list at the
+  end of the document.
+- **Facts:** search first. A fact the search does not settle, and that changes the
+  work, is asked, not silently assumed.
+- **Scope:** all three lenses.
+- **What counts as a doubt.** Round 2, verbatim: "occorre fare attenzione a capire se
+  è davvero una informazione che deve dare l'utente oppure se si tratta di scegliere
+  fra varie opzioni in cui ci sia una reale indecisione … se una cosa è così
+  probabile o raccomandabile, non deve chiedere." This is the real-indecision test
+  above.
+- **How to tell (third input, verbatim):** "per fare una domanda deve anche spiegare
+  i pro e contro di ogni risposta e qualora lui stesso vedesse che i pro pesano di
+  più dei contro allora non c'è bisogno di chiedere." This sets two rules. The weighing
+  of pros and cons is the test for choices. The weighing travels with every
+  question that offers options.
+- **Unattended below the top level:** I take "proceed on a declared assumption,
+  surfaced in the reply; stop blocked only at the top level (L3 in code and kb, E3 in
+  marketing)" over "stop at every level".
+  - Pro: unattended L1/L2 runs keep working, and the top level keeps today's stop.
+  - Contro: a below-top-level assumption can be wrong until the owner reads the
+    reply.
+  - The owner's principle ("se una cosa è così probabile o raccomandabile, non deve
+    chiedere") ruled on the options as presented, and it names no priority the
+    weighing would need.
+- **Pros and cons only where a question offers options:** I take "every option
+  offered carries its pros and cons" over "every question carries pros and cons".
+  - Pro: an open question ("what is the goal?") has no enumerable answers to weigh.
+  - Contro: none found; an open question still names what it blocks.
+- **Cost:** accepted explicitly. The exact question is quoted in the budget below.
+
+Derived without asking, with ground:
+
+- **Every level.** Ground: the owner's "ogni volta che emergono", and the existing
+  rule's "any phase, any level".
+- **The five-element form keeps the name "blocking form".** Ground: every question
+  outside a planned occasion still stops the write, and `review.md` plus two
+  scenarios cite that name.
 
 ## Feature Vision (alignment)
 
-- **Success Signal 1** (cold-start operability: rule on a change "without asking the user
-  for background") — this widens the signal from cold start to the whole session: the
-  agent asks only what no artifact can answer. Baseline: the signal today binds only the
-  Vision reviewer scenario.
-- **Actor 1** ("never re-explaining the project across sessions") — a useless question is
-  a forced re-explanation.
-- **Ceremony budget disclosure** (Non-Goal 3 requires it; "omission resolves against the
-  proposal", so every figure below is measured, and re-measured after the last edit —
-  the review caught stale numbers twice, which is why the commands are named).
-  `elicitation.md`: **60 → 169 lines**, `git diff --numstat HEAD~1` = **+123 / −14, net
-  +109**, of which `## The question discipline` is **117 lines**. One existing
-  anti-pattern bullet ("Asking what the approved vision already answers") is absorbed;
-  the other two are kept. The section is that long because the review's successful
-  evasions each cost a clause — the search floor, the reversibility fix, the precedence
-  rule, the closed prescribes-list, the waste-test element. `SKILL.md` gains **one**
-  bullet under Rule Zero: **416 characters / 76 words**, and deliberately the *shortest*
-  path to the rule — it cites `elicitation.md` and states the two-condition test, and
-  enumerates nothing, because a second copy of the never-legal forms is what diverged in
-  round 1 (the longest existing cross-cutting bullet is 597 chars, so this one is not
-  the largest thing on the always-read path).
-  **What L1 pays, stated honestly** (Goal 4 counts what the agent must read as real
-  cost, so "L1 pays nothing" would be false): L1 pays **no step, no field, no check, no
-  artifact** — and **76 words of always-read text**. `elicitation.md` itself is read at
-  L3 phase 3, or when an agent is about to ask. What it removes is user-side: the
-  interruption cost of illegal questions, at every level including L1. The added
-  ceremony sits above L1, so Non-Goal 3's budget branch applies — the cost is disclosed
-  here in the figures above, and the owner accepts it explicitly by merging.
+- **Core Problem (myopia).** A doubt settled silently is acting from partial
+  understanding. The artifact then carries a guess as if it were intent.
+- **Goal 3.** "Make divergence from the declared intent visible *before*
+  implementation … surface it and let the user choose." The doubt is asked, or the
+  choice shows its ground.
+- **Goal 2.** "Nothing load-bearing lives only in a transcript." Answers and grounds
+  are written into the artifact (`elicitation.md` §Reflect, unchanged).
+- **Goal 4 / solo-developer Actor.** "Ceremony proportional to risk": a clearly
+  preferable option costs one written line, not a question.
+- **Team-lead Actor.** "Divergence … surfaced before the change is merged": the
+  review clause.
+- **Non-Goal 3 (ceremony budget).** Constant always-read text also reaches L1. The
+  precedent is `rulings.md` r19: such text is admitted through the Non-Goal's second
+  door, the cost disclosed in full and accepted by the owner. Every cost this change
+  adds:
+  - **Always-read text.** Baseline measured 2026-09-25: code 416 characters, kb 327,
+    marketing 247. Target: at most +60 characters each.
+  - **`elicitation.md`.** Baseline: code 173 lines, kb 133, marketing 147. Target: at
+    most +30 net lines each.
+  - **A new design-review check** at the top level: one bullet in `review.md`, at
+    most 8 lines.
+  - **More interruptions.** One question set per write point instead of one list
+    with the deliverable, and outside the planned occasions each question carries the
+    compact five-element form.
+  - **A ground line ("I take X over Z: pro …, contro …")**, only when a candidate doubt is
+    settled without asking. It replaces the assumption line the old default already
+    required. At L1 the cost is zero unless a candidate doubt arises, and then the
+    line goes in the reply.
+  - **Unattended runs.** Unchanged in code and kb. Marketing gains an unattended path
+    it did not have.
+
+  **Owner acceptance, 2026-09-25, quoted.** The question: "La Vision vieta ogni
+  aumento di cerimonia non accettato esplicitamente. Questo cambio aggiunge: circa 60
+  caratteri nella riga di SKILL.md sempre letta (per lente), circa 30 righe in
+  elicitation.md, un nuovo controllo nella design review L3, e più interruzioni per te
+  (una serie di domande per step invece di un'unica lista finale). Accetti questo
+  costo?" The reply: "Accetto".
+
+  Three items came after that question and were not itemized in it: the ground line,
+  the compact form on questions outside planned occasions, and pros and cons on every
+  option at the planned occasions (the owner's own fourth input). Both replace a cost that
+  already existed: the assumption line, and the form on blocking questions. The
+  closure report names them so the owner can confirm them. Closure also re-measures
+  the figures and reports any overrun before merge.
+
+  **Measured at closure (2026-09-25).** The always-read line came in at 417, 385 and
+  304 characters, within target. The `review.md` bullet is 7 lines. `elicitation.md`
+  came in at 210, 185 and 210 lines (+37, +52, +63), over the +30 target. The owner
+  was asked with the figures and replied "Accetto le cifre reali" (2026-09-25).
+- **No other Non-Goal touched.** It adds no work-management surface and no second
+  triage authority, and it copies no other tool's format.
 
 ## Use Cases / User Needs
 
-Actor: the solo developer / team lead running the skill (project_vision.md `## Actors`).
+Actors, per `project_vision.md` §Actors: the solo developer and the team lead (code
+lens), and the practitioner in a non-code domain (kb, marketing). **NEW** concepts
+introduced by this change: *real indecision* and *delegated decision*. The *ground
+line* EXISTS in the code lens, as the "I take X from Y" shape its discipline uses for
+assumptions and derived answers. There it is extended to weighed choices and the
+rejected option. It is NEW in kb and marketing. Everything else EXISTS under the same name in the lenses.
 
-- **UC1 — repo-answerable ambiguity.** Mid-L3 the agent is unsure of a constraint. It
-  searches the repo/corpus and proceeds; no question reaches the user.
-- **UC2 — genuine fork.** Two viable designs, the choice turns on a priority only the
-  user owns, and building on the wrong one is rework of the unit. The agent asks ONE
-  blocking question carrying the mandatory form (fork, evidence, why it is the user's
-  call, what is blocked).
-- **UC3 — minor unknowns.** Unknowns that no fork of the work depends on: declared
-  assumptions in the artifact, presented batched with the round or the deliverable —
-  answered by exception, never a drip.
-- **UC4 — the confirmation impulse.** The agent wants reassurance ("is this ok?"). Not
-  legal: either the process already authorizes proceeding, or there is a real risk — in
-  which case it is named and becomes UC2.
+- **UC1 — real indecision on intent.** Solo developer; Goal 3. The request supports
+  two readings that change scope, and weighing their pros and cons settles neither. The
+  agent asks before writing either one, in one numbered set with the other open
+  doubts, and then writes the answer citing the reply.
+- **UC2 — a reading that clearly wins.** Solo developer; Goal 4. One reading is
+  settled by the request, an APPROVED Vision or an earlier reply, or its pros clearly
+  outweigh its cons against the other readings, and the weighing turns on no owner
+  priority that is not on record. The agent takes it without asking and writes the
+  source, or the weighing and the rejected reading, next to it.
+- **UC3 — a fact, or information only the owner holds.** Solo developer; Goal 4. The
+  search settles it: the agent cites the evidence, no question. The search leaves it
+  open and it changes the work: the agent asks, naming the search and its result. A
+  fact is never settled by weighing pros and cons.
+- **UC4 — design.** Solo developer; Goal 4. The agent decides under the project's
+  conventions and records the rationale. A choice that trades off something the owner
+  holds, with no clear preference, becomes UC1.
+- **UC5 — nobody to ask.** Practitioner or solo developer; Goal 2. In an unattended
+  run, a real doubt becomes a declared assumption (source plus excluded alternative).
+  At the top level the work stops blocked: at L3, `BLOCKED on the user` in code and
+  kb; at E3 in marketing, the artifact stays DRAFT and the plan holds at the next user
+  gate. Below the top level the work proceeds and the assumption is listed in the
+  reply. When the owner
+  said "you decide" for a choice, it becomes a delegated decision, quoted. A
+  dispatched subagent is told, at spawn, to return its real doubts in its final output
+  rather than decide them. The orchestrator asks them as its own, or settles a fact
+  with evidence. A reserved approval is never assumed: unattended, the work holds
+  blocked at any level.
+- **UC6 — reading the artifact.** Team lead; Team-lead Actor. Every intent choice in
+  a top-level analysis or design shows its source, or its ground and the reading it
+  rejected. The design review flags a choice that shows neither, and a ground that
+  does not meet the standard.
+- **UC7 — the confirmation impulse.** Solo developer; Goal 4. "Shall I proceed?" and
+  preference-fishing stay illegal.
+
+## Functional Spec
+
+**Behavior.**
+
+1. **Candidate doubt.** An open point whose answer changes what gets built or
+   written. Named thought-signals ("they probably mean", "the request doesn't say",
+   "either would work", "I'll note it as an assumption", "it's reversible") help
+   notice candidates. They illustrate the definition; they do not close it.
+2. **Real indecision.** Classify the candidate first, then test it.
+   - **Intent** (benefit, scope, priorities, non-goals, acceptance, reserved
+     approvals).
+   - **Fact** about the system: search first.
+   - **Design**: yours by convention, unless it trades off something the owner holds.
+
+   The test depends on the kind.
+   - **A fact, or information only the owner holds** (a deadline, a price, a business
+     constraint): settled only by evidence, cited. If the search leaves it open and it
+     changes the work, it is a real doubt. It is never settled by a weighing.
+   - **A choice** (a reading of intent, a design trade-off): first look for an
+     owner-authored statement that settles it (the request, an APPROVED Vision, an
+     earlier reply) and cite it. Otherwise, weigh the pros and cons of each option.
+   - One option's pros clearly outweigh its cons against the others: take it and write
+     "I take X over Z: pro …, contro …", naming the option rejected.
+   - The weighing is balanced, or it turns on a priority of the owner that is not on
+     record: it is a real doubt, because only the owner can weigh their own
+     priorities.
+
+   "The more natural reading", with no pros and cons written, is not a weighing.
+
+   **Reserved approvals and doctrine-mandated stops are outside this test.** They are
+   always asked, legal by mandate, whatever the agent thinks the answer is:
+   - Vision promotion and amendment;
+   - scope changes;
+   - proposal acceptance;
+   - merge decisions;
+   - the stops the doctrine mandates.
+3. **Timing.** A real doubt is asked before the first write that would embed its
+   answer, grouped with every doubt open at that point. It is never deferred to the
+   deliverable, and never dripped one per turn. The planned occasions keep their own
+   grouping and form: the L3 spec round (code, kb), the waves (marketing, whose
+   four-questions-per-round cap still holds, with overflow in the next round before
+   the write), and the Capture Moment sweep (kb). A mandated hand-over keeps its own
+   timing as well as its form: kb claim conflicts are escalated once, at the end of a
+   run, and never stop an ingest.
+4. **Form.** A question outside a planned occasion passes the legality test and
+   carries the blocking form: five elements, one line each. The fork element lists
+   the options, each with its pros and cons. Wherever a question offers options,
+   including the planned occasions, each option carries its pros and cons. The element "why no assumption survives" now states why no option is
+   settled by the weighing, and what a wrong pick costs. For a reserved approval or a
+   mandated stop, it cites the approval or the mandate instead. The rule that reserved
+   approvals and mandated stops are legal by mandate is stated next to the form. Each
+   lens's closed exemption list stays as it is: two in code and kb, one in marketing.
+5. **Assumptions.** Only for a real doubt that cannot be asked: unattended, or
+   delegated by the owner's explicit words for that choice. A general "go ahead" is
+   not a delegation. Each assumption states its source and the alternative it
+   excludes, and each is listed where the owner will read it. A reserved approval or
+   a mandated stop is never assumed: unattended, the work holds blocked at any level,
+   unless the mandating rule prescribes its own unattended handling. The gated review
+   rung is such a rule: the grant is never assumed, the fallback runs, and the row
+   records it. A dispatched subagent returns its open points in its final output;
+   the orchestrator treats them as its own candidate doubts.
+6. **Review.** In a top-level analysis or design review, each of these is a finding:
+   - an intent choice written with no owner-authored source, no ground line, and not
+     as an assumption the discipline makes legal;
+   - a ground line that names no rejected option, or states no pros and cons;
+   - a weighing that turns on an owner priority that is not on record;
+   - a fact or owner-held datum settled by a weighing instead of a source;
+   - a cited source that does not say what the line claims, where the reviewer can
+     read the source.
+
+**Cases.**
+
+- The search settles the fact: no question and no ground line needed beyond a
+  citation.
+- The options are equivalent in effect: no doubt. Pick one, because asking would be
+  preference-fishing.
+- A doubt emerges during implementation: same rule. If the answer changes an approved
+  contracted surface, it is a scope change the owner approves, as today.
+- A kb claim conflict: its own mandated hand-over, in the closed list, unchanged.
+- A marketing estimate backed by a benchmark or a comparable: a researched answer with
+  its confidence, not a doubt.
+
+**Acceptance criteria.**
+
+- **AC1.** Given two scope-changing readings with no clear preference, when the agent
+  reaches the write, then it asks first.
+- **AC2.** Given a clearly supported reading, then no question is asked, and the ground
+  appears next to the choice.
+- **AC3.** Given a fact the repo answers, then no question reaches the owner.
+- **AC4.** Given an unattended L3 run with a real doubt, then a declared assumption is
+  recorded with its source and excluded alternative, and the work stops blocked in
+  that lens's vocabulary.
+- **AC5.** Given a top-level artifact with an intent choice lacking any ground, or
+  a ground with no pros and cons and no rejected option, then the design review
+  reports a finding.
+- **AC6.** Given a merge decision with an obvious answer, then the agent still asks.
+- **AC7.** Given a question offering options, then each option carries its pros and
+  cons.
+- **AC8.** Given a fact the search leaves open that changes the work, then the agent
+  asks and does not weigh it.
+
+## Interface Contract
+
+**Actors and surfaces.** The surface is the agent's question to the owner in the
+conversation. For a software actor it is the blocked state on the artifact.
+
+**Reused idioms.** A numbered set with concrete options (the round and the waves), and
+the client's structured-question facility where one exists, which marketing already
+names. No new idiom.
+
+**Flow.**
+
+1. The agent works and a candidate doubt appears.
+2. It classifies the doubt and tests it for real indecision.
+3. An option that clearly wins the weighing is taken, and the weighing is written with it.
+4. Before the next write that would embed an open doubt, all the open doubts go out in
+   one set.
+5. The owner replies.
+6. The answers are written into the artifact, citing the reply, and the work resumes.
+
+When unattended, step 4 becomes a declared assumption, plus the blocked state at the top level.
+
+**Feedback.** Each question names what stays blocked. Afterwards the artifact shows,
+for every intent choice, its source: a reply, the record, or a stated ground.
+
+**Constraints.** The planned occasions and the closed exemption lists are read, not
+redesigned: `debugging.md`'s circuit breaker, `reconciliation.md` §4, and `review.md`'s
+round cap.
+
+**Flags.** Two risks feed the threat model: over-asking, and "the weighing favours it" used
+as a licence.
 
 ## Capability Ledger
 
 | Capability | Verdict | Where / gap | Evidence |
 |---|---|---|---|
-| Rule a candidate question legal/illegal | **MISSING** | no owner; this feature adds it to `elicitation.md` | searched `elicitation.md` (round + anti-patterns, no legality test), `SKILL.md` (gates say "stop and ask", no form), `review.md` (escalation surfaces findings, no question form), `vision.md` (anti-question in spirit, no rule) |
-| Proceed under a written assumption | **EXISTS — reach extended** | `elicitation.md` Unattended path | mechanism kept; the discipline extends it to attended sessions as the non-blocking default |
-| Escalation form (both sides + evidence + why undecidable) | **EXISTS in the family, INADEQUATE here** | F-025 ladder escalation (kb, in flight); `review.md` round-cap escalation surfaces artifact+findings but prescribes no question form | generalized into the blocking-question form; `review.md` (shared) untouched — the form binds at the point of asking, which the discipline owns |
-| Validate a question's legality at runtime | **not buildable** | the validator never sees the conversation | honest limit: no check can rule on a question that was asked in chat |
-| Assert the doctrine is WIRED | **EXISTS** | `test_skill_invariants.py` `@requires(...)` / `OPTIONAL_CAPABILITIES` (`sdlc_core.py:242`) | the family convention — every doctrine feature ships one (F-016 `test_rule_zero_declares_router_verdict`, F-018 `test_vision_discipline_wired`, F-020 `test_architect_pass_wired`). Used here: `question_discipline` capability + `test_question_discipline_wired`. An unconditional assertion would fail mkt (its `elicitation.md` differs); the gate is what makes it shippable in the shared battery |
+| Rule a question legal | EXISTS | `elicitation.md` §The question discipline ×3 (legality test) | re-read 2026-09-25; unchanged |
+| Tell a real doubt from a clear choice | MISSING | added in `elicitation.md` ×3: candidate signals, three kinds, the pros-and-cons test | searched the three `elicitation.md`, the three `SKILL.md`, `review.md` and `debugging.md` for "doubt", "unknown" and "assum": the only trigger is an unknown the agent already recognizes |
+| Decide when to ask | INADEQUATE | "Default non-blocking" defers doubts to the deliverable; code Rule Zero calls blocking the exception | replaced by "before the write that would embed it, grouped" |
+| Settle intent from the record | INADEQUATE (code) | the skip path and "derive before asking" allow repo-derived goal and scope | narrowed to an owner-authored source or a stated ground |
+| Record an assumption with its source | EXISTS, reach narrowed | the Unattended path (code, kb) plus the evidence duty | kept for unattended cases; delegation added; marketing has no unattended path, so it gains one |
+| Catch a groundless choice in a written artifact | MISSING | `review.md` §Reviewing covers conformance, grounding and restated facts, and nothing covers an unsourced intent choice | new bullet (shared ×3) |
+| Assert the wiring | EXISTS | `test_question_discipline_wired` with `@requires("question_discipline")`, claimed by all three entry points | anchors updated |
+| Observe behaviour | EXISTS | `evals/scenarios/`, non-gating (code lens) | new scenario |
 
 ## Impact
 
-| Path | Change | Why |
+| Path | Change | Serves |
 |---|---|---|
-| `skills/agentic-sdlc-skill/elicitation.md` | MODIFY | new `## The question discipline` section; skip path extended with "or derivable (name the sources)"; `## The round` gains "Derive before asking"; two anti-pattern bullets absorbed into the section |
-| `skills/agentic-sdlc-skill/SKILL.md` | MODIFY | one cross-cutting bullet under Rule Zero pointing at the discipline (questions happen at all levels; a rule only L3-phase-3 readers see never reaches them) |
-| `scripts/sdlc_core.py` ×3 | MODIFY | `question_discipline` added to `OPTIONAL_CAPABILITIES` — shared spine, so the capability name exists in every distribution and "kb does not claim it" is a visible decision, not a silent absence |
-| `scripts/test_skill_invariants.py` ×3 | MODIFY | `test_question_discipline_wired`, `@requires("question_discipline")`: asserts the section in `elicitation.md` AND the bullet on `SKILL.md`'s always-read path. Skips in kb/mkt until they adopt it |
-| `scripts/sdlc_check.py` (sdlc only) | MODIFY | this distribution claims the capability |
-| `scripts/shared_files.py` ×3 distributions | MODIFY | boundary record: `elicitation.md` is today in NEITHER `SHARED_FILES` nor `NOT_SHARED_ON_PURPOSE`, and the mkt copy has already silently diverged — exactly the "absence nobody notices" the manifest exists to prevent. Added to `NOT_SHARED_ON_PURPOSE` with the reason |
-| `scripts/shared_manifest.json` ×3 | REGENERATE | `shared_files.py`, `sdlc_core.py` and `test_skill_invariants.py` are all in `SHARED_FILES`; copied verbatim + `--update` in each distribution |
+| `skills/agentic-sdlc-skill/elicitation.md` | MODIFY: the discipline gains §When a doubt emerges (signals, kinds, pros-and-cons test), §Ask before the write (timing, assumptions only unattended or delegated, subagent doubts) and §The form of a question (the blocking form, scoped outside the planned occasions); the skip path and "derive before asking" are narrowed; "Default non-blocking" and "Blocking is reserved" are removed; one anti-pattern is added | UC1–UC5, UC7; FS 1–5 |
+| `distributions/kb-agentic-skill/skills/kb-agentic-skill/elicitation.md` | MODIFY: same in kb vocabulary; the Capture Moment sweep is named a planned occasion; claim conflicts cite `reconciliation.md` §4 without restating it | UC1–UC5 |
+| `distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/elicitation.md` | MODIFY: same in marketing vocabulary; adds an unattended path (artifact stays DRAFT, plan held at the next user gate, ledger ASSUMPTION rows listed there); the waves and their four-per-round cap stay the planned occasion; a researched ASSUMPTION is not a doubt | UC1–UC5 |
+| The planned occasions: code and kb round (`elicitation.md` §The round, "offer concrete options"); marketing question style ("Offer concrete options") | MODIFY: each option offered carries its pros and cons. The kb Capture Moment sweep offers no options (an open "any other decisions?") and is untouched | AC7 |
+| `dispatch.md` ×3 (shared) | MODIFY: the spawn sentence becomes "the brief plus the return-doubts line"; the line is self-contained for a subagent that never reads `elicitation.md` ("an open point whose answer changes the work: return it in your final output with what you searched; do not decide it") | UC5, F4 residual closed |
+| `SKILL.md` ×3 | MODIFY: the always-read line carries "a real doubt is asked when it emerges, before it is written"; code drops "Blocking the work is the exception" | FS 3 at every level |
+| `review.md` ×3 (shared) | MODIFY: new §Reviewing bullet "An unasked doubt is a finding", citing the discipline for what a legal ground or assumption is; the gated-rung citation repointed from `§Blocking is reserved` to `§The form of a question`, the section that states both the form and the legal-by-mandate rule | UC6, FS 6 |
+| `scripts/test_skill_invariants.py` ×3 (shared) | MODIFY: new anchors; "Default non-blocking" asserted absent; the always-read line must carry the duty; the heading `review.md` cites must exist | wiring |
+| `scripts/shared_manifest.json` ×3 | REGENERATE (`review.md`, `dispatch.md` and `test_skill_invariants.py` are shared) | drift guard |
+| `skills/agentic-sdlc-skill/evals/scenarios/doubt_asked_when_it_emerges.md` | ADD | AC1–AC3 (behaviour) |
+| `README.md`, `distributions/kb-agentic-skill/README.md` | MODIFY: the feature line ("proceeds on a declared assumption" is no longer true) | truthful packaging |
+| `distributions/mkt-agentic-sdlc/README.md` | MODIFY: line 105 claims the question discipline is byte-identical across the three lenses, which is false before and after; reworded as the same rule, restated per lens | same |
+| `ai_docs/strategic/skill_family_agent_workflows.md` | MODIFY: point 4 ("Default non-bloccante") | same |
+| `CHANGELOG.md` ×3 | MODIFY: `[Unreleased]` entry (1.35.0 is released) | release notes |
+| `ai_docs/solutions/harness_question_discipline/probe.py` | ADD | text replay |
 
-**Why the discipline is not split into the shared spine (the alternative, argued).**
-`review.md` and `vision.md` are shared because each is a whole file of domain-neutral
-doctrine. The discipline is a *section inside* a file whose remainder is domain-specific
-— mkt runs question waves, not the six-question spec round, and its copy already
-diverges. Splitting it into a fourth shared file would add a file to every distribution's
-support-file list (ceremony in two domains to fix a defect reported in one) and would
-still need per-domain wiring. Chosen instead: the capability name lives in the shared
-spine, the text lives per-domain, and the gated test makes each sibling's non-adoption a
-visible decision. **Named follow-up, not silently dropped:** kb's `elicitation.md` is
-byte-identical to sdlc's today and is being reshaped by F-024 on its own branch — it
-adopts the section there; mkt carries the cardinal rule already (`elicitation.md:5`) and
-owes the non-blocking default, the search-naming duty and the blocking form. Both are
-handoff rows, not this unit's scope.
+**Blast radius.** Every consumer of the changed text, enumerated by grep over the three
+skill directories, the READMEs and `ai_docs/strategic/`. These are doctrine files, so
+there is no symbol graph.
 
-Blast radius of `elicitation.md` (all consumers enumerated by grep over the skill dir):
-`architect.md:3` (sequencing — unchanged), `vision.md:50` (benefit-first — unchanged),
-`templates.md:250` (actors from round — unchanged), `SKILL.md:63,216` (trigger — 216
-untouched, discipline referenced from Rule Zero instead), `sdlc_check.py:52` (filename
-list — unchanged), `test_skill_invariants.py:187` (asserts "benefit" present — preserved).
-kb's and mkt's `elicitation.md` are NOT touched: kb's is being reshaped by F-024 on its
-own branch; mkt's already has its domain form of the rule.
+- `review.md:58-59` ×3 cites "§Blocking is reserved" and "that file's five-bullet
+  blocking form". Repointed; the form keeps its five bullets and its name.
+- `review.md:63` ×3 uses "why no assumption survives". The element is kept, redefined
+  compatibly: "either guess writes a false log row" is exactly a wrong-pick cost.
+- `review.md:70` ×3 cites the "Unattended path". Unchanged in code and kb. In marketing
+  it dangles today, and the new marketing unattended path makes it resolve.
+- `gated_rung_asks_before_descending.md`, both copies (code and kb), cites "the five
+  elements of the blocking form". They are kept.
+- kb `SKILL.md:246-250` (the sweep "is not a blocking question … the blocking form does
+  not attach") and kb `evals/scenarios/capture_channels_the_days_decisions.md:39` ("not
+  the five-part blocking form"). Both stay true: the sweep is a planned occasion with its
+  own form, now named as such.
+- `SKILL.md` ×3: the bullets in the Impact. Code line 163 and kb line 134 point to the
+  round (unchanged). Marketing lines 16 and 139 point to the waves (unchanged).
+- `vision.md:50` ×3 points to the round for the benefit (unchanged).
+- `debugging.md`'s circuit breaker and `guides.md`'s proposal: covered by the closed list
+  and "every other mandated stop carries the form" (unchanged).
+- Marketing `evals/scenarios/no_number_without_ledger.md` expects a benchmark or a
+  declared ASSUMPTION. Still true: a researched ASSUMPTION is not a doubt.
+- `dispatch.md` ×3 "Spawn the subagent with that brief as its entire context window":
+  the new line extends the spawn, and the brief format (`plan brief`) is unchanged.
+- The READMEs, `skill_family_agent_workflows.md` and the CHANGELOGs are in the Impact.
+
+If one is missed, a citation dangles; the gated rung would cite a heading that no longer
+exists. The probe and the wiring test assert that the cited heading exists in all three
+lenses.
 
 ## Security and Threat Model
 
-No code, no parsing, no network, no filesystem surface beyond doctrine text. Process
-risks instead:
+There is no code, parsing, network or filesystem surface, only doctrine text. The risks
+are process risks.
 
 | Risk | Mitigation |
 |---|---|
-| Over-suppression: agent silently guesses a genuinely user-owned call | the "what the user uniquely owns" list keeps intent/priority/approval askable, and an explicit **precedence rule** makes it win over the never-legal list — without which "it is reversible ⇒ preference-fishing ⇒ never legal" was a one-clause licence for silence (round 2, finding 4). Reversibility is no longer a sufficient condition; equivalence is measured on the benefit |
-| Under-suppression: agent games "I searched" | naming the search is not enough on its own — the question states **terms, tools, areas AND what they returned**, a search whose scope misses the question is not a search, and faking is named as such. The floors are imported from `architect.md`'s provisional-MISSING and `guides.md`'s never-fake-the-verdict, not merely their vocabulary (round 2, finding 2 — the first draft cited the pattern while shipping a weaker rule) |
-| "Assume it" becomes the way to skip the standard | the non-blocking default carries the **same** evidence duty as a question: source (`I take X from Y`), the excluded alternative, and mandatory batch presentation. This is also where the F-025 keep-both-with-sources mechanism actually lands (round 2, finding 3) |
-| Agent calls something a "fork" to force a question it wants to ask | the mandatory form has an element that only case (a) can answer — **why no assumption survives**: what work is discarded if you assume wrong. Without it, case (a) was the one blocking case the form could not falsify (round 2, finding 8) |
-| Discipline read as "never ask" | the section opens by naming the round as the planned question cost; doctrine-reserved approvals and doctrine-mandated stops stay blocking by design, and the prescribes-your-own-hand-over exemption is a **closed two-file list** so a stop cannot escape the form by silence (round 2, finding 5) |
+| Over-asking returns (the 2026-08-01 defect) | The legality test and the never-legal list are unchanged. An option that clearly wins the weighing is taken, not asked. Every question carries the pros and cons of each option, so the owner can answer quickly. Equivalent options are the agent's to pick. There is one set per write point, never a drip. Planned occasions keep their lighter forms. |
+| "The weighing favours it" becomes the new licence for silence | The weighing is written with the choice: pros and cons, and the option rejected. A weighing that turns on an owner priority not on record is a real doubt. The review clause flags a choice written without it. |
+| Signal gaming: "no signal fired, so no doubt" | The signals illustrate the definition; the definition in FS 1–2 governs. The review clause is independent of whether the author noticed. |
+| "Design choice" used as a label to avoid asking | A trade-off against something the owner holds, with no clear preference, is intent. |
+| Delegation stretched from a general "go ahead" | Delegation is only the owner's explicit words for that choice, quoted. |
+| A subagent folds its doubts silently | The spawn itself carries the return-doubts instruction (`dispatch.md`), because the brief is its entire context; the orchestrator asks them. |
+| A guessed fact wearing a weighing | Facts and owner-held data are never weighed (FS 2); the review flags one that was (FS 6). |
+| An unattended run assumes an approval | Reserved approvals and mandated stops are never assumed; the work holds blocked at any level. |
+| kb ingests interrupted | `reconciliation.md` §4 stays in kb's closed list with its timing (FS 3), cited and not restated. |
+| The review clause becomes a second copy of the owner list | The bullet cites each lens's discipline and restates nothing. |
+| A reserved approval taken because "the weighing favours it" | Reserved approvals and mandated stops are outside the weighing test, legal by mandate, stated in the section `review.md` cites. |
+| **Backstop limits, stated honestly** | The review clause runs at the top level only (L3, or E3 in marketing). It can check a ground against the standard and against any source it can read, but not that a quoted reply exists in the conversation, since the reviewer is given no transcript. L1 and L2 documents rely on the author-side rule alone. Whether devPNT's Hybrid reviewer definitions read `review.md` §Reviewing is outside this skill's reach, and is flagged to devPNT. |
 
 ## Action Plan
 
-1. Draft this ANALYSIS; design review (moment 1, independent subagent) before any edit.
-2. Apply the `elicitation.md` and `SKILL.md` edits.
-3. Record the boundary in `shared_files.py` ×3; regenerate the three manifests.
-4. Run the three distributions' test batteries + `sdlc_check.py check` + `index`.
-5. Closure: REVIEW_LOG row, handoff row (AWAITING OWNER — merge), flip COMPLETED.
+1. Probe written and shown RED on `c2a3828`.
+2. Design review: rounds 1–3 FAIL, round 4 (owner-authorized) PASS.
+3. Edit `elicitation.md` ×3 (including the options at the round and the waves) and
+   `SKILL.md` ×3.
+4. Edit `review.md` and `dispatch.md` in code and copy them byte-for-byte to kb and
+   marketing; do the same for `test_skill_invariants.py`; regenerate the three
+   manifests.
+5. Add the scenario; update the READMEs, `skill_family_agent_workflows.md` and the
+   three CHANGELOGs.
+6. Probe GREEN; the three batteries; `sdlc_check.py check` and `index`; closure review
+   on the diff; REVIEW_LOG rows; re-measure the budget; flip to COMPLETED.
+7. The closure report tells the owner, who also maintains devPNT, that devPNT's
+   generated reviewer definitions must carry the new §Reviewing clause. The report is
+   the record of that flag; the devPNT-side change is out of this unit's scope.
 
 ## Test Strategy
 
-Two layers, and the boundary between them is stated because the second cannot exist:
-
-- **Wiring is tested.** `test_question_discipline_wired` (capability-gated) fails if the
-  discipline section leaves `elicitation.md` or the bullet leaves `SKILL.md`'s always-read
-  path — the regression this feature is most exposed to, since doctrine text has no
-  compiler. Plus the standing batteries: drift guard (the spine propagated to three
-  distributions), `test_vision_discipline_wired` (the round still asks for the benefit),
-  `sdlc_check.py check`.
-- **Behavior is not testable here.** No check sees a conversation, so "the agent asked a
-  legal question" is out of reach of the validator. Its home is the eval harness
-  (`evals/scenarios/`), cold-run: a repo-answerable unknown must produce no user question,
-  and a genuine fork must produce one carrying the four form elements. Left as owner-run
-  field verification, in the shape the existing `consult_fires_on_match.md` scenario uses.
+- **Wiring (deterministic, gating).** `test_question_discipline_wired` in all three
+  distributions: new anchors, "Default non-blocking" absent, the duty on the
+  always-read line, and the `review.md`-cited heading present. Also the drift guard
+  and the full batteries. Covers the text side of FS 1–6.
+- **Doctrine replay (deterministic).** `harness_question_discipline/probe.py`: RED on
+  `c2a3828`, GREEN on the working tree. It covers:
+  - the silence licence gone;
+  - signals, the pros-and-cons test with its rejected option, pros and cons in the
+    form, the duty, write-point timing
+    and the restricted assumptions present;
+  - the code skip path and "derive before asking" narrowed;
+  - "legal by mandate" present in the section `review.md` cites;
+  - facts never weighed; reserved approvals never assumed; kb's mandated timing kept;
+    marketing's DRAFT hold; the subagent return line in `dispatch.md`; pros and cons
+    at the planned occasions;
+  - marketing's unattended path;
+  - the review clause;
+  - the cited heading resolving in all three lenses;
+  - the per-lens exemptions cited.
+- **Behaviour (non-gating, owner-run).** `doubt_asked_when_it_emerges.md` covers AC1
+  (asked before the write), AC2 (a clear reading taken with its ground) and AC3 (no
+  question on a repo fact). AC4–AC8 are covered by the text layer: the unattended
+  wording, the review clause, the legal-by-mandate rule, pros and cons in the form and
+  at the planned occasions, and the facts rule. No validator sees a conversation, and a
+  scenario for an unattended run or a design review is a follow-up, not claimed here.
 
 ## Diary
 
-- 2026-08-01 — opened from the owner's field report; investigation, design, implementation.
-  Design review round 1: **FAIL** — 1 BLOCK, 5 WARN, all real, all fixed before implementing.
-  The BLOCK was the always-read `SKILL.md` paraphrase dropping the reserved-approvals
-  branch, which would have outlawed the doctrine's own mandated waits (devPNT proposal
-  confirmation, Vision conflict, merge decision) for any agent that never opens
-  `elicitation.md` — the "restated facts diverge" defect `review.md` already names. Also
-  fixed: the reserved list did not cover the doctrine's own mandated STOPS (circuit
-  breaker, review round-cap), so the discipline could be read as outlawing them; a stale
-  unattended-path justification; understated cost figures; a wrongly-rejected test
-  alternative (the `@requires` gate makes the assertion shippable); and the unargued
-  shared/per-domain placement.
-- Design review round 2, first attempt: **INCOMPLETE — the reviewer process died on an
-  API session limit before writing a verdict.** Two findings it reached were salvaged and
-  fixed: the ANALYSIS frontmatter still said `PLANNED` while the code was implemented
-  (SKILL.md phase 4 mandates the flip; the handoff row already said IN_PROGRESS, so the
-  two states had diverged), and the reserved-blocking clause imposed the form on top of
-  `debugging.md`'s and `review.md`'s own prescribed hand-overs.
-- Design review round 2, **re-run on the committed state (fresh reviewer, deep tier):
-  FAIL — 4 BLOCK, 5 WARN, all evidenced, all fixed.** The round earned its cost: three of
-  the four BLOCKs were **working evasions**, not formatting. (1) Cost figures wrong again
-  after the round-2a edits — now re-measured with the commands named in the disclosure.
-  (2) The search-naming duty cited `architect.md`/`guides.md` as its standard while
-  shipping neither's floor, so *"I grepped for 'timeout' and it isn't there — which
-  timeout do you want?"* passed both criteria. (3) The non-blocking default — where most
-  traffic goes — carried **no** evidence duty at all, so "declare an assumption" was the
-  way to skip the entire standard; it is also where F-025's keep-both-with-sources
-  mechanism structurally belongs, and the first draft had attached its vocabulary to the
-  blocking branch instead. (4) "Reversible" was a **sufficient** condition for
-  preference-fishing, and nearly everything is reversible under git — a one-clause
-  licence for silence, decided against the intended reading by `vision.md`'s own
-  first-sentence-wins precedence rule. Fixed with a precedence clause. The WARNs closed
-  the prescribes-list gap, added the element that makes the waste test falsifiable, made
-  the Rule Zero bullet a citation rather than a second copy (it had already diverged —
-  it dropped "re-asking the record", the exact form the owner's report named), corrected
-  the L1-pays-nothing claim against Goal 4's reading-cost rule, and made the
-  `shared_files.py` boundary comment true about kb.
-- Repo-level `sdlc_check.py check` reports NOT CLEAN on `stale` — **pre-existing**,
-  identical at the parent commit before any edit here (areas `skills/`, `scripts/`,
-  `distributions/` unmarked since the consolidation). Not laundered with a `mark` this
-  change did not earn: marking 153 distribution files as re-analyzed would be the
-  unfalsifiable claim the family's own rules forbid. `validate` is 0 errors.
+- **2026-08-01 — first increment (legality test), COMPLETED.** Built from the "useless
+  questions" report. It added the legality test, the never-legal list, the owner-owned
+  precedence, "Default non-blocking" with its evidence duty, the blocking form with its
+  closed exemption list, and the capability-gated wiring test. Two design-review rounds
+  found 5 BLOCK and 10 WARN, all fixed; the history is in REVIEW_LOG.md.
+- **2026-09-25 — reopened: ask on real indecision.**
+  - Opened from the "doubts stay silent" report. The round was answered by the owner.
+  - The probe was written first. Two probe defects were fixed before it counted as red:
+    it sliced the file's opening line instead of the section, and it compared phrases
+    that wrap across lines. Both would have given false greens. With them fixed, the
+    probe was RED on `c2a3828`. It grew with each review round; its final form is
+    4/63 green there, where the four greens are preservation checks.
+  - Design review round 1: FAIL, 3 BLOCK and 10 WARN, all real.
+    - B1: judgement or repo-derived intent still settled doubts silently.
+    - B2: marketing has no unattended path.
+    - B3: a form on every question collided with the kb sweep and the waves.
+  - A second round with the owner on two questions this raised produced the
+    real-indecision test and the explicit cost acceptance. Everything is folded into
+    this version.
+  - Design review round 2: FAIL, 2 BLOCK and 6 WARN.
+    - N1: a ground line could hide the fork (no rejected reading), and the review
+      checked only presence.
+    - N2: reserved approvals fell under the ground test.
+    Both are folded in: the rejected reading and the standards check, and
+    legal-by-mandate stated outside the test. Also fixed: marketing E-levels, L1
+    cost, the quoted acceptance, the probe anchors, and the devPNT flag.
+  - Owner's third input, received during round 3: pros and cons of each answer in
+    every question, and no question when the agent's own weighing clearly favours one
+    option. Round 3 was stopped unread, because it was reviewing a superseded test.
+    The weighing replaces the one-line-ground test, and round 3 re-runs on this
+    version.
+  - Design review round 3 (a new reviewer): FAIL, 1 BLOCK and 10 WARN.
+    - F1: the weighing could settle facts and owner-held data.
+    The cap was reached and the findings went to the owner, who chose to fix them and
+    authorized a fourth round (a logged deviation from the cap). The owner also chose
+    the `dispatch.md` return-doubts line over a declared residual. All eleven findings
+    are folded in.
+  - Design review round 4 (scoped, the same reviewer): **PASS**, with 4 WARN and 2
+    minor residuals. Folded in: the gated rung's own unattended handling, a
+    self-contained `dispatch.md` line, the Objective's definition, the Action Plan,
+    and the third unitemized cost.
+- **2026-09-25 — implemented and closed.** Doctrine edited in the three lenses, with
+  the shared `review.md`, `dispatch.md` and wiring test copied byte-for-byte and the
+  manifests regenerated.
+  - Two probe false reds (scope errors in P9 and P6) were fixed in the probe, not the
+    doctrine.
+  - Closure review: PASS with 9 WARN. W2–W9 were fixed afterwards: marketing's two
+    meanings of ASSUMPTION, subagent doubts treated as candidate doubts, the
+    §4 paraphrase, wider wiring anchors, a tighter probe, the scenario, and the Diary
+    figure.
+  - W1, the budget overrun, was accepted by the owner.
+  - Final state: probe 63/63 green on the tree and 4/63 on `c2a3828` (preservation
+    checks); batteries 221, 407 and 239 OK.
+  - Integration, the owner's choice: commit on the branch now, and open the PR after
+    1.35.0 reaches main.

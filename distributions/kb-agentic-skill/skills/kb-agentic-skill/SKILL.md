@@ -73,7 +73,7 @@ Cross-cutting rules:
 - Adding one claim row to an existing topic is L1: the `id` may be left empty (the validator fills it — `claim-id --fill`), and no check errors on a hand-written row.
 - If a bigger impact emerges during L1/L2 work, stop, reclassify and declare it.
 - When in doubt, pick the higher level.
-- **No useless questions.** Every question to the practitioner passes the legality test of the question discipline (`elicitation.md`): searched first with the search named, and the blocked decision named. Claim-conflict escalations additionally carry their own mandated form and are batched at run end (`reconciliation.md` §4).
+- **Doubts asked, questions legal.** A real doubt is asked when it emerges, before its answer is written; every question passes the legality test of the question discipline (`elicitation.md`): searched first with the search named, and the blocked decision named. Claim-conflict escalations additionally carry their own mandated form and are batched at run end (`reconciliation.md` §4).
 
 ## Write Triggers
 

@@ -1,8 +1,8 @@
 # Elicitation — question waves
 
-`## The question discipline` below governs EVERY question to the user — any
-phase, any level, inside or outside the waves. The waves are the only place the
-process *plans* the cost of asking.
+`## The question discipline` below governs EVERY doubt and EVERY question to the
+user — any phase, any level, inside or outside the waves. The waves are the only
+place the process *plans* the cost of asking.
 
 Ask for the **benefit** the user wants, never for the mechanism they imagine delivers it: a mechanism stated as a requirement forecloses every better one.
 
@@ -12,7 +12,68 @@ research. Asking the user "who are your competitors and how are you
 positioned?" is outsourcing the skill's own job — the failure mode this file
 exists to prevent.
 
+Unattended path: when the user is not reachable (a scheduled or autonomous run)
+and a real doubt remains, do not stall and do not invent consensus. Record it as
+a **declared assumption** (§Ask before the write). At E3 the artifact stays
+`DRAFT` and the plan holds at the next user gate; at E1/E2, proceed and list the
+assumption in the reply.
+
 ## The question discipline
+
+A doubt kept silent is decided by the agent alone and reaches the plan looking
+settled; a useless question wastes the user's attention. This section rules on
+both.
+
+### When a doubt emerges
+
+A **candidate doubt** is an open point whose answer changes the plan. The usual
+signals — they illustrate, they do not close the definition:
+
+| Thought | What it means |
+|---|---|
+| "They probably mean…", "I'll assume…" | you are choosing between readings of the request |
+| "The brief doesn't say, so I'll fill it in" | a gap in scope, a non-goal, a budget or a priority |
+| "Either would work, I'll pick one" | equivalent in effect: yours, pick and do not ask; different in effect: weigh them below |
+| "I'll note it as an assumption and move on" | with the user reachable, that note is where doubts go to be forgotten |
+
+- **A fact about the business, or information only the user holds** (a budget,
+  a margin, a red line): settled only by evidence, cited —
+  never settled by a weighing. A ledger ASSUMPTION backed by a benchmark, a
+  comparable or a stated policy is a researched answer with its confidence, not a
+  doubt; a gap only the user can fill is a real doubt.
+- **A choice** — a reading of the brief, a strategic trade-off: cite the user's
+  statement that settles it (the brief, an APPROVED MKT-VISION, an earlier answer);
+  failing one, weigh the pros and cons of each option. One clearly outweighs: take
+  it and write the weighing with the choice — "I take X over Z: pro …, contro …".
+  Balanced, or turning on a priority of theirs not on record: a **real doubt**.
+  "The more natural reading" with no pros and cons written is not a weighing.
+  Reserved approvals never enter this test (§The form of a question).
+
+### Ask before the write
+
+A real doubt that passes the legality test below is **owed**, not merely allowed.
+Ask it before the first write that would embed its answer, grouped with every
+doubt open at that point — the next wave when one is due, otherwise one round —
+following the question style below. Never defer a doubt to the deliverable, where
+the user must find it inside the plan; never drip one question per turn. An
+intent choice with neither a source nor a weighing is a finding (`review.md`
+§Reviewing).
+
+**Declared assumptions exist only where no question can be asked:**
+
+- **Unattended** — the user is not reachable (the Unattended path above).
+- **Delegated** — their own words handed you this choice; quote them. A general
+  "go ahead" is not a delegation.
+
+Each states **what it is taken from** and **the alternative it excludes** —
+a number goes in the ledger as an ASSUMPTION row, anything else in the artifact it
+touches — and is listed where the user will read it: an unshown assumption is a
+fabricated FACT waiting to happen. (A researched ASSUMPTION row, with its range and
+confidence, is an answer, not a declared assumption.) A dispatched subagent returns
+its open points in its final output (`dispatch.md`); the orchestrator treats them as
+its own candidate doubts (§When a doubt emerges).
+
+### The legality test
 
 A question outside the waves is legal only when BOTH hold:
 
@@ -41,26 +102,25 @@ Never legal:
 non-negotiables, brand red lines, approvals the gates reserve) is never
 preference-fishing; the list above reaches choices that are *not* theirs.
 
-**Default non-blocking.** An unknown on which no fork of the plan depends:
-record it as a ledger **ASSUMPTION** — the native mechanism this lens already
-has — proceed, and present the open points **batched** with the next wave or
-the deliverable, answered by exception. Same evidence duty as a question: each
-assumption states **what it is taken from** (a benchmark, a comparable, a
-stated policy) and **the alternative it excludes**, and every assumption
-reaches the batch — an assumption nobody is shown is a silent decision, and an
-unshown ASSUMPTION row is exactly a fabricated FACT waiting to happen.
+### The form of a question
 
-**Blocking is reserved** for three cases: proceeding under ANY assumption would
-waste the work (the forks diverge at once); the decision is one the user
-uniquely owns; or the doctrine itself mandates the stop. One mandating file
-prescribes its own hand-over, and there this form does not apply:
-`review.md`'s round cap (the artifact plus the open findings). That list is closed.
-Every other blocking question carries the form:
+The approvals the gates reserve and every stop the doctrine mandates are asked
+whatever you expect the answer: **legal by mandate**, never weighed, never
+re-argued here. Unattended, they are never assumed: the plan holds at the gate,
+unless the mandating rule prescribes its own unattended handling (`review.md`'s
+gated rung does).
 
-- the fork: the concrete options and what each implies for the plan;
+One mandating file prescribes its own hand-over, and there this form does not
+apply: `review.md`'s round cap (the artifact plus the open findings).
+That list is closed. A question outside the waves carries the **blocking form**,
+one line per element:
+
+- the fork: the options, each with its pros and cons, and what each implies for
+  the plan;
 - the evidence: what you researched and what it leaves undecided;
-- why no assumption survives — what work is discarded if you assume and are
-  wrong;
+- why no assumption survives — why the weighing does not settle it, and what a
+  wrong pick costs; a reserved approval or a mandated stop cites the approval or
+  the mandate instead;
 - why it is the user's call;
 - what stays blocked until answered.
 
@@ -68,10 +128,11 @@ Question style (all waves):
 - Plain language, zero marketing jargon. Not "what's your ICP?" but "describe
   your best current customer".
 - Max 4 questions per round; multiple rounds per wave allowed but each round
-  must be worth the interruption.
-- Offer concrete options where a real choice exists (narrows the reply,
-  speeds the round). Use the client's structured-question facility when
-  available.
+  must be worth the interruption. More than 4 open doubts: the next round follows
+  at once, still before the write.
+- Offer concrete options where a real choice exists, each with its pros and
+  cons (narrows the reply, speeds the round). Use the client's
+  structured-question facility when available.
 - **Pre-authorize "I don't know" on numeric asks.** When you ask for a figure
   the client may never have measured (conversion rate, CAC, open rate),
   append the permission in the question itself — "...ma se non l'avete mai
@@ -136,6 +197,8 @@ next session and the reviewer read.
 
 ## Anti-patterns
 
+- **Deferring a doubt into the plan**: writing a guess into the artifact and
+  leaving the user to find it there.
 - **Outsourcing analysis**: asking the user for market size, competitor
   strengths, channel choice, or positioning. That is the skill's work.
 - **Jargon**: ICP, CAC, SOM, funnel — translate or don't ask.

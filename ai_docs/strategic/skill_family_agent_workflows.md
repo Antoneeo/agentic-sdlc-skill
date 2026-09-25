@@ -97,8 +97,10 @@ Qualunque lente sia attiva, l'agente:
 4. **Rispetta la question discipline**: ogni domanda a te è legale solo se (a) ha
    cercato prima e nomina la ricerca col risultato, e (b) nomina la decisione
    bloccata. Mai "procedo?", mai pesca di preferenze, mai ri-chiedere il registro.
-   Default non-bloccante: assunzione dichiarata (da cosa è presa + l'alternativa
-   esclusa), presentata in batch.
+   Un dubbio vero si chiede quando emerge, prima di scriverlo in un documento, con
+   pro e contro di ogni opzione; una scelta i cui pro vincono chiaramente si prende
+   scrivendo la pesatura accanto ("scelgo X invece di Z: pro …, contro …"); un fatto
+   si risolve con una prova o si chiede, mai con una pesatura.
 5. **Chiude meccanicamente**: `check` CLEAN, documenti nello stesso commit del
    lavoro, decisione esplicita di merge (mai branch orfani), `HANDOFF_[unit].md`
    cancellato e `index` rieseguito — cancellarlo **è** rimuovere la riga, e nessun

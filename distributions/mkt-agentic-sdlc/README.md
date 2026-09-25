@@ -102,7 +102,7 @@ that no update overrides -- ENFORCEMENT.md par.4).
 | [`@antoneeo/kb-agentic-skill`](https://www.npmjs.com/package/@antoneeo/kb-agentic-skill) | the documents you supply | topic |
 | `@antoneeo/mkt-agentic-sdlc-skill` (this one) | market evidence | engagement |
 
-Triage, the Vision Gate, the review gates, the guide router, question discipline and the validator spine are byte-identical across the three; only the fidelity discipline and the vocabulary change. When two live in the same project, `routing.md` decides which lens owns a given piece of work — with the market-facing override: anything whose purpose is to persuade the market is this lens's, whatever its source.
+Triage, the Vision Gate, the review gates, the guide router and the validator spine are byte-identical across the three, and the question discipline is the same rule restated in each lens's vocabulary; only the fidelity discipline and the vocabulary change. When two live in the same project, `routing.md` decides which lens owns a given piece of work — with the market-facing override: anything whose purpose is to persuade the market is this lens's, whatever its source.
 
 ## Which model to run it on
 

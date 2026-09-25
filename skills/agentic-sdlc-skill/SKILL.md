@@ -63,7 +63,7 @@ Cross-cutting rules:
 - Parsing of external input, authN/authZ, cryptography, networking, personal data and filesystem access are security-sensitive: never L1.
 - If a bigger impact emerges during L1/L2 work, stop, reclassify and declare it.
 - When in doubt, pick the higher level.
-- **Before asking the user anything — any phase, any level — the question must pass the legality test: search first and name the search with its result; name the decision or fact blocked without the answer.** Blocking the work is the exception, not the default. `elicitation.md` §The question discipline owns the rule and is the only place it is stated — read it before you ask, and do not work from a summary of it.
+- **A real doubt is asked when it emerges, before its answer is written — any phase, any level; a question is legal only after naming the search with its result and the decision it blocks.** `elicitation.md` §The question discipline owns the rule — what is a real doubt, the pros-and-cons weighing, the form — and is the only place it is stated: read it before you ask or assume, and do not work from a summary of it.
 - The full audit does not start for L1/L2 unless explicitly requested.
 
 Triage rationalizations — the thought on the left is the signal to STOP and re-triage:

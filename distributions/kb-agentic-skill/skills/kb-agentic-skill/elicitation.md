@@ -1,8 +1,8 @@
 # Spec Elicitation
 
-`## The question discipline` below governs EVERY question to the practitioner —
-any phase, any level, inside or outside the round. The rest of the file is the
-spec elicitation round: it applies when an L3 request enters phase 3 (Request
+`## The question discipline` below governs EVERY doubt and EVERY question to the
+practitioner — any phase, any level, inside or outside the round. The rest of the
+file is the spec elicitation round: it applies when an L3 request enters phase 3 (Request
 Analysis), BEFORE drafting the ANALYSIS document (Standalone) or the D-UC/E-ISP
 (Hybrid).
 
@@ -13,18 +13,72 @@ Do not run the round as a formality when the answers are already on record.
 
 Unattended path: when the user is not reachable (a scheduled or autonomous run,
 and a bootstrap Vision is `DRAFT` by mandate, so the skip path above cannot
-apply on a project's first L3), do not stall and do not invent consensus. Write
-the six answers as **declared assumptions** in `## Objective`, mark the ANALYSIS
-`BLOCKED on the user`, and stop before implementation. An assumption on the
-record is reviewable; a guess folded silently into a design is not.
+apply on a project's first L3) and a real doubt remains, do not stall and do not
+invent consensus. Write it as a **declared assumption** (§Ask before the write)
+in the artifact it touches. At L3, mark the ANALYSIS `BLOCKED on the user` and
+stop before implementation; below L3, proceed and list the assumption in the
+reply. An assumption on the record is reviewable; a guess folded silently into a
+design is not.
 
 ## The question discipline
 
-A question to the practitioner spends their attention and stalls the work; the
-process *plans* that cost in exactly two places — the round below, and the
-Capture Moment sweep at a user-signed closing (`SKILL.md`), a scheduled
-elicitation in the same family that carries its search result inline and stalls
-nothing. Everywhere, a question is legal only when BOTH hold:
+A doubt kept silent is decided by the agent alone and reaches the documents
+looking settled; a useless question wastes the practitioner's attention. This
+section rules on both. The process *plans* questions in two places — the round
+below, and the Capture Moment sweep at a user-signed closing (`SKILL.md`) — each
+a planned occasion that keeps its own form.
+
+### When a doubt emerges
+
+A **candidate doubt** is an open point whose answer changes what you write or
+record. The usual signals — they illustrate, they do not close the definition:
+
+| Thought | What it means |
+|---|---|
+| "They probably mean…", "I'll assume…" | you are choosing between readings of the request |
+| "The request doesn't say, so I'll fill it in" | a gap in scope, a non-goal, an acceptance criterion or a priority |
+| "Either would work, I'll pick one" | equivalent in effect: yours, pick and do not ask; different in effect: weigh them below |
+| "I'll note it as an assumption and move on" | with the practitioner reachable, that note is where doubts go to be forgotten |
+| "It's reversible, it can be fixed later" | later is after the documents built on it exist |
+
+- **A fact, or information only the practitioner holds** (a date, a figure, a
+  constraint): settled only by evidence, cited — never settled by a weighing. Left
+  open by the corpus and changing the work, it is a real doubt.
+- **A choice** — a reading of intent, a structuring trade-off: cite the
+  practitioner's statement that settles it (the request, an APPROVED Vision, an
+  earlier reply); failing one, weigh the pros and cons of each option. One clearly
+  outweighs: take it and write the weighing with the choice — "I take X over Z:
+  pro …, contro …". Balanced, or turning on a priority of theirs not on record: a
+  **real doubt**. "The more natural reading" with no pros and cons written is not
+  a weighing. Reserved approvals never enter this test (§The form of a question).
+
+### Ask before the write
+
+A real doubt that passes the legality test below is **owed**, not merely allowed:
+the test separates a doubt from a search not yet run, it never licenses silence.
+Ask it before the first write that would embed its answer, grouped with every
+doubt open at that point, in one numbered set, with the client's
+structured-question facility where it has one. Never defer a doubt to the
+deliverable, where the practitioner must find it inside the document; never drip
+one question per turn. Fold every answer into the artifact, citing the reply; an
+intent choice with neither a source nor a weighing is a finding (`review.md`
+§Reviewing).
+
+**Declared assumptions exist only where no question can be asked:**
+
+- **Unattended** — the practitioner is not reachable (the Unattended path above).
+- **Delegated** — their own words handed you this choice; quote them. A general
+  "go ahead" is not a delegation.
+
+Each states **what it is taken from** and **the alternative it excludes**, and is
+listed where the practitioner will read it — an assumption nobody is shown is a
+silent decision. A dispatched subagent returns its open points in its final output
+(`dispatch.md`); the orchestrator treats them as its own candidate doubts
+(§When a doubt emerges).
+
+### The legality test
+
+Everywhere, a question is legal only when BOTH hold:
 
 1. **Searched first, and the search is named — with its result.** The answer is
    not on record and not derivable from the corpus, the topic graph, `ai_docs/`,
@@ -60,31 +114,26 @@ about the documents come from the corpus. **Precedence:** a choice the
 practitioner uniquely owns is never preference-fishing; the list above reaches
 choices that are *not* theirs.
 
-**Default non-blocking.** An unknown on which no fork of the work depends:
-write it as a **declared assumption** in the artifact it touches, proceed, and
-present the open points **batched**, answered by exception. This branch carries
-the SAME evidence duty as a question: each assumption states **what it is taken
-from** and **the alternative it excludes**, and every declared assumption
-reaches the batch — an assumption nobody is shown is a silent decision. This is
-the same structure as the claim ledger's own escalation rule — keep BOTH sides
-with their sources and surface them, never silently pick one — and it is this
-branch, not the blocking one, where that rule structurally lives: an open
-`CONTESTED` set never stops an ingest (`reconciliation.md` §4).
+### The form of a question
 
-**Blocking is reserved** for three cases: proceeding under ANY assumption would
-waste the work (the forks diverge at once); the doctrine reserves the decision
-to the practitioner; or the doctrine itself mandates the stop. **Exactly two
-mandating files prescribe their own hand-over, and there the general form does
-not apply**: `reconciliation.md` §4's escalation form (the claims in the set,
-each source, date and provenance, and why the machine cannot decide) — the
-mandated form for claim conflicts; and `review.md`'s round cap (the artifact
-plus the open findings). That list is closed. Every other blocking question
-carries the general form:
+The approvals reserved above and every stop the doctrine mandates are asked
+whatever you expect the answer: **legal by mandate**, never weighed, never
+re-argued here. Unattended, they are never assumed: the work holds, unless the
+mandating rule prescribes its own unattended handling (`review.md`'s gated rung
+does).
 
-- the fork: the concrete options and what each implies for the work;
+**Exactly two mandating files prescribe their own hand-over, and there the
+general form does not apply**: `reconciliation.md` §4's escalation — the mandated
+form for claim conflicts, which keeps its own timing as well; and
+`review.md`'s round cap (the artifact plus the open findings). That list is closed. A question outside the
+planned occasions carries the **blocking form**, one line per element:
+
+- the fork: the options, each with its pros and cons, and what each implies for
+  the work;
 - the evidence: what you searched, read or tried, and what it leaves undecided;
-- why no assumption survives — what work is discarded if you assume and are
-  wrong;
+- why no assumption survives — why the weighing does not settle it, and what a
+  wrong pick costs; a reserved approval or a mandated stop cites the approval or
+  the mandate instead;
 - why it is the practitioner's call;
 - what stays blocked until answered.
 
@@ -92,7 +141,8 @@ carries the general form:
 
 Ask ONE structured set of questions, not a drip of follow-ups. Keep each
 question short and numbered; offer concrete options where a real choice
-exists (this narrows the reply and speeds up the round). Cover:
+exists, each with its pros and cons (this narrows the reply and speeds up the
+round). Cover:
 
 1. **Goal / benefit** — what problem this closes and why now. The answer must
    name what the actor *obtains*, not a mechanism: "a dashboard" is not an
@@ -128,6 +178,8 @@ run a second round to double-check answers that were already clear.
   question at a time across many turns instead of one structured round.
 - **Asking what the approved vision already answers**: re-asking goal or
   non-goals that a `Status: APPROVED` Vision or M-VISION already states.
+- **Deferring a doubt into the document**: writing a guess into the artifact
+  and leaving the practitioner to find it there.
 - **Collecting answers without folding them in**: getting replies in chat
   and proceeding to design without writing them into the analysis document —
   the next reader has no record of why the scope is what it is.

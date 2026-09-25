@@ -2,6 +2,19 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [Unreleased]
+
+### Changed
+- **F-026 revised: a real doubt is asked when it emerges.** The question discipline
+  no longer sends doubts to the deliverable ("Default non-blocking" is gone). A real
+  doubt (a fact the search leaves open, or a choice whose pros and cons do not
+  settle it) is asked before the first write that would embed its answer, grouped,
+  with the pros and cons of each option. A choice that clearly wins the weighing is
+  taken without asking, and the weighing is written next to it. Reserved approvals
+  are always asked. A real doubt becomes a declared assumption only in unattended
+  or delegated work. `review.md` makes an unasked doubt a design-review finding; `dispatch.md`
+  tells a subagent to return its real doubts instead of deciding them.
+
 ## [1.35.0] - 2026-09-19
 
 ### Added

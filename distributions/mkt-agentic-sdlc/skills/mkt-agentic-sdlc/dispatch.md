@@ -26,7 +26,11 @@ without an E-ISP.
    - `sdlc_check.py plan brief PLAN_[feature].md --task <id>` — prints the
      task block, the `produces` of prior-order tasks (interfaces), and
      `guides` pointers (paths, never pasted content) to stdout.
-   - Spawn the subagent with that brief as its entire context window.
+   - Spawn the subagent with that brief plus the return-doubts line as its
+     entire context window. The line: "An open point whose answer changes the
+     work is not yours to decide: return it in your final output with what you
+     searched." The orchestrator treats them as its own candidate doubts
+     (`elicitation.md` §When a doubt emerges).
    - Run `task.verify` out of band (the orchestrator executes it — the
      validator only ever prints it, never runs it) plus the one-shot review
      below.

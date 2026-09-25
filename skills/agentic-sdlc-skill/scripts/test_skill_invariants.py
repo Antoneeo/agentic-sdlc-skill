@@ -471,18 +471,33 @@ class SkillInvariants(unittest.TestCase):
 
     @requires("question_discipline")
     def test_question_discipline_wired(self):
-        """F-026: a question to the user is legal only if searched-first (search
-        named) and it names the blocked decision. Wired in the file that owns it
-        AND on the always-read path -- a rule only L3-phase-3 readers see never
-        reaches the L1/L2 question."""
+        """F-026: a real doubt is asked when it emerges, before its answer is
+        written; a question is legal only if searched-first (search named) and it
+        names the blocked decision. Wired in the file that owns it AND on the
+        always-read path -- a rule only L3-phase-3 readers see never reaches the
+        L1/L2 question."""
         e = read("elicitation.md")
-        for anchor in ("## The question discipline", "Searched first",
-                       "names what is blocked", "Generic confirmation",
-                       "Preference-fishing", "Default non-blocking",
-                       "Blocking is reserved", "fake the search",
-                       "the alternative it excludes", "That list is closed",
-                       "why no assumption survives"):
+        for anchor in ("## The question discipline", "### When a doubt emerges",
+                       "### Ask before the write", "### The form of a question",
+                       "Searched first", "names what is blocked",
+                       "Generic confirmation", "Preference-fishing",
+                       "fake the search", "the alternative it excludes",
+                       "That list is closed", "why no assumption survives",
+                       "legal by mandate", "Unattended path"):
             self.assertIn(anchor, e, f"elicitation.md missing {anchor}")
+        # The 2026-09-25 revision removed the default that sent a doubt to the
+        # deliverable; it must not come back.
+        self.assertNotIn("Default non-blocking", e,
+                         "the non-blocking default hands doubts to the deliverable")
+        for anchor in ("never settled by a weighing",
+                       "each with its pros and cons", "I take X over Z"):
+            self.assertIn(anchor, e, f"elicitation.md missing {anchor}")
+        # review.md is shared: the section it cites must exist in this lens.
+        rv = read("review.md")
+        self.assertIn("`elicitation.md` §The form of a question", rv)
+        self.assertIn("An unasked doubt is a finding", rv)
+        self.assertIn("return it in your final output", read("dispatch.md"),
+                      "a spawned subagent must be told to return its doubts")
         skill = read("SKILL.md")
         head = skill.split("## Write Triggers")[0]
         self.assertIn("question discipline", head,
@@ -498,6 +513,8 @@ class SkillInvariants(unittest.TestCase):
         bullet = [ln for ln in head.splitlines()
                   if "question discipline" in ln or "legality test" in ln]
         self.assertTrue(bullet, "the Rule Zero bullet is missing")
+        self.assertIn("when it emerges", " ".join(bullet),
+                      "the always-read line must carry the ask-when-it-emerges duty")
         for enumerated in ("Preference-fishing", "Re-asking the record",
                            "circuit breaker", "round cap"):
             self.assertNotIn(enumerated, " ".join(bullet),

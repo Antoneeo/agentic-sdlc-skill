@@ -1,30 +1,85 @@
 # Spec Elicitation
 
-`## The question discipline` below governs EVERY question to the user — any
-phase, any level, inside or outside the round. The rest of the file is the spec
-elicitation round: it applies when an L3 request enters phase 3 (Request
+`## The question discipline` below governs EVERY doubt and EVERY question to the
+user — any phase, any level, inside or outside the round. The rest of the file is
+the spec elicitation round: it applies when an L3 request enters phase 3 (Request
 Analysis), BEFORE drafting the ANALYSIS document (Standalone) or the D-UC/E-ISP
 (Hybrid).
 
-Skip path: if the spec is already complete — an approved Vision or explicit user
-requirements already answer goal, scope, and constraints, or the remainder is
-derivable from the repo, `ai_docs/` and the conversation — skip the round and add
+Skip path: if the spec is already complete — an approved Vision, explicit user
+requirements or an earlier reply already answer goal, scope, and constraints, and
+any remainder is settled as §When a doubt emerges allows — skip the round and add
 a one-line note in the analysis stating why it was skipped and naming the
 sources. Do not run the round as a formality when the answers are already on
 record.
 
 Unattended path: when the user is not reachable (a scheduled or autonomous run)
-and the skip path does not answer all six, do not stall and do not invent
-consensus. Write the missing answers as **declared assumptions** in
-`## Objective`, mark the ANALYSIS `BLOCKED on the user`, and stop before
-implementation. An assumption on the record is reviewable; a guess folded
-silently into a design is not.
+and a real doubt remains, do not stall and do not invent consensus. Write it as a
+**declared assumption** (§Ask before the write) in the artifact it touches. At L3,
+mark the ANALYSIS `BLOCKED on the user` and stop before implementation; below L3,
+proceed and list the assumption in the reply. An assumption on the record is
+reviewable; a guess folded silently into a design is not.
 
 ## The question discipline
 
-A question to the user spends their attention and stalls the work; the round
-below is the only place the process *plans* that cost. Everywhere, a question is
-legal only when BOTH hold:
+A doubt kept silent is decided by the agent alone and reaches the documents
+looking settled; a useless question wastes the user's attention. This section
+rules on both.
+
+### When a doubt emerges
+
+A **candidate doubt** is an open point whose answer changes what you build or
+write. The usual signals — they illustrate, they do not close the definition:
+
+| Thought | What it means |
+|---|---|
+| "They probably mean…", "I'll assume…" | you are choosing between readings of the request |
+| "The request doesn't say, so I'll fill it in" | a gap in scope, a non-goal, an acceptance criterion or a priority |
+| "Either would work, I'll pick one" | equivalent in effect: yours, pick and do not ask; different in effect: weigh them below |
+| "I'll note it as an assumption and move on" | with the user reachable, that note is where doubts go to be forgotten |
+| "It's reversible, it can be fixed later" | later is after the documents built on it exist |
+
+Settle it by kind:
+
+- **A fact, or information only the user holds** (a deadline, a price, a
+  constraint): settled only by evidence, cited — never settled by a weighing. Left
+  open by the search and changing the work, it is a real doubt.
+- **A choice** — a reading of intent, a design trade-off: cite the user's statement
+  that settles it (the request, an APPROVED Vision, an earlier reply); failing one,
+  weigh the pros and cons of each option. One clearly outweighs: take it and write
+  the weighing with the choice — "I take X over Z: pro …, contro …". Balanced, or
+  turning on a user priority not on record: a **real doubt**. "The more natural
+  reading" with no pros and cons written is not a weighing. Design is yours until it
+  trades off something the user owns. Reserved approvals never enter this test
+  (§The form of a question).
+
+### Ask before the write
+
+A real doubt that passes the legality test below is **owed**, not merely allowed:
+the test separates a doubt from a search not yet run, it never licenses silence.
+Ask it before the first write that would embed its answer — in an analysis, plan,
+guide or code — grouped with every doubt open at that point, in one numbered set,
+with the client's structured-question facility where it has one. Never defer a
+doubt to the deliverable, where the user must find it inside the document; never
+drip one question per turn. The round below is this rule's planned occasion. Fold
+every answer into the artifact, citing the reply (§Reflect); an intent choice with
+neither a source nor a weighing is a finding (`review.md` §Reviewing).
+
+**Declared assumptions exist only where no question can be asked:**
+
+- **Unattended** — the user is not reachable (the Unattended path above).
+- **Delegated** — the user's own words handed you this choice ("your call"); quote
+  them. A general "go ahead" is not a delegation.
+
+Each states **what it is taken from** and **the alternative it excludes**, and is
+listed where the user will read it: an assumption recorded alone is a decision
+wearing an assumption's clothes, and one nobody is shown is a silent decision. A
+dispatched subagent returns its open points in its final output (`dispatch.md`);
+the orchestrator treats them as its own candidate doubts (§When a doubt emerges).
+
+### The legality test
+
+Everywhere, a question is legal only when BOTH hold:
 
 1. **Searched first, and the search is named — with its result.** The answer is
    not on record and not derivable from the repo, `ai_docs/`, the Vision or the
@@ -48,9 +103,7 @@ Never legal:
   fork — that is a blocking question and carries the form below.
 - **Preference-fishing** — asking the user to pick among options that are
   equivalent **in their effect on the benefit** and already decided by the
-  project's conventions. Cheapness to undo is NOT the test: nearly everything is
-  reversible under version control, and "it is reversible" as a licence to stop
-  asking is the silence-side evasion this clause must not fund.
+  project's conventions. Cheapness to undo is NOT the test.
 - **Re-asking the record** — goal, scope or constraints that an APPROVED Vision,
   an earlier reply, or the request itself already states.
 
@@ -58,38 +111,20 @@ What questions are FOR — what the user uniquely owns: the benefit, priorities
 between conflicting goods, non-goals, acceptance, and the approvals doctrine
 reserves to them (Vision promotion and amendment, scope changes, proposal
 acceptance, merge decisions). Facts about intent come from the user; facts about
-the system come from search. (The marketing sibling states the same rule as "ask
-only what the user uniquely owns"; this is its code-domain form.)
+the system come from search.
 
 **Precedence, because both halves can fire at once:** this paragraph wins over
 the "never legal" list above it. A choice the user uniquely owns is never
 preference-fishing, however cheap it is to undo; the list reaches choices that
 are *not* theirs.
 
-**Default non-blocking.** An unknown on which no fork of the work depends: write
-it as a **declared assumption** in the artifact it touches — the same mechanism
-the unattended path uses — proceed, and present the open points **batched**, with
-the round for spec questions or with the deliverable otherwise, answered by
-exception.
+### The form of a question
 
-This is the path most work takes, so it carries the SAME evidence duty as a
-question, not a lighter one — otherwise "assume it" becomes the way to skip the
-standard. Each declared assumption states **what it is taken from** ("I take X
-from Y" — the same shape the round uses) and **the alternative it excludes**, and
-**every declared assumption reaches the batch**: an assumption nobody is shown is
-not an open point, it is a silent decision. That pairing is what the kb family's
-escalation rule actually does — keep BOTH sides with their sources and surface
-them, never silently pick one — and this branch, not the blocking one, is where
-it structurally belongs. An assumption recorded with its source and its rejected
-alternative is reviewable; one recorded alone is a decision wearing an
-assumption's clothes, and a session stalled on a question that could have been
-an assumption is the waste this section exists to prevent.
-
-**Blocking is reserved** for three cases: proceeding under ANY assumption would
-waste the work (the forks diverge at once, and the wrong branch is rework of the
-whole unit); the doctrine reserves the decision to the user (the approvals
-above); or the doctrine itself mandates the stop — and a mandated stop is legal
-by mandate, never re-argued here.
+The approvals reserved above and every stop the doctrine mandates are asked
+whatever you expect the answer: **legal by mandate**, never weighed, never
+re-argued here. Unattended, they are never assumed: the work holds, unless the
+mandating rule prescribes its own unattended handling (`review.md`'s gated rung
+does).
 
 **Exactly two mandating files prescribe their own hand-over, and there the form
 below does not apply** (two forms over one moment is the duplicate `review.md`
@@ -103,16 +138,15 @@ one that prescribes nothing (`guides.md`'s guide proposal and its ingestion
 bound). "The file mentions the moment" is not a prescription; only a stated
 hand-over is.
 
-A blocking question carries a mandatory form — surface both sides with their
-evidence, never silently pick one:
+A question outside the planned occasions carries the **blocking form**, one line
+per element — surface both sides with their evidence, never silently pick one:
 
-- the fork: the concrete options and what each implies for the work;
+- the fork: the options, each with its pros and cons, and what each implies for
+  the work;
 - the evidence: what you searched, read or tried, and what it leaves undecided;
-- why no assumption survives — what work is discarded if you assume and are
-  wrong. This is what makes case (a) falsifiable: without it, "this is a fork"
-  is an agent's assertion about its own convenience, and case (a) becomes the
-  licence for exactly the question this section forbids. Cases (b) and (c) answer
-  it by citing the approval or the mandate instead;
+- why no assumption survives — why the weighing does not settle it, and what a
+  wrong pick costs; a reserved approval or a mandated stop cites the approval or
+  the mandate instead;
 - why it is the user's call — what makes the remainder intent, priority or
   approval rather than a derivable fact;
 - what stays blocked until answered.
@@ -120,14 +154,15 @@ evidence, never silently pick one:
 ## The round
 
 **Derive before asking.** Answer each of the six from the record first — the
-Vision, `ai_docs/`, the conversation, the code. Ask only the residue, and carry
-the derived answers into the round as declared assumptions corrected by
-exception ("I take X from Y; the questions below are what no source answers"),
-not re-confirmed one by one.
+Vision, `ai_docs/`, the conversation; the code answers facts and constraints,
+never the goal, scope or acceptance. Ask only the real doubts, and carry the
+derived answers into the round with their source or weighing ("I take X from Y;
+the questions below are what no source settles"), not re-confirmed one by one.
 
 Ask ONE structured set of questions, not a drip of follow-ups. Keep each
 question short and numbered; offer concrete options where a real choice
-exists (this narrows the reply and speeds up the round). Cover:
+exists, each with its pros and cons (this narrows the reply and speeds up the
+round). Cover:
 
 1. **Goal / benefit** — what problem this closes and why now. The answer must
    name what the actor *obtains*, not a mechanism: "a dashboard" is not an
@@ -165,6 +200,8 @@ run a second round to double-check answers that were already clear.
 
 - **Interrogation**: an endless list of questions, or drip-feeding one
   question at a time across many turns instead of one structured round.
+- **Deferring a doubt into the document**: writing a guess into the artifact
+  and leaving the user to find it there.
 - **Collecting answers without folding them in**: getting replies in chat
   and proceeding to design without writing them into the analysis document —
   the next reader has no record of why the scope is what it is.
