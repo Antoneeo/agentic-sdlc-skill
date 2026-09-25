@@ -2,7 +2,7 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
-## [Unreleased]
+## [1.36.0] - 2026-09-25
 
 ### Changed
 - **F-026 revised: a real doubt is asked when it emerges.** The question discipline

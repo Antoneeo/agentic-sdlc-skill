@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [0.14.0] - 2026-09-25
 
 ### Changed
 - **F-026 revised: a real doubt is asked when it emerges.** The question discipline
