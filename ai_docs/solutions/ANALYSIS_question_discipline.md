@@ -1,10 +1,9 @@
 ---
 id: F-026
 feature: Question discipline (a real doubt is asked when it emerges; a question is legal only after the search)
-status: COMPLETED
+status: IN_PROGRESS
 level: L3
 start_date: 2026-08-01
-end_date: 2026-09-25
 ---
 # Feature Analysis: Question Discipline
 
@@ -224,6 +223,17 @@ rejected option. It is NEW in kb and marketing. Everything else EXISTS under the
      priorities.
 
    "The more natural reading", with no pros and cons written, is not a weighing.
+   Two conditions keep the weighing honest. Both come from a field run of the
+   behavioural scenario (see the Diary):
+   - **Each rejected option is stated at its strongest**, meaning the need it serves
+     best. A weighing won against a weak version of the alternative is not a
+     weighing.
+   - **Options that serve different needs of the actor make it a real doubt.** This
+     holds when each option is better at a need the actor would notice in using the
+     result, none is good enough at both, and nothing the owner wrote ranks those
+     needs. The weighing then turns on an owner priority, however clear the agent's
+     own ranking feels. Each lens uses its own examples; marketing speaks of the
+     audience or the business.
 
    **Reserved approvals and doctrine-mandated stops are outside this test.** They are
    always asked, legal by mandate, whatever the agent thinks the answer is:
@@ -514,3 +524,38 @@ are process risks.
     checks); batteries 221, 407 and 239 OK.
   - Integration, the owner's choice: commit on the branch now, and open the PR after
     1.35.0 reaches main.
+- **2026-09-25 — increment: an honest weighing.** Field evidence from the behavioural
+  scenario, each lens run blind by a fresh subagent, with the old doctrine as control:
+  - **Old doctrine.** It wrote nine intent choices into the analysis as assumptions
+    that "hold unless you correct them", including the one it called most important.
+    Its design review passed them.
+  - **New doctrine.** In the first run, on a thin fixture, it asked before writing. In
+    the second run it wrote a format choice as a weighing. Its design review failed
+    it: the options served different uses the record does not rank, and the weighing
+    stated the rejected option weakly. The agent then stopped and asked, in the full
+    form.
+  - **The mechanism.** The second-line clause worked. The first line leaked through a
+    self-judged weighing.
+  - **What this increment adds (FS 2):** a rejected option is stated at its strongest,
+    and options serving different, unranked needs are a real doubt.
+  - **Owner's choice (2026-09-25):** strengthen the doctrine before the release rather
+    than ship and watch.
+  - **Scenario fix.** The fixture's Vision said "export their own data", which
+    legitimately settles "all orders", so the status fork was not a real doubt there.
+    It is reworded neutrally. The format example in the doctrine comes from this
+    run, so re-running tests recall. The status fork, which no example names, is the
+    generalization check, and the increment is judged on it. Increment design
+    review: FAIL, 1 BLOCK in the scenario (it would have passed a weighed format
+    fork) and 6 WARN. All were applied except W4, an optional `review.md` wording the
+    reviewer called covered by inference.
+  - **Re-run on the reworded fixture, each doctrine blind.**
+    - Old doctrine: wrote the analysis with six assumptions "answered by exception",
+      covering format, row shape and which orders. Its own review passed them.
+    - New doctrine plus increment: wrote no analysis before asking. It asked about the
+      row shape and format (three options with pros and cons) and about a possible
+      legal-portability scope. It settled "which orders" with a visible weighing that
+      stated the current-only option at its strongest.
+    - That last choice is correct under FS 2: full history contains the current
+      orders, so one option serves both needs. The scenario criterion that demanded
+      the status question was wrong. It is rewritten from the rule, not from the
+      result.

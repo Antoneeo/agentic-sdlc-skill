@@ -36,6 +36,8 @@ P9  code: the skip path and "derive before asking" no longer let the repo settle
     intent.
 P10 facts and owner-held data are never settled by a weighing.
 P11 the shared `dispatch.md` tells a spawned subagent to return its real doubts.
+P12 a weighing states each rejected option at its strongest, and options serving
+    different, unranked needs of the actor are a real doubt.
 """
 import subprocess
 import sys
@@ -121,6 +123,10 @@ def main(ref):
               "no real-indecision test (weighing each option's pros and cons)")
         check("P7", lens, "I take X over Z" in qd,
               "the weighing line does not name the option it rejects")
+        # Increment 2026-09-25: an honest weighing (field run of the scenario).
+        check("P12", lens, "at its strongest" in qd and "serve different needs" in qd,
+              "the weighing does not state the rejected option at its strongest, or "
+              "does not make unranked different needs a real doubt")
         form = flat(subsection(el, "The form of a question"))
         check("P7", lens, "each with its pros and cons" in form,
               "the form's fork does not give each option its pros and cons")

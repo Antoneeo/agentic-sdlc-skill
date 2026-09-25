@@ -10,7 +10,9 @@ Tutte le modifiche significative a questa skill saranno documentate in questo fi
   doubt (a fact the search leaves open, or a choice whose pros and cons do not
   settle it) is asked before the first write that would embed its answer, grouped,
   with the pros and cons of each option. A choice that clearly wins the weighing is
-  taken without asking, and the weighing is written next to it. Reserved approvals
+  taken without asking, and the weighing is written next to it — each rejected option
+  stated at its strongest; options serving different needs that nothing the user
+  wrote ranks are a real doubt, however clear the agent's own ranking. Reserved approvals
   are always asked. A real doubt becomes a declared assumption only in unattended
   or delegated work. `review.md` makes an unasked doubt a design-review finding; `dispatch.md`
   tells a subagent to return its real doubts instead of deciding them.

@@ -43,10 +43,17 @@ signals — they illustrate, they do not close the definition:
   doubt; a gap only the user can fill is a real doubt.
 - **A choice** — a reading of the brief, a strategic trade-off: cite the user's
   statement that settles it (the brief, an APPROVED MKT-VISION, an earlier answer);
-  failing one, weigh the pros and cons of each option. One clearly outweighs: take
-  it and write the weighing with the choice — "I take X over Z: pro …, contro …".
-  Balanced, or turning on a priority of theirs not on record: a **real doubt**.
-  "The more natural reading" with no pros and cons written is not a weighing.
+  failing one, weigh the pros and cons of each option, stating each rejected option
+  at its strongest — the need it serves best; a weighing won against a weak version
+  of the alternative is not a weighing. One clearly outweighs: take it and write the
+  weighing with the choice — "I take X over Z: pro …, contro …". Balanced, or
+  turning on a priority of theirs not on record: a **real doubt** — and it does
+  whenever the options serve different needs of the audience or the business, each
+  better at one the user would notice in the results (reach against conversion,
+  speed to market against completeness of the launch) and none good enough at both,
+  and nothing the user wrote ranks those needs — however clear your own ranking
+  feels. "The more natural reading" with no pros and cons written is not a
+  weighing.
   Reserved approvals never enter this test (§The form of a question).
 
 ### Ask before the write
