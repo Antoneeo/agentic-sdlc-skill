@@ -11,7 +11,7 @@ updated: 2026-09-25
 
 ## Resume logistics
 
-- The branch is committed but not pushed. It was cut from `codex/f057-shared-project-memory`
+- The branch is committed and pushed to `origin`. It was cut from `codex/f057-shared-project-memory`
   (release 1.35.0, not yet in main), so a PR opened before that merge would carry the
   release commits too.
 - The CHANGELOG entries sit under `[Unreleased]` in all three packages. The version
