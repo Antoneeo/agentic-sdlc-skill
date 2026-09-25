@@ -2,17 +2,18 @@ Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
 **Release handoff (2026-09-19).** Code **1.35.0**, KB **1.18.0**, marketing
-**0.13.0** include F-056 (`cb6352c`) and F-057 (`740d6fc`). Release preparation
-is on `codex/f057-shared-project-memory`; expected tags are `v1.35.0`,
-`kb-v1.18.0`, `mkt-v0.13.0`, all at the release commit. Verify remote tags and
-merge through a PR before the owner runs `publish_all.bat` from the clean tagged
-checkout. No npm publication is performed by the agent. Installer tests pass in temporary homes
+**0.13.0** include F-056 (`cb6352c`) and F-057 (`740d6fc`). Tags `v1.35.0`,
+`kb-v1.18.0`, `mkt-v0.13.0` sit at the release commit `c2a3828`, which is in main;
+all three versions are on the registry (verified 2026-09-25). F-026 revised and the
+`stale` self-reference fix reached main on 2026-09-25 (`a33cc4d`, direct push the
+owner authorized) and sit under `[Unreleased]` in all three CHANGELOGs. No npm
+publication is performed by the agent. Installer tests pass in temporary homes
 outside the sandbox; sandbox-only code checkout crashes were isolated to native
 Node `fs.cpSync` on its denied `.pytest_cache`, not repaired by changing the product.
 
-**Registry state (verified 2026-09-19).** Published: code **1.34.0**, KB
-**1.17.0**, marketing **0.12.0**, Apache-2.0 with a NOTICE. The three release
-targets above are not yet published. Distill is outside this release. Per-release
+**Registry state (verified 2026-09-25).** Published: code **1.35.0**, KB
+**1.18.0**, marketing **0.13.0**, Apache-2.0 with a NOTICE. Distill is outside
+this release. Per-release
 history belongs to the three `CHANGELOG.md` files and is not restated here.
 
 **What the 2026-09-12 tranche does NOT claim.** The read surface GREW in all three
