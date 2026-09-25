@@ -8,7 +8,10 @@ approval — README alignment covers all three distributions plus the family
 document, and `mark` closes the step instead of opening it; amended 2026-08-25 by
 Antonio's indication — "lo script serve ad evitare errori evitabili.. mettilo pure
 nella guida" — adding `publish_all.bat` as the publish step, its skip semantics and
-its preconditions. This is the verbatim source
+its preconditions; amended 2026-09-25 by Antonio's approval of four changes
+observed in the v1.36.0 / kb 1.19.0 / mkt 0.14.0 release — a plain `check` beside
+the hybrid one, `mark` inside the release commit, one tag per package, and a
+pending 2FA read as pending, not failed. This is the verbatim source
 ("book") for `GUIDE_release.md`; detail lives here, the guide is the synthesis.
 
 ## Preconditions
@@ -17,7 +20,10 @@ its preconditions. This is the verbatim source
   battery green, ADR (if any) accepted.
 - `CHANGELOG.md` has an `## [Unreleased - X.Y.Z] (...)` section describing the release.
 - `python skills/agentic-sdlc-skill/scripts/sdlc_check.py check --hybrid --root <repo>`
-  is CLEAN (known DRAFT warnings on vision docs are acceptable).
+  is CLEAN (known DRAFT warnings on vision docs are acceptable), AND the plain
+  `sdlc_check.py check --root <repo>` is CLEAN too: in this repo `--hybrid`
+  delegates audit-plan staleness to devPNT and skips it, so only the plain check
+  sees areas left unmarked.
 - The target version does not already exist on npm:
   `npm view @antoneeo/agentic-sdlc-skill version`.
 
@@ -74,7 +80,11 @@ Run before any commit/tag/publish:
    `sdlc_check.py check --root <scratch>` → CLEAN (3 DRAFT warnings on the
    boilerplate vision docs are expected).
 3. Closure gate on the repo itself:
-   `sdlc_check.py check --hybrid --root <repo>` → CLEAN.
+   `sdlc_check.py check --hybrid --root <repo>` → CLEAN, and
+   `sdlc_check.py check --root <repo>` → CLEAN. The hybrid run skips audit-plan
+   staleness (delegated to devPNT); the plain run is the one that catches areas
+   the version bump modified and nobody re-marked (2026-09-25: the hybrid check
+   was CLEAN while the plain one was not).
 4. Skill eval battery (the deterministic release gate, ENFORCEMENT §5):
    `python -m unittest discover -s skills/agentic-sdlc-skill/scripts -p "test_*.py"`
    → all green. It aggregates `test_plan.py` + `test_session_start.py` +
@@ -95,23 +105,36 @@ Commit + tag + push are done with the repo-root script `git_push_tag.bat`
    `git add .`, so every pending change (including devPNT db churn, which is
    tracked in this repo) is swept into the release commit. If unrelated changes
    are pending, commit or isolate them first.
-2. From the feature branch run:
+2. Record the analysis of the areas the bump touched BEFORE running the script,
+   with the bump still uncommitted:
+   `sdlc_check.py mark skills/agentic-sdlc-skill/ distributions/ skills/ --root <repo>`.
+   On a dirty tree `mark` records a timestamp, so the `audit_plan.md` change rides
+   in the release commit and the tag covers it (as in the v1.35.0 commit
+   `c2a3828`). Marking after the release commit needs a second commit, and the
+   tag then no longer points at `HEAD` (2026-09-25).
+3. From the feature branch run:
    `git_push_tag.bat "Release vX.Y.Z: <short title>" vX.Y.Z`
    The script stages everything, commits with the given message, tags, and
    pushes both the current branch and the tag. The release commit carries the
    version bumps, CHANGELOG, README and handoff update together.
-3. VERIFY the tag landed on the release commit:
-   `git rev-parse vX.Y.Z` must equal `git rev-parse HEAD`. The script tags HEAD
+4. One tag per package. The script creates only the code tag `vX.Y.Z`. For the
+   packages released alongside it, tag the SAME release commit and push:
+   `git tag kb-vX.Y.Z`, `git tag mkt-vX.Y.Z`, then
+   `git push origin kb-vX.Y.Z mkt-vX.Y.Z` (only the tags of packages actually
+   bumped).
+5. VERIFY every tag landed on the release commit:
+   `git rev-parse <tag>` must equal `git rev-parse HEAD` for each tag. The script tags HEAD
    unconditionally — if its commit step failed (hook, empty stage), the tag
    lands on the PREVIOUS commit; this is the same wrong-tag failure hit
    manually in the v1.8.0 run. If the tag is wrong: `git tag -d vX.Y.Z`, fix,
    re-run (if the tag was already pushed, delete the remote tag too:
    `git push origin :refs/tags/vX.Y.Z`).
-4. Merge to main. Constraints on this machine (as of 2026-07): the `gh` CLI is
+6. Merge to main. Constraints on this machine (as of 2026-07): the `gh` CLI is
    NOT installed — create the PR via the GitHub web UI
    (`https://github.com/Antoneeo/agentic-sdlc-skill/pull/new/<branch>`); a
    direct push to main requires the user's explicit authorization in-session.
-   Historical pattern: one tag per release, name `vX.Y.Z`.
+   Tag names: `vX.Y.Z` (code), `kb-vX.Y.Z` (kb), `mkt-vX.Y.Z` (marketing), all
+   on the release commit.
 
 ## Known traps
 
@@ -183,6 +206,10 @@ prompts once for confirmation, then publishes, then verifies by printing
   instead, append `--otp=CODE` to the `npm publish` line in the script.
 - `access=public` is already in each `package.json` `publishConfig`; no flag
   is needed.
+- **A pending 2FA is not a failure.** Each package waits for its own browser
+  authorization, which can complete minutes after the previous one (2026-09-25:
+  mkt published 4.5 minutes after kb). Read the registry only after the script's
+  final verify block; before that, a missing package is pending, not failed.
 - A genuine failure (authorization expired, network, registry refusal) stops
   the run with `[FAIL] <name> publish failed at <ver>` and a non-zero exit.
   Re-run after fixing: what already succeeded is skipped.
