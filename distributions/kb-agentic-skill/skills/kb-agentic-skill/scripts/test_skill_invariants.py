@@ -491,7 +491,8 @@ class SkillInvariants(unittest.TestCase):
                          "the non-blocking default hands doubts to the deliverable")
         for anchor in ("never settled by a weighing",
                        "each with its pros and cons", "I take X over Z",
-                       "at its strongest", "serve different needs"):
+                       "at its strongest", "serve different needs",
+                       "none good enough at both"):
             self.assertIn(anchor, e, f"elicitation.md missing {anchor}")
         # review.md is shared: the section it cites must exist in this lens.
         rv = read("review.md")

@@ -47,17 +47,17 @@ Settle it by kind:
 - **A choice** — a reading of intent, a design trade-off: cite the user's statement
   that settles it (the request, an APPROVED Vision, an earlier reply); failing one,
   weigh the pros and cons of each option, stating each rejected option
-  at its strongest — the need it serves best; a weighing won against a weak version of the
-  alternative is not a weighing. One clearly outweighs: take it and write the
-  weighing with the choice — "I take X over Z: pro …, contro …". Balanced, or
-  turning on a user priority not on record: a **real doubt** — and it does whenever
-  the options serve different needs of the actor, each better at one the actor would
-  notice in using the result (reading in a spreadsheet against processing by a
-  program, a quick answer against a complete one) and none good enough at both, and
-  nothing the user wrote ranks those needs — however clear your own ranking feels.
-  "The more natural reading" with no pros and cons written is not a weighing. Design is yours until it
-  trades off something the user owns. Reserved approvals never enter this test
-  (§The form of a question).
+  at its strongest — the need it serves best; a weighing won against a weak
+  version of the alternative is not a weighing. One clearly outweighs: take it and
+  write the weighing with the choice — "I take X over Z: pro …, contro …".
+  Balanced, or turning on a user priority not on record: a **real doubt** — and it
+  turns on one whenever the options serve different needs of the actor, each better
+  at one the actor would notice in using the result (reading in a spreadsheet
+  against processing by a program, a quick answer against a complete one) and
+  none good enough at both, and nothing the user wrote ranks those needs — however
+  clear your own ranking feels. "The more natural reading" with no pros and cons
+  written is not a weighing. Design is yours until it trades off something the
+  user owns. Reserved approvals never enter this test (§The form of a question).
 
 ### Ask before the write
 

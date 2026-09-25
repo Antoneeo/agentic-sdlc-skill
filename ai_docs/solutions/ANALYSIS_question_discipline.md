@@ -1,9 +1,10 @@
 ---
 id: F-026
 feature: Question discipline (a real doubt is asked when it emerges; a question is legal only after the search)
-status: IN_PROGRESS
+status: COMPLETED
 level: L3
 start_date: 2026-08-01
+end_date: 2026-09-25
 ---
 # Feature Analysis: Question Discipline
 
@@ -306,6 +307,9 @@ rejected option. It is NEW in kb and marketing. Everything else EXISTS under the
   cons.
 - **AC8.** Given a fact the search leaves open that changes the work, then the agent
   asks and does not weigh it.
+- **AC9.** Given options that serve different needs, none good enough at both and
+  none ranked by the owner, then the agent asks, however clear its own ranking. A
+  weighing it does write states each rejected option at its strongest.
 
 ## Interface Contract
 
@@ -435,7 +439,10 @@ are process risks.
    three CHANGELOGs.
 6. Probe GREEN; the three batteries; `sdlc_check.py check` and `index`; closure review
    on the diff; REVIEW_LOG rows; re-measure the budget; flip to COMPLETED.
-7. The closure report tells the owner, who also maintains devPNT, that devPNT's
+7. Increment (2026-09-25): an honest weighing (FS 2's two conditions) in the three
+   lenses, with the wiring anchors, probe P12 and the scenario fixture. It gets its
+   own design review, closure review and blind re-run of the scenario.
+8. The closure report tells the owner, who also maintains devPNT, that devPNT's
    generated reviewer definitions must carry the new §Reviewing clause. The report is
    the record of that flag; the devPNT-side change is out of this unit's scope.
 
@@ -453,6 +460,9 @@ are process risks.
     and the restricted assumptions present;
   - the code skip path and "derive before asking" narrowed;
   - "legal by mandate" present in the section `review.md` cites;
+  - the honest weighing (P12: at its strongest, serve different needs, none good
+    enough at both, nothing the owner wrote ranks them), RED on `a33cc4d`, the
+    commit before the increment;
   - facts never weighed; reserved approvals never assumed; kb's mandated timing kept;
     marketing's DRAFT hold; the subagent return line in `dispatch.md`; pros and cons
     at the planned occasions;
@@ -525,7 +535,9 @@ are process risks.
   - Integration, the owner's choice: commit on the branch now, and open the PR after
     1.35.0 reaches main.
 - **2026-09-25 — increment: an honest weighing.** Field evidence from the behavioural
-  scenario, each lens run blind by a fresh subagent, with the old doctrine as control:
+  scenario, which exists in the code lens only. Old and new doctrine were each run blind
+  by a fresh subagent, one run per condition, and the transcripts were not kept in the
+  repo. The kb and mkt wordings have no behavioural run.
   - **Old doctrine.** It wrote nine intent choices into the analysis as assumptions
     that "hold unless you correct them", including the one it called most important.
     Its design review passed them.
@@ -534,8 +546,8 @@ are process risks.
     it: the options served different uses the record does not rank, and the weighing
     stated the rejected option weakly. The agent then stopped and asked, in the full
     form.
-  - **The mechanism.** The second-line clause worked. The first line leaked through a
-    self-judged weighing.
+  - **The mechanism, as far as one run shows.** The second-line clause caught the
+    leak. The first line leaked through a self-judged weighing.
   - **What this increment adds (FS 2):** a rejected option is stated at its strongest,
     and options serving different, unranked needs are a real doubt.
   - **Owner's choice (2026-09-25):** strengthen the doctrine before the release rather
@@ -557,5 +569,7 @@ are process risks.
       stated the current-only option at its strongest.
     - That last choice is correct under FS 2: full history contains the current
       orders, so one option serves both needs. The scenario criterion that demanded
-      the status question was wrong. It is rewritten from the rule, not from the
-      result.
+      the status question was wrong. It was rewritten after the result was seen, and
+      the closure review then aligned both criteria with the rule's three conditions.
+      The run's extra legal-portability question named its search, but was not
+      checked against the legality test.

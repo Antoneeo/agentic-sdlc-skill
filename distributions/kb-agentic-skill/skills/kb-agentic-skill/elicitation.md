@@ -51,11 +51,13 @@ record. The usual signals — they illustrate, they do not close the definition:
   a weak version of the alternative is not a weighing. One clearly outweighs: take
   it and write the weighing with the choice — "I take X over Z: pro …, contro …".
   Balanced, or turning on a priority of theirs not on record: a **real doubt** — and
-  it does whenever the options serve different needs of the actor, each better at
-  one the actor would notice in using the result (a quick answer against a complete
-  record) and none good enough at both, and nothing the practitioner wrote ranks
-  those needs — however clear your own ranking feels. "The more natural reading"
-  with no pros and cons written is not a weighing. Reserved approvals never enter this test (§The form of a question).
+  it turns on one whenever the options serve different needs of the actor, each
+  better at one the actor would notice in using the result (a quick answer against
+  a complete record) and
+  none good enough at both, and nothing the practitioner wrote ranks those needs —
+  however clear your own ranking feels. "The more natural reading" with no pros and
+  cons written is not a weighing. Reserved approvals never enter this test
+  (§The form of a question).
 
 ### Ask before the write
 

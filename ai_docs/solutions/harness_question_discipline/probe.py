@@ -124,7 +124,8 @@ def main(ref):
         check("P7", lens, "I take X over Z" in qd,
               "the weighing line does not name the option it rejects")
         # Increment 2026-09-25: an honest weighing (field run of the scenario).
-        check("P12", lens, "at its strongest" in qd and "serve different needs" in qd,
+        check("P12", lens, "at its strongest" in qd and "serve different needs" in qd
+              and "none good enough at both" in qd and "wrote ranks those needs" in qd,
               "the weighing does not state the rejected option at its strongest, or "
               "does not make unranked different needs a real doubt")
         form = flat(subsection(el, "The form of a question"))
