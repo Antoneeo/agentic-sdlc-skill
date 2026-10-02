@@ -1,6 +1,6 @@
 ---
 name: agentic-sdlc
-version: 1.36.0
+version: 1.37.0
 description: Documentation-First SDLC protocol with risk-proportional triage, Vision as a guide, a complete Standalone mode and optional symbiosis with devPNT. Use for features, significant bugs, refactors, audits and documented maintenance.
 author: Antonio Pinto (https://github.com/Antoneeo)
 copyright: (c) 2026 Antonio Pinto
@@ -59,10 +59,11 @@ Always classify the request before choosing the process. Declare the chosen leve
 | **Spike** | Time-boxed exploration to reduce uncertainty | Code not mergeable into main. Outcome in `ai_docs/solutions/SPIKE_[topic].md`. For production, reclassify as L2 or L3. |
 
 Cross-cutting rules:
-- **Domain routing (multi-lens installs only).** After the level is set, and only when a sibling lens skill of this family is installed (`kb-agentic`, `mkt-agentic-sdlc`), run the router in `routing.md` for every L2, L3 and Spike: it decides which lens's method and validation rules govern this unit of work. L1 never reaches it, and a single-lens install never reads the file — detection fails open. In such a project, never refer to a document whose meaning differs by lens ("threat model", "vision", `principles.md`, `handoff.md`) by its bare name: qualify it with its domain, or name its path.
+- **Domain routing (multi-lens installs only).** After the level is set, and only when a sibling lens skill of this family is installed (`kb-agentic`, `mkt-agentic-sdlc`, `course-creator`), run the router in `routing.md` for every L2, L3 and Spike: it decides which lens's method and validation rules govern this unit of work. L1 never reaches it, and a single-lens install never reads the file — detection fails open. In such a project, never refer to a document whose meaning differs by lens ("threat model", "vision", `principles.md`, `handoff.md`) by its bare name: qualify it with its domain, or name its path.
 - Parsing of external input, authN/authZ, cryptography, networking, personal data and filesystem access are security-sensitive: never L1.
 - If a bigger impact emerges during L1/L2 work, stop, reclassify and declare it.
 - When in doubt, pick the higher level.
+- For L2/L3 bugs, load `debugging.md` at the start of analysis, before proposing a cause or fix: incident evidence, ranked hypotheses and causal verification precede correction.
 - **A real doubt is asked when it emerges, before its answer is written — any phase, any level; a question is legal only after naming the search with its result and the decision it blocks.** `elicitation.md` §The question discipline owns the rule — what is a real doubt, the pros-and-cons weighing, the form — and is the only place it is stated: read it before you ask or assume, and do not work from a summary of it.
 - The full audit does not start for L1/L2 unless explicitly requested.
 
@@ -204,7 +205,7 @@ Hybrid L3:
 - Implementation work follows the TDD discipline in `tdd.md` (RED/GREEN/REFACTOR — the L2/L3 default; record the reason when it does not apply).
 - Before implementing (L2/L3; L1 exempt), **consult the guide router** — the verdict already declared with the triage level (`## Operative Guides`). Re-run the lookup here only if the work has moved to a topic the first one did not cover, and say so if the verdict changes.
 - If the environment does not allow automated tests, declare the alternative verification and the reason.
-- For bugs (L2/L3), follow the systematic debugging method in `debugging.md`.
+- For bugs (L2/L3), continue the investigation and design-verification method in `debugging.md`; implementation follows the `tdd.md` discipline above.
 - Circuit breaker: after 3 consecutive runs without progress on the tests, stop, switch to the systematic method in `debugging.md`, and ask for instructions if still stuck. `debugging.md` also covers **chronic fragility** — a component that breaks repeatedly across sessions is a comprehension + complexity signal (write the `source_kind: code` guide AND escalate a refactor), not a fourth patch.
 - Update the ANALYSIS Diary or the Action Plan when you complete milestones, hit blockers, change decisions, or a session ends with work unfinished.
 - **Opt-in subagent execution**: for an L3 with an approved design, the orchestrator MAY execute the work via subagents per `dispatch.md`, gated by `sdlc_check.py plan validate` ("no valid plan, no dispatch"); default stays same-session. Hybrid: the executable `PLAN_[feature].md` is `derived-from` the accepted E-TDD, never independently authored. `dispatch.md` also carries the family-wide **delegation boundary** (what may be delegated at all, and what never may) — that section is not gated by the opt-in trigger and applies at any level, dispatch or no dispatch.

@@ -1,0 +1,450 @@
+# Review Discipline
+
+The single definition of how to request, receive, and perform a review. Other
+places that need review behavior point here instead of restating it (DRY) —
+including devPNT's §4.5/§4.6 gates and any future review step.
+
+## When a review is due
+
+Two moments, and they review different things:
+
+| # | Moment | Object | Level |
+|---|---|---|---|
+| **1. Design review** | End of Phase 3 — **before any implementation** | the ANALYSIS (Standalone) / the `E-ISP`+`E-TDD` (Hybrid) | L3 |
+| **1b. Late arrival** | Work that became L3 *after* code existed — an L1/L2 reclassified mid-flight, or a design increment on a feature already implemented — runs moment 1 **now**, before any further implementation, logged `design (late)` | same | L3 |
+| **2. Closure review** | Phase 5, before DONE | the actual diff, against that approved design | L2 / L3 — the L2 closure review is optional; every review that runs logs its row |
+
+**Why the design review is its own moment, and not a nicety.** The closure review
+can only tell you the code matches the design; it cannot tell you the design was
+wrong. An omission in the design — an impacted file nobody listed, a threat with no
+answering requirement, a capability ruled EXISTS on an assumption — is *cheapest*
+to fix before code exists and most expensive after. And the author cannot catch it:
+a self-review runs in the context that produced the omission and is structurally
+blind to it, which is why independence, not effort, is what this gate buys.
+
+**Independence, best realization the client supports** — declare which one you used:
+
+1. **A fresh subagent** (Claude Code's Task tool, or the equivalent facility) with
+   its own context, given the artifacts below and nothing from this conversation.
+2. **A one-shot run of the client itself** (`gemini -p "…"`, `codex exec "…"`) with
+   a SELF-CONTAINED prompt — the reviewer session has no other context, which is
+   exactly what makes it independent.
+3. **A declared self-pass** — a separate, explicitly adversarial pass by you,
+   against the same checklist. **Rung 3 is illegitimate wherever a higher rung
+   is usable**: on a client with a working subagent facility or one-shot CLI,
+   descending to it is choosing zero independence, which is the one thing this
+   gate buys. A gated rung the user DECLINED is not usable — see *The gated
+   rung* below; a gated rung nobody asked about is not declined (unattended is
+   its own case below). When
+   you do use it, the log row must carry *why*, in the reason words below —
+   `self-pass (declared; absent — the client has no such facility)` — not merely
+   that you did. A rung named without its
+   reason is indistinguishable from a rung chosen for convenience.
+
+Rung 3 stays in the ladder deliberately: it is what keeps the methodology
+completable with no network, no account and no subagent facility. It is a floor,
+never a default.
+
+**The gated rung — present is not absent (F-038).** A rung that exists behind a
+standing policy or instruction forbidding its use absent a user request is
+**permission-gated**, not unavailable. An interactive per-call approval prompt is
+NOT this: answering the prompt IS the grant. With an ungated rung usable — rung 1
+free, or a one-shot CLI that works (try it, or show it failed) — the prohibition
+above is already satisfiable and no stop fires (the row still carries
+`gated, pre-empted` when a gated rung sat above the one that ran); a gated
+rung 2 is not "usable" for this clause, it joins the question instead. When the best rung is gated and no
+ungated rung works, the gate STOPS and asks: descending to rung 3 on silence is
+illegal while a user is reachable. The stop is doctrine-mandated (legal by mandate,
+`elicitation.md` §The form of a question) and carries that file's five-bullet
+blocking form — its closed-list exemption covers this file's round-cap hand-over
+only, not this stop. The question offers the gated rung(s) against the fallback, with what each
+buys; states each higher rung's status (tried / unusable / gated) with the
+standing instruction quoted and "no grant visible in my current context"; says
+why no assumption survives (assuming either way writes a false log row); says
+why it is the USER'S call — their tokens (~130-175k per deep review, measured
+2026-08) against a benefit only they can price, stated with what independence
+last bought; and names what stays blocked — which reviewer runs, nothing else.
+**No grant memory exists**: the answer holds while the conversation does, and an
+agent that cannot recall a grant asks again — one question per gate per intact
+context; re-asking is a smaller defect than a false row. Unattended
+(`elicitation.md`'s Unattended path — the user is not reachable), no question is
+emitted: rung 2 is still owed a try, then rung 3 runs with its reason logged.
+
+**The reason words.** A below-rung-1 row carries why the rung(s) above did not
+run; a rung-1 row owes nothing. `absent` — the client has no such facility (a
+claim about the client, never about a policy); `gated, declined` — usable only
+with the user's assent at this gate, and the user withheld it (a standing policy
+answered no, or a per-call prompt denied); `gated, unattended` — a standing policy
+gates it and no user is reachable to ask; `gated, pre-empted` — gated, nothing
+asked: an ungated lower rung ran the review instead. `gated` always appears with
+its outcome. The trigger term "permission-gated" scopes the STOP; the row word
+`gated` additionally covers a denied per-call prompt, which never triggers one.
+
+Use a different model from the author's where the client allows it.
+
+**The capability floor — which tier may run this role.** Independence says the
+reviewer must not be the author; it says nothing about whether the reviewer *can
+do the job*. A gate run below the capability its judgement needs produces the
+myopia the gate exists to catch, **while reporting as an independent review** —
+worse than no gate, because it certifies. So each role carries a minimum tier.
+Tiers are **client-relative capability levels, never provider names** (a name
+rots at the next model release; the tier→model binding lives in the client's own
+agent definition, never in this file):
+
+| Role | Floor | Why there |
+|---|---|---|
+| **authoring a governed artifact** (Vision, the analysis/design, use cases, the Interface Contract, threat model — `dispatch.md`'s never-list owns the enumeration) | **deep** | the purest case of the rule below: the output is judgement, nothing scores it, and `dispatch.md`'s never-list forbids moving it elsewhere — so the session's own capability IS this work's capability |
+| design review, closure review, any verdict on judgement | **deep** | the output is a judgement whose wrongness no check can see |
+| a light conformance or consistency pass (schema, coverage, citation resolution) | **light** | the criterion is stated and mechanical |
+| implementer dispatch, probe execution, anchor resolution, index regeneration | **economy** | a threshold signal catches a wrong cheap answer |
+
+The rule underneath the table: **a tier may be lowered only where a threshold
+signal exists** — `task.verify`, a test, a diff against a spec, an assertion
+harness — because that is what makes a wrong cheap answer visible instead of
+plausible. Where the output is judgement and nothing scores it, there is no
+signal to lower against, and the floor is the whole policy.
+
+**A session's floor is the highest floor among the roles it performs itself.** The
+table above binds reviewers and dispatched subagents, chosen per call — but the
+session doing the authoring was chosen by the USER before the agent existed, and
+an agent cannot re-tier itself mid-session. So the rule that reaches it is not
+routing, it is **disclosure**: where a session can determine that it is below the
+floor for a role it performs itself, it says so **once per session, at the first
+such role** — not once per unit — and the disclosure is repeated in the review
+row's existing `reviewer` cell (Hybrid: `notes`), which is what makes the pair
+below visible without adding a column.
+
+**Say plainly how thin this reach is.** A session knows its model NAME; tiers here
+are deliberately client-relative and this file maps no name to a tier, so the
+antecedent is satisfiable only where a session can recognize its own tier — which
+is also the session least likely to run the check. Where a session **cannot
+determine its own tier**, it owes nothing: the rule binds what an agent can know
+and say, never a capability it cannot acquire. **The reliably working half of this
+rule is the one addressed to the user, not to the agent** — which is why the
+package READMEs carry the tier-selection guidance, and why that is not a footnote.
+
+**Never both below the floor on the same unit — except when nothing better
+exists.** Where the authoring session ran below floor, the independent review's
+floor becomes non-negotiable and the same unit should not ALSO run a below-floor
+review. **The exception is the case *When independence and capability conflict*
+governs below**: where no independent rung at or above the floor exists at all,
+that rule wins, the review still runs, BOTH disclosures are recorded, and the
+result is not a violation but the worst admissible state — honestly labelled.
+Forbidding it outright would push the agent toward the abstention that rule
+explicitly rejects.
+
+**When independence and capability conflict, independence wins.** A client whose
+only independent rung is bound below the floor (a single-model client, or a
+subagent facility whose agent definition fixes a cheap model) still runs the
+gate: a below-floor *independent* reviewer catches the class the author is
+structurally blind to, while a self-pass catches none of it. What the floor then
+requires is **disclosure, not abstention** — the row records the tier that
+actually ran (`below floor: <reason>`), and that record IS the remedy. Where a
+higher-capability path exists but is permission-gated, nothing new applies: *The
+gated rung* above already governs, one question per gate per intact context.
+Where the client exposes no capability choice at all, the row says
+`single (client exposes no choice)` and the floor is satisfied by construction —
+it is a routing rule, and a routing rule with one route is not a failure.
+
+**Rounds are capped at 3.** FAIL → revise → re-review. If findings still stand
+after the third, stop and surface them to the user with the artifact — a gate that
+can block forever gets removed. **Log one row per completed review, PASS or FAIL**
+— a FAIL surfaced to the user is the highest-value outcome the gate produces, and
+logging only passes would erase exactly that evidence. The row goes in
+`ai_docs/audit/reviews/REVIEW_LOG.md` (create it if absent — `templates.md`):
+`| date | doc_key | tier | model | reviewer | findings_raised | findings_real | verdict | revise_rounds |`,
+with `tier` = `design` or `closure` in Standalone. **`model` records the capability
+tier that actually ran** — `deep`, `light`, `economy`, `single (client exposes no
+choice)`, or `below floor: <reason>` — never a provider name in doctrine (a project
+may of course write its own model names in its own log). Without it the floor above
+is a belief: the row would say a gate ran and never whether it could do its job, and
+the correlation with `revise_rounds` and `findings_real` — the only evidence the
+policy pays — could not be drawn.
+
+**One schema for both modes**, meaning one required CORE plus each mode's own
+**mode-specific** realization columns. The core is what both modes actually share: `date`, `doc_key`,
+`tier`, `model`, `findings_raised`, `findings_real`, `verdict`, `revise_rounds`.
+Around it, Standalone adds `reviewer` and Hybrid adds `instrument` and `notes` —
+a devPNT row carries no `reviewer` column at all, so "one identical column list"
+was never true of the two modes. This costs nothing for the reason `templates.md`
+§`ai_docs/audit/reviews/REVIEW_LOG.md` owns and states.
+The log is how the gate's value is measured over time; skipping it makes the gate
+unfalsifiable, the same defect as an unnamed EXISTS or a faked router verdict.
+
+**Revise means converge, not accrete.** Two revision failure modes generate their
+own findings and can make the cap unreachable honestly. (1) *Patch-on-patch*:
+each round's fixes are grafted onto the previous text until stale counts,
+duplicated sections and internal contradictions are findings the revisions
+themselves created. The lean operative form is the FIRST draft's form, not the
+round-3 rescue: the review request states the artifact's line count against a
+budget the author fixed before drafting (default: the measured figure below), and
+an artifact over budget is the reviewer's first finding, before content. When a
+round's findings are of that artifact-consistency class, rewrite lean instead of
+patching again. (2) *Revision narrative in the
+artifact*: the artifact under review carries its own review archaeology
+("v1.2 fixed…", "as the round-2 review noted…"). An artifact states what IS,
+once; how it got there lives in the REVIEW_LOG row's notes, never in the
+artifact — archaeology bloats the object under review and every stale
+self-reference is a future finding. Field measurement (2026-08): an artifact
+that had grown to ~1,250 lines across eight failing rounds passed on the round
+after a ~500-line operative rewrite moved the history out — the rewrite removed
+an entire finding class.
+
+**The reviewer is read-only and advisory.** It never edits, never commits, never
+marks anything DONE, and a PASS is not an approval to merge — the human owns that.
+
+## Requesting
+
+When you hand work to a reviewer (human or agent), give them:
+
+- **Scope**: what changed and why, in one or two lines.
+- **The authoritative design artifact**: the ANALYSIS, E-TDD, or equivalent
+  the change was built against — not a paraphrase of it.
+- **The actual diff**: the real changed files, not a description of them. (For a
+  **design** review there is no diff yet — that is the point; hand the artifact
+  plus the constraints below, and say the object under review is the design.)
+- **For an impact/solution-analysis review, the constraints it derives from**:
+  the **Vision**, including its `## Actors` (Hybrid: the `M-VISION`; Standalone:
+  `project_vision.md`/`roadmap.md` + the ANALYSIS Vision-Alignment), the
+  **use-cases / user-needs** (Hybrid: `D-UC`;
+  Standalone: the ANALYSIS `## Use Cases / User Needs`), and the **threat model**
+  (Hybrid: `P-TM`; Standalone: the ANALYSIS `## Security and Threat Model`). Hand these
+  *in addition to* the design artifact — the reviewer checks the artifact **against**
+  them, not only for internal consistency.
+- **For a design review, the threat model too** (same sources as above). Why this
+  one and not the whole set: file coverage crosses the impact-analysis→design hop on
+  a mechanical gate (every impacted file needs a design block), so a dropped file is
+  caught; **threats have no such gate** — a threat answered in the impact analysis
+  can silently fail to become a security requirement in the design, and the later
+  code review only verifies the requirements that are there, never the ones that
+  should have been. The design reviewer checks that every threat surface the change
+  touches has a matching security requirement.
+
+- **The severity contract**: state with the request what counts as a blocker
+  versus a lesser finding. A blocker is *unfit-to-proceed* evidence only — a
+  false claim about existing code, a published falsehood, a missing impacted
+  file, an unresolvable internal contradiction, a real regression; an
+  improvement idea, a wish, or a style preference is at most a WARN and never
+  fails the artifact. An uncalibrated "hunt hard" mandate produces
+  blocker-inflated rounds that fail artifacts on wishes — each one burns a
+  round from the cap of 3 and patches the artifact for prose, the accretion
+  failure the round-cap rule names. Stating the taxonomy calibrates the
+  *scale*; it never pre-judges any specific finding (that stays forbidden
+  below) — the reviewer still decides where every finding lands.
+
+**Pre-audit before you request.** Before handing the artifact over, run a
+scripted author pre-audit: mechanically resolve every `file:line` / symbol
+anchor the artifact cites against the real tree, and recount every count it
+states — with a script, not by eye. Anchors rot between drafts, and a reviewer
+that trips on a broken anchor spends its round proving your citation instead of
+your design. Measured cost is near zero (one grep-loop); measured catch: four
+rotted anchors in a single artifact, pre-review.
+
+**The verdict travels back as the reviewer's own final output** — the text it
+returns when it finishes, nothing else. A reviewer that tries to message the
+requester mid-run depends on a delivery channel it cannot verify (a subagent
+addressed by agent TYPE rather than by session gets no such channel, and the
+attempt fails silently); a requester that waits for such a message stalls
+holding a verdict that already exists. State the return form when you request
+the review, and read the verdict where it actually arrives.
+
+Never ask a reviewer to "review my session" or "review what I just did"
+without the artifacts above — that forces them to reconstruct scope from
+conversation instead of reviewing the change itself. Say which finding
+classes you want covered (correctness, security, conformance to the design,
+test coverage) if the default scope is not obvious.
+
+Never pre-judge findings for the reviewer: do not instruct them to ignore or
+not flag a specific issue ("don't treat X as a defect", "at most minor"). If
+you believe a finding would be a false positive, let the reviewer raise it and
+resolve it with evidence in §Receiving — pre-judging is usually the requester
+sparing themselves a round.
+
+## Receiving
+
+**MUST answer findings one by one — fix, or justify with evidence; why:
+silent drops turn review into theater** — a review whose findings are not
+tracked to a resolution gives the appearance of quality control without its
+substance.
+
+If you disagree with a finding, say so explicitly with your reasoning; never
+resolve a disagreement by rewording the finding until it goes away. When the
+project keeps a `REVIEW_LOG` (or equivalent), log the outcome of each
+finding there.
+
+### Review-driven corrections (scoped re-review)
+
+A fix made in response to a finding is new, unreviewed work — stopping after
+"I fixed it" ships the one version nobody reviewed. Every review-driven change
+therefore gets a **scoped re-review** before the review can PASS: hand the
+re-reviewer the original findings and ONLY the correction (the fix diff/range
+for code, the amended sections for a document), and require a per-finding
+verdict — `ADDRESSED`, `NOT ADDRESSED`, or `CONTESTED` with evidence. **A PASS
+that carried findings is provisional until its corrections pass that round** —
+the commonest real case is a PASS with non-blocking findings the author then
+fixes, and stopping there ships precisely the unreviewed version this rule
+exists to catch. The re-review also checks the correction itself for new
+blocker-level breakage — and nothing else: out-of-scope observations become separately
+recorded findings, never an extension of the loop. Expect two rounds as the
+norm, not the exception — round 1 finds, round 2 verifies the fixes — inside
+the same cap of 3 (§When a review is due). One logical review stays ONE
+REVIEW_LOG row — a scoped re-review is a round, not a new review — with the
+rounds narrated in the row's notes and **the verdict column carrying the
+round-1 verdict and the final one (`FAIL → PASS`), never the final one alone**:
+a first-round FAIL is the highest-value evidence the gate produces (§When a
+review is due), and collapsing it into a bare `PASS` erases exactly that.
+
+## Reviewing
+
+When you are the reviewer:
+
+- Verify claims against the real source, not against the diff's own
+  description of itself.
+- **Your verdict is your final output.** Deliver findings and verdict as the text
+  you return when you finish — never only through a message to the requester, a
+  channel you cannot verify and which fails silently when it is not there
+  (see `## Requesting`).
+- Cite evidence as `file:line` for every finding — a finding without a
+  location is not actionable.
+- **An unproven completion claim is a finding** (closure reviews, on the diff).
+  When the work under review states or implies that something passes, is fixed,
+  is clean or is complete, the evidence must be present and must post-date the
+  final relevant change; a claim resting on a stale run, on a narrower check
+  than the claim needs, or on a delegated agent's own report rather than the
+  diff, is a finding — name the claim and what would prove it. This is the
+  enforcement point of the author-side rule in `SKILL.md` §5 Closure, and the
+  reason a requester hands it over is that the reviewer cannot cite a rule it
+  was never given.
+- **Say what you could NOT verify.** When a claim in the artifact cannot be
+  verified from the inputs you were given (it lives in unchanged code, another
+  document, or an environment you cannot reach), report it as a
+  `CANNOT VERIFY` item instead of silently passing it — the requester holds
+  the context to resolve it, and must do so before closing. A PASS that
+  silently skipped unverifiable claims is review theater.
+- Keep severity honest: do not inflate a style preference to a blocker, and
+  do not soften a real correctness or security issue to a nit.
+- No praise padding. A review reports problems and their fixes, not a
+  summary of what looks fine.
+- **Conformance statement (impact/solution-analysis & design reviews only — not a
+  plain code-diff review).** When the artifact under review carries Vision / use-case
+  / threat-model constraints, your output MUST map each constraint to its evidence: for
+  every use-case/user-need (and the Actor it serves — a use-case with no defined Actor,
+  or an Actor UX expectation the solution does not meet, is a finding), every threat, and
+  every applicable Vision benefit/Non-Goal, state WHERE the artifact satisfies it (section
+  or `file:line`) or raise it as a finding. A PASS/approve is **not valid on "found nothing"** — the conformance
+  statement is the proof the check ran; an unfalsifiable "I checked" is the review
+  theater this discipline exists to prevent (the reviewer-side twin of §Receiving's
+  silent-drop rule). Plain code reviews stay findings-only.
+- **An unasked doubt is a finding (impact/solution-analysis & design reviews).** An
+  intent choice written with no owner-authored source and no weighing, a weighing
+  that names no rejected option or turns on an owner priority not on record, and a
+  fact or owner-held datum settled by a weighing instead of evidence are findings;
+  so is a cited source that does not say what the line claims. What makes a ground
+  or an assumption legal is each lens's `elicitation.md` §The question discipline —
+  cite it, never restate it. The fix is the question, not a better justification.
+- **Restated facts (cite, never copy).** Every governance slot has ONE owning document
+  per project. A fact restated in the artifact under review when another document owns
+  it is a **finding**: the fix is a citation naming the owner, not a better copy. This
+  binds the conformance statement too — where a constraint is satisfied by another
+  document, name that document as the evidence instead of repeating what it says. Two
+  copies of one fact diverge at the first edit, and the reader then has no way to tell
+  which one is current. The rule bites hardest across domains, where the same slot
+  ("threat model", "vision", "handoff") carries a different meaning under each lens and
+  a copy looks like an independent second source.
+- **Use-case grounding (same reviews; the two-check gate whose owning definition
+  is the code lens's `templates.md` `## Use Cases / User Needs` comment — cite it,
+  never restate it).** On an L3 impact/solution analysis (Standalone) or `D-UC`
+  (Hybrid), two findings live here and nowhere else: **a product name in no
+  bucket** — the use-cases name a thing that neither EXISTS in the product (called
+  by the term the product itself uses; a renamed existing thing is a phantom), nor
+  is declared NEW in this change, nor is a pure METAPHOR kept out of the interface;
+  it invents system reality that is not there. And **a use-case that traces to no
+  Vision / M-VISION benefit** — a need the vision does not want, which is drift.
+  This gate checks the use-cases are GROUNDED and runs BEFORE the owner's own
+  review, never replacing it; coverage of each use-case by the Impact, and the
+  Actor it serves, stay the conformance-statement clause above. A lens whose
+  template defines no `## Use Cases` section never fires this clause.
+- **Functional Spec (same reviews; fires only in the lens whose template defines
+  the section — the code lens today).** When the change adds or alters observable
+  behavior (the trigger's owning definition is the code lens's `templates.md`
+  `## Functional Spec` section comment — cite it, never restate it), **an L3
+  artifact carrying NO `## Functional Spec` is itself a finding** — absence is
+  what a skipped spec looks like, not a reason to skip the check. When the spec
+  is there, these findings live here: **a component, file or mechanism named
+  inside it** — the spec is component-free by construction; that is
+  Solution-leakage (component names belong to the Interface Contract, mechanism
+  to the Impact); a behavior whose edge, error or state-dependent cases are
+  absent with no stated reason; an acceptance criterion no `## Test Strategy`
+  item covers; a behavior serving no use case, or a use case whose behavior the
+  spec leaves unstated; and an Interface Contract flow realizing a behavior the
+  spec does not state. A lens whose template defines no such section (knowledge,
+  marketing) never fires this clause.
+- **Capability Ledger (same reviews).** **An L3 impact/solution analysis or design
+  that carries NO Capability Ledger is itself a finding** — the lens's capability
+  pass (`architect.md` in the code lens, `taxonomy.md` in the knowledge lens) left
+  no record, and "the artifact does not have one" is what a skipped pass looks like,
+  not a reason to skip the check. (This half is load-bearing in Hybrid, where the
+  validator backstop reads Standalone ANALYSIS files only and this clause is the
+  sole check that the pass ran.) When the ledger is there, map each
+  ledger row to where the design or diff realizes it. Three findings live here and
+  nowhere else (the capability-pass file named above): a capability ruled MISSING but implemented inside
+  the feature's code path, with no component owning it; a component whose contract
+  names the feature (a second consumer would force it open); and a capability ruled
+  MISSING, not built, and absorbed by quietly reshaping the feature — that is a
+  scope change owed to the user, not a design detail. An EXISTS row with no named
+  path or symbol is itself a finding. A capability built in this change and absent
+  from the `## Component Map` (`strategic/architecture.md`, where the lens keeps one) is a finding too — and
+  so is **a component the pass merely DISCOVERED and did not write**, especially
+  when the change marks that area ANALYZED: the area now looks read, the map is
+  still silent, and the next feature may lawfully rule the capability MISSING and
+  build it twice. And a **MISSING row in an area `audit/audit_plan.md` does not
+  mark ANALYZED, with no searches named**, is the finding that matters most on a
+  project the methodology arrived in recently — an unread map reported as an empty
+  one is how a duplicate of the existing codebase gets designed.
+- **Interface Contract (same reviews; fires only in the lens whose template
+  defines the section — the code lens today).** When the change creates or
+  modifies an actor-facing surface (the trigger's owning definition is the code
+  lens's `templates.md` section comment — cite it, never restate it), **an
+  artifact carrying NO `## Interface Contract` is itself a finding** — "the
+  artifact does not have one" is what a skipped contract looks like, not a reason
+  to skip the check. When the contract is there, these findings live here: a
+  use-case with no named interaction flow realizing it; **a flow that is not
+  walkable at the responsibility level** — it jumps from the actor's action to
+  the outcome without naming the components it traverses; **a *how* inside the
+  contract** — a mechanism, algorithm, data structure, widget or file-level
+  design — which is Solution-leakage (the flow NAMES components as
+  responsibility-holders, it never designs them); **required feedback that omits
+  an error or intermediate state, or a software actor's return status** (feedback
+  is universal, not human-only); a design or diff element that alters a
+  contracted surface, flow or feedback with no explicit renegotiation note (after
+  design approval that is a scope change owed to the user, not a design detail);
+  a contracted flow the `## Test Strategy` does not cover; and a new interaction
+  idiom introduced where the contract's own as-is names an existing one, with no
+  declared reason. (The architectural constraints the surface must live with are
+  NOT checked here — architecture-awareness is the Capability Ledger / Impact
+  review's job; a clause for it would duplicate that.) A lens whose template
+  defines no such section (knowledge, marketing) never fires this clause.
+- **Behavioural-claim probes (same reviews; fires only in the lens whose
+  SKILL.md defines Execute-Before-Specify — the code lens today; that paragraph
+  is the owning definition — cite it, never restate it).** On an L3 design
+  artifact, a claim of the form "the code today does X" must trace to an
+  assertion in the artifact's shipped harness
+  (`ai_docs/solutions/harness_[feature]/`): the check is mechanical — re-run
+  the harness and compare, instead of re-deriving the claims by reading. Three
+  findings live here and nowhere else: a behavioural claim backed by no probe
+  (report it as unproven — reading the source yourself is the same
+  insufficient evidence the rule bans for the author); a harness absent while
+  the prose carries behavioural claims; and a probe that no longer passes
+  against the current tree. Structural facts (a file exists, a symbol's
+  signature, its callers) are the blast-radius clause's territory, never probe
+  findings. A lens whose SKILL.md defines no such duty never fires this clause.
+
+## Anti-patterns
+
+- **Batch-dismissal**: closing out a whole findings list with one blanket
+  reply instead of addressing each finding individually.
+- **Rewording instead of addressing**: editing the finding's text to look
+  resolved without changing the code or providing evidence it is a
+  non-issue.
+- **Scope-creep findings**: raising issues unrelated to the change under
+  review instead of filing them separately.

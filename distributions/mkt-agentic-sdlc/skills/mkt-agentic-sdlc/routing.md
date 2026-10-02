@@ -17,6 +17,7 @@ family, identified by the `name:` in their `SKILL.md`:
 | code | `agentic-sdlc` | this repository's code |
 | knowledge | `kb-agentic` | documents the user supplied |
 | marketing | `mkt-agentic-sdlc` | market evidence |
+| course | `course-creator` | a defined learner's progressive understanding |
 
 - **No sibling installed, or the directory cannot be read** → the router does NOT run.
   Work under the loaded lens; read no further. This is the normal single-lens case and
@@ -36,6 +37,11 @@ Run the steps in order. Stop at the first one that decides.
    - *This repository's code* → provisional **code**; continue to step 2.
    - *Documents the user supplied* → **knowledge**. Decided.
    - *Market evidence* → **marketing**. Decided.
+   - *A deliverable whose purpose is to teach a defined audience through progressive
+     explanations and modules* → **course**. Decided, regardless of whether its
+     sources came from a supplied corpus, web research or this repository's code.
+     Acquiring and checking that corpus is a separate knowledge unit. Course
+     content is not routed through the provisional code branch below.
    - *A deliverable whose purpose is market-facing persuasion* (copy, positioning,
      campaign material) → **marketing regardless of source**. Decided. Without this
      branch the marketing lens is reachable only when the *source* is market evidence,
@@ -52,14 +58,15 @@ Run the steps in order. Stop at the first one that decides.
      **knowledge**. Decided; step 3 is not reached.
 
 3. **Build-consumed override** — only on the provisional `code` branch, never
-   overriding a *marketing* or *supplied-documents* verdict. *Is the deliverable a
+   overriding a *marketing*, *course* or *supplied-documents* verdict. *Is the deliverable a
    file the project's build or test toolchain consumes?* Executable or imported
    source: yes. Committed Markdown: no. A yes confirms **code**.
 
-4. **Split rule.** A request whose work must be faithful to two sources is **two units
-   of work**, split before routing: the distillation (knowledge) and the design that
-   cites it (code) each route alone. The router returns one lens per unit; it never
-   returns two lenses for one unit.
+4. **Split rule.** A request with distinct deliverables is split before routing:
+   corpus ingestion (knowledge) and a course based on it (course), or campaign
+   material (marketing) and training (course), are separate units. The same applies
+   to distillation (knowledge) and a technical design that cites it (code). The
+   router returns one lens per unit; it never returns two lenses for one unit.
 
 5. **Owning tree.** A straddling artifact keeps its lens for *method* and takes this
    repository's tree and validator for *storage*. Lens and location are separate
@@ -81,6 +88,10 @@ Run the steps in order. Stop at the first one that decides.
 | "turn these vendor specs into a technical design" | split (step 4): spec = supplied docs; design = this repo | — | — | **knowledge** for the distillation; **code** for the design, citing it |
 | "write the pricing page copy from our market research" | **purpose: market-facing → marketing** | never reached | never reached | **marketing**; stored in this repo's tree (step 5) |
 | "write the launch blog post from the release notes" | purpose: market-facing → marketing | never reached | never reached | **marketing** |
+| "create a beginner course from these API docs" | purpose: teaching → course | never reached | never reached | **course** |
+| "research sources and teach a newcomer a topic" | purpose: teaching → course | never reached | never reached | **course** |
+| "ingest these manuals, then create a course" | split: corpus = supplied docs; training = teaching | never reached | never reached | **knowledge** for ingestion; **course** for training |
+| "write sales copy and an onboarding course" | split: persuasion and teaching | never reached | never reached | **marketing** for copy; **course** for training |
 
 ## 3. Acting on the verdict
 
@@ -96,11 +107,12 @@ The verdict binds the **method and the validation rules**, not the storage:
 - **Verdict = a sibling lens** → say so, and work that unit under the sibling's method
   and its rule set (its templates, its mandatory risk section — code
   `## Security and Threat Model`, knowledge `## Sources and Verification`, marketing
-  `## Threat Map / Plan Risks`). The artifact is written with an explicit
+  `## Threat Map / Plan Risks`, course `## Learning and Content Risks`). The artifact is written with an explicit
   `domain:` field so the answer survives the session, and it stays in this project's
   `ai_docs/` tree (step 5).
 - **The unit was split** (step 4) → route and declare each half separately.
 
-Documents under `vision/` — the project vision, principles, the roadmap — sit **above**
-the domain split: they belong to no lens and are validated by the core's structural
-rules only. The router is not consulted for them.
+The project vision, principles and roadmap under `vision/` sit **above** the domain
+split and receive the core's structural rules. A feature Vision under
+`vision/features/` belongs to its explicit domain; a course Vision declares
+`domain: course`. The router is not consulted for project-wide vision files.

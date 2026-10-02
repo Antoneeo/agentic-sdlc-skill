@@ -1,0 +1,6 @@
+{
+  "name": "course-creator",
+  "version": "0.1.0-beta.1",
+  "description": "Course creation for defined learners, with progressive explanations, sourced facts and diagnostic independent testing.",
+  "author": "Antonio Pinto (https://github.com/Antoneeo)"
+}

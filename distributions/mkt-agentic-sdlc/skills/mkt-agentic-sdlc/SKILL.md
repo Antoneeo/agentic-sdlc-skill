@@ -1,6 +1,6 @@
 ---
 name: mkt-agentic-sdlc
-version: 0.14.0
+version: 0.15.0
 description: Evidence-First marketing planning protocol with engagement triage, SOSTAC workflow, evidence ledger, adversarial CMO review, a complete Standalone mode and optional symbiosis with devPNT. Use for marketing plans, go-to-market strategy, campaign planning and market research.
 author: Antonio Pinto (https://github.com/Antoneeo)
 copyright: (c) 2026 Antonio Pinto
@@ -53,7 +53,7 @@ The validator now ships as three files: entry point, `sdlc_core.py`, `knowledge.
 
 **Declare the level WITH the router verdict** (one line, for every engagement level above the trivial one): the result of the guide-router lookup, i.e. `Level: E2 · router: no match` or `Level: E3 · router: GUIDE_brand_voice.md → read`. The lookup is the consult trigger; making its result a declared output is what keeps it from being skipped — a level declared without a verdict makes "did not look" indistinguishable from "looked, nothing matched". Name the guide you matched, or `no match`.
 
-**Domain routing (multi-lens installs only).** After the level is set, and only when a sibling lens skill of this family is installed (`agentic-sdlc`, `kb-agentic`), run the router in `routing.md`: it decides which lens's method and validation rules govern this unit of work. The trivial level never reaches it (L1 never reaches it), and a single-lens install never reads the file — detection fails open. In such a project, never refer to a document whose meaning differs by lens ("threat model", "vision", `principles.md`, `handoff.md`) by its bare name: qualify it with its domain, or name its path.
+**Domain routing (multi-lens installs only).** After the level is set, and only when a sibling lens skill of this family is installed (`agentic-sdlc`, `kb-agentic`, `course-creator`), run the router in `routing.md`: it decides which lens's method and validation rules govern this unit of work. The trivial level never reaches it (L1 never reaches it), and a single-lens install never reads the file — detection fails open. In such a project, never refer to a document whose meaning differs by lens ("threat model", "vision", `principles.md`, `handoff.md") by its bare name: qualify it with its domain, or name its path.
 
 Always classify the request before choosing the process. Declare the chosen level to the user when you start operational work.
 

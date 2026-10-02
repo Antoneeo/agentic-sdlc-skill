@@ -11,6 +11,8 @@ not manifested here.
 | Document | Status | Description |
 |---|---|---|
 | `vision/features/VISION_agentic_sdlc_vnext.md` | CURRENT | Feature vision for the vNext evolution (triage, support files, mechanical validation, devPNT symbiosis) delivered in 1.5.0/1.6.0. |
+| `vision/features/VISION_course_agentic-sdlc-kb-agentic.md` | APPROVED | Vision del corso per sviluppatori su kb-agentic e agentic-sdlc, usato come primo banco di prova di course_creator. |
+| `vision/features/VISION_course_creator.md` | APPROVED | Vision approvata di course_creator per spiegazioni progressive, anche quando chi richiede il corso parte da zero. |
 | `vision/features/VISION_kb_second_brain.md` | APPROVED | Feature vision for the kb-agentic "second brain" milestone - the recall reflex, the daily gesture, and the time cycle that keep a project KB honest over mont... |
 | `vision/features/VISION_vision_governance.md` | CURRENT | Feature vision for the Vision governance layer (ai_docs/vision/, Vision Gate) delivered in 1.4.0. |
 | `vision/principles.md` | DRAFT | Vision Principles |
@@ -25,7 +27,7 @@ not manifested here.
 | Document | Status | Description |
 |---|---|---|
 | `reference/GUIDE_release.md` | CURRENT | How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish. |
-| `reference/GUIDE_shared_project_memory.md` | CURRENT | Consult before changing shared-memory discovery, docs-root resolution, or validator composition across the three distributions. |
+| `reference/GUIDE_shared_project_memory.md` | CURRENT | Consult before changing shared-memory discovery, docs-root resolution, or validator composition across the four distributions. |
 
 ## architecture/
 
@@ -49,6 +51,7 @@ not manifested here.
 | `architecture/ADR_2026-09-11_mandatory_read_diet.md` | CURRENT | ADR - doctrine leaves the mandatory read by RELOCATION behind a triggered pointer, never by deletion, and a relocation must enumerate its inbound citations.... |
 | `architecture/ADR_2026-09-11_probes_that_cannot_fail.md` | CURRENT | ADR - a probe over a computed output must RECOMPUTE the expected value and compare; a probe over prose must be labelled a wording anchor. Adopted after the s... |
 | `architecture/ADR_2026-09-19_shared_project_memory.md` | CURRENT | Why project memory is shared by every lens while document authority and specialist workflows remain separate. |
+| `architecture/ADR_2026-09-27_course_overlay_single_index.md` | CURRENT | Why course creation owns its teaching artifacts while the shared core owns the ai_docs index. |
 
 ## functional/
 
@@ -68,4 +71,5 @@ not manifested here.
 | `strategic/capabilities_and_positioning.md` | CURRENT | Dated, evidence-based comparison of agentic-sdlc 1.26.1 and Superpowers 6.2.0: advantages, parity, remaining gaps and deliberate non-adoptions. |
 | `strategic/existing_features.md` | CURRENT | Concise catalog of the skill's existing features. |
 | `strategic/process_agentic_sdlc_devpnt.md` | CURRENT | The joint agentic-sdlc × devPNT governance process — pipeline, documents, human vs agent reviews, mandatory checks, and why it works. Read to understand how... |
-| `strategic/skill_family_agent_workflows.md` | CURRENT | How the three skills differ in the way an AGENT actually works under each — from a full three-way doctrine inventory. For the owner; body in Italian. |
+| `strategic/skill_family_agent_workflows.md` | CURRENT | How the four skills differ in the way an agent works under each; the course lens is Standalone in its first release. For the owner; body in Italian. |
+| `strategic/skills_vs_standard_agents_team.md` | CURRENT | Per il team di sviluppo: vantaggi di kb-agentic e agentic-sdlc rispetto all'uso di un agente senza memoria e processo di progetto. |

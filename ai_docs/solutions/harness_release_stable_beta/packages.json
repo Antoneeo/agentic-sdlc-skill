@@ -1,0 +1,34 @@
+[
+  {
+    "package": "@antoneeo/agentic-sdlc-skill",
+    "version": "1.37.0",
+    "files": 29,
+    "pack_rc": 0,
+    "init_rc": 0,
+    "scratch_check_rc": 0
+  },
+  {
+    "package": "@antoneeo/kb-agentic-skill",
+    "version": "1.20.0",
+    "files": 29,
+    "pack_rc": 0,
+    "init_rc": 0,
+    "scratch_check_rc": 0
+  },
+  {
+    "package": "@antoneeo/mkt-agentic-sdlc-skill",
+    "version": "0.15.0",
+    "files": 28,
+    "pack_rc": 0,
+    "init_rc": 0,
+    "scratch_check_rc": 0
+  },
+  {
+    "package": "@antoneeo/course-creator",
+    "version": "0.1.0-beta.1",
+    "files": 34,
+    "pack_rc": 0,
+    "init_rc": 0,
+    "scratch_check_rc": 0
+  }
+]

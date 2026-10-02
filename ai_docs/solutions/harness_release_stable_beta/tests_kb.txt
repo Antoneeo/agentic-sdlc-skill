@@ -1,0 +1,116 @@
+..................................................................................................................................................................................................................................................................................................[ERROR] C:\Users\apint\AppData\Local\Temp\tmp_6330ws0\project\ai_docs\solutions\PLAN_invalid_brief.md: task[0]: missing required field(s): verify
+
+[plan] brief: plan is invalid, refusing to brief (1 errors).
+..[plan] brief: task id 'T-NOPE' not found in C:\Users\apint\AppData\Local\Temp\tmp6i5y8ad5\project\ai_docs\solutions\PLAN_brief.md
+.[ERROR] C:\Users\apint\AppData\Local\Temp\tmppgdgyoj3\project\ai_docs\solutions\PLAN_abs.md: task[0]: paths 'C:\Users\apint\AppData\Local\Temp\tmppgdgyoj3\outside.md' is absolute, contains '..', or escapes 'C:\Users\apint\AppData\Local\Temp\tmppgdgyoj3\project' — rejected (fail closed)
+
+[plan] validate: 1 errors, 0 warnings.
+.[ERROR] C:\Users\apint\AppData\Local\Temp\tmpgj7rep7u\project\ai_docs\solutions\PLAN_dup.md: task[1]: duplicate task id 'T1'
+
+[plan] validate: 1 errors, 0 warnings.
+..[ERROR] C:\Users\apint\AppData\Local\Temp\tmpdxh3g7gv\project\ai_docs\solutions\PLAN_bad_guide.md: task[0]: guide '../../outside_guide.md' is not confined under the project reference dir (C:\Users\apint\AppData\Local\Temp\tmpdxh3g7gv\project\ai_docs\reference) or the agent KB reference dir (C:\Users\apint\.agentic-sdlc\ai_docs\reference) — rejected
+
+[plan] validate: 1 errors, 0 warnings.
+..[warn] ledger 'C:\Users\apint\AppData\Local\Temp\tmpgg7dyp2k\project\ai_docs\solutions\PLAN_ok_ledger.ledger.json' unreadable/malformed, treating as empty: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+.[plan] C:\Users\apint\AppData\Local\Temp\tmpeysw41g8\project\ai_docs\solutions\PLAN_malformed.md: malformed JSON in the plan block: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+.[plan] C:\Users\apint\AppData\Local\Temp\tmp61hiiepy\project\ai_docs\solutions\PLAN_no_block.md: no fenced ```json block found in the plan file
+.[ERROR] C:\Users\apint\AppData\Local\Temp\tmp671xldr2\project\ai_docs\solutions\PLAN_no_paths.md: task[0]: must declare at least one of 'paths'/'produces'
+
+[plan] validate: 1 errors, 0 warnings.
+.[ERROR] C:\Users\apint\AppData\Local\Temp\tmpou6mvxx1\project\ai_docs\solutions\PLAN_missing_verify.md: task[0]: missing required field(s): verify
+
+[plan] validate: 1 errors, 0 warnings.
+.[ERROR] C:\Users\apint\AppData\Local\Temp\tmp60cnl8d0\project\ai_docs\solutions\PLAN_escape.md: task[0]: paths '../escape.md' is absolute, contains '..', or escapes 'C:\Users\apint\AppData\Local\Temp\tmp60cnl8d0\project' — rejected (fail closed)
+
+[plan] validate: 1 errors, 0 warnings.
+..s....s.................................................ss...s...ssss...........sssss.......................s.
+----------------------------------------------------------------------
+Ran 414 tests in 30.220s
+
+OK (skipped=15)
+[ok] workstream registry regenerated: C:\Users\apint\AppData\Local\Temp\tmp2fixoxyz\ai_docs\audit\handoff.md
+[ok] workstream registry regenerated: C:\Users\apint\AppData\Local\Temp\tmpt3itysu5\ai_docs\audit\handoff.md
+[ok] workstream registry regenerated: C:\Users\apint\AppData\Local\Temp\tmpo3kbq5wt\ai_docs\audit\handoff.md
+[ERROR] ai_docs/audit/handoff.md NOT regenerated -- it still holds state no source accounts for:
+          - content outside the table with nowhere to go (4 line(s), first: '## Active features') -- project-wide notes belong in audit/project_notes.md
+          Convert the whole registry at once (templates.md): converting one row at a time is the state that loses the others.
+[ERROR] ai_docs/audit/handoff.md NOT regenerated -- it still holds state no source accounts for:
+          - rows no HANDOFF_*.md accounts for: F-002 beta
+          Convert the whole registry at once (templates.md): converting one row at a time is the state that loses the others.
+[ok] workstream registry regenerated: C:\Users\apint\AppData\Local\Temp\tmpy222wc1h\repo\ai_docs\audit\handoff.md
+[ok] C:\Users\apint\AppData\Local\Temp\tmpo79vpch9\project\ai_docs\solutions\PLAN_good_guide.md: plan valid (1 task(s), 0 warning(s)).
+[ok] C:\Users\apint\AppData\Local\Temp\tmpjo3wrpta\project\ai_docs\solutions\PLAN_orphan_ledger.md: plan valid (1 task(s), 1 warning(s)).
+[ok] C:\Users\apint\AppData\Local\Temp\tmpgg7dyp2k\project\ai_docs\solutions\PLAN_ok_ledger.md: plan valid (1 task(s), 1 warning(s)).
+[ok] C:\Users\apint\AppData\Local\Temp\tmptetkac56\project\ai_docs\solutions\PLAN_produces_only.md: plan valid (1 task(s), 0 warning(s)).
+[ok] C:\Users\apint\AppData\Local\Temp\tmpnd68abo3\project\ai_docs\solutions\PLAN_valid.md: plan valid (1 task(s), 0 warning(s)).
+[warn]  /: path is absolute, contains '..', or resolves outside the project root: rejected (use a project-relative path, '.' for the root)
+[warn]  ../escape: path is absolute, contains '..', or resolves outside the project root: rejected (use a project-relative path, '.' for the root)
+[ok] no analyzed area was modified after its last recorded analysis.
+[ERROR] ../outside: absolute, '..'-escaping, or outside the project root: refusing to mark (use a project-relative path, '.' for the root). Nothing was written.
+=== benefit: what the process caught, and what it costs to read ===
+[info] no ai_docs/audit/reviews/REVIEW_LOG.md yet: nothing to report. The number appears once reviews are logged.
+
+Read cost of kb-agentic-skill: SKILL.md 30454 bytes (every session) + 188616 bytes across 13 support files (read on trigger) = 219070 bytes total
+    dispatch.md                  7997
+    distillation.md             16384
+    elicitation.md              10839
+    ENFORCEMENT.md              17711
+    guides.md                   19124
+    memory.md                    5040
+    portability.md               6257
+    reconciliation.md            7676
+    review.md                   31782
+    routing.md                   7705
+    taxonomy.md                  5479
+    templates.md                37532
+    vision.md                   15090
+=== benefit: what the process caught, and what it costs to read ===
+rows parsed: 3   rows unparsed: 1  -> line 6: 3 cells: header declares 9 and no positional map fits
+reviews with a stated moment: 2   moment not stated by `tier`: 1  (deep x1)
+span of the reviews counted below: 2026-07-28 -> 2026-09-10
+
+moment      rows   findings FAIL verdict per review
+design         1          4           1        4.0
+closure        1          3           0        3.0
+
+Caught BEFORE the code existed: 4 / 7 findings = 57%
+Bounded by the 9 findings in rows whose moment `tier` does not state: 25%-81% (`code` rows are post-implementation by definition, so their findings sit on the closure side of the upper bound)
+Reviews whose verdict contains FAIL: 1 / 2 = 50%
+(both figures are over the 2 reviews whose moment `tier` states)
+
+Read cost of kb-agentic-skill: SKILL.md 30454 bytes (every session) + 188616 bytes across 13 support files (read on trigger) = 219070 bytes total
+    dispatch.md                  7997
+    distillation.md             16384
+    elicitation.md              10839
+    ENFORCEMENT.md              17711
+    guides.md                   19124
+    memory.md                    5040
+    portability.md               6257
+    reconciliation.md            7676
+    review.md                   31782
+    routing.md                   7705
+    taxonomy.md                  5479
+    templates.md                37532
+    vision.md                   15090
+[ok] ANALYSIS index regenerated: C:\Users\apint\AppData\Local\Temp\tmpkoo89arm\ai_docs\strategic\features_history.md
+[ok] document manifest regenerated: C:\Users\apint\AppData\Local\Temp\tmpkoo89arm\ai_docs\INDEX.md
+[ok] guide router regenerated (empty stub): C:\Users\apint\AppData\Local\Temp\tmpkoo89arm\ai_docs\reference\INDEX.md
+[ok] ANALYSIS index regenerated: C:\Users\apint\AppData\Local\Temp\tmpzp8vwykm\ai_docs\strategic\features_history.md
+[ok] document manifest regenerated: C:\Users\apint\AppData\Local\Temp\tmpzp8vwykm\ai_docs\INDEX.md
+[ok] guide router regenerated (empty stub): C:\Users\apint\AppData\Local\Temp\tmpzp8vwykm\ai_docs\reference\INDEX.md
+[note]  vision/project_vision.md is DRAFT: not a gating authority, have the user validate it
+[note]  vision/roadmap.md is DRAFT: not a gating authority, have the user validate it
+[note]  vision/principles.md is DRAFT: not a gating authority, have the user validate it
+
+Validation: 0 errors, 0 warnings, 3 advisories.
+[note] advisories are freshness signals: never fail a build, not even --strict.
+[ok] ANALYSIS index regenerated: C:\Users\apint\AppData\Local\Temp\tmpmniu43rv\ai_docs\strategic\features_history.md
+[info] no canonical documents: INDEX.md not generated
+[ok] guide router regenerated (empty stub): C:\Users\apint\AppData\Local\Temp\tmpmniu43rv\ai_docs\reference\INDEX.md
+[warn]  vision/project_vision.md missing
+[warn]  vision/roadmap.md missing
+[warn]  vision/principles.md missing
+[ERROR] ai_docs/INDEX.md missing: run 'sdlc_check.py index'
+[ERROR] ai_docs/reference/INDEX.md missing while GUIDE_*.md files exist: the router is the only thing that routes work to them -- run 'sdlc_check.py index'
+
+Validation: 2 errors, 3 warnings, 0 advisories.

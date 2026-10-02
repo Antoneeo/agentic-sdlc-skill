@@ -1,5 +1,5 @@
 ---
-description: How the three skills differ in the way an AGENT actually works under each — from a full three-way doctrine inventory. For the owner; body in Italian.
+description: How the four skills differ in the way an agent works under each; the course lens is Standalone in its first release. For the owner; body in Italian.
 status: CURRENT
 ---
 # La famiglia di skill: come lavora un agente sotto ognuna
@@ -11,7 +11,8 @@ l'agente può conoscere. Tutti i pacchetti includono `memory.md` e `knowledge.py
 consultazione trasversale, catalogo degli originali e integrità topic/claim/fonti.
 Una sola installazione basta per questa memoria. La KB resta la disciplina per
 acquisire corpus e progettare tassonomie; il marketing conserva ledger e controlli
-numerici; SDLC verifica il codice reale.
+numerici; SDLC verifica il codice reale; course_creator organizza spiegazioni
+progressive per destinatari definiti.
 
 `index` registra guide, piani e decisioni in `memory/INDEX.md` senza copiarli.
 `recall` cerca metadati correnti per argomento; i tag `topics:` sono facoltativi.
@@ -20,12 +21,12 @@ distinguere proposta, approvazione e comportamento osservato. Nessun watcher,
 nessuna estrazione automatica di claim, nessuna nuova autorità sulla Vision.
 
 **Per chi**: il proprietario, e chiunque debba scegliere quale skill installare o
-capire perché un agente si comporta diversamente in tre progetti.
+capire perché un agente si comporta diversamente in quattro progetti.
 **Risponde a**: "cosa fa *concretamente* di diverso un agente sotto ogni lente".
 **Non risponde a**: come sono impacchettate (`architecture.md`) o perché la famiglia
 esiste (`project_vision.md`).
-**Fonte**: inventario sistematico di ogni file di dottrina delle tre distribuzioni
-(2026-08-01), non memoria di sessione.
+**Fonte**: inventario sistematico delle tre distribuzioni originarie (2026-08-01)
+e contratto didattico F-058 (2026-09-27), non memoria di sessione.
 **Documento derivato**: le sue fonti sono `skills/` e `distributions/`. Cambia la
 dottrina → questo documento e il `README.md` della distribuzione toccata sono
 stale finché non li aggiorni; `stale` lo segnala sulle righe corrispondenti di
@@ -33,26 +34,26 @@ stale finché non li aggiorni; `stale` lo segnala sulle righe corrispondenti di
 
 ## L'idea in una riga
 
-Le tre skill condividono **lo stesso processo** (la spina, byte-identica e vigilata
+Le quattro skill condividono **lo stesso processo** (la spina, byte-identica e vigilata
 dal drift guard) e differiscono in **una sola cosa fondamentale**: *a che cosa le
 affermazioni dell'agente devono essere fedeli*. Tutto il resto — i documenti, i
 gate, il vocabolario, i controlli — discende da quella scelta.
 
-| | agentic-sdlc | kb-agentic | mkt-agentic-sdlc |
-|---|---|---|---|
-| **Fedele a** | il codice di QUESTO repo | i documenti che TU fornisci | l'evidenza di mercato |
-| **Unità di lavoro** | feature (`F-`) | topic (`K-`) | engagement (`E1/E2/E3`) |
-| **Triage** | L1 / L2 / L3 / Spike (grana: **file** — ~10 righe, ≤3 file) | L1 / L2 / L3 / Spike (grana: **conoscenza**, mai file — una riga di claim → propagazione di un fatto già assestato → nuova unità di conoscenza) | E1 / E2 / E3 / Research Spike |
-| **Fasi L3/E3** | 5 (audit → vision → analisi → sviluppo → chiusura) | 5 (+ dentro la 4: l'algoritmo di ingestione) | **9** (spina SOSTAC) |
-| **La domanda dell'agente** | "cosa rompe questo cambiamento?" | "cosa sappiamo già, quanto è certo, da dove viene?" | "quale evidenza sostiene questa scelta?" |
-| **Il peccato capitale** | modificare a istinto senza orientarsi | spacciare conoscenza del modello per fonte | inventare un numero |
-| **Slot di rischio (obbligatorio, il validator lo esige)** | `## Security and Threat Model` | `## Sources and Verification` | `## Threat Map / Plan Risks` |
-| **Albero documenti** | `ai_docs/` | `ai_docs/` + `corpus/` + `topics/` | `mkt_docs/` (vision/strategy/tactics/deliverables) — `ai_docs/` su albero migrato con `migrate` |
-| **File di dottrina propri** | `architect.md`, `tdd.md`, `debugging.md` | `taxonomy.md`, `distillation.md`, `reconciliation.md` | `frameworks.md`, `research.md` |
-| **Comandi validator** | spina + memoria/KB condivisa | spina + memoria/KB condivisa | stessi comandi condivisi + `ledger`, `budget`, `funnel`, `trace` |
-| **Validazione** | struttura, Component Map, memoria e integrità KB | struttura, memoria e integrità KB | memoria e integrità KB + **aritmetica** (budget ±1%, funnel ±5%, catena obiettivo→tattica→KPI) |
+| | agentic-sdlc | kb-agentic | mkt-agentic-sdlc | course_creator |
+|---|---|---|---|---|
+| **Fedele a** | il codice di QUESTO repo | i documenti che TU fornisci | l'evidenza di mercato | il profilo del destinatario e le fonti dei fatti insegnati |
+| **Unità di lavoro** | feature (`F-`) | topic (`K-`) | engagement (`E1/E2/E3`) | corso (`C-`) |
+| **Triage** | L1 / L2 / L3 / Spike (grana: **file** — ~10 righe, ≤3 file) | L1 / L2 / L3 / Spike (grana: **conoscenza**) | E1 / E2 / E3 / Research Spike | L1 correzione locale; L2 revisione limitata; L3 corso nuovo o percorso modificato |
+| **Fasi maggiori** | 5 (audit → vision → analisi → sviluppo → chiusura) | 5 (+ algoritmo di ingestione) | **9** (spina SOSTAC) | 5 (orientamento → Vision → design → spiegazioni e test → feedback) |
+| **La domanda dell'agente** | "cosa rompe questo cambiamento?" | "cosa sappiamo già, quanto è certo, da dove viene?" | "quale evidenza sostiene questa scelta?" | "questa persona può capire e usare il passo dopo aver letto la spiegazione?" |
+| **Il peccato capitale** | modificare a istinto senza orientarsi | spacciare conoscenza del modello per fonte | inventare un numero | dare una spiegazione generica che assume prerequisiti non insegnati |
+| **Slot di rischio obbligatorio** | `## Security and Threat Model` | `## Sources and Verification` | `## Threat Map / Plan Risks` | `## Learning and Content Risks` |
+| **Albero documenti** | `ai_docs/` | `ai_docs/` + `corpus/` + `topics/` | `mkt_docs/`, oppure `ai_docs/` migrato | `ai_docs/` + `solutions/courses/<slug>/` |
+| **File di dottrina propri** | `architect.md`, `tdd.md`, `debugging.md` | `taxonomy.md`, `distillation.md`, `reconciliation.md` | `frameworks.md`, `research.md` | `learning_design.md`, `source_check.md`, `simulation.md`, `feedback.md` |
+| **Comandi validator** | spina + memoria/KB condivisa | spina + memoria/KB condivisa | spina + `ledger`, `budget`, `funnel`, `trace` | spina + `course <slug>` |
+| **Validazione** | struttura, Component Map, memoria e integrità KB | struttura, memoria e integrità KB | evidenza e aritmetica | struttura del grafo didattico, ordine e riferimenti; qualità della spiegazione ed efficacia richiedono altri giudizi |
 
-## La spina comune (identica byte per byte, su tutte e tre)
+## La spina comune (identica byte per byte, su tutte e quattro)
 
 Qualunque lente sia attiva, l'agente:
 
@@ -148,10 +149,17 @@ Ciò che solo qui l'agente fa:
 - **TDD di default** (L2/L3): UN test che fallisce, visto fallire, prima del
   codice; l'esenzione va scritta nel Diary ("un'esenzione non registrata è
   indistinguibile dal dimenticarsene").
-- **Debugging col circuit breaker** (`debugging.md`): riproduci → isola → causa
-  radice via grafo dei simboli → fix alla causa → test di regressione *verificato
-  fallire sul codice vecchio*. **3 run consecutivi senza progresso → STOP**, metodo
-  sistematico, poi consegna (riproduzione minima, cosa escluso, ipotesi migliore).
+- **Debugging col circuit breaker** (`debugging.md`): parte dalle evidenze locali
+  del guasto; mantiene le ipotesi ordinate insieme per probabilità motivata e costo
+  di verifica. I perché approfondiscono soltanto legami causali sostenuti da prove,
+  senza imporre cinque livelli. La correzione applica Poka-Yoke nel responsabile
+  dell'invariante e verifica: «Dopo la correzione il software deve essere fatto
+  come se fosse stato progettato senza quel difetto». Preserva i comportamenti
+  validi e richiede un test di regressione *verificato fallire sul codice vecchio*.
+  Gli incidenti intermittenti ammettono evidenze alternative con limiti dichiarati;
+  il grafo dei simboli aiuta l'impatto, ma non prova il percorso eseguito.
+  **3 tentativi senza nuove informazioni o progresso → STOP**: riesamina evidenze
+  e ipotesi, poi consegna risultati, cause escluse/aperte e lacune ancora presenti.
   Componente che si rompe ripetutamente → mai una quarta patch: guida di
   comprensione + refactor proposto come L3 a sé.
 - **Guide di comprensione DAL codice**, scritte autonomamente (unico silent-write
@@ -347,19 +355,40 @@ finale** + `check` CLEAN).
 - I deliverable parlano **la lingua del mercato target**; la struttura resta
   templata così il validator può fare il parsing.
 
+## course_creator — la lente della spiegazione
+
+La skill parte dal destinatario e dall'uso che farà della conoscenza. Anche una
+persona che non conosce il tema può chiedere un corso: l'agente propone un
+perimetro e cerca fonti riapribili per i fatti, usando la propria conoscenza
+di addestramento per orientarsi e formulare, non come prova.
+
+Il corso ha una Vision formativa approvata, un profilo con conoscenze provate,
+incerte e da insegnare, un grafo dei concetti e un piano di moduli. Ogni modulo
+serve un obiettivo e contiene una spiegazione calibrata sul profilo, con
+prerequisiti, fonte, esempio e passaggio al modulo seguente. Verifiche ed
+esercizi mostrano dove la spiegazione va corretta; non la sostituiscono.
+
+Il validator controlla struttura, ID, cicli, ordine e riferimenti. Simulatori
+indipendenti provano il materiale con un controllo senza corso; un controllo
+che già risolve il compito rende inconcludente il confronto. Il corso resta
+«efficacia non verificata» finché riscontri osservabili di destinatari reali
+comparabili non sostengono una conclusione circoscritta. Feedback spontanei
+possono correggere il corso e un difetto metodologico riproducibile può
+generare una guida o una proposta governata di modifica della skill.
+
 ## Dove sono Vision, UC, TM, ISP, TDD? (niente è sparito)
 
 Quei nomi sono il vocabolario **Hybrid** (devPNT). Ogni lente riempie gli stessi
 slot di governance con la propria carta:
 
-| Slot (devPNT) | agentic-sdlc Standalone | kb-agentic Standalone | mkt-agentic-sdlc Standalone |
-|---|---|---|---|
-| M-VISION | milestone di `vision/roadmap.md` | idem | `MKT_VISION.md` (gate di fase 2) |
-| D-UC (casi d'uso) | `## Use Cases` nell'ANALYSIS | idem | `ICP_PERSONAS.md` |
-| P-TM (threat model) | `## Security and Threat Model` | `## Sources and Verification` | `THREAT_MAP.md` |
-| E-ISP (impact/strategia) | `## Capability Ledger` + `## Impact` | idem (taxonomy ledger) | `STRATEGY.md` |
-| E-TDD (design/piano) | corpo di design + `## Action Plan` | idem | `TACTICAL_PLAN.md` |
-| E-TP (test/misura) | `## Test Strategy` | idem | `MEASUREMENT_PLAN.md` |
+| Slot (devPNT) | agentic-sdlc Standalone | kb-agentic Standalone | mkt-agentic-sdlc Standalone | course_creator Standalone |
+|---|---|---|---|---|
+| M-VISION | milestone di `vision/roadmap.md` | idem | `MKT_VISION.md` (gate di fase 2) | `VISION_course_<slug>.md` |
+| D-UC (casi d'uso) | `## Use Cases` nell'ANALYSIS | idem | `ICP_PERSONAS.md` | ANALYSIS canonica + dettaglio `D-UC.md` |
+| P-TM (threat model) | `## Security and Threat Model` | `## Sources and Verification` | `THREAT_MAP.md` | `## Learning and Content Risks` + dettaglio `P-TM.md` |
+| E-ISP (impact/strategia) | `## Capability Ledger` + `## Impact` | idem (taxonomy ledger) | `STRATEGY.md` | ANALYSIS canonica + grafo dei concetti |
+| E-TDD (design/piano) | corpo di design + `## Action Plan` | idem | `TACTICAL_PLAN.md` | `COURSE_PLAN.md` |
+| E-TP (test/misura) | `## Test Strategy` | idem | `MEASUREMENT_PLAN.md` | `SIMULATION_REPORT.md` e `FEEDBACK_REPORT.md` |
 
 Regola che li tiene coerenti: **un master solo per artefatto** — in Hybrid il DB
 vince e lo shadow (`SHADOW_[doc_key]_vX.Y.md`) si rigenera; in Standalone il
@@ -371,8 +400,10 @@ due forme: si esegue UNA volta, mai due.
 - **Un solo albero, un solo default**: `default_domain:` nel README della docs
   root; ogni artefatto può dichiarare la sua lente (`domain:`). Qualunque
   pacchetto include il core comune e l'integrità KB. Gli entry point compongono
-  i controlli: marketing usa la propria validazione documentale e numerica, non
-  esegue lo stesso check strutturale completo di code/KB.
+  i controlli: su `ai_docs/` marketing compone il check strutturale del core,
+  quello di memoria e i propri controlli solo quando un engagement è segnalato;
+  course aggiunge il check didattico. Su `mkt_docs/` marketing mantiene il proprio
+  writer dell'indice.
 - **Il router** (`routing.md`, letto solo se c'è una sorella installata): per ogni
   L2/L3/Spike, il test di fedeltà — *a cosa deve essere fedele questo lavoro?*
   Con la deroga market-facing: scopo persuasivo verso il mercato → mkt,

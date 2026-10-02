@@ -1,0 +1,35 @@
+{
+  "consolidation_invariants": {
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "skills/agentic-sdlc-skill/scripts",
+      "-p",
+      "test_skill_invariants.py"
+    ],
+    "return_code": 0
+  },
+  "consolidation_check": {
+    "command": [
+      "python",
+      "skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+      "check",
+      "--root",
+      "."
+    ],
+    "return_code": 1
+  },
+  "isolated_patch": {
+    "command": [
+      "git",
+      "apply",
+      "--reverse",
+      "--check",
+      "ai_docs\\solutions\\harness_evidence_debugging\\F061_METHOD.patch"
+    ],
+    "return_code": 0
+  }
+}

@@ -1,0 +1,75 @@
+===== validate =====
+[note]  vision/roadmap.md is DRAFT: not a gating authority, have the user validate it
+[note]  vision/principles.md is DRAFT: not a gating authority, have the user validate it
+[note]  solutions/ANALYSIS_architect_pass.md: L3 in implementation with no design-review row in ai_docs/audit/reviews/REVIEW_LOG.md -- the design was reviewed by nobody but its author before code was written (review.md moment 1)
+[note]  solutions/ANALYSIS_field_test_defects.md: L3 in implementation with no design-review row in ai_docs/audit/reviews/REVIEW_LOG.md -- the design was reviewed by nobody but its author before code was written (review.md moment 1)
+[note]  solutions/ANALYSIS_functional_spec.md: L3 in implementation with no design-review row in ai_docs/audit/reviews/REVIEW_LOG.md -- the design was reviewed by nobody but its author before code was written (review.md moment 1)
+[note]  solutions/ANALYSIS_init_wires_orient_hook.md: L3 in implementation with no design-review row in ai_docs/audit/reviews/REVIEW_LOG.md -- the design was reviewed by nobody but its author before code was written (review.md moment 1)
+[note]  solutions/ANALYSIS_kb_capture_moment.md: L3 without '## Capability Ledger' -- the architect pass left no record (architect.md); run it before the Impact
+[note]  solutions/ANALYSIS_kb_exhaustive_ingestion.md: L3 in implementation with no design-review row in ai_docs/audit/reviews/REVIEW_LOG.md -- the design was reviewed by nobody but its author before code was written (review.md moment 1)
+[note]  solutions/ANALYSIS_kb_field_report.md: L3 in implementation with no design-review row in ai_docs/audit/reviews/REVIEW_LOG.md -- the design was reviewed by nobody but its author before code was written (review.md moment 1)
+[note]  solutions/ANALYSIS_kb_portable_knowledge.md: L3 in implementation with no design-review row in ai_docs/audit/reviews/REVIEW_LOG.md -- the design was reviewed by nobody but its author before code was written (review.md moment 1)
+[note]  solutions/ANALYSIS_kb_recall_reflex.md: L3 without '## Capability Ledger' -- the architect pass left no record (architect.md); run it before the Impact
+[note]  solutions/ANALYSIS_per_turn_protocol_reminder.md: L3 in implementation with no design-review row in ai_docs/audit/reviews/REVIEW_LOG.md -- the design was reviewed by nobody but its author before code was written (review.md moment 1)
+[note]  solutions/ANALYSIS_per_turn_protocol_reminder.md: L3 without '## Capability Ledger' -- the architect pass left no record (architect.md); run it before the Impact
+[note]  solutions/ANALYSIS_review_convergence_doctrine.md: L3 in implementation with no design-review row in ai_docs/audit/reviews/REVIEW_LOG.md -- the design was reviewed by nobody but its author before code was written (review.md moment 1)
+[note]  solutions/ANALYSIS_vision_shape_rules.md: L3 in implementation with no design-review row in ai_docs/audit/reviews/REVIEW_LOG.md -- the design was reviewed by nobody but its author before code was written (review.md moment 1)
+[note]  strategic/architecture.md: 'ai_docs/' is ANALYZED in the audit plan but owns no Component Map row -- marking asserts the area was read closely enough to name what it owns, and the map's silence there is now groundable for a MISSING verdict (architect.md). If it genuinely owns no component, say so in the audit plan's Notes column: 'owns no component'
+[warn]  solutions/ANALYSIS_authoring_floor.md: section '## Feature Vision' missing
+[warn]  solutions/ANALYSIS_benefit_report.md: section '## Feature Vision' missing
+[warn]  solutions/ANALYSIS_cross_unit_remediation.md: section '## Feature Vision' missing
+[warn]  solutions/ANALYSIS_field_test_defects.md: section '## Feature Vision' missing
+[warn]  solutions/ANALYSIS_field_test_defects.md: section '## Action Plan' missing
+[warn]  solutions/ANALYSIS_global_orient_hook.md: section '## Objective' missing
+[warn]  solutions/ANALYSIS_kb_midsession_drift.md: section '## Objective' missing
+[warn]  solutions/ANALYSIS_kb_row_atomicity.md: section '## Feature Vision' missing
+[warn]  solutions/ANALYSIS_kb_time_cycle.md: section '## Objective' missing
+[warn]  solutions/ANALYSIS_mandatory_read_diet.md: section '## Objective' missing
+[warn]  solutions/ANALYSIS_mandatory_read_diet.md: section '## Feature Vision' missing
+[warn]  solutions/ANALYSIS_mkt_read_diet.md: section '## Feature Vision' missing
+[warn]  solutions/ANALYSIS_per_turn_protocol_reminder.md: section '## Feature Vision' missing
+[warn]  solutions/ANALYSIS_per_turn_protocol_reminder.md: section '## Action Plan' missing
+[warn]  solutions/ANALYSIS_review_convergence_doctrine.md: section '## Feature Vision' missing
+[warn]  solutions/ANALYSIS_revision_doctrine.md: section '## Objective' missing
+[warn]  functional/architecture_overview.md: missing 'status:' in the header (CURRENT/SUPERSEDED/DRAFT/DEPRECATED)
+[warn]  functional/external_interfaces.md: missing 'status:' in the header (CURRENT/SUPERSEDED/DRAFT/DEPRECATED)
+
+Validation: 0 errors, 18 warnings, 16 advisories.
+[note] advisories are freshness signals: never fail a build, not even --strict.
+
+===== stale =====
+Areas modified after the last recorded analysis:
+  skills/agentic-sdlc-skill/  (2 files)
+    - skills/agentic-sdlc-skill/debugging.md
+    - skills/agentic-sdlc-skill/SKILL.md
+  distributions/  (57 files)
+    - distributions/course-creator/CHANGELOG.md
+    - distributions/course-creator/package.json
+    - distributions/course-creator/README.md
+    - distributions/course-creator/skills/course-creator/elicitation.md
+    - distributions/course-creator/skills/course-creator/ENFORCEMENT.md
+    - distributions/course-creator/skills/course-creator/feedback.md
+    - distributions/course-creator/skills/course-creator/learning_design.md
+    - distributions/course-creator/skills/course-creator/simulation.md
+    - distributions/course-creator/skills/course-creator/SKILL.md
+    - distributions/course-creator/skills/course-creator/slide_content.md
+    ... and 47 more
+  ai_docs/  (246 files)
+    - ai_docs/INDEX.md
+    - ai_docs/audit/handoff.md
+    - ai_docs/audit/HANDOFF_course_agentic_sdlc_kb_agentic.md
+    - ai_docs/audit/HANDOFF_course_pedagogy.md
+    - ai_docs/audit/HANDOFF_evidence_debugging.md
+    - ai_docs/audit/reviews/REVIEW_course_distill.md
+    - ai_docs/audit/reviews/REVIEW_course_progression.md
+    - ai_docs/audit/reviews/REVIEW_course_roles.md
+    - ai_docs/audit/reviews/REVIEW_course_slide_content.md
+    - ai_docs/audit/reviews/REVIEW_course_text_2_1.md
+    ... and 236 more
+  skills/  (2 files)
+    - skills/agentic-sdlc-skill/debugging.md
+    - skills/agentic-sdlc-skill/SKILL.md
+
+After re-analyzing, record it with: sdlc_check.py mark <path>
+
+check: NOT CLEAN (validate rc=0, stale rc=1)

@@ -23,13 +23,14 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | architecture/ADR_2026-09-11_mandatory_read_diet.md | code |  | ADR - doctrine leaves the mandatory read by RELOCATION behind a triggered pointer, never by deletion, and a relocation must enumerate its inbound citations. Rejected - deleting the seam, compressing prose, a filename-only pointer, and extracting all three lenses blind. | 118302a368f111073366948f222c6fcbd7b915cb2f681bba269d3643189cdf5e |
 | architecture/ADR_2026-09-11_probes_that_cannot_fail.md | code |  | ADR - a probe over a computed output must RECOMPUTE the expected value and compare; a probe over prose must be labelled a wording anchor. Adopted after the same defect - an assertion satisfiable by a literal - shipped in five consecutive units and recurred five more times inside the unit convened to remove it, across three review rounds. Rejected - patching each case, relying on reviewer mutation-testing alone, and deleting the wording anchors. | 6131e0d4ccf1b7714d379d21cbf73d1e9dca6decd1df708376b4cc229fc565cf |
 | architecture/ADR_2026-09-19_shared_project_memory.md | code |  | Why project memory is shared by every lens while document authority and specialist workflows remain separate. | 3b7a32a6d372760b63bbe4215bf5d3156eb91d88b78dfbadf6179a0e830a2b4f |
+| architecture/ADR_2026-09-27_course_overlay_single_index.md | code |  | Why course creation owns its teaching artifacts while the shared core owns the ai_docs index. | c4d1c96e801b244c83425a95ed55e6568c4155dd4113d04d0693386ccee4a102 |
 | functional/architecture_overview.md | code |  | architecture_overview | d896cc7ef49b26babf8fc9a51685c9121753d6e76013efe8d6d8132ee3d0b491 |
 | functional/data_entities.md | code |  | devPNT-generated data-entity doc. Snapshot 2026-07-02; regenerate via devPNT after structural changes. | b07c0a22fbe0570c6a54e2bc370b7eb4355c40adfcc622d4c1d448bf66ee6459 |
 | functional/entry_points.md | code |  | devPNT-generated entry-point doc. Snapshot 2026-07-02; regenerate via devPNT after structural changes. | f9a0298ccf4f8f103e83efb57c97c5a8edbb84fbe4df5dfdd79c1eaf7dca8bc9 |
 | functional/external_interfaces.md | code |  | external_interfaces | 5a0ece9adce862d40d5852baeed01715af901e618557a60ddb1416f1fbf46e69 |
 | functional/feature_flows.md | code |  | devPNT-generated feature-flow doc. Snapshot 2026-07-02; regenerate via devPNT after structural changes. | 3b3e74f60cde6d39ddc45061c21a8af897f12d7d5739cf59aa9e7adcd8a361ca |
-| reference/GUIDE_release.md | code |  | How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish. | a80cee4c11f681da155dc9ce710e319f717066af1b7fc28facf5a39011d3ab2b |
-| reference/GUIDE_shared_project_memory.md | code | shared-memory, validation, domain-routing | Consult before changing shared-memory discovery, docs-root resolution, or validator composition across the three distributions. | 100cfd0866328aa0bcb6e1d169ee7f9305e6a0918afe2b1778b66dde23d5c0b7 |
+| reference/GUIDE_release.md | code |  | How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish. | f7d58199f6f908bf6ad7b86e7d00eb897c87c3dc19c9009f8c500395b3cd6fa3 |
+| reference/GUIDE_shared_project_memory.md | code | shared-memory, validation, domain-routing | Consult before changing shared-memory discovery, docs-root resolution, or validator composition across the four distributions. | 3d03fd7873be5cc0b1f8cba31050a6d51de58a872e23cba7bd09b1487cd8d85b |
 | solutions/ANALYSIS_agentic_sdlc_vnext.md | code |  | Analisi della Feature: Agentic SDLC vNext | c9a8a7b88844ac56cb8c53a7f73529443bf8e844217bc0a42949f0a71f65a72a |
 | solutions/ANALYSIS_apache_license.md | code |  | F-055 - relicense the skill packages from MIT to Apache-2.0 with a NOTICE, so a redistributed skill carries its author's attribution while every use inside a user's own project stays unconditional; also ships the license text no package carries today. | adc32c92ebfc9d359ccdce46e81eafef7d41370c3428ca3d23266237f0f828d3 |
 | solutions/ANALYSIS_architect_pass.md | code |  | Feature Analysis: Architect Pass | 04dea693212604e12b4ce4d6c7f9110a7acda065ce5650eb0e1cc73c9c70c36a |
@@ -38,9 +39,14 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/ANALYSIS_capability_tiers.md | code |  | F-048 - the capability dimension gets an owner. A capability floor no review gate may start below (with the independence-vs-capability arbitration), the delegation boundary written down, and the REVIEW_LOG core schema widened with `model` so both policies become falsifiable. | 9848ea33143d2321895dc1abfd932379bd18fb0e059e7f150ad91f9057c22a46 |
 | solutions/ANALYSIS_claim_ledger.md | code |  | Feature Analysis: Claim Ledger | a3b862537bb7b2bce77dd30a9fa9a1054189790975bdc4b2feb5be84e7e7bf6f |
 | solutions/ANALYSIS_comprehension_guides.md | code |  | ANALYSIS — Code-Comprehension Guides | 226bb3b1864b7abb9c42ee2fffc83dc279d65516797f92a9c2fde202c942695e |
+| solutions/ANALYSIS_course_agentic-sdlc-kb-agentic.md | course |  | Course Analysis: kb-agentic e agentic-sdlc | 9e63c75398460eaa908b9380d55b39f26d5868c66db8d48807fbc271dbe000d2 |
+| solutions/ANALYSIS_course_creator.md | code |  | Analisi: course_creator | 3ef0784bc4a4a5e9a42cfa7ec88d6f5a82a77be2b864b88c06a0154ceae00665 |
+| solutions/ANALYSIS_course_domain_core.md | code |  | Analisi: profilo course nel core | 295c59f824cc9221ada348055b1cf22d734c9451192f79e06aec79f01b6be86b |
+| solutions/ANALYSIS_course_slide_content.md | code |  | Course Creator: contenuto, progressione e ruoli indipendenti | 939971d44484cf4d0aa2eb6b4c5bba180cd6594f13ea1e700d413cba32679143 |
 | solutions/ANALYSIS_cross_unit_remediation.md | code |  | F-053 - the five defects a cross-lens review run on a DIFFERENT model found after six units shipped, each reviewed in isolation by the same model family as its author. Four are correctness (an unpaid re-review debt, a human-approval rule missing from one package, a rule that reached one lens of three, a report printing an inverted claim); one is a probe that rots by construction. | 0b3da6b348c752027f967b0e1fb9b4db9a66e27432596e17e9d26669a4ede41e |
 | solutions/ANALYSIS_design_review_gate.md | code |  | Feature Analysis: Design Review Gate | 081049efdf20fde830d3d162a9d35752d90c9aa5a99183fa7d0709dc3dfc9360 |
 | solutions/ANALYSIS_devpnt_seam.md | code |  | Feature Analysis: devPNT Seam | d6733c4d7ec05302852f9df861cb565e243b6d0263285e4ed6da292112bdd14a |
+| solutions/ANALYSIS_evidence_driven_debugging.md | code |  | F-061 — Debugging fondato sulle evidenze | 1a80a756e1cc6dda6e88d5da9b217bcd70ed7ffc30a3d38429910c8ca5209844 |
 | solutions/ANALYSIS_execution_integrity.md | code |  | Feature Analysis: Execution Integrity — Tranche A (F-034) | 1f2c2db81b618ac30c1496bd417cbdcbd099d41bae3ff92f3278c0096db67d5c |
 | solutions/ANALYSIS_field_test_defects.md | code |  | ANALYSIS — Field-test defects | ef6389df1d92ebc90ce08214faac21840944eff74702f84fb3a1c0ebfc236b02 |
 | solutions/ANALYSIS_functional_spec.md | code |  | Feature Analysis: Functional Spec + strategic-pass loop (F-033) | bb627d81693ba12ad21b9f377c7a1fd3ba5a1ed2637716467db3abd0d76816b1 |
@@ -67,6 +73,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/ANALYSIS_per_turn_protocol_reminder.md | code |  | F-046 - the protocol reaches every turn, not only the first. SKILL.md is read on demand, so every duty written there reaches a session only if something loads the skill; this unit adds the one-line per-turn reminder whose first duty is to decide whether the skill governs the work and load it once. | f0b2775ed24fafbd2477d6f2ba5787289c7f673cc42751520e211879e6ccb4e1 |
 | solutions/ANALYSIS_permission_gated_rung.md | code |  | Feature Analysis: the permission-gated rung | 1a76bbd4e0ab51594672907cebb1dfd0437244a775c2cc767bdc8c8dbd9d59b5 |
 | solutions/ANALYSIS_question_discipline.md | code |  | Feature Analysis: Question Discipline | 5703eba9e5343caac0c5d6c798759b743ad51ab24fc98f9b7700dde691675a55 |
+| solutions/ANALYSIS_release_stable_course_beta.md | code |  | Release preparation, channel separation, verification and publication record. | 7079d0b7eda34fe8395964a13ffa28e49bc1897e0dd32df97362646ca98a3ef0 |
 | solutions/ANALYSIS_review_convergence_doctrine.md | code |  | F-045 - review convergence doctrine (code lens spine). Four field-lesson blocks from the 2026-08 eight-FAIL review session (Execute-Before-Specify, converge-not-accrete, severity contract, author pre-audit) plus the two review-hardening additions (proportionality clause, reviewer-side probe check). Spine ported to all three distributions. | 8798fcc607d904e9d595969ec8a4666cec19affbef2d27b24aed916b0121e9fd |
 | solutions/ANALYSIS_revision_doctrine.md | code |  | F-043 - the revision doctrine (kb lens). Incorporating new knowledge into an existing document = full re-read + body rewritten to current state + history in the Diary, never append a delta. The gesture the L2 triage names without prescribing; born from the 12-document delta-append post-mortem. | 14e4061728d83e38839ad07debf7d3a30408c8bacd929193ecc96124064b3c15 |
 | solutions/ANALYSIS_sdlc_kb_integration.md | code |  | Memoria comune, responsabilità distinte | 847e8f04cef26ab59b3be25710d81170d2da02850bc500e818c8522620ccc396 |
@@ -76,6 +83,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/ANALYSIS_vision_clarity.md | code |  | Feature Analysis: Vision Clarity | 40f4c29a588117ca15a8e0dcbecbf381c2f00eafdb23f2f39fd1fc24266f89e0 |
 | solutions/ANALYSIS_vision_governance.md | code |  | Analisi della Feature: Vision Governance | bfebe8b677d7ab02bda87791b14020f735e72c15d714aa9008ea44875df42a07 |
 | solutions/ANALYSIS_vision_shape_rules.md | code |  | Feature Analysis: Vision Shape Rules | 6087521bef5a48cd8c1bb1298ccd6463569e51cb09186f5fd3b9983c11aa0d8c |
+| solutions/PLAN_course_creator.md | code |  | course_creator — piano di implementazione F-058 | 6ffb7a04f66c3cf4f6ded496527e6e24730e0c8540ef768605769d099562dd49 |
 | solutions/SHADOW_e_tdd_agent_kb_u2_v1.0.md | code |  | E-TDD: Agent-Global Knowledge Base (Feature B unit 2) — Technical Design | 2f10104b5c9de8695238bd88cad85807b017651e2683b92afc1aeec5a955fa2c |
 | solutions/SHADOW_e_tdd_antigravity_client_v1.0.md | code |  | E-TDD: Antigravity 2.0 Client Support | 5daca08cd67a59cfb8a49e013c6e539e9061bb4fc07dcc03bae913ec65d63a1b |
 | solutions/SHADOW_e_tdd_consolidation_eval_harness_v1.0.md | code |  | E-TDD: Unit 4 — Eval Harness | 7b28aced47b7645eb4b72af367bf830cc2a4938e742bd97ff84fec08662e632e |
@@ -89,12 +97,163 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/SPIKE_kb_composition.md | code |  | Studio della composizione di KB autonome A/B/C; comportamento attuale, proposta e verifiche necessarie. | 1a412f093169e5fdfe6c2cdf8515244331e0b4c9dee10d449bc853359a20b574 |
 | solutions/SPIKE_kb_recall_second_instrument.md | code |  | Negative spike — whether kb's recall needs a mandated text probe (and a claims inventory) to stop a false `kb: no coverage`. Two replays refuted the defect; the one real finding became the multi-slug verdict. | 42b7155550904d97006b862576cfde0d9c89cd25180bb6205de8be399e59dfc1 |
 | solutions/antigravity_skills_guide.md | code |  | Guide: Creating Skills and MCP Integration in Antigravity 2.0 | 9cb286c2801500519da793bca9be29a46387b2733da3661f4d8ed056b15e04b9 |
-| strategic/architecture.md | code |  | Stack, package structure, component map and architectural patterns of the skill repository. | f832462f7bcaa8def97c2ad70ed3ea08ca130d83aee505ee3ec6cdae15308de4 |
+| solutions/courses/agentic-sdlc-kb-agentic/CONCEPT_GRAPH.md | code |  | Grafo dei prerequisiti e attraversamento del testo | 59be999321769f3b6a334f8cf13f6baf47d7f7ca55ab0aa56a00597f0cac4050 |
+| solutions/courses/agentic-sdlc-kb-agentic/COURSE_PLAN.md | code |  | Piano del corso: lavorare con kb-agentic e agentic-sdlc | 1cd685a57404f8a108c14a3b149b2dd1b6ce8e604ed212782c717bdef1e1e7fe |
+| solutions/courses/agentic-sdlc-kb-agentic/D-IC.md | code |  | Interazione con il corso | d0432e574a9893cde9e00e20a494015a8d57ad8f275cdafedd318b8997232180 |
+| solutions/courses/agentic-sdlc-kb-agentic/D-UC.md | code |  | Destinatari e bisogni del corso | a5a8018fcf1e226cd5577694046ec7981c945c08a7a6fa840968daa7f2a3aba5 |
+| solutions/courses/agentic-sdlc-kb-agentic/FEEDBACK_REPORT.md | code |  | Feedback ricevuto | ba1416818806c27a731c29f8160912fd158d4600e20add7f73c264493c8ec50c |
+| solutions/courses/agentic-sdlc-kb-agentic/P-TM.md | code |  | Rischi didattici e di contenuto | 9db2b84e1ee8954f02efaa819fef4b772e9ea29223ad60b2679f487bfad0b88e |
+| solutions/courses/agentic-sdlc-kb-agentic/SIMULATION_REPORT.md | code |  | Diagnostica del corso 3.1-content | 02b37a1c3d6ec05ef50315f8c2a4948d3accdfa291587191e20183c9bc368bf1 |
+| solutions/courses/agentic-sdlc-kb-agentic/SIMULATION_REPORT_1.0-draft.md | code |  | Simulazione diagnostica del corso | a87e4c80ed9ce8ff6238a104f663b89aca1b8f815fa66f098f13f787e9e54bfd |
+| solutions/courses/agentic-sdlc-kb-agentic/SLIDE_CONTENT.md | code |  | Lavorare con kb-agentic e agentic-sdlc | f1046d4d4c54e1ec026827ad79c97e6ca817b0e4c1b426cb7712916bdbce132d |
+| solutions/courses/agentic-sdlc-kb-agentic/history_2_1/CONCEPT_GRAPH.md | code |  | Grafo dei prerequisiti didattici | 42392392ab516ab19e292ad4e56d4fdff796de86455a491ad54949eb07db2105 |
+| solutions/courses/agentic-sdlc-kb-agentic/history_2_1/COURSE_PLAN.md | code |  | Piano del corso: kb-agentic e agentic-sdlc | ba179bf45e4182a74b02004d75ad0c682e3d8d45c6636652715fc3de8cba1d0a |
+| solutions/courses/agentic-sdlc-kb-agentic/history_2_1/D-IC.md | code |  | Interazione con il corso | 49eb6e9676e72c293c5a003d34ac43ebc543c4e0d3bb807ec796e4682e51cbe5 |
+| solutions/courses/agentic-sdlc-kb-agentic/history_2_1/SIMULATION_REPORT.md | code |  | Simulazione diagnostica del testo 2.1-content | 251a33dfd7b9643fd8d6d736ba75ed41b0d93aabcfa9efc4e8063d34e1448792 |
+| solutions/courses/agentic-sdlc-kb-agentic/history_2_1/SLIDE_CONTENT.md | code |  | Corso kb-agentic e agentic-sdlc — sorgente completo delle slide | 3ef172b0cb526e923787c1d54e21ac7177e430055ec3691a25fd42fccf3b7e0b |
+| solutions/courses/agentic-sdlc-kb-agentic/history_2_1/sources.md | code |  | Fonti del corso | 6316d88cee7cfafcad2caf1b85c536dd4315ec5e27b454a74ace2495b98bb514 |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_0/CONCEPT_GRAPH.md | code |  | Grafo dei prerequisiti e attraversamento del testo | cf63d79761f842bc3a31d5c925c791600b669f16614439335ff7f0b8ab68b03c |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_0/COURSE_PLAN.md | code |  | Piano del corso: lavorare con kb-agentic e agentic-sdlc | a69fe2928e6361b6d10982d30c47bc0a54cc6a5e402bf07085af9f1fd582ce4f |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_0/D-UC.md | code |  | Destinatari e bisogni del corso | 8b3171bda898ae18a667bd8dcd7d0e3da4e7912eb4cfe2bfcbc4cefe0a32f92d |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_0/SIMULATION_REPORT.md | code |  | Diagnostica del corso 3.0-content | ab5a1a43329dede735dc8169cca7367984155dabce169cdad9e45b8d75a1a6ef |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_0/SLIDE_CONTENT.md | code |  | Lavorare con kb-agentic e agentic-sdlc | 1e1f6f23c54f2882bf50219926951a5346baf7c49129d3bdca5730a75dd61bb0 |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_0/sources.md | code |  | Fonti del corso | e346f074032afd7869c96542b6e5e468d215fcba9d9035ecf636a74c526cef75 |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_1/CONCEPT_GRAPH.md | code |  | Grafo dei prerequisiti e attraversamento del testo | 11f41b9a2f5d3417c0a3fcbf7b63eed3524115de9af8f4f0e85a51bd9aada066 |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_1/COURSE_PLAN.md | code |  | Piano del corso: lavorare con kb-agentic e agentic-sdlc | 0f0e73f4c816944f20b029511e3e3c076d69b8c654227618a5f4b864ff9d5a04 |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_1/SIMULATION_REPORT.md | code |  | Diagnostica del corso 3.1-content | 02b37a1c3d6ec05ef50315f8c2a4948d3accdfa291587191e20183c9bc368bf1 |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_1/SLIDE_CONTENT.md | code |  | Lavorare con kb-agentic e agentic-sdlc | 45956a322ae2324ed3672f4309fcd8e79b8fa61708f42f7989f2290999b9af80 |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_1/sources.md | code |  | Fonti del corso | d4d84d967e34cba5e6b532a5019d2140d74128ed1037bf7ba084780a560381b1 |
+| solutions/courses/agentic-sdlc-kb-agentic/modules/M1.md | code |  | M1 — La memoria non è la chat | 3f59895ab9f0700dbebfff0202c0b6471f5071381e7db2e3fd50a086fac528d7 |
+| solutions/courses/agentic-sdlc-kb-agentic/modules/M2.md | code |  | M2 — Dal manuale alla risposta rintracciabile | 3780bfbde44c190302ccd5512957e7b40f937eeb00eefc60fc8dae3445abcbc7 |
+| solutions/courses/agentic-sdlc-kb-agentic/modules/M3.md | code |  | M3 — La memoria che sa correggersi | 78ef737369fc9716cf465789f2e35e1dfe9c0494dbccbef2797a3cfbaaceab3c |
+| solutions/courses/agentic-sdlc-kb-agentic/modules/M4.md | code |  | M4 — Dal beneficio al livello di lavoro | 8a16ab195b75e51f14a7d5574e9a967d1192e28327d07b8a01c10da7866debfc |
+| solutions/courses/agentic-sdlc-kb-agentic/modules/M5.md | code |  | M5 — Tre lenti e una soluzione verificabile | 7a2f4ee540a0d12b03147563d6f6155dbe018534cd21ecccdfb6a66dfcaf79c0 |
+| solutions/courses/agentic-sdlc-kb-agentic/modules/M6.md | code |  | M6 — Due skill, una memoria di progetto | deaad7c121beaa98eb210ced98bff74d9e8be704dcd6bcaa6de06707fb27822e |
+| solutions/courses/agentic-sdlc-kb-agentic/modules/M7.md | code |  | M7 — Che cosa cresce nel tempo | 87c2a3a2bb458f197294bdc7a229948e658a1984a3e78b92172f642b093cee73 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_2_1/CRITERIA.md | code |  | Criteri congelati prima delle risposte | 0b5cb324a969274db75c034cdf8275714bbf73f420f9c04bae690f4d58376c82 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_2_1/control_response.md | code |  | control_response | edc721c33587df71cfd66461f0335cfceaa351400e1f134702975884dbf04252 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_2_1/learner_packet.md | code |  | learner_packet | e55dfd5a4ffb40b5f2b3a7cf5ff3c6e1bb3676fba25bd08879cb1533eeee5d8d |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_2_1/learner_response.md | code |  | learner_response | 838cd3fc8cca10d680e4bc7f7ca0e0605a27b859698fe9cccefe8dd95c0e4230 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/CRITERIA.md | code |  | Criteri congelati prima delle risposte — simulazione 3.1-content | cc40408b717122f42015b599c0ebc05c196abb8f22a9df613433d65210407d6a |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/PROMPTS.md | code |  | Prompt consegnati (verbatim) | 2ef0702a341753f5cddabd13a82887b1bdda6e0c65eec2e5eb26aa3e975f0670 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/control_response.md | code |  | Risposta del controllo senza corso (verbatim) | 1d09f6687028dd3e6a3315f9b8921a696f3f94a00d3b4b4a8456e7a48ac03773 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/learner_response.md | code |  | Risposta al caso Delta/Cedro | 6874481173fed2083c899f0318c00ae9b21a4ff210bace9c0e772f65cb065b18 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S01.md | code |  | S01 — Perché aspettiamo proprio 30 secondi? | 2d076d9788d7fff81e992b03f13e65804de8a34f67a8144df8c3610bce7e07f9 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S02.md | code |  | S02 — Ritroviamo la ragione della scelta | 5211e1fa586877faa7486d3f5f40e4f9a567db58939848069ca83642e2baeb48 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S03.md | code |  | S03 — Una nota utile conserva anche il motivo | da2321194fdd8e00cd5954c30bbb5a42198d66e93295965507e998ad03d2d906 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S04.md | code |  | S04 — Una skill rende il metodo riutilizzabile | cfb11d87286cf67922f1ea7be2569afbb05f2d723256c6fa5635dde779c15a2b |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S05.md | code |  | S05 — Due domande, due responsabilità | c325c6dc304ff61effa566a3186e472cdb02b4d1a6135aecfd205a7683115ee9 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S06.md | code |  | S06 — Una nuova chat non è il nostro archivio | b44c53a876d79e902730deb4eccd95ab7e6f1a86345de65147be306d7b6ce6c6 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S07.md | code |  | S07 — Le skill stanno nell’ambiente, le decisioni nel progetto | 81ffb9c0e81811c3e8dcca3c3cac53280f6fbff0f0f4c1b28d43bec0c372b1ea |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S08.md | code |  | S08 — Un indice ci porta al documento pertinente | 61d01c50fda13aeac8505d7a6507a0b8da323d2d92d4399d61ee986db991a68b |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S09.md | code |  | S09 — Il metodo si vede in ciò che resta | 7f2cef53916fc98ac2101cf199d82ef244f06b78f8b7400c72a2b97a544d0fbf |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S10.md | code |  | S10 — Quando basta chiedere una buona nota | 0eb284f475b8885dc08b7a5600cc5a86a74f7f5c8cf07d2a2aca14e796bf1827 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S11.md | code |  | S11 — Prova: che cosa manca alla risposta? | 05ff0e1a9a1b12567b1bf808a943a1caddf2aba5f6109d41138ed4be6f3eefba |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S12.md | code |  | S12 — Soluzione: prima ritrovare, poi concludere | ddfd3e0d6a61184d57ecd99f100dca09f592abbc2c32840faed420ecbc030385 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S13.md | code |  | S13 — Prima di riassumere, l’agente rende la fonte riapribile | 3675c8dbbc4d72ad3dd313da4fde7a45e369d2ff74100eab4e02b9edc37ed785 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S14.md | code |  | S14 — Un claim dice una cosa che possiamo controllare | 55945e8f12af5a47fcd7ee572e0c695d434ba0470d20568f0a7801f482449251 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S15.md | code |  | S15 — Il grafo degli argomenti organizza le domande | 871727db32a31cb80e52290b4952d1deafb08b5d2d347b4fa5fd6ee82d71871f |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S16.md | code |  | S16 — Una risposta utile porta con sé il suo limite | df8dfbea0db6ff6ecd5b9d9c4dbf48aa1b0f48d389b4f1ca51693cd90589005f |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S17.md | code |  | S17 — Prova: la risposta dell’agente regge? | 85572af4699c13ecf5dec417a2f334ac304296a72fa5a678c58095797d7c5cc9 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S18.md | code |  | S18 — Soluzione: la condizione viaggia con il numero | 44f63e981c66ff9c639f4517c189d545a2d9603e66dcf08554270b631fd975ff |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S19.md | code |  | S19 — 30 e 45 possono essere entrambi corretti | 87bbbbb2a9fefdb762b94bf348883a3817c42d060a306b81370d518a14193c0e |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S20.md | code |  | S20 — Il conflitto resta visibile finché manca una ragione per risolverlo | d01f85b0ace8d4a70d83886e16b6fbffe1b84cd06cde0cfade14fb4ba07786b9 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S21.md | code |  | S21 — Una rettifica cambia l’evidenza, non soltanto la data | 1b6ead850cbd907cabc402451f55147eab0145bac7dff2b7d5af32c155cdb726 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S22.md | code |  | S22 — La conoscenza cambia prima del codice | f4374d11e6daab078566be7c398024727564decbfc917d66a5763040c2eb1b51 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S23.md | code |  | S23 — Prova: il resoconto dell’agente sui conflitti | 877acf9a938a0fdb81fd75b82eeabbd871ed1cfe58dea648d1859ce03f478a5f |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S24.md | code |  | S24 — Soluzione: prima confrontare gli ambiti | a96c9f2d7ef62f15a652eb68d8ac86131d8eadc0db46bbf8095e2c2741800c53 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S25.md | code |  | S25 — Il risultato da ottenere viene prima della costante | f8bf5a649438298df0888203739f50398858f628a4bb03b1ada87654d37b71a0 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S26.md | code |  | S26 — Il triage proporziona il lavoro al rischio | 681338eb3cde1356526d3d3ace9cafecea2d87b4b2785aa8a89a00a91c591b39 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S27.md | code |  | S27 — Prova: accetti il livello dichiarato? | 04b0930edfca22b99cd15ee0c5c75c29706d8d00762dfc679a4e8b9a4bc76a19 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S28.md | code |  | S28 — Soluzione: classificare l’effetto, dichiarare il dubbio | 46518a8b75b20fcc084d4a376259059b8f11875c17abbe2439a1478d843621b4 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S29.md | code |  | S29 — Il bisogno fa emergere chi potremmo dimenticare | 36246149d721dd2ed22ec19574618c220a9efc70be179c87a2d8521087a46170 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S30.md | code |  | S30 — La specifica rende il comportamento discutibile prima del codice | 87adbba2a91f06d9f08deef6f8567dfeb104bcc588ce03d8a1711f6e58bbe9db |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S31.md | code |  | S31 — Il contratto di interazione segue il viaggio della richiesta | 09fd82468b0b2872d43f7ae07522276e1677ee218ab74407cf914482ae881206 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S32.md | code |  | S32 — Un rischio utile indica che cosa osservare | 0f5628887f26ca7ff790ccb474a943cc6964e4bbdfed371768cc07a78a3d5742 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S33.md | code |  | S33 — Prima di costruire, l’agente cerca ciò che esiste | 568425a1cb29fda62360e4ab473dcb4f984241dac82e58379651b3bb3b6ea097 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S34.md | code |  | S34 — L’impatto collega la scelta alle parti da cambiare | 0e8d0bdc155b464266689fe6a3018d44943a2cda74ad151c503a438706417905 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S35.md | code |  | S35 — La review del design cerca ciò che l’autore ha trascurato | aa943cccbe0f3af942b7603e9600917313211ba3c49d0ccf00423d0cf828527c |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S36.md | code |  | S36 — I test devono osservare ciò che ricevono le persone | cad377cdf24ba899a160c9d059e0cd532e5c272884de46810bd776dfac3cb380 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S37.md | code |  | S37 — La chiusura lascia un risultato e un punto da cui ripartire | bbbd503bb2db3379e2128eeadf1d4cc40ae4fdff25577cd42129f9d93ea7535f |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S38.md | code |  | S38 — Prova: «Il test è verde, possiamo chiudere» | 9744c33d3a22e914bde04a5a26118ff050ac2e2748e24f80037b91ef9c8b513f |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S39.md | code |  | S39 — Soluzione: ricostruire le evidenze mancanti | a12804715d7d9e6fe9222acea1120d5f942e9965d3b54f46bb1440a07afb5ffc |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S40.md | code |  | S40 — Il passaggio fra le due skill conserva la responsabilità | c12ff43ac8f6fe01e9124b33f64448b8a96b9966f5013c5b2fd0a5bc4f1ac280 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S41.md | code |  | S41 — Standalone è già un percorso completo | 179fedeeacb2ed88d64435766f96b4dfdff0f1028b084e959df380bbf3528ac3 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S42.md | code |  | S42 — Prova: il manuale può chiudere il ticket? | b7ddd9e10b028c3e4062e33a718aef3d5e7fbc6f57f7bda4a9e93947a623c2d7 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S43.md | code |  | S43 — Soluzione: fatto, scelta e prova restano distinti | 1efd0f537d629ed8c642f4193490bbb222f5bf5e7b6b201a20c50ada537d96ba |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S44.md | code |  | S44 — Applicazione facoltativa: verifica il tuo agente su un tuo documento | cd31306e468307e747077eb5d12865adaf1c6ba764b27852545c96cc0994b99c |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S45.md | code |  | S45 — Dopo una settimana: evitare una ricostruzione | a8a0caf84bc029c7ebac108a4d78bd5aab8998fc12c5055ab9e135b03b5b505a |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S46.md | code |  | S46 — Dopo un mese: la memoria deve cambiare con il progetto | 808e7841c3b399a23675c1eb902cdba2db89358489c4a3257b531378ade5fa22 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S47.md | code |  | S47 — Prova: che cosa abbiamo davvero risparmiato? | 693afc40056db02ae5094a3627a6871612fde524176f3b4bab1d96c60e9ba5d3 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S48.md | code |  | S48 — Soluzione: il vantaggio dipende dal lavoro conservato | 3413fa4ec9d0aa289a09807e5aa51e12d64e7d3b8cca8bd32e38e82d429abee9 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S49.md | code |  | S49 — Dopo anni: consegnare un ragionamento a chi arriva | 705009144ec70a707f1aa0cefd5ec017e6c6f09e62ed4e968b28502221fbf8c3 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S50.md | code |  | S50 — Trasferimento: quale disciplina proporresti? | 66a75d513aab8cc9569f91e5ab0d142d47cbe3688fa2752325711e589e461951 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S51.md | code |  | S51 — Soluzione: proporzionare, chiarire, verificare | 7adba5b4f52208c5bcd575a69c8bc8dcb1b4abfa75d5c07d3e5aab0b9b3b01bd |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/packet/S52.md | code |  | S52 — Ripartire dalle ragioni, non dalla memoria di qualcuno | 415db6a1eb50c0ee68d6033c3f43ecb4891194acc37d5e1f53e38826d7f26d55 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S01.md | code |  | S01 | 637aa21342edb801e993a96499475f4fa0c56eb9a37d3db371b69fe593ca9f2b |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S02.md | code |  | S02 | 730a9dddb92d94042015938da2e557d0d28403d0b3d0018fb5fc502af57863d7 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S03.md | code |  | S03 | f57239005cf619c7ee50ad70d8158a4bb48b7df7f0443768eb2fa7b4c1440043 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S04.md | code |  | S04 | 25c3ab1a96467e12a7ab5774b3deda49b7d50816cdbd5a54f1975f9dbf4706de |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S05.md | code |  | S05 | 291765e037f62191105c3b90233ebb6c7a6529702221957311ca13dcdfaaf126 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S06.md | code |  | S06 | 59f92bf998f630920ad42b55bfe2d01a1e962b5b887c1c5123d688f65c3505fa |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S07.md | code |  | S07 | 7713b2e548d359f9c8cd956b92feba25fb900c2a1d4c7ee1db5e1b1a863431fe |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S08.md | code |  | S08 | a43ffbfbbc6be16c524cf80080dd11fe67766b80e9dbf035dbd7b23e870d9e25 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S09.md | code |  | S09 | d42c268d87209f94a04b921e4f8b1ef0f36f3c144db4e06470abaf8991af4db6 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S10.md | code |  | S10 | 6cd104d792db19db74d3a0989cede47addc26d0f03864b82e4a18567756d4632 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S11.md | code |  | S11 | f3608bae69f5d814c38bc362d3e4213aed15c84bdc0aa24396388be490cc7c76 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S12.md | code |  | S12 | cf331499610aaa603fe38c5d1e3dceb7832f668fd9008ee26045072bdbc52cc5 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S13.md | code |  | S13 | 66f2d3c3ca85a89366d7a4be19524815b51fc0276f3aedfe704e7657425fc88c |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S14.md | code |  | S14 | 311279575d00b01b7983af688cfe39cfeede0b4dc3d27fb3d786a5425bc42a94 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S15.md | code |  | S15 | c7ca26db9c2d794907f003cbd49c98f23b40294f87d23401a4786ed806b6a81c |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S16.md | code |  | S16 | 3c6b367c258858a6b3dd28d46296ebe12eb249ff087189ab6cadf500f9bb2ef3 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S17.md | code |  | S17 | b7c4467bae57935a9571f39a23e347fb2523d62fd01d39e200f8fb624173b084 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S18.md | code |  | S18 | 89789e50e7f35d075216603415131dce24f02026a2816801eee5ad8df24ef032 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S19.md | code |  | S19 | e8a677eff6b1e6a28d34f0057ceaa78c26e67be039c2db2d8e7a5072ad7a817d |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S20.md | code |  | S20 | aea54642d7f7f6fc8ceae17790dc8c4112509d300d207b0f522cc7470c3c2ca6 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S21.md | code |  | S21 | 5e00130e7ebd132c84d5aefae00c1e5511af7df3762aacb4c683a4793d95762c |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S22.md | code |  | S22 | 81eee2e1d90ecedb1615e7e1e612db935afebd0f773a635d79a2002235581230 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S23.md | code |  | S23 | f24f6ef0469412506b534a3764da4eddc4dd0287347fba1e6ddd75440f8b3b5c |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S24.md | code |  | S24 | 9336cdd48d1f9c5eda900613d53fb6fbe7f1c3fbfd95ca8bc6cdeee14ecad955 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S25.md | code |  | S25 | c8cb38bfcb62cdbf9c8485f9ef1c55959c01c44a32fbba0c78465cc16ca4c4f6 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S26.md | code |  | S26 | cf5a9409f52de82c96b53e6ff3ca583b0660cf77a4f3bc70e81c810a6e085a88 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S27.md | code |  | S27 | 75c139171329301e078652c71c89faf8dedf41dea6b950f53b91da59a9f1e1ab |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S28.md | code |  | S28 | 8f00486e0f3a232f6d2795de5914b2a186d5330f3b938066e128a0ffe699e758 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S29.md | code |  | S29 | 3d9907acf1ce6142c2275fd4a533d79bf65a5c0604bc77b4f1aa066619bc4130 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S30.md | code |  | S30 | 88a0d37671ced0fb06e5f87b3944b3cdab8773ff8880097fa0adf37f523eba78 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S31.md | code |  | S31 | 55a9cccab475d160bd7eb3dfa379758178684c8948cd64d57d3d680d32b79097 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S32.md | code |  | S32 | 8268a8ce1318c0cc048f728c76bd72d51237004dfb3afb0e32ace716658c5e1f |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S33.md | code |  | S33 | c48f6116683908f759c0288e1cae17f04f2bb7fddef2d24a3a527a78589299bf |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S34.md | code |  | S34 | 591056fe14618581920030885d6868ee81186214c424b41d351ced5489dbdc95 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S35.md | code |  | S35 | 41562f61486120f57b86638880593f6d2859078746a0f217d1aff4cafb5ad71c |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S36.md | code |  | S36 | e949df46dca729b50362598c87743035283de7e15b70752937a6196ed8ca5932 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S37.md | code |  | S37 | 8d08669435232e7694b3de81bcf28c05cd41924272d978da746754a57278e4f4 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S38.md | code |  | S38 | d08df0b3b76abcf51e5bbc2a50ab45a2f6ac6a7a243dd4b760ab528237c3a20f |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S39.md | code |  | S39 | 880d89a56db7bff2760c81d13d5b4b316989dedf614505683bf81af298de00fe |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S40.md | code |  | S40 | 8a60ff3ee759812d2c846e44874df9a2d1e845dd4107487d88b8b5a658c023a7 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S41.md | code |  | S41 | da436b2f93fb2c18c06a79257fb36af9c71c1833e09d06fa0efa19ceadb0b30b |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S42.md | code |  | S42 | bc2c9a5e38c7ab05fa29a6deb3d774f24f675fb590ffe5c9cafcfb4b56cb4328 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S43.md | code |  | S43 | f9f69a9811aee6b634243a68a3676f347623fa37ce568b299f0a2e8dead79404 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S44.md | code |  | S44 | 3a86f63c85257bcfe8688a81cb698c003ba138a3669efa9566c728ef9a57912f |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S45.md | code |  | S45 | 0a2d46ec15e1e92d080abc4f7d4948809759b8b76b22b5f492ece6dde8bd727b |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S46.md | code |  | S46 | 610d21a213388bc284c7e2095c454f6e389cb14dc7c1774fd3119be8cc747172 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S47.md | code |  | S47 | f7c182d28ccf2ac54b655ef23fc4f3859f4d3db0425b940ea776d9bbeca0ee56 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S48.md | code |  | S48 | 03f8d8cfc7a3ccc547fbd381f5a31103b94146f1a7005a599d24a234a45bb808 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S49.md | code |  | S49 | b8dfbeaf654e1517e110b367d0981774e191861e829816bbc20e436c7a2a4e50 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S50.md | code |  | S50 | b5eef621f83eea1aa97566db92f55000fdecb5ea67a4d380f7ceca5903f281ea |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S51.md | code |  | S51 | c1a1b82db22036c94845724a606a75c384b20137bc84fbdbc8b2efbddfc55b2b |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S52.md | code |  | S52 | e59ecb61f1682fd9b5a9b81c9914e83d8eb6747d8c008b10306dce1b209b5081 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_control_p1_response.md | code |  | simulation_control_p1_response | 86bf58dccd77bd63018ffab67eeb99c9535c81a63be5a0a2437db4a4ac250918 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_course_p1_response.md | code |  | simulation_course_p1_response | 2bd2daaebb08755f4492911b2b54f842eefb52d22acb79b25f0767b2e9c91ff2 |
+| solutions/courses/agentic-sdlc-kb-agentic/sources.md | code |  | Fonti del corso | dad09ccabf2bd7dc6695a1ee2871b3720f5b8fb5e684b71140702d6fff92289f |
+| strategic/architecture.md | code |  | Stack, package structure, component map and architectural patterns of the skill repository. | 8f8e595405377c18a6dc62743ecc7839adb3441b85107a6499cd8da71f64e60b |
 | strategic/capabilities_and_positioning.md | code |  | Dated, evidence-based comparison of agentic-sdlc 1.26.1 and Superpowers 6.2.0: advantages, parity, remaining gaps and deliberate non-adoptions. | ae92ce3f719e4b3666167653a65630b6eb7ef30f00a0a30ad6fadaf3cd28f324 |
-| strategic/existing_features.md | code |  | Concise catalog of the skill's existing features. | b10828c043a9731f79fa46ad9abd580ea8f5292581395ad768b02c79455d1eae |
+| strategic/existing_features.md | code |  | Concise catalog of the skill's existing features. | 13ac30591add6dd8b8f63c3a7e8dba21ece369353e5cb2631bb5d470d48de53a |
 | strategic/process_agentic_sdlc_devpnt.md | code |  | The joint agentic-sdlc × devPNT governance process — pipeline, documents, human vs agent reviews, mandatory checks, and why it works. Read to understand how a change goes from idea to release. | ec90b59d68bf6da79f395782e63eefb005525ce23f5b575be990e5f5cbec40da |
-| strategic/skill_family_agent_workflows.md | code |  | How the three skills differ in the way an AGENT actually works under each — from a full three-way doctrine inventory. For the owner; body in Italian. | f6dfde4dbd32326b6e13a7ae5cf2a8736c254870fe75e423c3aabccccbca3f9f |
+| strategic/skill_family_agent_workflows.md | code |  | How the four skills differ in the way an agent works under each; the course lens is Standalone in its first release. For the owner; body in Italian. | 84940d394556fa3cfa1f8f85bb2c9ddb3d0b30450152f57629b8834c1f8c1aaa |
+| strategic/skills_vs_standard_agents_team.md | knowledge |  | Per il team di sviluppo: vantaggi di kb-agentic e agentic-sdlc rispetto all'uso di un agente senza memoria e processo di progetto. | d17c9c35c2d3d4b847418ade83f45a3c6a81999e22a5aa85c1942f752784b934 |
 | vision/features/VISION_agentic_sdlc_vnext.md | code |  | Feature vision for the vNext evolution (triage, support files, mechanical validation, devPNT symbiosis) delivered in 1.5.0/1.6.0. | 8c5e2834b7a63310495fb837c08ab1d2c7e2723acdb163ee6e24bd88c403d2bf |
+| vision/features/VISION_course_agentic-sdlc-kb-agentic.md | course |  | Vision del corso per sviluppatori su kb-agentic e agentic-sdlc, usato come primo banco di prova di course_creator. | 9f6257995619791689b970daf741cf5b6a47b00870d7a55003aa3e0b259ae5f7 |
+| vision/features/VISION_course_creator.md | code |  | Vision approvata di course_creator per spiegazioni progressive, anche quando chi richiede il corso parte da zero. | b07cd35cf8e6c25298f9bbe8081c7f7a6389d9301763abbdd3b86a4e1b3e16f1 |
 | vision/features/VISION_kb_second_brain.md | code |  | Feature vision for the kb-agentic "second brain" milestone - the recall reflex, the daily gesture, and the time cycle that keep a project KB honest over months of daily use with an agent colleague. | bd30306f23faa874967d00d2d32c8fb24922e5c4383c61040586847ef9afc0e8 |
 | vision/features/VISION_vision_governance.md | code |  | Feature vision for the Vision governance layer (ai_docs/vision/, Vision Gate) delivered in 1.4.0. | 50cbace539b4e8706d2bcb1c28441df92c2862bdc6dd6b6c634cf5bfae61a0b7 |
 | vision/principles.md | code |  | Vision Principles | 6e272fefca734ef8183dfb85366186b6bff2e80a785a0f71593b2d8796245445 |

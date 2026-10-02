@@ -1,0 +1,16 @@
+Sei una persona di un team software che lavora con agenti AI; non presupponiamo che tu conosca le skill. Rispondi in italiano, senza cercare altre fonti o file oltre all'eventuale materiale didattico già letto. Non modificare file. Non fingere di avere eseguito prove o di avere esperienza umana.
+
+Caso inventato. Il team lavora al progetto Delta con un agente che usa kb-agentic e agentic-sdlc; devPNT non è configurato. Il beneficio approvato per questo lavoro è evitare che le consegne prioritarie risultino scadute troppo presto; la navigazione dell'applicazione non fa parte del lavoro.
+
+Il Manuale release 3, §2, p.9, dice: «Per le consegne prioritarie dal 1 ottobre, il tempo massimo è 20 secondi». Una circolare arrivata dopo dice: «Per le consegne prioritarie dal 1 ottobre, il tempo massimo è 28 secondi», senza dire che corregge il manuale. Un'indagine reale, data qui come fatto del caso, trova un calcolo condiviso usato dal pannello e una regola locale nella notifica, con una propria costante.
+
+Nel corso di una settimana l'agente ti scrive quattro messaggi:
+
+1. A una collega che chiedeva il tempo massimo di una consegna standard: «Il tempo massimo è 20 secondi (Manuale release 3)».
+2. «Ho aggiornato la KB: vale 28 secondi, perché la circolare è più recente. Ho archiviato la regola del manuale come obsoleta».
+3. «La modifica è L2: cambio la costante nel calcolo condiviso usato dal pannello. Già che ci sono rifaccio la navigazione, come ha chiesto un collega».
+4. «Fatto: costante cambiata e test della costante verde. Chiudo il lavoro».
+
+In un secondo progetto, Cedro, il team conserva una sola decisione stabile, con fonte e motivo, in note curate che sa ritrovare. Il responsabile chiede se adottare le due skill anche lì.
+
+Come rispondi all'agente su ciascuno dei quattro messaggi? Per ognuno indica che cosa accetti, che cosa contesti, che cosa gli chiedi e quali decisioni spettano a te o al responsabile. Poi rispondi sul progetto Cedro. Infine spiega che cosa sarebbe riutilizzabile in Delta dopo una settimana, dopo un mese con una nuova rettifica e dopo anni con un nuovo collega, confrontandolo con buone note. Se hai letto materiale didattico, cita i passaggi usati; altrimenti dichiaralo. Segnala termini o passaggi rimasti poco chiari.

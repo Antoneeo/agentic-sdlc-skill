@@ -20,6 +20,8 @@ supersedes: old_doc.md       # only if it replaces another canonical doc
 
 When a doc replaces another: the new one declares `supersedes:`, the old one switches to `status: SUPERSEDED` (it stays as history, do not delete it). `sdlc_check.py validate` warns if `status` is missing or if a superseded doc is still `CURRENT`.
 
+For a course in the same `ai_docs/` tree, `vision/features/VISION_course_<slug>.md` and `solutions/ANALYSIS_course_<slug>.md` declare `domain: course` explicitly and the ANALYSIS uses a `C-` ID. The feature Vision is scoped to that course; the project-wide Vision stays above all four domains. Course design belongs to `course-creator`.
+
 ## ai_docs/reference/GUIDE_[topic].md
 
 A guide is either OPERATIVE (`source_kind: document` — distilled from USER-PROVIDED

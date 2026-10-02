@@ -1,0 +1,148 @@
+........................s.......s.......................................................................................[ERROR] C:\Users\apint\AppData\Local\Temp\tmpj7tsgb43\project\ai_docs\solutions\PLAN_invalid_brief.md: task[0]: missing required field(s): verify
+
+[plan] brief: plan is invalid, refusing to brief (1 errors).
+..[plan] brief: task id 'T-NOPE' not found in C:\Users\apint\AppData\Local\Temp\tmpcng4se21\project\ai_docs\solutions\PLAN_brief.md
+.[ERROR] C:\Users\apint\AppData\Local\Temp\tmp1zsdbzah\project\ai_docs\solutions\PLAN_abs.md: task[0]: paths 'C:\Users\apint\AppData\Local\Temp\tmp1zsdbzah\outside.md' is absolute, contains '..', or escapes 'C:\Users\apint\AppData\Local\Temp\tmp1zsdbzah\project' — rejected (fail closed)
+
+[plan] validate: 1 errors, 0 warnings.
+.[ERROR] C:\Users\apint\AppData\Local\Temp\tmpgi3klqlm\project\ai_docs\solutions\PLAN_dup.md: task[1]: duplicate task id 'T1'
+
+[plan] validate: 1 errors, 0 warnings.
+..[ERROR] C:\Users\apint\AppData\Local\Temp\tmpqdyrtghu\project\ai_docs\solutions\PLAN_bad_guide.md: task[0]: guide '../../outside_guide.md' is not confined under the project reference dir (C:\Users\apint\AppData\Local\Temp\tmpqdyrtghu\project\ai_docs\reference) or the agent KB reference dir (C:\Users\apint\.agentic-sdlc\ai_docs\reference) — rejected
+
+[plan] validate: 1 errors, 0 warnings.
+..[warn] ledger 'C:\Users\apint\AppData\Local\Temp\tmp2lvojlnw\project\ai_docs\solutions\PLAN_ok_ledger.ledger.json' unreadable/malformed, treating as empty: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+.[plan] C:\Users\apint\AppData\Local\Temp\tmpgrzlymug\project\ai_docs\solutions\PLAN_malformed.md: malformed JSON in the plan block: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+.[plan] C:\Users\apint\AppData\Local\Temp\tmpw8xhsa14\project\ai_docs\solutions\PLAN_no_block.md: no fenced ```json block found in the plan file
+.[ERROR] C:\Users\apint\AppData\Local\Temp\tmpgik6z7lu\project\ai_docs\solutions\PLAN_no_paths.md: task[0]: must declare at least one of 'paths'/'produces'
+
+[plan] validate: 1 errors, 0 warnings.
+.[ERROR] C:\Users\apint\AppData\Local\Temp\tmpeowqj09u\project\ai_docs\solutions\PLAN_missing_verify.md: task[0]: missing required field(s): verify
+
+[plan] validate: 1 errors, 0 warnings.
+.[ERROR] C:\Users\apint\AppData\Local\Temp\tmp7y55707i\project\ai_docs\solutions\PLAN_escape.md: task[0]: paths '../escape.md' is absolute, contains '..', or escapes 'C:\Users\apint\AppData\Local\Temp\tmp7y55707i\project' — rejected (fail closed)
+
+[plan] validate: 1 errors, 0 warnings.
+..s....s..........................................ss...s...ssss..s........sssss.......................s..s......
+----------------------------------------------------------------------
+Ran 245 tests in 27.147s
+
+OK (skipped=19)
+[WARN] ai_docs/solutions/courses/intro/COURSE_PLAN.md [content]: legacy course: migrate to a complete textual content contract; quality is not certified
+course: 0 error(s), 1 warning(s)
+[ERROR] ai_docs/solutions/courses/intro/CONCEPT_GRAPH.md [CONCEPT_GRAPH.md]: CONCEPT_GRAPH.md missing file
+[ERROR] ai_docs/solutions/courses/intro/CONCEPT_GRAPH.md [graph]: concept table missing or empty
+[ERROR] ai_docs/solutions/courses/intro/COURSE_PLAN.md [M1]: objective not defined in concept graph
+[ERROR] ai_docs/solutions/courses/intro/COURSE_PLAN.md [M1]: concept CO1 missing from graph
+[WARN] ai_docs/solutions/courses/intro/COURSE_PLAN.md [content]: legacy course: migrate to a complete textual content contract; quality is not certified
+course: 4 error(s), 1 warning(s)
+[note]  solutions/ANALYSIS_course_intro.md: 'level' missing (L1/L2/L3/Spike) -- risk-proportional checks cannot apply, and dropping the line is cheaper than doing the work it triggers
+[note]  ai_docs/reference/INDEX.md missing: Rule Zero requires reading the guide router and forbids faking its verdict, so the router exists even with zero guides -- run 'sdlc_check.py index'
+[warn]  vision/project_vision.md missing
+[warn]  vision/roadmap.md missing
+[warn]  vision/principles.md missing
+[warn]  solutions/ANALYSIS_course_intro.md: section '## Objective' missing
+[warn]  solutions/ANALYSIS_course_intro.md: section '## Feature Vision' missing
+[warn]  solutions/ANALYSIS_course_intro.md: section '## Impact' missing
+[warn]  solutions/ANALYSIS_course_intro.md: section '## Action Plan' missing
+[warn]  solutions/ANALYSIS_course_intro.md: section '## Test Strategy' missing
+[warn]  solutions/ANALYSIS_course_intro.md: section '## Diary' missing
+[ERROR] strategic/features_history.md missing: run 'sdlc_check.py index'
+[ERROR] ai_docs/INDEX.md missing: run 'sdlc_check.py index'
+
+Validation: 2 errors, 9 warnings, 2 advisories.
+[note] advisories are freshness signals: never fail a build, not even --strict.
+[ERROR] ai_docs/solutions/courses/intro/CONCEPT_GRAPH.md [CONCEPT_GRAPH.md]: CONCEPT_GRAPH.md missing file
+[ERROR] ai_docs/solutions/courses/intro/CONCEPT_GRAPH.md [graph]: concept table missing or empty
+[ERROR] ai_docs/solutions/courses/intro/COURSE_PLAN.md [M1]: objective not defined in concept graph
+[ERROR] ai_docs/solutions/courses/intro/COURSE_PLAN.md [M1]: concept CO1 missing from graph
+[WARN] ai_docs/solutions/courses/intro/COURSE_PLAN.md [content]: legacy course: migrate to a complete textual content contract; quality is not certified
+course: 4 error(s), 1 warning(s)
+[ok] workstream registry regenerated: C:\Users\apint\AppData\Local\Temp\tmp6k1j1s45\ai_docs\audit\handoff.md
+[ok] workstream registry regenerated: C:\Users\apint\AppData\Local\Temp\tmpv9z_gehp\ai_docs\audit\handoff.md
+[ok] workstream registry regenerated: C:\Users\apint\AppData\Local\Temp\tmpp0zd26oj\ai_docs\audit\handoff.md
+[ERROR] ai_docs/audit/handoff.md NOT regenerated -- it still holds state no source accounts for:
+          - content outside the table with nowhere to go (4 line(s), first: '## Active features') -- project-wide notes belong in audit/project_notes.md
+          Convert the whole registry at once (templates.md): converting one row at a time is the state that loses the others.
+[ERROR] ai_docs/audit/handoff.md NOT regenerated -- it still holds state no source accounts for:
+          - rows no HANDOFF_*.md accounts for: F-002 beta
+          Convert the whole registry at once (templates.md): converting one row at a time is the state that loses the others.
+[ok] workstream registry regenerated: C:\Users\apint\AppData\Local\Temp\tmp97crw6ft\repo\ai_docs\audit\handoff.md
+[ok] C:\Users\apint\AppData\Local\Temp\tmpz9v989_z\project\ai_docs\solutions\PLAN_good_guide.md: plan valid (1 task(s), 0 warning(s)).
+[ok] C:\Users\apint\AppData\Local\Temp\tmpm5jmzs34\project\ai_docs\solutions\PLAN_orphan_ledger.md: plan valid (1 task(s), 1 warning(s)).
+[ok] C:\Users\apint\AppData\Local\Temp\tmp2lvojlnw\project\ai_docs\solutions\PLAN_ok_ledger.md: plan valid (1 task(s), 1 warning(s)).
+[ok] C:\Users\apint\AppData\Local\Temp\tmpu_y7bmey\project\ai_docs\solutions\PLAN_produces_only.md: plan valid (1 task(s), 0 warning(s)).
+[ok] C:\Users\apint\AppData\Local\Temp\tmpackn2y7n\project\ai_docs\solutions\PLAN_valid.md: plan valid (1 task(s), 0 warning(s)).
+[warn]  /: path is absolute, contains '..', or resolves outside the project root: rejected (use a project-relative path, '.' for the root)
+[warn]  ../escape: path is absolute, contains '..', or resolves outside the project root: rejected (use a project-relative path, '.' for the root)
+[ok] no analyzed area was modified after its last recorded analysis.
+[ERROR] ../outside: absolute, '..'-escaping, or outside the project root: refusing to mark (use a project-relative path, '.' for the root). Nothing was written.
+=== benefit: what the process caught, and what it costs to read ===
+[info] no ai_docs/audit/reviews/REVIEW_LOG.md yet: nothing to report. The number appears once reviews are logged.
+
+Read cost of course-creator: SKILL.md 13789 bytes (every session) + 165589 bytes across 14 support files (read on trigger) = 179378 bytes total
+    dispatch.md                  7997
+    elicitation.md              11440
+    ENFORCEMENT.md              17547
+    feedback.md                  1571
+    guides.md                   19124
+    learning_design.md          16232
+    memory.md                    5040
+    review.md                   31782
+    routing.md                   7705
+    simulation.md                9613
+    slide_content.md             8133
+    source_check.md              2825
+    templates.md                11490
+    vision.md                   15090
+=== benefit: what the process caught, and what it costs to read ===
+rows parsed: 3   rows unparsed: 1  -> line 6: 3 cells: header declares 9 and no positional map fits
+reviews with a stated moment: 2   moment not stated by `tier`: 1  (deep x1)
+span of the reviews counted below: 2026-07-28 -> 2026-09-10
+
+moment      rows   findings FAIL verdict per review
+design         1          4           1        4.0
+closure        1          3           0        3.0
+
+Caught BEFORE the code existed: 4 / 7 findings = 57%
+Bounded by the 9 findings in rows whose moment `tier` does not state: 25%-81% (`code` rows are post-implementation by definition, so their findings sit on the closure side of the upper bound)
+Reviews whose verdict contains FAIL: 1 / 2 = 50%
+(both figures are over the 2 reviews whose moment `tier` states)
+
+Read cost of course-creator: SKILL.md 13789 bytes (every session) + 165589 bytes across 14 support files (read on trigger) = 179378 bytes total
+    dispatch.md                  7997
+    elicitation.md              11440
+    ENFORCEMENT.md              17547
+    feedback.md                  1571
+    guides.md                   19124
+    learning_design.md          16232
+    memory.md                    5040
+    review.md                   31782
+    routing.md                   7705
+    simulation.md                9613
+    slide_content.md             8133
+    source_check.md              2825
+    templates.md                11490
+    vision.md                   15090
+[ok] ANALYSIS index regenerated: C:\Users\apint\AppData\Local\Temp\tmpzp732n44\ai_docs\strategic\features_history.md
+[ok] document manifest regenerated: C:\Users\apint\AppData\Local\Temp\tmpzp732n44\ai_docs\INDEX.md
+[ok] guide router regenerated (empty stub): C:\Users\apint\AppData\Local\Temp\tmpzp732n44\ai_docs\reference\INDEX.md
+[ok] ANALYSIS index regenerated: C:\Users\apint\AppData\Local\Temp\tmpatun_3ng\ai_docs\strategic\features_history.md
+[ok] document manifest regenerated: C:\Users\apint\AppData\Local\Temp\tmpatun_3ng\ai_docs\INDEX.md
+[ok] guide router regenerated (empty stub): C:\Users\apint\AppData\Local\Temp\tmpatun_3ng\ai_docs\reference\INDEX.md
+[note]  vision/project_vision.md is DRAFT: not a gating authority, have the user validate it
+[note]  vision/roadmap.md is DRAFT: not a gating authority, have the user validate it
+[note]  vision/principles.md is DRAFT: not a gating authority, have the user validate it
+
+Validation: 0 errors, 0 warnings, 3 advisories.
+[note] advisories are freshness signals: never fail a build, not even --strict.
+[ok] ANALYSIS index regenerated: C:\Users\apint\AppData\Local\Temp\tmp6p64wscp\ai_docs\strategic\features_history.md
+[info] no canonical documents: INDEX.md not generated
+[ok] guide router regenerated (empty stub): C:\Users\apint\AppData\Local\Temp\tmp6p64wscp\ai_docs\reference\INDEX.md
+[warn]  vision/project_vision.md missing
+[warn]  vision/roadmap.md missing
+[warn]  vision/principles.md missing
+[ERROR] ai_docs/INDEX.md missing: run 'sdlc_check.py index'
+[ERROR] ai_docs/reference/INDEX.md missing while GUIDE_*.md files exist: the router is the only thing that routes work to them -- run 'sdlc_check.py index'
+
+Validation: 2 errors, 3 warnings, 0 advisories.

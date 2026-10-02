@@ -2,6 +2,13 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.37.0] - 2026-10-02
+
+### Changed
+- F-061: start bug analysis from incident evidence; maintain hypotheses ranked jointly by likelihood and verification cost, deepen supported causal links with the five whys, and require clean Poka-Yoke correction with the owner's exact design check and collateral verification. Allow declared alternative evidence for intermittent incidents while retaining regression tests.
+- F-058: route course creation to `course-creator` and guard a fourth byte-identical shared core copy.
+- Document explicit `domain: course` and canonical `C-` course analysis identifiers.
+
 ## [1.36.0] - 2026-09-25
 
 ### Changed

@@ -1,0 +1,12 @@
+{
+ "reader": {
+  "session": "subagent (general-purpose, sonnet), fresh context, background",
+  "role": "sequential reader P1",
+  "prompt_file": "see PROMPTS.md"
+ },
+ "control": {
+  "session": "subagent (general-purpose, sonnet), fresh context, background",
+  "role": "no-course control P1",
+  "prompt_file": "see PROMPTS.md"
+ }
+}

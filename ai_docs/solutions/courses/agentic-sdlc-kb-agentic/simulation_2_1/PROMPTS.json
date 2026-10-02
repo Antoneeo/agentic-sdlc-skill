@@ -1,0 +1,12 @@
+{
+  "course": {
+    "session": "/root/text21_learner",
+    "fork_turns": "none",
+    "prompt": "Simulazione diagnostica indipendente richiesta dalla skill course-creator. Il tuo unico input didattico è C:/Users/apint/Documents/Codex/2026-09-27/che-fine-hanno-fatto-le-skills/work/course-text-review/ai_docs/solutions/courses/agentic-sdlc-kb-agentic/simulation_2_1/learner_packet.md. Leggi SOLO quel file e TASK.txt nella stessa directory con strumenti di lettura; non leggere altri file, skill, rubriche, soluzioni, repository né web. Esegui il compito TASK.txt e restituisci risposta completa. Non modificare file. Non autovalutarti. Indica i soli file letti. Non hai storia precedente da usare."
+  },
+  "control": {
+    "session": "/root/text21_control",
+    "fork_turns": "none",
+    "prompt": "Simulazione diagnostica indipendente richiesta dalla skill course-creator. Sei il controllo senza materiale didattico. Il tuo unico input è C:/Users/apint/Documents/Codex/2026-09-27/che-fine-hanno-fatto-le-skills/work/course-text-review/ai_docs/solutions/courses/agentic-sdlc-kb-agentic/simulation_2_1/TASK.txt. Leggi SOLO quel file con strumenti di lettura; non leggere altri file, skill, rubriche, soluzioni, repository né web. Esegui il compito TASK.txt e restituisci risposta completa. Non modificare file. Non autovalutarti. Indica i soli file letti. Non hai storia precedente da usare."
+  }
+}

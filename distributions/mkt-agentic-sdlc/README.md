@@ -2,7 +2,7 @@
 
 ## Shared project memory
 
-All three lenses include project memory by default; install the lens you need,
+All four lenses include project memory by default; install the lens you need,
 not a second skill just for recall. `index` registers guides, decisions and plans
 in the docs root's `memory/INDEX.md`, linking originals without copying them.
 `recall "onboarding"` finds related metadata across domains; optional
@@ -85,6 +85,12 @@ The workstream registry (`audit/handoff.md`) is **generated** from one file per 
 - **Standalone** — everything on the filesystem under `mkt_docs/`.
 - **Hybrid with devPNT** — plans and strategy artifacts governed as versioned devPNT documents (MKT-VISION, ICP/Personas, Threat Map, Strategy, Tactical Plan, Measurement Plan), with proposal/approval workflow and independent review gates.
 
+On a shared `ai_docs/` tree, run `mkt_check.py index --docs-dir ai_docs` to
+generate the common index. An existing marketing-format `ai_docs/INDEX.md`
+receives an explicit migration diagnostic; `validate` and `check` leave it
+untouched. Marketing-specific checks run when the tree declares a marketing
+engagement, while a course-only tree remains governed by its own course lens.
+
 The Hybrid seam ships as its own file, `hybrid.md` — the authoritative
 hierarchy and the ownership matrix naming which artifact is mastered where.
 A Standalone engagement never reads it, which is why it is not in the
@@ -94,15 +100,16 @@ Installing or updating the npm package wires the session-orientation hook
 machine-wide (user-level Claude Code settings; removal is a standing opt-out
 that no update overrides -- ENFORCEMENT.md par.4).
 
-## The family: three lenses, one spine
+## The family: four lenses, one spine
 
 | Package | Faithful to | Unit of work |
 |---|---|---|
 | [`@antoneeo/agentic-sdlc-skill`](https://www.npmjs.com/package/@antoneeo/agentic-sdlc-skill) | this repository's code | feature |
 | [`@antoneeo/kb-agentic-skill`](https://www.npmjs.com/package/@antoneeo/kb-agentic-skill) | the documents you supply | topic |
 | `@antoneeo/mkt-agentic-sdlc-skill` (this one) | market evidence | engagement |
+| [`@antoneeo/course-creator`](../course-creator/README.md) | the learner's starting point and verified teaching sources | course |
 
-Triage, the Vision Gate, the review gates, the guide router and the validator spine are byte-identical across the three, and the question discipline is the same rule restated in each lens's vocabulary; only the fidelity discipline and the vocabulary change. When two live in the same project, `routing.md` decides which lens owns a given piece of work — with the market-facing override: anything whose purpose is to persuade the market is this lens's, whatever its source.
+The four lenses share the process spine and project memory. Each lens keeps its own fidelity discipline. When two live in the same project, `routing.md` decides ownership by the deliverable's purpose: persuasion is marketing, instruction for a learner is course, even when both draw on the same source documents.
 
 ## Which model to run it on
 

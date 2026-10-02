@@ -1,0 +1,22 @@
+{
+  "baseline": {
+    "case_costs": {
+      "A": 7,
+      "B": 3,
+      "C": 7,
+      "D": 5
+    },
+    "checks": 13,
+    "total_cost": 22
+  },
+  "candidate_initial": {
+    "case_costs": {
+      "A": 2,
+      "B": 3,
+      "C": 7,
+      "D": 5
+    },
+    "checks": 12,
+    "total_cost": 17
+  }
+}

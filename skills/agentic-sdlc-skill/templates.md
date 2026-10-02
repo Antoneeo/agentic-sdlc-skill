@@ -14,14 +14,14 @@ Every durable canonical document opens with this frontmatter: it feeds the gener
 description: One line — what the document is and when to read it.
 status: CURRENT              # CURRENT | SUPERSEDED | DRAFT | DEPRECATED
 supersedes: old_doc.md       # only if it replaces another canonical doc
-domain: code                 # optional — code | knowledge | marketing; omit in a single-domain project
+domain: code                 # optional — code | knowledge | marketing | course
 ---
 # Document Title
 ```
 
 When a doc replaces another: the new one declares `supersedes:`, the old one switches to `status: SUPERSEDED` (it stays as history, do not delete it). `sdlc_check.py validate` warns if `status` is missing or if a superseded doc is still `CURRENT`.
 
-**`domain:` — write it only when it says something.** It names the domain whose fidelity discipline the document was written under, and it *records* an answer the work already has; it never decides one. Omit it and the project default applies (`default_domain:` in `ai_docs/README.md`, absent → `code`), so a single-domain project never writes the field at all. Documents under `vision/` sit above the split and take no `domain:`. In a mixed project, a wrong or forgotten field surfaces as a validation error on the missing mandatory risk section — never as a silent pass.
+**`domain:` — write it only when it says something.** It names the domain whose fidelity discipline the document was written under, and it *records* an answer the work already has; it never decides one. Omit it and the project default applies (`default_domain:` in `ai_docs/README.md`, absent → `code`), so a single-domain project never writes the field at all. Project-wide documents under `vision/` sit above the split. A course's feature Vision is the exception: `vision/features/VISION_course_<slug>.md` carries `domain: course` explicitly, even in a marketing-default project, so its owner remains unambiguous. In a mixed project, a wrong or forgotten field surfaces as a validation error on the missing mandatory risk section — never as a silent pass.
 
 ## ai_docs/reference/GUIDE_[topic].md
 
@@ -216,7 +216,7 @@ Only for features spanning multiple ANALYSIS documents or multiple milestones: o
 
 The frontmatter is the source of truth for the feature state (the `features_history.md` index is generated from it).
 
-`domain:` and `checks:` are optional and only earn their place in a project where more than one lens is installed (see the canonical-header note above for how an omitted `domain:` resolves). `checks:` names **portable checks** imported from another domain — e.g. `domain: knowledge` with `checks: [marketing.funnel]`. An imported check can only ADD findings, never relax what the owning domain requires, so importing one is always safe; naming a check this installation does not carry produces a visible warning, never a silent pass. `id:` is unique **within a domain**, and its prefix says which: `F-` code, `K-` knowledge, `M-` marketing. Projects that predate the prefixes keep their `F-` ids — uniqueness was already scoped to the one domain they have.
+`domain:` and `checks:` are optional for ordinary analyses and only earn their place in a project where more than one lens is installed; a course ANALYSIS always declares `domain: course`. `checks:` names **portable checks** imported from another domain — e.g. `domain: knowledge` with `checks: [marketing.funnel]`. An imported check can only ADD findings, never relax what the owning domain requires, so importing one is always safe; naming a check this installation does not carry produces a visible warning, never a silent pass. `id:` is unique **within a domain**, and its prefix says which: `F-` code, `K-` knowledge, `M-` marketing, `C-` course. Projects that predate the prefixes keep their `F-` ids — uniqueness was already scoped to the one domain they have.
 
 ```markdown
 ---
@@ -226,7 +226,7 @@ status: PLANNED
 level: L3
 start_date: 2026-06-11
 end_date:
-domain: code                    # optional — code | knowledge | marketing
+domain: code                    # optional — code | knowledge | marketing | course
 checks: [marketing.funnel]      # optional — extra portable checks to run on this document
 ---
 # Feature Analysis: [Name]

@@ -2,6 +2,8 @@
 """Deterministic tests for mkt_check.py — fixture project built in a tempdir."""
 
 import re
+import io
+from contextlib import redirect_stdout
 import subprocess
 import sys
 import tempfile
@@ -242,6 +244,80 @@ class MktCheckTests(unittest.TestCase):
         self.assertEqual(mkt_check.parse_num("EUR 6,000"), 6000)
         self.assertIsNone(mkt_check.parse_num(""))
         self.assertIsNone(mkt_check.parse_num("n/a"))
+
+
+class SharedDocsTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.root = Path(self.tmp.name)
+        self.docs = self.root / "ai_docs"
+        self.docs.mkdir()
+        self.write("README.md", "---\ndefault_domain: course\n---\n# Project docs\n")
+        for name in mkt_check.sdlc_core.VISION_FILES:
+            self.write("vision/" + name,
+                       "---\ndescription: Shared vision.\nstatus: CURRENT\n---\n"
+                       "Status: APPROVED\n# Shared vision\n")
+
+    def write(self, rel, content):
+        path = self.docs / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+
+    def invoke(self, *args):
+        return mkt_check.main([*args, "--root", str(self.root), "--docs-dir", "ai_docs"])
+
+    def test_course_only_uses_core_index_and_has_no_marketing_ledger_requirement(self):
+        self.write("vision/features/VISION_course_intro.md",
+                   "---\ndescription: Course vision.\nstatus: APPROVED\ndomain: course\n---\n"
+                   "# Intro course\nStatus: APPROVED\n")
+        self.assertEqual(self.invoke("index"), 0)
+        index = (self.docs / "INDEX.md").read_text(encoding="utf-8")
+        self.assertEqual(index, mkt_check.sdlc_core.build_manifest(self.root))
+        self.assertEqual(self.invoke("validate", "--strict"), 0)
+        self.assertEqual(self.invoke("check", "--strict"), 0)
+
+    def test_marketing_feature_vision_or_ledger_signals_engagement(self):
+        self.write("vision/features/VISION_marketing.md",
+                   "---\ndescription: Marketing vision.\nstatus: APPROVED\ndomain: marketing\n---\n"
+                   "# Campaign\nStatus: APPROVED\n")
+        self.assertTrue(mkt_check.has_marketing_engagement(self.root))
+        self.write("vision/features/VISION_marketing.md",
+                   "---\ndescription: Course vision.\nstatus: APPROVED\ndomain: course\n---\n"
+                   "# Course\nStatus: APPROVED\n")
+        self.assertFalse(mkt_check.has_marketing_engagement(self.root))
+        self.write("research/evidence_ledger.md", LEDGER)
+        self.assertTrue(mkt_check.has_marketing_engagement(self.root))
+
+    def test_legacy_index_reports_migration_without_rewrite(self):
+        self.write("INDEX.md", mkt_check.build_index(self.root))
+        before = (self.docs / "INDEX.md").read_bytes()
+        output = io.StringIO()
+        with redirect_stdout(output):
+            self.assertEqual(self.invoke("validate"), 1)
+        self.assertIn("mkt_check.py index --docs-dir ai_docs", output.getvalue())
+        self.assertEqual((self.docs / "INDEX.md").read_bytes(), before)
+
+    def test_default_marketing_only_feature_vision_signals_engagement(self):
+        self.write("README.md", "---\ndefault_domain: marketing\n---\n# Project\n")
+        self.assertFalse(mkt_check.has_marketing_engagement(self.root))
+        self.write("vision/features/VISION_course_intro.md",
+                   "---\nstatus: APPROVED\ndomain: course\n---\n# Course\n")
+        self.assertFalse(mkt_check.has_marketing_engagement(self.root))
+        self.write("vision/features/VISION_campaign.md",
+                   "---\nstatus: APPROVED\n---\n# Campaign\n")
+        self.assertTrue(mkt_check.has_marketing_engagement(self.root))
+        self.assertEqual(self.invoke("index"), 0)
+        self.assertEqual(self.invoke("validate", "--strict"), 0)
+        self.assertEqual(self.invoke("check", "--strict"), 1)  # ledger owed
+
+    def test_core_and_marketing_index_do_not_take_turns_overwriting(self):
+        self.assertEqual(self.invoke("index"), 0)
+        first = (self.docs / "INDEX.md").read_bytes()
+        self.assertEqual(mkt_check.sdlc_core.cmd_index(self.root), 0)
+        self.assertEqual((self.docs / "INDEX.md").read_bytes(), first)
+        self.assertEqual(self.invoke("index"), 0)
+        self.assertEqual((self.docs / "INDEX.md").read_bytes(), first)
 
 
 class CommandSurfaceTests(unittest.TestCase):

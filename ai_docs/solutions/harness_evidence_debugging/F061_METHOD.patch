@@ -1,0 +1,232 @@
+--- a/skills/agentic-sdlc-skill/SKILL.md
++++ b/skills/agentic-sdlc-skill/SKILL.md
+@@ -63,6 +63,7 @@
+ - Parsing of external input, authN/authZ, cryptography, networking, personal data and filesystem access are security-sensitive: never L1.
+ - If a bigger impact emerges during L1/L2 work, stop, reclassify and declare it.
+ - When in doubt, pick the higher level.
++- For L2/L3 bugs, load `debugging.md` at the start of analysis, before proposing a cause or fix: incident evidence, ranked hypotheses and causal verification precede correction.
+ - **A real doubt is asked when it emerges, before its answer is written — any phase, any level; a question is legal only after naming the search with its result and the decision it blocks.** `elicitation.md` §The question discipline owns the rule — what is a real doubt, the pros-and-cons weighing, the form — and is the only place it is stated: read it before you ask or assume, and do not work from a summary of it.
+ - The full audit does not start for L1/L2 unless explicitly requested.
+ 
+@@ -204,7 +205,7 @@
+ - Implementation work follows the TDD discipline in `tdd.md` (RED/GREEN/REFACTOR — the L2/L3 default; record the reason when it does not apply).
+ - Before implementing (L2/L3; L1 exempt), **consult the guide router** — the verdict already declared with the triage level (`## Operative Guides`). Re-run the lookup here only if the work has moved to a topic the first one did not cover, and say so if the verdict changes.
+ - If the environment does not allow automated tests, declare the alternative verification and the reason.
+-- For bugs (L2/L3), follow the systematic debugging method in `debugging.md`.
++- For bugs (L2/L3), continue the investigation and design-verification method in `debugging.md`; implementation follows the `tdd.md` discipline above.
+ - Circuit breaker: after 3 consecutive runs without progress on the tests, stop, switch to the systematic method in `debugging.md`, and ask for instructions if still stuck. `debugging.md` also covers **chronic fragility** — a component that breaks repeatedly across sessions is a comprehension + complexity signal (write the `source_kind: code` guide AND escalate a refactor), not a fourth patch.
+ - Update the ANALYSIS Diary or the Action Plan when you complete milestones, hit blockers, change decisions, or a session ends with work unfinished.
+ - **Opt-in subagent execution**: for an L3 with an approved design, the orchestrator MAY execute the work via subagents per `dispatch.md`, gated by `sdlc_check.py plan validate` ("no valid plan, no dispatch"); default stays same-session. Hybrid: the executable `PLAN_[feature].md` is `derived-from` the accepted E-TDD, never independently authored. `dispatch.md` also carries the family-wide **delegation boundary** (what may be delegated at all, and what never may) — that section is not gated by the opt-in trigger and applies at any level, dispatch or no dispatch.
+--- a/skills/agentic-sdlc-skill/debugging.md
++++ b/skills/agentic-sdlc-skill/debugging.md
+@@ -1,71 +1,118 @@
+ # Systematic Debugging
+ 
+-Applies to bugs classified L2 or L3. Entered either from phase 4
+-(Development and Testing) when a defect surfaces during implementation, or
+-from the circuit breaker in `SKILL.md` §4 after repeated no-progress runs.
++Applies to bugs classified L2 or L3, from the start of their analysis, including
++defects discovered during implementation. Investigate the observed failure before
++proposing a definitive fix. A suspicious source-code pattern is a hypothesis, not
++proof that it caused this incident.
+ 
+ ## Method
+ 
+-Work the steps in order; do not skip ahead to a fix before step 3 names the
+-mechanism.
++1. **Establish the facts.** State expected versus observed behavior, affected
++   environment, timing and last known working state. Read available local incident
++   evidence first: relevant logs, stack traces, request/response, effective
++   configuration and service state. Preserve evidence before restarts or changes
++   erase it; urgent containment may come first, but label it temporary and record
++   what evidence could not be preserved. Logs may be partial or misleading: check
++   their scope and time window. Do not exhaust every log or wait for nonexistent
++   logs when a direct observation is available. Read only what is needed, redact
++   secrets/personal data in reports, and keep sensitive raw logs out of project docs.
+ 
+-1. **Reproduce deterministically.** Find the smallest input or scenario that
+-   triggers the bug every time. A bug you cannot reliably reproduce cannot be
+-   verified as fixed.
+-2. **Isolate.** Narrow the failing case to its minimal form — strip
+-   unrelated setup, unrelated data, unrelated code paths. Bisect (recent
+-   commits, code paths, input ranges) when the boundary is unclear.
+-3. **Root cause — name the mechanism.** State in one sentence why the
+-   observed behavior happens, tracing the actual execution path. Trace it by
+-   enumerating the real callers/consumers of each suspect symbol with the best
+-   symbol-graph tool your toolchain offers — an IDE/LSP call hierarchy or a
+-   find-usages / call-graph capability — not text search; `grep`
+-   under-enumerates and hides the very consumer that breaks. **MUST NOT
+-   patch a symptom without naming the mechanism; why: symptom patches recur
+-   and stack** — the same underlying defect resurfaces elsewhere, and each
+-   unexplained patch makes the next investigation harder, not easier.
+-4. **Fix at the cause**, not at the symptom identified in step 1.
+-5. **Write a regression test that FAILS on the old code** (verify this
+-   before applying the fix, or by temporarily reverting it) and passes after.
+-   A regression test that was never confirmed to fail proves nothing.
+-6. **Run the relevant suite for collateral.** A root-cause fix can change
+-   behavior other callers depend on; enumerate those callers with the
+-   symbol-graph (step 3), not from memory, and check them before closing.
++2. **Maintain the hypotheses.** Keep a small register in the existing L2
++   mini-analysis or L3 ANALYSIS/Action Plan, not a new mandatory document:
+ 
+-**Capture the model you had to rebuild.** If naming the mechanism (step 3) forced
+-you to reconstruct the mental model of a complex component that no guide documents —
+-tracing it across files because it was written down nowhere — that is the
+-comprehension trigger (`guides.md` §1): it is your duty to write the `source_kind:
+-code` guide, so the next debugger starts with the map you just paid to build.
++   | Cause hypothesis | Evidence for/against | Likelihood and basis | Verification cost | Check and result | Current hypothesis status |
++   |---|---|---|---|---|---|
+ 
+-**Chronic fragility is a signal, not a task to grind.** If a component breaks
+-*repeatedly across sessions* and its complexity is no longer under control, stop
+-treating each break as an isolated bug — that pattern has two duties, not one:
+-1. **Understand** — write the `source_kind: code` comprehension guide (above) so the
+-   understanding stops evaporating between sessions.
+-2. **Escalate the complexity itself** — STOP stacking patches on a component nobody
+-   fully understands. Flag the fragility as tech debt and propose a dedicated
+-   **refactor as its own L3** (Vision-gated), instead of a fourth fix. Continuing to
+-   patch a component you keep breaking is the anti-pattern, not the fix.
++   Use high/medium/low or unknown likelihood and rough costs, with reasons; do not
++   invent numerical probabilities. Prefer hypotheses that are both more likely
++   and cheaper to verify. When those criteria conflict, choose a check with useful
++   discrimination between the remaining explanations and justify that choice.
++   State what observation would support or invalidate the hypothesis before the
++   check. Record each result, update evidence/status and reorder after every check.
++   An inconclusive check leaves the hypothesis open; distinguish a check's outcome
++   from the hypothesis's accumulated status (open, confirmed, invalidated).
++   Do not repeat an invalidated hypothesis unless new evidence reopens it.
++
++3. **Test and trace the mechanism.** Reproduce and isolate the smallest faithful
++   failing case when feasible; bisect inputs, paths or changes when informative.
++   Skip a reproduction already known to omit the incident's causal conditions;
++   choose a faithful alternative or disclose the gap. Stop diagnostic checks when
++   further results cannot change the causal or fix decision; this does not replace
++   the regression and recovery verification in step 5.
++   If the incident is intermittent or inaccessible, use captured traces and
++   targeted diagnostic observations instead of declaring investigation impossible.
++   Add minimal instrumentation when evidence is insufficient. Prefer read-only
++   checks; run state-changing experiments in a controlled environment under the
++   existing authorization boundaries. Read source to answer a concrete question
++   arising from evidence, then check its predictions against actual execution.
++   A static call graph identifies possible consumers, not the executed path.
++
++   Use the **five whys** to deepen supported causal links, not to force five
++   answers or a single linear cause. Each unsupported answer becomes a hypothesis
++   in the register. Allow interacting causes; distinguish why the failure happened
++   from why prevention or detection missed it. Stop when the actionable causal
++   mechanism is supported, or state the evidence gap instead of inventing a cause.
++   Before a definitive fix, name the mechanism and evidence connecting it to this
++   failure; explain which alternatives were invalidated and which remain open.
++   Missing logs or a passing unrelated test do not invalidate a hypothesis.
++
++4. **Correct the design with Poka-Yoke.** Fix the responsible code, configuration
++   or infrastructure; do not force a code edit for an environmental cause.
++   Enforce the invariant where the responsibility belongs: prevent the invalid
++   condition, or detect and reject it immediately with an explicit outcome when
++   prevention is infeasible. Preserve legitimate behavior; a blanket rejection or
++   crash is not universally appropriate. Prefer the smallest coherent correction
++   over a case-specific exception, duplicated guard, silent fallback or speculative
++   broad refactor. Temporary containment is not a definitive fix.
++
++   Before editing, enumerate affected consumers using the available symbol graph
++   and a text coverage probe; reconcile differences and state coverage limits.
++   With no graph available, use text/targeted reads and disclose incomplete coverage
++   rather than guessing completeness. Apply existing triage/design gates if scope
++   expands. Mandatory design verification, preserving this wording verbatim:
++
++   > Dopo la correzione il software deve essere fatto come se fosse stato progettato senza quel difetto
++
++   Explain how the fix satisfies it: the correct owner enforces the invariant,
++   the same failure is prevented or detected at origin, no ad hoc exception is
++   needed, and valid consumer behavior is preserved. Disclose residual compromises;
++   the sentence does not authorize redesign beyond the confirmed defect's scope.
++
++5. **Verify the correction and collateral.** Follow `tdd.md` for implementation:
++   confirm a regression test fails for this mechanism on the old implementation
++   and passes after the fix. Verify the Poka-Yoke against invalid and valid cases,
++   relevant neighboring cases, and concurrency/retry/order where the mechanism
++   involves them. Run the relevant consumer suite after the final change.
++   If the original incident cannot be replayed, distinguish controlled mechanism
++   tests from incident recovery evidence and report remaining uncertainty; do not
++   waive available regression tests or claim an unperformed verification.
++
++**Capture the model you had to rebuild.** If tracing the cause reconstructed a
++complex component with no CURRENT comprehension guide, write its `source_kind:
++code` guide under `guides.md` §1. Keep evidence and invariants, not sensitive logs.
++
++**Chronic fragility is a signal, not a task to grind.** If the component repeatedly
++breaks across sessions and complexity is no longer controlled, preserve its model
++in that guide and surface the debt. Propose a dedicated Vision-gated L3 refactor
++instead of stacking patches; do not silently expand the current fix into it.
+ 
+ ## Circuit breaker integration
+ 
+-After 3 consecutive runs without progress: STOP. Do not attempt a 4th
+-variation of the same guess. Audit your assumptions from step 1 — is the
+-reproduction actually deterministic, is the isolated case actually minimal,
+-is the "root cause" from step 3 actually confirmed or just plausible? Then
+-restart from step 1 with the corrected assumption.
+-
+-If still stuck after the restart, ask the user for instructions, and hand
+-over the evidence gathered so far: the minimal reproduction, what was ruled
+-out, and the current best hypothesis.
++After three consecutive attempts without new diagnostic information or progress,
++STOP varying the same guess. Audit the evidence, register and checks: did a result
++actually invalidate the hypothesis, did the test reproduce the relevant conditions,
++and was the mechanism confirmed rather than merely plausible? Restart from the
++earliest unsupported step. If still stuck after that restart, ask the user for
++instructions with observed facts, checks/results, invalidated and open hypotheses,
++the evidence gap and any temporary containment. More guesses are not progress.
+ 
+ ## Anti-patterns
+ 
+-- **Shotgun debugging**: changing several things at once hoping one fixes it
+-  — when it "works," you do not know which change mattered or why.
+-- **Stacking speculative fixes**: adding a second guess on top of an
+-  unverified first one instead of confirming or discarding it first.
+-- **"Fixed but can't say why"**: closing the bug without a step-3 mechanism
+-  statement. If you cannot name the mechanism, the fix is not confirmed —
+-  it may just be masking the trigger.
++- Source-first speculation: patching a plausible defect without tying it to the incident.
++- Shotgun debugging: changing several things at once without a discriminating check.
++- Guess stacking: retaining an unverified fix while adding another.
++- Register theater: invented likelihoods, repeated cheap but uninformative checks,
++  or check failure presented as hypothesis falsification without adequate coverage.
++- Five invented whys: unsupported causal links, or forcing one root on interacting causes.
++- Symptom exceptions: suppressing one event or input instead of correcting its invariant.
++- "Fixed but can't say why": closure without causal evidence and the mandatory design check.
+--- a/README.md
++++ b/README.md
+@@ -23,7 +23,7 @@
+ - **Risk-proportional workflow**: L1/L2/L3/Spike triage avoids heavyweight process for trivial work, with a symmetric **Write Triggers** table mapping each event to the document it produces (one event, one destination).
+ - **Vision-guided governance**: Standalone projects use `ai_docs/vision/`; Hybrid projects use devPNT `M-VISION` as the milestone north star. The Vision names its **Actors** — the cast a feature serves, one light line each — so UX is designed for concrete roles, not an implicit "user".
+ - **Architect pass — capabilities before files**: at L3, before listing what changes, the feature is stated as the *capabilities* it needs and each is ruled against the platform (EXISTS / INADEQUATE / MISSING); what is missing is designed as a component with its own contract, of which the feature is one consumer — never inlined into the feature's code path. A `## Component Map` in `strategic/architecture.md` is the durable inventory the pass reads, so the platform is not re-derived from source every session. On a codebase the methodology arrives in late, the map's silence is treated as **unread, not empty**: it can never ground a MISSING verdict.
+-- **Execution disciplines**: explicit TDD (RED/GREEN/REFACTOR), systematic debugging, an L3 spec-elicitation round, and a single code-review definition wired into the workflow phases.
++- **Execution disciplines**: explicit TDD (RED/GREEN/REFACTOR), evidence-first debugging with hypotheses ranked by likelihood and verification cost, supported causal questioning and clean Poka-Yoke correction with regression checks; an L3 spec-elicitation round and a single code-review definition wired into the workflow phases.
+ - **Operative + comprehension guides + agent-global KB**: distil user-provided indications into source-faithful operative `GUIDE_*.md` (`source_kind: document`), and let the agent autonomously author **code-comprehension guides** (`source_kind: code`) for complex components — a source-faithful mental-model map that survives across sessions, so the next session doesn't re-derive and break the component from partial understanding. Consulted before work; shared cross-project via `~/.agentic-sdlc`.
+ - **Several people, one project**: the workstream registry (`audit/handoff.md`) is **generated** from one file per open workstream, so two people opening or closing two workstreams on two branches edit two different files and their merge is clean. Row-per-workstream alone was not enough — a file-global `Date:` header defeats row-level ownership — so the header is derived from the sources and no writer touches it. The generated view can still conflict; that conflict is resolved by re-running `index`, never by hand, and `validate` refuses CLEAN until the file matches its sources. The append-only review log gets `merge=union` (a built-in driver, no per-clone configuration). It all works with no VCS at all: it is files and a generator.
+ - **Opt-in subagent execution**: an approved design projects into a validated executable plan an orchestrator can drive through subagents.
+--- a/ai_docs/strategic/skill_family_agent_workflows.md
++++ b/ai_docs/strategic/skill_family_agent_workflows.md
+@@ -149,10 +149,17 @@
+ - **TDD di default** (L2/L3): UN test che fallisce, visto fallire, prima del
+   codice; l'esenzione va scritta nel Diary ("un'esenzione non registrata è
+   indistinguibile dal dimenticarsene").
+-- **Debugging col circuit breaker** (`debugging.md`): riproduci → isola → causa
+-  radice via grafo dei simboli → fix alla causa → test di regressione *verificato
+-  fallire sul codice vecchio*. **3 run consecutivi senza progresso → STOP**, metodo
+-  sistematico, poi consegna (riproduzione minima, cosa escluso, ipotesi migliore).
++- **Debugging col circuit breaker** (`debugging.md`): parte dalle evidenze locali
++  del guasto; mantiene le ipotesi ordinate insieme per probabilità motivata e costo
++  di verifica. I perché approfondiscono soltanto legami causali sostenuti da prove,
++  senza imporre cinque livelli. La correzione applica Poka-Yoke nel responsabile
++  dell'invariante e verifica: «Dopo la correzione il software deve essere fatto
++  come se fosse stato progettato senza quel difetto». Preserva i comportamenti
++  validi e richiede un test di regressione *verificato fallire sul codice vecchio*.
++  Gli incidenti intermittenti ammettono evidenze alternative con limiti dichiarati;
++  il grafo dei simboli aiuta l'impatto, ma non prova il percorso eseguito.
++  **3 tentativi senza nuove informazioni o progresso → STOP**: riesamina evidenze
++  e ipotesi, poi consegna risultati, cause escluse/aperte e lacune ancora presenti.
+   Componente che si rompe ripetutamente → mai una quarta patch: guida di
+   comprensione + refactor proposto come L3 a sé.
+ - **Guide di comprensione DAL codice**, scritte autonomamente (unico silent-write

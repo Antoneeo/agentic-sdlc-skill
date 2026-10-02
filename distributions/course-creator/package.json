@@ -1,0 +1,52 @@
+{
+  "name": "@antoneeo/course-creator",
+  "version": "0.1.0-beta.1",
+  "description": "Design sourced, progressive courses for a defined learner with Agentic SDLC governance and diagnostic learner simulations.",
+  "keywords": ["claude-code", "gemini-cli", "codex", "course-design", "skill", "ai-agent"],
+  "author": "Antonio Pinto (https://github.com/Antoneeo)",
+  "license": "Apache-2.0",
+  "publishConfig": { "access": "public", "tag": "beta" },
+  "bin": {
+    "course-creator-init": "scripts/init.js",
+    "course-creator-install-skill": "scripts/postinstall.js"
+  },
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js",
+    "preuninstall": "node scripts/preuninstall.js",
+    "test": "node scripts/test_clients.js"
+  },
+  "files": [
+    "skills/course-creator/SKILL.md",
+    "skills/course-creator/templates.md",
+    "skills/course-creator/slide_content.md",
+    "skills/course-creator/learning_design.md",
+    "skills/course-creator/source_check.md",
+    "skills/course-creator/simulation.md",
+    "skills/course-creator/feedback.md",
+    "skills/course-creator/elicitation.md",
+    "skills/course-creator/ENFORCEMENT.md",
+    "skills/course-creator/memory.md",
+    "skills/course-creator/review.md",
+    "skills/course-creator/routing.md",
+    "skills/course-creator/vision.md",
+    "skills/course-creator/guides.md",
+    "skills/course-creator/dispatch.md",
+    "skills/course-creator/scripts/sdlc_check.py",
+    "skills/course-creator/scripts/course_check.py",
+    "skills/course-creator/scripts/sdlc_core.py",
+    "skills/course-creator/scripts/knowledge.py",
+    "skills/course-creator/scripts/entry_point.py",
+    "skills/course-creator/scripts/shared_files.py",
+    "skills/course-creator/scripts/shared_manifest.json",
+    "skills/course-creator/LICENSE",
+    "skills/course-creator/NOTICE",
+    "gemini-extension.json",
+    "README.md",
+    "CHANGELOG.md",
+    "NOTICE",
+    "scripts/lib.js",
+    "scripts/init.js",
+    "scripts/postinstall.js",
+    "scripts/preuninstall.js"
+  ]
+}

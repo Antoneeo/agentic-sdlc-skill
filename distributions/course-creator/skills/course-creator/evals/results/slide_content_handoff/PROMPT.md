@@ -1,0 +1,4 @@
+# Forward production prompt
+Fresh agent /root/forward_content received SKILL.md, slide_content.md and learning_design.md, and this isolated approved brief: Italian novice coordinators can divide but compare defective-item counts without denominator. Teach lower observed defect rate versus total rework. Facts supplied: rate = defective/inspected; 8/100 = 8%, 12/300 = 4%; counts and rates answer different questions; no causal conclusions. Produce 4–6 self-study slides M1/O1/P1 under slide-content-v1, exact full text, new-case transfer and separate solution. Sources use the fixture locator ai_docs/solutions/courses/ratios/sources.md#facts. No browsing or PPTX. Vision/design assumed approved only for this isolated production test. Do not grade your own output or claim human efficacy.
+
+Scope: production-contract forward test, not a full L3 project run or a learner/control simulation. The fixture source locator is supplied, not a claim of filesystem validation.

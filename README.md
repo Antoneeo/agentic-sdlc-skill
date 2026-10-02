@@ -2,7 +2,7 @@
 
 ## Shared project memory
 
-All three lenses include project memory by default; install the lens you need,
+All four lenses include project memory by default; install the lens you need,
 not a second skill just for recall. `index` registers guides, decisions and plans
 in the docs root's `memory/INDEX.md`, linking originals without copying them.
 `recall "onboarding"` finds related metadata across domains; optional
@@ -23,7 +23,7 @@ Vendoring requires all three files: the entry point, `sdlc_core.py`, `knowledge.
 - **Risk-proportional workflow**: L1/L2/L3/Spike triage avoids heavyweight process for trivial work, with a symmetric **Write Triggers** table mapping each event to the document it produces (one event, one destination).
 - **Vision-guided governance**: Standalone projects use `ai_docs/vision/`; Hybrid projects use devPNT `M-VISION` as the milestone north star. The Vision names its **Actors** — the cast a feature serves, one light line each — so UX is designed for concrete roles, not an implicit "user".
 - **Architect pass — capabilities before files**: at L3, before listing what changes, the feature is stated as the *capabilities* it needs and each is ruled against the platform (EXISTS / INADEQUATE / MISSING); what is missing is designed as a component with its own contract, of which the feature is one consumer — never inlined into the feature's code path. A `## Component Map` in `strategic/architecture.md` is the durable inventory the pass reads, so the platform is not re-derived from source every session. On a codebase the methodology arrives in late, the map's silence is treated as **unread, not empty**: it can never ground a MISSING verdict.
-- **Execution disciplines**: explicit TDD (RED/GREEN/REFACTOR), systematic debugging, an L3 spec-elicitation round, and a single code-review definition wired into the workflow phases.
+- **Execution disciplines**: explicit TDD (RED/GREEN/REFACTOR), evidence-first debugging with hypotheses ranked by likelihood and verification cost, supported causal questioning and clean Poka-Yoke correction with regression checks; an L3 spec-elicitation round and a single code-review definition wired into the workflow phases.
 - **Operative + comprehension guides + agent-global KB**: distil user-provided indications into source-faithful operative `GUIDE_*.md` (`source_kind: document`), and let the agent autonomously author **code-comprehension guides** (`source_kind: code`) for complex components — a source-faithful mental-model map that survives across sessions, so the next session doesn't re-derive and break the component from partial understanding. Consulted before work; shared cross-project via `~/.agentic-sdlc`.
 - **Several people, one project**: the workstream registry (`audit/handoff.md`) is **generated** from one file per open workstream, so two people opening or closing two workstreams on two branches edit two different files and their merge is clean. Row-per-workstream alone was not enough — a file-global `Date:` header defeats row-level ownership — so the header is derived from the sources and no writer touches it. The generated view can still conflict; that conflict is resolved by re-running `index`, never by hand, and `validate` refuses CLEAN until the file matches its sources. The append-only review log gets `merge=union` (a built-in driver, no per-clone configuration). It all works with no VCS at all: it is files and a generator.
 - **Opt-in subagent execution**: an approved design projects into a validated executable plan an orchestrator can drive through subagents.
@@ -119,17 +119,18 @@ Installing or updating the npm package wires the session-orientation hook
 machine-wide (user-level Claude Code settings; removal is a standing opt-out
 that no update overrides -- ENFORCEMENT.md par.4).
 
-## The family: three lenses, one spine
+## The family: four lenses, one spine
 
-Same process, three fidelity disciplines — what the agent's assertions must be faithful to:
+Same process, four fidelity disciplines — what the agent's assertions must be faithful to:
 
 | Package | Faithful to | Unit of work | Own doctrine |
 |---|---|---|---|
 | [`@antoneeo/agentic-sdlc-skill`](https://www.npmjs.com/package/@antoneeo/agentic-sdlc-skill) | this repository's code | feature | `architect.md`, `tdd.md`, `debugging.md` |
 | [`@antoneeo/kb-agentic-skill`](https://www.npmjs.com/package/@antoneeo/kb-agentic-skill) | the documents you supply | topic | `taxonomy.md`, `distillation.md`, `reconciliation.md` |
 | [`@antoneeo/mkt-agentic-sdlc-skill`](https://www.npmjs.com/package/@antoneeo/mkt-agentic-sdlc-skill) | market evidence | engagement | `frameworks.md`, `research.md` |
+| [`@antoneeo/course-creator`](distributions/course-creator/README.md) | the learner's starting point and verified teaching sources | course | `learning_design.md`, `source_check.md`, `simulation.md`, `feedback.md` |
 
-The three lenses share the process spine and knowledge-integrity engine. Install only the one you need; when two live in the same project, `routing.md` decides which lens owns a given piece of work. Marketing additionally runs its numerical checks: code/KB do not certify marketing arithmetic.
+The four lenses share the process spine and knowledge-integrity engine. Install only the one you need; when two live in the same project, `routing.md` decides which lens owns a given piece of work. Marketing runs numerical checks; course creator checks instructional structure. Neither structural check certifies factual truth or human learning.
 
 ## Standalone vs Hybrid
 

@@ -203,6 +203,11 @@ DOMAINS = {
         "risk_label": "## Threat Map / Plan Risks",
         "id_prefix": "M-",
     },
+    "course": {
+        "risk_section": ("## Learning and Content Risks",),
+        "risk_label": "## Learning and Content Risks",
+        "id_prefix": "C-",
+    },
 }
 # Absent everything -- no `default_domain:` line, no `domain:` field -- a project is
 # `code`. That is what every project created before this field existed already is,
@@ -1298,7 +1303,7 @@ def cmd_validate(root, strict=False, hybrid=False):
                               "have the user validate it")
 
     # ANALYSIS: frontmatter and mandatory sections
-    # Ids are unique WITHIN a domain (prefixes F-/K-/M- keep them apart in practice):
+    # Ids are unique WITHIN a domain (prefixes F-/K-/M-/C- keep them apart in practice):
     # two lenses over one tree must not collide on a number neither of them chose.
     seen_ids = {}
     default_domain = project_default_domain(root)

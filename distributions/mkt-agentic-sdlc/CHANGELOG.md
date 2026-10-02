@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.15.0] - 2026-10-02
+
+### Changed
+- F-058: share the canonical `ai_docs/` index writer with code, KB and course. Marketing checks activate only for signaled engagements on that tree; existing `mkt_docs/` behavior remains.
+- Diagnose a legacy marketing-format `ai_docs/INDEX.md` with an explicit migration command.
+
 ## [0.14.0] - 2026-09-25
 
 ### Changed

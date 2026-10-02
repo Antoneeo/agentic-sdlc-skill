@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-02",
+  "suites": {
+    "code": {
+      "tests": 228,
+      "skip": 1,
+      "rc": 0
+    },
+    "kb": {
+      "tests": 414,
+      "skip": 15,
+      "rc": 0
+    },
+    "marketing": {
+      "tests": 251,
+      "skip": 14,
+      "rc": 0
+    },
+    "course": {
+      "tests": 245,
+      "skip": 19,
+      "rc": 0
+    }
+  },
+  "course_node": {
+    "pass": 4,
+    "skip": 1,
+    "rc": 0
+  },
+  "publisher": {
+    "tests": 4,
+    "rc": 0,
+    "stable_tag_omitted": true
+  },
+  "shared_guard": {
+    "files": 22,
+    "rc": 0
+  },
+  "reviews": "PASS",
+  "npm_auth": "login succeeded",
+  "publication": "pending"
+}

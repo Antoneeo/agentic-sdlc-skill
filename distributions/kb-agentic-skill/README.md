@@ -2,7 +2,7 @@
 
 ## Shared project memory
 
-All three lenses include project memory by default; install the lens you need,
+All four lenses include project memory by default; install the lens you need,
 not a second skill just for recall. `index` registers guides, decisions and plans
 in the docs root's `memory/INDEX.md`, linking originals without copying them.
 `recall "onboarding"` finds related metadata across domains; optional
@@ -111,15 +111,16 @@ one), and an opt-in per-turn reminder exists for long sessions: `sdlc_check.py
 remind`, one constant line via UserPromptSubmit -- documented in `ENFORCEMENT.md`
 par.4, never wired by default.
 
-## The family: three lenses, one spine
+## The family: four lenses, one spine
 
 | Package | Faithful to | Unit of work |
 |---|---|---|
 | [`@antoneeo/agentic-sdlc-skill`](https://www.npmjs.com/package/@antoneeo/agentic-sdlc-skill) | this repository's code | feature |
 | `@antoneeo/kb-agentic-skill` (this one) | the documents you supply | topic |
 | [`@antoneeo/mkt-agentic-sdlc-skill`](https://www.npmjs.com/package/@antoneeo/mkt-agentic-sdlc-skill) | market evidence | engagement |
+| [`@antoneeo/course-creator`](../course-creator/README.md) | the learner's starting point and verified teaching sources | course |
 
-The three lenses ship the common validator core and knowledge-integrity engine. When two live in the same project, `routing.md` decides which lens owns a given piece of work. Each entry point composes its structural checks: marketing uses its own document validation and numerical checks; code/KB do not certify marketing arithmetic.
+The four lenses ship the common validator core and knowledge-integrity engine. When two live in the same project, `routing.md` decides which lens owns a given piece of work. Marketing uses its numerical checks, and course creator checks the instructional graph and references. A course may use KB sources without making the KB topic graph its prerequisite graph.
 
 ## Standalone vs Hybrid
 

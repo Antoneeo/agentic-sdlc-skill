@@ -1,0 +1,263 @@
+# Release Runbook — @antoneeo/agentic-sdlc-skill
+
+Approved by Antonio Pinto, 2026-07-02. Distilled from the v1.8.0 release session
+(first documented release run); amended same day by Antonio's indication to use
+`git_push_tag.bat` for the commit+tag+push step, and again same day with the
+script's re-run behavior observed in the field; amended 2026-08-01 by Antonio's
+approval — README alignment covers all three distributions plus the family
+document, and `mark` closes the step instead of opening it; amended 2026-08-25 by
+Antonio's indication — "lo script serve ad evitare errori evitabili.. mettilo pure
+nella guida" — adding `publish_all.bat` as the publish step, its skip semantics and
+its preconditions; amended 2026-09-25 by Antonio's approval of four changes
+observed in the v1.36.0 / kb 1.19.0 / mkt 0.14.0 release — a plain `check` beside
+the hybrid one, `mark` inside the release commit, one tag per package, and a
+pending 2FA read as pending, not failed. This is the verbatim source
+("book") for `GUIDE_release.md`; detail lives here, the guide is the synthesis.
+
+## Preconditions
+
+- The unit/feature being shipped is DONE: independent code review PASS, scenario
+  battery green, ADR (if any) accepted.
+- `CHANGELOG.md` has an `## [Unreleased - X.Y.Z] (...)` section describing the release.
+- `python skills/agentic-sdlc-skill/scripts/sdlc_check.py check --hybrid --root <repo>`
+  is CLEAN (known DRAFT warnings on vision docs are acceptable), AND the plain
+  `sdlc_check.py check --root <repo>` is CLEAN too: in this repo `--hybrid`
+  delegates audit-plan staleness to devPNT and skips it, so only the plain check
+  sees areas left unmarked.
+- The target version does not already exist on npm:
+  `npm view @antoneeo/agentic-sdlc-skill version`.
+
+## Version bump points
+
+All three, in the same commit:
+
+1. `package.json` → `"version"`.
+2. `gemini-extension.json` → `"version"`.
+3. `CHANGELOG.md` → heading `## [Unreleased - X.Y.Z] (...)` becomes
+   `## [X.Y.Z] - YYYY-MM-DD (...)` (date the entry, keep the parenthetical title).
+
+## Packaging completeness
+
+- `package.json` `files` is an explicit allowlist. Every NEW runtime/support file
+  (anything under `skills/agentic-sdlc-skill/` that the skill needs at runtime)
+  MUST be added there, or it ships neither in the npm tarball nor to installed
+  skill folders — `postinstall.js` copies the *installed package's* skill folder
+  recursively, so it can only copy what the tarball contains.
+- Field precedent: in v1.8.0, `skills/agentic-sdlc-skill/guides.md` (added by
+  Feature B unit 1) was missing from `files` and would not have shipped; caught
+  only at release time.
+- Verify with `npm pack --dry-run --json`: every expected file listed;
+  `__pycache__` and `.sources/` snapshots NOT listed.
+- The skill eval harness is **dev-only** and must NOT ship: `test_*.py` (the
+  battery) and the whole `evals/` dir guard the skill's development, they are
+  not runtime files. They are absent from `package.json` `files`; confirm the
+  `npm pack --dry-run --json` listing does not contain them.
+
+## README alignment
+
+- The "Installed support files" bullet in `README.md` lists the support files —
+  add any new one.
+- The "Runtime Shape" tree in `README.md` lists the skill folder contents — add
+  any new file there too.
+- **Every distribution has its own `README.md`, and it is that package's npm
+  page**: the step above applies to all three (`README.md` at the repo root for
+  the code lens, `distributions/kb-agentic-skill/README.md`,
+  `distributions/mkt-agentic-sdlc/README.md`), and it includes
+  `ai_docs/strategic/skill_family_agent_workflows.md` — the document that says
+  what an agent does differently under each lens.
+- When the doctrine changed, `sdlc_check.py mark` on the `skills/` and
+  `distributions/` audit areas is the LAST step of closure, not the first: do
+  not record the analysis until those derived documents say the same thing as
+  the doctrine.
+
+## Verification battery
+
+Run before any commit/tag/publish:
+
+1. `npm pack --dry-run --json` — see Packaging completeness above.
+2. init.js smoke on a scratch project: run `node <repo>/scripts/init.js` in an
+   empty directory → all templates extracted, no errors; then
+   `sdlc_check.py check --root <scratch>` → CLEAN (3 DRAFT warnings on the
+   boilerplate vision docs are expected).
+3. Closure gate on the repo itself:
+   `sdlc_check.py check --hybrid --root <repo>` → CLEAN, and
+   `sdlc_check.py check --root <repo>` → CLEAN. The hybrid run skips audit-plan
+   staleness (delegated to devPNT); the plain run is the one that catches areas
+   the version bump modified and nobody re-marked (2026-09-25: the hybrid check
+   was CLEAN while the plain one was not).
+4. Skill eval battery (the deterministic release gate, ENFORCEMENT §5):
+   `python -m unittest discover -s skills/agentic-sdlc-skill/scripts -p "test_*.py"`
+   → all green. It aggregates `test_plan.py` + `test_session_start.py` +
+   `test_skill_invariants.py` and asserts the skill's own doctrine invariants
+   (triggers/hook/worktree present and wired, indexes idempotent, support
+   pointers resolve). A failing eval blocks the release. If `test_indexes_idempotent`
+   fails, run `sdlc_check.py index` and re-run.
+
+After publish: `npm view @antoneeo/agentic-sdlc-skill version` must return the
+new version.
+
+## Git sequence
+
+Commit + tag + push are done with the repo-root script `git_push_tag.bat`
+(per Antonio's indication, 2026-07-02).
+
+1. Ensure the working tree contains ONLY the release edits — the script runs
+   `git add .`, so every pending change (including devPNT db churn, which is
+   tracked in this repo) is swept into the release commit. If unrelated changes
+   are pending, commit or isolate them first.
+2. Record the analysis of the areas the bump touched BEFORE running the script,
+   with the bump still uncommitted:
+   `sdlc_check.py mark skills/agentic-sdlc-skill/ distributions/ skills/ --root <repo>`.
+   On a dirty tree `mark` records a timestamp, so the `audit_plan.md` change rides
+   in the release commit and the tag covers it (as in the v1.35.0 commit
+   `c2a3828`). Marking after the release commit needs a second commit, and the
+   tag then no longer points at `HEAD` (2026-09-25).
+3. From the feature branch run:
+   `git_push_tag.bat "Release vX.Y.Z: <short title>" vX.Y.Z`
+   The script stages everything, commits with the given message, tags, and
+   pushes both the current branch and the tag. The release commit carries the
+   version bumps, CHANGELOG, README and handoff update together.
+4. One tag per package. The script creates only the code tag `vX.Y.Z`. For the
+   packages released alongside it, tag the SAME release commit and push:
+   `git tag kb-vX.Y.Z`, `git tag mkt-vX.Y.Z`, then
+   `git push origin kb-vX.Y.Z mkt-vX.Y.Z` (only the tags of packages actually
+   bumped).
+5. VERIFY every tag landed on the release commit:
+   `git rev-parse <tag>` must equal `git rev-parse HEAD` for each tag. The script tags HEAD
+   unconditionally — if its commit step failed (hook, empty stage), the tag
+   lands on the PREVIOUS commit; this is the same wrong-tag failure hit
+   manually in the v1.8.0 run. If the tag is wrong: `git tag -d vX.Y.Z`, fix,
+   re-run (if the tag was already pushed, delete the remote tag too:
+   `git push origin :refs/tags/vX.Y.Z`).
+6. Merge to main. Constraints on this machine (as of 2026-07): the `gh` CLI is
+   NOT installed — create the PR via the GitHub web UI
+   (`https://github.com/Antoneeo/agentic-sdlc-skill/pull/new/<branch>`); a
+   direct push to main requires the user's explicit authorization in-session.
+   Tag names: `vX.Y.Z` (code), `kb-vX.Y.Z` (kb), `mkt-vX.Y.Z` (marketing), all
+   on the release commit.
+
+## Known traps
+
+Verified in the field, 2026-07-02:
+
+- **devPNT db locks**: while the devPNT MCP server runs,
+  `.devpnt/agent/agent_knowledge.db` and `.devpnt/plans/plans.db` are held open
+  and continuously rewritten. Any git operation that must replace them in the
+  primary working tree (checkout, merge, stash) fails with
+  `error: unable to unlink old '...': Invalid argument` — and
+  "commit then switch" fails too, because the dbs re-drift immediately after
+  each commit. Committing on the CURRENT branch (what `git_push_tag.bat` does)
+  is fine; do branch-crossing work in a separate `git worktree add` checkout,
+  or defer it to a session where the devPNT server is stopped.
+- **`git_push_tag.bat` failure mode**: the script does not stop on a failed
+  commit — the tag then lands on the previous HEAD. Always run the step-3
+  verification from the Git sequence above.
+- **`git_push_tag.bat` re-run with an existing tag**: `git tag` fails
+  (`fatal: tag 'vX.Y.Z' already exists`) but the script continues and pushes
+  anyway; the existing tag is NOT moved. Benign when the tag already points at
+  the intended release commit (observed in the v1.8.0 run); otherwise delete
+  and re-tag (`git tag -d vX.Y.Z`, and `git push origin :refs/tags/vX.Y.Z` if
+  it was pushed).
+- **npm 2FA**: `npm publish` stops with `EOTP` (one-time password via browser).
+  The agent cannot complete it — the USER runs the final `npm publish`.
+- **PowerShell 5.1**: no `&&` chaining; `npm pack --dry-run` prints its file
+  listing to stderr — use `--json` and parse instead.
+
+## Publish
+
+1. Publish from a clean checkout of the release content. If the primary
+   worktree is stuck on another branch (see devPNT db locks),
+   `git worktree add <tmp> <release-branch>` provides one.
+2. `npm publish` — run by the USER (2FA OTP). npm prints the full tarball
+   listing before the OTP prompt: check it one last time.
+3. Confirm with `npm view @antoneeo/agentic-sdlc-skill version`.
+
+### publish_all.bat — the three packages in one run
+
+Added 2026-08-25 on Antonio's indication: *"lo script serve ad evitare errori
+evitabili.. mettilo pure nella guida"*. The point of the script is that the
+publish step is where avoidable mistakes happen — publishing the wrong tree,
+publishing from an untagged checkout, forgetting one of the three packages,
+or re-doing a package that is already on the registry — and a script removes
+the ones a human should not have to remember.
+
+`publish_all.bat` (repo root) publishes all three packages in one run, in
+order: `@antoneeo/agentic-sdlc-skill` (repo root),
+`@antoneeo/kb-agentic-skill` (`distributions\kb-agentic-skill`),
+`@antoneeo/mkt-agentic-sdlc-skill` (`distributions\mkt-agentic-sdlc`). It
+prompts once for confirmation, then publishes, then verifies by printing
+`npm view <name> version` for all three.
+
+- **PRECONDITION: bump + commit + tag FIRST** (`git_push_tag.bat`). `npm
+  publish` packs the WORKING TREE, not the tag, so it must run from the clean
+  tagged checkout. This is the error the script exists to prevent and the one
+  it cannot detect for you.
+- **Already-published packages are SKIPPED, not failures.** Before each
+  package the script compares `npm pkg get version` against
+  `npm view <name> version` and skips on a match, reporting
+  `[ok] <ver> is already on the registry - skipped, nothing to do.`
+  Two consequences: a single-package release works (the two unchanged
+  packages are skipped rather than aborting the run), and a run interrupted
+  part-way is resumed by simply re-running it.
+- **The three packages version independently**, so the single-package release
+  is the normal case, not the exception.
+- **2FA is web-based**: npm prints an authorization URL and opens the browser
+  for EACH package published. On an account using an authenticator app
+  instead, append `--otp=CODE` to the `npm publish` line in the script.
+- `access=public` is already in each `package.json` `publishConfig`; no flag
+  is needed.
+- **A pending 2FA is not a failure.** Each package waits for its own browser
+  authorization, which can complete minutes after the previous one (2026-09-25:
+  mkt published 4.5 minutes after kb). Read the registry only after the script's
+  final verify block; before that, a missing package is pending, not failed.
+- A genuine failure (authorization expired, network, registry refusal) stops
+  the run with `[FAIL] <name> publish failed at <ver>` and a non-zero exit.
+  Re-run after fixing: what already succeeded is skipped.
+
+Field note, 2026-08-25: until that date the script's header promised the skip
+and the code did not implement it — it called `npm publish` unconditionally and
+treated npm's non-zero exit on an already-published version as a failure. Since
+the publish order starts with the code package, a kb-only release aborted on the
+first package and never reached kb. Fixed by asking the registry before
+publishing rather than parsing npm's error text afterwards. Verified against the
+live registry with the publish call replaced by a marker, exercising all three
+branches: versions equal (skipped, no publish attempted), registry holds a
+different version (would publish), package not on the registry at all (would
+publish).
+
+## Post-release
+
+- `ai_docs/audit/handoff.md`: record the release (version, date) and the next
+  step; include it in the release commit when possible.
+- devPNT: update milestone / Action Plan state if the release closes a unit or
+  a milestone.
+- If new canonical docs were added, run `sdlc_check.py index` and commit the
+  regenerated indexes.
+
+## F-058 course-creator addendum (2026-09-27)
+The approved F-058 design adds distributions/course-creator as a fourth package. The working-tree publish_all.bat now calls and verifies @antoneeo/course-creator after code, KB, and marketing. This records the implementation, not a publication authorization. The four package versions remain independent. A package is published only when a person runs the release script and completes its confirmation and npm authentication. The fourth package README, support files and package allowlist must be checked before a release.
+
+
+## Stable and beta release amendment — 2026-10-02
+
+Antonio authorized commit and publication of software, KB and marketing as stable,
+and course-creator as beta. Each package carries its own channel in publishConfig.tag;
+omission means latest. A prerelease suffix alone is insufficient: publish_all.bat
+passes --tag and verifies the selected dist-tag, propagating verification failure.
+Use version-specific registry existence checks so repeat publication is skipped even
+when a newer release occupies the channel. A skipped version whose channel no longer
+points at it does not authorize moving that channel backwards.
+
+Course beta documentation declares experimental artifact contracts and no established
+human learning efficacy. Technical package, installer and regression gates remain.
+
+If unrelated presentation/rendering work remains in the primary main checkout,
+exclude it explicitly from staging and publish from a clean export of the exact
+release commit (git archive), after comparing all four tags to that commit. Do not
+run git_push_tag.bat's blanket git add against unrelated work. Its commit/tag/push
+sequence can be performed explicitly with the inspected staging set in this case.
+This amendment preserves the guide's order and immutable release identity.
+
+Publication is authorized in this session; the agent may invoke the publisher.
+Browser authentication remains the owner's act. Awaiting 2FA is pending publication,
+not evidence of a registry rejection. Record actual published versions after verify.

@@ -1,0 +1,1511 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Static skill-invariant battery (M4 Unit 4) -- the deterministic release gate.
+
+Asserts the skill's OWN doctrine invariants: every M4 unit output is present and
+wired, support-file pointers resolve, and the generated indexes are idempotent.
+Stdlib only, zero-LLM, zero-network, zero-subprocess -- a failing eval is always
+a real regression, never flakiness (P-TM T9). Runs as part of
+`python -m unittest discover -s scripts -p "test_*.py"`.
+"""
+import contextlib
+import hashlib
+import io
+import os
+import re
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+import sdlc_core as sc  # noqa: E402  spine behaviour comes from the core
+import entry_point  # noqa: E402
+entry_point.load()  # importing the overlay is what REGISTERS this distribution's profile
+dist = sc            # ...which the core then answers for: one place, whatever the overlay is called
+
+# file sits at skills/agentic-sdlc-skill/scripts/ -> parents[1] = skill dir,
+# parents[3] = repo root where ai_docs/ lives (matches test_plan.py:229).
+SKILL_DIR = Path(__file__).resolve().parents[1]
+REPO = Path(__file__).resolve().parents[3]
+
+
+def read(rel):
+    return sc.read_text(SKILL_DIR / rel)
+
+
+def setUpModule():
+    """Pin the docs root for this battery's fixtures.
+
+    The marketing overlay defaults to `mkt_docs`, so a shared battery that builds
+    `ai_docs` fixtures must say which root it means instead of inheriting whichever
+    distribution happens to be installed."""
+    global _SAVED_DOCS_DIR
+    _SAVED_DOCS_DIR = sc.docs_dir()
+    sc.set_docs_dir("ai_docs")
+
+
+def tearDownModule():
+    sc.set_docs_dir(_SAVED_DOCS_DIR)
+
+
+def requires(capability):
+    """Guard a PROFILE-specific assertion.
+
+    Only OPTIONAL capabilities can be skipped: `test_profile_declares_every_spine_
+    capability` refuses a profile that drops a spine one, so editing your own profile
+    is never a way out of the doctrine -- only a way to declare an overlay this
+    distribution genuinely does not have. A skip here is a declared decision, visible
+    in one line of the entry point, not a silently absent test.
+    """
+    def decorate(fn):
+        return unittest.skipUnless(
+            dist.has_capability(capability),
+            f"{dist.profile()['skill_name']} does not claim the '{capability}' overlay",
+        )(fn)
+    return decorate
+
+
+class SharedProfileInvariants(unittest.TestCase):
+    """Run identically in every distribution: the profile itself is the subject."""
+
+    def test_profile_declares_every_spine_capability(self):
+        missing = dist.REQUIRED_CAPABILITIES - dist.profile()["capabilities"]
+        self.assertEqual(missing, set(),
+                         "a distribution may not drop spine doctrine by editing its own "
+                         f"profile; missing: {sorted(missing)}")
+
+    def test_profile_claims_no_unknown_capability(self):
+        known = dist.REQUIRED_CAPABILITIES | dist.OPTIONAL_CAPABILITIES
+        unknown = dist.profile()["capabilities"] - known
+        self.assertEqual(unknown, set(),
+                         f"unknown capability claimed: {sorted(unknown)} -- add it to "
+                         "OPTIONAL_CAPABILITIES in the core, so every distribution sees it")
+
+    def test_every_declared_support_file_exists(self):
+        for rel in dist.profile()["support_files"]:
+            self.assertTrue((SKILL_DIR / rel).is_file(),
+                            f"profile declares {rel}, which is not on disk")
+
+    def test_every_support_file_on_disk_is_declared(self):
+        """The other direction: an undeclared file is doctrine nothing points at."""
+        declared = set(dist.profile()["support_files"]) | {"SKILL.md"}
+        on_disk = {p.name for p in SKILL_DIR.glob("*.md")}
+        self.assertEqual(on_disk - declared, set(),
+                         "support files exist but are not in the profile: either wire them "
+                         "or delete them")
+
+    def test_the_skill_name_matches_the_manifest(self):
+        head = read("SKILL.md").split("---")[1]
+        self.assertIn(f"name: {dist.profile()['skill_name']}", head,
+                      "the profile and SKILL.md disagree about which skill this is")
+
+
+class ShippedLicense(unittest.TestCase):
+    """F-055: the package says Apache-2.0 and carries the terms that say it.
+
+    The skill folder is what travels -- postinstall copies it into every client and
+    a fork copies it whole -- so the terms sit beside SKILL.md; the package root
+    carries them too, where scanners and the repository page look. Skipped where no
+    package.json sits beside the skill (an installed copy)."""
+
+    def setUp(self):
+        import json
+        pkg = SKILL_DIR.parents[1] / "package.json"
+        if not pkg.is_file():
+            self.skipTest("no package.json beside this skill (installed copy)")
+        self.root = pkg.parent
+        self.manifest = json.loads(sc.read_text(pkg))
+
+    def test_the_package_states_one_license(self):
+        m = re.search(r"^license:\s*(\S+)\s*$", read("SKILL.md"), re.M)
+        self.assertIsNotNone(m, "SKILL.md frontmatter must carry `license:` -- an installed "
+                                "skill has no package.json to say which terms it ships under")
+        self.assertEqual((self.manifest.get("license"), m.group(1)), ("Apache-2.0", "Apache-2.0"),
+                         "package.json and SKILL.md must both say Apache-2.0")
+
+    def test_the_license_text_is_the_canonical_apache_2(self):
+        # SHA-256 of https://www.apache.org/licenses/LICENSE-2.0.txt, LF line endings.
+        canonical = "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        for where in (self.root, SKILL_DIR):
+            path = where / "LICENSE"
+            self.assertTrue(path.is_file(), f"no LICENSE in {where}")
+            text = path.read_bytes().replace(b"\r\n", b"\n")
+            self.assertEqual(hashlib.sha256(text).hexdigest(), canonical,
+                             f"{path} is not the canonical Apache-2.0 text")
+
+    def test_the_package_root_and_the_skill_folder_carry_one_notice(self):
+        notices = []
+        for where in (self.root, SKILL_DIR):
+            path = where / "NOTICE"
+            self.assertTrue(path.is_file(), f"no NOTICE in {where}")
+            notices.append(path.read_bytes().replace(b"\r\n", b"\n"))
+        self.assertEqual(notices[0], notices[1],
+                         "the package root and the skill folder carry different NOTICEs")
+
+    def test_the_tarball_carries_the_terms(self):
+        # `files` is an allowlist: npm packs a root LICENSE unasked, and nothing else.
+        listed = set(self.manifest.get("files", []))
+        folder = "skills/%s/" % SKILL_DIR.name
+        for rel in ("NOTICE", folder + "LICENSE", folder + "NOTICE"):
+            self.assertIn(rel, listed, f"'{rel}' is not in package.json `files`: "
+                                       "the published package would ship without it")
+
+    def test_the_readme_keeps_the_permission_for_use_in_your_own_project(self):
+        # The grant that keeps the Vision's user guarantee whole is published in the README,
+        # the package's npm page. Whitespace-normalized, so a rewrap cannot hide it.
+        readme = " ".join(sc.read_text(self.root / "README.md").split())
+        self.assertTrue("Using the skill in your own project carries no obligation" in readme,
+                        "the README lost the permission for use inside a user's own project")
+
+
+class SkillInvariants(unittest.TestCase):
+
+    def test_orient_registered(self):
+        self.assertTrue(hasattr(sc, "cmd_orient"))
+        with tempfile.TemporaryDirectory() as d:
+            self.assertEqual(sc.main(["orient", "--root", d]), 0)
+
+    def test_enforcement_sections_present(self):
+        t = read("ENFORCEMENT.md")
+        self.assertIn("## 4. SessionStart hook", t)
+        self.assertIn("## 5. Skill eval battery", t)
+
+    def test_the_installer_actually_wires_the_orient_hook(self):
+        """F-036. The assertion above checks PROSE. Until 2026-08-25 nothing
+        checked that any installer PERFORMED the wiring ENFORCEMENT 4 mandates --
+        and nothing did: `grep -rn "settings.json|SessionStart|hooks" scripts/*.js`
+        came back empty in all three distributions. A governed project therefore
+        ran with no orientation at all, which is the field defect that opened
+        F-036. This is the companion assertion that closes the hole."""
+        init_js = REPO / "scripts" / "init.js"
+        lib_js = REPO / "scripts" / "lib.js"
+        self.assertTrue(init_js.is_file(), "no installer at %s" % init_js)
+        # The CALL, on a LIVE line. Asserting the bare name passes on a file
+        # that only imports the writer; asserting the call text passes on one
+        # where the call is commented out. Both were caught by review, so the
+        # comment lines come off before the match.
+        live = [ln for ln in sc.read_text(init_js).splitlines()
+                if not ln.strip().startswith("//")]
+        self.assertTrue(any("wireOrientHook({" in ln for ln in live),
+                        "init.js does not CALL the SessionStart hook writer that "
+                        "ENFORCEMENT 4 mandates: the manual-step regression")
+        lib_live = [ln for ln in sc.read_text(lib_js).splitlines()
+                    if not ln.strip().startswith("//")]
+        self.assertTrue(any("function wireOrientHook" in ln for ln in lib_live))
+        # The DECISION, not the word: `settings.local.json` also appears in the
+        # helper's own comments, so the earlier assertion passed against an
+        # implementation with the portability split removed.
+        self.assertTrue(
+            any("vendored ? 'settings.json' : 'settings.local.json'" in ln
+                for ln in lib_live),
+            "the portability split is gone: a machine-specific hook path would "
+            "be committed for every teammate to inherit")
+
+    def test_enforcement_hook_examples_name_this_lens(self):
+        """F-036 round 2. Every worked hook example in ENFORCEMENT names a skill
+        directory and a validator, and a reader COPIES it. Both kb and mkt shipped
+        `.claude/skills/agentic-sdlc/scripts/...` -- a directory neither of them
+        installs -- so anyone following the doctrine got a hook that runs, prints
+        `can't open file`, and emits nothing: the wired-and-dead defect F-036
+        exists to detect, sitting in the instructions themselves. Everything is
+        DERIVED from what this distribution actually ships; a literal here is what
+        let three copies assert one lens's identity."""
+        entry = None
+        for name in ("sdlc_check.py", "mkt_check.py"):
+            if (SKILL_DIR / "scripts" / name).is_file():
+                entry = name
+                break
+        self.assertIsNotNone(entry, "no validator entry point beside this battery")
+        # The examples are JSON inside markdown, so each path separator is written
+        # as TWO backslash characters. Split on it rather than escaping a regex.
+        sep = chr(92) * 2
+        text = read("ENFORCEMENT.md")
+        chunks = text.split("skills" + sep)[1:]
+        self.assertTrue(chunks, "ENFORCEMENT shows no worked hook example to check")
+        for chunk in chunks:
+            named_dir = chunk.split(sep)[0]
+            # rstrip the backslash of the escaped quote that closes the JSON string
+            named_script = (chunk.split(sep)[2].split('"')[0].rstrip(chr(92))
+                            if chunk.count(sep) >= 2 else "")
+            self.assertEqual(named_script, entry,
+                             "ENFORCEMENT names %r; this distribution ships %r"
+                             % (named_script, entry))
+            self.assertTrue(SKILL_DIR.name.startswith(named_dir),
+                            "ENFORCEMENT names skills/%s, but this lens lives in "
+                            "%s -- a reader copying that snippet gets a hook that "
+                            "cannot run" % (named_dir, SKILL_DIR.name))
+
+    def test_the_ladder_names_the_gated_rung(self):
+        """F-038. A rung that exists behind a standing permission policy had no
+        truthful word: F-035's log row wrote 'unavailable' for a facility that
+        was present, and rung 3's reason string hard-coded 'no subagent
+        facility'. The ladder must carry the gated state, its definition, the
+        rung-2 precedence, the unattended bound and the no-memory rule -- and
+        THIS lens's templates.md must define the reason words (per-lens file:
+        the drift guard cannot check it)."""
+        ladder = read("review.md")
+        start = ladder.index("Independence, best realization")
+        end = ladder.index("Rounds are capped")
+        # Whitespace-normalized: prose reflows, and an anchor that depends on
+        # where a line happens to wrap is a test of the formatter, not the rule.
+        section = " ".join(ladder[start:end].split())
+        for anchor in ("permission-gated", 'rung 2 is not "usable"',
+                       "Unattended", "asks again", "gated, declined",
+                       "gated, unattended", "gated, pre-empted",
+                       "forbidding its use absent a user request",
+                       "approval prompt is NOT this",
+                       "wherever a higher rung is usable",
+                       "DECLINED is not usable"):
+            self.assertIn(anchor, section,
+                          "the ladder lost its gated-rung clause: %r" % anchor)
+        # The retired reason string must not return: 'no subagent facility' as a
+        # parenthesised reason claims absence where the truthful word may be
+        # gated -- the exact F-035 defect this vocabulary exists to end.
+        self.assertNotIn("(declared; no subagent facility", section,
+                         "the retired reason string is back in the ladder")
+        tpl = read("templates.md")
+        for word in ("gated, declined", "gated, unattended", "gated, pre-empted"):
+            self.assertIn(word, tpl,
+                          "templates.md does not define reason word %r" % word)
+
+    def test_skill_consult_trigger(self):
+        t = read("SKILL.md")
+        self.assertIn("consult the guide router", t)
+        self.assertIn("Consult (before acting)", t)
+
+    def test_every_support_file_is_in_the_package(self):
+        """F-030: a support file the profile declares but `package.json` omits is
+        doctrine the installed skill does not have. It ships a SKILL.md pointing
+        at a file the user cannot open -- the same doctrine-vs-machinery class
+        F-029 spent a release closing, and it nearly shipped again with
+        `portability.md`. Skipped where no package.json sits beside the skill
+        (an installed copy), because there the question does not arise."""
+        import json
+        pkg = SKILL_DIR.parents[1] / "package.json"
+        if not pkg.is_file():
+            self.skipTest("no package.json beside this skill (installed copy)")
+        listed = set(json.loads(sc.read_text(pkg)).get("files", []))
+        for name in dist.profile()["support_files"]:
+            rel = "%s/%s" % (SKILL_DIR.name, name)
+            self.assertIn(
+                "skills/" + rel, listed,
+                f"'{name}' is a declared support file and is NOT packaged: the "
+                f"published skill would cite doctrine its user cannot open")
+
+    def test_the_installed_skill_says_which_version_it_is(self):
+        """F-033: an installed skill carries NO package.json and NO
+        gemini-extension.json — only doctrine and scripts. Without a version in
+        SKILL.md's frontmatter, neither the user nor the agent reading it can
+        tell which build is installed, and diagnosing "is that fix in your copy?"
+        needs `npm view` plus a shasum comparison. That happened, in the field.
+
+        The string alone would rot, so this asserts the SYNC: every bump point
+        must move together. The third bump point (gemini-extension.json) was
+        already skipped for two whole releases with nothing to catch it, which is
+        precisely why the fourth arrives with a test attached."""
+        import json
+        skill = read("SKILL.md")
+        m = re.search(r"^version:\s*(\S+)\s*$", skill, re.M)
+        self.assertIsNotNone(
+            m, "SKILL.md frontmatter must carry `version:` — an installed skill "
+               "has no other file that says which build it is")
+        declared = m.group(1)
+        pkg = SKILL_DIR.parents[1] / "package.json"
+        if not pkg.is_file():
+            self.skipTest("no package.json beside this skill (installed copy)")
+        for rel in ("package.json", "gemini-extension.json"):
+            p = SKILL_DIR.parents[1] / rel
+            if not p.is_file():
+                continue
+            self.assertEqual(
+                json.loads(sc.read_text(p))["version"], declared,
+                f"SKILL.md says {declared} and {rel} disagrees: a version the "
+                f"reader cannot trust is worse than no version at all")
+
+    def test_scenarios_only_cite_support_files_this_lens_ships(self):
+        """F-029 G: a scenario may not test a construct this distribution lacks.
+
+        kb shipped two scenarios copied byte-for-byte from the code lens, both
+        exercising `architect.md` — which kb does not have. The battery therefore
+        reported coverage of a pass that is not here, while kb's OWN method
+        (extraction, placement, reconciliation, the corpus letter, locators) had
+        none at all. Local by design: a cross-distribution diff cannot run in an
+        installed skill, but an absent support file can always be seen from here."""
+        scen = SKILL_DIR / "evals" / "scenarios"
+        if not scen.is_dir():
+            self.skipTest("this distribution ships no scenarios")
+        known = {p.name for p in SKILL_DIR.glob("*.md")}
+        for p in sorted(scen.glob("*.md")):
+            for ref in set(re.findall(r"`([A-Za-z_]+\.md)`", sc.read_text(p))):
+                if ref in known or ref.startswith(("GUIDE_", "ANALYSIS_", "SPIKE_")):
+                    continue
+                self.fail(f"evals/scenarios/{p.name} cites `{ref}`, which this "
+                          f"distribution does not ship: the scenario tests a "
+                          f"construct that is not here, so a green battery "
+                          f"reports coverage it does not have")
+
+    def test_triage_levels_are_distinguishable(self):
+        """F-029: no two levels may state the same criteria.
+
+        kb shipped L1 and L2 both bounded at 'at most 1-2 files', so no change
+        could be classified L2 and anything touching three files fell to L3 by
+        'when in doubt, go higher'. A field user hit it with a five-file
+        propagation of one already-settled fact, deviated, and declared the
+        deviation -- the best available behaviour against an undecidable rule.
+
+        Lens-agnostic on purpose, in the level NAMES as much as in the units:
+        each domain states the boundaries in its own (`L1..L3` here, `E1..E3` in
+        marketing), and the Vision requires exactly that of every sibling. So
+        this asserts the graded levels are DISTINGUISHABLE, never what they say."""
+        rows = {}
+        for line in read("SKILL.md").splitlines():
+            m = re.match(r"^\|\s*\*\*([A-Z]\d)\s*-[^|]*\*\*\s*\|([^|]*)\|", line)
+            if m:
+                rows[m.group(1)] = " ".join(m.group(2).split()).strip().lower()
+        self.assertGreaterEqual(
+            len(rows), 3,
+            "Rule Zero must offer at least three graded levels to classify by; "
+            f"found {sorted(rows)}")
+        seen = {}
+        for lvl in sorted(rows):
+            crit = rows[lvl]
+            if crit in seen:
+                self.fail(f"{seen[crit]} and {lvl} state the SAME criteria "
+                          f"({crit!r}): no request can be classified between "
+                          f"them, so the level is decided by the tie-break "
+                          f"rule instead of by the request")
+            seen[crit] = lvl
+
+    def test_rule_zero_declares_router_verdict(self):
+        """F-016 move A: the consult lives on the ALWAYS-executed path. Rule Zero
+        makes the router lookup a DECLARED output, so 'did not look' is
+        distinguishable from 'looked, no match'. L1 stays exempt."""
+        t = read("SKILL.md")
+        self.assertIn("router verdict", t)
+        self.assertIn("router: no match", t)
+        head = t.split("## Write Triggers")[0]
+        self.assertIn("router verdict", head,
+                      "the router verdict must be declared in Rule Zero, "
+                      "not only later in the workflow")
+
+    def test_phase1_reads_guide_router(self):
+        """F-016 move B: Phase 1 (the only always-run read step) reads the guide
+        router, not just README + INDEX."""
+        t = read("SKILL.md")
+        self.assertIn("reference/INDEX.md` (the guide router", t,
+                      "Phase 1 must read the guide router under the docs "
+                      "root (ai_docs/ or this lens's own root)")
+        self.assertIn("reference/INDEX.md", read("templates.md"),
+                      "the README template must seed the router as a must-read")
+
+    @requires("comprehension_guides")
+    def test_code_guide_trigger_has_a_phase(self):
+        """F-016 move D: the source_kind: code Write-Triggers row must name a real
+        phase. Phase 'any' is nobody's phase -- the duty then never fires."""
+        t = read("SKILL.md")
+        row = [ln for ln in t.splitlines()
+               if "`source_kind: code`" in ln and ln.lstrip().startswith("|")]
+        self.assertTrue(row, "Write-Triggers row for source_kind: code missing")
+        self.assertNotIn("| any |", row[0])
+        self.assertIn("Comprehension checkpoint", t)
+
+    def test_enforcement_hook_is_recommended_default(self):
+        """F-016 move C: the orient hook is the only non-prompt backstop -- it is
+        a recommended default, no longer merely optional."""
+        t = read("ENFORCEMENT.md")
+        self.assertIn("recommended default", t)
+        self.assertNotIn("## 4. SessionStart hook (orientation, optional)", t)
+
+    def test_parallel_handoff_wired(self):
+        """F-019 + F-028: the handoff is a workstream REGISTRY, and since F-028 a
+        GENERATED one — one authored source file per open workstream, so two
+        writers touch two files. Durable narrative stays in the ANALYSIS Diary
+        (DRY); the source file carries the row plus the resume logistics and is
+        deleted at closure, which is what removes the row."""
+        unit = dist.profile()["unit_noun"]
+        skill = read("SKILL.md")
+        self.assertIn(f"HANDOFF_[{unit}].md", skill)
+        self.assertIn("workstream registry", skill)
+        tpl = read("templates.md")
+        self.assertIn(f"HANDOFF_[{unit}].md", tpl)
+        self.assertIn("resume logistics", tpl,
+                      "the Diary/logistics boundary must be stated in the template")
+        # F-028. The registry is generated: saying so in one file and not the
+        # other is how an agent ends up hand-editing a file the validator then
+        # rejects -- the doctrine-vs-machinery defect class, in the document
+        # that describes the machinery.
+        for name, text in (("SKILL.md", skill), ("templates.md", tpl)):
+            self.assertIn("GENERATED" if name == "templates.md" else "generated", text,
+                          f"{name} must say the registry is generated")
+            self.assertIn("index", text)
+        self.assertIn("all at once", tpl.lower(),
+                      "converting one row at a time is the state that loses the "
+                      "others: the template owes the whole-project clause")
+        self.assertIn("workstream:", tpl,
+                      "the frontmatter key that makes a file a source must be shown")
+        # A shipped format change without a migration clause strands existing projects
+        # -- but only a distribution that HAS shipped one owes the clause.
+        if dist.has_capability("legacy_narrative_handoff"):
+            self.assertIn("pre-1.17", skill)
+            self.assertIn("pre-1.17", tpl)
+
+    def test_vision_discipline_wired(self):
+        """F-018: a Vision is a gate, and the discipline that makes it verifiable
+        by a cold reader is single-sourced in vision.md and reachable from the
+        Vision Gate phase, the Write-Triggers row and the template."""
+        v = read("vision.md")
+        for anchor in ("## What a Vision IS", "deletion test",
+                       "## 1. The nine properties", "## 4. Minimum operable sections",
+                       "## 6. The blind check"):
+            self.assertIn(anchor, v, f"vision.md missing {anchor}")
+        self.assertIn("benefit", read("elicitation.md"),
+                      "elicitation must ask for the benefit, not accept a mechanism")
+        skill = read("SKILL.md")
+        self.assertIn("blind check", skill,
+                      "the Vision Gate must route promotion through the blind check")
+        self.assertIn("vision.md", skill)
+        self.assertIn("vision.md", read("templates.md"),
+                      "the Vision template must point at the drafting discipline")
+
+    @requires("question_discipline")
+    def test_question_discipline_wired(self):
+        """F-026: a real doubt is asked when it emerges, before its answer is
+        written; a question is legal only if searched-first (search named) and it
+        names the blocked decision. Wired in the file that owns it AND on the
+        always-read path -- a rule only L3-phase-3 readers see never reaches the
+        L1/L2 question."""
+        e = read("elicitation.md")
+        for anchor in ("## The question discipline", "### When a doubt emerges",
+                       "### Ask before the write", "### The form of a question",
+                       "Searched first", "names what is blocked",
+                       "Generic confirmation", "Preference-fishing",
+                       "fake the search", "the alternative it excludes",
+                       "That list is closed", "why no assumption survives",
+                       "legal by mandate", "Unattended path"):
+            self.assertIn(anchor, e, f"elicitation.md missing {anchor}")
+        # The 2026-09-25 revision removed the default that sent a doubt to the
+        # deliverable; it must not come back.
+        self.assertNotIn("Default non-blocking", e,
+                         "the non-blocking default hands doubts to the deliverable")
+        for anchor in ("never settled by a weighing",
+                       "each with its pros and cons", "I take X over Z",
+                       "at its strongest", "serve different needs",
+                       "none good enough at both"):
+            self.assertIn(anchor, e, f"elicitation.md missing {anchor}")
+        # review.md is shared: the section it cites must exist in this lens.
+        rv = read("review.md")
+        self.assertIn("`elicitation.md` §The form of a question", rv)
+        self.assertIn("An unasked doubt is a finding", rv)
+        self.assertIn("return it in your final output", read("dispatch.md"),
+                      "a spawned subagent must be told to return its doubts")
+        skill = read("SKILL.md")
+        head = skill.split("## Write Triggers")[0]
+        self.assertIn("question discipline", head,
+                      "the legality test must be reachable from Rule Zero, "
+                      "not only from the phase-3 round")
+        self.assertIn("elicitation.md", head,
+                      "Rule Zero must CITE the owning file, not restate the rule: "
+                      "a second copy diverges at the first edit (review.md "
+                      "§Reviewing, restated facts)")
+        # The bullet may not grow back into a second copy of the rule. The three
+        # never-legal forms and the three blocking cases live in ONE file; a
+        # summary that enumerates them is the divergence this guards.
+        bullet = [ln for ln in head.splitlines()
+                  if "question discipline" in ln or "legality test" in ln]
+        self.assertTrue(bullet, "the Rule Zero bullet is missing")
+        self.assertIn("when it emerges", " ".join(bullet),
+                      "the always-read line must carry the ask-when-it-emerges duty")
+        for enumerated in ("Preference-fishing", "Re-asking the record",
+                           "circuit breaker", "round cap"):
+            self.assertNotIn(enumerated, " ".join(bullet),
+                             f"Rule Zero re-enumerates '{enumerated}' instead of "
+                             "citing elicitation.md -- two copies, one of which "
+                             "will go stale")
+
+    @requires("architect_pass")
+    def test_architect_pass_wired(self):
+        """F-020: the architect pass runs at L3 between elicitation and the
+        Impact -- capabilities ruled against the platform before files are
+        listed. Wired end to end: discipline file, phase-3 invocation, the
+        ANALYSIS section that records it, and the review clause that checks it."""
+        a = read("architect.md")
+        for anchor in ("## 1. State the feature as capabilities, not as files",
+                       "## 2. Rule each capability against the platform",
+                       "## 4. Decide the unit of change", "MISSING",
+                       "Feature-shaped platform", "Silent degradation"):
+            self.assertIn(anchor, a, f"architect.md missing {anchor}")
+        skill = read("SKILL.md")
+        self.assertIn("Architect before you list files", skill,
+                      "phase 3 must invoke the pass before the Impact")
+        phase3 = skill.split("### 3. Request Analysis")[1].split("### 4.")[0]
+        self.assertIn("architect.md", phase3)
+        self.assertLess(phase3.index("Architect before you list files"),
+                        phase3.index("Blast-radius enumeration"),
+                        "the architect pass precedes the blast radius: "
+                        "capabilities are ruled before files are listed")
+        minsec = skill.split("Minimum sections:")[1].splitlines()[0]
+        self.assertIn("Capability Ledger", minsec,
+                      "the ledger must be named on the L3 minimum-sections line "
+                      "itself, not merely somewhere in the file")
+        tpl = read("templates.md")
+        self.assertIn("## Capability Ledger", tpl)
+        self.assertLess(tpl.index("## Capability Ledger"),
+                        tpl.index("## Impact"),
+                        "the ledger section precedes Impact, which it feeds")
+        self.assertIn("Capability Ledger", read("review.md"),
+                      "the closure review must map the ledger, or the pass is "
+                      "authored and never checked")
+
+    @requires("interaction_contract")
+    def test_interaction_contract_wired(self):
+        """F-032 (v2): the Interface Contract binds use cases to actor-facing
+        surfaces BEFORE the solution -- observable behavior AND the
+        responsibility-level flow (naming components), conditional
+        on the acts-on-or-perceives trigger. Wired end to end: template section
+        in pipeline order, phase-3 invocation ahead of the architect pass, the
+        review clause that makes a skipped contract a finding, and the
+        elicitation hook that feeds its as-is."""
+        tpl = read("templates.md")
+        self.assertIn("## Interface Contract", tpl)
+        self.assertLess(tpl.index("## Use Cases / User Needs"),
+                        tpl.index("## Interface Contract"),
+                        "the contract realizes the use cases, so it follows them")
+        self.assertLess(tpl.index("## Interface Contract"),
+                        tpl.index("## Capability Ledger"),
+                        "the contract precedes the ledger and the Impact: "
+                        "degrees of freedom shrink monotonically")
+        self.assertIn("acts on or perceives", tpl,
+                      "the trigger's OWNING definition (the verb pair) lives in "
+                      "the templates.md section comment")
+        skill = read("SKILL.md")
+        minsec = skill.split("Minimum sections:")[1].splitlines()[0]
+        self.assertIn("Interface Contract", minsec,
+                      "the conditional section must be named on the L3 "
+                      "minimum-sections line itself")
+        phase3 = skill.split("### 3. Request Analysis")[1].split("### 4.")[0]
+        self.assertIn("Interface Contract before the Impact", phase3)
+        self.assertLess(phase3.index("Interface Contract before the Impact"),
+                        phase3.index("Architect before you list files"),
+                        "pipeline order: contract, then capabilities, then files")
+        self.assertNotIn("acts on or perceives", phase3,
+                         "SKILL.md cites the trigger's owning home instead of "
+                         "restating the verb pair -- two copies drift")
+        self.assertIn("Interface Contract", read("review.md"),
+                      "a skipped contract must be a finding, or the section is "
+                      "authored and never checked")
+        self.assertIn("the surfaces they use today", read("elicitation.md"),
+                      "the elicitation round feeds the contract's as-is")
+
+    @requires("architect_pass")
+    def test_component_map_wired(self):
+        """F-020b: the pass is only repeatable across sessions if what gets built
+        lands in a durable inventory. The Component Map is that inventory, and its
+        write trigger is the component's BIRTH -- keyed on the stack, a new
+        component never fires it and the map rots silently."""
+        self.assertIn("## Component Map", read("templates.md"),
+                      "the architecture template must carry the map")
+        a = read("architect.md")
+        self.assertIn("## Component Map", a,
+                      "the pass must READ the map before searching the code")
+        self.assertIn("Component Map", read("review.md"),
+                      "a built component missing from the map must be a finding")
+        skill = read("SKILL.md")
+        rows = [ln for ln in skill.splitlines()
+                if "Component Map" in ln and ln.lstrip().startswith("|")]
+        self.assertTrue(rows, "Write-Triggers row for the Component Map missing")
+        self.assertIn("BORN", rows[0],
+                      "the trigger must key on the component's birth, not on a "
+                      "stack change the birth would never fire")
+        self.assertIn("DISCOVERED", rows[0],
+                      "a component the pass merely FINDS must also land in the "
+                      "map: marking the area ANALYZED while the map stays silent "
+                      "lets the next feature rule it MISSING and build it twice")
+        self.assertIn("DISCOVERED", read("review.md"),
+                      "the discovered-component duty needs its mirror finding")
+        # dogfood: this repo's own architecture doc carries a real map
+        arch_p = REPO / "ai_docs" / "strategic" / "architecture.md"
+        if arch_p.is_file():
+            self.assertIn("## Component Map", sc.read_text(arch_p))
+
+    @requires("architect_pass")
+    def test_unmapped_never_grounds_missing(self):
+        """F-020c: on a project the methodology just arrived in, the map is nearly
+        all silence. Silence is UNREAD, not EMPTY -- reading it as empty designs a
+        duplicate of the existing codebase. The incremental licence covers writing
+        the inventory, never comprehension of what the change touches."""
+        a = read("architect.md")
+        self.assertIn("Empty-map MISSING", a,
+                      "the anti-pattern must be named to be reviewable")
+        self.assertIn("never ground a MISSING", a)
+        self.assertIn("cache of evidence somebody already paid for", a,
+                      "the map is a cache of evidence, not a substitute for it")
+        self.assertIn("never the STANDARD of one", a,
+                      "a cache hit may not lower the evidence bar for a verdict")
+        self.assertIn("Understanding is never deferred", a,
+                      "the licence defers the artifact, not the comprehension")
+        skill = read("SKILL.md")
+        self.assertIn("No full-codebase sweep is required before the first feature",
+                      skill, "an unbounded up-front sweep is skipped silently, "
+                             "which is worse than an incremental map")
+        self.assertIn("audit/audit_plan.md` FIRST", skill,
+                      "the scope ledger precedes the documents built on it")
+        self.assertIn("ANALYZED", read("review.md"),
+                      "an unfalsifiable MISSING on unmapped ground must be a finding")
+        self.assertIn("unread, not empty", read("templates.md"),
+                      "the map template must declare its own coverage limit")
+
+    @requires("architect_pass")
+    def test_backstops_are_advisory_not_a_gate(self):
+        """F-020e: the accepted ceremony budget was a SIGNAL. --strict turns
+        warnings into exit 1 and ENFORCEMENT recommends it in CI, so routing the
+        architect-pass checks through `warnings` would ship a blocking gate the
+        owner never accepted. They must be advisories, inert under --strict."""
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            sol = root / "ai_docs" / "solutions"
+            sol.mkdir(parents=True)
+            vis = root / "ai_docs" / "vision"
+            vis.mkdir()
+            for name in sc.VISION_FILES:
+                (vis / name).write_text(f"# {name}\nStatus: APPROVED (by owner)\n",
+                                        encoding="utf-8")
+            (sol / "ANALYSIS_x.md").write_text(
+                "---\nid: F-1\nfeature: X\nstatus: COMPLETED\nlevel: L3\n"
+                "start_date: 2026-08-01\nend_date: 2026-08-02\n---\n"
+                "# X\n## Objective\no\n## Feature Vision\nv\n## Impact\ni\n"
+                "## Security and Threat Model\ns\n## Action Plan\n- [x] a\n"
+                "## Test Strategy\nt\n## Diary\nd\n", encoding="utf-8")
+            sc.cmd_index(root)  # generated indexes present: isolate the advisory
+            self.assertEqual(sc.cmd_validate(root, strict=True), 0,
+                             "a missing Capability Ledger must not fail --strict: "
+                             "an advisory that reddens CI is a gate under another name")
+        a = read("architect.md")
+        self.assertIn("not even under `--strict`", a,
+                      "the doctrine must state the escalation honestly")
+
+    def test_map_refs_scoped_to_the_where_column(self):
+        """R3 BLOCK (found by two independent reviewers): harvesting refs from
+        the WHOLE architecture.md let the canonical template's own
+        '## Directory Structure' backticks satisfy the mark-counter-check, so it
+        was inert on every project that filled that section in."""
+        arch = ("# A\n## Directory Structure\n- `billing/` — invoices\n\n"
+                "## Component Map\n\n| Component | Capability | Contract | Where |\n"
+                "|---|---|---|---|\n| Api | serve | h() | `src/api.py#h` |\n")
+        self.assertEqual(sc.map_where_refs(arch), ["src/api.py"],
+                         "only the Where column counts; a Directory Structure "
+                         "backtick must not silence the check")
+        self.assertIsNone(sc.map_where_refs("# A\n## Other\n- `x/y.py`\n"),
+                          "no Component Map at all -> None, not an empty claim")
+        self.assertEqual(sc.map_where_refs(
+            "## Component Map\n\n| Component | Capability |\n|---|---|\n| A | b |\n"), [],
+            "a map with no Where column maps nothing -> [], not None")
+        # symbol stripped and separators normalized, so a file-area row can match
+        arch2 = arch.replace("`src/api.py#h`", "`src\\api.py#h`")
+        self.assertEqual(sc.map_where_refs(arch2), ["src/api.py"])
+
+    def test_prose_is_never_reported_as_rot(self):
+        """R3: `Next.js`/`Node.js`/`OrderStore.save` were reported as rotting
+        paths. A false rot trains the reader to ignore the channel."""
+        for token in ("Next.js", "Node.js", "Vue.js", "React.js",
+                      "OrderStore.save", "app.core", "1.18.0"):
+            self.assertEqual(sc._map_refs(f"`{token}`"), [],
+                             f"'{token}' is prose, not a file ref")
+        # the exclusion is scoped to the .js framework-name case ONLY: a blanket
+        # CamelCase rule silences exactly what React/C#/Java projects map
+        for real in ("run_behavioral.py", "init.js", "src/a.py#F", "README.md",
+                     "App.tsx", "Program.cs", "Main.java", "Cargo.toml"):
+            self.assertTrue(sc._map_refs(f"`{real}`"),
+                            f"'{real}' is a real ref and must stay checked")
+
+    def test_new_checks_never_redden_strict_ci(self):
+        """R3 BLOCK: the 'level missing' guard shipped as a WARNING, which
+        --strict escalates to exit 1 -- the exact defect the advisories bucket
+        was invented for, reintroduced one round later. Bootstrap DRAFT visions
+        had the same problem: the skill mandates DRAFT, so --strict was red on
+        every freshly bootstrapped project."""
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "ai_docs" / "solutions").mkdir(parents=True)
+            vis = root / "ai_docs" / "vision"
+            vis.mkdir()
+            for name in sc.VISION_FILES:      # bootstrap state: DRAFT by mandate
+                (vis / name).write_text(f"# {name}\nStatus: DRAFT\n", encoding="utf-8")
+            (root / "ai_docs" / "solutions" / "ANALYSIS_old.md").write_text(
+                "---\nid: F-9\nfeature: Legacy\nstatus: COMPLETED\n"
+                "start_date: 2024-01-01\nend_date: 2024-02-01\n---\n"
+                "# L\n## Objective\no\n## Feature Vision\nv\n## Impact\ni\n"
+                "## Security and Threat Model\ns\n## Action Plan\n- [x] a\n"
+                "## Test Strategy\nt\n## Diary\nd\n", encoding="utf-8")
+            sc.cmd_index(root)
+            self.assertEqual(sc.cmd_validate(root, strict=True), 0,
+                             "a pre-1.18 analysis with no `level:` and a bootstrap "
+                             "DRAFT vision must not fail --strict")
+
+    def test_router_stub_written_with_zero_guides(self):
+        """R3 BLOCK: Rule Zero makes reading the router mandatory and forbids
+        faking `no match`, but `index` refused to write it without guides -- so
+        the required verdict was unsatisfiable on every new project."""
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "ai_docs" / "reference").mkdir(parents=True)
+            sc.cmd_index(root)
+            gidx = root / "ai_docs" / "reference" / "INDEX.md"
+            self.assertTrue(gidx.is_file(), "the router must exist even with zero guides")
+            self.assertIn("no match", sc.read_text(gidx),
+                          "the stub must name the honest verdict")
+            # ...but with guides PRESENT a missing router is still an ERROR: the
+            # agent's mandatory lookup would find nothing and legally declare
+            # 'absent', so the guide governing the work is never consulted
+            (root / "ai_docs" / "reference" / "GUIDE_x.md").write_text(
+                "---\ndescription: when to do x\nstatus: CURRENT\nsource_kind: document\n"
+                "source: s\ndistilled_from: ai_docs/reference/.sources/x.md\n"
+                "source_hash: abc\n---\n# Guide: X\n## How to do X\n[source: x.md#a]\ndo x\n",
+                encoding="utf-8")
+            gidx.unlink()
+            self.assertEqual(sc.cmd_validate(root), 1,
+                             "guides without a router must be an ERROR, not an advisory")
+        self.assertIn("router: absent", read("guides.md"),
+                      "a third legal verdict is needed for a genuinely missing router")
+
+    def test_design_review_gate_wired(self):
+        """F-021: in Standalone the ANALYSIS was reviewed only as an INPUT to the
+        closure review -- i.e. after the code existed. The design gate fires at
+        the END of Phase 3, before implementation, and is logged."""
+        r = read("review.md")
+        for anchor in ("## When a review is due", "Design review", "Closure review",
+                       "declared self-pass", "capped at 3", "REVIEW_LOG.md"):
+            self.assertIn(anchor, r, f"review.md missing {anchor}")
+        skill = read("SKILL.md")
+        self.assertIn("Design review gate", skill)
+        before, after = dist.profile()["design_gate_between"]
+        p3 = skill.index(before)
+        p4 = skill.index(after)
+        self.assertTrue(p3 < skill.index("Design review gate") < p4,
+                        "the gate must sit after the design exists and before the work is "
+                        "executed -- a design review after implementation is the closure review")
+        self.assertTrue([ln for ln in skill.splitlines()
+                         if "REVIEW_LOG.md" in ln and ln.lstrip().startswith("|")],
+                        "Write-Triggers row for the review log missing")
+        self.assertIn("REVIEW_LOG.md", read("templates.md"))
+        # behavior: the backstop nags only where it should
+        due = {"level": "L3", "status": "IN_PROGRESS", "start_date": "2026-07-28"}
+        self.assertTrue(sc.design_review_due(due))
+        self.assertTrue(sc.design_review_due({**due, "status": "COMPLETED"}))
+        self.assertFalse(sc.design_review_due({**due, "status": "PLANNED"}),
+                         "the review is due at the END of Phase 3: a design still "
+                         "being drafted is not late")
+        self.assertFalse(sc.design_review_due({**due, "level": "L2"}))
+        self.assertFalse(sc.design_review_due({**due, "start_date": "2026-07-01"}),
+                         "work predating the gate is grandfathered")
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "ai_docs" / "audit" / "reviews").mkdir(parents=True)
+            self.assertFalse(sc.review_logged(root, "ANALYSIS_x.md"),
+                             "no log file -> not logged")
+            (root / sc.review_log_rel()).write_text(
+                "| date | doc_key | tier | reviewer | r | r | verdict | n |\n"
+                "|---|---|---|---|---|---|---|---|\n"
+                "| 2026-07-28 | ANALYSIS_x.md | design | subagent | 3 | 3 | PASS | 1 |\n"
+                # a CLOSURE row that says 'design' in its reviewer cell: the
+                # fixture that made the old whole-row match pass vacuously
+                "| 2026-07-28 | ANALYSIS_y.md + diff | closure | subagent - "
+                "conformance to the design | 1 | 1 | PASS | 1 |\n"
+                "| 2026-07-28 | ANALYSIS_w.md | design (late) | self-pass "
+                "(declared; absent) | 2 | 2 | FAIL | 1 |\n",
+                encoding="utf-8")
+            self.assertTrue(sc.review_logged(root, "ANALYSIS_x.md"))
+            self.assertFalse(sc.review_logged(root, "ANALYSIS_y.md"),
+                             "a closure row is not a design review, even when the "
+                             "word 'design' appears elsewhere in it")
+            self.assertTrue(sc.review_logged(root, "ANALYSIS_w.md"),
+                            "'design (late)' is a design review, and a FAIL row counts")
+            self.assertFalse(sc.review_logged(root, "ANALYSIS_z.md"))
+            # a longer sibling must not satisfy a shorter name's gate
+            self.assertFalse(sc.review_logged(root, "ANALYSIS_"),
+                             "substring matching lets a sibling ANALYSIS pass")
+            # the tier column is located by header, not assumed at index 2
+            (root / sc.review_log_rel()).write_text(
+                "| # | date | doc_key | tier | reviewer | r | v | n |\n"
+                "|---|---|---|---|---|---|---|---|\n"
+                "| 1 | 2026-07-28 | ANALYSIS_x.md | design | subagent | 1 | PASS | 1 |\n",
+                encoding="utf-8")
+            self.assertTrue(sc.review_logged(root, "ANALYSIS_x.md"),
+                            "an extra leading column must not produce a permanent, "
+                            "unclearable 'you skipped the review'")
+
+    def test_human_approval_rule_in_every_lens(self):
+        """F-053: the never-auto-accept rule is a human-approval guarantee, and
+        it must be readable in EVERY lens's own package.
+
+        It was missing from kb entirely -- behind a green battery, because the
+        only assertion lived inside the seam test, which `skipTest()`s any lens
+        without a `hybrid.md`: the one lens that did not have the rule was the
+        one lens nothing checked. This test skips nothing. Lens-agnostic by
+        construction: it reads whichever of the two files this lens keeps its
+        Hybrid seam in, and carries no lens's headings."""
+        text = read("SKILL.md")
+        hybrid = SKILL_DIR / "hybrid.md"
+        if hybrid.is_file():
+            text += hybrid.read_text(encoding="utf-8")
+        self.assertRegex(text, r"(?i)auto-accept",
+                         "a package whose Hybrid mode proposes governed "
+                         "artifacts must say the human resolves them")
+        self.assertRegex(
+            text, r"(?i)explicit confirmation|wait for[^.]{0,24}confirm",
+            "naming auto-accept without saying what to do instead is a label, "
+            "not a guarantee: the duty is to present and wait")
+
+    def test_authoring_pointer_in_the_contract(self):
+        """F-053: the authoring floor must reach the AUTHOR before it drafts.
+
+        `review.md` is loaded at the design-review gate -- one phase after the
+        artifact exists -- so the rule needs a pointer in the always-read
+        contract. F-049 put one in the code lens only; this pins it in each.
+
+        Presence and ownership only: whether the pointer sits BEFORE that
+        lens's first authoring instruction is a per-lens question, and a shared
+        file carrying three lenses' anchors is the failure the conservation ADR
+        rejected. That position check lives in the repo's own harness."""
+        text = read("SKILL.md")
+        self.assertIn("know which tier is authoring", text,
+                      "without a pointer in SKILL.md the rule is unreachable "
+                      "at the only moment it could change what gets written")
+        after = text.split("know which tier is authoring", 1)[1][:600]
+        self.assertIn("`review.md`", after,
+                      "the pointer must CITE the rule's owner; a pointer that "
+                      "restates it is a second source of truth")
+
+    def test_hybrid_seam_moved_not_deleted(self):
+        """F-051: the Hybrid seam left the mandatory read for a triggered support
+        file. A pruning unit has one catastrophic failure mode -- a quiet deletion
+        wearing the costume of a move -- so this pins CONSERVATION, not bytes.
+        Skipped in a lens that has not done the move (SKILL.md is per-lens)."""
+        skill = read("SKILL.md")
+        hybrid_path = SKILL_DIR / "hybrid.md"
+        if not hybrid_path.is_file():
+            self.skipTest("this lens has not extracted its Hybrid seam yet")
+        hybrid = hybrid_path.read_text(encoding="utf-8")
+        # CONSERVATION, the direction that matters: the moved block must still
+        # hash to the digest recorded when it left SKILL.md. Deriving anchors
+        # FROM hybrid.md can only ever check for duplicates -- delete a section
+        # and the derived list simply stops mentioning it, so the gate goes
+        # green on the one failure it exists to catch (mutation-proved at
+        # F-052). The digest is per-lens DATA in the lens's own file, so the
+        # shared check carries no lens's headings and still proves the content
+        # survived.
+        stamp = re.search(r"<!--\s*moved-block-sha256:\s*([0-9a-f]{64})\s*-->",
+                          hybrid)
+        self.assertIsNotNone(
+            stamp, "hybrid.md must record the digest of the block it received, "
+                   "or nothing in any battery guards that content")
+        i = hybrid.index("### Hybrid in symbiosis with devPNT")
+        body = hybrid[i:].split("\n", 1)[1].strip()
+        self.assertEqual(hashlib.sha256(body.encode("utf-8")).hexdigest(),
+                         stamp.group(1),
+                         "the moved block has drifted from what was moved: "
+                         "content was edited or deleted after the relocation")
+        # and no duplicate: whatever moved must be gone from the contract.
+        # Anchors DERIVED, so no lens's headings live in this shared file.
+        moved = [ln.strip() for ln in hybrid.splitlines()
+                 if ln.startswith("### ")
+                 and ln.strip() != "### Hybrid in symbiosis with devPNT"]
+        self.assertTrue(moved, "hybrid.md carries no section: nothing moved")
+        for heading in moved:
+            self.assertNotIn(heading, skill,
+                             f"{heading!r} is in BOTH files: the move did not "
+                             "happen, and the reader now has two copies")
+        # A heading can survive while its substance does not, so the rows go
+        # too: every table row that moved must be absent from the contract.
+        rows = [ln.strip() for ln in hybrid.splitlines()
+                if ln.startswith("| ") and ln.count("|") >= 3]
+        for row in rows:
+            self.assertNotIn(row, skill,
+                             "a moved table row is still in SKILL.md")
+        # the pointer must carry its trigger and its consequence, or it is a
+        # filename and a Hybrid session has no reason to follow it
+        self.assertIn("hybrid.md", skill)
+        block = skill[skill.index("### Hybrid in symbiosis with devPNT"):]
+        block = block[:block.index("\n## ")]
+        self.assertIn("devpnt_", block, "the pointer must name its trigger")
+        # Anchored AFTER the filename and on the consequence itself: matching
+        # "ownership" alone is satisfied by the pointer's own content inventory,
+        # so deleting the whole consequence paragraph would leave it green.
+        after = block.split("hybrid.md", 1)[-1]
+        self.assertRegex(after, r"(?i)second source of truth",
+                         "the reader must be able to price skipping it")
+        self.assertRegex(after, r"(?i)auto-accept",
+                         "the human-approval rule now lives ONLY in the moved "
+                         "file; the pointer must say so")
+
+    def test_benefit_reports_and_never_gates(self):
+        """F-050: the process's central claim is measurable from REVIEW_LOG, and
+        the measure must never become a gate. The parser's one real risk is
+        silently dropping rows -- the log legally carries two widths, and the
+        one-off analysis that motivated this unit lost 61 of 63 rows that way."""
+        both_widths = (
+            "| date | doc_key | tier | model | reviewer | findings_raised | "
+            "findings_real | verdict | revise_rounds |\n"
+            "|---|---|---|---|---|---|---|---|---|\n"
+            "| 2026-09-10 | A.md | design | deep | subagent | 5 | 4 | FAIL -> PASS | 2 |\n"
+            "| 2026-07-28 | B.md | closure | subagent | 3 | 3 | PASS | 1 |\n"
+            "| 2026-08-01 | C.md | deep | subagent | 9 | 9 | PASS | 1 |\n"
+            "| junk | not | a row |\n")
+        rows, unparsed = sc.parse_review_log(both_widths)
+        self.assertEqual(len(rows), 3,
+                         "a log legitimately carries mixed widths: 9-cell "
+                         "(post-F-048) beside 8-cell (original)")
+        # The Hybrid row review.md mandates has 10 cells and NO `reviewer`.
+        # Reading by width alone reports a whole devPNT log as unparsed.
+        hyb, hyb_un = sc.parse_review_log(
+            "| date | doc_key | tier | model | instrument | findings_raised "
+            "| findings_real | verdict | revise_rounds | notes |\n"
+            "|---|---|---|---|---|---|---|---|---|---|\n"
+            "| 2026-09-01 | E-ISP x | design | deep | graph | 5 | 4 | FAIL | 2 |  |\n")
+        self.assertEqual((len(hyb), len(hyb_un)), (1, 0), hyb_un)
+        self.assertNotIn("reviewer", hyb[0])
+        # templates.md promises reordered/extra columns are fine when the
+        # header says `tier` -- so the header, not the width, is the map.
+        reo, reo_un = sc.parse_review_log(
+            "| tier | date | doc_key | findings_real | verdict |\n"
+            "|---|---|---|---|---|\n"
+            "| design | 2026-09-01 | X | 3 | PASS |\n")
+        self.assertEqual((len(reo), len(reo_un)), (1, 0), reo_un)
+        # an alignment separator is not data and must not become a phantom
+        # entry in the counter that exists to signal data loss
+        _, ali_un = sc.parse_review_log(
+            "| date | doc_key | tier | verdict | findings_real |\n"
+            "|:---|:---:|---:|---|---|\n"
+            "| 2026-09-01 | X | design | PASS | 2 |\n")
+        self.assertEqual(ali_un, [], ali_un)
+        # a findings cell stating no number is UNKNOWN, never zero
+        self.assertIsNone(sc.review_findings("all"))
+        self.assertIsNone(sc.review_findings("R1 4 BLOCK + 8 WARN"),
+                          "a prose cell must not yield a confident count")
+        self.assertEqual(sc.review_findings("7 confirmed"), 7)
+        # FAIL is a word: `PASS (no failures)` is not a failure
+        self.assertFalse(sc._is_fail("PASS (no failures)"))
+        self.assertTrue(sc._is_fail("FAIL -> PASS"))
+        self.assertEqual(len(unparsed), 1,
+                         "a row that parses as neither width is COUNTED, never "
+                         "skipped -- a shrunken denominator inflates every ratio")
+        self.assertEqual([r["tier"] for r in rows], ["design", "closure", "deep"])
+        self.assertEqual(rows[0]["model"], "deep")
+        self.assertNotIn("model", rows[1],
+                         "a narrow row has no model cell; reading one would "
+                         "sample `reviewer` instead")
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            # no log at all -> still a clean report, still exit 0
+            self.assertEqual(sc.cmd_benefit(root), 0,
+                             "a measurement that can fail a build becomes a target")
+            (root / "ai_docs" / "audit" / "reviews").mkdir(parents=True)
+            (root / sc.review_log_rel()).write_text(both_widths, encoding="utf-8")
+            self.assertEqual(sc.cmd_benefit(root), 0)
+        self.assertIn("never a CI gate", read("ENFORCEMENT.md"),
+                      "unstated, someone wires it into CI and the number "
+                      "stops measuring")
+
+    def test_capability_floor_and_delegation_boundary(self):
+        """F-048: independence says the reviewer is not the author; it never said
+        the reviewer CAN do the job. The floor binds gates, so review.md owns it
+        (dispatch.md is surfaced everywhere as opt-in-L3-only); the delegation
+        boundary is family-wide and says what may leave the authoring context."""
+        r, d = read("review.md"), read("dispatch.md")
+        # the floor lives where the gates live, and dispatch points at it
+        self.assertIn("capability floor", r.lower(),
+                      "review.md must own the floor: it owns the gates it binds")
+        self.assertIn("capability floor", d.lower(),
+                      "dispatch.md must CITE the floor, not restate it (DRY)")
+        self.assertIn("threshold signal", r.lower(),
+                      "a tier may be lowered only where a wrong cheap answer is "
+                      "catchable -- that rule IS the floor's justification")
+        # F-049: the floor must reach the AUTHOR, not only the gates. Parsed as a
+        # table row, because a floor a reader cannot look a role up in is advice.
+        # scoped to the FLOOR TABLE's rows, not every pipe line in the file:
+        # a future table elsewhere containing "author" would false-fail.
+        author_rows = [ln for ln in r.splitlines()
+                       if ln.startswith("|")
+                       and re.search(r"\*\*(deep|light|economy)\*\*", ln)
+                       and re.search(r"author", ln, re.I)]
+        self.assertEqual(len(author_rows), 1,
+                         "authoring a governed artifact is the purest deep-floor "
+                         "role: its output is judgement and nothing scores it")
+        self.assertIn("highest floor among the roles it performs itself", r,
+                      "a session performing several roles has no floor without it")
+        flat = re.sub(r"\s+", " ", r)
+        self.assertRegex(flat, r"(?i)cannot determine its own tier",
+                         "the rule binds disclosure, never a capability an agent "
+                         "cannot acquire -- it must fail open and say so")
+        self.assertRegex(flat, r"(?i)should not ALSO run a below-floor",
+                         "authoring below floor AND reviewing below floor on one "
+                         "unit is the combination that must be named")
+        self.assertRegex(flat, r"(?i)The exception is the case",
+                         "forbidding it outright contradicts `independence wins` "
+                         "and pushes toward the abstention that rule rejects")
+        self.assertRegex(flat, r"`reviewer` cell",
+                         "the log has no column for the authoring tier, so the "
+                         "rule must name the cell the disclosure lands in")
+        # the arbitration: the case where the only independent rung is below it
+        self.assertIn("independence wins", r.lower(),
+                      "a client whose only independent rung is below the floor "
+                      "must not be left with two rules pointing opposite ways")
+        # no provider names in shared doctrine -- they rot at the next release
+        for name in ("Opus", "Sonnet", "Haiku", "GPT-4", "Gemini"):
+            self.assertNotIn(name, r + d,
+                             f"{name} is a provider name in shared doctrine")
+        # the boundary, and the condition that makes a task delegable at all
+        self.assertIn("delegated at all", d.lower())
+        self.assertIn("never delegate", d.lower(),
+                      "without a never-list the boundary is advice, not a rule")
+        self.assertIn("not delegable", d.lower(),
+                      "a brief that cannot be pointers pays the tokens twice")
+        # structural, not a spelling pin: the never-list must actually enumerate,
+        # and it must name the authoring case -- the expensive mistake it exists
+        # to prevent. A boundary whose never-list is one vague line is advice.
+        never = d.split("**Never delegate**", 1)
+        self.assertEqual(len(never), 2, "the never-list must be its own item")
+        block = never[1].split("- **")[0]
+        self.assertGreaterEqual(len([c for c in block.split(",") if c.strip()]), 4,
+                                "the never-list must enumerate what it forbids")
+        self.assertTrue(re.search(r"authoring a governed artifact", block, re.I),
+                        "delegated authoring is the mistake the boundary exists "
+                        "to name; a never-list omitting it names nothing")
+
+    def test_review_log_records_which_capability_ran(self):
+        """F-048: `model` is what makes the floor falsifiable -- a row that says a
+        gate ran but not whether it could do its job proves nothing. Owner
+        accepted the ceremony cost 2026-09-10 (Vision 'no ceremony ratchet')."""
+        r, t = read("review.md"), read("templates.md")
+        self.assertIn("| tier | model |", r,
+                      "the core schema must carry `model` after `tier`")
+        self.assertIn("| tier | model |", t,
+                      "this lens's templates.md must state the same schema")
+        # Every value the spine declares must be documented in the template.
+        # Two values carry a tail (`single (client exposes no choice)`,
+        # `below floor: <reason>`), so match the whole backticked token and
+        # compare on its key -- a regex ending at the word drops both and the
+        # coverage check then silently under-covers.
+        key = lambda v: v.split(":")[0].split("(")[0].strip()
+        declared = sorted({key(v) for v in re.findall(
+            r"`(deep|light|economy|single[^`]*|below floor[^`]*)`", r)})
+        self.assertGreaterEqual(len(declared), 5, declared)
+        for v in declared:
+            self.assertIn(v, t, f"`{v}` declared in review.md, absent from "
+                                "templates.md -- the writer cannot use it")
+        # the floor must be a parseable table, not prose: >=2 role->tier rows
+        floor_rows = [ln for ln in r.splitlines()
+                      if ln.startswith("|")
+                      and re.search(r"\*\*(deep|light|economy)\*\*", ln)]
+        self.assertGreaterEqual(len(floor_rows), 2,
+                                "a floor stated only in prose cannot be "
+                                "checked against a role")
+        # `model` must not be sold as a second schema: core + mode-specific
+        self.assertIn("mode-specific", r.lower(),
+                      "Standalone and Hybrid never had one identical column "
+                      "list -- a devPNT row carries no `reviewer` column")
+        # behaviour: the widened schema still resolves, and a mixed log too
+        with tempfile.TemporaryDirectory() as dtmp:
+            root = Path(dtmp)
+            (root / "ai_docs" / "audit" / "reviews").mkdir(parents=True)
+            (root / sc.review_log_rel()).write_text(
+                "| date | doc_key | tier | model | reviewer | r | r | verdict | n |\n"
+                "|---|---|---|---|---|---|---|---|---|\n"
+                "| 2026-09-10 | ANALYSIS_new.md | design | deep | subagent | 1 | 1 | PASS | 1 |\n"
+                # a historical row, one cell narrower, under the widened header
+                "| 2026-07-28 | ANALYSIS_old.md | design | subagent | 2 | 2 | PASS | 1 |\n",
+                encoding="utf-8")
+            self.assertTrue(sc.review_logged(root, "ANALYSIS_new.md"),
+                            "the widened schema broke the gate's tier lookup")
+            self.assertTrue(sc.review_logged(root, "ANALYSIS_old.md"),
+                            "historical rows must keep their meaning: `model` "
+                            "goes AFTER `tier`, so `tier` stays at index 2")
+
+    def test_design_review_advisory_end_to_end(self):
+        """F-021 closure review F2: the unit tests never exercised cmd_validate,
+        so a reviewer's mutation run showed the advisory could be DELETED and the
+        battery stayed green. This asserts the wiring itself: it fires, --hybrid
+        suppresses it (devPNT owns that slot), and it never moves an exit code."""
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "ai_docs" / "solutions").mkdir(parents=True)
+            vis = root / "ai_docs" / "vision"
+            vis.mkdir()
+            for name in sc.VISION_FILES:   # otherwise --strict fails on unrelated warnings
+                (vis / name).write_text(f"# {name}\nStatus: APPROVED (by owner)\n",
+                                        encoding="utf-8")
+            (root / "ai_docs" / "solutions" / "ANALYSIS_f.md").write_text(
+                "---\nid: F-1\nfeature: F\nstatus: IN_PROGRESS\nlevel: L3\n"
+                "start_date: 2026-08-01\n---\n# F\n## Objective\no\n"
+                "## Feature Vision\nv\n## Capability Ledger\n| a |\n## Impact\ni\n"
+                "## Security and Threat Model\ns\n## Action Plan\n- [ ] a\n"
+                "## Test Strategy\nt\n## Diary\nd\n", encoding="utf-8")
+            sc.cmd_index(root)
+
+            def out(**kw):
+                buf = io.StringIO()
+                with contextlib.redirect_stdout(buf):
+                    rc = sc.cmd_validate(root, **kw)
+                return rc, buf.getvalue()
+
+            rc, text = out()
+            self.assertIn("no design-review row", text,
+                          "the advisory must fire on an L3 in implementation")
+            self.assertEqual(rc, 0, "advisories never move the exit code")
+            rc, text = out(hybrid=True)
+            self.assertNotIn("no design-review row", text,
+                             "--hybrid: devPNT's gate owns the slot, so firing here "
+                             "is a permanent unfixable false positive")
+            rc, text = out(strict=True)
+            self.assertNotIn("no design-review row", text.split("Validation:")[1],
+                             "summary sanity")
+            self.assertEqual(rc, 0, "--strict must not escalate this advisory")
+            # cmd_check must FORWARD hybrid: reverting that forwarding was one of
+            # the four mutations that shipped green
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                sc.cmd_check(root, hybrid=True)
+            self.assertNotIn("no design-review row", buf.getvalue(),
+                             "cmd_check must pass hybrid through to cmd_validate")
+
+    def test_audit_plan_paths_confined(self):
+        """R2 BLOCK-1: audit_plan.md is document content, so `stale`/`mark` must
+        confine its paths BEFORE walking. An absolute row ('/' -- what init.js
+        used to seed) made `root / rel` the drive and crashed relative_to()."""
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "ai_docs" / "audit").mkdir(parents=True)
+            (root / "ai_docs" / "audit" / "audit_plan.md").write_text(
+                "# Audit Plan\n\n| Path | Status | Reference | Notes |\n|---|---|---|---|\n"
+                "| / | ANALYZED | 2020-01-01T00:00:00Z | |\n"
+                "| ../escape | ANALYZED | 2020-01-01T00:00:00Z | |\n", encoding="utf-8")
+            self.assertEqual(sc.cmd_stale(root), 0,
+                             "hostile rows must be rejected, not walked (and never crash)")
+            self.assertEqual(sc.cmd_mark(root, ["../outside"]), 1,
+                             "mark must refuse to write an out-of-tree area into the plan")
+        seeder = sc.read_text(REPO / "scripts" / "init.js")
+        if seeder:
+            self.assertNotIn("| / | PENDING", seeder,
+                             "the seeded audit-plan row must be '.', not the drive root")
+
+    def test_no_advisory_on_a_fresh_project(self):
+        """R2 WARN-3: a brand-new project must come out silent. An advisory on
+        day zero, about a placeholder the seeder just wrote, trains the reader to
+        ignore the channel -- worse than the rot it reports."""
+        tpl = read("templates.md")
+        m = re.search(r"^## Component Map$(.*?)^## Architectural Patterns",
+                      tpl, re.M | re.S)
+        self.assertTrue(m, "architecture template lost its Component Map section")
+        adv = []
+        sc.check_component_map(REPO, "## Component Map\n" + m.group(1), adv)
+        self.assertEqual(adv, [], f"the shipped template must validate silently: {adv}")
+
+    def test_map_refs_no_false_rot(self):
+        """R2 N2: a generic extension heuristic turns prose into rot warnings.
+        A false 'the map is rotting' is the worst outcome -- it teaches readers
+        to ignore the channel."""
+        prose = ["app.core", "OrderStore.save", "1.18.0", "agentic-sdlc-init",
+                 "https://example.com/x.py", "some prose"]
+        for token in prose:
+            self.assertEqual(sc._map_refs(f"`{token}`"), [],
+                             f"'{token}' is prose, not a path ref")
+        for real in ("src/a.py#Foo", "README.md", "scripts\\init.js"):
+            self.assertTrue(sc._map_refs(f"`{real}`"), f"'{real}' is a real ref")
+
+    @requires("architect_pass")
+    def test_ledger_backstop_bypasses_closed(self):
+        """R2 WARN-4: two zero-cost bypasses -- delete the optional `level:` line,
+        or mention the heading inside an HTML comment."""
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            sol = root / "ai_docs" / "solutions"
+            sol.mkdir(parents=True)
+            body = ("# X\n## Objective\no\n## Feature Vision\nv\n## Impact\ni\n"
+                    "## Security and Threat Model\ns\n## Action Plan\n- [x] a\n"
+                    "## Test Strategy\nt\n## Diary\nd\n")
+            front = ("---\nid: F-1\nfeature: X\nstatus: IN_PROGRESS\n{lvl}"
+                     "start_date: 2026-08-01\n---\n")
+            (sol / "ANALYSIS_a.md").write_text(front.format(lvl="") + body, encoding="utf-8")
+            (sol / "ANALYSIS_b.md").write_text(
+                front.format(lvl="level: L3\n") + body
+                + "<!-- TODO: write the ## Capability Ledger later -->\n", encoding="utf-8")
+            out = []
+            sc.cmd_validate(root)
+            txt = "\n".join(out)  # noqa: F841 - output asserted via the checks below
+            metas = {p.name: meta for p, meta, _ in sc.list_analyses(root)}
+            self.assertFalse(sc.ledger_due(metas["ANALYSIS_a.md"]),
+                             "a missing level cannot be due -- but it MUST warn")
+            self.assertTrue(sc.ledger_due(metas["ANALYSIS_b.md"]))
+        # The behaviour lives in the shared core; the entry point is thin by design.
+        self.assertIn("'level' missing", sc.read_text(SKILL_DIR / "scripts" / "sdlc_core.py"),
+                      "dropping `level:` must not be a free way out of the level's checks")
+        # Heading detection, asserted on the FUNCTION (advisories never move the
+        # exit code, so a test that only checks rc is green on broken code -- the
+        # previous version of this test was exactly that theater).
+        body = "# X\n## Objective\no\n"
+        self.assertTrue(sc.has_ledger_heading(body + "## Capability Ledger\n| a |\n"))
+        self.assertFalse(sc.has_ledger_heading(body + "<!-- ## Capability Ledger -->\n"),
+                         "a commented-out heading is not a ledger")
+        self.assertFalse(sc.has_ledger_heading(body + "<!-- draft\n## Capability Ledger\n"),
+                         "an UNTERMINATED comment must not hide the heading either")
+        # ...but an unterminated marker must not nuke a REAL ledger that follows
+        self.assertTrue(sc.has_ledger_heading(
+            body + "we write `<!--` inline here\n\n## Capability Ledger\n| a |\n"),
+            "an inline '<!--' mention must not swallow the rest of the document")
+        self.assertTrue(sc.has_ledger_heading(
+            body + "```\n<!-- unclosed example\n```\n\n## Capability Ledger\n| a |\n"),
+            "an unclosed comment inside a fenced block is an EXAMPLE, not a comment")
+        self.assertFalse(sc.has_ledger_heading(body + "### Capability Ledger\n"),
+                         "the section is '##', anchored")
+
+    @requires("architect_pass")
+    def test_ledger_due_gating(self):
+        """F-020d: the ledger warning fires ONLY for active L3 analyses born
+        after the pass shipped. Closed history and pre-pass in-flight work
+        never nag (the lazy-convert doctrine, same as the pre-1.17 handoff)."""
+        due = {"level": "L3", "status": "IN_PROGRESS", "start_date": "2026-07-28"}
+        self.assertTrue(sc.ledger_due(due))
+        self.assertTrue(sc.ledger_due({**due, "status": "PLANNED"}))
+        self.assertTrue(sc.ledger_due({**due, "status": "COMPLETED"}),
+                        "status must NOT gate: closure flips the ANALYSIS to "
+                        "COMPLETED before `check` runs, so a status filter "
+                        "silences the backstop at the only mandated moment")
+        self.assertFalse(sc.ledger_due({**due, "start_date": "2026-07-19"}),
+                         "pre-pass work is grandfathered -- by date, the only guard")
+        self.assertFalse(sc.ledger_due({**due, "level": "L2"}),
+                         "the pass is L3-only")
+        self.assertFalse(sc.ledger_due({**due, "level": ""}))
+        # malformed / quoted / unpadded dates must not silently decide the gate
+        self.assertFalse(sc.ledger_due({**due, "start_date": ""}))
+        self.assertFalse(sc.ledger_due({**due, "start_date": "28/07/2026"}),
+                         "a non-ISO date must not fire on a lexicographic compare")
+        self.assertTrue(sc.ledger_due({**due, "start_date": "'2026-08-01'"}),
+                        "a YAML-quoted date must not grandfather forever")
+        self.assertFalse(sc.ledger_due({**due, "start_date": "2026-7-01"}),
+                         "an unpadded pre-epoch date must not read as post-epoch")
+
+    @requires("architect_pass")
+    def test_component_map_rot_detected(self):
+        """F-020d: a map row whose 'Where' ref no longer resolves, or whose
+        #symbol was renamed away, is flagged -- the source_hash equivalent the
+        map lacked. Healthy rows stay silent; non-path backticks are ignored."""
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "src").mkdir()
+            (root / "src" / "core.py").write_text(
+                "class Notifier:\n    pass\n", encoding="utf-8")
+            def warns(where):
+                """Rot findings only -- the 'inert map' notice is asserted apart."""
+                text = ("## Component Map\n\n"
+                        "| Component | Capability it owns | Contract | Where |\n"
+                        "|---|---|---|---|\n"
+                        f"| Notifier | notify | fire-and-forget | {where} |\n")
+                w = []
+                sc.check_component_map(root, text, w)
+                return [m for m in w if "no checkable path" not in m]
+            self.assertEqual(warns("`src/core.py#Notifier`"), [],
+                             "a healthy row must stay silent")
+            self.assertTrue(warns("`src/gone.py#Notifier`"),
+                            "a dead path must warn")
+            self.assertTrue(warns("`src/core.py#OldName`"),
+                            "a renamed-away symbol must warn")
+            self.assertEqual(warns("`bare-name` and `Notifier`"), [],
+                             "non-path backticks are prose, not refs")
+            self.assertTrue(warns("`../outside/core.py#X`"),
+                            "an escaping ref is rejected, fail-closed")
+            self.assertEqual(warns("`src/*.py#Notifier`"), [],
+                             "glob refs resolve too")
+            self.assertEqual(warns("`src\\core.py#Notifier`"), [],
+                             "a Windows-separator ref must be normalized, "
+                             "not silently skipped as uncheckable")
+            self.assertTrue(warns("`src/core.py#Notif`"),
+                            "substring symbol matching is a false PASS: the "
+                            "match must be on a word boundary")
+            self.assertEqual(warns("`https://example.com/core.py`"), [],
+                             "a URL is not a repo path")
+            self.assertTrue(warns("`core.md#X`"),
+                            "an unqualified file-shaped ref must warn, not be "
+                            "skipped -- that skip left 9 of this repo's own "
+                            "18 refs unchecked")
+            # a literal bracket in a path (Next.js dynamic route) is not a glob
+            (root / "app").mkdir()
+            (root / "app" / "[id].tsx").write_text("export const Page = 1\n",
+                                                   encoding="utf-8")
+            self.assertEqual(warns("`app/[id].tsx#Page`"), [],
+                             "a literal-bracket path that exists must not be "
+                             "reported as rot via glob interpretation")
+            # inert-check detection: rows present, no checkable ref anywhere
+            inert = ("## Component Map\n\n| Component | Capability | Contract | Where |\n"
+                     "|---|---|---|---|\n| Notifier | notify | fire | see the code |\n")
+            w = []
+            sc.check_component_map(root, inert, w)
+            self.assertTrue(w, "a map whose rows carry no checkable path is an "
+                               "inert check reported as a clean one")
+            # the 'Where' column is located by header, not assumed last
+            five = ("## Component Map\n\n"
+                    "| Component | Capability | Contract | Where | Owner |\n"
+                    "|---|---|---|---|---|\n"
+                    "| Notifier | notify | fire | `src/gone.py` | team |\n")
+            w = []
+            sc.check_component_map(root, five, w)
+            self.assertTrue(w, "a map with extra columns must still be checked")
+
+    @requires("architect_pass")
+    def test_architect_scenarios_present(self):
+        """F-020d: the pass's execution is exercised by the behavioral layer --
+        one scenario for running the pass at all, one for the brownfield trap
+        (map silence must not ground a MISSING)."""
+        sys.path.insert(0, str(SKILL_DIR / "evals"))
+        import run_behavioral as rb  # noqa: E402
+        sdir = SKILL_DIR / "evals" / "scenarios"
+        for name, must in (("architect_rules_before_impact.md", "Capability Ledger"),
+                           ("unmapped_never_grounds_missing.md", "Component Map")):
+            p = sdir / name
+            self.assertTrue(p.is_file(), f"scenario missing: {name}")
+            s = rb.load_scenario(str(p))   # parses, or the driver exits non-zero
+            self.assertTrue(s["expected"], f"{name}: empty 'expected'")
+            crit = [ln for ln in s["pass_criteria"].splitlines() if ln.strip().startswith("-")]
+            self.assertGreaterEqual(len(crit), 3,
+                                    f"{name}: pass criteria gutted to {len(crit)} bullet(s)")
+            self.assertIn(must, s["pass_criteria"],
+                          f"{name} must assert on {must}, or it tests nothing about the pass")
+
+    def test_skill_proactive_trigger(self):
+        t = read("SKILL.md")
+        self.assertIn("PROPOSE distilling a guide", t)
+        self.assertIn("Propose proactively", t)
+
+    def test_guides_consume_and_proactive(self):
+        t = read("guides.md")
+        self.assertIn("## 0. Consuming a guide", t)
+        self.assertIn("### Proactive trigger", t)
+
+    @requires("subagent_dispatch")
+    def test_dispatch_guide_note(self):
+        self.assertIn("Guide consumption under dispatch", read("dispatch.md"))
+
+    @requires("comprehension_guides")
+    def test_comprehension_guide_wiring(self):
+        """Code-comprehension guides (source_kind: code) are wired end to end:
+        the autonomous trigger in guides.md, the SKILL.md moment + Write-Triggers
+        row, and the template field."""
+        guides = read("guides.md")
+        self.assertIn("Comprehension trigger", guides)
+        self.assertIn("source_kind", guides)
+        skill = read("SKILL.md")
+        self.assertIn("source_kind: code", skill)
+        self.assertIn("Comprehend (code, autonomous)", skill)
+        self.assertIn("source_kind", read("templates.md"))
+
+    def test_skill_worktree_hygiene(self):
+        t = read("SKILL.md")
+        self.assertIn("Isolate the work", t)
+        self.assertIn("Branch/worktree hygiene", t)
+
+    def test_support_files_wired(self):
+        """Anti-orphan (mechanized 'orphaned discipline never fires', M2):
+        every expected support file exists AND is referenced in SKILL.md, and
+        any *.md added beside SKILL.md is also referenced (no silent orphan)."""
+        skill_md = read("SKILL.md")
+        # The entry point's FILENAME differs per distribution (mkt_check.py): derive it,
+        # or this shared test asserts one distribution's identity in all three.
+        entry = Path(entry_point.load().__file__).name
+        expected = list(dist.profile()["support_files"]) + [
+            f"scripts/{entry}", "scripts/sdlc_core.py"]
+        for rel in expected:
+            self.assertTrue((SKILL_DIR / rel).is_file(),
+                            f"expected support file missing: {rel}")
+            self.assertIn(Path(rel).name, skill_md,
+                          f"support file not referenced in SKILL.md (dangling): {rel}")
+        for p in SKILL_DIR.glob("*.md"):
+            if p.name == "SKILL.md":
+                continue
+            self.assertIn(p.name, skill_md,
+                          f"orphan support file (exists, not referenced): {p.name}")
+
+    @unittest.skipUnless((REPO / "ai_docs" / "INDEX.md").is_file(),
+                         "this distribution's repo is not governed by the core document model")
+    def test_indexes_idempotent(self):
+        """Generated indexes are current: build_* output == on-disk, computed
+        WITHOUT writing (never calls cmd_index). A stale index fails here; the
+        fix is `sdlc_check.py index` before release -- the intended gate."""
+        hist = REPO / "ai_docs" / "strategic" / "features_history.md"
+        if hist.is_file():
+            self.assertEqual(sc.norm_text(sc.build_index(REPO)),
+                             sc.norm_text(sc.read_text(hist)),
+                             "features_history.md stale: run sdlc_check.py index")
+        if sc.list_canonical_docs(REPO):
+            manifest = REPO / "ai_docs" / "INDEX.md"
+            self.assertEqual(sc.norm_text(sc.build_manifest(REPO)),
+                             sc.norm_text(sc.read_text(manifest)),
+                             "INDEX.md stale: run sdlc_check.py index")
+        if sc.list_guides(REPO):
+            gidx = REPO / "ai_docs" / "reference" / "INDEX.md"
+            self.assertEqual(sc.norm_text(sc.build_guide_index(REPO)),
+                             sc.norm_text(sc.read_text(gidx)),
+                             "reference/INDEX.md stale: run sdlc_check.py index")
+
+    # --- TS9 (static half): the domain router is internally consistent --------
+    # The router is doctrine: no code executes it, so nothing but this test stands
+    # between a self-contradicting table and an agent following it.
+
+    def _router_rows(self):
+        rows = []
+        for line in read("routing.md").splitlines():
+            cells = [c.strip() for c in line.strip().strip("|").split("|")]
+            if len(cells) == 5 and not set("".join(cells)) <= set("-: "):
+                rows.append(cells)
+        return [r for r in rows if r[0] not in ("Request",)]
+
+    def test_router_is_reached_only_from_the_level_test_and_only_with_a_sibling(self):
+        skill = read("SKILL.md")
+        self.assertIn("routing.md", skill, "the router must be reachable from the contract")
+        self.assertRegex(skill, r"L1 never reaches it",
+                         "an L1 that pays for routing is the ceremony budget broken")
+        routing = read("routing.md")
+        self.assertIn("fail open", routing.lower(),
+                      "detection that cannot answer must not block the work")
+
+    def test_every_code_branch_row_evaluates_every_step(self):
+        for row in self._router_rows():
+            request, s1, s2, s3, lens = row
+            if s1 != "code":
+                continue  # decided at step 1: later steps are correctly never reached
+            self.assertTrue(s2 and s2 != "—", f"row '{request}' skips step 2")
+            self.assertTrue(s3 and s3 != "—", f"row '{request}' skips step 3")
+            self.assertIn(lens.strip("*").lower(), ("code", "knowledge"),
+                          f"row '{request}' leaves the code branch to a lens it cannot reach")
+
+    def test_at_least_one_row_turns_on_step_three(self):
+        self.assertTrue(
+            any("build-consumed" in r[3].lower() for r in self._router_rows()),
+            "a step no worked example exercises is a step nobody will run",
+        )
+
+    def test_the_reverse_pair_routes_differently(self):
+        """The pair that made step 2 necessary: same fidelity, different deliverable."""
+        rows = {r[0]: r[4].strip("*").lower() for r in self._router_rows()}
+        guide = next((v for k, v in rows.items() if "comprehension guide" in k), None)
+        customer = next((v for k, v in rows.items() if "customers' admins" in k), None)
+        self.assertEqual(guide, "code")
+        self.assertEqual(customer, "knowledge")
+
+    def test_every_domain_has_a_risk_slot(self):
+        """The slot is translated per domain, never dropped -- asserted on the data."""
+        for name, rules in sc.DOMAINS.items():
+            self.assertTrue(rules["risk_section"], f"{name} has no risk section")
+            self.assertTrue(rules["risk_label"].startswith("## "), f"{name}'s label is not a heading")
+
+    def test_behavioral_driver_no_llm(self):
+        """Mechanized T4: the behavioral driver must never call a model,
+        the network, or a subprocess."""
+        src = (SKILL_DIR / "evals" / "run_behavioral.py").read_text(encoding="utf-8")
+        forbidden = ["subprocess", "os.system", "eval(", "exec(", "urllib",
+                     "http", "requests", "openai", "anthropic", "socket"]
+        for tok in forbidden:
+            self.assertNotIn(tok, src, f"driver must not reference {tok} (T4)")
+
+
+if __name__ == "__main__":
+    unittest.main()

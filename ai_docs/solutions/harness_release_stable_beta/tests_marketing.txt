@@ -1,0 +1,196 @@
+...............................................................................................................................[ERROR] C:\Users\apint\AppData\Local\Temp\tmp_psuu1y3\project\ai_docs\solutions\PLAN_invalid_brief.md: task[0]: missing required field(s): verify
+
+[plan] brief: plan is invalid, refusing to brief (1 errors).
+..[plan] brief: task id 'T-NOPE' not found in C:\Users\apint\AppData\Local\Temp\tmprqfuq52j\project\ai_docs\solutions\PLAN_brief.md
+.[ERROR] C:\Users\apint\AppData\Local\Temp\tmpw7ui6_fv\project\ai_docs\solutions\PLAN_abs.md: task[0]: paths 'C:\Users\apint\AppData\Local\Temp\tmpw7ui6_fv\outside.md' is absolute, contains '..', or escapes 'C:\Users\apint\AppData\Local\Temp\tmpw7ui6_fv\project' — rejected (fail closed)
+
+[plan] validate: 1 errors, 0 warnings.
+.[ERROR] C:\Users\apint\AppData\Local\Temp\tmpzt84yypr\project\ai_docs\solutions\PLAN_dup.md: task[1]: duplicate task id 'T1'
+
+[plan] validate: 1 errors, 0 warnings.
+..[ERROR] C:\Users\apint\AppData\Local\Temp\tmp5_vdba60\project\ai_docs\solutions\PLAN_bad_guide.md: task[0]: guide '../../outside_guide.md' is not confined under the project reference dir (C:\Users\apint\AppData\Local\Temp\tmp5_vdba60\project\ai_docs\reference) or the agent KB reference dir (C:\Users\apint\.agentic-sdlc\ai_docs\reference) — rejected
+
+[plan] validate: 1 errors, 0 warnings.
+..[warn] ledger 'C:\Users\apint\AppData\Local\Temp\tmp16inshvo\project\ai_docs\solutions\PLAN_ok_ledger.ledger.json' unreadable/malformed, treating as empty: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+.[plan] C:\Users\apint\AppData\Local\Temp\tmpk4wwztrg\project\ai_docs\solutions\PLAN_malformed.md: malformed JSON in the plan block: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+.[plan] C:\Users\apint\AppData\Local\Temp\tmpcwoioc87\project\ai_docs\solutions\PLAN_no_block.md: no fenced ```json block found in the plan file
+.[ERROR] C:\Users\apint\AppData\Local\Temp\tmp64_u_z9u\project\ai_docs\solutions\PLAN_no_paths.md: task[0]: must declare at least one of 'paths'/'produces'
+
+[plan] validate: 1 errors, 0 warnings.
+.[ERROR] C:\Users\apint\AppData\Local\Temp\tmpk4z9x_xz\project\ai_docs\solutions\PLAN_missing_verify.md: task[0]: missing required field(s): verify
+
+[plan] validate: 1 errors, 0 warnings.
+.[ERROR] C:\Users\apint\AppData\Local\Temp\tmpojy3dm86\project\ai_docs\solutions\PLAN_escape.md: task[0]: paths '../escape.md' is absolute, contains '..', or escapes 'C:\Users\apint\AppData\Local\Temp\tmpojy3dm86\project' — rejected (fail closed)
+
+[plan] validate: 1 errors, 0 warnings.
+..s....s.................................................ss...s...ssss............ssss.......................s.
+----------------------------------------------------------------------
+Ran 251 tests in 30.429s
+
+OK (skipped=14)
+[ok] workstream registry regenerated: C:\Users\apint\AppData\Local\Temp\tmpsinvhyar\ai_docs\audit\handoff.md
+[ok] workstream registry regenerated: C:\Users\apint\AppData\Local\Temp\tmp7ri83vfc\ai_docs\audit\handoff.md
+[ok] workstream registry regenerated: C:\Users\apint\AppData\Local\Temp\tmpn14aflhc\ai_docs\audit\handoff.md
+[ERROR] ai_docs/audit/handoff.md NOT regenerated -- it still holds state no source accounts for:
+          - content outside the table with nowhere to go (4 line(s), first: '## Active features') -- project-wide notes belong in audit/project_notes.md
+          Convert the whole registry at once (templates.md): converting one row at a time is the state that loses the others.
+[ERROR] ai_docs/audit/handoff.md NOT regenerated -- it still holds state no source accounts for:
+          - rows no HANDOFF_*.md accounts for: F-002 beta
+          Convert the whole registry at once (templates.md): converting one row at a time is the state that loses the others.
+[ok] workstream registry regenerated: C:\Users\apint\AppData\Local\Temp\tmp5opf5a2h\repo\ai_docs\audit\handoff.md
+[ERROR] ledger: ledger EV-03: ASSUMPTION without confidence (HIGH|MED|LOW)
+[FAIL] ledger: 1 error(s), 0 warning(s)
+[ERROR] ledger: ledger EV-02: BENCHMARK without a source URL
+[FAIL] ledger: 1 error(s), 0 warning(s)
+[ERROR] budget: TACTICAL_PLAN.md: allocations sum to 14000, Total budget is 15000 (tolerance 1%)
+[FAIL] budget: 1 error(s), 0 warning(s)
+[ERROR] budget: TACTICAL_PLAN.md: 'Total budget:' line missing
+[FAIL] budget: 1 error(s), 0 warning(s)
+[OK] wrote mkt_docs/INDEX.md
+[ok] project memory regenerated: C:\Users\apint\AppData\Local\Temp\tmpzsib9ezu\mkt_docs\memory\INDEX.md
+[OK] check clean
+[OK] ledger clean
+[OK] ledger clean
+[OK] ledger clean
+[ERROR] ledger: ledger EV-01: FACT sourced to an internal document ('see the VoC sweep') -- a FACT is what the client stated or their own primary data; an observation gathered by research is a BENCHMARK and owes its URL
+[FAIL] ledger: 1 error(s), 0 warning(s)
+[ERROR] ledger: ledger EV-01: FACT sourced to an internal document ('VoC sweep, research/VOC.md') -- a FACT is what the client stated or their own primary data; an observation gathered by research is a BENCHMARK and owes its URL
+[FAIL] ledger: 1 error(s), 0 warning(s)
+[ERROR] ledger: ledger EV-01: FACT without a source -- name the origin ('user, Wave 1' or the client's data file)
+[FAIL] ledger: 1 error(s), 0 warning(s)
+[ERROR] funnel: TACTICAL_PLAN.md [Google Ads]: customers=50 but Leads*Close% = 24 (tolerance 5%)
+[ERROR] funnel: TACTICAL_PLAN.md [Google Ads]: cac=250 but Budget/Customers = 120 (tolerance 5%)
+[FAIL] funnel: 2 error(s), 0 warning(s)
+[OK] funnel clean
+[OK] wrote mkt_docs/INDEX.md
+[ok] project memory regenerated: C:\Users\apint\AppData\Local\Temp\tmpskkw0f9l\mkt_docs\memory\INDEX.md
+[OK] wrote mkt_docs/INDEX.md
+[ok] project memory regenerated: C:\Users\apint\AppData\Local\Temp\tmplds3j3s_\mkt_docs\memory\INDEX.md
+[WARN]  validate: vision/MKT_VISION.md: missing frontmatter 'status'
+[OK] validate clean (1 warning(s))
+[WARN]  validate: vision/MKT_VISION.md: missing frontmatter 'status'
+[FAIL] validate: 0 error(s), 1 warning(s)
+[ERROR] trace: objective O2: no KPI row in MEASUREMENT_PLAN.md
+[FAIL] trace: 1 error(s), 0 warning(s)
+[WARN]  trace: objective O1: no tactic serves it in TACTICAL_PLAN.md
+[ERROR] trace: TACTICAL_PLAN.md [Google Ads]: objective O9 not defined in OBJECTIVES.md
+[FAIL] trace: 1 error(s), 1 warning(s)
+[OK] wrote mkt_docs/INDEX.md
+[ok] project memory regenerated: C:\Users\apint\AppData\Local\Temp\tmp178nb6wi\mkt_docs\memory\INDEX.md
+[WARN]  validate: mkt_docs/INDEX.md stale -- regenerate with 'mkt_check.py index'
+[ERROR] memory/INDEX.md not aligned: run the validator's index command
+[FAIL] validate: 0 error(s), 1 warning(s)
+[WARN]  trace: objective O2: no tactic serves it in TACTICAL_PLAN.md
+[ERROR] trace: TACTICAL_PLAN.md [Content]: no objective (O<n>) named
+[FAIL] trace: 1 error(s), 1 warning(s)
+[ERROR] ledger: strategy/OBJECTIVES.md: reference [EV-99] not found in the ledger
+[FAIL] ledger: 1 error(s), 0 warning(s)
+[ok] ANALYSIS index regenerated: C:\Users\apint\AppData\Local\Temp\tmp4re75fzl\ai_docs\strategic\features_history.md
+[ok] document manifest regenerated: C:\Users\apint\AppData\Local\Temp\tmp4re75fzl\ai_docs\INDEX.md
+[ok] guide router regenerated (empty stub): C:\Users\apint\AppData\Local\Temp\tmp4re75fzl\ai_docs\reference\INDEX.md
+[ok] project memory regenerated: C:\Users\apint\AppData\Local\Temp\tmp4re75fzl\ai_docs\memory\INDEX.md
+[ok] ANALYSIS index regenerated: C:\Users\apint\AppData\Local\Temp\tmp4re75fzl\ai_docs\strategic\features_history.md
+[ok] document manifest regenerated: C:\Users\apint\AppData\Local\Temp\tmp4re75fzl\ai_docs\INDEX.md
+[ok] guide router regenerated (empty stub): C:\Users\apint\AppData\Local\Temp\tmp4re75fzl\ai_docs\reference\INDEX.md
+[ok] ANALYSIS index regenerated: C:\Users\apint\AppData\Local\Temp\tmp4re75fzl\ai_docs\strategic\features_history.md
+[ok] document manifest regenerated: C:\Users\apint\AppData\Local\Temp\tmp4re75fzl\ai_docs\INDEX.md
+[ok] guide router regenerated (empty stub): C:\Users\apint\AppData\Local\Temp\tmp4re75fzl\ai_docs\reference\INDEX.md
+[ok] project memory regenerated: C:\Users\apint\AppData\Local\Temp\tmp4re75fzl\ai_docs\memory\INDEX.md
+[ok] ANALYSIS index regenerated: C:\Users\apint\AppData\Local\Temp\tmpic4zonj3\ai_docs\strategic\features_history.md
+[ok] document manifest regenerated: C:\Users\apint\AppData\Local\Temp\tmpic4zonj3\ai_docs\INDEX.md
+[ok] guide router regenerated (empty stub): C:\Users\apint\AppData\Local\Temp\tmpic4zonj3\ai_docs\reference\INDEX.md
+[ok] project memory regenerated: C:\Users\apint\AppData\Local\Temp\tmpic4zonj3\ai_docs\memory\INDEX.md
+
+Validation: 0 errors, 0 warnings, 0 advisories.
+[OK] validate clean
+
+Validation: 0 errors, 0 warnings, 0 advisories.
+[OK] check clean
+[ok] ANALYSIS index regenerated: C:\Users\apint\AppData\Local\Temp\tmpiprqsn7d\ai_docs\strategic\features_history.md
+[ok] document manifest regenerated: C:\Users\apint\AppData\Local\Temp\tmpiprqsn7d\ai_docs\INDEX.md
+[ok] guide router regenerated (empty stub): C:\Users\apint\AppData\Local\Temp\tmpiprqsn7d\ai_docs\reference\INDEX.md
+[ok] project memory regenerated: C:\Users\apint\AppData\Local\Temp\tmpiprqsn7d\ai_docs\memory\INDEX.md
+
+Validation: 0 errors, 0 warnings, 0 advisories.
+[OK] validate clean
+[ERROR] ledger: research/evidence_ledger.md missing
+[WARN]  budget: no tactical plan found (tactics/TACTICAL_PLAN.md) -- budget check skipped
+[WARN]  funnel: no tactical plan found -- funnel check skipped
+[WARN]  trace: strategy/OBJECTIVES.md missing -- trace check skipped
+
+Validation: 0 errors, 0 warnings, 0 advisories.
+[FAIL] check: 1 error(s), 3 warning(s)
+[ok] C:\Users\apint\AppData\Local\Temp\tmpegljmabq\project\ai_docs\solutions\PLAN_good_guide.md: plan valid (1 task(s), 0 warning(s)).
+[ok] C:\Users\apint\AppData\Local\Temp\tmpypxnqls5\project\ai_docs\solutions\PLAN_orphan_ledger.md: plan valid (1 task(s), 1 warning(s)).
+[ok] C:\Users\apint\AppData\Local\Temp\tmp16inshvo\project\ai_docs\solutions\PLAN_ok_ledger.md: plan valid (1 task(s), 1 warning(s)).
+[ok] C:\Users\apint\AppData\Local\Temp\tmp1uqrwtgw\project\ai_docs\solutions\PLAN_produces_only.md: plan valid (1 task(s), 0 warning(s)).
+[ok] C:\Users\apint\AppData\Local\Temp\tmp964lwjjb\project\ai_docs\solutions\PLAN_valid.md: plan valid (1 task(s), 0 warning(s)).
+[warn]  /: path is absolute, contains '..', or resolves outside the project root: rejected (use a project-relative path, '.' for the root)
+[warn]  ../escape: path is absolute, contains '..', or resolves outside the project root: rejected (use a project-relative path, '.' for the root)
+[ok] no analyzed area was modified after its last recorded analysis.
+[ERROR] ../outside: absolute, '..'-escaping, or outside the project root: refusing to mark (use a project-relative path, '.' for the root). Nothing was written.
+=== benefit: what the process caught, and what it costs to read ===
+[info] no ai_docs/audit/reviews/REVIEW_LOG.md yet: nothing to report. The number appears once reviews are logged.
+
+Read cost of mkt-agentic-sdlc: SKILL.md 22091 bytes (every session) + 157203 bytes across 12 support files (read on trigger) = 179294 bytes total
+    dispatch.md                  7997
+    elicitation.md              11653
+    ENFORCEMENT.md              15641
+    frameworks.md                5998
+    guides.md                   19124
+    hybrid.md                    3532
+    memory.md                    5040
+    research.md                  5443
+    review.md                   31782
+    routing.md                   7705
+    templates.md                28198
+    vision.md                   15090
+=== benefit: what the process caught, and what it costs to read ===
+rows parsed: 3   rows unparsed: 1  -> line 6: 3 cells: header declares 9 and no positional map fits
+reviews with a stated moment: 2   moment not stated by `tier`: 1  (deep x1)
+span of the reviews counted below: 2026-07-28 -> 2026-09-10
+
+moment      rows   findings FAIL verdict per review
+design         1          4           1        4.0
+closure        1          3           0        3.0
+
+Caught BEFORE the code existed: 4 / 7 findings = 57%
+Bounded by the 9 findings in rows whose moment `tier` does not state: 25%-81% (`code` rows are post-implementation by definition, so their findings sit on the closure side of the upper bound)
+Reviews whose verdict contains FAIL: 1 / 2 = 50%
+(both figures are over the 2 reviews whose moment `tier` states)
+
+Read cost of mkt-agentic-sdlc: SKILL.md 22091 bytes (every session) + 157203 bytes across 12 support files (read on trigger) = 179294 bytes total
+    dispatch.md                  7997
+    elicitation.md              11653
+    ENFORCEMENT.md              15641
+    frameworks.md                5998
+    guides.md                   19124
+    hybrid.md                    3532
+    memory.md                    5040
+    research.md                  5443
+    review.md                   31782
+    routing.md                   7705
+    templates.md                28198
+    vision.md                   15090
+[ok] ANALYSIS index regenerated: C:\Users\apint\AppData\Local\Temp\tmp6q_t_xb9\ai_docs\strategic\features_history.md
+[ok] document manifest regenerated: C:\Users\apint\AppData\Local\Temp\tmp6q_t_xb9\ai_docs\INDEX.md
+[ok] guide router regenerated (empty stub): C:\Users\apint\AppData\Local\Temp\tmp6q_t_xb9\ai_docs\reference\INDEX.md
+[ok] ANALYSIS index regenerated: C:\Users\apint\AppData\Local\Temp\tmpzjpdi0fj\ai_docs\strategic\features_history.md
+[ok] document manifest regenerated: C:\Users\apint\AppData\Local\Temp\tmpzjpdi0fj\ai_docs\INDEX.md
+[ok] guide router regenerated (empty stub): C:\Users\apint\AppData\Local\Temp\tmpzjpdi0fj\ai_docs\reference\INDEX.md
+[note]  vision/project_vision.md is DRAFT: not a gating authority, have the user validate it
+[note]  vision/roadmap.md is DRAFT: not a gating authority, have the user validate it
+[note]  vision/principles.md is DRAFT: not a gating authority, have the user validate it
+
+Validation: 0 errors, 0 warnings, 3 advisories.
+[note] advisories are freshness signals: never fail a build, not even --strict.
+[ok] ANALYSIS index regenerated: C:\Users\apint\AppData\Local\Temp\tmpyjyv279t\ai_docs\strategic\features_history.md
+[info] no canonical documents: INDEX.md not generated
+[ok] guide router regenerated (empty stub): C:\Users\apint\AppData\Local\Temp\tmpyjyv279t\ai_docs\reference\INDEX.md
+[warn]  vision/project_vision.md missing
+[warn]  vision/roadmap.md missing
+[warn]  vision/principles.md missing
+[ERROR] ai_docs/INDEX.md missing: run 'sdlc_check.py index'
+[ERROR] ai_docs/reference/INDEX.md missing while GUIDE_*.md files exist: the router is the only thing that routes work to them -- run 'sdlc_check.py index'
+
+Validation: 2 errors, 3 warnings, 0 advisories.

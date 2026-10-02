@@ -689,3 +689,5 @@ analyses, discovery-by-grep), `audit/` (audit plan and handoff).
 
 `default_domain:` is the project's answer for every document that does not declare its own `domain:`. Whichever lens's `init` created the project seeds it; a later init never overwrites it, and an absent line resolves to `code` — so every project created before this field existed keeps behaving exactly as it did. It is written once, at project level, precisely so that the same tree gets **the same verdict from every installed lens**.
 
+A course added to a marketing-default `ai_docs/` tree must mark both `vision/features/VISION_course_<slug>.md` and `solutions/ANALYSIS_course_<slug>.md` with `domain: course` and give the ANALYSIS a `C-` ID. Otherwise the untagged feature Vision is treated as marketing work. The project-wide Vision is shared across the four lenses.
+

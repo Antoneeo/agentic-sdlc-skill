@@ -1,6 +1,6 @@
 ---
 name: kb-agentic
-version: 1.19.0
+version: 1.20.0
 description: Knowledge-Base & Document-First protocol with risk-proportional triage, Vision as a guide, Signal Distillation, a complete Standalone mode and optional symbiosis with devPNT. Use for user documentation, knowledge extraction, SOPs, research notes, decision logs, knowledge management — and for answering project questions from the claim ledger and topic graph.
 author: Antonio Pinto (https://github.com/Antoneeo)
 copyright: (c) 2026 Antonio Pinto
@@ -67,7 +67,7 @@ Cross-cutting rules:
   this from becoming an escape hatch is the trigger list below, which overrides the
   level whatever the size, plus one limit: **propagation that changes what a claim
   asserts is not propagation** — it is a new knowledge unit, so L3.
-- **Domain routing (multi-lens installs only).** After the level is set, and only when a sibling lens skill of this family is installed (`agentic-sdlc`, `mkt-agentic-sdlc`), run the router in `routing.md` for every L2, L3 and Spike: it decides which lens's method and validation rules govern this unit of work. L1 never reaches it, and a single-lens install never reads the file — detection fails open. In such a project, never refer to a document whose meaning differs by lens ("threat model", "vision", `principles.md`, `handoff.md`) by its bare name: qualify it with its domain, or name its path.
+- **Domain routing (multi-lens installs only).** After the level is set, and only when a sibling lens skill of this family is installed (`agentic-sdlc`, `mkt-agentic-sdlc`, `course-creator`), run the router in `routing.md` for every L2, L3 and Spike: it decides which lens's method and validation rules govern this unit of work. L1 never reaches it, and a single-lens install never reads the file — detection fails open. In such a project, never refer to a document whose meaning differs by lens ("threat model", "vision", `principles.md`, `handoff.md`) by its bare name: qualify it with its domain, or name its path.
 - Personal data, credentials, security-sensitive processes, authN/authZ specs are high-risk: never L1.
 - **Escalation triggers — ANY of these makes it L3, whatever the file count:** the change touches the topic hierarchy (`parents:`, a `GENERALIZES` verdict, a re-parent); it touches more than one node's frontmatter; it creates or supersedes a node other nodes reference. Re-shaping the graph is a unit of change, never a side effect of placing one claim.
 - Adding one claim row to an existing topic is L1: the `id` may be left empty (the validator fills it — `claim-id --fill`), and no check errors on a hand-written row.

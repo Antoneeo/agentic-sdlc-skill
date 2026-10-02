@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 """The drift guard — the family's spine is authored once and copied verbatim.
 
-Three distributions ship the same spine. Nothing but this guard stops the fourth
-divergence: the first three happened silently, and were found by a user.
+Four distributions ship the same spine. This guard detects divergence between
+copies before it reaches users.
 
 How it works, and why this shape:
   * SHARED_FILES is an explicit per-file MANIFEST, never "everything" and never a
@@ -12,7 +12,7 @@ How it works, and why this shape:
   * `python shared_files.py --update` records each shared file's SHA-256 into
     `shared_manifest.json`. The recorded content is IDENTICAL in every
     distribution — that is the whole trick: edit a shared file in one repo and its
-    manifest changes, so the three manifests no longer match and the divergence is
+    manifest changes, so the four manifests no longer match and the divergence is
     visible as a diff instead of as a bug report.
   * `test_drift.py` fails when a shared file's hash does not match the manifest.
     So a local edit is caught immediately, in the repo where it happened, and the
@@ -100,6 +100,7 @@ DISTRIBUTION_SKILL_DIRS = (
     "skills/agentic-sdlc-skill",
     "distributions/kb-agentic-skill/skills/kb-agentic-skill",
     "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc",
+    "distributions/course-creator/skills/course-creator",
 )
 
 
@@ -184,7 +185,7 @@ def _cli():
     diverged, root = cross_distribution_report()
     if root is None:
         print("[note] not the consolidated checkout: comparing against the recorded "
-              "manifest only. The cross-distribution check needs all three side by side.")
+              "manifest only. The cross-distribution check needs all four side by side.")
     else:
         for rel, seen in diverged.items():
             print(f"[ERROR] shared file differs BETWEEN distributions: {rel}")
@@ -204,7 +205,7 @@ def _cli():
               "or -- if the change is intended -- apply it to EVERY distribution and run\n"
               "`python shared_files.py --update` in each.")
         return 1
-    scope = ("are identical across all three distributions" if root
+    scope = ("are identical across all four distributions" if root
              else "match the manifest")
     print(f"[ok] {len(SHARED_FILES)} shared files {scope}")
     return 0

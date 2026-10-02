@@ -1,0 +1,11 @@
+{
+  "verified_files": [
+    "SKILL.md",
+    "learning_design.md",
+    "templates.md",
+    "slide_content.md",
+    "simulation.md"
+  ],
+  "archive_sha256": "dd909f2205c6bd4c10dadefc590126dc90934fe98a72c01f56e24b1578deaaf2",
+  "status": "actual archive content matches staged supports"
+}

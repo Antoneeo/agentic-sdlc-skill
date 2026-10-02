@@ -2,14 +2,14 @@
 description: How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish.
 status: CURRENT
 source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition; amended 2026-09-25 — plain `check` beside the hybrid one, `mark` inside the release commit, one tag per package, a pending 2FA is pending, not failed).
-distilled_from: ai_docs/reference/.sources/release-runbook-a62d4cd6.md
-source_hash: a62d4cd6f2b67f44b2e0c2d292391a6f1ea1d9a9ac10c34e070572af80ceac6a
+distilled_from: ai_docs/reference/.sources/release-runbook-course-creator.md
+source_hash: a93c4d2f114caaf6b4daafbe0b14ea393e08c5a57777f3821d52f32a39c04274
 ---
 # Guide: Release
 
 ## When this applies
-[source: release-runbook-a62d4cd6.md#preconditions]
-Shipping a version of `@antoneeo/agentic-sdlc-skill`. Enter only when: the unit
+[source: release-runbook-course-creator.md#preconditions]
+Shipping a version of one of the four `@antoneeo` skill packages. Enter only when: the unit
 is DONE (review PASS, battery green, ADR accepted), `CHANGELOG.md` carries an
 `## [Unreleased - X.Y.Z]` section, the repo's `check --hybrid` AND plain `check`
 are CLEAN, and
@@ -17,7 +17,7 @@ are CLEAN, and
 already published.
 
 ## How to do a release
-[source: release-runbook-a62d4cd6.md#git-sequence]
+[source: release-runbook-course-creator.md#git-sequence]
 Order: bump → verify → mark → script (commit+tag+push) → package tags → verify
 tags → merge → publish.
 1. Bump FOUR places in one commit: `package.json` version,
@@ -31,15 +31,19 @@ tags → merge → publish.
 2. Any NEW support file since the last release MUST be in `package.json`
    `files` — it is an allowlist, and `postinstall.js` can only copy what the
    tarball contains. Update README's support-files bullet and Runtime Shape
-   tree too — **in all three distributions** (repo root for the code lens,
-   `distributions/kb-agentic-skill/`, `distributions/mkt-agentic-sdlc/`): each
+   tree too — **in all four distributions** (repo root for the code lens,
+   `distributions/kb-agentic-skill/`, `distributions/mkt-agentic-sdlc/`,
+   `distributions/course-creator/`): each
    `README.md` IS that package's npm page. The same duty covers
    `strategic/skill_family_agent_workflows.md`. When the doctrine changed,
    `mark` on the `skills/`/`distributions/` audit areas is the LAST step of
    closure, not the first: do not record the analysis while a derived document
    still says something else. (snapshot §Packaging completeness, §README alignment)
-3. Working tree must contain ONLY the release edits (bumps + CHANGELOG +
-   README + handoff): the script stages EVERYTHING (`git add .`).
+3. Inspect the staging scope: the script stages EVERYTHING (`git add .`).
+   If unrelated presentation work remains, stage the release files explicitly and
+   perform the same commit/tag/push sequence with that inspected set. Publish from
+   a clean `git archive` export of the exact tagged commit, preserving the primary
+   checkout. (snapshot §Stable and beta release amendment — 2026-10-02)
 4. With the bump still uncommitted, `mark skills/agentic-sdlc-skill/
    distributions/ skills/`: the dirty tree records a timestamp, so
    `audit_plan.md` rides in the release commit under the tag. Marking after the
@@ -48,23 +52,26 @@ tags → merge → publish.
    `git_push_tag.bat "Release vX.Y.Z: <short title>" vX.Y.Z` — one step:
    stage all, commit, tag, push branch + tag. It creates the code tag only.
 6. Tag each other bumped package on the SAME commit and push:
-   `git tag kb-vX.Y.Z` / `git tag mkt-vX.Y.Z`, then
-   `git push origin kb-vX.Y.Z mkt-vX.Y.Z`.
+   `git tag kb-vX.Y.Z` / `git tag mkt-vX.Y.Z` / `git tag course-vX.Y.Z`, then
+   `git push origin kb-vX.Y.Z mkt-vX.Y.Z course-vX.Y.Z`.
 7. VERIFY every tag: `git rev-parse <tag>` == `git rev-parse HEAD`. If wrong,
    `git tag -d <tag>`, fix, re-run (delete the remote tag too if it was
    pushed: `git push origin :refs/tags/<tag>`).
 8. Merge to main: `gh` CLI is not installed on this machine — GitHub web PR,
    or user-authorized direct push.
-9. Publish with `publish_all.bat` from the repo root — the USER's step (2FA
-   opens a browser per package). It does all three packages in one run and
+9. Publish with `publish_all.bat` from the clean tagged content. Publication is
+   authorized in this session; browser 2FA remains the USER's step. It checks all four packages in one run and
    **skips any already on the registry at that version**, so a single-package
-   release is normal: the two that did not change are skipped, not failures,
+   release is normal: the others that did not change are skipped, not failures,
    and an interrupted run is resumed by re-running. It packs the WORKING TREE,
    so run it from the clean tagged checkout — step 5 must have happened first.
-   (snapshot §Publish, §publish_all.bat)
+   Stable packages default to `latest`; course declares `publishConfig.tag: beta`.
+   The script passes the channel explicitly and verifies that dist-tag. A beta
+   suffix alone does not select the channel. (snapshot §Publish, §publish_all.bat,
+   §Stable and beta release amendment — 2026-10-02)
 
 ## How to verify it is done right
-[source: release-runbook-a62d4cd6.md#verification-battery]
+[source: release-runbook-course-creator.md#verification-battery]
 Before any commit/tag/publish, four checks:
 1. `npm pack --dry-run --json` — expected files in; `__pycache__`, `.sources/`
    snapshots, and the dev-only eval harness (`test_*.py`, `evals/`) NOT listed.
@@ -78,11 +85,11 @@ Before any commit/tag/publish, four checks:
    `python -m unittest discover -s skills/agentic-sdlc-skill/scripts -p "test_*.py"`
    all green (aggregates plan + orient + skill-invariants). A failing eval blocks
    the release; if `test_indexes_idempotent` fails, run `sdlc_check.py index` and re-run.
-After publish: `npm view @antoneeo/agentic-sdlc-skill version` returns the new
-version.
+After publish: verify each version and its intended `dist-tags.latest` or
+`dist-tags.beta`. Course latest must not point at the beta release.
 
 ## What to watch out for
-[source: release-runbook-a62d4cd6.md#known-traps]
+[source: release-runbook-course-creator.md#known-traps]
 - **devPNT db locks**: with the devPNT MCP server running, git checkout/merge/
   stash in the primary worktree fail on `.devpnt/*.db`
   (`unable to unlink old '...': Invalid argument`), and the dbs re-drift after
@@ -104,7 +111,7 @@ version.
 - **`publish_all.bat` packs the working tree, not the tag.** Publishing before
   the bump is committed and tagged ships a tree that no tag names, and npm
   versions are immutable — there is no undo. Bump, commit, tag, THEN publish.
-- **The three packages version independently**, so most releases touch one of
+- **The four packages version independently**, so most releases touch one of
   them. That is the case the script is built for: it skips the others by
   comparing the local version against the registry first. (Before 2026-08-25 it
   did not, and aborted on the first already-published package instead.)
@@ -112,7 +119,7 @@ version.
   use `--json`.
 
 ## Post-release
-[source: release-runbook-a62d4cd6.md#post-release]
+[source: release-runbook-course-creator.md#post-release]
 Record version + date + next step in `ai_docs/audit/handoff.md` (in the release
 commit when possible); update devPNT milestone/Action Plan state if the release
 closes a unit; regenerate indexes (`sdlc_check.py index`) if canonical docs

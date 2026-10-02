@@ -1,0 +1,7 @@
+# Feedback, improvement and efficacy
+
+Read when feedback from a real learner or observed use arrives. The feedback channel is chosen in `D-IC.md`; do not create or imply a service. A learner can also report an issue through another identified route. Recover course version and module from context; ask only if still missing, then record the smallest context needed to understand the observation in `FEEDBACK_REPORT.md`.
+
+Classify the report: unclear explanation, missing prerequisite, wrong or stale fact, delivery barrier, weak check, indistinguishable learning value, incomplete source content, or an issue outside the course's promise. Trace it to the learner profile, concept, module objective, source and check. Propose a correction and state what evidence would show improvement. A single concrete report can justify a correction. If it exposes a reproducible defect in **the course-creation method**, distill the reasoning into a guide or propose a change to `course-creator` under Agentic SDLC; never rewrite the skill automatically.
+
+An efficacy claim needs criteria for the learner's understanding or use, observations from sufficiently comparable real learners, contrary outcomes and limits. No formal pilot is mandatory; naturally arriving feedback may supply evidence. An isolated positive comment and a simulated PASS do not. Keep the visible label `efficacy not verified` until the evidence supports a narrower, explicit statement. Review privacy and retention before storing learner details; no continuing personal register is part of this method.

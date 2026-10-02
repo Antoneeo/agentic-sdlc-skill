@@ -1,22 +1,14 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**Release handoff (2026-09-19).** Code **1.35.0**, KB **1.18.0**, marketing
-**0.13.0** include F-056 (`cb6352c`) and F-057 (`740d6fc`). Tags `v1.35.0`,
-`kb-v1.18.0`, `mkt-v0.13.0` sit at the release commit `c2a3828`, which is in main;
-all three versions are on the registry (verified 2026-09-25). F-026 revised and the
-`stale` self-reference fix, and the honest-weighing increment, reached main on
-2026-09-25. **Release 1.36.0 / kb 1.19.0 / mkt 0.14.0** carries them: bumped on
-`release/1.36.0`, tagged `v1.36.0`, `kb-v1.19.0`, `mkt-v0.14.0`. Next: merge it
-to main, then the owner runs `publish_all.bat` from the clean tagged checkout. No npm
-publication is performed by the agent. Installer tests pass in temporary homes
-outside the sandbox; sandbox-only code checkout crashes were isolated to native
-Node `fs.cpSync` on its denied `.pytest_cache`, not repaired by changing the product.
-
-**Registry state (verified 2026-09-25).** Published: code **1.35.0**, KB
-**1.18.0**, marketing **0.13.0**, Apache-2.0 with a NOTICE. Distill is outside
-this release. Per-release
-history belongs to the three `CHANGELOG.md` files and is not restated here.
+**Release preparation (2026-10-02).** The registry confirms code 1.36.0, KB
+1.19.0 and marketing 0.14.0 already published. New prepared targets: code 1.37.0,
+KB 1.20.0, marketing 0.15.0 and course 0.1.0-beta.1 on beta. Antonio authorized
+commit and publication; GUIDE_release.md is the runbook. Independent release and
+integration reviews PASS; four full suites, package allowlists and scratch checks
+pass. npm browser login completed. Commit, tags and publication remain pending;
+HANDOFF_release_stable_course_beta.md carries the resume. Exclude ongoing
+presentations; publish the exact committed export. C-001 remains open.
 
 **What the 2026-09-12 tranche does NOT claim.** The read surface GREW in all three
 lenses (+6.2% code, +8.2% kb, +7.8% mkt across all `.md`), even though the code and mkt

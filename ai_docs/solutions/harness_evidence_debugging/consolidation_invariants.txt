@@ -1,0 +1,96 @@
+[warn]  /: path is absolute, contains '..', or resolves outside the project root: rejected (use a project-relative path, '.' for the root)
+[warn]  ../escape: path is absolute, contains '..', or resolves outside the project root: rejected (use a project-relative path, '.' for the root)
+[ok] no analyzed area was modified after its last recorded analysis.
+[ERROR] ../outside: absolute, '..'-escaping, or outside the project root: refusing to mark (use a project-relative path, '.' for the root). Nothing was written.
+[ok] ANALYSIS index regenerated: C:\Users\apint\AppData\Local\Temp\tmpnmjxoy1h\ai_docs\strategic\features_history.md
+[ok] document manifest regenerated: C:\Users\apint\AppData\Local\Temp\tmpnmjxoy1h\ai_docs\INDEX.md
+[ok] guide router regenerated (empty stub): C:\Users\apint\AppData\Local\Temp\tmpnmjxoy1h\ai_docs\reference\INDEX.md
+[note]  solutions/ANALYSIS_x.md: L3 in implementation with no design-review row in ai_docs/audit/reviews/REVIEW_LOG.md -- the design was reviewed by nobody but its author before code was written (review.md moment 1)
+[note]  solutions/ANALYSIS_x.md: L3 without '## Capability Ledger' -- the architect pass left no record (architect.md); run it before the Impact
+
+Validation: 0 errors, 0 warnings, 2 advisories.
+[note] advisories are freshness signals: never fail a build, not even --strict.
+=== benefit: what the process caught, and what it costs to read ===
+[info] no ai_docs/audit/reviews/REVIEW_LOG.md yet: nothing to report. The number appears once reviews are logged.
+
+Read cost of agentic-sdlc-skill: SKILL.md 46559 bytes (every session) + 182016 bytes across 13 support files (read on trigger) = 228575 bytes total
+    architect.md                12890
+    debugging.md                 7828
+    dispatch.md                  7997
+    elicitation.md              12314
+    ENFORCEMENT.md              15593
+    guides.md                   19124
+    hybrid.md                    6646
+    memory.md                    5040
+    review.md                   31782
+    routing.md                   7705
+    tdd.md                       2683
+    templates.md                37324
+    vision.md                   15090
+=== benefit: what the process caught, and what it costs to read ===
+rows parsed: 3   rows unparsed: 1  -> line 6: 3 cells: header declares 9 and no positional map fits
+reviews with a stated moment: 2   moment not stated by `tier`: 1  (deep x1)
+span of the reviews counted below: 2026-07-28 -> 2026-09-10
+
+moment      rows   findings FAIL verdict per review
+design         1          4           1        4.0
+closure        1          3           0        3.0
+
+Caught BEFORE the code existed: 4 / 7 findings = 57%
+Bounded by the 9 findings in rows whose moment `tier` does not state: 25%-81% (`code` rows are post-implementation by definition, so their findings sit on the closure side of the upper bound)
+Reviews whose verdict contains FAIL: 1 / 2 = 50%
+(both figures are over the 2 reviews whose moment `tier` states)
+
+Read cost of agentic-sdlc-skill: SKILL.md 46559 bytes (every session) + 182016 bytes across 13 support files (read on trigger) = 228575 bytes total
+    architect.md                12890
+    debugging.md                 7828
+    dispatch.md                  7997
+    elicitation.md              12314
+    ENFORCEMENT.md              15593
+    guides.md                   19124
+    hybrid.md                    6646
+    memory.md                    5040
+    review.md                   31782
+    routing.md                   7705
+    tdd.md                       2683
+    templates.md                37324
+    vision.md                   15090
+[ok] ANALYSIS index regenerated: C:\Users\apint\AppData\Local\Temp\tmp173rso4m\ai_docs\strategic\features_history.md
+[ok] document manifest regenerated: C:\Users\apint\AppData\Local\Temp\tmp173rso4m\ai_docs\INDEX.md
+[ok] guide router regenerated (empty stub): C:\Users\apint\AppData\Local\Temp\tmp173rso4m\ai_docs\reference\INDEX.md
+[note]  solutions/ANALYSIS_a.md: 'level' missing (L1/L2/L3/Spike) -- risk-proportional checks cannot apply, and dropping the line is cheaper than doing the work it triggers
+[note]  solutions/ANALYSIS_b.md: L3 in implementation with no design-review row in ai_docs/audit/reviews/REVIEW_LOG.md -- the design was reviewed by nobody but its author before code was written (review.md moment 1)
+[note]  solutions/ANALYSIS_b.md: L3 without '## Capability Ledger' -- the architect pass left no record (architect.md); run it before the Impact
+[note]  ai_docs/reference/INDEX.md missing: Rule Zero requires reading the guide router and forbids faking its verdict, so the router exists even with zero guides -- run 'sdlc_check.py index'
+[warn]  vision/project_vision.md missing
+[warn]  vision/roadmap.md missing
+[warn]  vision/principles.md missing
+[ERROR] solutions/ANALYSIS_b.md: id 'F-1' duplicated (already used in solutions/ANALYSIS_a.md)
+[ERROR] strategic/features_history.md missing: run 'sdlc_check.py index'
+
+Validation: 2 errors, 3 warnings, 4 advisories.
+[note] advisories are freshness signals: never fail a build, not even --strict.
+[ok] ANALYSIS index regenerated: C:\Users\apint\AppData\Local\Temp\tmpebmdoft8\ai_docs\strategic\features_history.md
+[ok] document manifest regenerated: C:\Users\apint\AppData\Local\Temp\tmpebmdoft8\ai_docs\INDEX.md
+[ok] guide router regenerated (empty stub): C:\Users\apint\AppData\Local\Temp\tmpebmdoft8\ai_docs\reference\INDEX.md
+[note]  vision/project_vision.md is DRAFT: not a gating authority, have the user validate it
+[note]  vision/roadmap.md is DRAFT: not a gating authority, have the user validate it
+[note]  vision/principles.md is DRAFT: not a gating authority, have the user validate it
+
+Validation: 0 errors, 0 warnings, 3 advisories.
+[note] advisories are freshness signals: never fail a build, not even --strict.
+[ok] ANALYSIS index regenerated: C:\Users\apint\AppData\Local\Temp\tmp1ly3o84w\ai_docs\strategic\features_history.md
+[info] no canonical documents: INDEX.md not generated
+[ok] guide router regenerated (empty stub): C:\Users\apint\AppData\Local\Temp\tmp1ly3o84w\ai_docs\reference\INDEX.md
+[warn]  vision/project_vision.md missing
+[warn]  vision/roadmap.md missing
+[warn]  vision/principles.md missing
+[ERROR] ai_docs/INDEX.md missing: run 'sdlc_check.py index'
+[ERROR] ai_docs/reference/INDEX.md missing while GUIDE_*.md files exist: the router is the only thing that routes work to them -- run 'sdlc_check.py index'
+
+Validation: 2 errors, 3 warnings, 0 advisories.
+................................................................
+----------------------------------------------------------------------
+Ran 64 tests in 0.630s
+
+OK

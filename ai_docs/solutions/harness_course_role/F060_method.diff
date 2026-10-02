@@ -1,0 +1,98 @@
+diff -ru before/SKILL.md after/SKILL.md
+--- before/SKILL.md	2026-09-28 09:31:12.571015500 +0200
++++ after/SKILL.md	2026-09-28 09:31:12.577033900 +0200
+@@ -80,7 +80,7 @@
+ 
+ Read `slide_content.md` and author the complete primary text before optional rendering. Every slide has exact learner copy, full explanation, concrete examples and limits, visual meaning, transition, source and a module/objective link. Checks have authored solutions, rationale and correction paths. In self-study mode essential reasoning is visible to the learner, not hidden in speaker notes. A renderer must not need to invent teaching material. Only an explicit user request for non-slide instruction selects the equivalent complete textual-unit contract. Keep the feedback channel in `D-IC.md`; the source points to it.
+ 
+-**Content acceptance gate.** Apply the semantic acceptance rubric in `learning_design.md` to the actual learner packet. Its §3 connects the prerequisite graph to progressive discovery in the actual explanations and first uses; validate that traversal through the sequential reading diagnostic in `simulation.md`. The reviewer locates the before/after capability, the explanatory reasoning, aligned evidence and a plausible insufficient answer that the criterion rejects. A generic list, unexplained mechanism, unfair comparison or missing answer blocks readiness even when structure passes. For method/tool courses show when a plausible alternative suffices and what the method explicitly adds; never imply skill instructions guarantee agent compliance.
++**Content acceptance gate.** Apply the semantic acceptance rubric in `learning_design.md` to the actual learner packet. Its §3 connects the prerequisite graph to progressive discovery in the actual explanations and first uses; validate that traversal through the sequential reading diagnostic in `simulation.md`. The reviewer locates the before/after capability, the explanatory reasoning, aligned evidence and a plausible insufficient answer that the criterion rejects. A generic list, unexplained mechanism, unfair comparison or missing answer blocks readiness even when structure passes. For method/tool courses show when a plausible alternative suffices and what the method explicitly adds; never imply skill instructions guarantee agent compliance. For a course on a tool or agent, apply the `Learner's act` row: a check whose required result is an output the tool produces for the person blocks readiness.
+ 
+ Run `python <skill_dir>/scripts/sdlc_check.py course <slug> --root <project_root>` to check structure. For the clarity review, the reviewer follows **Writing with `distill`** above and applies its review mode to the actual learner surface defined in `slide_content.md`; retain the separate factual-fidelity review. A green structural check says nothing about either. Apply `simulation.md` with fresh independent learner agents and a no-course control when available. Preserve prompts, permitted material, tools, responses and session IDs. A control already able to answer makes a course-assisted success inconclusive. Correct blocking explanations and retest. If independent sessions are unavailable, state **simulated test not run** and why; never impersonate independence.
+ 
+diff -ru before/elicitation.md after/elicitation.md
+--- before/elicitation.md	2026-09-28 09:31:12.571015500 +0200
++++ after/elicitation.md	2026-09-28 09:31:12.577033900 +0200
+@@ -193,4 +193,4 @@
+ 
+ ## Course-specific elicitation
+ 
+-Ask which explanation should become possible for the named learner, what they already know with evidence, where they will use the knowledge, and which surfaces they use today. Distinguish an unknown fact from an unknown learner prerequisite. Ask for the benefit before selecting modules.
++Ask which explanation should become possible for the named learner, what they already know with evidence, where they will use the knowledge, which surfaces they use today, and, when a tool or agent is involved, which acts are theirs and which the tool performs for them. Distinguish an unknown fact from an unknown learner prerequisite. Ask for the benefit before selecting modules.
+diff -ru before/learning_design.md after/learning_design.md
+--- before/learning_design.md	2026-09-28 09:31:12.573026600 +0200
++++ after/learning_design.md	2026-09-28 09:31:12.575030000 +0200
+@@ -8,6 +8,8 @@
+ 
+ Write the result as a capability in context: what the learner should notice, explain, decide or do, and under which conditions. Avoid objectives such as 'cover chapter 3' or 'understand our approach' without an observable meaning. State the likely misconception or plausible shortcut and its limits without inventing learner failure.
+ 
++**Who performs each act.** When the course teaches work with a tool, agent or delegated process, record for each objective which acts the learner performs in the real situation (formulating or refining a request, judging an output, taking a decision reserved to them, operating the tool) and which operations the tool performs for them. Read that split from the approved course Vision (its learners and scope); the record realizes it, and a reviewer checks the record against the Vision, not against itself. The Vision may narrow the acts this paragraph admits. Objectives, worked cases and checks target the learner's acts. Explain the tool's mechanism as far as the learner needs it to ask, recognize and verify; do not train the learner to produce by hand what the tool produces for them. The learner may read a source or artifact directly to verify the tool's output: verification is their act, producing the artifact is not. A classification, assessment or record that the tool produces (a level, a category, a conflict verdict, an extracted statement) remains a tool output even when a decision depends on it: the learner's decision is to accept, contest or override it after the tool has produced it. Decisions reserved to the learner are those the tool hands to a person, such as approvals, open choices and scope. Predicting what the tool will return is the learner's act when its purpose is to recognize or verify that output and the check then confronts the prediction with what the tool actually returns. This belongs to the use situation above; it is not a separate audience field.
++
+ ## 2. Work backward from evidence, then build the teaching
+ 
+ Before planning slides, decide what would count as evidence for each promised result and what superficially plausible response would fail. Recall can establish factual knowledge; a claim about judgement requires a choice with reasons, and transfer requires a new situation. Do not inflate every small fact into an elaborate performance task. Several objectives can share one cumulative check.
+@@ -32,6 +34,8 @@
+ 
+ Then give appropriate support for a learner attempt (a cue, partial example or comparison) and reduce it toward independent use. Ask the learner to explain a choice and compare it with an authored rationale. Scale support to prior knowledge and task complexity; advanced learners may not need beginner scaffolding. Do not prescribe a worked example or exercise on every slide. For conceptual objectives, a causal explanation, prediction or contrasting example can supply the bridge without pretending it is a procedure.
+ 
++When the procedure is performed by a tool or agent, the worked case shows the tool's output next to the observations, and the learner's reasoning is the judgement of that output: what to accept, what to ask for, which decision remains theirs.
++
+ ## 5. Manage the learning load and the delivery surface
+ 
+ Introduce necessary terms before using them; keep related data, diagram labels and explanations together. Remove decorative or irrelevant information. Segment a complex explanation into meaningful steps while retaining how they connect. Tailor support to the learner rather than equating more words with better teaching.
+@@ -56,9 +60,10 @@
+ | Progressive discovery | Trace graph dependencies to the actual explanation and first dependent use, and locate how each step develops the question established so far. Apply the sequential reading diagnostic in simulation.md; a later explanation cannot repair an earlier readiness finding. |
+ | Discrimination | Give a plausible but insufficient learner answer and explain why the criterion rejects it. For application/transfer promises, inspect a changed or unfamiliar case that cannot pass by repeating labels. |
+ | Support and correction | Locate sufficient explanation before the attempt, an authored rationale, and a correction matched to a likely error. |
++| Learner's act | For a course that teaches work with a tool, agent or delegated process that performs operations for the learner (§1); otherwise not applicable. The check starts from a request to formulate, a tool output to judge or a decision reserved to the learner, as recorded in the use situation (§1). Its required result is not, even in reduced form, an output the tool produces for the learner, whatever verb frames it (verify, decide, understand); naming a tool output a decision does not make it the learner's act. When a check shows no tool output and asks the learner to assign a level, category or verdict the tool produces, that result is a tool output even if the learner's role owns the decision that depends on it; the check becomes the learner's act once it shows the tool's declaration to accept, contest or override. A prediction confronted with the tool's actual output is admitted (§1) unless the approved course Vision reserves that output to the tool. |
+ | Delivery and fidelity | Necessary terms and reasoning are available in the declared mode; sources support facts and visual instructions do not delegate missing teaching to the renderer. |
+ 
+-Fail readiness for a promised capability if the reviewer cannot locate its teaching or suitable evidence, if the answer can be supplied by repeating headings alone when application is promised, or if the course asks for reasoning it never prepares. Cite the defect and revise the affected explanation/check; another filled field or added theory name does not resolve it. Do not demand novelty for an expert when the course is for novices, or require a method-superiority comparison in unrelated conceptual courses.
++Fail readiness for a promised capability if the reviewer cannot locate its teaching or suitable evidence, if the answer can be supplied by repeating headings alone when application is promised, if the course asks for reasoning it never prepares, or if a check's required result is an output that the taught tool or agent produces rather than the learner's own act. Cite the defect and revise the affected explanation/check; another filled field or added theory name does not resolve it. Do not demand novelty for an expert when the course is for novices, or require a method-superiority comparison in unrelated conceptual courses.
+ 
+ Separate three conclusions: (1) this draft meets content/design criteria; (2) this skill improved an agent's output under the tested conditions; (3) people learned and retained the capability. Review supports the first. A controlled production comparison may inform the second. Only suitable learner evidence can support the third. A no-course model may already know the answer; preserve that inconclusive outcome.
+ 
+diff -ru before/simulation.md after/simulation.md
+--- before/simulation.md	2026-09-28 09:31:12.570505800 +0200
++++ after/simulation.md	2026-09-28 09:31:12.575030000 +0200
+@@ -20,7 +20,7 @@
+ 
+ ## Protocol, fixed before testing
+ 
+-For each learner profile, freeze the course version or material hash, objective, expected evidence of comprehension, prompts/tasks, tools and permitted sources. Construct two independent fresh sessions with the **same** learner profile, final tasks, tools and external access. The course session receives the learner packet incrementally as described below; the control receives no course or reading dialogue. Neither gets project design discussion, answer key, the other's output or hidden facts the real learner would lack. Repository/KB access is allowed only when it matches the real learner context and cannot expose unrevealed course material or expected answers. Otherwise remove it from both sessions or mark the comparison contaminated.
++For each learner profile, freeze the course version or material hash, objective, expected evidence of comprehension, prompts/tasks, tools and permitted sources. Construct two independent fresh sessions with the **same** learner profile, final tasks, tools and external access. The course session receives the learner packet incrementally as described below; the control receives no course or reading dialogue. Neither gets project design discussion, answer key, the other's output or hidden facts the real learner would lack. Repository/KB access is allowed only when it matches the real learner context and cannot expose unrevealed course material or expected answers. Otherwise remove it from both sessions or mark the comparison contaminated. When the course teaches work with a tool, agent or delegated process that performs operations for the learner (`learning_design.md` §1), the simulated learner is itself an agent and can answer well by performing the tool's operations. Place it in the person's role as the approved course Vision describes, and give the final task a tool output to judge or a request to formulate wherever the real situation has one.
+ 
+ ## Sequential reading: withhold what comes next
+ 
+@@ -42,6 +42,6 @@
+ 
+ ## Freeze evidence and distinguish what the test evaluates
+ 
+-Use the objective-specific criteria from `learning_design.md`, including a plausible insufficient response and the explanation expected to correct it. Do not leak that response, the key or the desired reasoning into the learner prompt. Fix criteria before seeing results. Record whether the task asks recall, understanding, application or transfer; recalling the course's named steps cannot establish a promised decision skill.
++Use the objective-specific criteria from `learning_design.md`, including a plausible insufficient response and the explanation expected to correct it. Do not leak that response, the key or the desired reasoning into the learner prompt. Fix criteria before seeing results. Record whether the task asks recall, understanding, application or transfer; recalling the course's named steps cannot establish a promised decision skill. For such a course, the frozen criteria score the person's acts (the request, the judgement of the tool's output, the reserved decision) and give no credit for producing, in any form, an output the tool produces for the person.
+ 
+ For evaluations of course-creator itself, use fresh producer sessions with a realistic user brief and raw sources. Do not restate the teaching techniques being tested in that brief. Keep baseline/revision on the same request, source access and model settings, preserve both outputs and have an independent reviewer apply frozen criteria without version labels. Include a structurally complete but pedagogically inadequate fixture when testing the review gate. A positive result is scoped to the observed runs; a successful baseline makes incremental benefit inconclusive. A production comparison is not a learner/control simulation and neither proves human learning.
+diff -ru before/slide_content.md after/slide_content.md
+--- before/slide_content.md	2026-09-28 09:31:12.571015500 +0200
++++ after/slide_content.md	2026-09-28 09:31:12.577033900 +0200
+@@ -10,7 +10,7 @@
+ 
+ Trace each module to that change. Each slide serves the progression; it need not make a separate benefit claim. If the reviewer cannot identify the change, explanatory contribution and transfer evidence, revise the course before calling it ready. Populated fields and longer text are not evidence of value.
+ 
+-For a method/tool course, apply both the method and a fair alternative to the same conditions. Show the additional explicit mechanism, its cost, limits and a case where the alternative is sufficient. Equivalent instructions may produce equivalent results; instructions guide an agent, they do not mechanically guarantee compliance. Do not manufacture failures or measured advantages.
++For a method/tool course, apply both the method and a fair alternative to the same conditions. Show the additional explicit mechanism, its cost, limits and a case where the alternative is sufficient. Equivalent instructions may produce equivalent results; instructions guide an agent, they do not mechanically guarantee compliance. Do not manufacture failures or measured advantages. Teach and check the person's acts with the method, as `learning_design.md` §1 records them, not the operations the method assigns to the tool or agent.
+ 
+ ## Versioned contract
+ 
+diff -ru before/templates.md after/templates.md
+--- before/templates.md	2026-09-28 09:31:12.568782300 +0200
++++ after/templates.md	2026-09-28 09:31:12.575030000 +0200
+@@ -160,7 +160,7 @@
+ ## Teaching alignment
+ | Objectives and use context | Evidence and success criterion | Explanatory bridge | Example or contrast | Support and correction |
+ |---|---|---|---|---|
+-| O1: <observable comprehension/decision and conditions> | <task + what distinguishes an adequate answer> | <passage explaining the connection, not its topic name> | <case/changed condition and locator> | <appropriate guidance, rationale, likely error and recovery locator> |
++| O1: <observable comprehension/decision and conditions; for a course on a tool or agent, the learner's act and the tool output it acts on (learning_design.md §1)> | <task + what distinguishes an adequate answer> | <passage explaining the connection, not its topic name> | <case/changed condition and locator> | <appropriate guidance, rationale, likely error and recovery locator> |
+ ```
+ 
+ The module material itself names course/version/module, explains the concept for that profile, gives a useful example and transition, and points to IC1 or says feedback is unavailable.

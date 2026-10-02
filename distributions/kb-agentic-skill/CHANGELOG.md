@@ -2,6 +2,11 @@
 
 Every significant change to this skill is recorded here.
 
+## [1.20.0] - 2026-10-02
+
+### Changed
+- F-058: route course creation to `course-creator`, keep course artifacts discoverable in shared memory, and guard the fourth shared core copy.
+
 ## [1.19.0] - 2026-09-25
 
 ### Changed

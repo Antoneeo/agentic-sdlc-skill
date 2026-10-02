@@ -4,6 +4,10 @@ status: CURRENT
 ---
 # Existing Features
 
+- [061] **Evidence-driven debugging**: Bug analysis starts with local incident evidence and a proportionate register of hypotheses ordered by likelihood and verification cost. Evidence-backed causal questioning supports intermittent incidents; clean Poka-Yoke correction carries the owner's exact design check, valid-behavior protection and regression verification. Implemented locally; behavioral comparison and closure evidence are in `solutions/ANALYSIS_evidence_driven_debugging.md`.
+
+- [058] **Course Creator**: A fourth Standalone lens creates courses for specified learner profiles through a prerequisite graph and progressive, sourced explanations. Its course validator checks structural trace and safe references; independent simulated learners diagnose confusing passages, while real learner evidence governs any efficacy claim. The installable package lives under `distributions/course-creator/`.
+
 - [057] **Shared Project Memory**: Every distribution includes a catalog of original project documents, live metadata `recall`, and shared topic/claim/corpus integrity. One installed skill suffices; workflow ownership remains domain-specific. No status aggregation, automatic claims, semantic search or watcher. See `reference/GUIDE_shared_project_memory.md` for implementation boundaries.
 
 - [000] **Project Initialization**: Creates baseline `ai_docs/` governance files and agent protocol instructions for supported AI tools.

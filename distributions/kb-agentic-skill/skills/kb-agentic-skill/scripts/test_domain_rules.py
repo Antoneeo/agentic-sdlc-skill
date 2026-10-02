@@ -62,6 +62,11 @@ MARKETING_RISK = """
 The competitor may cut price before launch; the plan holds a discount reserve.
 """
 
+COURSE_RISK = """
+## Learning and Content Risks
+A missing prerequisite makes the explanation unusable for this audience.
+"""
+
 
 def write(root, rel, text):
     p = Path(root) / rel
@@ -147,6 +152,16 @@ class TS2DefaultResolution(unittest.TestCase):
             self.assertNotIn("Security and Threat Model", out)
             self.assertEqual(rc, 0, out)
 
+    def test_course_project_default_uses_learning_risk(self):
+        with tempfile.TemporaryDirectory() as d:
+            seed_project(d, readme_default="course")
+            write(d, "ai_docs/solutions/ANALYSIS_a.md",
+                  analysis("C-001", "Lesson", COURSE_RISK))
+            rc, out = validate(d)
+            self.assertEqual(rc, 0, out)
+            self.assertEqual(sc.project_default_domain(Path(d)), "course")
+            self.assertEqual(sc.DOMAINS["course"]["id_prefix"], "C-")
+
     def test_artifact_field_overrides_the_project_default(self):
         with tempfile.TemporaryDirectory() as d:
             seed_project(d, readme_default="knowledge")
@@ -166,7 +181,7 @@ class TS2DefaultResolution(unittest.TestCase):
 
 
 class TS3MixedTree(unittest.TestCase):
-    """Three lenses, one tree, one answer."""
+    """Four lenses, one tree, one answer."""
 
     def _mixed(self, d):
         seed_project(d)
@@ -176,6 +191,8 @@ class TS3MixedTree(unittest.TestCase):
               analysis("F-001", "Knowledge thing", KNOWLEDGE_RISK, domain="knowledge"))
         write(d, "ai_docs/solutions/ANALYSIS_marketing.md",
               analysis("M-001", "Market thing", MARKETING_RISK, domain="marketing"))
+        write(d, "ai_docs/solutions/ANALYSIS_course.md",
+              analysis("C-001", "Course thing", COURSE_RISK, domain="course"))
 
     def test_mixed_tree_is_clean(self):
         with tempfile.TemporaryDirectory() as d:
@@ -199,6 +216,16 @@ class TS3MixedTree(unittest.TestCase):
             write(d, "ai_docs/solutions/ANALYSIS_b.md", analysis("F-001", "B", CODE_RISK))
             _, out = validate(d)
             self.assertIn("duplicated", out)
+
+    def test_same_id_in_course_is_a_collision(self):
+        with tempfile.TemporaryDirectory() as d:
+            seed_project(d)
+            write(d, "ai_docs/solutions/ANALYSIS_course_a.md",
+                  analysis("C-001", "A", COURSE_RISK, domain="course"))
+            write(d, "ai_docs/solutions/ANALYSIS_course_b.md",
+                  analysis("C-001", "B", COURSE_RISK, domain="course"))
+            _, out = validate(d)
+            self.assertIn("id 'C-001' duplicated", out)
 
     def test_generated_index_does_not_depend_on_the_entry_point(self):
         """The whole reason the default is project-level rather than per-distribution."""
@@ -234,6 +261,23 @@ class TS4PerDomainSections(unittest.TestCase):
             self.assertEqual(rc, 1)
             self.assertIn("'## Threat Map / Plan Risks' missing (mandatory)", out)
 
+    def test_course_analysis_missing_its_risk_section_errors(self):
+        with tempfile.TemporaryDirectory() as d:
+            seed_project(d, readme_default="course")
+            write(d, "ai_docs/solutions/ANALYSIS_a.md", analysis("C-001", "A", ""))
+            rc, out = validate(d)
+            self.assertEqual(rc, 1)
+            self.assertIn("'## Learning and Content Risks' missing (mandatory)", out)
+
+    def test_course_does_not_accept_another_domains_risk(self):
+        with tempfile.TemporaryDirectory() as d:
+            seed_project(d)
+            write(d, "ai_docs/solutions/ANALYSIS_a.md",
+                  analysis("C-001", "A", CODE_RISK, domain="course"))
+            rc, out = validate(d)
+            self.assertEqual(rc, 1)
+            self.assertIn("'## Learning and Content Risks' missing (mandatory)", out)
+
     def test_a_knowledge_tree_is_never_asked_for_code_sections(self):
         with tempfile.TemporaryDirectory() as d:
             seed_project(d, readme_default="knowledge")
@@ -259,6 +303,13 @@ class TS10CrossDomainLocatability(unittest.TestCase):
             self.assertIn("| knowledge |", tagged)
             self.assertIn("| code |", tagged,
                           "the untagged sibling still resolves: the column is complete or absent")
+
+    def test_course_is_visible_in_generated_index(self):
+        with tempfile.TemporaryDirectory() as d:
+            seed_project(d)
+            write(d, "ai_docs/solutions/ANALYSIS_course.md",
+                  analysis("C-001", "Course", COURSE_RISK, domain="course"))
+            self.assertIn("| course |", reindex(d))
 
     def test_the_restated_fact_clause_is_present(self):
         """C4's only mechanism against copies. If this clause goes, nothing detects them."""
