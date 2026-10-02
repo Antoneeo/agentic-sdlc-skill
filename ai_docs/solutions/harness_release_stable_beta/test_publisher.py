@@ -40,6 +40,11 @@ elif args[0]=='view':
  else: print('wrong' if os.environ['MOCK_MODE']=='verify-fail' else pkg['version'])
 elif args[0]=='publish':
  sys.exit(1 if os.environ['MOCK_MODE']=='publish-fail' else 0)
+elif args[:2]==['dist-tag','ls']:
+ if os.environ['MOCK_MODE']=='tags-fail': sys.exit(1)
+ if os.environ['MOCK_MODE']=='tags-empty': sys.exit(0)
+ print('beta: '+pkg['version'])
+ if os.environ['MOCK_MODE']=='beta-promoted': print('latest: '+pkg['version'])
 ''', encoding='utf-8')
             env = dict(os.environ, PATH=str(fake)+os.pathsep+os.environ['PATH'],
                        MOCK_LOG=str(root/'calls.jsonl'), MOCK_MODE=mode)
@@ -70,6 +75,21 @@ elif args[0]=='publish':
 
     def test_failed_verify_does_not_report_success(self):
         result, _ = self.run_mock('verify-fail')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn('All four published.', result.stdout)
+
+    def test_beta_also_on_latest_is_rejected(self):
+        result, _ = self.run_mock('beta-promoted')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn('All four published.', result.stdout)
+
+    def test_tag_query_failure_is_rejected(self):
+        result, _ = self.run_mock('tags-fail')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn('All four published.', result.stdout)
+
+    def test_empty_tag_query_is_rejected(self):
+        result, _ = self.run_mock('tags-empty')
         self.assertNotEqual(result.returncode, 0)
         self.assertNotIn('All four published.', result.stdout)
 

@@ -1,0 +1,20 @@
+{
+  "release_commit": "3e5677335db2636c4e4f97e8dfbeea16fb18c088",
+  "accepted": {
+    "code": "1.37.0",
+    "kb": "1.20.0",
+    "marketing": "0.15.0",
+    "course": "0.1.0-beta.1"
+  },
+  "public_tarball_sha1_verified": {
+    "code": "ae194650d52db126c3e3eb8a97d1db17cb62be7e",
+    "kb": "9a25d20ca464a311d7f0a904e3a71212026561ff",
+    "marketing": "42ac0e2fde89642b044978dcd20ce8360e5e0fbd",
+    "course": "6bd2d298ff4b1ff33520d29ab2ad5e8dfabbcd1d"
+  },
+  "tags_endpoint": "https://registry.npmjs.org/-/package/<encoded-name>/dist-tags",
+  "course_latest_removal": "authenticated DELETE rejected: E400 Bad Request",
+  "stable_latest_verified": {"code": "1.37.0", "kb": "1.20.0", "marketing": "0.15.0"},
+  "course_dist_tags_verified": {"beta": "0.1.0-beta.1", "latest": "0.1.0-beta.1"},
+  "closure": "pending owner decision: beta-only channel isolation not achieved"
+}

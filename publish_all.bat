@@ -110,6 +110,33 @@ for /L %%i in (1,1,10) do (
   )
 )
 if "!GOT!"=="!WANT!" (
+  if not "!CHANNEL!"=="latest" (
+    REM First publication can also create latest; verify isolation directly.
+    set "TAGFILE=%TEMP%\agentic-sdlc-tags-!RANDOM!-!RANDOM!.txt"
+    call npm dist-tag ls %~2 > "!TAGFILE!" 2>nul
+    if errorlevel 1 (
+      del /q "!TAGFILE!"
+      echo   [FAIL] cannot read %~2 channel tags.
+      popd & exit /b 1
+    )
+    set "CHANNEL_FOUND="
+    set "PROMOTED="
+    for /f "usebackq tokens=1,2" %%t in ("!TAGFILE!") do (
+      if "%%t"=="!CHANNEL!:" if "%%u"=="!WANT!" set "CHANNEL_FOUND=1"
+      if "%%t"=="latest:" set "PROMOTED=%%u"
+    )
+    del /q "!TAGFILE!"
+    if not defined CHANNEL_FOUND (
+      echo   [FAIL] %~2 does not confirm !CHANNEL! = !WANT!.
+      popd & exit /b 1
+    )
+    if "!PROMOTED!"=="!WANT!" (
+      echo   [FAIL] %~2 prerelease is also on latest; keep it on !CHANNEL! only.
+      echo   Manual removal may be attempted: npm dist-tag rm %~2 latest
+      echo   Registry rejection requires owner resolution; do not report beta-only success.
+      popd & exit /b 1
+    )
+  )
   echo   [ok] %~2 [!CHANNEL!] = !GOT!
 ) else (
   echo   [??] %~2 : local !WANT!, registry reports !GOT! - the registry may still

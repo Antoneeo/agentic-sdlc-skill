@@ -26,5 +26,14 @@ after integration and derived documents have been reviewed. Publication is still
 pending; login completed. Course presentations and local rendering dependencies
 are excluded from staging and npm packages.
 
+Post-publication: commit 3e56773 and all four package tags are on origin. npm
+accepted all four versions; public tarball SHA1 values match publication.json.
+All three stable latest tags match their targets. Course beta matches 0.1.0-beta.1,
+but latest also names this prerelease. Authenticated removal completed browser
+authorization and returned E400. Publication is accepted; beta-only closure is open,
+pending owner decision. Earlier E404 and pending-login statements describe preflight.
+Seven publisher guard mocks now pass; independent guard review PASS. Its WARN
+was resolved by describing manual tag removal as subject to registry acceptance.
+
 Plain repository closure gate CLEAN (validate rc=0, stale rc=0); 18 inherited
 nonfatal warnings retained. F-060/F-061 implemented units can now close.

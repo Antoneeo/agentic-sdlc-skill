@@ -4,7 +4,7 @@ level: L3
 branch: main
 status: IN_PROGRESS
 since: 2026-10-02
-next: Finish independent release reviews, close audit references, commit and tag, publish stable lenses and course beta from the exact release commit.
+next: Await owner decision on course latest alias after authenticated removal failed E400; review publisher guard and finish publication record.
 details: ANALYSIS_release_stable_course_beta.md
 updated: 2026-10-02
 ---
@@ -18,4 +18,9 @@ verified 1.36.0, 1.19.0, 0.14.0; course returned E404.
 Work stays on main. Exclude presentations and their local dependencies from the
 release commit; publish a clean git archive export so unrelated local work survives.
 Do not infer human learning efficacy from simulator or validator results. C-001
-content work remains open. No publication or commit has occurred yet.
+content work remains open. Release commit 3e56773 and all four tags are on origin/main. npm accepted all four
+packages and public tarballs match the publication hashes. Direct dist-tag reads
+confirm stable targets but course also has latest. Browser authorization completed;
+the authenticated DELETE of latest returned E400. Beta-only closure is not achieved.
+Owner decision on this residual is pending. Do not repeat publication, unpublish,
+or move release tags. Seven publisher isolation mock tests pass; independent guard review PASS.

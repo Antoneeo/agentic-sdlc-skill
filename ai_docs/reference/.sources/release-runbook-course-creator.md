@@ -261,3 +261,9 @@ This amendment preserves the guide's order and immutable release identity.
 Publication is authorized in this session; the agent may invoke the publisher.
 Browser authentication remains the owner's act. Awaiting 2FA is pending publication,
 not evidence of a registry rejection. Record actual published versions after verify.
+
+Observed 2026-10-02: first course publication with explicit beta also acquired latest.
+Authenticated removal of latest returned E400 after browser authorization. Do not
+assume manual removal will succeed. The publisher must reject beta-only success
+when latest equals the prerelease, or tag queries fail/return empty. Keep closure
+open for owner resolution; do not automatically unpublish or move stable channels.

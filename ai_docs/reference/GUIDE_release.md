@@ -3,7 +3,7 @@ description: How to release a new version of the skill package (npm + git tag + 
 status: CURRENT
 source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition; amended 2026-09-25 — plain `check` beside the hybrid one, `mark` inside the release commit, one tag per package, a pending 2FA is pending, not failed).
 distilled_from: ai_docs/reference/.sources/release-runbook-course-creator.md
-source_hash: a93c4d2f114caaf6b4daafbe0b14ea393e08c5a57777f3821d52f32a39c04274
+source_hash: 535a49d32573c0dbff2f915513deb0c650614e66fc3190482395f0b49a459422
 ---
 # Guide: Release
 
@@ -87,6 +87,11 @@ Before any commit/tag/publish, four checks:
    the release; if `test_indexes_idempotent` fails, run `sdlc_check.py index` and re-run.
 After publish: verify each version and its intended `dist-tags.latest` or
 `dist-tags.beta`. Course latest must not point at the beta release.
+On the first course publication (2026-10-02), npm also assigned latest despite
+explicit beta routing, and authenticated removal returned E400. The publisher now
+rejects this state and failed/empty tag queries. Manual removal is subject to registry
+acceptance; keep closure open for owner resolution. Do not automatically unpublish
+or move other channels. (snapshot §Stable and beta release amendment — 2026-10-02)
 
 ## What to watch out for
 [source: release-runbook-course-creator.md#known-traps]

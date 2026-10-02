@@ -386,3 +386,9 @@ Bounded role handoff evidence and limitations: REVIEW_course_roles.md. No full-c
 | 2026-10-02 | ANALYSIS_release_stable_course_beta.md | design | gpt-6-astra, fresh read-only release_design_review; author different model | 2 WARN | 2, harness and failure callers specified | PASS | 1 |
 | 2026-10-02 | publisher and metadata diff | closure | gpt-6-astra, fresh read-only release_closure_review | 1 WARN | 1, stable fixture now exercises omitted tag | PASS | 1 |
 | 2026-10-02 | F-058/F-059/F-060 pending integration | closure | gpt-6-astra, fresh read-only release_integration_review | 3 findings | 3, beta install pointer and reminder docs corrected and reread | PASS | 1 |
+| 2026-10-02 | publisher beta isolation guard | closure | gpt-6-astra, read-only release_closure_review | 1 WARN | 1, manual removal hint now conditional on registry acceptance | PASS | 1 |
+
+Isolation guard review maps intended-tag presence, failed/empty query rejection,
+and latest alias rejection to the actual batch diff and seven mock cases. No
+automatic registry mutation. This PASS does not close the external release:
+course latest removal failed E400 after authentication; owner decision remains open.

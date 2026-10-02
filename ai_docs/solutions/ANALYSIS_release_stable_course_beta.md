@@ -36,6 +36,9 @@ capability. No Vision change or claim of demonstrated human learning is introduc
 3. Re-run all four Python suites, package allowlists, course client installer tests
    and temporary-project initialization. Existing synthetic debugging results remain
    bounded evidence, not generalized efficacy measurements.
+   Verification also queries npm dist-tag ls directly and rejects a non-latest
+   release if latest points to that prerelease. First-publish behavior observed
+   below means selecting beta alone is insufficient for this additional predicate.
 4. Reconcile audit references only after reviewing changed surfaces and derived
    documents. Legacy nonfatal warnings remain disclosed; do not fabricate past reviews.
 5. Commit release files deliberately. Exclude ongoing course presentation/rendering
@@ -120,3 +123,12 @@ versions are absent on the registry. Evidence in harness_release_stable_beta.
 
 Standalone repository check CLEAN after reviewed audit references refreshed.
 F-060 and F-061 implementation closure recorded; F-062 publication still pending.
+Commit 3e56773 and four tags pushed to main; npm accepted all packages. Public
+tarballs match their publication SHA1. Direct dist-tag endpoint shows three stable
+targets, but npm also assigned latest to the first course beta. Removal authorized
+by the beta-only scope completed browser authorization, but registry DELETE returned
+E400. Owner decision on the residual alias is pending; beta-only closure remains open.
+Explicit channel isolation was added to the existing verification after a failing
+mock demonstrated false success. Seven mocks now pass, including failed or empty
+tag queries. Independent guard review PASS; conditional manual-removal hint resolves
+its WARN. Release tags stay on 3e56773.

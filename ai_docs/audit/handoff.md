@@ -8,7 +8,7 @@ Date: 2026-10-02 (UTC)
 | C-001 Corso kb-agentic e agentic-sdlc | L3 | main | IN_PROGRESS | 2026-09-27 | 3.2-content ready for owner reading (SLIDE_CONTENT.md). Pending: fresh-reader retest of edited prefixes, second frozen task with an inverted cue, then a new PPTX only after owner approval. Work directly in the main project folder. | HANDOFF_course_agentic_sdlc_kb_agentic.md · ANALYSIS_course_agentic-sdlc-kb-agentic.md |
 | F-015 Code-Comprehension Guides | L3 | main | PAUSED | 2026-07-19 | dogfood #8: write one real `source_kind: code` guide | HANDOFF_comprehension_guides.md · ANALYSIS_comprehension_guides.md |
 | F-055 Apache-2.0 with NOTICE (four packages, two repositories) | L3 | feat/apache-license | DONE, AWAITING PUBLISH | 2026-09-13 | publish_all.bat from the repo root (owner's act, 2FA opens a browser per package; all three changed), then npm publish in distill-skill (2FA); then npm view returns code 1.34.0, kb 1.17.0, mkt 0.12.0, distill 0.9.0 | HANDOFF_apache_license.md · ANALYSIS_apache_license.md · harness_apache_license/probe.py |
-| F-062 Stable family release and course beta | L3 | main | IN_PROGRESS | 2026-10-02 | Finish independent release reviews, close audit references, commit and tag, publish stable lenses and course beta from the exact release commit. | HANDOFF_release_stable_course_beta.md · ANALYSIS_release_stable_course_beta.md |
+| F-062 Stable family release and course beta | L3 | main | IN_PROGRESS | 2026-10-02 | Await owner decision on course latest alias after authenticated removal failed E400; review publisher guard and finish publication record. | HANDOFF_release_stable_course_beta.md · ANALYSIS_release_stable_course_beta.md |
 
 ## Project-wide notes
 
