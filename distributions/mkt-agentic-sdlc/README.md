@@ -11,9 +11,16 @@ status and evidence: discovery is not approval or proof of implementation.
 
 Registration happens at `index`/documentation closure, not through a background
 watcher. Existing projects acquire the catalog on their next `index`; `recall`
-also sees live metadata. The KB lens remains the specialist for ingestion and
-taxonomy. Marketing retains its numerical validators. See the skill's `memory.md`.
+also sees live metadata. Shared `distillation.md`, `taxonomy.md`, `reconciliation.md`,
+`portability.md` and `knowledge-templates.md` are available on demand under the
+marketing workflow. KB retains its independent corpus triage. Marketing retains
+its numerical validators. See the skill's `memory.md`.
 Vendoring requires all three files: the entry point, `sdlc_core.py`, `knowledge.py`.
+
+The common `capture-source` and `evidence` commands preserve selected software
+extracts and report correspondence with declared inputs. They do not create claims,
+certify execution or change market-evidence classes. Typed KB topics may distinguish
+observations, requirements, hypotheses and designs; legacy rows remain readable.
 
 
 Evidence-First marketing planning protocol for AI coding agents (Claude Code, Gemini CLI, Google Antigravity, Codex). The sibling of [`@antoneeo/agentic-sdlc-skill`](https://www.npmjs.com/package/@antoneeo/agentic-sdlc-skill), transplanted from software engineering to marketing strategy.

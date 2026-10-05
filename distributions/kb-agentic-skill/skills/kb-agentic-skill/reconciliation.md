@@ -14,6 +14,13 @@ both sides stay, marked, until information ends the disagreement.
 
 ## 1. Five outcomes — the agent classifies, the machine verifies
 
+Compare nature before meaning: an OBSERVATION and a REQUIREMENT or DESIGN may
+differ legitimately. Unlike kinds coexist; never CONTEST or SUPERSEDE across kinds.
+Approval changes neither kind nor observed reality. UNCLASSIFIED legacy rows need
+source inspection before classification, never a silent inferred migration. Within
+one kind, compare subject, conditions and validity, then classify below. Provenance
+still describes origin, not rank. Keep prior evidence and claim history.
+
 Subject-sameness is semantic judgement; no query performs it. Classify:
 
 | Outcome | When | Action |
@@ -45,7 +52,7 @@ dangling ids are errors, duplicates are errors.
    `sdlc_check.py stale`: its `## claims` section lists every living
    document still citing the fallen id without naming its successor(s)
    and every derivation resting on a superseded source -- the revision
-   worklist, worked per the kb `## Revision` doctrine, one document at a
+   worklist, worked per `memory.md` §Revision, one document at a
    time. The citation warn also stands in `check` until each document is
    revised (or an append-only correction naming the successors lands),
    so the worklist cannot be silently forgotten.

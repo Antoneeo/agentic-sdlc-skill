@@ -7,10 +7,15 @@ Every distribution ships this module alongside its entry point and sdlc_core.py.
 import argparse
 import os
 import hashlib
+import contextlib
+import json
 import ntpath
 import posixpath
 import re
 import sys
+import stat
+import tempfile
+import uuid
 from pathlib import Path
 import sdlc_core
 from sdlc_core import *  # compatibility with the existing KB implementation
@@ -21,6 +26,8 @@ from sdlc_core import _map_refs
 # is pure and stdlib — the battery calls them directly.
 
 CLAIM_COLUMNS = ("id", "claim", "valid", "qty", "about", "source", "prov", "state")
+TYPED_CLAIM_COLUMNS = CLAIM_COLUMNS + ("kind",)
+CLAIM_KINDS = ("OBSERVATION", "REQUIREMENT", "HYPOTHESIS", "DESIGN")
 CLAIM_HEADING = "## Claims"
 PROVENANCES = ("GIVEN", "ELICITED", "DERIVED", "RULING", "IMPORTED")
 SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]{0,63}$")
@@ -174,6 +181,7 @@ def kb_parse_claims(text):
     except StopIteration:
         return [], []
     header_seen = False
+    columns = CLAIM_COLUMNS
     for i in range(start + 1, len(lines)):
         ln = lines[i].strip()
         if ln.startswith("## "):
@@ -183,19 +191,20 @@ def kb_parse_claims(text):
         cells = [c.strip() for c in ln.strip("|").split("|")]
         if not header_seen:
             header_seen = True          # header row
-            if [c.lower() for c in cells] != list(CLAIM_COLUMNS):
+            columns = tuple(c.lower() for c in cells)
+            if columns not in (CLAIM_COLUMNS, TYPED_CLAIM_COLUMNS):
                 errors.append((i + 1, "claim table header must be exactly: "
-                               + " | ".join(CLAIM_COLUMNS)))
+                               + " | ".join(CLAIM_COLUMNS) + " (optionally followed by kind)"))
                 return [], errors
             continue
         if set(ln) <= {"|", "-", " ", ":"}:
             continue                    # separator row
-        if len(cells) != len(CLAIM_COLUMNS):
+        if len(cells) != len(columns):
             errors.append((i + 1, "claim row has %d cells, expected %d "
                            "(a '|' inside a cell must be escaped)"
-                           % (len(cells), len(CLAIM_COLUMNS))))
+                           % (len(cells), len(columns))))
             continue
-        row = dict(zip(CLAIM_COLUMNS, cells))
+        row = dict(zip(columns, cells))
         row["_line"] = i + 1
         rows.append(row)
     return rows, errors
@@ -341,11 +350,22 @@ def kb_check_claims(root):
         rel = "topics/" + p.name
         text = sdlc_core.read_text(p)
         rows, perrs = kb_parse_claims(text)
+        meta = sdlc_core.load_frontmatter(text.splitlines()) or {}
+        schema = kb_unquote(meta.get("claim_schema", "1"))
+        if schema not in ("1", "2"):
+            errors.append("%s: claim_schema must be 1 or 2" % rel)
+        if schema == "2":
+            section = text.split(CLAIM_HEADING, 1)[-1].split("\n## ", 1)[0]
+            header = next((ln for ln in section.splitlines() if ln.strip().startswith("|")), "")
+            if tuple(c.strip().lower() for c in header.strip().strip("|").split("|")) != TYPED_CLAIM_COLUMNS:
+                errors.append("%s: claim_schema 2 requires the typed header" % rel)
         for line, msg in perrs:
             errors.append("%s:%d: %s" % (rel, line, msg))
         per_file_rows.append((rel, rows))
         for row in rows:
             where = "%s:%d" % (rel, row["_line"])
+            if "kind" in row and row["kind"] not in CLAIM_KINDS:
+                errors.append("%s: kind must be %s" % (where, "/".join(CLAIM_KINDS)))
             # --- source: resolve, confine, span-check ---
             sources = [s.strip() for s in row["source"].split(";") if s.strip()]
             if not sources:
@@ -530,6 +550,13 @@ def kb_check_claims(root):
                                   "the check, it does not clean up" % (where, kind, t))
                     continue
                 orow, _ = other
+                if row.get("kind") and orow.get("kind"):
+                    if row["kind"] != orow["kind"]:
+                        errors.append("%s: %s cannot connect different claim kinds (%s / %s)"
+                                      % (where, kind, row["kind"], orow["kind"]))
+                elif row.get("kind") or orow.get("kind"):
+                    warnings.append("%s: related legacy claim %s has unclassified kind; re-verify"
+                                    % (where, t))
                 if kind == "SUPERSEDED" and orow["prov"] == "IMPORTED":
                     # F-030, owner ruling 2026-08-03: knowledge crosses a project
                     # boundary, authority does not. An IMPORTED row carries another
@@ -1011,6 +1038,15 @@ def kb_corpus_check(root):
             meta = sdlc_core.load_frontmatter(sdlc_core.read_text(meta_p).splitlines()) or {}
             orig = given / meta_p.name[:-len(".meta.md")]
             rel = "corpus/given/" + orig.name
+            try:
+                # Software bindings use a full, duplicate-aware header read; a
+                # legacy sidecar keeps the checks below, unchanged.
+                full_meta = _kb_header_meta(_kb_read_bytes(root, "corpus/given/" + meta_p.name))
+                if any(k.startswith("software_") for k in full_meta):
+                    _kb_software_integrity(root, rel, full_meta)
+            except (OSError, ValueError) as exc:
+                errors.append("%s: %s" % (rel, exc))
+                continue
             if not orig.is_file():
                 errors.append("%s: sidecar exists but the original is gone" % rel)
                 continue
@@ -1076,6 +1112,307 @@ def kb_sha256_bytes(path):
     return h.hexdigest()
 
 
+# ----------------------------------------------- software evidence (F-064)
+SOFTWARE_FIELDS = ("software_schema", "software_project_id", "software_path",
+                   "software_sha256", "software_lines", "software_role")
+SOFTWARE_ROLES = ("code", "test", "config", "result")
+SOFTWARE_MAX_BYTES = 16 * 1024 * 1024
+
+
+def _kb_relative(rel):
+    """Portable POSIX spelling, never a drive/stream/URL or a parent traversal."""
+    rel = str(rel)
+    if (not rel or ntpath.isabs(rel) or ntpath.splitdrive(rel)[0]
+            or "\\" in rel or ":" in rel or ".." in rel.split("/")
+            or any(ord(c) < 32 for c in rel)):
+        raise ValueError("unsafe relative path: %r" % rel)
+    norm = posixpath.normpath(rel)
+    if norm == ".":
+        raise ValueError("a file path is required")
+    return norm
+
+
+def _kb_safe_path(base, rel):
+    """Validate every existing hop under base without following links.
+
+    base is the root the caller chose and is trusted as spelled, links among its
+    ancestors included (macOS /var, a junctioned checkout): confinement concerns
+    what lies under it. A caller that must also confine base itself checks it as
+    a hop of an outer root (capture: docs under project).
+    Directory replacement by an adversarial concurrent process is out of scope;
+    capture must run in a root whose writers are trusted. Rechecked before publish.
+    """
+    rel = _kb_relative(rel)
+    base = Path(base).absolute()
+    path, hop = base / rel, base
+    for name in rel.split("/"):
+        hop = hop / name
+        try:
+            info = hop.lstat()
+        except FileNotFoundError:
+            break
+        if (stat.S_ISLNK(info.st_mode)
+                or getattr(info, "st_file_attributes", 0) & 0x400):
+            raise ValueError("links/reparse points are not allowed: %s" % hop)
+        if hop != path and not stat.S_ISDIR(info.st_mode):
+            raise ValueError("not a directory: %s" % hop)
+    path.resolve().relative_to(base.resolve())
+    return path
+
+
+def _kb_read_bytes(base, rel, limit=None):
+    path = _kb_safe_path(base, rel)
+    before = path.stat()
+    if not stat.S_ISREG(before.st_mode):
+        raise ValueError("not a regular file: %s" % rel)
+    if limit is not None and before.st_size > limit:
+        raise ValueError("source exceeds %d bytes" % limit)
+    flags = os.O_RDONLY | getattr(os, "O_BINARY", 0) | getattr(os, "O_NOFOLLOW", 0)
+    with os.fdopen(os.open(path, flags), "rb") as source:
+        opened = os.fstat(source.fileno())
+        if not stat.S_ISREG(opened.st_mode):
+            raise ValueError("not a regular source")
+        data = source.read() if limit is None else source.read(limit + 1)
+        after = os.fstat(source.fileno())
+    current = _kb_safe_path(base, rel).stat()
+    signature = lambda s: (s.st_dev, s.st_ino, s.st_size, s.st_mtime_ns)
+    if any(signature(s) != signature(before) for s in (opened, after, current)):
+        raise ValueError("source changed during capture: %s" % rel)
+    if limit is not None and len(data) > limit:
+        raise ValueError("source exceeds %d bytes" % limit)
+    return data
+
+
+def _kb_software_frontmatter(raw):
+    """Full frontmatter for identities/bindings; reject duplicate fields."""
+    lines = raw.decode("utf-8-sig").splitlines()
+    if not lines or lines[0].strip() != "---":
+        return {}
+    out = {}
+    for line in lines[1:]:
+        if line.strip() == "---":
+            return out
+        match = re.match(r"^([\w-]+):\s*(.*)$", line)
+        if match:
+            key, value = match.groups()
+            if key in out:
+                raise ValueError("duplicate frontmatter field: %s" % key)
+            out[key] = value.strip()
+    raise ValueError("unclosed frontmatter")
+
+
+def _kb_header_meta(raw):
+    """The strict read above when the header carries a software binding; the
+    legacy reading (sdlc_core.load_frontmatter) otherwise, so sidecars and notes
+    written before F-064 keep their verdicts. A header that fails the strict read
+    while naming a software_ field fails closed."""
+    text = raw.decode("utf-8-sig", "replace")
+    try:
+        meta = _kb_software_frontmatter(raw)
+    except ValueError:
+        if re.search(r"(?mi)^software_[\w-]*:", text):
+            raise
+        meta = {}
+    if any(k.startswith("software_") for k in meta):
+        return meta
+    return sdlc_core.load_frontmatter(text.splitlines()) or {}
+
+
+def kb_software_meta(meta):
+    keys = {k for k in meta if k.startswith("software_")}
+    if not keys:
+        return None
+    if keys != set(SOFTWARE_FIELDS):
+        raise ValueError("software binding requires exactly: %s" % ", ".join(SOFTWARE_FIELDS))
+    binding = {k: kb_unquote(meta[k]) for k in SOFTWARE_FIELDS}
+    if binding["software_schema"] != "1":
+        raise ValueError("unsupported software_schema")
+    pid = binding["software_project_id"]
+    if str(uuid.UUID(pid)) != pid:
+        raise ValueError("software_project_id must be a canonical UUID")
+    if _kb_relative(binding["software_path"]) != binding["software_path"]:
+        raise ValueError("software_path must be canonical POSIX relative")
+    if not re.fullmatch(r"[0-9a-f]{64}", binding["software_sha256"]):
+        raise ValueError("software_sha256 must be a raw-byte SHA256")
+    span = re.fullmatch(r"([1-9][0-9]*)-([1-9][0-9]*)", binding["software_lines"])
+    if not span or int(span[1]) > int(span[2]):
+        raise ValueError("software_lines must be an inclusive nonempty A-B span")
+    if binding["software_role"] not in SOFTWARE_ROLES:
+        raise ValueError("unknown software_role")
+    return binding
+
+
+@contextlib.contextmanager
+def _kb_capture_lock(docs):
+    lock = _kb_safe_path(docs, ".software-capture.lock")
+    try:
+        fd = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+    except FileExistsError:
+        raise ValueError("capture lock exists; another capture may be active; inspect before removing a stale lock")
+    try:
+        os.close(fd)
+        yield
+    finally:
+        _kb_safe_path(docs, lock.name).unlink()
+
+
+def _kb_project_id(docs, create):
+    path = _kb_safe_path(docs, "README.md")
+    raw = _kb_read_bytes(docs, "README.md") if path.exists() else b""
+    meta = _kb_software_frontmatter(raw)
+    pid = kb_unquote(meta.get("knowledge_project_id"))
+    if "knowledge_project_id" in meta:
+        if not pid or str(uuid.UUID(pid)) != pid:
+            raise ValueError("knowledge_project_id must be one canonical UUID")
+        return pid
+    if not create:
+        return None
+    pid = str(uuid.uuid4())
+    newline = b"\r\n" if b"\r\n" in raw else b"\n"
+    entry = b"knowledge_project_id: " + pid.encode("ascii") + newline
+    bom = b"\xef\xbb\xbf" if raw.startswith(b"\xef\xbb\xbf") else b""
+    body = raw[len(bom):]
+    if body.splitlines()[:1] == [b"---"]:
+        offset = body.index(b"\n") + 1
+        updated = bom + body[:offset] + entry + body[offset:]
+    else:
+        updated = bom + b"---" + newline + entry + b"---" + newline + body
+    # README is mutable; source artifacts below never use replace. Refuse an
+    # external edit noticed since our read instead of overwriting it.
+    fd, stage = tempfile.mkstemp(prefix=".knowledge-id-", dir=docs)
+    try:
+        with os.fdopen(fd, "wb") as out:
+            out.write(updated)
+        current = _kb_read_bytes(docs, "README.md") if path.exists() else b""
+        if current != raw:
+            raise ValueError("README changed during identity creation; retry")
+        _kb_safe_path(docs, "README.md")
+        os.replace(stage, path)
+    finally:
+        if os.path.exists(stage):
+            os.unlink(stage)
+    return pid
+
+
+def kb_project_id(docs, *, create=False):
+    """Read-only unless explicitly creating at the acquisition boundary."""
+    if not create:
+        return _kb_project_id(docs, False)
+    with _kb_capture_lock(docs):
+        return _kb_project_id(docs, True)
+
+
+def _kb_binding_name(binding, digest, derived_from):
+    data = dict(binding, derived_from=sorted(set(derived_from)))
+    payload = json.dumps(data, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+    return "source-%s-%s.txt" % (digest, hashlib.sha256(payload).hexdigest())
+
+
+def _kb_software_integrity(docs, rel, meta):
+    binding = kb_software_meta(meta)
+    recorded = (meta.get("sha256") or "").strip()
+    if binding or recorded:
+        raw = _kb_read_bytes(docs, rel)
+        digest = hashlib.sha256(raw).hexdigest()
+        if recorded != digest:
+            raise ValueError("stored source digest mismatch: raw-byte digest changed since ingest")
+    if binding is None:
+        return None
+    entries = [_kb_relative(e) for e in _kb_df_entries(meta.get("derived_from"))]
+    if Path(rel).name != _kb_binding_name(binding, digest, entries):
+        raise ValueError("source name does not match content/binding")
+    return binding
+
+
+def _kb_publish(docs, rel, data):
+    """Publish an already staged inode exclusively; no truncated visible file."""
+    path = _kb_safe_path(docs, rel)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    _kb_safe_path(docs, rel)
+    if path.exists():
+        if _kb_read_bytes(docs, rel) != data:
+            raise ValueError("existing artifact has different bytes: %s" % rel)
+        return False
+    fd, stage = tempfile.mkstemp(prefix=".capture-", dir=path.parent)
+    try:
+        with os.fdopen(fd, "wb") as out:
+            out.write(data)
+            out.flush()
+            os.fsync(out.fileno())
+        _kb_safe_path(docs, rel)
+        try:
+            os.link(stage, path)
+        except FileExistsError:
+            if _kb_read_bytes(docs, rel) != data:
+                raise ValueError("concurrent artifact collision: %s" % rel)
+            return False
+        return True
+    finally:
+        os.unlink(stage)
+
+
+def kb_capture_source(project, docs, rel, start, end, role, derived_from=()):
+    """Select bytes; store evidence, never a claim or an extraction-complete flag."""
+    import datetime
+    rel = _kb_relative(rel)
+    if kb_unquote(rel.strip()) != rel:
+        raise ValueError("source path cannot round-trip through metadata")
+    if role not in SOFTWARE_ROLES or not (isinstance(start, int) and isinstance(end, int)
+                                         and 1 <= start <= end):
+        raise ValueError("capture requires role code/test/config/result and an inclusive 1-based span")
+    docs = Path(docs).absolute()
+    docs_rel = docs.relative_to(Path(project).absolute()).as_posix()
+    _kb_safe_path(project, docs_rel + "/README.md")
+    _kb_safe_path(docs, "corpus/given/source.txt")
+    # Validate UUID/README syntax before reading the requested software file.
+    kb_project_id(docs)
+    raw = _kb_read_bytes(project, rel, SOFTWARE_MAX_BYTES)
+    try:
+        raw.decode("utf-8")
+    except UnicodeDecodeError:
+        raise ValueError("capture requires UTF-8 source bytes")
+    # utf8-lines-v1: a line ends at LF only, as `grep -n` and git count it; \f, \v,
+    # a lone \r, U+0085 and U+2028 are content. The extract is the raw bytes.
+    lines = re.findall(rb"[^\n]*\n|[^\n]+\Z", raw)
+    if end > len(lines):
+        raise ValueError("capture span extends beyond source lines")
+    extract = b"".join(lines[start-1:end])
+    entries = sorted(set(_kb_relative(str(e)) for e in derived_from))
+    for entry in entries:
+        if any(c in entry for c in ",[]") or kb_unquote(entry.strip()) != entry:
+            raise ValueError("derived_from path cannot round-trip through metadata")
+        try:
+            _kb_read_bytes(docs, entry)
+        except OSError as exc:
+            raise ValueError("derived_from cannot be reopened: %s" % entry) from exc
+    digest = hashlib.sha256(extract).hexdigest()
+    with _kb_capture_lock(docs):
+        binding = dict(zip(SOFTWARE_FIELDS, (
+            "1", _kb_project_id(docs, True), rel, hashlib.sha256(raw).hexdigest(),
+            "%d-%d" % (start, end), role)))
+        name = _kb_binding_name(binding, digest, entries)
+        artifact, side = "corpus/given/" + name, "corpus/given/" + name + ".meta.md"
+        _kb_safe_path(project, rel)
+        meta = dict(sha256=digest, date=datetime.date.today().isoformat(),
+                    provenance="GIVEN", extractor="utf8-lines-v1", **binding)
+        if entries:
+            meta["derived_from"] = "[" + ", ".join(entries) + "]"
+        side_path = _kb_safe_path(docs, side)
+        if side_path.exists():
+            existing = _kb_software_frontmatter(_kb_read_bytes(docs, side))
+            _kb_software_integrity(docs, artifact, existing)
+            if (kb_software_meta(existing) != binding
+                    or sorted(set(_kb_df_entries(existing.get("derived_from")))) != entries
+                    or existing.get("provenance") != "GIVEN"
+                    or existing.get("extractor") != "utf8-lines-v1"):
+                raise ValueError("existing sidecar has different acquisition metadata")
+            return artifact, side, False
+        _kb_publish(docs, artifact, extract)
+        side_bytes = ("---\n" + "\n".join(k + ": " + v for k, v in meta.items()) + "\n---\n").encode("utf-8")
+        _kb_publish(docs, side, side_bytes)
+        return artifact, side, True
+
+
 # -------------------------------------------------------- time cycle (F-044)
 # The three lists of the kb time cycle, computed ONCE per invocation and fed to
 # every surface (check/graph/corpus warn streams, `stale`, orient) -- never a
@@ -1102,6 +1439,276 @@ def _kb_df_entries(value):
     if v.startswith("[") and v.endswith("]"):
         return [kb_unquote(e) for e in v[1:-1].split(",") if kb_unquote(e)]
     return [kb_unquote(v)]
+
+
+def _kb_resolve_source(docs, entry):
+    # Preserve the existing normalisation and bare-name ladder; confine before read.
+    norm = posixpath.normpath(entry)
+    candidates = [norm] if "/" in norm else ["corpus/notes/" + norm, "corpus/given/" + norm]
+    for rel in candidates:
+        try:
+            path = _kb_safe_path(docs, rel)
+            if path.is_file():
+                return rel
+        except (OSError, ValueError):
+            continue
+    return None
+
+
+def _kb_source_meta(docs, rel):
+    path = _kb_safe_path(docs, rel)
+    if not path.is_file():
+        raise ValueError("missing source: %s" % rel)
+    side = _kb_safe_path(docs, rel + ".meta.md")
+    if side.exists():
+        return _kb_header_meta(_kb_read_bytes(docs, rel + ".meta.md"))
+    if path.suffix.lower() == ".md":
+        return _kb_header_meta(_kb_read_bytes(docs, rel))
+    return {}
+
+
+def kb_source_graph(docs):
+    """One confined graph for supersession, evidence and portability."""
+    rev, node_meta, superseded, dangling = {}, {}, set(), []
+    pending = []
+    for directory, pattern in (("corpus/notes", "*.md"), ("corpus/given", "*.meta.md")):
+        try:
+            folder = _kb_safe_path(docs, directory + "/.probe").parent
+            for path in sorted(folder.glob(pattern)):
+                rel = directory + "/" + path.name
+                pending.append(rel[:-8] if rel.endswith(".meta.md") else rel)
+        except (OSError, ValueError) as exc:
+            dangling.append((directory, str(exc)))
+    while pending:
+        rel = pending.pop()
+        if rel in node_meta:
+            continue
+        try:
+            meta = _kb_source_meta(docs, rel)
+        except (OSError, ValueError) as exc:
+            node_meta[rel] = {"_error": str(exc)}
+            dangling.append((rel, str(exc)))
+            continue
+        node_meta[rel] = meta
+        for entry in _kb_df_entries(meta.get("derived_from")):
+            target = _kb_resolve_source(docs, entry)
+            if target is None:
+                dangling.append((rel, entry))
+            else:
+                rev.setdefault(target, set()).add(rel)
+                pending.append(target)
+        sup = kb_unquote(meta.get("supersedes"))
+        if sup and rel.startswith("corpus/given/"):
+            try:
+                old = _kb_relative("corpus/given/" + sup)
+                _kb_safe_path(docs, old)
+                superseded.add(old)
+            except (OSError, ValueError):
+                dangling.append((rel, sup))
+    return rev, node_meta, superseded, sorted(dangling)
+
+
+def kb_derivation_dependents(reverse_edges, node_meta, seeds):
+    chain = []
+    seeds = set(seeds)
+    for ground in sorted(seeds):
+        seen, frontier = {ground}, [(ground, ())]
+        while frontier:
+            node, via = frontier.pop()
+            for owner in sorted(reverse_edges.get(node, ())):
+                if owner in seen:
+                    continue
+                seen.add(owner)
+                owner_via = via + (node,)
+                tomb = node_meta.get(owner, {}).get("status", "").strip() == "SUPERSEDED"
+                if owner not in seeds and not tomb:
+                    chain.append((owner, ground, owner_via))
+                frontier.append((owner, owner_via))
+    return sorted(chain)
+
+
+def kb_software_findings(project, docs, topics=()):
+    """Read-only evidence projection. MATCHED proves only declared byte inputs.
+
+    supports are {source, status, reason, premises:[support,...]}; AND within a
+    derivation, OR across a claim's supports. State and kind are never rewritten.
+    """
+    rev, metas, superseded, dangling = kb_source_graph(docs)
+    forward = {}
+    for source, dependents in rev.items():
+        for owner in dependents:
+            forward.setdefault(owner, []).append(source)
+    errors, sources, cache = [], {}, {}
+    try:
+        pid = kb_project_id(docs) if project is not None else None
+    except (OSError, ValueError) as exc:
+        pid = None
+        errors.append("project identity: %s" % exc)
+    bad_owners = {owner for owner, _ in dangling}
+
+    def support(rel, active=()):
+        if rel in active or len(active) >= 200:
+            errors.append("derivation cycle: %s" % " -> ".join(active + (rel,)))
+            return dict(source=rel, status="INVALID", reason="derivation cycle", premises=[])
+        if rel in cache:
+            return cache[rel]
+        status, reason, premises = "UNTRACKED", "no software binding", []
+        try:
+            meta = metas.get(rel)
+            if meta is None:
+                meta = _kb_source_meta(docs, rel)
+            if "_error" in meta:
+                raise ValueError(meta["_error"])
+            if rel in bad_owners:
+                raise ValueError("derived_from missing or cannot resolve: %s" % rel)
+            binding = _kb_software_integrity(docs, rel, meta)
+            if binding:
+                if pid != binding["software_project_id"]:
+                    status, reason = "UNBOUND", "project identity absent or different; software path not opened"
+                else:
+                    try:
+                        live = _kb_safe_path(project, binding["software_path"])
+                        info = live.stat()
+                        if not stat.S_ISREG(info.st_mode):
+                            raise ValueError("not a regular software file")
+                        # A captured input is bounded. Growing beyond that bound
+                        # proves drift without reading an unbounded new file.
+                        matched = (info.st_size <= SOFTWARE_MAX_BYTES and
+                                   hashlib.sha256(_kb_read_bytes(project, binding["software_path"], SOFTWARE_MAX_BYTES)).hexdigest()
+                                   == binding["software_sha256"])
+                        status = "MATCHED" if matched else "CHANGED"
+                        reason = "declared file bytes match" if matched else "declared file bytes changed; re-verify"
+                    except OSError:
+                        status, reason = "UNAVAILABLE", "declared software file missing or unreadable"
+            parents = sorted(forward.get(rel, ()))
+            # A source outside the preloaded corpus may itself be a derivation.
+            if not parents and meta.get("derived_from"):
+                for entry in _kb_df_entries(meta["derived_from"]):
+                    target = _kb_resolve_source(docs, entry)
+                    if target is None:
+                        raise ValueError("derived_from missing: %s" % entry)
+                    parents.append(target)
+            premises = [support(p, active + (rel,)) for p in parents]
+            if premises:
+                states = [p["status"] for p in premises] + ([status] if binding else [])
+                status = next((s for s in ("INVALID", "CHANGED", "UNAVAILABLE", "UNBOUND", "UNTRACKED") if s in states), "MATCHED")
+                reason = "all declared premises match" if status == "MATCHED" else "a declared premise needs re-verification"
+            if rel in superseded or meta.get("status") == "SUPERSEDED":
+                status, reason = "UNTRACKED", "historical source is superseded; follow its successor"
+        except (OSError, ValueError) as exc:
+            status, reason = "INVALID", str(exc)
+            errors.append("%s: %s" % (rel, exc))
+        item = dict(source=rel, status=status, reason=reason, premises=premises)
+        sources[rel] = (rel, status, reason)
+        cache[rel] = item
+        return item
+
+    claims = []
+    all_topics = {}
+    try:
+        folder = _kb_safe_path(docs, "topics/.probe").parent
+        for path in sorted(folder.glob("*.md")):
+            if path.name == "INDEX.md":
+                continue
+            text = _kb_read_bytes(docs, "topics/" + path.name).decode("utf-8-sig")
+            meta = _kb_header_meta(text.encode("utf-8"))
+            slug = kb_unquote(meta.get("topic")) or path.stem
+            if slug in all_topics:
+                errors.append("duplicate topic: %s" % slug)
+            all_topics[slug] = (path, text, kb_parse_claims(text)[0])
+    except (OSError, ValueError) as exc:
+        errors.append("topics: %s" % exc)
+    wanted = set(topics) if topics else set(all_topics)
+    for missing in sorted(wanted - set(all_topics)):
+        errors.append("no such topic: %s" % missing)
+    for slug in sorted(wanted & set(all_topics)):
+        path, text, rows = all_topics[slug]
+        _, parse_errors = kb_parse_claims(text)
+        errors.extend("%s:%s: %s" % (slug, ln, msg) for ln, msg in parse_errors)
+        meta = _kb_header_meta(text.encode("utf-8"))
+        schema = kb_unquote(meta.get("claim_schema", "1"))
+        if schema not in ("1", "2") or (schema == "2" and any("kind" not in r for r in rows)):
+            errors.append("%s: invalid claim_schema or missing typed kind column" % slug)
+        for row in rows:
+            for src in (s.strip() for s in row["source"].split(";")):
+                if not src:
+                    continue  # an empty `;` piece, skipped as kb_check_claims does
+                try:
+                    rel, loc = src.rsplit("#", 1)
+                    target = _kb_safe_path(docs, rel)
+                    if LOC_PAGE_RE.match(loc):
+                        _kb_safe_path(docs, str(Path(rel).with_suffix(".txt")).replace("\\", "/"))
+                    if not target.is_file():
+                        raise ValueError("source missing")
+                    kb_check_locator(target, loc, slug, errors)
+                except (OSError, ValueError) as exc:
+                    errors.append("%s: invalid source %r: %s" % (slug, src, exc))
+            supports = [support(rel) for rel in kb_claim_sources(row)]
+            kind = row.get("kind", "UNCLASSIFIED")
+            if kind not in CLAIM_KINDS and kind != "UNCLASSIFIED":
+                errors.append("%s: invalid claim kind %s" % (slug, kind))
+            claims.append((slug, row["id"], kind, row["state"], supports))
+    # Orphan bindings are still checkable; no repository scan, just known corpus.
+    if not topics:
+        for rel, meta in sorted(metas.items()):
+            if any(k.startswith("software_") for k in meta):
+                support(rel)
+    return {"errors": sorted(set(errors)), "sources": sorted(sources.values()), "claims": claims}
+
+
+def kb_cmd_evidence(project, docs, topics=(), json_output=False):
+    report = kb_software_findings(project, docs, topics)
+    if json_output:
+        print(json.dumps(report, ensure_ascii=False, indent=2))
+    else:
+        print("Evidence: declared inputs only; no semantic or completeness certification.")
+        def show_support(item, depth=1):
+            print("%s%s %s: %s" % ("  " * depth, item["status"], item["source"], item["reason"]))
+            for premise in item["premises"]:
+                show_support(premise, depth + 1)
+        if not report["claims"]:
+            print("no coverage: no selected claims")
+        for slug, cid, kind, state, supports in report["claims"]:
+            print("%s %s kind=%s state=%s" % (slug, cid, kind, state))
+            for item in supports:
+                show_support(item)
+        for error in report["errors"]:
+            print("[ERROR] %s" % error)
+    needs_review = any(kind == "UNCLASSIFIED" or state != "OK"
+                       or (kind == "OBSERVATION" and not any(s["status"] == "MATCHED" for s in supports))
+                       for _, _, kind, state, supports in report["claims"])
+    return 1 if report["errors"] or needs_review else 0
+
+
+def _kb_evidence_diagnostics(project, docs):
+    # Legacy/non-software check and stale remain silent. Read only known corpus
+    # metadata; never discover software by scanning the checkout.
+    _, metas, _, _ = kb_source_graph(docs)
+    if not any(any(k.startswith("software_") for k in meta) for meta in metas.values()):
+        return 0
+    report = kb_software_findings(project, docs)
+    for error in report["errors"]:
+        print("[ERROR] evidence: %s" % error)
+    for rel, status, reason in report["sources"]:
+        if status != "MATCHED":
+            print("[warn] evidence %s %s: %s" % (status, rel, reason))
+    return 1 if report["errors"] else 0
+
+
+def kb_cmd_capture_source(project, docs, args):
+    match = re.fullmatch(r"([1-9][0-9]*):([1-9][0-9]*)", args.lines)
+    if not match:
+        print("[ERROR] --lines must be an inclusive 1-based A:B span")
+        return 2
+    try:
+        artifact, side, created = kb_capture_source(project, docs, args.path,
+            int(match[1]), int(match[2]), args.role, args.derived_from)
+    except (OSError, ValueError) as exc:
+        print("[ERROR] %s" % exc)
+        return 1
+    print("[ok] %s: %s\n  %s\nNo claims generated; extraction coverage not declared."
+          % ("created" if created else "reused", artifact, side))
+    return 0
 
 
 def kb_time_cycle(docs):
@@ -1186,72 +1793,8 @@ def kb_time_cycle(docs):
             by = tuple(rel for rel, text in living
                        if rel != topic_rel and _kb_hex_bounded(text, rid))
             expired.append((topic_rel, rid, until, by))
-    rev = {}
-    node_meta = {}
-    sup_arts = set()
-    notes_dir = docs / "corpus" / "notes"
-    given_dir = docs / "corpus" / "given"
-
-    def _resolve(entry):
-        # Normalize BEFORE resolving: `./x`, `a//b`, `a/../b` resolve on the
-        # filesystem but would never match the canonical node keys, so the
-        # walk would silently stop with neither a chain entry nor a dangling
-        # warn (closure-review WARN-1). Backslashed spellings stay loud: no
-        # `/` means the bare-name ladder, which dangles them visibly.
-        entry = posixpath.normpath(entry)
-        if "/" in entry:
-            return entry if (docs / entry).is_file() else None
-        for base in ("corpus/notes/", "corpus/given/"):
-            if (docs / (base + entry)).is_file():
-                return base + entry
-        return None
-
-    def _edges_of(owner_rel, meta):
-        for e in _kb_df_entries(meta.get("derived_from")):
-            target = _resolve(e)
-            if target is None:
-                dangling.append((owner_rel, e))
-            else:
-                rev.setdefault(target, set()).add(owner_rel)
-
-    if notes_dir.is_dir():
-        for p in sorted(notes_dir.glob("*.md")):
-            rel = "corpus/notes/" + p.name
-            try:
-                meta = sdlc_core.load_frontmatter(
-                    sdlc_core.read_text(p).splitlines()) or {}
-            except Exception:
-                continue
-            node_meta[rel] = meta
-            _edges_of(rel, meta)
-    if given_dir.is_dir():
-        for mp in sorted(given_dir.glob("*.meta.md")):
-            orig_rel = "corpus/given/" + mp.name[:-len(".meta.md")]
-            try:
-                meta = sdlc_core.load_frontmatter(
-                    sdlc_core.read_text(mp).splitlines()) or {}
-            except Exception:
-                continue
-            node_meta[orig_rel] = meta
-            _edges_of(orig_rel, meta)
-            sup = kb_unquote(meta.get("supersedes"))
-            if sup:
-                sup_arts.add("corpus/given/" + sup)
-    for ground in sorted(sup_arts):
-        seen = {ground}
-        frontier = [(ground, ())]
-        while frontier:
-            node, via = frontier.pop()
-            for owner in sorted(rev.get(node, ())):
-                if owner in seen:
-                    continue
-                seen.add(owner)
-                owner_via = via + (node,)
-                tomb = (node_meta.get(owner, {}).get("status")
-                        or "").strip() == "SUPERSEDED"
-                if owner not in sup_arts and not tomb:
-                    chain.append((owner, ground, owner_via))
-                frontier.append((owner, owner_via))
+    rev, node_meta, sup_arts, dangling = kb_source_graph(docs)
+    chain = kb_derivation_dependents(rev, node_meta, sup_arts)
     cited.sort()
     expired.sort()
     chain.sort()
@@ -1361,18 +1904,50 @@ def kb_export_closure(docs, slugs):
                     selected[other] = all_topics[other]
                     added.append(other)
                     pending.append(other)
-    artifacts = []
-    seen = set()
+    artifacts, seen, active = [], set(), set()
+
+    def include(rel, required=True):
+        if rel in active:
+            errors.append("derivation cycle at %s" % rel)
+            return
+        if rel in seen:
+            return
+        try:
+            path = _kb_safe_path(docs, rel)
+            if not path.is_file():
+                if required:
+                    errors.append("missing source: %s" % rel)
+                return
+            active.add(rel)
+            seen.add(rel)
+            artifacts.append(rel)
+            meta = _kb_source_meta(docs, rel)
+            _kb_software_integrity(docs, rel, meta)
+            side = _kb_safe_path(docs, rel + ".meta.md")
+            if side.is_file() and rel + ".meta.md" not in seen:
+                seen.add(rel + ".meta.md")
+                artifacts.append(rel + ".meta.md")
+            # A transitive premise needs its canonical extraction too, not just
+            # sources directly named in claim cells.
+            if path.suffix and path.suffix != ".txt":
+                include(rel[:-len(path.suffix)] + ".txt", required=False)
+            for entry in _kb_df_entries(meta.get("derived_from")):
+                source = _kb_resolve_source(docs, entry)
+                if source is None:
+                    errors.append("%s: derived_from cannot resolve %s" % (rel, entry))
+                else:
+                    include(source)
+        except (OSError, ValueError) as exc:
+            errors.append("%s: %s" % (rel, exc))
+        finally:
+            active.discard(rel)
+
     for slug, (_p, _t, rows) in sorted(selected.items()):
+        _, perrs = kb_parse_claims(_t)
+        errors.extend("%s:%s: %s" % (slug, line, msg) for line, msg in perrs)
         for r in rows:
             for rel in kb_claim_sources(r):
-                for cand in (rel, rel + ".meta.md",
-                             rel[:-len(Path(rel).suffix)] + ".txt" if Path(rel).suffix else rel):
-                    if cand in seen:
-                        continue
-                    if (docs / cand).is_file():
-                        seen.add(cand)
-                        artifacts.append(cand)
+                include(rel)
     return selected, artifacts, added, errors
 
 
@@ -1420,6 +1995,14 @@ def kb_import_plan(bundle, docs):
         if not p.is_file() or p.name == BUNDLE_MANIFEST:
             continue
         rel = p.relative_to(bundle).as_posix()
+        if rel == "README.md":
+            continue  # a bundle never adopts the exporter project identity
+        try:
+            _kb_safe_path(bundle, rel)
+            _kb_safe_path(docs, rel)
+        except (OSError, ValueError) as exc:
+            errors.append("%s: %s" % (rel, exc))
+            continue
         dst = sdlc_core.confine_under(docs, rel)
         if dst is None:
             errors.append("bundle entry %r escapes the docs root — refusing the "
@@ -1440,7 +2023,8 @@ def kb_import_plan(bundle, docs):
     for rel, p, _dst in writes:
         if not rel.startswith("topics/"):
             continue
-        rows, _ = kb_parse_claims(sdlc_core.read_text(p))
+        rows, perrs = kb_parse_claims(sdlc_core.read_text(p))
+        errors.extend("%s:%s: %s" % (rel, line, msg) for line, msg in perrs)
         for r in rows:
             if r["id"] and r["id"] in known_ids:
                 dedup.append(r["id"])
@@ -1565,16 +2149,17 @@ def kb_refresh_indexes(docs):
     return memory_index(docs)
 
 
-def kb_validate_surface(docs, full=False):
+def kb_validate_surface(docs, full=False, project=None):
     """Additive seam for marketing: preserve its own validator and report."""
     rc = max(memory_validate(docs), _kb_extra_validate(docs))
     if full and ((docs / "topics").is_dir() or (docs / "corpus").is_dir()):
         cycle = kb_time_cycle(docs)
         rc = max(rc, kb_cmd_graph(docs, cycle), kb_cmd_corpus(docs, cycle))
+        rc = max(rc, _kb_evidence_diagnostics(project, docs))
     return rc
 
 INTERCEPTED = {"index", "validate", "check", "graph", "corpus", "claim-id",
-               "anchor", "export", "import", "stale", "recall"}
+               "anchor", "export", "import", "stale", "recall", "capture-source", "evidence"}
 
 
 def _kb_root(args):
@@ -1672,6 +2257,7 @@ def kb_cmd_check(root, docs, strict=False, hybrid=False):
         rc = max(rc, kb_cmd_graph(docs, cycle))
         print("===== corpus =====")
         rc = max(rc, kb_cmd_corpus(docs, cycle))
+        rc = max(rc, _kb_evidence_diagnostics(root, docs))
     return rc
 
 
@@ -1695,6 +2281,7 @@ def kb_cmd_stale(root, docs, hybrid=False):
         print("## claims")
         for ln in lines:
             print(ln)
+    _kb_evidence_diagnostics(root, docs)
     return rc
 
 
@@ -1982,6 +2569,8 @@ shared project memory -- also available:
   recall QUERY                live cross-domain document metadata lookup
   graph                       topic-graph integrity: placement, edges, cycles
   corpus                      corpus integrity: digests, supersession, notes
+  capture-source PATH         store a selected UTF-8 span (--lines A:B --role ROLE)
+  evidence                    compare declared software inputs (--topics --json)
   stale                       spine staleness PLUS `## claims`: superseded-cited
                               docs, expired windows, superseded chains
   claim-id <path> <locator>   compute a claim id (--fill to fill a whole table)
@@ -2037,6 +2626,18 @@ def main(argv=None):
     p.add_argument("locator", nargs="?")
     p.add_argument("--qty")
     p.add_argument("--fill", action="store_true")
+    p = sub.add_parser("capture-source")
+    p.add_argument("path")
+    p.add_argument("--lines", required=True)
+    p.add_argument("--role", required=True, choices=SOFTWARE_ROLES)
+    p.add_argument("--derived-from", nargs="*", default=[])
+    p.add_argument("--root")
+    p.add_argument("--docs-dir")
+    p = sub.add_parser("evidence")
+    p.add_argument("--topics")
+    p.add_argument("--json", action="store_true")
+    p.add_argument("--root")
+    p.add_argument("--docs-dir")
     p = sub.add_parser("anchor")
     p.add_argument("path")
     p.add_argument("phrase")
@@ -2072,6 +2673,10 @@ def main(argv=None):
         return 1
     if args.cmd == "index":
         return kb_cmd_index(root, docs)
+    if args.cmd == "capture-source":
+        return kb_cmd_capture_source(root, docs, args)
+    if args.cmd == "evidence":
+        return kb_cmd_evidence(root, docs, tuple(s.strip() for s in (args.topics or "").split(",") if s.strip()), args.json)
     if args.cmd == "recall":
         return memory_recall(docs, args.query)
     if args.cmd == "stale":

@@ -1,0 +1,17 @@
+===== validate =====
+[warn]  vision/project_vision.md missing
+[warn]  vision/roadmap.md missing
+[warn]  vision/principles.md missing
+
+Validation: 0 errors, 3 warnings, 0 advisories.
+
+===== stale =====
+[info] no rows in D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\ai_docs\solutions\harness_software_knowledge\behavior\instructions\project\ai_docs\audit\audit_plan.md: nothing to check (audit not initialized, or Hybrid mode where mapping is delegated to devPNT).
+
+check: CLEAN (validate rc=0, stale rc=0)
+===== graph =====
+[ok] topic graph and claim ledger consistent (0 warnings)
+===== corpus =====
+[warn]  corpus/given/identity-test.txt: original_path 'D:/SoftwareDev/skill_sdlc/agentic-sdlc-skill/ai_docs/solutions/harness_software_knowledge/behavior/instructions/project/inputs/identity-test.txt' does not resolve (tried D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\ai_docs\solutions\harness_software_knowledge\behavior\instructions\project\inputs\identity-test.txt) — the extraction is intact, the pointer to the original is not. A warning and not an error: a bundle carries artifacts and sidecars, never the originals, so after an import this dangles legitimately
+[warn]  corpus/given/identity.py: original_path 'D:/SoftwareDev/skill_sdlc/agentic-sdlc-skill/ai_docs/solutions/harness_software_knowledge/behavior/instructions/project/inputs/identity.py' does not resolve (tried D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\ai_docs\solutions\harness_software_knowledge\behavior\instructions\project\inputs\identity.py) — the extraction is intact, the pointer to the original is not. A warning and not an error: a bundle carries artifacts and sidecars, never the originals, so after an import this dangles legitimately
+[ok] corpus consistent (2 warnings)

@@ -63,10 +63,16 @@ revisits `related:` pairs and either merges (tombstone the loser: `status: SUPER
 
 ## 4. GENERALIZES escalates; re-parenting is guarded
 
-Re-parenting rewrites the graph's shape, and kb's Rule Zero makes hierarchy changes L3
-(escalation triggers, `SKILL.md`): stop, declare, and treat it as its own unit — never a
-side effect of placing one claim. A GENERALIZES that would create a **new root** also
+Re-parenting rewrites the graph's shape. In independent KB assignments, kb's Rule
+Zero makes hierarchy changes L3: stop, declare and treat it as its own unit. Other
+lenses classify through their owner and router; importing this method does not import
+KB triage. A hierarchy change is always explicit, never a side effect of placement. A GENERALIZES that would create a **new root** also
 stops for the practitioner: reframing the whole base is a decision, not a placement.
+
+Inside an already classified software unit, a new leaf under an existing parent is
+internal capture, not a second L3. An empty graph's first root belongs to project
+design; do not infer it from a milestone name. Preserve the note immediately with
+subject metadata so recall can find it while root/GENERALIZES/re-parenting is decided.
 
 Before writing `parents:`, walk the target's ancestor chain; if the node itself appears,
 **refuse** — a cycle detaches a subtree, and since descent is the only retrieval path, a
@@ -81,7 +87,7 @@ source lands on the survivor instead of resurrecting the dead slug.
 
 ## 6. The same descent, answer mode
 
-The descent above also serves ANSWERING (`SKILL.md` §Topic Recall): when a reply would
+The descent above also serves ANSWERING (`memory.md` §Topic Recall): when a reply would
 assert facts about the project's domain, descend before answering from model memory.
 Differences only — no placement verdicts, no writes; the descent stops at reading the
 matched node's claims; coverage (found / not found) replaces the five verdicts; UNPLACED

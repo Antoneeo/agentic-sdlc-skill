@@ -1,0 +1,12 @@
+{
+  "variant": "candidate",
+  "baseline_commit": "2d5a5c67402487200fe5df3929d0b093fad6e761",
+  "cases": [
+    "eclosion",
+    "api-config",
+    "approved-proposal",
+    "rename-delete"
+  ],
+  "session1": "pending",
+  "session2": "pending"
+}

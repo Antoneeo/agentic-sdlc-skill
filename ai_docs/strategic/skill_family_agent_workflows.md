@@ -4,13 +4,14 @@ status: CURRENT
 ---
 # La famiglia di skill: come lavora un agente sotto ognuna
 
-## Memoria comune, metodo specializzato (F-057)
+## Memoria comune, metodo specializzato
 
 La scelta della lente determina il workflow e l'autorità, non limita ciò che
 l'agente può conoscere. Tutti i pacchetti includono `memory.md` e `knowledge.py`:
 consultazione trasversale, catalogo degli originali e integrità topic/claim/fonti.
-Una sola installazione basta per questa memoria. La KB resta la disciplina per
-acquisire corpus e progettare tassonomie; il marketing conserva ledger e controlli
+Una sola installazione basta: distillazione, tassonomia, riconciliazione,
+portabilità e template della conoscenza sono supporti condivisi. La KB conserva
+triage degli incarichi di corpus e domanda di chiusura; il marketing conserva ledger e controlli
 numerici; SDLC verifica il codice reale; course_creator organizza spiegazioni
 progressive per destinatari definiti.
 
@@ -19,6 +20,15 @@ progressive per destinatari definiti.
 Il catalogo non è un quadro degli stati del lavoro: l'agente apre le fonti per
 distinguere proposta, approvazione e comportamento osservato. Nessun watcher,
 nessuna estrazione automatica di claim, nessuna nuova autorità sulla Vision.
+
+Nel lavoro software L2/L3, la cattura nasce anche durante l'analisi senza modifiche
+al codice. Il grafo del progetto collega proprietà, comportamenti, responsabilità
+e prove attraverso le milestone. La modifica comporta riverifica e riconciliazione
+dei claim interessati, senza seconda ANALYSIS KB. Le proposte restano DESIGN anche
+dopo approvazione; osservazioni, requisiti e ipotesi hanno natura distinta.
+`capture-source` conserva estratti selezionati e versione del file; `evidence`
+controlla soltanto input dichiarati. MATCHED non prova verità, esecuzione o completezza
+delle dipendenze. L1 non acquista nuovi artefatti o controlli obbligatori.
 
 **Per chi**: il proprietario, e chiunque debba scegliere quale skill installare o
 capire perché un agente si comporta diversamente in quattro progetti.
@@ -49,7 +59,7 @@ gate, il vocabolario, i controlli — discende da quella scelta.
 | **Il peccato capitale** | modificare a istinto senza orientarsi | spacciare conoscenza del modello per fonte | inventare un numero | dare una spiegazione generica che assume prerequisiti non insegnati |
 | **Slot di rischio obbligatorio** | `## Security and Threat Model` | `## Sources and Verification` | `## Threat Map / Plan Risks` | `## Learning and Content Risks` |
 | **Albero documenti** | `ai_docs/` | `ai_docs/` + `corpus/` + `topics/` | `mkt_docs/`, oppure `ai_docs/` migrato | `ai_docs/` + `solutions/courses/<slug>/` |
-| **File di dottrina propri** | `architect.md`, `tdd.md`, `debugging.md` | `taxonomy.md`, `distillation.md`, `reconciliation.md` | `frameworks.md`, `research.md` | `learning_design.md`, `source_check.md`, `simulation.md`, `feedback.md` |
+| **File di dottrina propri** | `architect.md`, `tdd.md`, `debugging.md` | triage e Capture Moment in `SKILL.md`; metodi KB condivisi | `frameworks.md`, `research.md` | `learning_design.md`, `source_check.md`, `simulation.md`, `feedback.md` |
 | **Comandi validator** | spina + memoria/KB condivisa | spina + memoria/KB condivisa | spina + `ledger`, `budget`, `funnel`, `trace` | spina + `course <slug>` |
 | **Validazione** | struttura, Component Map, memoria e integrità KB | struttura, memoria e integrità KB | evidenza e aritmetica | struttura del grafo didattico, ordine e riferimenti; qualità della spiegazione ed efficacia richiedono altri giudizi |
 
@@ -197,12 +207,14 @@ originali). Il limite va scritto dove stanno, per campo: 233 MB di PDF non entra
 nel docs root per proteggere byte che nessun locator tocca.
 
 **2. Estrazione — l'unità è il claim.** Righe
-`id | claim | valid | qty | about | source | prov | state`. L'**id** =
+`id | claim | valid | qty | about | source | prov | state`, con `kind` aggiunto
+nei topic `claim_schema: 2`. Le righe legacy rimangono non classificate. L'**id** =
 hash(posizione+quantità), **mai del testo** — una riformulazione LLM non conia
 identità nuove. Il prezzo, dichiarato (F-035): **uno stesso span non puo' portare
 due asserzioni diverse alla stessa qty** — l'id non le distingue e il validator
 rifiuta la coppia, nominando la collisione invece di accusare un copia-incolla. Si
-allarga un locator o si fondono le righe; non si ritocca la qty per far divergere
+restringe ogni locator alla propria asserzione; si fondono solo duplicati della
+stessa asserzione. Non si ritocca la qty per far divergere
 l'hash. La `prov` della riga viene ora confrontata con la `provenance:` dichiarata
 dal sidecar dell'artefatto: una riga `GIVEN` su un'estrazione debole (un OCR, una
 trascrizione da immagine) produce un warning, perche' dichiararlo nella prosa del
@@ -291,7 +303,8 @@ calcola tutto prima di scrivere un byte. Le claim già presenti si riconoscono
 **per id**, non confrontando testi, perché `kb_claim_id` esclude il testo: stesso
 artefatto content-addressed allo stesso span = stesso id in qualunque progetto.
 La conoscenza attraversa il confine di progetto, **l'autorità no**: un ruling
-importato arriva come `prov: IMPORTED`, conserva il suo `basis:` originale, deve
+importato viene marcato dall'agente ricevente come `prov: IMPORTED` (il comando
+copia i file senza riscriverne l'autorità), conserva il suo `basis:` originale, deve
 dichiarare `imported_from:`, e **non può superare una riga locale** finché non lo
 ratifichi tu con una nota e un basis tuoi (ruling del proprietario, 2026-08-03).
 
@@ -412,7 +425,7 @@ due forme: si esegue UNA volta, mai due.
 - **DRY fra lenti**: un fatto ha una casa sola; le altre lo **citano, mai lo
   copiano** — un fatto ricopiato è un finding di review. I nomi ambigui per lente
   ("threat model", "vision", `handoff.md`) si qualificano sempre.
-- **La spina non può divergere**: 22 file condivisi byte-identici verificati dal
+- **La spina non può divergere**: file del manifest condiviso verificati byte-identici dal
   drift guard a ogni build; i check portabili (`marketing.budget` su un documento
   kb con una tabella di budget, `knowledge.sources` altrove) si importano per
   nome e **aggiungono findings, mai autorità**.

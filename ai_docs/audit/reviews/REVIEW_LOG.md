@@ -392,3 +392,59 @@ Isolation guard review maps intended-tag presence, failed/empty query rejection,
 and latest alias rejection to the actual batch diff and seven mock cases. No
 automatic registry mutation. This PASS does not close the external release:
 course latest removal failed E400 after authentication; owner decision remains open.
+
+## 2026-10-04 — F-063 software knowledge, initial analysis
+
+| Date | Feature and artifact | Moment | Reviewer model/session | Findings raised | Findings real | Verdict | Revise rounds |
+|---|---|---|---|---|---|---|---|
+| 2026-10-04 | F-063 VISION_software_knowledge.md | vision blind gate | gpt-6-astra high, fresh read-only vision_gate; invoking session Default | 0 | 0 | PASS | 0 |
+| 2026-10-04 | F-063 ANALYSIS_software_knowledge.md | initial analysis review, not implementation gate | gpt-6-astra high, fresh read-only analysis_review; invoking/reviewer mode Default | 2 WARN | 2 addressed | PASS → PASS | 2 |
+| 2026-10-04 | F-063 ANALYSIS_software_knowledge.md | owner correction: explicit ingestion, addition and update flow | gpt-6-astra high, read-only analysis_review, scoped follow-up; invoking mode Default | 0 | 0 | PASS | 0 |
+
+Evidence and conformance: `REVIEW_software_knowledge_2026-10-04.md`.
+Instruments: targeted rg/source reads and executable characterization P1–P10;
+no semantic consumer-set certification (devPNT points to another project).
+R2 verified explicit reuse of Topic Recall/Capture Moment and the added future
+hostile-source/synthetic-secret test. Schema, signatures, complete impact and
+ceremony cost remain for the executable design; this PASS authorizes none of them.
+Flow correction: targeted document reads only; UC4/FS5, interface, diagram and
+future test aligned. No runtime change; characterization not rerun.
+
+## 2026-10-04 — F-063/F-064 executable design
+
+| Date | Feature and artifact | Moment | Reviewer model/session | Findings raised | Findings real | Verdict | Revise rounds |
+|---|---|---|---|---|---|---|---|
+| 2026-10-04 | F-063/F-064 ANALYSIS + file map | design before implementation | gpt-6-astra high, fresh read-only software_design_review; invoking/reviewer mode Default | 2 BLOCK, 1 WARN | 3 addressed | FAIL → PASS | 1 |
+
+Evidence and conformance: `REVIEW_software_knowledge_design_2026-10-04.md`.
+Instruments: AST name/attribute enumeration over 108 Python files (zero parse
+failures), text coverage 362 product files + 21 harness, 39 doctrine references,
+source reads, baseline P1–P10 and negative control. Inventories independently reproduced.
+Final map: 83 unique paths. No residual findings; candidate implementation/tests,
+measured benefit and owner acceptance of cost remain future work.
+
+| Date | Feature and artifact | Moment | Reviewer model/session | Findings raised | Findings real | Verdict | Revise rounds |
+|---|---|---|---|---|---|---|---|
+| 2026-10-04 | F-063/F-064 implementation, ADR and guide | code vs approved design | gpt-6-astra high, fresh read-only software_code_review; invoking/reviewer Default | 2 BLOCK, 1 WARN | 3 addressed | FAIL -> PASS | 1 |
+
+Conformance: `REVIEW_software_knowledge_code_2026-10-04.md`; instrument: scoped
+filesystem diff, source reads, AST/text design inventory, four-copy SHA256 checks.
+Author tests/behavior: `TEST_software_knowledge_2026-10-04.md`. F-064 technical
+completion; F-063 FS7 remains open because reconstruction cost did not decrease.
+
+| Date | Feature and artifact | Moment | Reviewer model/session | Findings raised | Findings real | Verdict | Revise rounds |
+|---|---|---|---|---|---|---|---|
+| 2026-10-04 | F-064 uncommitted diff (knowledge.py) | post-R2 review, before commit | claude-opus-5-5, separate session; same session then fixed (not independent of the fix) | 1 BLOCK, 4 WARN | 2 fixed, 3 open | FAIL -> fixed | 1 |
+
+BLOCK: `_kb_safe_path` refused links among the ROOT's ancestors, now applied to legacy
+corpora too: a root reached through a junction/symlink (macOS `/var`, a junctioned
+checkout) failed `check` on every sidecar and silently emptied the supersession chain.
+Fixed: only hops under the chosen root are validated. WARN 1: the strict header read
+hit legacy sidecars/notes (duplicate key, unclosed fence) that `load_frontmatter`
+accepted. Fixed: `_kb_header_meta` is strict only for software bindings. Both
+reproduced red on old code, green after; regressions in `test_software_knowledge.py`.
+Follow-up, same day: WARN 2 fixed (evidence skips an empty `;` piece like
+kb_check_claims); WARN 3 fixed (utf8-lines-v1 ends a line at LF only, as grep/git;
+ANALYSIS_kb_evidence updated). Both red before, green after. WARN 4 withdrawn: both
+header readers already strip values and the other five status readers do not unquote,
+so unquoting there alone would make evidence disagree with graph/stale.

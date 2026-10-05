@@ -1,0 +1,1 @@
+Fixture {original_id: A, current_id: B}: identity returns A. Local PASS, not an end-to-end card click.

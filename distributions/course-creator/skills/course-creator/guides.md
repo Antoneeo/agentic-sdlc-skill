@@ -102,6 +102,11 @@ a guide.
 
 ### Comprehension trigger (code source, autonomous — a duty, not a proposal)
 
+A comprehension guide may navigate to shared topic claims and their evidence for
+properties to preserve (`memory.md`). Cite IDs and reopen ground; a topic summary
+does not replace the guide's code snapshot/fidelity anchors. Reconcile pertinent
+knowledge while doing the work; no bulk migration of existing guides is required.
+
 The two triggers above are for `source_kind: document` (the user hands material
 over). There is a third, for `source_kind: code`: while doing L2/L3 work, when you
 recognize that a component / feature / abstraction layer is **high-complexity** and

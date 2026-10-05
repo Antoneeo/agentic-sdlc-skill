@@ -1,0 +1,27 @@
+{
+  "false_false_true": {
+    "returned": true,
+    "calls": 3
+  },
+  "first_true": {
+    "returned": true,
+    "calls": 1
+  },
+  "always_false": {
+    "returned": false,
+    "calls": 3
+  },
+  "identity_original_A_current_B": "A",
+  "intentional_wrong_assertions_rejected": 2,
+  "scope": "Local fixture only; no card integration or external services",
+  "source_sha256": {
+    "identity-test.txt": "2fa49ba256129b7988272b97f272e6cc1a15a7930c46ebb5b7b102c1ab70ca13",
+    "identity.py": "3829deb5c873085f6ca531677eb7477d7b0eed4e27fe88de72ec88d6c83b33ce",
+    "retry-config.json": "898a80b765d5d2169c8f5db93fca941627b94be4e681307302345dd05294e5e1",
+    "retry-proposal.md": "9f23ebb4b5e32a4a0da29f87457f18bb2af232d0046324e99d85f2af2950a388",
+    "retry-test.txt": "e3ceac7c82d50a3f6a5d26bbb6872d97daf0429cb9ef5c320dfd6dd201bdfeba",
+    "retry.py": "044ddd6b2149f9d44b0b5591e16d212c2037dc93c30b2110244d065c2bf549ef",
+    "REVIEW_m145_card_trace_core.md": "6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be",
+    "TEST_m145_card_continuity.md": "8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59"
+  }
+}

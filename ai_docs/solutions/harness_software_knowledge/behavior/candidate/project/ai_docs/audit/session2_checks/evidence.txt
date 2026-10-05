@@ -1,0 +1,57 @@
+Evidence: declared inputs only; no semantic or completeness certification.
+card-identity ca323e332851 kind=OBSERVATION state=SUPERSEDED 521033cfbca5
+  UNTRACKED corpus/notes/card-identity.md: historical source is superseded; follow its successor
+card-identity 530a1405d7a5 kind=OBSERVATION state=OK
+  UNAVAILABLE corpus/given/source-2fa49ba256129b7988272b97f272e6cc1a15a7930c46ebb5b7b102c1ab70ca13-34aed586813e7deca317b429aa10be22f03db52c4a3c523ac08255fc49c2999f.txt: declared software file missing or unreadable
+card-identity 5488954c2729 kind=OBSERVATION state=OK
+  UNAVAILABLE corpus/given/source-2fa49ba256129b7988272b97f272e6cc1a15a7930c46ebb5b7b102c1ab70ca13-34aed586813e7deca317b429aa10be22f03db52c4a3c523ac08255fc49c2999f.txt: declared software file missing or unreadable
+card-identity a6f03a3c8e5b kind=REQUIREMENT state=SUPERSEDED c5540b6ae4f2
+  UNTRACKED corpus/notes/card-identity.md: historical source is superseded; follow its successor
+card-identity 521033cfbca5 kind=OBSERVATION state=OK
+  MATCHED corpus/notes/card-identity-current.md: all declared premises match
+card-identity c5540b6ae4f2 kind=REQUIREMENT state=OK
+  MATCHED corpus/notes/card-identity-current.md: all declared premises match
+card-identity 80b51449ebd8 kind=OBSERVATION state=OK
+  MATCHED corpus/notes/card-identity-current.md: all declared premises match
+retry-policy ed7529803c5c kind=OBSERVATION state=SUPERSEDED 8a2c2a590ef0
+  UNTRACKED corpus/given/source-898a80b765d5d2169c8f5db93fca941627b94be4e681307302345dd05294e5e1-fbba7af07ce1b2ad333491ea024532cb72f90121bb4ea19dae074971e65ade9b.txt: historical source is superseded; follow its successor
+retry-policy f579af228875 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-e3ceac7c82d50a3f6a5d26bbb6872d97daf0429cb9ef5c320dfd6dd201bdfeba-181d2eeeefc0a6400827d3c53a9f6742536a7d72719891ddc71308703f9ec260.txt: declared file bytes match
+retry-policy fe81bb4c27b5 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-e3ceac7c82d50a3f6a5d26bbb6872d97daf0429cb9ef5c320dfd6dd201bdfeba-181d2eeeefc0a6400827d3c53a9f6742536a7d72719891ddc71308703f9ec260.txt: declared file bytes match
+retry-policy a3cf8c487f67 kind=OBSERVATION state=SUPERSEDED 3547ad67a440
+  UNTRACKED corpus/notes/retry-policy.md: historical source is superseded; follow its successor
+retry-policy cf3fdca6a96c kind=OBSERVATION state=SUPERSEDED b244f34e9684
+  UNTRACKED corpus/notes/retry-policy.md: historical source is superseded; follow its successor
+retry-policy 3b6aae6dc920 kind=OBSERVATION state=SUPERSEDED cec28e64d739
+  UNTRACKED corpus/notes/retry-policy.md: historical source is superseded; follow its successor
+retry-policy 4a2ef53d0481 kind=OBSERVATION state=SUPERSEDED 86c13846163a
+  UNTRACKED corpus/notes/retry-policy.md: historical source is superseded; follow its successor
+retry-policy e6e3c025289c kind=OBSERVATION state=SUPERSEDED b094373754b3
+  UNTRACKED corpus/notes/retry-policy.md: historical source is superseded; follow its successor
+retry-policy 57647275bed3 kind=REQUIREMENT state=SUPERSEDED 01ecf6b74dd8
+  UNTRACKED corpus/notes/retry-policy.md: historical source is superseded; follow its successor
+retry-policy 8cbe4c563a35 kind=DESIGN state=OK
+  UNTRACKED corpus/given/retry-proposal-9f23ebb4.txt: no software binding
+retry-policy 987cdc1555d1 kind=DESIGN state=OK
+  UNTRACKED corpus/given/retry-proposal-9f23ebb4.txt: no software binding
+retry-policy 00dac20b6be6 kind=DESIGN state=OK
+  UNTRACKED corpus/given/retry-proposal-9f23ebb4.txt: no software binding
+retry-policy c26ac671370b kind=OBSERVATION state=OK
+  UNTRACKED corpus/given/retry-proposal-9f23ebb4.txt: no software binding
+retry-policy 8a2c2a590ef0 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-11d417822122f262f9ab3af7b8b379337f13a6cc3d82af66dc541f09b4a3dbab-fe7f15122f4a5a7aaeb11c9bdd6716fd2d739551735631d3c2fae7b730a84932.txt: declared file bytes match
+retry-policy 3547ad67a440 kind=OBSERVATION state=OK
+  MATCHED corpus/notes/retry-policy-current.md: all declared premises match
+retry-policy b244f34e9684 kind=OBSERVATION state=OK
+  MATCHED corpus/notes/retry-policy-current.md: all declared premises match
+retry-policy cec28e64d739 kind=OBSERVATION state=OK
+  MATCHED corpus/notes/retry-policy-current.md: all declared premises match
+retry-policy 86c13846163a kind=OBSERVATION state=OK
+  MATCHED corpus/notes/retry-policy-current.md: all declared premises match
+retry-policy b094373754b3 kind=OBSERVATION state=OK
+  MATCHED corpus/notes/retry-policy-current.md: all declared premises match
+retry-policy 01ecf6b74dd8 kind=REQUIREMENT state=OK
+  MATCHED corpus/notes/retry-policy-current.md: all declared premises match
+retry-policy 2bd18d77260c kind=OBSERVATION state=OK
+  MATCHED corpus/notes/retry-policy-current.md: all declared premises match

@@ -64,18 +64,16 @@ class TestCaptureDoctrine(unittest.TestCase):
             "carrying its own search result inline",
             "the inline result satisfies the search-first duty",
             "scheduled elicitation",
-            "`derived_from:` → claim `prov: DERIVED`",
-            "The sweep is idempotent",
-            "never re-captured",
-            "prov: ELICITED",
-            "RULING only when the decision resolves an existing contested set",
-            "never a decision park",
             "Declared residual",
-            "never silently overwrite",
             "Silence stays legal where no one signed off",
         ):
             self.assertIn(anchor, text,
                           "SKILL.md lost a capture clause: %r" % anchor)
+
+        self.assertIn("`memory.md` §Capture", text)
+        memory = normalized(SKILL_DIR / "memory.md")
+        for anchor in ('`derived_from:` → claim `prov: DERIVED`', 'The sweep is idempotent', 'never re-captured', 'prov: ELICITED', 'RULING only when the decision resolves an existing contested set', 'never a decision park', 'never silently overwrite'):
+            self.assertIn(anchor, memory, anchor)
 
     def test_write_triggers_carry_the_sweep_row(self):
         text = normalized(SKILL_DIR / "SKILL.md")

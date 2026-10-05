@@ -1,0 +1,14 @@
+..............s.........F.......
+======================================================================
+FAIL: test_e6_export_includes_extraction_of_a_transitive_premise (test_software_knowledge.SoftwareEvidenceTests.test_e6_export_includes_extraction_of_a_transitive_premise)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 289, in test_e6_export_includes_extraction_of_a_transitive_premise
+    self.assertIn("corpus/given/manual.txt", artifacts)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'corpus/given/manual.txt' not found in ['corpus/notes/manual-use.md', 'corpus/given/manual.pdf']
+
+----------------------------------------------------------------------
+Ran 32 tests in 3.580s
+
+FAILED (failures=1, skipped=1)

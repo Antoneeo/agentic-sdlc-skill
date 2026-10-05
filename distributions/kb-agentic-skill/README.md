@@ -11,9 +11,20 @@ status and evidence: discovery is not approval or proof of implementation.
 
 Registration happens at `index`/documentation closure, not through a background
 watcher. Existing projects acquire the catalog on their next `index`; `recall`
-also sees live metadata. The KB lens remains the specialist for ingestion and
-taxonomy. Marketing retains its numerical validators. See the skill's `memory.md`.
+also sees live metadata. Recall/capture/revision and the intake, taxonomy,
+reconciliation and portability methods now ship with every lens, together with
+`knowledge-templates.md`. KB retains its corpus triage and closing question;
+using a shared method in software work does not start a second KB workflow.
+Marketing retains its numerical validators. See the skill's `memory.md`.
 Vendoring requires all three files: the entry point, `sdlc_core.py`, `knowledge.py`.
+
+`capture-source <relative-file> --lines A:B --role code|test|config|result` preserves
+a selected UTF-8 extract and version binding. `evidence --topics subject` compares
+declared software inputs; MATCHED means bytes correspond, not truth or execution.
+Changed, missing and foreign bindings remain distinguishable. Schema-2 topics append
+`kind` (OBSERVATION, REQUIREMENT, HYPOTHESIS, DESIGN); legacy rows keep their IDs and
+remain unclassified. Export includes transitive derivation premises. Import preserves
+foreign bindings without adopting the source project's identity.
 
 
 `kb-agentic` turns an AI agent into the keeper of a second brain built **on the documents you supply** — not on what the model remembers. It supports Claude Code, Codex, Gemini CLI, Google Antigravity 2.0, Cursor/Windsurf-style project instructions, and optional devPNT governance.
@@ -54,7 +65,7 @@ Deliberately absent: any per-node coverage or completion state. `gaps:` says wha
 - **Question discipline**: a real doubt is asked when it emerges, before its answer is written, with the pros and cons of each option; a choice whose pros clearly win is taken with the weighing written next to it. A question is legal only when the agent searched first, names the search with its result, and names the decision it unblocks.
 - **Operative guides + agent-global KB**: distil user-provided indications into source-faithful `GUIDE_*.md` (`source_kind: document`) — verbatim snapshot plus hash, so drift is detected mechanically.
 - **Mechanical checks**: `check`, `validate`, `index`, `graph`, `corpus`, `claim-id`, `anchor`, `export`, `import`, `stale` (spine staleness plus `## claims` -- superseded-cited documents, expired `valid` windows, superseded derivation chains), plus the spine's `mark`/`benefit`/`gate`/`plan`/`orient`/`migrate`. `benefit` reports what the review gates have already caught, beside what the doctrine costs to read; it always exits 0 and carries no verdict. The graph and corpus checks verify spans against the stored extraction, recompute every id, refuse cycles and unreachable nodes, and enforce `CONTESTED` symmetry.
-- **Installed support files**: Claude, Codex, Gemini and Google Antigravity receive the full skill folder — `SKILL.md`, `templates.md`, `taxonomy.md`, `distillation.md`, `reconciliation.md`, `guides.md`, `vision.md`, `elicitation.md`, `review.md`, `dispatch.md`, `routing.md`, `ENFORCEMENT.md`, `memory.md`, and the validator's three files, `scripts/sdlc_check.py` + `scripts/sdlc_core.py` + `scripts/knowledge.py` (copy all three) — plus the `LICENSE` and `NOTICE` it ships under.
+- **Installed support files**: Claude, Codex, Gemini and Google Antigravity receive the full skill folder — `SKILL.md`, `templates.md`, `taxonomy.md`, `distillation.md`, `reconciliation.md`, `guides.md`, `vision.md`, `elicitation.md`, `review.md`, `dispatch.md`, `routing.md`, `ENFORCEMENT.md`, `memory.md`, `portability.md`, `knowledge-templates.md`, and the validator's three files, `scripts/sdlc_check.py` + `scripts/sdlc_core.py` + `scripts/knowledge.py` (copy all three) — plus the `LICENSE` and `NOTICE` it ships under.
 
 ## Installation
 

@@ -1,0 +1,8 @@
+[info] no rows in D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\ai_docs\solutions\harness_software_knowledge\behavior\candidate\project\ai_docs\audit\audit_plan.md: nothing to check (audit not initialized, or Hybrid mode where mapping is delegated to devPNT).
+[warn] evidence UNTRACKED corpus/given/retry-proposal-9f23ebb4.txt: no software binding
+[warn] evidence UNAVAILABLE corpus/given/source-2fa49ba256129b7988272b97f272e6cc1a15a7930c46ebb5b7b102c1ab70ca13-34aed586813e7deca317b429aa10be22f03db52c4a3c523ac08255fc49c2999f.txt: declared software file missing or unreadable
+[warn] evidence UNTRACKED corpus/given/source-3829deb5c873085f6ca531677eb7477d7b0eed4e27fe88de72ec88d6c83b33ce-8829d8c0971044a078e0b8ccaeabd96555bae9a5e137b9ae7b63a1f9a6ec8e3a.txt: historical source is superseded; follow its successor
+[warn] evidence UNTRACKED corpus/given/source-898a80b765d5d2169c8f5db93fca941627b94be4e681307302345dd05294e5e1-fbba7af07ce1b2ad333491ea024532cb72f90121bb4ea19dae074971e65ade9b.txt: historical source is superseded; follow its successor
+[warn] evidence UNTRACKED corpus/notes/card-identity.md: historical source is superseded; follow its successor
+[warn] evidence UNTRACKED corpus/notes/project-placement.md: no software binding
+[warn] evidence UNTRACKED corpus/notes/retry-policy.md: historical source is superseded; follow its successor

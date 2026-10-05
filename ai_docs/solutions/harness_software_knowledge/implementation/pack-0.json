@@ -1,0 +1,186 @@
+[
+  {
+    "id": "@antoneeo/agentic-sdlc-skill@1.37.0",
+    "name": "@antoneeo/agentic-sdlc-skill",
+    "version": "1.37.0",
+    "size": 258170,
+    "unpackedSize": 762876,
+    "shasum": "78d46afd469d4aaafcc4b16832d90700095f1b49",
+    "integrity": "sha512-a8U/WuD2XwBY4b6y8j0jfkzVqF1CVfdvKSnUPudmDTBDC1MEjaXR5yAD0pQoj0S9grb6oiY2KSJ6VX1QaCIPUQ==",
+    "filename": "antoneeo-agentic-sdlc-skill-1.37.0.tgz",
+    "files": [
+      {
+        "path": "CHANGELOG.md",
+        "size": 131101,
+        "mode": 420
+      },
+      {
+        "path": "LICENSE",
+        "size": 11560,
+        "mode": 420
+      },
+      {
+        "path": "NOTICE",
+        "size": 169,
+        "mode": 420
+      },
+      {
+        "path": "README.md",
+        "size": 14295,
+        "mode": 420
+      },
+      {
+        "path": "gemini-extension.json",
+        "size": 235,
+        "mode": 420
+      },
+      {
+        "path": "package.json",
+        "size": 2104,
+        "mode": 420
+      },
+      {
+        "path": "scripts/init.js",
+        "size": 17578,
+        "mode": 420
+      },
+      {
+        "path": "scripts/lib.js",
+        "size": 33339,
+        "mode": 420
+      },
+      {
+        "path": "scripts/postinstall.js",
+        "size": 4183,
+        "mode": 420
+      },
+      {
+        "path": "scripts/preuninstall.js",
+        "size": 1229,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/architect.md",
+        "size": 12890,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/debugging.md",
+        "size": 7828,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/dispatch.md",
+        "size": 7997,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/distillation.md",
+        "size": 17577,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/elicitation.md",
+        "size": 12314,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/ENFORCEMENT.md",
+        "size": 15593,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/guides.md",
+        "size": 19124,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/hybrid.md",
+        "size": 6646,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/knowledge-templates.md",
+        "size": 8012,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/LICENSE",
+        "size": 11560,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/memory.md",
+        "size": 10166,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/NOTICE",
+        "size": 169,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/portability.md",
+        "size": 7214,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/reconciliation.md",
+        "size": 8029,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/review.md",
+        "size": 31782,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/routing.md",
+        "size": 7799,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "size": 121634,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+        "size": 3238,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/sdlc_core.py",
+        "size": 130280,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/SKILL.md",
+        "size": 46620,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/taxonomy.md",
+        "size": 5514,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/tdd.md",
+        "size": 2683,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/templates.md",
+        "size": 37324,
+        "mode": 420
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/vision.md",
+        "size": 15090,
+        "mode": 420
+      }
+    ],
+    "entryCount": 34,
+    "bundled": []
+  }
+]

@@ -1,0 +1,15 @@
+===== validate =====
+[warn]  vision/project_vision.md missing
+[warn]  vision/roadmap.md missing
+[warn]  vision/principles.md missing
+
+Validation: 0 errors, 3 warnings, 0 advisories.
+
+===== stale =====
+[info] no rows in D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\ai_docs\solutions\harness_software_knowledge\behavior\instructions\project\ai_docs\audit\audit_plan.md: nothing to check (audit not initialized, or Hybrid mode where mapping is delegated to devPNT).
+
+check: CLEAN (validate rc=0, stale rc=0)
+===== graph =====
+[ok] topic graph and claim ledger consistent (0 warnings)
+===== corpus =====
+[ok] corpus consistent (0 warnings)

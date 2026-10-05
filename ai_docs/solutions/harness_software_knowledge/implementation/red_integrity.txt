@@ -1,0 +1,52 @@
+............Fs..FFF.........
+======================================================================
+FAIL: test_e3_mutation_during_read_refuses_publication (test_software_knowledge.SoftwareEvidenceTests.test_e3_mutation_during_read_refuses_publication)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 343, in test_e3_mutation_during_read_refuses_publication
+    with self.assertRaisesRegex(ValueError, "changed during"):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_e4_growth_beyond_capture_limit_is_change_not_corruption (test_software_knowledge.SoftwareEvidenceTests.test_e4_growth_beyond_capture_limit_is_change_not_corruption)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 324, in test_e4_growth_beyond_capture_limit_is_change_not_corruption
+    self.assertEqual(report["errors"], [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['corpus/given/source-37b3eb22cd7722d9a009[141 chars]tes'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'corpus/given/source-37b3eb22cd7722d9a009f7def5765a4f4caddbc7373ed999842bf84a55bcddd5-ee7a85945c4d199a100395160872c44d252edf6b35a73be2f72e1015792a1f4e.txt: source exceeds 16777216 bytes'
+
++ []
+- ['corpus/given/source-37b3eb22cd7722d9a009f7def5765a4f4caddbc7373ed999842bf84a55bcddd5-ee7a85945c4d199a100395160872c44d252edf6b35a73be2f72e1015792a1f4e.txt: '
+-  'source exceeds 16777216 bytes']
+
+======================================================================
+FAIL: test_e4_matched_bytes_cannot_validate_a_missing_locator (test_software_knowledge.SoftwareEvidenceTests.test_e4_matched_bytes_cannot_validate_a_missing_locator)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 316, in test_e4_matched_bytes_cannot_validate_a_missing_locator
+    self.assertEqual(rc, 1, out)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: 0 != 1 : Evidence: declared inputs only; no semantic or completeness certification.
+behavior 335fd1e825ad kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-37b3eb22cd7722d9a009f7def5765a4f4caddbc7373ed999842bf84a55bcddd5-e8bc8d5f348416e12e8305b890a969acfd4e3c355d6b6b6d3a208cb3f46494c3.txt: declared file bytes match
+
+
+======================================================================
+FAIL: test_e4_schema2_cannot_be_silently_legacy (test_software_knowledge.SoftwareEvidenceTests.test_e4_schema2_cannot_be_silently_legacy)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 331, in test_e4_schema2_cannot_be_silently_legacy
+    self.assertTrue(self.findings()["errors"])
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [] is not true
+
+----------------------------------------------------------------------
+Ran 28 tests in 2.907s
+
+FAILED (failures=4, skipped=1)

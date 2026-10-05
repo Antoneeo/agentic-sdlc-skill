@@ -51,6 +51,11 @@
     "scripts/lib.js",
     "scripts/init.js",
     "scripts/postinstall.js",
-    "scripts/preuninstall.js"
+    "scripts/preuninstall.js",
+    "skills/mkt-agentic-sdlc/distillation.md",
+    "skills/mkt-agentic-sdlc/taxonomy.md",
+    "skills/mkt-agentic-sdlc/reconciliation.md",
+    "skills/mkt-agentic-sdlc/portability.md",
+    "skills/mkt-agentic-sdlc/knowledge-templates.md"
   ]
 }

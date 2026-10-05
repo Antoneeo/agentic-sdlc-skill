@@ -67,9 +67,11 @@ class TestRecallDoctrine(unittest.TestCase):
     """The wording the reflex depends on cannot silently leave the files."""
 
     def test_skill_md_carries_the_recall_section(self):
-        text = normalized(SKILL_DIR / "SKILL.md")
+        skill = normalized(SKILL_DIR / "SKILL.md")
+        self.assertIn("## Topic Recall — the answer-side consult", skill)
+        self.assertIn("`memory.md` §Topic Recall", skill)
+        text = normalized(SKILL_DIR / "memory.md")
         for anchor in (
-            "## Topic Recall — the answer-side consult",
             "unconditional scan on domain assertions",
             "judged ON the scanned top rows, never before them",
             "Once per topic per SESSION",
@@ -100,7 +102,7 @@ class TestRecallDoctrine(unittest.TestCase):
 
         The count is pinned too: the repair is in the FORM, not in the
         vocabulary — a fifth legal value would be a contract change, not a fix."""
-        text = normalized(SKILL_DIR / "SKILL.md")
+        text = normalized(SKILL_DIR / "memory.md")
         for value in ("N claims cited", "node matched, no claims"):
             self.assertIn("`kb: <slug>[, <slug> …] → %s`" % value, text,
                           "the %r verdict is not expressible for a multi-branch "

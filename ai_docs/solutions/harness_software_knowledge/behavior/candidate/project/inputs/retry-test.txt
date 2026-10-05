@@ -1,0 +1,1 @@
+Fixture local: attempts=3, operation returns false twice then true. Result: PASS. No external service called.

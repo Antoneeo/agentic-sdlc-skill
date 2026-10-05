@@ -69,6 +69,8 @@ You choose topics; the export decides what must travel with them.
 - **Every artifact a selected claim cites**, plus its sidecar and its stored extraction.
   A claim whose source cannot be reopened is model knowledge arriving by another route —
   the validator would reject it in the target, and correctly.
+- **Every transitive `derived_from` premise**, including sidecars and canonical
+  extractions. Missing references, escaping paths and cycles refuse the export.
 - **Every row a `CONTESTED` row points at.** The symmetry check refuses a set that lost
   half its members, so a partial export ships a tree that cannot pass its own checks.
   When a partner row lives in an unselected topic, that topic is **added and reported** —
@@ -86,13 +88,15 @@ broken set is worse than exporting nothing.
   the placement pass's (`taxonomy.md`, five verdicts, `owns:` against double placement).
 - **Never deletes.** The doctrine is tombstones over deletion; an additive import has no
   business removing anything.
-- **All or nothing.** The whole plan is computed before a byte is written. An import that
-  half-applies leaves a tree whose checks fail and whose owner cannot tell what landed.
+- **Preflight before writing.** The whole plan is computed before a byte is written.
+  This is not a filesystem transaction: an I/O interruption may leave a partial
+  additive import. Inspect it, rerun the plan, and run `check` before use.
 
 It refuses on: a missing or unmarked `MANIFEST.md`; a path that escapes the docs root; an
 artifact whose name matches an existing one **with different bytes** (content-addressed
 names must mean equal content — a mismatch means one of the two is lying about its
-origin); an incomplete conflict set; a dangling `supersedes:`.
+origin). `check` then detects incomplete conflict sets and dangling references;
+import itself does not certify the graph.
 
 After importing, run `check`. The import is deliberately not a validator.
 
@@ -104,7 +108,8 @@ another owner's decision, and importing it unchanged would make that decision bi
 here without anyone here granting it — the machine deciding, which reconciliation
 refuses everywhere else.
 
-So an imported ruling arrives as **`prov: IMPORTED`** (owner ruling, 2026-08-03):
+The receiving agent must mark imported rulings **`prov: IMPORTED`** (owner ruling,
+2026-08-03). The additive file-copy command does not rewrite their authority:
 
 - its text, span and original `basis:` travel **verbatim** — the knowledge is not lost,
   and pretending it is a `DERIVED` synthesis would make the row lie about where it came
@@ -118,8 +123,17 @@ So an imported ruling arrives as **`prov: IMPORTED`** (owner ruling, 2026-08-03)
 set the row's `prov` to `RULING`. That is you deciding, which is the only thing that ever
 settles anything here.
 
+Software sidecars and their project UUID travel unchanged. An import never adopts
+the source project's README identity: foreign bindings report UNBOUND without opening
+local paths as if they were the source project. A clone retaining the same UUID may
+match, subject to byte checks. To support a foreign claim locally, add local evidence
+through normal capture and reconciliation; do not relabel its foreign binding.
+
 ## 5. Triage
 
-Exporting is L1 — it writes nothing into the corpus and changes no knowledge. Importing
+For independent KB assignments, exporting is L1 — it writes nothing into the corpus and changes no knowledge. Importing
 is **L3**: a source enters the corpus and nodes are created, which is the L3 definition
 in Rule Zero, and the bundle is external input, which is never L1 whatever its size.
+
+Other lenses use their owning router and risk scale; importing this method does not
+create a second KB workflow. External input remains never L1.

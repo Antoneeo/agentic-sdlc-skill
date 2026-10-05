@@ -135,6 +135,8 @@ devPNT is not there, work Standalone and nothing is lost.
 
 ### 1. Audit and Alignment
 
+- For L2/L3, use `memory.md` §Software work to descend from project properties to relevant evidence, naming gaps.
+
 - Read `ai_docs/audit/handoff.md` if it exists — the **workstream registry**: one row per open workstream, so you see at a glance what is in PROGRESS, on which branch, since when, before touching anything. It is generated from the `HANDOFF_*.md` files, so it is read here and never edited here. If a row's Date/Branch are inconsistent with reality, treat that row as history. When resuming a specific workstream, read its `audit/HANDOFF_[feature].md` (its row plus the resume logistics) AND its ANALYSIS Diary (the durable narrative) — the registry row points at both. A hand-written or pre-1.17 narrative handoff still works and is converted when you next write it, not now (Write Triggers).
 - Read `ai_docs/README.md` (curated must-reads), `ai_docs/INDEX.md` (generated manifest of all canonical docs) and `ai_docs/reference/INDEX.md` (the guide router) to know what exists before exploring the code. The router is a mandatory read, not an optional one: it is the only orientation step that tells you a guide already governs the work you are about to do. On a project with no guides yet it exists as an empty stub (`sdlc_check.py index` writes it precisely so the mandatory read has something to read) — the honest verdict there is `router: no match`, and if the file is genuinely absent, say `router: absent (no router file)` and regenerate it rather than inventing a match. `solutions/` and `audit/` are not indexed per file: search them with glob/grep.
 - Recommended default: a SessionStart hook (`ENFORCEMENT.md` §4) emits this orientation automatically at session start (README + INDEX + guide router + handoff + triage reminder), so the router reaches the context even in a session that never opens Phase 1 explicitly. Wire it wherever Python is available; when it is not wired, do these reads manually as above — the process never depends on it, and it fails open (a missing/empty `ai_docs/` never blocks the session).
@@ -160,6 +162,8 @@ Hybrid:
 - The M-VISION is a Vision: `vision.md` applies to it too. The gate lens of the blind check (§6) is the proportional subset for a milestone-scope document.
 
 ### 3. Request Analysis
+
+- Apply `memory.md` §Software work during analysis too: capture reusable findings as they emerge, before review; keep approved proposals typed DESIGN.
 
 For any L3, run the spec elicitation round in `elicitation.md` BEFORE drafting the analysis (skip path inside — one-line note when the spec is already complete).
 
@@ -199,6 +203,8 @@ Hybrid L3:
 
 ### 4. Development and Testing
 
+- Per `memory.md` §Software work, check affected knowledge before/during changes and reconcile verification results, including indirect dependencies.
+
 - Implement only after the documentation gate required by the level. **Flip the ANALYSIS frontmatter `PLANNED` → `IN_PROGRESS` when implementation starts** — that flip is what `gate` and the handoff registry key on, and nothing else performs it.
 - Isolate the work: run an L3 change on its own branch. In Hybrid, prefer a git worktree from the start — a running devPNT server locks `.devpnt/*.db` and blocks in-place branch switches/merges in the primary worktree.
 - Modify surgically, consistently with the plan.
@@ -211,6 +217,8 @@ Hybrid L3:
 - **Opt-in subagent execution**: for an L3 with an approved design, the orchestrator MAY execute the work via subagents per `dispatch.md`, gated by `sdlc_check.py plan validate` ("no valid plan, no dispatch"); default stays same-session. Hybrid: the executable `PLAN_[feature].md` is `derived-from` the accepted E-TDD, never independently authored. `dispatch.md` also carries the family-wide **delegation boundary** (what may be delegated at all, and what never may) — that section is not gated by the opt-in trigger and applies at any level, dispatch or no dispatch.
 
 ### 5. Closure
+
+- Complete only missing captures per `memory.md` §Software work at this closure or an already due handoff; carry unresolved evidence there. No new closing question or L1 obligation.
 
 - Run the relevant tests/lint/smoke checks.
 - **Claim-to-evidence (fires at EVERY completion claim, any phase, any level).** Before stating or implying that anything passes, works, is fixed, is clean or is complete: name the claim, run the proof that establishes *that* claim **after the final relevant edit**, read the full result, and report the actual status with the evidence. Freshness: a check run before a later relevant change proves nothing about the current tree. Breadth: a narrower check never supports a broader claim — targeted tests ≠ full suite; lint ≠ build; "tests pass" ≠ "requirements complete" (that claim maps to the Functional Spec acceptance criteria where the artifact carries them; "gate clean" maps to a fresh gate run reporting clean). **Delegated work is verified on the diff/files, never on the agent's report** — "the subagent said success" is a claim, not evidence. If the environment cannot run the proof, say so and give the alternative evidence — never claim the unavailable result. Red flags that mean STOP and run the proof: "should", "probably", "seems to", "still passes", "just this once", any satisfaction expressed before verification.
@@ -291,3 +299,10 @@ The prompt is not enforcement. When the project needs repeatable guarantees:
 - (skill development) the self-eval battery `python -m unittest discover -s scripts -p "test_*.py"` guards the skill's own doctrine invariants and is the deterministic release gate — see `ENFORCEMENT.md` §5.
 
 The validator is a support, not a universal prerequisite: the skill must stay usable in environments without Python or hooks, declaring what it cannot verify automatically.
+
+## Shared knowledge methods (on demand)
+
+`memory.md` is the common recall/capture/revision entry. For source intake read
+`distillation.md`; for placement `taxonomy.md`; for additions and updates
+`reconciliation.md`; for bundles `portability.md`. Formats live in
+`knowledge-templates.md`. Read on the corresponding trigger, under this lens's triage.

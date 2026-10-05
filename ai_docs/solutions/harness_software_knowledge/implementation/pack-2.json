@@ -1,0 +1,181 @@
+[
+  {
+    "id": "@antoneeo/mkt-agentic-sdlc-skill@0.15.0",
+    "name": "@antoneeo/mkt-agentic-sdlc-skill",
+    "version": "0.15.0",
+    "size": 209255,
+    "unpackedSize": 633433,
+    "shasum": "5186dade817f54ae43dfb22bb30da9c58f6628ee",
+    "integrity": "sha512-7udzrFR1ebvzvcjnw9IThlvkuBBgo5u6np/DoodXIRjWl/d+lugis+UxH4CCUXJEEAxrKoq/ZKggJPaOvPSdEw==",
+    "filename": "antoneeo-mkt-agentic-sdlc-skill-0.15.0.tgz",
+    "files": [
+      {
+        "path": "CHANGELOG.md",
+        "size": 32140,
+        "mode": 420
+      },
+      {
+        "path": "LICENSE",
+        "size": 11560,
+        "mode": 420
+      },
+      {
+        "path": "NOTICE",
+        "size": 169,
+        "mode": 420
+      },
+      {
+        "path": "README.md",
+        "size": 9894,
+        "mode": 420
+      },
+      {
+        "path": "gemini-extension.json",
+        "size": 268,
+        "mode": 420
+      },
+      {
+        "path": "package.json",
+        "size": 2056,
+        "mode": 420
+      },
+      {
+        "path": "scripts/init.js",
+        "size": 17147,
+        "mode": 420
+      },
+      {
+        "path": "scripts/lib.js",
+        "size": 29332,
+        "mode": 420
+      },
+      {
+        "path": "scripts/postinstall.js",
+        "size": 3331,
+        "mode": 420
+      },
+      {
+        "path": "scripts/preuninstall.js",
+        "size": 1229,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/dispatch.md",
+        "size": 7997,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/distillation.md",
+        "size": 17577,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/elicitation.md",
+        "size": 11653,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/ENFORCEMENT.md",
+        "size": 15641,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/frameworks.md",
+        "size": 5998,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/guides.md",
+        "size": 19124,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/hybrid.md",
+        "size": 3532,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/knowledge-templates.md",
+        "size": 8012,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/LICENSE",
+        "size": 11560,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/memory.md",
+        "size": 10166,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/NOTICE",
+        "size": 169,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/portability.md",
+        "size": 7214,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/reconciliation.md",
+        "size": 8029,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/research.md",
+        "size": 5443,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/review.md",
+        "size": 31782,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/routing.md",
+        "size": 7799,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "size": 121634,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/scripts/mkt_check.py",
+        "size": 31454,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/scripts/sdlc_core.py",
+        "size": 130280,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/SKILL.md",
+        "size": 22441,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/taxonomy.md",
+        "size": 5514,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/templates.md",
+        "size": 28198,
+        "mode": 420
+      },
+      {
+        "path": "skills/mkt-agentic-sdlc/vision.md",
+        "size": 15090,
+        "mode": 420
+      }
+    ],
+    "entryCount": 33,
+    "bundled": []
+  }
+]

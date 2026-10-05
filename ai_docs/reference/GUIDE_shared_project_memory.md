@@ -1,67 +1,110 @@
 ---
-description: Consult before changing shared-memory discovery, docs-root resolution, or validator composition across the four distributions.
+description: Consult before changing shared memory, software evidence, derivations or validator composition across the four distributions.
 status: CURRENT
 source_kind: code
-source: F-057 shared memory excerpts plus F-058 current marketing and course entry-point code; paths and symbols are labelled in the snapshot.
-distilled_from: ai_docs/reference/.sources/shared-project-memory-course-creator.md
-source_hash: 63fa202571121bf5b23bc9b3c7b92c2da0b0d5dbf960c3ae9efae3d2eace132f
-topics: [shared-memory, validation, domain-routing]
+source: Exact current shared-memory and software-evidence implementation excerpts; paths and symbols labelled in the snapshot.
+distilled_from: ai_docs/reference/.sources/shared-project-memory-software-evidence.md
+source_hash: a12d44260c2da36e45a7125cbe94f41da8a4ff584d1b0d1d0cbd277212f85b0b
+topics: [shared-memory, software-knowledge, validation, domain-routing]
 ---
-# Guide: Shared project memory
+# Guide: Shared project memory and software evidence
 
-For maintainers changing discovery or validator integration. This is the implementation
-map; `memory.md` in each installed skill owns agent usage, and
-`architecture/ADR_2026-09-19_shared_project_memory.md` records the architectural choice.
+For maintainers changing discovery, capture or validator integration. Installed
+`memory.md` owns agent usage; the software-knowledge ADR records the design choice.
+This guide maps implemented controls and their limits, not semantic correctness.
 
 ## Control and data flow
-[source: shared-project-memory-course-creator.md#distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/mkt_check.py:cmd_index (F-058 current source)]
-[source: shared-project-memory-course-creator.md#distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/mkt_check.py:run_check (F-058 current source)]
-[source: shared-project-memory-course-creator.md#distributions/course-creator/skills/course-creator/scripts/sdlc_check.py:main (F-058 current source)]
+[source: shared-project-memory-software-evidence.md#skills/agentic-sdlc-skill/scripts/knowledge.py:kb_capture_source]
+[source: shared-project-memory-software-evidence.md#skills/agentic-sdlc-skill/scripts/knowledge.py:kb_software_findings]
 
-Code and KB entry points delegate to `knowledge.main`. On `ai_docs`, marketing
-delegates `index` to the core and shared-memory writers,
-while retaining its numerical commands. Its validate/check result combines core,
-marketing and `kb_validate_surface` findings when marketing work is signaled.
-On `mkt_docs`, the legacy marketing index remains. Course delegates shared commands
-to `knowledge.main` and adds `course_check.validate_all` to validate/check, plus
-`course <slug>` for one course. A legacy marketing `ai_docs/INDEX.md` receives an
-explicit migration diagnostic; validate/check never rewrite it.
+```mermaid
+flowchart LR
+    A[Selected live file span] --> C[capture-source]
+    C --> S[Immutable extract and binding sidecar]
+    S --> D[Derived note: joint premises]
+    D --> K[Topic claims: nature and conditions]
+    K --> R[Recall and source inspection]
+    K --> E[evidence]
+    L[Current declared inputs] --> E
+    E --> V[Scoped re-verification]
+    V --> N[New source when needed]
+    N --> D
+    V --> Q[Reconcile existing claims]
+    Q --> K
+```
 
-Do not replace one result with the other. Root discovery uses the core resolver
-in both paths; ambiguous roots fail instead of being merged.
+Capture writes no claims or extraction-complete field. Distillation, placement and
+reconciliation remain agent work under the owning lens. A snapshot is evidence of
+selected bytes, not proof that their interpretation or coverage is complete.
 
-## Discovery is not knowledge extraction
-[source: shared-project-memory-course-creator.md#skills/agentic-sdlc-skill/scripts/knowledge.py:memory_records]
+## Discovery and freshness
+[source: shared-project-memory-software-evidence.md#skills/agentic-sdlc-skill/scripts/knowledge.py:memory_records]
+[source: shared-project-memory-software-evidence.md#skills/agentic-sdlc-skill/scripts/knowledge.py:memory_recall]
+[source: shared-project-memory-software-evidence.md#skills/agentic-sdlc-skill/scripts/knowledge.py:memory_validate]
 
-`memory_records` reads README plus Markdown under `MEMORY_DIRS`. It excludes hidden
-and harness subdirectories, generated indexes, raw corpus and audit logs. It returns
-path, domain, optional topics, description/title and a raw-byte SHA256; no document
-state or claim is generated. Domain falls back to README's `default_domain`, then
-`code`. Changing this inventory changes what every lens can discover.
+Index catalogs README and Markdown originals from MEMORY_DIRS, excluding generated
+indexes, hidden/harness directories, raw corpus, code and audit. Rows carry metadata
+and raw-byte fingerprints, not work states. Domain defaults from README, then code.
+Recall searches live metadata with all query words; it does not search bodies.
+A missing result proves no metadata match. Open the originals and inspect evidence.
+An existing stale catalog is detected; legacy absence stays usable until index.
+No watcher or automatic extraction is introduced. Guide snapshot hashes establish
+snapshot freshness only, never correspondence with subsequently edited live code.
 
-## Index and recall have different freshness contracts
-[source: shared-project-memory-course-creator.md#skills/agentic-sdlc-skill/scripts/knowledge.py:memory_recall]
+## Capture safety and identity
+[source: shared-project-memory-software-evidence.md#skills/agentic-sdlc-skill/scripts/knowledge.py:_kb_read_bytes]
+[source: shared-project-memory-software-evidence.md#skills/agentic-sdlc-skill/scripts/knowledge.py:_kb_capture_lock]
+[source: shared-project-memory-software-evidence.md#skills/agentic-sdlc-skill/scripts/knowledge.py:_kb_project_id]
+[source: shared-project-memory-software-evidence.md#skills/agentic-sdlc-skill/scripts/knowledge.py:kb_capture_source]
 
-`index` writes the catalog; there is no watcher. `recall` rebuilds metadata in memory
-and requires every query word to occur somewhere in the first four fields, ignoring
-case. It does not search bodies or interpret meaning. No result establishes only
-that metadata did not match. Readers must open originals to assess evidence and status.
+Capture accepts one explicit UTF-8 span from a regular file of at most 16 MiB.
+It rejects escaping/drive/ADS paths and symlinks/reparse points in existing path hops.
+A single byte buffer supplies extract and full-file digest; stat checks detect
+ordinary concurrent modification. The docs-root README owns a persistent UUID.
+Capture serializes cooperating writers, publishes without overwriting, and writes
+the sidecar last. An identical retry reuses evidence; an orphan blob can be completed.
+An abandoned lock requires inspection before removal. These are trusted-workspace
+controls, not protection against adversarial concurrent directory replacement or
+an attacker restoring timestamps; the UUID is identity metadata, not authentication.
 
-## Validation and confinement
-[source: shared-project-memory-course-creator.md#skills/agentic-sdlc-skill/scripts/knowledge.py:memory_validate]
+## Claims and evidence are separate contracts
+[source: shared-project-memory-software-evidence.md#skills/agentic-sdlc-skill/scripts/knowledge.py:kb_check_claims]
+[source: shared-project-memory-software-evidence.md#skills/agentic-sdlc-skill/scripts/knowledge.py:_kb_software_integrity]
+[source: shared-project-memory-software-evidence.md#skills/agentic-sdlc-skill/scripts/knowledge.py:kb_software_findings]
+[source: shared-project-memory-software-evidence.md#skills/agentic-sdlc-skill/scripts/knowledge.py:kb_cmd_evidence]
 
-An existing catalog must match regenerated content; an absent catalog is allowed for
-legacy projects. Unsafe catalog output paths fail. `_memory_safe` checks resolved
-confinement, symlinks and junctions when the Python runtime exposes `is_junction`.
-Source edits, deletions and even byte-level line-ending changes can stale the catalog.
-Regenerate it after checkout conversion rather than treating its fingerprint as a
-semantic digest. Snapshot freshness does not prove this guide still matches live code.
+Legacy eight-column rows keep their IDs. Schema 2 adds kind: OBSERVATION,
+REQUIREMENT, HYPOTHESIS or DESIGN, independently of provenance and state.
+Cross-kind CONTESTED/SUPERSEDED relations are rejected. Legacy nature stays
+UNCLASSIFIED until source-based classification; approval never implies observation.
 
-## Composition traps
-[source: shared-project-memory-course-creator.md#skills/agentic-sdlc-skill/scripts/knowledge.py:kb_cmd_check]
+Evidence verifies binding metadata and stored bytes before comparing declared live
+files. AND combines all transitive derivation premises; OR keeps alternative claim
+supports separate. MATCHED is byte correspondence, CHANGED requests re-verification,
+UNAVAILABLE identifies unreadable/missing inputs, UNBOUND a different/absent project
+identity, UNTRACKED a source without live binding, INVALID an integrity failure.
+Unbound paths are not opened as local software. Stale alternatives remain visible
+even if another matches. Claim state remains separate. Explicit evidence exits 1 on
+integrity errors, unclassified/non-OK rows or an observation with no matched support;
+other claim kinds need not pretend to be executable evidence. No-coverage is stated.
 
-Code/KB run the core check and then shared memory, graph and corpus checks. The core's
-printed CLEAN line precedes those additions: use the final exit code and all findings,
-not that banner alone. `validate` is lighter than `check`; a successful catalog check
-does not certify claims. Topic/corpus indexes are refreshed only when those directories
-exist; cataloguing a guide does not create a topic graph or ingest a corpus.
+## Composition and portability
+[source: shared-project-memory-software-evidence.md#skills/agentic-sdlc-skill/scripts/knowledge.py:kb_validate_surface]
+[source: shared-project-memory-software-evidence.md#skills/agentic-sdlc-skill/scripts/knowledge.py:kb_cmd_check]
+[source: shared-project-memory-software-evidence.md#skills/agentic-sdlc-skill/scripts/knowledge.py:kb_export_closure]
+[source: shared-project-memory-software-evidence.md#skills/agentic-sdlc-skill/scripts/knowledge.py:kb_import_plan]
+[source: shared-project-memory-software-evidence.md#distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/mkt_check.py:main]
+[source: shared-project-memory-software-evidence.md#distributions/course-creator/skills/course-creator/scripts/sdlc_check.py:main]
+
+Code/KB compose core, memory, graph, corpus and evidence diagnostics. Marketing
+passes its resolved project to the shared seam and retains its numerical checks;
+course adds its instructional validator. Drift warns in existing check/stale;
+integrity errors fail check. Use final exit and all findings, not an earlier core
+CLEAN banner. Legacy/non-software work receives no new binding requirement.
+
+Export includes cited sources and transitive derivation premises, refusing missing,
+escaping or cyclic closures. Additive import preserves bindings and ignores the
+exporter's README; it does not adopt identity or rewrite foreign ruling authority.
+Preflight is not a filesystem transaction. The receiving agent applies the existing
+IMPORTED/re-ratification policy and runs check. Root ambiguity is never resolved by
+combining projects. Concept graphs do not replace symbol/dependency impact analysis.

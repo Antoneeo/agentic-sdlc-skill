@@ -43,9 +43,11 @@ class RevisionDoctrineTests(unittest.TestCase):
 
     def setUp(self):
         self.skill = normalized(SKILL)
+        self.memory = normalized(SKILL_DIR / "memory.md")
 
     def test_section_exists(self):
         self.assertIn("## Revision", self.skill)
+        self.assertIn("`memory.md` §Revision", self.skill)
 
     def test_seven_load_bearing_anchors(self):
         # The doctrine's clauses, anchored whitespace-normalized: deleting any
@@ -58,13 +60,13 @@ class RevisionDoctrineTests(unittest.TestCase):
                        "tombstone",
                        "raises the probability",
                        "PER DOCUMENT"):
-            self.assertIn(anchor, self.skill, anchor)
+            self.assertIn(anchor, self.memory, anchor)
 
     def test_exemption_anchors(self):
         # Without these the doctrine instructs the forbidden act: the machine
         # deciding on claim rows, or a revision smuggling an L3 re-parent.
-        self.assertIn("never the ledger", self.skill)
-        self.assertIn("never re-parents", self.skill)
+        self.assertIn("never the ledger", self.memory)
+        self.assertIn("never re-parents", self.memory)
 
     def test_l2_process_cell_carries_the_pointer(self):
         row = next((l for l in SKILL.read_text(encoding="utf-8").splitlines()

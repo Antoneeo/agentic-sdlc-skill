@@ -1,0 +1,1 @@
+Requirement: edits preserve logical identity; undo behavior has not been analyzed.

@@ -4,6 +4,14 @@
 
 The package is the fourth lens of the Agentic SDLC family. It uses the shared `ai_docs/` project memory and governance. Version 0.1.0-beta.1 supports Standalone mode. This is an experimental beta: the authoring method and artifact contracts may change; human learning efficacy has not been established. Its course artifacts remain readable without the skill.
 
+Shared knowledge methods ship in `memory.md`, `distillation.md`, `taxonomy.md`,
+`reconciliation.md`, `portability.md` and `knowledge-templates.md`, loaded on demand
+under course triage. `capture-source` preserves selected software evidence and
+`evidence` checks declared input correspondence; neither proves teaching efficacy
+or test execution. Typed KB claims distinguish observation, requirement, hypothesis
+and design while legacy rows remain readable. These methods add no software-phase
+capture obligation to course authoring and do not replace its prerequisite graph.
+
 ## Install and initialize
 
 ```sh
@@ -22,4 +30,3 @@ Using the skill in your own project carries no obligation to publish your course
 New courses deliver a complete textual source for every slide (`SLIDE_CONTENT.md`), with exact learner copy, full explanations, examples, visual contents, transitions and answers. PPTX and other renderings are optional. Explicit non-slide requests retain a complete textual source for their units. Every course must show distinguishable value for its audience through an explanatory contribution and a transfer task; structure or simulated success does not establish human efficacy. See `skills/course-creator/slide_content.md`.
 
 Course design now uses outcome-first evidence, teaching/assessment alignment, visible worked reasoning, proportionate support, cognitive-load management and retrieval opportunities. `learning_design.md` records the pedagogical sources and the source-informed semantic review rubric; a locator table or structural PASS is not proof of learning.
-

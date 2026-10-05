@@ -41,7 +41,7 @@ sdlc_core.set_profile(
     unit_noun="feature",
     support_files=("templates.md", "architect.md", "guides.md", "vision.md", "tdd.md",
                    "debugging.md", "elicitation.md", "review.md", "dispatch.md",
-                   "routing.md", "hybrid.md", "ENFORCEMENT.md", "memory.md"),
+                   "routing.md", "hybrid.md", "ENFORCEMENT.md", "memory.md", "distillation.md", "taxonomy.md", "reconciliation.md", "portability.md", "knowledge-templates.md"),
     capabilities=(
         # spine
         "triage", "write_triggers", "workstream_registry", "vision_gate",

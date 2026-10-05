@@ -1,0 +1,43 @@
+{
+  "scope": "Local current inputs only; no external service or complete card click",
+  "inputs_sha256": {
+    "D:\\SoftwareDev\\skill_sdlc\\agentic-sdlc-skill\\ai_docs\\solutions\\harness_software_knowledge\\behavior\\instructions\\project\\inputs\\retry.py": "044ddd6b2149f9d44b0b5591e16d212c2037dc93c30b2110244d065c2bf549ef",
+    "D:\\SoftwareDev\\skill_sdlc\\agentic-sdlc-skill\\ai_docs\\solutions\\harness_software_knowledge\\behavior\\instructions\\project\\inputs\\retry-config.json": "11d417822122f262f9ab3af7b8b379337f13a6cc3d82af66dc541f09b4a3dbab",
+    "D:\\SoftwareDev\\skill_sdlc\\agentic-sdlc-skill\\ai_docs\\solutions\\harness_software_knowledge\\behavior\\instructions\\project\\inputs\\retry-test.txt": "e3ceac7c82d50a3f6a5d26bbb6872d97daf0429cb9ef5c320dfd6dd201bdfeba",
+    "D:\\SoftwareDev\\skill_sdlc\\agentic-sdlc-skill\\ai_docs\\solutions\\harness_software_knowledge\\behavior\\instructions\\project\\inputs\\retry-proposal.md": "9f23ebb4b5e32a4a0da29f87457f18bb2af232d0046324e99d85f2af2950a388",
+    "D:\\SoftwareDev\\skill_sdlc\\agentic-sdlc-skill\\ai_docs\\solutions\\harness_software_knowledge\\behavior\\instructions\\project\\inputs\\card_identity.py": "3829deb5c873085f6ca531677eb7477d7b0eed4e27fe88de72ec88d6c83b33ce",
+    "D:\\SoftwareDev\\skill_sdlc\\agentic-sdlc-skill\\ai_docs\\solutions\\harness_software_knowledge\\behavior\\instructions\\project\\inputs\\TEST_m145_card_continuity.md": "8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59",
+    "D:\\SoftwareDev\\skill_sdlc\\agentic-sdlc-skill\\ai_docs\\solutions\\harness_software_knowledge\\behavior\\instructions\\project\\inputs\\REVIEW_m145_card_trace_core.md": "6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be"
+  },
+  "current_config": {
+    "attempts": 1
+  },
+  "current_false_false_true": {
+    "result": false,
+    "calls": 1
+  },
+  "old_three_attempt_fixture": {
+    "result": true,
+    "calls": 3
+  },
+  "immediate_success": {
+    "result": true,
+    "calls": 1
+  },
+  "identity": "A",
+  "negative_controls": [
+    {
+      "assertion": "current_limit_three",
+      "result": "EXPECTED_FAILURE"
+    },
+    {
+      "assertion": "current_identity_B",
+      "result": "EXPECTED_FAILURE"
+    }
+  ],
+  "limits": [
+    "No latency/network/deployment proof",
+    "No consumer or rename integration enumeration",
+    "Eclosion reports read, not executed"
+  ]
+}

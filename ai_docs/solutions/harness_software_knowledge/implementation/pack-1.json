@@ -1,0 +1,166 @@
+[
+  {
+    "id": "@antoneeo/kb-agentic-skill@1.20.0",
+    "name": "@antoneeo/kb-agentic-skill",
+    "version": "1.20.0",
+    "size": 233366,
+    "unpackedSize": 694398,
+    "shasum": "2bf7f5d134d92ea308d3c5ede0c43bc559cb3ef2",
+    "integrity": "sha512-hOjlWMnlt2SAYE5r1BkCAXcyvXax8GWd+E8FAIPelI777TJmpctpl2vIz3M/X1sz3Pp8EVT8acJE9LOIiM+FZQ==",
+    "filename": "antoneeo-kb-agentic-skill-1.20.0.tgz",
+    "files": [
+      {
+        "path": "CHANGELOG.md",
+        "size": 123917,
+        "mode": 420
+      },
+      {
+        "path": "LICENSE",
+        "size": 11560,
+        "mode": 420
+      },
+      {
+        "path": "NOTICE",
+        "size": 169,
+        "mode": 420
+      },
+      {
+        "path": "README.md",
+        "size": 19511,
+        "mode": 420
+      },
+      {
+        "path": "gemini-extension.json",
+        "size": 266,
+        "mode": 420
+      },
+      {
+        "path": "package.json",
+        "size": 1896,
+        "mode": 420
+      },
+      {
+        "path": "scripts/init.js",
+        "size": 16735,
+        "mode": 420
+      },
+      {
+        "path": "scripts/lib.js",
+        "size": 27295,
+        "mode": 420
+      },
+      {
+        "path": "scripts/postinstall.js",
+        "size": 3322,
+        "mode": 420
+      },
+      {
+        "path": "scripts/preuninstall.js",
+        "size": 1229,
+        "mode": 420
+      },
+      {
+        "path": "skills/kb-agentic-skill/dispatch.md",
+        "size": 7997,
+        "mode": 420
+      },
+      {
+        "path": "skills/kb-agentic-skill/distillation.md",
+        "size": 17577,
+        "mode": 420
+      },
+      {
+        "path": "skills/kb-agentic-skill/elicitation.md",
+        "size": 10839,
+        "mode": 420
+      },
+      {
+        "path": "skills/kb-agentic-skill/ENFORCEMENT.md",
+        "size": 17711,
+        "mode": 420
+      },
+      {
+        "path": "skills/kb-agentic-skill/guides.md",
+        "size": 19124,
+        "mode": 420
+      },
+      {
+        "path": "skills/kb-agentic-skill/knowledge-templates.md",
+        "size": 8012,
+        "mode": 420
+      },
+      {
+        "path": "skills/kb-agentic-skill/LICENSE",
+        "size": 11560,
+        "mode": 420
+      },
+      {
+        "path": "skills/kb-agentic-skill/memory.md",
+        "size": 10166,
+        "mode": 420
+      },
+      {
+        "path": "skills/kb-agentic-skill/NOTICE",
+        "size": 169,
+        "mode": 420
+      },
+      {
+        "path": "skills/kb-agentic-skill/portability.md",
+        "size": 7214,
+        "mode": 420
+      },
+      {
+        "path": "skills/kb-agentic-skill/reconciliation.md",
+        "size": 8029,
+        "mode": 420
+      },
+      {
+        "path": "skills/kb-agentic-skill/review.md",
+        "size": 31782,
+        "mode": 420
+      },
+      {
+        "path": "skills/kb-agentic-skill/routing.md",
+        "size": 7799,
+        "mode": 420
+      },
+      {
+        "path": "skills/kb-agentic-skill/scripts/knowledge.py",
+        "size": 121634,
+        "mode": 420
+      },
+      {
+        "path": "skills/kb-agentic-skill/scripts/sdlc_check.py",
+        "size": 2698,
+        "mode": 420
+      },
+      {
+        "path": "skills/kb-agentic-skill/scripts/sdlc_core.py",
+        "size": 130280,
+        "mode": 420
+      },
+      {
+        "path": "skills/kb-agentic-skill/SKILL.md",
+        "size": 24192,
+        "mode": 420
+      },
+      {
+        "path": "skills/kb-agentic-skill/taxonomy.md",
+        "size": 5514,
+        "mode": 420
+      },
+      {
+        "path": "skills/kb-agentic-skill/templates.md",
+        "size": 31111,
+        "mode": 420
+      },
+      {
+        "path": "skills/kb-agentic-skill/vision.md",
+        "size": 15090,
+        "mode": 420
+      }
+    ],
+    "entryCount": 30,
+    "bundled": []
+  }
+]

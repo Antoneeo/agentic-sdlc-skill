@@ -35,7 +35,7 @@ sdlc_core.set_profile(
     unit_noun="engagement",
     support_files=("templates.md", "frameworks.md", "research.md", "elicitation.md",
                    "review.md", "routing.md", "guides.md", "vision.md", "hybrid.md", "dispatch.md",
-                   "ENFORCEMENT.md", "memory.md"),
+                   "ENFORCEMENT.md", "memory.md", "distillation.md", "taxonomy.md", "reconciliation.md", "portability.md", "knowledge-templates.md"),
     capabilities=(
         # spine
         "triage", "write_triggers", "workstream_registry", "vision_gate",
@@ -686,7 +686,7 @@ def main(argv=None):
 
     parser = argparse.ArgumentParser(prog="mkt_check.py", description=__doc__,
         epilog="Shared memory commands: recall QUERY, graph, corpus, claim-id, anchor, "
-               "export, import, stale, orient. Use COMMAND --help for options.")
+               "capture-source, evidence, export, import, stale, orient. Use COMMAND --help for options.")
     parser.add_argument("command", choices=list(OVERLAY_COMMANDS))
     parser.add_argument("file", nargs="?", default=None,
                         help="optional target file for budget/funnel")
@@ -734,7 +734,7 @@ def main(argv=None):
         if sdlc_core.docs_dir() == "ai_docs":
             code = max(code, sdlc_core.cmd_validate(root, strict=args.strict))
         code = max(code, knowledge.kb_validate_surface(root / sdlc_core.docs_dir(),
-                                                       full=args.command == "check"))
+                                                       full=args.command == "check", project=root))
     if code == 0:
         print(f"[OK] {args.command} clean "
               f"({len(rep.warnings)} warning(s))" if rep.warnings else f"[OK] {args.command} clean")

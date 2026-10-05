@@ -1,0 +1,63 @@
+{
+  "recorded_date": "2026-10-04",
+  "exit_code": 0,
+  "python": "3.14.3 (tags/v3.14.3:323c59a, Feb  3 2026, 16:04:56) [MSC v.1944 64 bit (AMD64)]",
+  "input_sha256": {
+    "ai_docs/solutions/harness_software_knowledge/probe.py": "576765a6d0181dadede82689bc009ca9a7116993a45ccf30fbb029274ffa9220",
+    "skills/agentic-sdlc-skill/scripts/knowledge.py": "a1be56e7ad55d53bd221cf47e21dd398d9c0643cf62666067ba54feee5d4c8de",
+    "skills/agentic-sdlc-skill/scripts/sdlc_core.py": "9a7ed068c01595f1bcce261bee4b8c48bcfa40d47d58b09cffeec95584403787"
+  },
+  "negative_control": false,
+  "results": [
+    {
+      "id": "P1",
+      "pass": true,
+      "detail": "Indexing an original creates the memory catalog, without creating topics."
+    },
+    {
+      "id": "P2",
+      "pass": true,
+      "detail": "A body-only term does not match recall metadata."
+    },
+    {
+      "id": "P3",
+      "pass": true,
+      "detail": "A parent/child topic fixture and a source-anchored claim validate."
+    },
+    {
+      "id": "P4",
+      "pass": true,
+      "detail": "The current claim schema has provenance and lifecycle, no kind field."
+    },
+    {
+      "id": "P5",
+      "pass": true,
+      "detail": "Adding a kind column to the existing schema is rejected."
+    },
+    {
+      "id": "P6",
+      "pass": true,
+      "detail": "Changing only the linked live original produces no corpus/time-cycle finding in this fixture."
+    },
+    {
+      "id": "P7",
+      "pass": true,
+      "detail": "Mutating the preserved source bytes does produce a corpus digest error."
+    },
+    {
+      "id": "P8",
+      "pass": true,
+      "detail": "An explicit source supersession reaches its derived note."
+    },
+    {
+      "id": "P9",
+      "pass": true,
+      "detail": "The document catalog remains current when only code outside the docs root changes."
+    },
+    {
+      "id": "P10",
+      "pass": true,
+      "detail": "A direct claim source outside ai_docs is rejected; evidence needs the existing corpus boundary."
+    }
+  ]
+}

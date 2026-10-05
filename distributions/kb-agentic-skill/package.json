@@ -51,6 +51,7 @@
     "scripts/lib.js",
     "scripts/init.js",
     "scripts/postinstall.js",
-    "scripts/preuninstall.js"
+    "scripts/preuninstall.js",
+    "skills/kb-agentic-skill/knowledge-templates.md"
   ]
 }

@@ -1,0 +1,54 @@
+.............FFF.s..F...............F
+======================================================================
+FAIL: test_e3_metadata_paths_must_round_trip_before_publication (test_software_knowledge.SoftwareEvidenceTests.test_e3_metadata_paths_must_round_trip_before_publication) (rel=' source.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 173, in test_e3_metadata_paths_must_round_trip_before_publication
+    with self.assertRaises(ValueError):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_e3_metadata_paths_must_round_trip_before_publication (test_software_knowledge.SoftwareEvidenceTests.test_e3_metadata_paths_must_round_trip_before_publication) (rel="'source.py'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 173, in test_e3_metadata_paths_must_round_trip_before_publication
+    with self.assertRaises(ValueError):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_e3_metadata_paths_must_round_trip_before_publication (test_software_knowledge.SoftwareEvidenceTests.test_e3_metadata_paths_must_round_trip_before_publication) (rel='source.py ')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 173, in test_e3_metadata_paths_must_round_trip_before_publication
+    with self.assertRaises(ValueError):
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_e4_corrupted_legacy_support_cannot_hide_behind_matched_alternative (test_software_knowledge.SoftwareEvidenceTests.test_e4_corrupted_legacy_support_cannot_hide_behind_matched_alternative)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 189, in test_e4_corrupted_legacy_support_cannot_hide_behind_matched_alternative
+    self.assertEqual(rc, 1, out)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: 0 != 1 : Evidence: declared inputs only; no semantic or completeness certification.
+behavior cb7334d8c94e kind=OBSERVATION state=OK
+  UNTRACKED corpus/notes/legacy-summary.md: a declared premise needs re-verification
+  MATCHED corpus/given/source-37b3eb22cd7722d9a009f7def5765a4f4caddbc7373ed999842bf84a55bcddd5-8f40fb6c6a98a6b7fe5a59627fe3015e4a67e82446f8788bc1c8e3c18405dc39.txt: declared file bytes match
+
+
+======================================================================
+FAIL: test_e7_text_evidence_names_changed_transitive_premise (test_software_knowledge.SoftwareEvidenceTests.test_e7_text_evidence_names_changed_transitive_premise)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 202, in test_e7_text_evidence_names_changed_transitive_premise
+    self.assertIn("CHANGED " + code + ": declared file bytes changed", out)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'CHANGED corpus/given/source-37b3eb22cd7722d9a009f7def5765a4f4caddbc7373ed999842bf84a55bcddd5-c60e2e521fe77525f53aafca3cf36a73fcdf09521332ccea973f7759d717afd5.txt: declared file bytes changed' not found in 'Evidence: declared inputs only; no semantic or completeness certification.\nbehavior cf2ecc1a0397 kind=OBSERVATION state=OK\n  CHANGED corpus/notes/decision.md: a declared premise needs re-verification\n'
+
+----------------------------------------------------------------------
+Ran 35 tests in 4.192s
+
+FAILED (failures=5, skipped=1)

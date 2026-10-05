@@ -1,0 +1,99 @@
+{
+  "scope": "fixture locali, nessun servizio esterno, nessun click card",
+  "results": [
+    {
+      "check": "config reale",
+      "actual": {
+        "attempts": 3
+      },
+      "expected": {
+        "attempts": 3
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "due falsi poi vero",
+      "actual": [
+        true,
+        3
+      ],
+      "expected": [
+        true,
+        3
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "arresto al primo successo",
+      "actual": [
+        true,
+        1
+      ],
+      "expected": [
+        true,
+        1
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "esaurimento tentativi",
+      "actual": [
+        false,
+        3
+      ],
+      "expected": [
+        false,
+        3
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "zero tentativi",
+      "actual": [
+        false,
+        0
+      ],
+      "expected": [
+        false,
+        0
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "identita originale",
+      "actual": "A",
+      "expected": "A",
+      "status": "PASS"
+    },
+    {
+      "check": "original_id mancante",
+      "actual": "'original_id'",
+      "expected": "'original_id'",
+      "status": "PASS"
+    },
+    {
+      "check": "eccezione propagata",
+      "actual": "local fixture",
+      "expected": "local fixture",
+      "status": "PASS"
+    },
+    {
+      "check": "controllo negativo tentativi",
+      "status": "EXPECTED_FAIL",
+      "actual": [
+        false,
+        3
+      ],
+      "negated_expectation": [
+        false,
+        5
+      ]
+    },
+    {
+      "check": "controllo negativo identita",
+      "status": "EXPECTED_FAIL",
+      "actual": "A",
+      "negated_expectation": "B"
+    }
+  ]
+}

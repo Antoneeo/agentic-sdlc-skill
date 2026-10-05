@@ -1,0 +1,1 @@
+def save(record): return record['original_id']

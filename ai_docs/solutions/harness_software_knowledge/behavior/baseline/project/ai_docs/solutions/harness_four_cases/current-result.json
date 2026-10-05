@@ -1,0 +1,127 @@
+{
+  "observed_at": "2026-10-04T18:08:37.861050+00:00",
+  "scope": "fixture locali, nessun servizio esterno, nessun click card",
+  "sources": {
+    "inputs/retry.py": "044ddd6b2149f9d44b0b5591e16d212c2037dc93c30b2110244d065c2bf549ef",
+    "inputs/retry-config.json": "11d417822122f262f9ab3af7b8b379337f13a6cc3d82af66dc541f09b4a3dbab",
+    "inputs/card_identity.py": "3829deb5c873085f6ca531677eb7477d7b0eed4e27fe88de72ec88d6c83b33ce"
+  },
+  "results": [
+    {
+      "check": "config corrente",
+      "actual": {
+        "attempts": 1
+      },
+      "expected": {
+        "attempts": 1
+      },
+      "status": "PASS"
+    },
+    {
+      "check": "due falsi poi vero con config corrente",
+      "actual": [
+        false,
+        1
+      ],
+      "expected": [
+        false,
+        1
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "fixture storica esplicita a tre tentativi",
+      "actual": [
+        true,
+        3
+      ],
+      "expected": [
+        true,
+        3
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "arresto al primo successo",
+      "actual": [
+        true,
+        1
+      ],
+      "expected": [
+        true,
+        1
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "esaurimento tentativi corrente",
+      "actual": [
+        false,
+        1
+      ],
+      "expected": [
+        false,
+        1
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "zero tentativi",
+      "actual": [
+        false,
+        0
+      ],
+      "expected": [
+        false,
+        0
+      ],
+      "status": "PASS"
+    },
+    {
+      "check": "identita originale",
+      "actual": "A",
+      "expected": "A",
+      "status": "PASS"
+    },
+    {
+      "check": "original_id mancante",
+      "actual": "'original_id'",
+      "expected": "'original_id'",
+      "status": "PASS"
+    },
+    {
+      "check": "eccezione propagata",
+      "actual": "local fixture",
+      "expected": "local fixture",
+      "status": "PASS"
+    },
+    {
+      "check": "vecchia config non piu corrente",
+      "status": "EXPECTED_FAIL",
+      "actual": {
+        "attempts": 1
+      },
+      "negated_expectation": {
+        "attempts": 3
+      }
+    },
+    {
+      "check": "controllo negativo tentativi",
+      "status": "EXPECTED_FAIL",
+      "actual": [
+        false,
+        1
+      ],
+      "negated_expectation": [
+        false,
+        5
+      ]
+    },
+    {
+      "check": "controllo negativo identita",
+      "status": "EXPECTED_FAIL",
+      "actual": "A",
+      "negated_expectation": "B"
+    }
+  ]
+}

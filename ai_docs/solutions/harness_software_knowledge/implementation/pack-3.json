@@ -1,0 +1,211 @@
+[
+  {
+    "id": "@antoneeo/course-creator@0.1.0-beta.1",
+    "name": "@antoneeo/course-creator",
+    "version": "0.1.0-beta.1",
+    "size": 191950,
+    "unpackedSize": 589294,
+    "shasum": "46c3ce9b6a6e0ae4aff42c65c6fb9abac94e24ac",
+    "integrity": "sha512-R78Zgefz2BKDw0nM6RrbQPo3I2D4cINbjxZ2d3n7CYtyEf/IfO28uKBg0b1tBiHLoc7VSQAujL5u/lFijhr8KQ==",
+    "filename": "antoneeo-course-creator-0.1.0-beta.1.tgz",
+    "files": [
+      {
+        "path": "CHANGELOG.md",
+        "size": 1180,
+        "mode": 420
+      },
+      {
+        "path": "LICENSE",
+        "size": 11560,
+        "mode": 420
+      },
+      {
+        "path": "NOTICE",
+        "size": 169,
+        "mode": 420
+      },
+      {
+        "path": "README.md",
+        "size": 2389,
+        "mode": 420
+      },
+      {
+        "path": "gemini-extension.json",
+        "size": 258,
+        "mode": 420
+      },
+      {
+        "path": "package.json",
+        "size": 2275,
+        "mode": 420
+      },
+      {
+        "path": "scripts/init.js",
+        "size": 4191,
+        "mode": 420
+      },
+      {
+        "path": "scripts/lib.js",
+        "size": 31250,
+        "mode": 420
+      },
+      {
+        "path": "scripts/postinstall.js",
+        "size": 657,
+        "mode": 420
+      },
+      {
+        "path": "scripts/preuninstall.js",
+        "size": 496,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/dispatch.md",
+        "size": 7997,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/distillation.md",
+        "size": 17577,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/elicitation.md",
+        "size": 11440,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/ENFORCEMENT.md",
+        "size": 17547,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/feedback.md",
+        "size": 1571,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/guides.md",
+        "size": 19124,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/knowledge-templates.md",
+        "size": 8012,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/learning_design.md",
+        "size": 16232,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/LICENSE",
+        "size": 11560,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/memory.md",
+        "size": 10166,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/NOTICE",
+        "size": 169,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/portability.md",
+        "size": 7214,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/reconciliation.md",
+        "size": 8029,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/review.md",
+        "size": 31782,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/routing.md",
+        "size": 7799,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/scripts/course_check.py",
+        "size": 24171,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/scripts/entry_point.py",
+        "size": 961,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/scripts/knowledge.py",
+        "size": 121634,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/scripts/sdlc_check.py",
+        "size": 3329,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/scripts/sdlc_core.py",
+        "size": 130280,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/scripts/shared_files.py",
+        "size": 8611,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/scripts/shared_manifest.json",
+        "size": 2860,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/simulation.md",
+        "size": 9613,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/SKILL.md",
+        "size": 14139,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/slide_content.md",
+        "size": 8133,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/source_check.md",
+        "size": 2825,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/taxonomy.md",
+        "size": 5514,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/templates.md",
+        "size": 11490,
+        "mode": 420
+      },
+      {
+        "path": "skills/course-creator/vision.md",
+        "size": 15090,
+        "mode": 420
+      }
+    ],
+    "entryCount": 39,
+    "bundled": []
+  }
+]

@@ -21,6 +21,16 @@ case in front of you, decide by the north star — both halves of it, in the sam
 
 ## 1. Intake — everything becomes a file first
 
+For software, select the smallest relevant file span BEFORE intake, preserving its
+conditions and limits. Exhaust that selected extract, not the repository. Use
+`capture-source <relative-path> --lines A:B --role code|test|config|result` to preserve
+exact UTF-8 bytes and the version binding. It does not extract claims or declare
+reading complete. Binding fields and typed rows: `knowledge-templates.md`.
+An interpretation of code is a DERIVED note citing captured extracts. A test's source
+and an execution result are different evidence; an approved design is not execution.
+Joint premises belong in `derived_from:` (AND); the claim's `source` alternatives
+are independent corroborations (OR), as defined in `memory.md` §Software evidence.
+
 Ingest **never touches the graph**. First the source enters the corpus; the graph is fed
 from the corpus, so everything is re-derivable when the rules improve.
 
@@ -84,7 +94,7 @@ not actionable; "A says delivery Q1, B says Q3" is. A claim is a sentence that c
 true or false: "the system is robust" is not one; "the retry runs 3 times with backoff"
 is.
 
-Claims live in the owning topic's `## Claims` table (`templates.md` has the template):
+Claims live in the owning topic's `## Claims` table (`knowledge-templates.md` has the template):
 
 | id | claim | valid | qty | about | source | prov | state |
 |---|---|---|---|---|---|---|---|
@@ -127,6 +137,12 @@ Claims live in the owning topic's `## Claims` table (`templates.md` has the temp
   conflict; never a rank.
 - **state** — `OK`, `CONTESTED <id>[,..]`, `SUPERSEDED <id>[,..]` (`reconciliation.md`
   owns the transitions; a split bundle names ALL its successors).
+
+For a typed topic set `claim_schema: 2` and append the ninth column `kind`:
+`OBSERVATION | REQUIREMENT | HYPOTHESIS | DESIGN`. Kind is independent of provenance
+and state: observed behavior, required property, documented uncertainty, intended
+change. Legacy eight-column topics remain readable and UNCLASSIFIED; never infer
+their nature from prose. Classify on a relevant revisit, with source inspection.
 
 ## 3. Extraction discipline
 
@@ -175,7 +191,7 @@ task per window (below), so a session that ends mid-source resumes at the next t
 instead of re-reading or guessing where it stopped.
 
 **Close each window by advancing `extracted_through:`** on the artifact's sidecar
-(`templates.md`) — `p=<n>`, `L<n>`, or `complete` when the last page is read. It is what
+(`knowledge-templates.md`) — `p=<n>`, `L<n>`, or `complete` when the last page is read. It is what
 makes "I am finished" falsifiable, and it makes the rows and the field check each other:
 a claim whose locator addresses past the declared coverage is a contradiction, and the
 validator reports it. Say the limit out loud, as with `original_sha256` above:
@@ -213,12 +229,13 @@ checker sees the break. `sdlc_check.py anchor` does this for you; hand-authoring
 locator without it is how two generation rounds get lost.
 
 Extraction is read-only on the corpus and blind to the graph: rows go to placement
-(`taxonomy.md`) afterwards. Ingesting a document set is **L3 by Rule Zero**; the
+(`taxonomy.md`) afterwards. For independent KB assignments, ingesting a document set is **L3 by Rule Zero**; the
 ingestion plan derives from the ANALYSIS Action Plan, **one task per reading window** —
 a source that fits one window is one task, a 200-page manual at 30 pages is seven — each
 task's `verify` = "claim rows parse; every source resolves under the docs root; the
 sidecar's `extracted_through:` reaches this window's last page". Serial in v1:
-correctness first.
+correctness first. Other lenses keep their owning triage and plan; using this
+method alone creates no second analysis or ingestion project.
 
 The plan's ledger already records `status: done` per task (`templates.md`), which is the
 register that survives a session boundary — so ingestion **builds no second one**. What
@@ -228,8 +245,9 @@ them, never stored.
 ## 4. Signal discipline (what "distillation" still means)
 
 - Contract-first for any prose you write around the rows (reader, action, payload).
-- Zero speculation: unverified information is marked `[unverified]` or omitted — never
-  written as a claim.
+- Zero speculation: undocumented guesses are omitted or recorded as gaps. A
+  HYPOTHESIS may represent a source-documented uncertainty, explicitly as such; it
+  never asserts the suspected behavior as an OBSERVATION.
 - No noise: no filler, no restated boilerplate; the claim table IS the signal.
 - Lifecycle: every document carries `status:` frontmatter; superseding knowledge marks
   the old file `SUPERSEDED` (documents) or the old row (claims).

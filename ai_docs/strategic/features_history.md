@@ -55,3 +55,5 @@
 | F-060 | Contenuto completo e metodo didattico verificabile dei corsi | code | L3 | COMPLETED | 2026-09-27 | 2026-10-02 | solutions/ANALYSIS_course_slide_content.md |
 | F-061 | Evidence-driven debugging and clean Poka-Yoke correction | code | L3 | COMPLETED | 2026-10-02 | 2026-10-02 | solutions/ANALYSIS_evidence_driven_debugging.md |
 | F-062 | Stable family release and course beta | code | L3 | IN_PROGRESS | 2026-10-02 |  | solutions/ANALYSIS_release_stable_course_beta.md |
+| F-063 | Conoscenza cumulativa del software | code | L3 | IN_PROGRESS | 2026-10-04 |  | solutions/ANALYSIS_software_knowledge.md |
+| F-064 | Natura dei claim ed evidenze software nel motore KB comune | code | L3 | COMPLETED | 2026-10-04 | 2026-10-04 | solutions/ANALYSIS_kb_evidence.md |

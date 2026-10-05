@@ -1,0 +1,105 @@
+✔ TS11 init seeds default_domain in the docs root README and never overwrites it (8257.6897ms)
+✔ TS11 no sibling lens installed: no multi-lens note is written (4047.6365ms)
+✔ TS11 sibling lens installed: the note is additive and the protocol pointer is untouched (3954.6217ms)
+✔ TS7 package files[] lists exactly the shipped skill files, and they all exist (3.1945ms)
+✔ T7 skillTarget unchanged for claude/gemini/codex (default skills subdir) (1.3204ms)
+✔ T7 existing three clients declare no skillsSubdir and no homeMarker (0.7954ms)
+✔ T2 skillTarget(antigravity) === ~/.gemini/config/skills/agentic-sdlc (1.0093ms)
+✔ T1 bare ~/.gemini present: gemini TRUE, antigravity FALSE (1518.8432ms)
+✔ T3 antigravity detected when ~/.gemini/config/skills exists (117.9528ms)
+✔ T3 antigravity detected when ANTIGRAVITY_HOME is set (242.4556ms)
+✔ antigravity carries an accurate reload string mentioning agy (4.3373ms)
+✖ T2/T7 install then uninstall: antigravity + gemini targets round-trip cleanly (363.9595ms)
+✔ F-036: a fresh project gets a valid hook in the machine-specific file (6.6122ms)
+✔ F-036: a vendored validator gets a portable command in the SHARED file (7.6429ms)
+✔ F-036 (R2): this lens wins over a sibling vendored beside it (8.4062ms)
+✔ F-036 (R2): the ENFORCEMENT §2 tools/ layout counts as vendored (5.1235ms)
+✔ F-036 (R2): a shell-metacharacter directory name never reaches a command (6.9767ms)
+✔ F-036: unrelated keys and foreign hooks survive the merge (T1) (9.0403ms)
+✔ F-036 (R2): an unrecognised hooks shape is NEVER rewritten (21.889ms)
+✔ F-036: running twice adds exactly one hook (T2) (6.5193ms)
+✔ F-036 (R2): vendoring LATER does not add a second hook in the other file (8.2802ms)
+✔ F-036 (R2): a hook placed directly in the array is recognised (7.1912ms)
+✔ F-036: a hook that is wired but DEAD is reported, not called done (T2b) (5.8427ms)
+✔ F-036 (R2): a DEAD hook whose interpreter is quoted is still BROKEN (6.2024ms)
+✔ F-036 (R2): a WORKING hook with no quotes is not called broken (6.9629ms)
+✔ F-036 (R2): a hook naming no known validator is unverifiable, not broken (6.6762ms)
+✔ F-036: malformed JSON is left byte-identical (T1) (6.6339ms)
+✔ F-036: no Python and no validator both refuse to write (T3) (6.9187ms)
+✔ F-036 (R2): docsLabel reaches the statusMessage (5.4849ms)
+✔ F-036: --hybrid rides on the option (9.3002ms)
+✔ F-036 (R2): orientHookCommand is the single command shape (0.1007ms)
+✔ F-046: fresh machine wires the per-turn hook and records its own marker (12.8641ms)
+✔ F-046 REGRESSION: an existing orient install still gets the per-turn hook (19.3432ms)
+✔ F-046: wiring twice is idempotent, and removal is a standing opt-out (19.5611ms)
+✔ F-042: fresh machine wires the user settings and records the target (13.0544ms)
+✔ F-042: second run is already, byte-identical file, marker still one line (16.0355ms)
+✔ F-042: hand-removed hook with the target listed stays opted-out forever (16.9491ms)
+✔ F-042: a marker line for ANOTHER target does not block a fresh world (7.7521ms)
+✔ F-042: pathsEqual folds case and separators exactly like the platform (0.3075ms)
+✔ F-042: a sibling lens hook counts as wired (already) and is remembered (12.1778ms)
+✔ F-042: malformed settings and missing python write nothing (4.7791ms)
+✔ F-042: a dead existing global hook reports broken and adds no marker line (10.8443ms)
+✔ F-042 FS-2: a live global hook makes project init report global (12.2132ms)
+✔ F-042 FS-2: a BROKEN project hook is reported before the global cover (11.4226ms)
+✔ F-042 FS-2: a DEAD global hook falls through to the project write (10.9723ms)
+✔ F-042 FS-3: uninstall removes only attributable entries, prunes, clears the line (22.7784ms)
+✔ F-042 FS-3: uninstall with no attributable entry keeps the opt-out (16.4217ms)
+✔ F-042 FS-3: marker-listed targets from another world are cleaned too (14.1883ms)
+✔ F-042 FS-3: unrecognized settings are left alone (5.6263ms)
+✔ F-042: detectPython finds an interpreter on this machine (39.2822ms)
+✖ F-042: postinstall wires the user settings in a stubbed home (child process) (305.7881ms)
+✔ F-042 FS-2: an UNVERIFIABLE global hook falls through to the project write (7.0639ms)
+✔ F-042 T3b: attribution folds case on win32 (a lowercased hook is still ours) (22.7486ms)
+ℹ tests 53
+ℹ suites 0
+ℹ pass 51
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 19355.284
+
+✖ failing tests:
+
+test at scripts\test_clients.js:352:1
+✖ T2/T7 install then uninstall: antigravity + gemini targets round-trip cleanly (363.9595ms)
+  Error: Command failed: C:\Program Files\nodejs\node.exe D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\scripts\postinstall.js
+      at genericNodeError (node:internal/errors:985:15)
+      at wrappedFn (node:internal/errors:539:14)
+      at checkExecSyncError (node:child_process:925:11)
+      at execFileSync (node:child_process:961:15)
+      at TestContext.<anonymous> (D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\scripts\test_clients.js:374:5)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12) {
+    status: 3221226505,
+    signal: null,
+    output: [ null, null, null ],
+    pid: 261916,
+    stdout: null,
+    stderr: null
+  }
+
+test at scripts\test_clients.js:938:1
+✖ F-042: postinstall wires the user settings in a stubbed home (child process) (305.7881ms)
+  Error: Command failed: C:\Program Files\nodejs\node.exe D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\scripts\postinstall.js
+      at genericNodeError (node:internal/errors:985:15)
+      at wrappedFn (node:internal/errors:539:14)
+      at checkExecSyncError (node:child_process:925:11)
+      at execFileSync (node:child_process:961:15)
+      at TestContext.<anonymous> (D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\scripts\test_clients.js:952:5)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12) {
+    status: 3221226505,
+    signal: null,
+    output: [ null, null, null ],
+    pid: 88420,
+    stdout: null,
+    stderr: null
+  }

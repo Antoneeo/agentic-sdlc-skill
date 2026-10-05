@@ -1,0 +1,27 @@
+===== validate =====
+[warn]  vision/project_vision.md missing
+[warn]  vision/roadmap.md missing
+[warn]  vision/principles.md missing
+
+Validation: 0 errors, 3 warnings, 0 advisories.
+
+===== stale =====
+[info] no rows in D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\ai_docs\solutions\harness_software_knowledge\behavior\candidate\project\ai_docs\audit\audit_plan.md: nothing to check (audit not initialized, or Hybrid mode where mapping is delegated to devPNT).
+
+check: CLEAN (validate rc=0, stale rc=0)
+===== graph =====
+[note]  topics/card-continuity.md:52: claim text of b138cec58fc4 reads like more than one assertion (matched '; ') — one row asserts one thing; if it is a bundle, split it (distillation.md section 3, reconciliation.md section 'Splitting a bundled row'). Heuristic only: a genuinely single assertion needs no change
+[note]  topics/card-continuity.md:59: claim text of c6d7a6db479f reads like more than one assertion (matched '; ') — one row asserts one thing; if it is a bundle, split it (distillation.md section 3, reconciliation.md section 'Splitting a bundled row'). Heuristic only: a genuinely single assertion needs no change
+[note]  topics/card-continuity.md:62: claim text of 99d0b5bbaa17 reads like more than one assertion (matched '; ') — one row asserts one thing; if it is a bundle, split it (distillation.md section 3, reconciliation.md section 'Splitting a bundled row'). Heuristic only: a genuinely single assertion needs no change
+[note]  topics/card-continuity.md:64: claim text of 3e4b68265d9c reads like more than one assertion (matched '; ') — one row asserts one thing; if it is a bundle, split it (distillation.md section 3, reconciliation.md section 'Splitting a bundled row'). Heuristic only: a genuinely single assertion needs no change
+[note]  topics/card-continuity.md:67: claim text of 243eaa4ec781 reads like more than one assertion (matched '; ') — one row asserts one thing; if it is a bundle, split it (distillation.md section 3, reconciliation.md section 'Splitting a bundled row'). Heuristic only: a genuinely single assertion needs no change
+[note]  topics/card-continuity.md:68: claim text of d577efce2dfa reads like more than one assertion (matched '; ') — one row asserts one thing; if it is a bundle, split it (distillation.md section 3, reconciliation.md section 'Splitting a bundled row'). Heuristic only: a genuinely single assertion needs no change
+[note]  topics/card-continuity.md:69: claim text of 79fcc16d8d5f reads like more than one assertion (matched '; ') — one row asserts one thing; if it is a bundle, split it (distillation.md section 3, reconciliation.md section 'Splitting a bundled row'). Heuristic only: a genuinely single assertion needs no change
+[note]  topics/card-continuity.md:70: claim text of 2dc98a10f042 reads like more than one assertion (matched '; ') — one row asserts one thing; if it is a bundle, split it (distillation.md section 3, reconciliation.md section 'Splitting a bundled row'). Heuristic only: a genuinely single assertion needs no change
+[note]  topics/card-identity.md:19: claim text of ca323e332851 reads like more than one assertion (matched '; ') — one row asserts one thing; if it is a bundle, split it (distillation.md section 3, reconciliation.md section 'Splitting a bundled row'). Heuristic only: a genuinely single assertion needs no change
+[note]  topics/retry-policy.md:27: claim text of e6e3c025289c reads like more than one assertion (matched '; ') — one row asserts one thing; if it is a bundle, split it (distillation.md section 3, reconciliation.md section 'Splitting a bundled row'). Heuristic only: a genuinely single assertion needs no change
+[ok] topic graph and claim ledger consistent (0 warnings)
+===== corpus =====
+[ok] corpus consistent (0 warnings)
+[warn] evidence UNTRACKED corpus/given/retry-proposal-9f23ebb4.txt: no software binding
+[warn] evidence UNTRACKED corpus/notes/project-placement.md: no software binding

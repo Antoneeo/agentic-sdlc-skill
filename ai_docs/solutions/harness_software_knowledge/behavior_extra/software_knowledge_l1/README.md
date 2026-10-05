@@ -1,0 +1,1 @@
+Use the settings menu to change the theme.

@@ -27,6 +27,11 @@ names nothing and is the **Paper ledger** anti-pattern, not the licence.
 
 ## 2. Rule each capability against the platform
 
+Consult relevant project topics/properties via `memory.md` before ruling. Read the
+claims and their code/test ground; distinguish required, proposed and observed behavior.
+The Component Map and real symbol/consumer analysis still establish impact: a topic
+graph is not a dependency graph and missing coverage proves no missing capability.
+
 One verdict per capability:
 
 | Verdict | Meaning | What the row must carry |

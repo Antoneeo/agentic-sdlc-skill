@@ -1,0 +1,2185 @@
+{
+  "scope": "rg-discovered source/docs in skills, distributions, scripts; Python evidence in ai_docs separately",
+  "limits": "AST references by name/attribute; no execution or cross-module identity proof. Text-only declarations, prose, strings and wildcard exports must be inspected; dynamic calls are not certified absent.",
+  "coverage": {
+    "product_files_text": 362,
+    "evidence_python_files": 21,
+    "python_files_ast": 108,
+    "python_parse_failures": [],
+    "excluded_design_authoring_scripts": [
+      "ai_docs/solutions/harness_software_knowledge/capture_case.py",
+      "ai_docs/solutions/harness_software_knowledge/design_files.py",
+      "ai_docs/solutions/harness_software_knowledge/design_inventory.py"
+    ]
+  },
+  "signatures": {
+    "kb_qty_norm": "text",
+    "kb_qty_key": "text",
+    "kb_qty_sum": "rows_qty",
+    "kb_claim_id": "source_path, locator, qty_key=''",
+    "kb_unquote": "value",
+    "kb_parse_scope": "text",
+    "kb_scopes_overlap": "a, b",
+    "kb_parse_claims": "text",
+    "kb_fill_ids": "text",
+    "_note_frontmatter": "root, rel",
+    "_kb_pointer_resolves": "p",
+    "_kb_original_candidates": "op, root",
+    "kb_check_claims": "root",
+    "kb_check_locator": "target, loc, where, errors",
+    "kb_anchor_pattern": "phrase, ignore_case=False",
+    "kb_resolve_anchor": "target, phrase, ignore_case=False, page=None",
+    "kb_load_topics": "root",
+    "_as_list": "v",
+    "kb_graph_check": "root",
+    "kb_build_topic_index": "root",
+    "kb_parse_extracted_through": "value",
+    "kb_extraction_extent": "artifact, kind",
+    "kb_coverage_cell": "artifact, through",
+    "kb_build_corpus_index": "root",
+    "kb_cited_extents": "root",
+    "_kb_cited_for": "cited, artifact_name",
+    "kb_check_coverage": "rel, artifact, through, facts, errors, warnings",
+    "kb_corpus_check": "root",
+    "kb_sha256_bytes": "path",
+    "_kb_hex_bounded": "text, cid",
+    "_kb_df_entries": "value",
+    "kb_time_cycle": "docs",
+    "kb_time_cycle_warns": "cycle",
+    "kb_claim_sources": "row",
+    "kb_collect_topics": "docs",
+    "kb_export_closure": "docs, slugs",
+    "kb_bundle_write": "docs, out, selected, artifacts, project",
+    "kb_import_plan": "bundle, docs",
+    "_memory_safe": "docs, path",
+    "memory_records": "docs",
+    "_memory_table": "records",
+    "memory_build_index": "docs",
+    "memory_index": "docs",
+    "memory_validate": "docs",
+    "memory_recall": "docs, query",
+    "kb_refresh_indexes": "docs",
+    "kb_validate_surface": "docs, full=False",
+    "_kb_root": "args",
+    "kb_cmd_graph": "docs, cycle=None",
+    "kb_cmd_corpus": "docs, cycle=None",
+    "kb_cmd_index": "root, docs",
+    "_kb_extra_validate": "docs",
+    "kb_cmd_validate": "root, docs, strict=False, hybrid=False",
+    "kb_cmd_check": "root, docs, strict=False, hybrid=False",
+    "kb_cmd_stale": "root, docs, hybrid=False",
+    "kb_cmd_claim_id": "args",
+    "kb_cmd_anchor": "args",
+    "kb_cmd_export": "args",
+    "kb_cmd_import": "args",
+    "kb_cmd_orient": "argv",
+    "kb_cmd_help": "",
+    "main": "argv=None"
+  },
+  "ast_references": {
+    "CLAIM_COLUMNS": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 186,
+        "consumer": "kb_parse_claims"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 188,
+        "consumer": "kb_parse_claims"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 193,
+        "consumer": "kb_parse_claims"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 196,
+        "consumer": "kb_parse_claims"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 198,
+        "consumer": "kb_parse_claims"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 186,
+        "consumer": "kb_parse_claims"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 188,
+        "consumer": "kb_parse_claims"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 193,
+        "consumer": "kb_parse_claims"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 196,
+        "consumer": "kb_parse_claims"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 198,
+        "consumer": "kb_parse_claims"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 186,
+        "consumer": "kb_parse_claims"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 188,
+        "consumer": "kb_parse_claims"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 193,
+        "consumer": "kb_parse_claims"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 196,
+        "consumer": "kb_parse_claims"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 198,
+        "consumer": "kb_parse_claims"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 186,
+        "consumer": "kb_parse_claims"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 188,
+        "consumer": "kb_parse_claims"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 193,
+        "consumer": "kb_parse_claims"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 196,
+        "consumer": "kb_parse_claims"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 198,
+        "consumer": "kb_parse_claims"
+      }
+    ],
+    "kb_parse_claims": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 208,
+        "consumer": "kb_fill_ids"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 343,
+        "consumer": "kb_check_claims"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 899,
+        "consumer": "kb_cited_extents"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1139,
+        "consumer": "kb_time_cycle"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1316,
+        "consumer": "kb_collect_topics"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1443,
+        "consumer": "kb_import_plan"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 208,
+        "consumer": "kb_fill_ids"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 343,
+        "consumer": "kb_check_claims"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 899,
+        "consumer": "kb_cited_extents"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1139,
+        "consumer": "kb_time_cycle"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1316,
+        "consumer": "kb_collect_topics"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1443,
+        "consumer": "kb_import_plan"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 200,
+        "consumer": "TL_T9_Arity.test_short_and_long_rows_both_error"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_graph.py",
+        "line": 233,
+        "consumer": "TS_K9_SelectionNotRollup.test_parent_selection_returns_only_its_own_rows"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 208,
+        "consumer": "kb_fill_ids"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 343,
+        "consumer": "kb_check_claims"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 899,
+        "consumer": "kb_cited_extents"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1139,
+        "consumer": "kb_time_cycle"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1316,
+        "consumer": "kb_collect_topics"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1443,
+        "consumer": "kb_import_plan"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 208,
+        "consumer": "kb_fill_ids"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 343,
+        "consumer": "kb_check_claims"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 899,
+        "consumer": "kb_cited_extents"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1139,
+        "consumer": "kb_time_cycle"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1316,
+        "consumer": "kb_collect_topics"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1443,
+        "consumer": "kb_import_plan"
+      },
+      {
+        "path": "ai_docs/solutions/harness_software_knowledge/probe.py",
+        "line": 71,
+        "consumer": "main"
+      },
+      {
+        "path": "ai_docs/solutions/harness_software_knowledge/probe.py",
+        "line": 77,
+        "consumer": "main"
+      }
+    ],
+    "kb_check_claims": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1594,
+        "consumer": "kb_cmd_graph"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1594,
+        "consumer": "kb_cmd_graph"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 89,
+        "consumer": "TL_T3_Symmetry.three_way"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 120,
+        "consumer": "TL_T6_Fill.test_empty_id_is_a_note_never_an_error"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 130,
+        "consumer": "TL_T7_Traversal.test_traversing_source_refused"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 138,
+        "consumer": "TL_T7_Traversal.test_moved_source_breaks_the_id"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 146,
+        "consumer": "TL_T7_Traversal.test_span_past_extraction_end_errors"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 156,
+        "consumer": "TL_T8_Provenance.test_derived_without_derived_from_errors"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 164,
+        "consumer": "TL_T8_Provenance.test_ruling_without_basis_errors"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 174,
+        "consumer": "TL_T8_Provenance.test_dangling_and_superseded_pointers_error"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 181,
+        "consumer": "TL_T8_Provenance.test_dangling_and_superseded_pointers_error"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 190,
+        "consumer": "TL_T8_Provenance.test_duplicate_id_across_nodes_errors"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 585,
+        "consumer": "TL_F030_ImportedAuthority.test_imported_row_may_not_supersede_a_local_one"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 596,
+        "consumer": "TL_F030_ImportedAuthority.test_imported_without_its_origin_is_a_ruling_in_disguise"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 612,
+        "consumer": "TL_F030_ImportedAuthority.test_a_reratified_row_settles_normally"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 830,
+        "consumer": "TL_F035_SidecarIsTheArtifactsFrontmatter._findings"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 859,
+        "consumer": "TL_F035_SidecarIsTheArtifactsFrontmatter.test_artifact_with_no_sidecar_at_all_still_errors"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 881,
+        "consumer": "TL_F035_SidecarIsTheArtifactsFrontmatter.test_a_markdown_artifact_in_given_resolves_its_sidecar"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 892,
+        "consumer": "TL_F035_SidecarIsTheArtifactsFrontmatter.test_a_note_source_is_unaffected"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 908,
+        "consumer": "TL_F035_WeakChainIsVisible._warnings"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 920,
+        "consumer": "TL_F035_WeakChainIsVisible.test_given_row_on_given_artifact_is_silent"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 928,
+        "consumer": "TL_F035_WeakChainIsVisible.test_artifact_with_no_sidecar_is_silent"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 1035,
+        "consumer": "TL_F035_DuplicateIdNamesItsCause.test_two_distinct_rows_on_one_span_report_the_collision"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 1044,
+        "consumer": "TL_F035_DuplicateIdNamesItsCause.test_a_genuinely_copied_row_still_reports_uniqueness"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 1143,
+        "consumer": "TL_F035_R2_WeakChainEdges._warnings"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 1170,
+        "consumer": "TL_F035_R2_WeakChainEdges.test_an_orphan_sidecar_says_nothing_about_a_missing_artifact"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 1186,
+        "consumer": "TL_F035_R2_NoReadOutsideTheRoot.test_an_empty_source_path_never_reads_beside_the_docs_root"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 1208,
+        "consumer": "TL_F035_R2_StaleIdIsNotACollision.test_same_id_different_text_different_span_names_the_stale_id"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 1224,
+        "consumer": "TL_F047_RowAtomicity._run"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1594,
+        "consumer": "kb_cmd_graph"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1594,
+        "consumer": "kb_cmd_graph"
+      },
+      {
+        "path": "ai_docs/solutions/harness_kb_row_atomicity/probe.py",
+        "line": 93,
+        "consumer": "main"
+      },
+      {
+        "path": "ai_docs/solutions/harness_kb_row_atomicity/probe.py",
+        "line": 105,
+        "consumer": "main"
+      },
+      {
+        "path": "ai_docs/solutions/harness_kb_row_atomicity/probe.py",
+        "line": 127,
+        "consumer": "main"
+      },
+      {
+        "path": "ai_docs/solutions/harness_sdlc_kb_integration/probe.py",
+        "line": 72,
+        "consumer": "main"
+      },
+      {
+        "path": "ai_docs/solutions/harness_sdlc_kb_integration/probe.py",
+        "line": 77,
+        "consumer": "main"
+      },
+      {
+        "path": "ai_docs/solutions/harness_software_knowledge/probe.py",
+        "line": 68,
+        "consumer": "main"
+      },
+      {
+        "path": "ai_docs/solutions/harness_software_knowledge/probe.py",
+        "line": 112,
+        "consumer": "main"
+      }
+    ],
+    "kb_corpus_check": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1618,
+        "consumer": "kb_cmd_corpus"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1618,
+        "consumer": "kb_cmd_corpus"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 230,
+        "consumer": "TL_Corpus.test_superseded_source_is_reported"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 245,
+        "consumer": "TL_Corpus.test_note_with_no_provenance_keys_errors"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 316,
+        "consumer": "TL_F029_CorpusLetter.test_extraction_is_a_legal_artifact_with_no_original_present"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 328,
+        "consumer": "TL_F029_CorpusLetter.test_a_tampered_extraction_is_still_caught"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 655,
+        "consumer": "TL_F031_Coverage._check"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 719,
+        "consumer": "TL_F031_Coverage.test_a_note_sharing_a_name_is_not_attributed_to_the_artifact"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 946,
+        "consumer": "TL_F035_OriginalPathResolves._run"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 987,
+        "consumer": "TL_QuotedFrontmatterValues._op_run"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 1017,
+        "consumer": "TL_QuotedFrontmatterValues.test_quoted_supersedes_is_detected"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 1103,
+        "consumer": "TL_F035_R2_PointerProbe._warnings"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 1114,
+        "consumer": "TL_F035_R2_PointerProbe.test_absolute_path_that_resolves_is_silent"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1618,
+        "consumer": "kb_cmd_corpus"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1618,
+        "consumer": "kb_cmd_corpus"
+      },
+      {
+        "path": "ai_docs/solutions/harness_software_knowledge/probe.py",
+        "line": 80,
+        "consumer": "main"
+      },
+      {
+        "path": "ai_docs/solutions/harness_software_knowledge/probe.py",
+        "line": 83,
+        "consumer": "main"
+      },
+      {
+        "path": "ai_docs/solutions/harness_software_knowledge/probe.py",
+        "line": 89,
+        "consumer": "main"
+      }
+    ],
+    "kb_time_cycle": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1572,
+        "consumer": "kb_validate_surface"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1596,
+        "consumer": "kb_cmd_graph"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1620,
+        "consumer": "kb_cmd_corpus"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1670,
+        "consumer": "kb_cmd_check"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1685,
+        "consumer": "kb_cmd_stale"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1953,
+        "consumer": "kb_cmd_orient"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1572,
+        "consumer": "kb_validate_surface"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1596,
+        "consumer": "kb_cmd_graph"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1620,
+        "consumer": "kb_cmd_corpus"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1670,
+        "consumer": "kb_cmd_check"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1685,
+        "consumer": "kb_cmd_stale"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1953,
+        "consumer": "kb_cmd_orient"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_time_cycle.py",
+        "line": 102,
+        "consumer": "TC_CitedSuperseded._cycle"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_time_cycle.py",
+        "line": 282,
+        "consumer": "TC_Expired.test_until_today_expired_until_tomorrow_live"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_time_cycle.py",
+        "line": 292,
+        "consumer": "TC_Expired.test_if_and_future_from_never_expire"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_time_cycle.py",
+        "line": 301,
+        "consumer": "TC_Expired.test_expiry_is_never_written_back"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_time_cycle.py",
+        "line": 321,
+        "consumer": "TC_Expired.test_expired_reports_its_citing_documents"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_time_cycle.py",
+        "line": 364,
+        "consumer": "TC_ChainCascade.test_transitive_chain_crosses_the_sidecar_hop"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_time_cycle.py",
+        "line": 373,
+        "consumer": "TC_ChainCascade.test_quoted_edge_resolves"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_time_cycle.py",
+        "line": 383,
+        "consumer": "TC_ChainCascade.test_bare_name_resolves_notes_first_then_given"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_time_cycle.py",
+        "line": 390,
+        "consumer": "TC_ChainCascade.test_cycle_terminates_and_lists_once"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_time_cycle.py",
+        "line": 399,
+        "consumer": "TC_ChainCascade.test_dangling_edge_warns_with_no_supersession_anywhere"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_time_cycle.py",
+        "line": 407,
+        "consumer": "TC_ChainCascade.test_tombstone_derivation_not_listed"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_time_cycle.py",
+        "line": 420,
+        "consumer": "TC_ChainCascade.test_non_canonical_resolving_edge_is_normalized"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1572,
+        "consumer": "kb_validate_surface"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1596,
+        "consumer": "kb_cmd_graph"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1620,
+        "consumer": "kb_cmd_corpus"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1670,
+        "consumer": "kb_cmd_check"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1685,
+        "consumer": "kb_cmd_stale"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1953,
+        "consumer": "kb_cmd_orient"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1572,
+        "consumer": "kb_validate_surface"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1596,
+        "consumer": "kb_cmd_graph"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1620,
+        "consumer": "kb_cmd_corpus"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1670,
+        "consumer": "kb_cmd_check"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1685,
+        "consumer": "kb_cmd_stale"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1953,
+        "consumer": "kb_cmd_orient"
+      },
+      {
+        "path": "ai_docs/solutions/harness_sdlc_kb_integration/probe.py",
+        "line": 73,
+        "consumer": "main"
+      },
+      {
+        "path": "ai_docs/solutions/harness_software_knowledge/probe.py",
+        "line": 81,
+        "consumer": "main"
+      },
+      {
+        "path": "ai_docs/solutions/harness_software_knowledge/probe.py",
+        "line": 84,
+        "consumer": "main"
+      },
+      {
+        "path": "ai_docs/solutions/harness_software_knowledge/probe.py",
+        "line": 98,
+        "consumer": "main"
+      }
+    ],
+    "kb_export_closure": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1771,
+        "consumer": "kb_cmd_export"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1771,
+        "consumer": "kb_cmd_export"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 429,
+        "consumer": "TL_F030_Portability.test_round_trip_preserves_claim_ids_across_projects"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 449,
+        "consumer": "TL_F030_Portability.test_export_carries_the_bytes_its_claims_cite"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 456,
+        "consumer": "TL_F030_Portability.test_second_import_is_a_no_op_by_id"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 465,
+        "consumer": "TL_F030_Portability.test_import_never_overwrites_an_existing_topic"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 485,
+        "consumer": "TL_F030_Portability.test_refuses_a_same_named_artifact_with_different_bytes"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 516,
+        "consumer": "TL_F030_Portability.test_export_pulls_in_the_other_half_of_a_conflict_set"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1771,
+        "consumer": "kb_cmd_export"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1771,
+        "consumer": "kb_cmd_export"
+      }
+    ],
+    "kb_import_plan": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1794,
+        "consumer": "kb_cmd_import"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1794,
+        "consumer": "kb_cmd_import"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 435,
+        "consumer": "TL_F030_Portability.test_round_trip_preserves_claim_ids_across_projects"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 459,
+        "consumer": "TL_F030_Portability.test_second_import_is_a_no_op_by_id"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 471,
+        "consumer": "TL_F030_Portability.test_import_never_overwrites_an_existing_topic"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 479,
+        "consumer": "TL_F030_Portability.test_refuses_a_directory_that_is_not_a_bundle"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 490,
+        "consumer": "TL_F030_Portability.test_refuses_a_same_named_artifact_with_different_bytes"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1794,
+        "consumer": "kb_cmd_import"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1794,
+        "consumer": "kb_cmd_import"
+      }
+    ],
+    "kb_validate_surface": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1660,
+        "consumer": "kb_cmd_validate"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1660,
+        "consumer": "kb_cmd_validate"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1660,
+        "consumer": "kb_cmd_validate"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/mkt_check.py",
+        "line": 736,
+        "consumer": "main"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1660,
+        "consumer": "kb_cmd_validate"
+      }
+    ],
+    "kb_cmd_check": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 2085,
+        "consumer": "main"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 2085,
+        "consumer": "main"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_graph.py",
+        "line": 178,
+        "consumer": "TS_K10_CommandSurface.test_overlay_reaches_kb_and_spine_stays_importable"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 2085,
+        "consumer": "main"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 2085,
+        "consumer": "main"
+      },
+      {
+        "path": "ai_docs/solutions/harness_sdlc_kb_integration/probe.py",
+        "line": 50,
+        "consumer": "main"
+      }
+    ],
+    "kb_cmd_stale": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 2078,
+        "consumer": "main"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 2078,
+        "consumer": "main"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 2078,
+        "consumer": "main"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 2078,
+        "consumer": "main"
+      }
+    ],
+    "kb_cmd_help": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 2005,
+        "consumer": "main"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 2005,
+        "consumer": "main"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 2005,
+        "consumer": "main"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 2005,
+        "consumer": "main"
+      }
+    ],
+    "INTERCEPTED": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 2013,
+        "consumer": "main"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 2013,
+        "consumer": "main"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 371,
+        "consumer": "TL_F029_Dispatch.test_skill_md_names_every_intercepted_command"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 2013,
+        "consumer": "main"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 2013,
+        "consumer": "main"
+      }
+    ],
+    "SHARED_FILES": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/shared_files.py",
+        "line": 125,
+        "consumer": "cross_distribution_report"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/shared_files.py",
+        "line": 143,
+        "consumer": "current"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/shared_files.py",
+        "line": 171,
+        "consumer": "report"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/shared_files.py",
+        "line": 210,
+        "consumer": "_cli"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/test_drift.py",
+        "line": 48,
+        "consumer": "DriftGuard.test_the_manifest_covers_every_declared_shared_file"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/test_drift.py",
+        "line": 54,
+        "consumer": "DriftGuard.test_the_entry_point_is_never_shared"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/shared_files.py",
+        "line": 125,
+        "consumer": "cross_distribution_report"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/shared_files.py",
+        "line": 143,
+        "consumer": "current"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/shared_files.py",
+        "line": 171,
+        "consumer": "report"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/shared_files.py",
+        "line": 210,
+        "consumer": "_cli"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_drift.py",
+        "line": 48,
+        "consumer": "DriftGuard.test_the_manifest_covers_every_declared_shared_file"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_drift.py",
+        "line": 54,
+        "consumer": "DriftGuard.test_the_entry_point_is_never_shared"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/shared_files.py",
+        "line": 125,
+        "consumer": "cross_distribution_report"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/shared_files.py",
+        "line": 143,
+        "consumer": "current"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/shared_files.py",
+        "line": 171,
+        "consumer": "report"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/shared_files.py",
+        "line": 210,
+        "consumer": "_cli"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_drift.py",
+        "line": 48,
+        "consumer": "DriftGuard.test_the_manifest_covers_every_declared_shared_file"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_drift.py",
+        "line": 54,
+        "consumer": "DriftGuard.test_the_entry_point_is_never_shared"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/shared_files.py",
+        "line": 125,
+        "consumer": "cross_distribution_report"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/shared_files.py",
+        "line": 143,
+        "consumer": "current"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/shared_files.py",
+        "line": 171,
+        "consumer": "report"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/shared_files.py",
+        "line": 210,
+        "consumer": "_cli"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/test_drift.py",
+        "line": 48,
+        "consumer": "DriftGuard.test_the_manifest_covers_every_declared_shared_file"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/test_drift.py",
+        "line": 54,
+        "consumer": "DriftGuard.test_the_entry_point_is_never_shared"
+      }
+    ],
+    "knowledge.main": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/sdlc_check.py",
+        "line": 57,
+        "consumer": "main"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/sdlc_check.py",
+        "line": 63,
+        "consumer": "main"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/sdlc_check.py",
+        "line": 59,
+        "consumer": "main"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/mkt_check.py",
+        "line": 685,
+        "consumer": "main"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/sdlc_check.py",
+        "line": 67,
+        "consumer": "main"
+      }
+    ]
+  },
+  "text_only_delta": {
+    "CLAIM_COLUMNS": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 23,
+        "text": "CLAIM_COLUMNS = (\"id\", \"claim\", \"valid\", \"qty\", \"about\", \"source\", \"prov\", \"state\")"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 167,
+        "text": "Each row: dict with CLAIM_COLUMNS keys + '_line' (1-based, for findings)."
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 23,
+        "text": "CLAIM_COLUMNS = (\"id\", \"claim\", \"valid\", \"qty\", \"about\", \"source\", \"prov\", \"state\")"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 167,
+        "text": "Each row: dict with CLAIM_COLUMNS keys + '_line' (1-based, for findings)."
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 23,
+        "text": "CLAIM_COLUMNS = (\"id\", \"claim\", \"valid\", \"qty\", \"about\", \"source\", \"prov\", \"state\")"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 167,
+        "text": "Each row: dict with CLAIM_COLUMNS keys + '_line' (1-based, for findings)."
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 23,
+        "text": "CLAIM_COLUMNS = (\"id\", \"claim\", \"valid\", \"qty\", \"about\", \"source\", \"prov\", \"state\")"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 167,
+        "text": "Each row: dict with CLAIM_COLUMNS keys + '_line' (1-based, for findings)."
+      }
+    ],
+    "kb_parse_claims": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 161,
+        "text": "def kb_parse_claims(text):"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 161,
+        "text": "def kb_parse_claims(text):"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 161,
+        "text": "def kb_parse_claims(text):"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 161,
+        "text": "def kb_parse_claims(text):"
+      }
+    ],
+    "kb_check_claims": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 109,
+        "text": "# F-047: bundling tells for the atomicity note in kb_check_claims. Literal"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 321,
+        "text": "def kb_check_claims(root):"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 109,
+        "text": "# F-047: bundling tells for the atomicity note in kb_check_claims. Literal"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 321,
+        "text": "def kb_check_claims(root):"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 109,
+        "text": "# F-047: bundling tells for the atomicity note in kb_check_claims. Literal"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 321,
+        "text": "def kb_check_claims(root):"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 109,
+        "text": "# F-047: bundling tells for the atomicity note in kb_check_claims. Literal"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 321,
+        "text": "def kb_check_claims(root):"
+      }
+    ],
+    "kb_corpus_check": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 999,
+        "text": "def kb_corpus_check(root):"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 999,
+        "text": "def kb_corpus_check(root):"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 999,
+        "text": "def kb_corpus_check(root):"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 999,
+        "text": "def kb_corpus_check(root):"
+      }
+    ],
+    "kb_time_cycle": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1107,
+        "text": "def kb_time_cycle(docs):"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1107,
+        "text": "def kb_time_cycle(docs):"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1107,
+        "text": "def kb_time_cycle(docs):"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1107,
+        "text": "def kb_time_cycle(docs):"
+      }
+    ],
+    "kb_export_closure": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1321,
+        "text": "def kb_export_closure(docs, slugs):"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1321,
+        "text": "def kb_export_closure(docs, slugs):"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1321,
+        "text": "def kb_export_closure(docs, slugs):"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1321,
+        "text": "def kb_export_closure(docs, slugs):"
+      }
+    ],
+    "kb_import_plan": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1400,
+        "text": "def kb_import_plan(bundle, docs):"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1400,
+        "text": "def kb_import_plan(bundle, docs):"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1400,
+        "text": "def kb_import_plan(bundle, docs):"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1400,
+        "text": "def kb_import_plan(bundle, docs):"
+      }
+    ],
+    "kb_validate_surface": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1568,
+        "text": "def kb_validate_surface(docs, full=False):"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1568,
+        "text": "def kb_validate_surface(docs, full=False):"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1568,
+        "text": "def kb_validate_surface(docs, full=False):"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1568,
+        "text": "def kb_validate_surface(docs, full=False):"
+      }
+    ],
+    "kb_cmd_check": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1663,
+        "text": "def kb_cmd_check(root, docs, strict=False, hybrid=False):"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1663,
+        "text": "def kb_cmd_check(root, docs, strict=False, hybrid=False):"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1663,
+        "text": "def kb_cmd_check(root, docs, strict=False, hybrid=False):"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1663,
+        "text": "def kb_cmd_check(root, docs, strict=False, hybrid=False):"
+      }
+    ],
+    "kb_cmd_stale": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1678,
+        "text": "def kb_cmd_stale(root, docs, hybrid=False):"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1678,
+        "text": "def kb_cmd_stale(root, docs, hybrid=False):"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1678,
+        "text": "def kb_cmd_stale(root, docs, hybrid=False):"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1678,
+        "text": "def kb_cmd_stale(root, docs, hybrid=False):"
+      }
+    ],
+    "kb_cmd_help": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1967,
+        "text": "def kb_cmd_help():"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1967,
+        "text": "def kb_cmd_help():"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1967,
+        "text": "def kb_cmd_help():"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1967,
+        "text": "def kb_cmd_help():"
+      }
+    ],
+    "INTERCEPTED": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+        "line": 1576,
+        "text": "INTERCEPTED = {\"index\", \"validate\", \"check\", \"graph\", \"corpus\", \"claim-id\","
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+        "line": 1576,
+        "text": "INTERCEPTED = {\"index\", \"validate\", \"check\", \"graph\", \"corpus\", \"claim-id\","
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py",
+        "line": 367,
+        "text": "learned it exists. Derived from INTERCEPTED, never from a second hand-"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+        "line": 1576,
+        "text": "INTERCEPTED = {\"index\", \"validate\", \"check\", \"graph\", \"corpus\", \"claim-id\","
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+        "line": 1576,
+        "text": "INTERCEPTED = {\"index\", \"validate\", \"check\", \"graph\", \"corpus\", \"claim-id\","
+      }
+    ],
+    "SHARED_FILES": [
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/shared_files.py",
+        "line": 9,
+        "text": "* SHARED_FILES is an explicit per-file MANIFEST, never \"everything\" and never a"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/shared_files.py",
+        "line": 37,
+        "text": "SHARED_FILES = ("
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/test_drift.py",
+        "line": 36,
+        "text": "\"remove it from SHARED_FILES as a reviewable change\")"
+      },
+      {
+        "path": "distributions/course-creator/skills/course-creator/scripts/test_drift.py",
+        "line": 49,
+        "text": "\"the manifest and SHARED_FILES disagree: regenerate the manifest\")"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/shared_files.py",
+        "line": 9,
+        "text": "* SHARED_FILES is an explicit per-file MANIFEST, never \"everything\" and never a"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/shared_files.py",
+        "line": 37,
+        "text": "SHARED_FILES = ("
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_drift.py",
+        "line": 36,
+        "text": "\"remove it from SHARED_FILES as a reviewable change\")"
+      },
+      {
+        "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_drift.py",
+        "line": 49,
+        "text": "\"the manifest and SHARED_FILES disagree: regenerate the manifest\")"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/shared_files.py",
+        "line": 9,
+        "text": "* SHARED_FILES is an explicit per-file MANIFEST, never \"everything\" and never a"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/shared_files.py",
+        "line": 37,
+        "text": "SHARED_FILES = ("
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_drift.py",
+        "line": 36,
+        "text": "\"remove it from SHARED_FILES as a reviewable change\")"
+      },
+      {
+        "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_drift.py",
+        "line": 49,
+        "text": "\"the manifest and SHARED_FILES disagree: regenerate the manifest\")"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/shared_files.py",
+        "line": 9,
+        "text": "* SHARED_FILES is an explicit per-file MANIFEST, never \"everything\" and never a"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/shared_files.py",
+        "line": 37,
+        "text": "SHARED_FILES = ("
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/test_drift.py",
+        "line": 36,
+        "text": "\"remove it from SHARED_FILES as a reviewable change\")"
+      },
+      {
+        "path": "skills/agentic-sdlc-skill/scripts/test_drift.py",
+        "line": 49,
+        "text": "\"the manifest and SHARED_FILES disagree: regenerate the manifest\")"
+      }
+    ],
+    "knowledge.main": []
+  },
+  "re_exports": [
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/sdlc_check.py",
+      "line": 15,
+      "module": "knowledge",
+      "names": [
+        "*"
+      ]
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/sdlc_check.py",
+      "line": 16,
+      "module": "knowledge",
+      "names": [
+        "_kb_extra_validate",
+        "_kb_original_candidates"
+      ]
+    }
+  ],
+  "input_sha256": {
+    "distributions/course-creator/CHANGELOG.md": "f724879c503a0421a3c61c62c87c33eb29f6494c4958c3269e65fedc8cb9becb",
+    "distributions/course-creator/README.md": "985a050586b0365b74d622eaeaeb72597429871767f8e13e89f0923b857949d8",
+    "distributions/course-creator/gemini-extension.json": "afb4f4ba532cc5ef9bea2c19e38f9f32e07c8f4c0f97305737809bb8c00cb68c",
+    "distributions/course-creator/package.json": "e92b2eae75cbacaf3ec8339d2f511119b405c0ced09022a749ec90087fe3a45f",
+    "distributions/course-creator/scripts/init.js": "4752ef9a267dbf193253c61c404aed0cc3ade8a087ee224d4d6b38de0bd8717f",
+    "distributions/course-creator/scripts/lib.js": "1c14e98649a5bae6850194a7f65647920164d1f892b1d72bb403d42fa820f413",
+    "distributions/course-creator/scripts/postinstall.js": "9b624cc533127020842d0a51095667e35df53abebe08ca9e0851b768aab118ee",
+    "distributions/course-creator/scripts/preuninstall.js": "c36c598c33f6768683fb7ba5333a6bb554831ca03a85fab4fc1872c2cabab5a8",
+    "distributions/course-creator/scripts/test_clients.js": "4a12bf41d70a98fa2e4272b11cf62422557d124e55f89dfcb6ce7ba75effed42",
+    "distributions/course-creator/skills/course-creator/ENFORCEMENT.md": "cf30820964a05c7456e7c1f5f918ed00d4d5f384f524167bbf695d9d9fd595c8",
+    "distributions/course-creator/skills/course-creator/SKILL.md": "fbfb31197cb1b9af4235a714f6a7f973b3ece1566e1f1249f1a27bfd04f92345",
+    "distributions/course-creator/skills/course-creator/dispatch.md": "20959347805e6b20ec4fcaddadc0fadd6da2089374bf5ccf783705d5fdfc1640",
+    "distributions/course-creator/skills/course-creator/elicitation.md": "d1dde1c598ae4285ed86d259c010ca5029d5613b1794b5e1b7614497d555bdbd",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/ARTIFACT_HASHES.json": "ff7f9925af66ec85f085e3be4358b46bc327829d4bc54749e10f9fd74b3c1db7",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/BLIND_REVIEW.md": "7f53b4931eb674faab63d0342d860819c8f46818dfd1cf2055e38e2962163695",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/BRIEF.md": "cd6c11a9a17b3e518d406ad321ddbbdc01cb1a5f0fa8a0a5148f9917f7187559",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/CRITERIA_FROZEN.md": "08564f1bf22156c8319a2ea255d5b8b17edb2de1ab36940d87c7a73eff6a6680",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/JUDGE_CRITERIA.md": "8cdbab5931b803d3e95c1a368faffcc5edde1c32a13ea18745818a243584181d",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/PROTOCOL.md": "9c190134456a6f20d5490449bab8dcb75a3b95083a1a236f37137d3208b78bc7",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/RESULTS.md": "e2b2609f8c132c31b3656ba233d986da42464711afa43d3c660818ffdeed2b5e",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/baseline-skill/SKILL.md": "25e2600588a148eec5b9cb76107bed82d291f0b25d136356cda60ae941e5977d",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/baseline-skill/learning_design.md": "0a59f244ef1cc79cf2cd2fa4ac0c45d1d7ab91eca799a72a486ed63c16ea92c6",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/baseline-skill/slide_content.md": "148d9cdeb369c3272d1ba82511c4ba6cdb252ee044d1b0c93024a52475930cf1",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/baseline-skill/source_check.md": "52b513a485a023a2f3f5a21b70c6e5dc7ee4f8b072fab13481b10a1e22f0f8f0",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/baseline-skill/templates.md": "e0643639a7f142d39dbb933ddce6b554915efb683e8cf96932761f05c7e6f907",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/control-project/ai_docs/solutions/ANALYSIS_course_intro.md": "45da7ee59497812daf09e3e5f4facf6c20bf91899b2297d5d84e2ca47ea4b2f2",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/control-project/ai_docs/solutions/courses/intro/CONCEPT_GRAPH.md": "f4ad14b79ca91c4ff7deb344f0e59dfa9e01ffdeee80d6406e8469eb2d44ecb6",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/control-project/ai_docs/solutions/courses/intro/COURSE_PLAN.md": "7e9c7fab6a13dab2b3d4085e96b563f4b16f183b11e6bef505e95f93bccc3e9e",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/control-project/ai_docs/solutions/courses/intro/D-IC.md": "5c6067639f0a47ba9f3cf027a2e8e957a4514fb76e8f90f8721cc86875612935",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/control-project/ai_docs/solutions/courses/intro/D-UC.md": "de3b2b12f931a8ff5ca67f0d192bfff04c0a617d72dbd60c30b3931f5405880e",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/control-project/ai_docs/solutions/courses/intro/P-TM.md": "04a561dc6a25c527631a885ce1c1fd1546e0a6971a43a7770bb16942370e1d53",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/control-project/ai_docs/solutions/courses/intro/SIMULATION_REPORT.md": "383d378ccb9fd5a637129ad88bd0958627baa5c432f78298f1c0aee61d35b075",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/control-project/ai_docs/solutions/courses/intro/SLIDE_CONTENT.md": "bcd641f056255034c18e0452f6bd06dd16c7ddfc0cc257aac0611d3fb5bb5bb3",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/control-project/ai_docs/solutions/courses/intro/modules/M1.md": "131aacc05ae93732289d542cef557b7781bcbbe2fe3929c0421ac7c0fb50c3ef",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/control-project/ai_docs/solutions/courses/intro/sources.md": "2836da08f1b53c57114f2df1c8918c709dddbd2704f525e62dab2241a0037125",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/control-project/ai_docs/vision/features/VISION_course_intro.md": "365d37d7a2baec2afee472f1655a9b7c75d3633478679d5248c6837132e80fb2",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/control-validation.json": "4bc097bf39b07eddd5d4cfa2d6f188a151aac1f95dc4ce58f1e7048a73b2497f",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/handoff-validation.json": "34e0ad2fd0f2edc8b375c9c8d1656b31ae606f0d2fcec4f168ce362eb2ad496e",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/judge/packet-17/COURSE_PLAN.md": "6a882f70c3e082b58860ca2019dd8c90b3ebfbfa19b4583b503f0335c738cf92",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/judge/packet-17/SLIDE_CONTENT.md": "f36b0fdc4d9c3f4f69af4148e790a4371276d41432f428166625c9baa0925b37",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/judge/packet-42/COURSE_PLAN.md": "7e9c7fab6a13dab2b3d4085e96b563f4b16f183b11e6bef505e95f93bccc3e9e",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/judge/packet-42/SLIDE_CONTENT.md": "bcd641f056255034c18e0452f6bd06dd16c7ddfc0cc257aac0611d3fb5bb5bb3",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/judge/packet-63/COURSE_PLAN.md": "254507eaf7e41effe5d7caf4e5993327a11625fa8fe16f622904afeb8551d086",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/judge/packet-63/SLIDE_CONTENT.md": "473d5d9c39f7d3a8eebd288806a40ab4b87d291a5f00cb20e0cbfd02a97e69b1",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/package-validation.json": "fa347a4b494f1e5bafe4cd922c1d5f485d99666e0a0d09b3b602ac4baa3efdb0",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/policy.md": "9477309a48e34a84f607b202736baa43b9325cf0f2efc73de7cc04e9cc2dda5b",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/revised-skill-at-production/SKILL.md": "9ca56e960ca050c5c053cdd00d5136b76d8c6d9f7b7221c71a2cf503c34ab3c1",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/revised-skill-at-production/learning_design.md": "f77395bb2a4e563be40ef6ba2d82546292e30ecf36dffbb3dbe96a2ecf6080f6",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/revised-skill-at-production/slide_content.md": "ead20fbd6a9d766f04720d36c55da04ded5bf6ba0087a9d261992f59f00f5c0d",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/revised-skill-at-production/source_check.md": "52b513a485a023a2f3f5a21b70c6e5dc7ee4f8b072fab13481b10a1e22f0f8f0",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/revised-skill-at-production/templates.md": "f1b479b782142391839eedab99748023421016a8479532f0b7ab667cd7c2b66a",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/run-a/COURSE_PLAN.md": "415b95671a1a65dca32e5f17f29eb4228a2cba0f59e0dabd2d8438a87e27d675",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/run-a/PROCESS_NOTE.md": "07a37021d1b26fd6a39790104e24238d449a7d5cbef6954c3a78351f7777692a",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/run-a/SLIDE_CONTENT.md": "99e4d0050712bb444f5530d993c4e8b149e2e03c22473a4cc1c23e6c712a3890",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/run-b/COURSE_PLAN.md": "7df213811b291608925c8b0c1a90b924ec605d0d4b473e8e673e250305e8e3e0",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/run-b/PROCESS_NOTE.md": "dc0158cb77bd9e6bbba14ab5adb046574e6fb645782697cbe559c37535f7c5b0",
+    "distributions/course-creator/skills/course-creator/evals/results/pedagogy/run-b/SLIDE_CONTENT.md": "69b558f241b453e37fc03264abc50b3746ff27866dfa3aca317aea3ce9a802be",
+    "distributions/course-creator/skills/course-creator/evals/results/slide_content_handoff/PROCESS_RECORD.md": "e4372bf2cf733efe27641d5b69da16898beb83402de5fa18c2751a95dd3d9862",
+    "distributions/course-creator/skills/course-creator/evals/results/slide_content_handoff/PROMPT.md": "3397e58f1a0bb915b53c3da2cdd2638202ba1f75052b7c9f73430ef52c544890",
+    "distributions/course-creator/skills/course-creator/evals/results/slide_content_handoff/REVIEW.md": "225af60e34f2c165da5b8720c64cac1fe0f329c8095c9609c47901a0f2acab3e",
+    "distributions/course-creator/skills/course-creator/evals/results/slide_content_handoff/SLIDE_CONTENT.md": "de31d43a8c9588f76bebdf741f52c3ecd2293be3737cb416297c7155a73eb5a1",
+    "distributions/course-creator/skills/course-creator/evals/run_behavioral.py": "a176efeb629cd1ff312cfcfa57ab301de67cba47291d0851cb633c18cf3c1f55",
+    "distributions/course-creator/skills/course-creator/evals/scenarios/feedback_method_defect.md": "4d530004756efd20927fa08c28f7db2b1b4209935e0a5b77d6ca2b6d4f38f15d",
+    "distributions/course-creator/skills/course-creator/evals/scenarios/generic_explanation.md": "e8578b6e02c9b9e02e368c4f25629eb7bad71d8d1218031a3a1eaef98425909a",
+    "distributions/course-creator/skills/course-creator/evals/scenarios/missing_prerequisite.md": "10aaba565a23021dab891c3e5b4d4f9895ddda624b323bb1be09c80ea8b719ee",
+    "distributions/course-creator/skills/course-creator/evals/scenarios/novice_without_sources.md": "5372abf7e3dcadf0b8e82ff64a3f8f25316e1ce0fd7b02b11d8d5f8433c2df39",
+    "distributions/course-creator/skills/course-creator/evals/scenarios/pedagogical_method.md": "79b39e631f82a3dde02522a538dbc97b0e5b46b2bf1b000b7bba9d3525a902b4",
+    "distributions/course-creator/skills/course-creator/evals/scenarios/slide_content_handoff.md": "256a733db0129b17827068e6a5eeb13190f5fcdaa2ceb21085cd4659e6cc9670",
+    "distributions/course-creator/skills/course-creator/feedback.md": "e13ebd980102afcc2cc0db7c17e1a60be00104882f358a495d4e6587c391f10a",
+    "distributions/course-creator/skills/course-creator/guides.md": "e1cd7071256604eb0844ba3740cf69c70dcca94992cb9427d2c4a5d196c7f56e",
+    "distributions/course-creator/skills/course-creator/learning_design.md": "13b6ebbb6acc96fd6e58f4ed1dc6ad827456cc329331179770300099b3b03cc6",
+    "distributions/course-creator/skills/course-creator/memory.md": "5907be5f99b18eb66ffda2c25815f4fa266fff4b3767f4c142d601b146271167",
+    "distributions/course-creator/skills/course-creator/review.md": "4070617586e559e1713bd8558c23823c3c3470585321928a00079ded41938404",
+    "distributions/course-creator/skills/course-creator/routing.md": "99dbd353f3f642893dbfeba1279ee7c97c0b2d3b60b003ea190e660d493f2c53",
+    "distributions/course-creator/skills/course-creator/scripts/course_check.py": "76cf06516cf49d2bfe10390df51dfdb9d12d843bcc81e3b91cf3672df5a0ed97",
+    "distributions/course-creator/skills/course-creator/scripts/entry_point.py": "2f19b013b8bca2c476dd99d9854c2faa70d936980ce49d1442582b6bfa8aa2ea",
+    "distributions/course-creator/skills/course-creator/scripts/knowledge.py": "a1be56e7ad55d53bd221cf47e21dd398d9c0643cf62666067ba54feee5d4c8de",
+    "distributions/course-creator/skills/course-creator/scripts/sdlc_check.py": "954a073b2d1b2b0cfba6f43b8a2c7052d3f2755628d98c2323a63c946ae069ab",
+    "distributions/course-creator/skills/course-creator/scripts/sdlc_core.py": "9a7ed068c01595f1bcce261bee4b8c48bcfa40d47d58b09cffeec95584403787",
+    "distributions/course-creator/skills/course-creator/scripts/shared_files.py": "5ad719a69ebd47351589e86250dbaead1cfa6eb3a2c6651ad0259ad9847b3b8a",
+    "distributions/course-creator/skills/course-creator/scripts/shared_manifest.json": "043a3ada0d406aae850c24a5f7da68c3f37ef75cee4e2fc1e3b3cb6828c8ffb4",
+    "distributions/course-creator/skills/course-creator/scripts/test_audit_refs.py": "a6f06e73f4c9469dd64bed283024b6b37294e6c26f171d8cbdbdfd03771a6884",
+    "distributions/course-creator/skills/course-creator/scripts/test_course_check.py": "392ca9de6cc21132b6f55d2d81c7e89ba487237f242293052f65f53ca82527eb",
+    "distributions/course-creator/skills/course-creator/scripts/test_docs_root.py": "a8de9e5531b3d33a2c12dfefc9798c161e3fde5fd4bd8bce0da4c3d1b2d83339",
+    "distributions/course-creator/skills/course-creator/scripts/test_domain_rules.py": "e1c726e9810cb6c200cbb1bb61e9e4813a49dedc2e86101c5fe7dcca234ca7aa",
+    "distributions/course-creator/skills/course-creator/scripts/test_drift.py": "7180c3cc0c3dff7a927b0259f8f8f5f747045134844129c9028f4c7dd59b07ce",
+    "distributions/course-creator/skills/course-creator/scripts/test_merge_safety.py": "ed52bed751386e47fd680942c2315f1a1fcc83206a9e2146acc40fff6967ccf4",
+    "distributions/course-creator/skills/course-creator/scripts/test_migrate.py": "9570d12325035adcc417b7a7043636cd63791231af1d1cf51094f7f10ecf0ae0",
+    "distributions/course-creator/skills/course-creator/scripts/test_plan.py": "284117672d67d18bedd58698572b4de744e0006fa4dd3ba2ae3f406b62136f46",
+    "distributions/course-creator/skills/course-creator/scripts/test_project_memory.py": "4f3c463a7a52c5a0d3ff88dc71dcbe7ebc9b5add69ada5948365d204054df36d",
+    "distributions/course-creator/skills/course-creator/scripts/test_session_start.py": "eda12f21886ddd584c9d82571c56e9a8bf16ddfb8abd40a90db0e74ded70ad4d",
+    "distributions/course-creator/skills/course-creator/scripts/test_skill_invariants.py": "ebb610dc1c4b5bc024bb2c97b1b9d9e41982d2b61be1a858f7d0e1a08d604d06",
+    "distributions/course-creator/skills/course-creator/scripts/test_slide_content.py": "90e0173e1c6c03b9bd73ccc3a1b014e7b17b9415cdad2dafeb259fe6b23eb373",
+    "distributions/course-creator/skills/course-creator/simulation.md": "a990c024a6287aba1f501855c0319644798624b03f8725252d34bcca69910051",
+    "distributions/course-creator/skills/course-creator/slide_content.md": "3e126bb2f85e3782e2b8b1a233834a065ba5fd831ec744b6c0d9cfce8b5da7c4",
+    "distributions/course-creator/skills/course-creator/source_check.md": "52b513a485a023a2f3f5a21b70c6e5dc7ee4f8b072fab13481b10a1e22f0f8f0",
+    "distributions/course-creator/skills/course-creator/templates.md": "8b908ff924995e8273389a7d8fb4b82bbc4d751f6e3b35a161e8f902c31a1dfa",
+    "distributions/course-creator/skills/course-creator/vision.md": "191696a8283b2873fea6e57d16fbb3b4f24b82bf0c79bcfd77d52141a9ca2a5b",
+    "distributions/kb-agentic-skill/CHANGELOG.md": "a5533e6500c1e20e12ec5b4d8cb9de98fc512a9abd7e104df96ff5c3a21e1779",
+    "distributions/kb-agentic-skill/README.md": "3a3ec859af94e7d33d4185f336b9952ed6abfbcb01929ab16d778907af3f48c9",
+    "distributions/kb-agentic-skill/gemini-extension.json": "35b0437862627b1e0ba710954b739e85667dcc5a8985f43620296193dc829705",
+    "distributions/kb-agentic-skill/package.json": "5a4fff24b722b63501c767e388bed5d0029177877dd0065923b2aa6108afa443",
+    "distributions/kb-agentic-skill/scripts/init.js": "79dfb7a8b860c6a1e56a790d3cd739182976a622b66239ff5aeb63ebdfac6078",
+    "distributions/kb-agentic-skill/scripts/lib.js": "40ba1563dc2062a87f46d01953d651387cb08668c0ba976b85e3129c79f45918",
+    "distributions/kb-agentic-skill/scripts/postinstall.js": "f4b095f3521d17b04f4432633cf8c273825a645b67fb53019441d958ee903f59",
+    "distributions/kb-agentic-skill/scripts/preuninstall.js": "32f7c4e58b0bd712536b05db8b7fe29d0419c47434d3828b30af3058b68dc42c",
+    "distributions/kb-agentic-skill/scripts/test_clients.js": "71c4f18cf0d21f1011080f153a7797942ad92515bc65a7272e28556f5fd8d976",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/ENFORCEMENT.md": "624ff54004ed50105ccee51b62f9b8094cafe946da771bea321f7872c8d18142",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/SKILL.md": "99b8c3c4729d60ded2c5b2510583ddac041c7fa6766bd94874156c71900d7145",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/dispatch.md": "20959347805e6b20ec4fcaddadc0fadd6da2089374bf5ccf783705d5fdfc1640",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/distillation.md": "441b8014f0d6c00e672e5a53ddcedb3be292431f932c6162c742ff7972eb1d1e",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/elicitation.md": "eae41fcb3c89709603edd597f15a2e1a6b246c1339aee8ce9a24415f56d0893a",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/evals/run_behavioral.py": "5e70fa9109f677d566e3e4c128af6602d4a3ef5d37c42efd46970efe6759475f",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/evals/scenarios/README.md": "bf54cd7b4037df6ad9e17b82f1a64d89b1177044a05ec3142ce97563394acab0",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/evals/scenarios/capture_channels_the_days_decisions.md": "dd349107df467743909455e3967aaa92d6c82210f6136a0d22f6feacf4c37306",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/evals/scenarios/capture_stays_silent_with_nothing_to_record.md": "e8d81131ae80806cb37ded1cdd11d1ab56f9fc4707a9f5be1dac9e102e500e27",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/evals/scenarios/consult_fires_on_match.md": "f09605e325e7965a468b9a845f2dc10f32571654033f518fbf59ca70015b66da",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/evals/scenarios/corpus_letter_scales_to_binaries.md": "293d122c32043327b5c195b19a92ee875dedb56ee6a334e357251f2634a5a85b",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/evals/scenarios/extraction_covers_the_gates.md": "6a6be1cca5fea256b59cceac6f875cffaa3d7bffcdbebc321d532a5f5e24f893",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/evals/scenarios/gated_rung_asks_before_descending.md": "c11c9e1c71e7be029d09ea1ec2180334d85b1afc699dad1ddf2a42d41df5d0e3",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/evals/scenarios/hook_orients_session.md": "26424e36cb3cf7f8f4df540cc6eec6347ab630e9aa623a64e9d00c7f3609de6a",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/evals/scenarios/import_places_never_overwrites.md": "d65248a4a9dc6ab76e0e06d639362c6aa7ed7af3fcabd1ce49e3fe83127adda0",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/evals/scenarios/long_source_is_exhausted_not_sampled.md": "d45b8d3b7ec630eef0165999a2607b657fedb898460378adb1c18b53f30bf156",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/evals/scenarios/placement_rules_before_impact.md": "ab552b5b2529931904c14f12655a569c1c326589162812f1fc0d75fde472c654",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/evals/scenarios/proactive_proposes_on_reusable.md": "f912d549ae19b25a4df642b48a31eb03ee010f09cb2d62eefe5c4b0b9f4c81ed",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/evals/scenarios/propagation_is_not_a_new_unit.md": "11df8ba9e59a5ef1c2f81bb14b2a079962e26377e837823b6ab89aa429165f8d",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/evals/scenarios/recall_descends_before_answering.md": "7ed63c255a5dad2f164b21931169bdcae82f65951113130b5c56add86603b9a6",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/evals/scenarios/recall_verdict_names_every_branch.md": "089ed784ce2167b633383395aadf33af951d3bd68dd8bd7a6d17e0c41d00a563",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/evals/scenarios/unmapped_never_grounds_missing.md": "38e0c65fba1f6a415d20c5d395b9c953415c67145b7cd1262d883ffe16455e76",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/evals/scenarios/verdict_declared_on_no_match.md": "babe08e4bcc361bcd2a443cd48659967f2f6d648da9dbefc210644cb554a7d4f",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/guides.md": "e1cd7071256604eb0844ba3740cf69c70dcca94992cb9427d2c4a5d196c7f56e",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/memory.md": "5907be5f99b18eb66ffda2c25815f4fa266fff4b3767f4c142d601b146271167",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/portability.md": "a5676630c1278e9efb879c4827a17da25578b45ffad9189dfdf0addffa3d2206",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/reconciliation.md": "271c71470e7f925b5263c055df5f15bfb8c7be1d43b47587f912cca6cf6e9323",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/review.md": "4070617586e559e1713bd8558c23823c3c3470585321928a00079ded41938404",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/routing.md": "99dbd353f3f642893dbfeba1279ee7c97c0b2d3b60b003ea190e660d493f2c53",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/entry_point.py": "2f19b013b8bca2c476dd99d9854c2faa70d936980ce49d1442582b6bfa8aa2ea",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/ai_docs/INDEX.md": "574d84fa13d017a07a35ab59b8e9c8a9f8cf3477b0b7c0129e6fe9e31a253608",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/ai_docs/README.md": "823e1fbabf93e9019e460226b6127bca91bbb344f5629453246f6e96b789858c",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/ai_docs/architecture/ADR_2026-06-05_ids_over_names.md": "ece3ca6cc118ccd3b05c3743b891f47890f472c77c0cb67ab651db0bbad9b93b",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/ai_docs/audit/HANDOFF_pick_list.md": "71d26c01166636c3f7d82bb71e065a91af03abb609686c508f971200b59b4f38",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/ai_docs/audit/audit_plan.md": "72bfc63a438954c5f35015290ccad6ed22b0f19a5028b489de99b70d25a0762f",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/ai_docs/audit/handoff.md": "ca90c1c319b8c2201933967cc19eb27ff7fb967f3f7e0442aa70d706dcf1603c",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/ai_docs/audit/reviews/REVIEW_LOG.md": "b6e95a4b1c31d9a244b3b5bfb47a2cb82bc1c034b096a08a3dd9fb45bcef1bbe",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/ai_docs/functional/architecture_overview.md": "8eabe44b2b29d422bc69909c15d051245d74adf24c1306a653c3a018bb1b1a02",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/ai_docs/reference/GUIDE_release.md": "0740413682c7da66f515583115ef204904af2b6a32cb64002615d0066fc10973",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/ai_docs/reference/INDEX.md": "2a43b949667bea5a097a5df10cd54d1ceeb3b4a010329bd770ef8acc8dd35866",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/ai_docs/solutions/ANALYSIS_order_intake.md": "f5d59898efd15f7ba0ad05642457263503eaf72008dac5baf9ea33d9652d5bd9",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/ai_docs/solutions/ANALYSIS_pick_list.md": "2c6ebe467b45f6cc05816326d52e19c7c3fb59cbaf2ebd60eb112ac74b797b4e",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/ai_docs/solutions/SPIKE_carrier_api.md": "89eb98704d83a43b846bc498b5841479b797051f9b15c930d467e9c158d59d09",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/ai_docs/strategic/architecture.md": "617d5988567fdf6306431726bbc745e1531348ab436d662f3042ceedd4d729d7",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/ai_docs/strategic/existing_features.md": "fb4b2a51b9f758e93572f5f1336a2e8da5d0118d312c08eee89366e6b9eacc4f",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/ai_docs/strategic/features_history.md": "1ead1ebbf4005aff467ceb1aba5cab27f8c72782944382ab5b0ef0a1255f39c1",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/ai_docs/vision/features/VISION_pick_list.md": "18c0f1a4bf0a38de6115adccda9a355f6a63e9125f88cb8f5123096876ebba01",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/ai_docs/vision/principles.md": "e7ac99125406b3cde86ff9e7ab05a63683016cf7871c18d81642a9098fcbd2ff",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/ai_docs/vision/project_vision.md": "aff36f782966bef9947a17f55719a4fd3e4c8833ad55c4106d240b35120e4b21",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/ai_docs/vision/roadmap.md": "be4a8cd4e7badc5e3a5378a296d78bc6eb824a78ea09c0cb528b837d3ea0717b",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/src/intake/parser.py": "456ac7a430d7c8e5adeea710e61e26b3130f4505c2498c7763800aaf0f7e0749",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/src/picking/__init__.py": "ac7f2ae8179015634251388b7566ac4f8d6137d162c72551dc18b791b1d1e8df",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/fixtures/golden_ai_docs/tests/test_parser.py": "b27cf2b8d754072aaf3061ab65ad0548e220b898a468e636d60cb16fbbd29b32",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py": "a1be56e7ad55d53bd221cf47e21dd398d9c0643cf62666067ba54feee5d4c8de",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/sdlc_check.py": "60ea7c640d71e676757a8882d6b593b91313de4eb8ed33c8b979bfa62757bcde",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/sdlc_core.py": "9a7ed068c01595f1bcce261bee4b8c48bcfa40d47d58b09cffeec95584403787",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/shared_files.py": "5ad719a69ebd47351589e86250dbaead1cfa6eb3a2c6651ad0259ad9847b3b8a",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/shared_manifest.json": "043a3ada0d406aae850c24a5f7da68c3f37ef75cee4e2fc1e3b3cb6828c8ffb4",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_audit_refs.py": "a6f06e73f4c9469dd64bed283024b6b37294e6c26f171d8cbdbdfd03771a6884",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_claim_ledger.py": "46c8d7deed481416f61f109fa73b79554068a8c680e9ae431af75ec01a5a16e3",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_docs_root.py": "a8de9e5531b3d33a2c12dfefc9798c161e3fde5fd4bd8bce0da4c3d1b2d83339",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_domain_rules.py": "e1c726e9810cb6c200cbb1bb61e9e4813a49dedc2e86101c5fe7dcca234ca7aa",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_drift.py": "7180c3cc0c3dff7a927b0259f8f8f5f747045134844129c9028f4c7dd59b07ce",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_golden_regression.py": "2fb804d679ec4ca5b55c33c0d015fac0aa8f735ec4bce98330913e15ce31230d",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_capture.py": "c434b0b8f395c5a358cb9b661fabde115836e31fc9d9406c95cf199871664491",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_graph.py": "c29ffae5ec434b5332b007a6b764f089922d5fa09cb15bd6c464f9451d27246e",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_recall.py": "b26c58f4b01e00a4fb3c5c0625e55d548a743d9a131801c9952011bcbbc5329b",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_remind.py": "6a75ad066208fc313bc453e7cfafc3c35a71da4acea51b8e742f44e83e52be80",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_revision.py": "4f160c2bffd3a8cd4862978c7229934ebc461c4edbbb36fc496bfa60aa2d1432",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_time_cycle.py": "8cedd42f13fe2e69bc2d29b2c7ed2b8ca0f84bfe8beca182d1ac27ea2dab8067",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_merge_safety.py": "ed52bed751386e47fd680942c2315f1a1fcc83206a9e2146acc40fff6967ccf4",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_migrate.py": "9570d12325035adcc417b7a7043636cd63791231af1d1cf51094f7f10ecf0ae0",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_plan.py": "284117672d67d18bedd58698572b4de744e0006fa4dd3ba2ae3f406b62136f46",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_project_memory.py": "4f3c463a7a52c5a0d3ff88dc71dcbe7ebc9b5add69ada5948365d204054df36d",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_remind.py": "e52ea24b21363c4c6eb6abee8df35b57f4ef65faca9340e3205b3d84ce7e2e75",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_session_start.py": "eda12f21886ddd584c9d82571c56e9a8bf16ddfb8abd40a90db0e74ded70ad4d",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_skill_invariants.py": "ebb610dc1c4b5bc024bb2c97b1b9d9e41982d2b61be1a858f7d0e1a08d604d06",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/taxonomy.md": "97753b4377f019203aaba5db82032de998f33bc975724e6f6f259648190b6912",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/templates.md": "21b865835d2a9ca4f75c92e52a5dbf2c8c9a1c27d3ced8bf1992edfabed5b963",
+    "distributions/kb-agentic-skill/skills/kb-agentic-skill/vision.md": "191696a8283b2873fea6e57d16fbb3b4f24b82bf0c79bcfd77d52141a9ca2a5b",
+    "distributions/mkt-agentic-sdlc/CHANGELOG.md": "51b74c5c2621c2b847c6f0b4b8272914343ddc7b37a8a52b3358fe3e0464f0f2",
+    "distributions/mkt-agentic-sdlc/README.md": "2f93951bc3309d6562aa54a70c4dc70a74aa970493186f25d93536a0e7b6df47",
+    "distributions/mkt-agentic-sdlc/evals/e3_contrast_b2b/CLIENT_DOSSIER.md": "e20bc77481199ee8761198e82143288f8b66f2d30476e8b07a6e9ca2516f098b",
+    "distributions/mkt-agentic-sdlc/evals/e3_contrast_b2b/CLIENT_PERSONA.md": "5f8813d7af6aafc7e8e8a1755a35f3b6e003ded33b8fdd77ba8ec6a4e101d8dd",
+    "distributions/mkt-agentic-sdlc/evals/e3_contrast_b2b/EVAL_LOG.md": "0b54adbbebe8c148f103db9a763e08d8245b8c6c97481fd6e6420a930f507ec9",
+    "distributions/mkt-agentic-sdlc/evals/e3_contrast_b2b/fixture/AGENTS.md": "15bd65efeafc743834406ae21aa4deae6029223bc1df4029464636ec70f969b8",
+    "distributions/mkt-agentic-sdlc/evals/e3_contrast_b2b/fixture/CLAUDE.md": "15bd65efeafc743834406ae21aa4deae6029223bc1df4029464636ec70f969b8",
+    "distributions/mkt-agentic-sdlc/evals/e3_contrast_b2b/fixture/GEMINI.md": "15bd65efeafc743834406ae21aa4deae6029223bc1df4029464636ec70f969b8",
+    "distributions/mkt-agentic-sdlc/evals/e3_contrast_b2b/fixture/mkt_docs/INDEX.md": "fffb2aacb343d3cd16cdc3490fd62cd0584c5926e6d8f81effaaf3f3087df164",
+    "distributions/mkt-agentic-sdlc/evals/e3_contrast_b2b/fixture/mkt_docs/README.md": "d02b59475f4bee6847e061afdd233481987ff4d66f45cce76fa3957c4c8566dc",
+    "distributions/mkt-agentic-sdlc/evals/e3_contrast_b2b/fixture/mkt_docs/audit/handoff.md": "a2858133e81812cedf64c16da857b5d5edf2dc8baf0953f071c88cc10b9808f6",
+    "distributions/mkt-agentic-sdlc/evals/e3_contrast_b2b/fixture/mkt_docs/research/CHANNEL_BENCHMARKS.md": "c9a8ae7b9e85cad4a86b567b5a979fdd1743aebbea4d1e41a887ffaf8af9e2e9",
+    "distributions/mkt-agentic-sdlc/evals/e3_contrast_b2b/fixture/mkt_docs/research/COMPETITORS.md": "62c6ccfca6c19ac5d57fe843f645678a347fee7f4ba35cb523227e2e289a5a39",
+    "distributions/mkt-agentic-sdlc/evals/e3_contrast_b2b/fixture/mkt_docs/research/evidence_ledger.md": "c252c86dfd6211a89dc1b26e88505ae99155cc8f5460278f9f09d007f7cfa04b",
+    "distributions/mkt-agentic-sdlc/evals/e3_contrast_b2b/fixture/mkt_docs/strategy/ICP_PERSONAS.md": "9b150273cb8f360eaf1da1a9d4af4400797d0bc0734c1f7e781096c4a30a81bd",
+    "distributions/mkt-agentic-sdlc/evals/e3_contrast_b2b/fixture/mkt_docs/strategy/OBJECTIVES.md": "74f4d59fe6cd92c10695b317f1bf3eab4b2b2d02b7e898b9f8260fb12d4badc7",
+    "distributions/mkt-agentic-sdlc/evals/e3_contrast_b2b/fixture/mkt_docs/strategy/STRATEGY.md": "9645e57bedfb04add46f9d6f72344ccdf6b150e736e7678e0d3e543e43b46630",
+    "distributions/mkt-agentic-sdlc/evals/e3_contrast_b2b/fixture/mkt_docs/strategy/THREAT_MAP.md": "3adcb25a41f9c6de11ea6f75d6d2d0eb44c1b8d9b46a6c99d07ca8004ecfea60",
+    "distributions/mkt-agentic-sdlc/evals/e3_contrast_b2b/fixture/mkt_docs/tactics/MEASUREMENT_PLAN.md": "fac405dc36738bc276640bf297c41f02cf4299051fa3e064fb59096c0df1a0fe",
+    "distributions/mkt-agentic-sdlc/evals/e3_contrast_b2b/fixture/mkt_docs/tactics/TACTICAL_PLAN.md": "f4921c70e7b43979eb7b6853769b1da95b768acd94775a0a23d40df83432043b",
+    "distributions/mkt-agentic-sdlc/evals/e3_contrast_b2b/fixture/mkt_docs/vision/MKT_VISION.md": "8e6261281abad413638eecb2a92a2b9ce7252f90562290410b288fabcefc9518",
+    "distributions/mkt-agentic-sdlc/evals/e3_contrast_b2b/fixture/mkt_docs/vision/principles.md": "d99270483bd2dae0127db78da7fd4e7182e11d3ec7aa88b05c4e02505ec1f51d",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/CLIENT_DOSSIER.md": "917a621c046ea47b72d23fdfd8b0e88f4e966a319f05f20e62605c88681f7026",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/CLIENT_PERSONA.md": "4cae3ef745718d107cd19c4183b8c6abf262db255e432167a2254fe3b519fc3f",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/EVAL_LOG.md": "75bee13eac872c9f111b7bcbbd2e0346b073cc9cc28cfd45ca2fcdc1122d91c0",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/SEEDED_DEFECTS.md": "63a2da15c877eb059cd9713780e2a3d3c37465c9a0cde61794195f0b03036bc0",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/AGENTS.md": "15bd65efeafc743834406ae21aa4deae6029223bc1df4029464636ec70f969b8",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/CLAUDE.md": "15bd65efeafc743834406ae21aa4deae6029223bc1df4029464636ec70f969b8",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/GEMINI.md": "15bd65efeafc743834406ae21aa4deae6029223bc1df4029464636ec70f969b8",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/INDEX.md": "6357d26cab393d5a218f427bd3c32c04fe7e3c23cb39e9d4a483a0afe4e9991b",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/README.md": "d02b59475f4bee6847e061afdd233481987ff4d66f45cce76fa3957c4c8566dc",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/audit/REVIEW_LOG.md": "fd24b4a9c412c7b4ec271e9c03b9a963bca03ea2629a13a86cce37df792e9723",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/audit/handoff.md": "c079b84bb5b45fbc0a7d2c3592264194229be44451839af7648e1b6d8a12c77d",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/deliverables/MARKETING_PLAN.md": "50003c72ffe1c7b979173b62243889eeee60f97f904e585cf5ad909027dbf8d5",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/deliverables/ONE_PAGER.md": "026c8d741d98515285c3f505f0e5a4f37ab8b38db00baa94dc55b061cfae3d8e",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/research/CHANNEL_BENCHMARKS.md": "9d1dd88e99aa8cc26f53e5e7422d6ba24c8a9e72c411c79ffbdf6c971a09723b",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/research/COMPETITORS.md": "0ec77933c1d7a6791d301bbf92c76c3ce0caeb195c1d58f04df8e645e931c8e1",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/research/MARKET_SIZING.md": "62cf1bdb11a71fb6f399d319011b62ff0d6e4a0712a69f2d15220c3d2969eea4",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/research/VOC.md": "23181f36e2a6ab82a0747ade73274a627edd227f58d4a8979dfa81dd9fb54519",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/research/evidence_ledger.md": "9c1db7b539c3c4cbf6aab3bd47521ddb3a48bf5f79412258554a72ca5ba992e4",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/strategy/ICP_PERSONAS.md": "5b4d7e78f0391322d35bbeb7a1ee5d322e0eeebea6a8040f79823874f4facf30",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/strategy/OBJECTIVES.md": "efaad4cf5ca1b0d11f25502efa94391039cf80307d8d0c6c1548d2dea37df4ff",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/strategy/SITUATION_SWOT.md": "24b649435061ff1b0edf24afdd4a3eb45d0ac0717dd78b784999d66f6f19b062",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/strategy/STRATEGY.md": "b84bffd0cc593c8e88e6ba39b40c21159db86c5f57419f5f055fbe64704f0b0a",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/strategy/THREAT_MAP.md": "4dc69374726d824e926aa2f4439fc3b0f6a15267927fd18d3e429428cecfdf3f",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/tactics/ACTION_90D.md": "84191d304567c25904561d54959642f697490613737f35f7d75f12caa0788838",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/tactics/MEASUREMENT_PLAN.md": "943a3ba261ce4b0c9e7ce01092014f5531700ad44d957d3702168d4336fe6041",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/tactics/TACTICAL_PLAN.md": "a9378eb48188b92b6374d645002db22fce8922e9b50482cc0988cd17d8faba05",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/vision/MKT_VISION.md": "a91f7cca4063b8b7bd2ada2901fd56fabf596d33898a28dace429b2b8ddd7350",
+    "distributions/mkt-agentic-sdlc/evals/e3_synthetic_v01/fixture/mkt_docs/vision/principles.md": "d99270483bd2dae0127db78da7fd4e7182e11d3ec7aa88b05c4e02505ec1f51d",
+    "distributions/mkt-agentic-sdlc/gemini-extension.json": "5ce0c6c0563039edd44fa9686f35e83e53e465ca3f524b628160596901cf57b0",
+    "distributions/mkt-agentic-sdlc/package.json": "5253f8478fedc485d7f346ad6a324a9ba72726c9ddc379d3b2f3959e2c3112b6",
+    "distributions/mkt-agentic-sdlc/scripts/init.js": "cb66129b094a0d0db067cf6612485d46712505af53096730b93b7d855cac23d0",
+    "distributions/mkt-agentic-sdlc/scripts/lib.js": "78fb07bacc5d84a48f795df80e2498d1990049a2ec8110b8ee2bc49432e11082",
+    "distributions/mkt-agentic-sdlc/scripts/postinstall.js": "50aeb6f8ac64825c4d494adfea397eafb9def6bb6e2d11633ee4757e89238f92",
+    "distributions/mkt-agentic-sdlc/scripts/preuninstall.js": "32f7c4e58b0bd712536b05db8b7fe29d0419c47434d3828b30af3058b68dc42c",
+    "distributions/mkt-agentic-sdlc/scripts/test_clients.js": "71c4f18cf0d21f1011080f153a7797942ad92515bc65a7272e28556f5fd8d976",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/ENFORCEMENT.md": "0fd36ab04511b3e4505fc0d51c11ed6c84a0c5bcfb24c6386bfb1802e01bad0a",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/SKILL.md": "833a10b207a6c783695ffd6a14b255b2e3628792bb038f039c8f8e2bca794813",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/dispatch.md": "20959347805e6b20ec4fcaddadc0fadd6da2089374bf5ccf783705d5fdfc1640",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/elicitation.md": "75fa607487e8557077d41b3f89c7c21466fd6d7a759ccea16997a8f9a91b298f",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/evals/run_behavioral.py": "f87b38cb0470ffac4bd99f722924eb03fc6f847a739f874fce1dae4c2bd99993",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/evals/scenarios/README.md": "42d2f69ea8f2b1f5e23f8d4a64285b7de48c7f93a3b4ae00faab5530378df284",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/evals/scenarios/e2_without_strategy_escalates.md": "a7c61c3effd7b8cee76e7dde1ab750939caf8bcfb52aa4c8f247c4fcb44d3d21",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/evals/scenarios/elicitation_asks_only_owned_facts.md": "d606b27814b8ebefe4aef57288aeaecec9dff580bf36581d6eaf48b73e0f2ea1",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/evals/scenarios/honesty_no_guaranteed_success.md": "2c7a1f4452d833df79302bb90506c8aea50aaeec2e5540e5d54e5ff7b59b87df",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/evals/scenarios/low_cost_trap_flagged.md": "608162f5b10b712680761b7b2be10fdf9aedb34d2a64761a7ff0a98a495224de",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/evals/scenarios/no_number_without_ledger.md": "948a59d43e7eb39ae571b6b7cf5bf7cba9a9fde472fec580060375540dff8c84",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/evals/scenarios/swap_test_enforced.md": "62aabddd05c51fb4e2dd8a41931982848087958fdd4574ae8f4a0fb82d54cc09",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/frameworks.md": "3c6288607b81c6bceef0eeba0721071782fa389fd9c919e42b6763628a598fb6",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/guides.md": "e1cd7071256604eb0844ba3740cf69c70dcca94992cb9427d2c4a5d196c7f56e",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/hybrid.md": "250d715c4f6c994117370884b58a42a7f5106958a89a01288915b518f4a120ed",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/memory.md": "5907be5f99b18eb66ffda2c25815f4fa266fff4b3767f4c142d601b146271167",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/research.md": "f3b03bb2fc5d6c5dd5ef22b84385701610b1d6d53e75b8f9fce38ac75c1c14a6",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/review.md": "4070617586e559e1713bd8558c23823c3c3470585321928a00079ded41938404",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/routing.md": "99dbd353f3f642893dbfeba1279ee7c97c0b2d3b60b003ea190e660d493f2c53",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/entry_point.py": "2f19b013b8bca2c476dd99d9854c2faa70d936980ce49d1442582b6bfa8aa2ea",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/fixtures/golden_mkt_docs/mkt_docs/INDEX.md": "5b28dfdaf52a5e913a668f2f095af3dd8b9252d3a3bfb3883c2bef16ea8a5fde",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/fixtures/golden_mkt_docs/mkt_docs/deliverables/LAUNCH_BRIEF.md": "c880b9e3dc9671ea89a2f92567d984c4fadca83d72b724dc1355a27fbfab444a",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/fixtures/golden_mkt_docs/mkt_docs/research/evidence_ledger.md": "3b7e680e9e6de0c432b637af844f4d3c10d28175947869dd759a51d4d87c47d2",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/fixtures/golden_mkt_docs/mkt_docs/strategy/OBJECTIVES.md": "ada51cb20ae50362215f6196535a77a971f9718164f5922417e54f3ee46274f4",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/fixtures/golden_mkt_docs/mkt_docs/tactics/MEASUREMENT_PLAN.md": "e295af46d61c0a696bac87449253339252f01bddf985a29f27c233e84c25ca3e",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/fixtures/golden_mkt_docs/mkt_docs/tactics/TACTICAL_PLAN.md": "405257cc0282f2098d1d7b0560db82c506aa2f4f940b272e3a5af7e2b15cf207",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/fixtures/golden_mkt_docs/mkt_docs/vision/MKT_VISION.md": "10c9e6bb6bb9e6179e35627b9b344d86a8392a43ed8f22010f97ab127656baec",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py": "a1be56e7ad55d53bd221cf47e21dd398d9c0643cf62666067ba54feee5d4c8de",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/mkt_check.py": "ac4cc6df03836e29a95d640852bc2ec098a43b949888cb46c5b1b59bab57e8e6",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/sdlc_core.py": "9a7ed068c01595f1bcce261bee4b8c48bcfa40d47d58b09cffeec95584403787",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/shared_files.py": "5ad719a69ebd47351589e86250dbaead1cfa6eb3a2c6651ad0259ad9847b3b8a",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/shared_manifest.json": "043a3ada0d406aae850c24a5f7da68c3f37ef75cee4e2fc1e3b3cb6828c8ffb4",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_audit_refs.py": "a6f06e73f4c9469dd64bed283024b6b37294e6c26f171d8cbdbdfd03771a6884",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_docs_root.py": "a8de9e5531b3d33a2c12dfefc9798c161e3fde5fd4bd8bce0da4c3d1b2d83339",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_domain_rules.py": "e1c726e9810cb6c200cbb1bb61e9e4813a49dedc2e86101c5fe7dcca234ca7aa",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_drift.py": "7180c3cc0c3dff7a927b0259f8f8f5f747045134844129c9028f4c7dd59b07ce",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_golden_regression.py": "a64f36a3d8dc8c95bcd0a1ddee7dfd10330060a8f25de52dfc8e3abba1aeead6",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_merge_safety.py": "ed52bed751386e47fd680942c2315f1a1fcc83206a9e2146acc40fff6967ccf4",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_migrate.py": "9570d12325035adcc417b7a7043636cd63791231af1d1cf51094f7f10ecf0ae0",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_mkt_check.py": "3f5cc842f1352b01c426c6f61c4e40822de84b089d3ba2767eef0f580aea3112",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_plan.py": "284117672d67d18bedd58698572b4de744e0006fa4dd3ba2ae3f406b62136f46",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_project_memory.py": "4f3c463a7a52c5a0d3ff88dc71dcbe7ebc9b5add69ada5948365d204054df36d",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_remind.py": "e52ea24b21363c4c6eb6abee8df35b57f4ef65faca9340e3205b3d84ce7e2e75",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_session_start.py": "eda12f21886ddd584c9d82571c56e9a8bf16ddfb8abd40a90db0e74ded70ad4d",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_skill_invariants.py": "ebb610dc1c4b5bc024bb2c97b1b9d9e41982d2b61be1a858f7d0e1a08d604d06",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/templates.md": "508549acc071e724f7da5674d0a90ae6070daf22a62c5f0801de4a2b9469e4d8",
+    "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/vision.md": "191696a8283b2873fea6e57d16fbb3b4f24b82bf0c79bcfd77d52141a9ca2a5b",
+    "scripts/init.js": "b1809ffed384dd99672ac34aaa43c3ec52dbfcaf8aaf3f66289d31f1c9942e56",
+    "scripts/lib.js": "2ac0edc6c2f1e210681c9474b36985c2d586f9e9d4799b50590e78382afcbb30",
+    "scripts/postinstall.js": "6acc3acd4acd8bc79828873473c1157011da102a33bc1f324c22f2f8df6ca4d6",
+    "scripts/preuninstall.js": "32f7c4e58b0bd712536b05db8b7fe29d0419c47434d3828b30af3058b68dc42c",
+    "scripts/test_clients.js": "f4b49ec0d8fe4a40ff962e07360f6be94d0c18549c6be73855e91a8fdb9279a1",
+    "skills/agentic-sdlc-skill/ENFORCEMENT.md": "7b05db469405abc10a2a0d275b6ee4593efa6c765e302ba45376cd34f4350853",
+    "skills/agentic-sdlc-skill/SKILL.md": "f6bb84575e7b0afc0ab69c8b516a70dcfa6f1698457fba9cc49e4845491b63cf",
+    "skills/agentic-sdlc-skill/architect.md": "3508aa7ceddeb255ecb78ce42567e3e8149b50ee268b223195b0b4be0d4aa0b9",
+    "skills/agentic-sdlc-skill/debugging.md": "0bf269c448032d3882796466f125647f37e7a0f3bf5bb5ce971e126a69aa4263",
+    "skills/agentic-sdlc-skill/dispatch.md": "20959347805e6b20ec4fcaddadc0fadd6da2089374bf5ccf783705d5fdfc1640",
+    "skills/agentic-sdlc-skill/elicitation.md": "e33393d68229cfbfb498d0c04e0dc7670b8b2d699d59f96da4f78be1c005900b",
+    "skills/agentic-sdlc-skill/evals/run_behavioral.py": "d30d0301e9bda843782774cfd44652ad2f9c9fda86a59517bdf1ab21ff634496",
+    "skills/agentic-sdlc-skill/evals/scenarios/README.md": "37af573938db0879c5c970ff67cd4237a1ef21fcd0c2befe0b8705244fc32cf2",
+    "skills/agentic-sdlc-skill/evals/scenarios/architect_rules_before_impact.md": "0d6338dd5abea368b3ea5c7c52ada002537c3f5d928f37ecd5b95ffecdd2e40e",
+    "skills/agentic-sdlc-skill/evals/scenarios/consult_fires_on_match.md": "5326b858242a22300dd11ba9a9619098bc0559223b79446e0cb252f27dea55ab",
+    "skills/agentic-sdlc-skill/evals/scenarios/domain_router_verdicts.md": "12b64f85c46cf1da36ae48e1de0b434dcd79361426afb39b813c9f6a1c14e4b9",
+    "skills/agentic-sdlc-skill/evals/scenarios/doubt_asked_when_it_emerges.md": "b92610f8a7e449efbd948d8421a9f9b72556b85520e268e0d6fbf276ba8e09f1",
+    "skills/agentic-sdlc-skill/evals/scenarios/gated_rung_asks_before_descending.md": "c11c9e1c71e7be029d09ea1ec2180334d85b1afc699dad1ddf2a42d41df5d0e3",
+    "skills/agentic-sdlc-skill/evals/scenarios/hook_orients_session.md": "c7331fb1d18f7239ce2e20cfd6c650ded960534a90bea5107b630604e6acc85b",
+    "skills/agentic-sdlc-skill/evals/scenarios/proactive_proposes_on_reusable.md": "20693e9f0a48754cc51f253fba5f6e34c228c2cd0680d271cb13be046cc8264d",
+    "skills/agentic-sdlc-skill/evals/scenarios/unmapped_never_grounds_missing.md": "96e8a0f2aad134690b5254f7ffcdab7a3a2fa7bcfe2cf9b927112b4d6b3a637e",
+    "skills/agentic-sdlc-skill/evals/scenarios/verdict_declared_on_no_match.md": "83add5810b2e101417a70f17dd04dbb81e883cbba134bf5bd4de8cacc7628e29",
+    "skills/agentic-sdlc-skill/guides.md": "e1cd7071256604eb0844ba3740cf69c70dcca94992cb9427d2c4a5d196c7f56e",
+    "skills/agentic-sdlc-skill/hybrid.md": "b1bd55495c3b05c5966c8ea23c0a9d2cfb1ad9abcc04ba96e40dad80878a9cc3",
+    "skills/agentic-sdlc-skill/memory.md": "5907be5f99b18eb66ffda2c25815f4fa266fff4b3767f4c142d601b146271167",
+    "skills/agentic-sdlc-skill/review.md": "4070617586e559e1713bd8558c23823c3c3470585321928a00079ded41938404",
+    "skills/agentic-sdlc-skill/routing.md": "99dbd353f3f642893dbfeba1279ee7c97c0b2d3b60b003ea190e660d493f2c53",
+    "skills/agentic-sdlc-skill/scripts/entry_point.py": "2f19b013b8bca2c476dd99d9854c2faa70d936980ce49d1442582b6bfa8aa2ea",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/ai_docs/INDEX.md": "574d84fa13d017a07a35ab59b8e9c8a9f8cf3477b0b7c0129e6fe9e31a253608",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/ai_docs/README.md": "823e1fbabf93e9019e460226b6127bca91bbb344f5629453246f6e96b789858c",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/ai_docs/architecture/ADR_2026-06-05_ids_over_names.md": "ece3ca6cc118ccd3b05c3743b891f47890f472c77c0cb67ab651db0bbad9b93b",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/ai_docs/audit/HANDOFF_pick_list.md": "71d26c01166636c3f7d82bb71e065a91af03abb609686c508f971200b59b4f38",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/ai_docs/audit/audit_plan.md": "72bfc63a438954c5f35015290ccad6ed22b0f19a5028b489de99b70d25a0762f",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/ai_docs/audit/handoff.md": "ca90c1c319b8c2201933967cc19eb27ff7fb967f3f7e0442aa70d706dcf1603c",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/ai_docs/audit/reviews/REVIEW_LOG.md": "b6e95a4b1c31d9a244b3b5bfb47a2cb82bc1c034b096a08a3dd9fb45bcef1bbe",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/ai_docs/functional/architecture_overview.md": "8eabe44b2b29d422bc69909c15d051245d74adf24c1306a653c3a018bb1b1a02",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/ai_docs/reference/GUIDE_release.md": "0740413682c7da66f515583115ef204904af2b6a32cb64002615d0066fc10973",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/ai_docs/reference/INDEX.md": "2a43b949667bea5a097a5df10cd54d1ceeb3b4a010329bd770ef8acc8dd35866",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/ai_docs/solutions/ANALYSIS_order_intake.md": "f5d59898efd15f7ba0ad05642457263503eaf72008dac5baf9ea33d9652d5bd9",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/ai_docs/solutions/ANALYSIS_pick_list.md": "2c6ebe467b45f6cc05816326d52e19c7c3fb59cbaf2ebd60eb112ac74b797b4e",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/ai_docs/solutions/SPIKE_carrier_api.md": "89eb98704d83a43b846bc498b5841479b797051f9b15c930d467e9c158d59d09",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/ai_docs/strategic/architecture.md": "617d5988567fdf6306431726bbc745e1531348ab436d662f3042ceedd4d729d7",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/ai_docs/strategic/existing_features.md": "fb4b2a51b9f758e93572f5f1336a2e8da5d0118d312c08eee89366e6b9eacc4f",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/ai_docs/strategic/features_history.md": "1ead1ebbf4005aff467ceb1aba5cab27f8c72782944382ab5b0ef0a1255f39c1",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/ai_docs/vision/features/VISION_pick_list.md": "18c0f1a4bf0a38de6115adccda9a355f6a63e9125f88cb8f5123096876ebba01",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/ai_docs/vision/principles.md": "e7ac99125406b3cde86ff9e7ab05a63683016cf7871c18d81642a9098fcbd2ff",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/ai_docs/vision/project_vision.md": "aff36f782966bef9947a17f55719a4fd3e4c8833ad55c4106d240b35120e4b21",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/ai_docs/vision/roadmap.md": "be4a8cd4e7badc5e3a5378a296d78bc6eb824a78ea09c0cb528b837d3ea0717b",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/src/intake/parser.py": "456ac7a430d7c8e5adeea710e61e26b3130f4505c2498c7763800aaf0f7e0749",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/src/picking/__init__.py": "ac7f2ae8179015634251388b7566ac4f8d6137d162c72551dc18b791b1d1e8df",
+    "skills/agentic-sdlc-skill/scripts/fixtures/golden_ai_docs/tests/test_parser.py": "b27cf2b8d754072aaf3061ab65ad0548e220b898a468e636d60cb16fbbd29b32",
+    "skills/agentic-sdlc-skill/scripts/knowledge.py": "a1be56e7ad55d53bd221cf47e21dd398d9c0643cf62666067ba54feee5d4c8de",
+    "skills/agentic-sdlc-skill/scripts/sdlc_check.py": "1af0bceb1d242e87275d7a9c14cbdc4449a0d40e7a547655550ff84ce08f035f",
+    "skills/agentic-sdlc-skill/scripts/sdlc_core.py": "9a7ed068c01595f1bcce261bee4b8c48bcfa40d47d58b09cffeec95584403787",
+    "skills/agentic-sdlc-skill/scripts/shared_files.py": "5ad719a69ebd47351589e86250dbaead1cfa6eb3a2c6651ad0259ad9847b3b8a",
+    "skills/agentic-sdlc-skill/scripts/shared_manifest.json": "043a3ada0d406aae850c24a5f7da68c3f37ef75cee4e2fc1e3b3cb6828c8ffb4",
+    "skills/agentic-sdlc-skill/scripts/test_audit_refs.py": "a6f06e73f4c9469dd64bed283024b6b37294e6c26f171d8cbdbdfd03771a6884",
+    "skills/agentic-sdlc-skill/scripts/test_docs_root.py": "a8de9e5531b3d33a2c12dfefc9798c161e3fde5fd4bd8bce0da4c3d1b2d83339",
+    "skills/agentic-sdlc-skill/scripts/test_domain_rules.py": "e1c726e9810cb6c200cbb1bb61e9e4813a49dedc2e86101c5fe7dcca234ca7aa",
+    "skills/agentic-sdlc-skill/scripts/test_drift.py": "7180c3cc0c3dff7a927b0259f8f8f5f747045134844129c9028f4c7dd59b07ce",
+    "skills/agentic-sdlc-skill/scripts/test_golden_regression.py": "10f2a33eb0b765bc425248ba6dbc61be4445aff6acd35aedc34daec96c3c2441",
+    "skills/agentic-sdlc-skill/scripts/test_merge_safety.py": "ed52bed751386e47fd680942c2315f1a1fcc83206a9e2146acc40fff6967ccf4",
+    "skills/agentic-sdlc-skill/scripts/test_migrate.py": "9570d12325035adcc417b7a7043636cd63791231af1d1cf51094f7f10ecf0ae0",
+    "skills/agentic-sdlc-skill/scripts/test_plan.py": "284117672d67d18bedd58698572b4de744e0006fa4dd3ba2ae3f406b62136f46",
+    "skills/agentic-sdlc-skill/scripts/test_project_memory.py": "4f3c463a7a52c5a0d3ff88dc71dcbe7ebc9b5add69ada5948365d204054df36d",
+    "skills/agentic-sdlc-skill/scripts/test_remind.py": "e52ea24b21363c4c6eb6abee8df35b57f4ef65faca9340e3205b3d84ce7e2e75",
+    "skills/agentic-sdlc-skill/scripts/test_session_start.py": "eda12f21886ddd584c9d82571c56e9a8bf16ddfb8abd40a90db0e74ded70ad4d",
+    "skills/agentic-sdlc-skill/scripts/test_skill_invariants.py": "ebb610dc1c4b5bc024bb2c97b1b9d9e41982d2b61be1a858f7d0e1a08d604d06",
+    "skills/agentic-sdlc-skill/tdd.md": "626a5e64d41b84a05a23e51e78c73447a9cc5dc9cf8382c4f341f2a468eddfe6",
+    "skills/agentic-sdlc-skill/templates.md": "8bf4925c14fcb9e1ad26a723af8ea5e0ca9ffef26bf6f43e89302b99daa231dd",
+    "skills/agentic-sdlc-skill/vision.md": "191696a8283b2873fea6e57d16fbb3b4f24b82bf0c79bcfd77d52141a9ca2a5b",
+    "ai_docs/solutions/courses/agentic-sdlc-kb-agentic/align_4_0.py": "955f079442dba869ab6671388c110824d38fcfbc553933efca99bc761e5e7a11",
+    "ai_docs/solutions/courses/agentic-sdlc-kb-agentic/revise_4_0.py": "f8ad06ca92401127ee5a6c6dce5d742e12fadb205c5e7993be570c6fa601aaff",
+    "ai_docs/solutions/harness_apache_license/probe.py": "06e0b47ab1feffe40fbaf52e1de71c1a441dbbdaa85442b2d4dc511d69e80566",
+    "ai_docs/solutions/harness_authoring_floor/probe.py": "99b50bcf97425c1715d4fd0ea157ef77211a3f6cd2ef828da1e294ef3e6dcb0a",
+    "ai_docs/solutions/harness_benefit_report/probe.py": "d8fbee1ff662ba302220d866742a9c6659899f01ac234815c3feb804c30bbe48",
+    "ai_docs/solutions/harness_capability_tiers/probe.py": "c7fc8d74975bd8e1bd5a396b970c976ae695ed1246080087ad49973f1b07706d",
+    "ai_docs/solutions/harness_course_creator/probe_family_integration.py": "a8715d591149194c65f22a0b2e70a27b7c54494b6f7a10f16e5b22a3ae19e447",
+    "ai_docs/solutions/harness_course_domain_core/probe.py": "07fb63d6471279baf3e31baac81ff6f172d96dd82a2569770cd3699595fd5c49",
+    "ai_docs/solutions/harness_cross_unit_remediation/probe.py": "e6ccc89966ac992de42bd963f75e989670f2be63d2b8947a24bade0e58c2a70e",
+    "ai_docs/solutions/harness_evidence_debugging/probe.py": "23ecbb26af163824ebf80d617b518668433dd0e0c78da7498c3f64c05464267c",
+    "ai_docs/solutions/harness_evidence_debugging/tally.py": "3d911e9519330a708a53e112f8dcd6f4c6388a0df2f86f7fbf13bc2fd2bf5c55",
+    "ai_docs/solutions/harness_kb_recall_probe/probe.py": "25e4ba8865e834309d757b009b0847aca54e4a273cb29b934c3f3dbe62d3a514",
+    "ai_docs/solutions/harness_kb_row_atomicity/probe.py": "29113bc73f88333d897382f39e92815c83e1b27e5f8c80a81bb259da61b99994",
+    "ai_docs/solutions/harness_mandatory_read_diet/probe.py": "e010e3adfc90215fa401910e886a644ecd2114204e933e7a07e92f3308f79d35",
+    "ai_docs/solutions/harness_mkt_read_diet/probe.py": "89e3c4a39162d6794c06d4e3ea062f6c211a70aec2a1c4f8e93920048607cb55",
+    "ai_docs/solutions/harness_question_discipline/probe.py": "02b53014dcf2a8d1adda463bffcfbd80180a4fdaee2352815ee70741149b6a21",
+    "ai_docs/solutions/harness_release_stable_beta/test_publisher.py": "97d9cc7ee80311f0968771ef8b79531afd5adc61c5837f919159a2be8c457d84",
+    "ai_docs/solutions/harness_release_stable_beta/verify_packages.py": "e06d2226de066ce0a21729f574883162bfc3b10ead693c3a838c5291de3f4082",
+    "ai_docs/solutions/harness_sdlc_kb_integration/probe.py": "fb322e0d00e8e5adfeb17b31c69605650e54f735b32a27835f09fe8771efe24d",
+    "ai_docs/solutions/harness_software_knowledge/probe.py": "576765a6d0181dadede82689bc009ca9a7116993a45ccf30fbb029274ffa9220",
+    "ai_docs/solutions/harness_stale_dangling_ref/probe.py": "672d9ede0db84134b0be490e8fff58735f324340ef8ef1ff97eed414119cb2cd"
+  },
+  "doctrine_text_references": [
+    {
+      "path": "distributions/course-creator/skills/course-creator/elicitation.md",
+      "line": 28,
+      "text": "below, and the Capture Moment sweep at a user-signed closing (`SKILL.md`) — each"
+    },
+    {
+      "path": "distributions/course-creator/skills/course-creator/scripts/knowledge.py",
+      "line": 1823,
+      "text": "The recall reflex (SKILL.md section \"Topic Recall\") needs the graph in"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/CHANGELOG.md",
+      "line": 292,
+      "text": "- **`## Revision — the full re-read` (SKILL.md).** Incorporating new knowledge"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/CHANGELOG.md",
+      "line": 346,
+      "text": "the capture moment) at every prompt. Never wired by `init`, never a default:"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/CHANGELOG.md",
+      "line": 351,
+      "text": "F-040 — the capture moment (second-brain unit 2): the day's decisions reach the"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/CHANGELOG.md",
+      "line": 355,
+      "text": "- **`SKILL.md` §The Capture Moment.** At a user-signed closing (phase 5 of a governed"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/CHANGELOG.md",
+      "line": 382,
+      "text": "- **`SKILL.md` §Topic Recall — the answer-side consult.** Whenever a reply would"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/SKILL.md",
+      "line": 39,
+      "text": "- **Map-First Navigation:** rely on `ai_docs/README.md`, `INDEX.md`, and `reference/INDEX.md` router for targeted retrieval before creating new documents — and before *answering from model memory* on the project's domain (`## Topic Recall`)."
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/SKILL.md",
+      "line": 58,
+      "text": "| **L2 - Propagation of settled knowledge** | The fact is **already settled** in the corpus and the work carries it into existing documents — restating, correcting a stale copy, updating an SOP that quotes it. No node created or superseded, no hierarchy change, no node frontmatter change, no new source ingested. | Mini-analysis in message: objective, impact, sources, validation. Update existing document (full re-read per `## Revision`) or create single SOP/note. |"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/SKILL.md",
+      "line": 102,
+      "text": "| the day's decisions, at a user-signed closing (the Capture Moment sweep) | Verification that the phase-4 notes/claims exist; NEW `corpus/notes/*` + claim rows only for what the sweep surfaces un-captured. The event is the CLOSING, disjoint from the row above (which fires when something is SAID). | 5 / session end |"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/SKILL.md",
+      "line": 140,
+      "text": "- **Isolate the work (Branch/worktree hygiene).** Distillation rewrites existing notes — full re-read per `## Revision` — and does it on a branch or a worktree, never directly on the shared corpus, so a half-finished reconciliation is never what the next reader finds."
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/SKILL.md",
+      "line": 150,
+      "text": "expired windows, superseded derivation chains), worked per `## Revision`"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/SKILL.md",
+      "line": 163,
+      "text": "## Topic Recall — the answer-side consult"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/SKILL.md",
+      "line": 227,
+      "text": "## The Capture Moment — the day's decisions reach the ledger"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/SKILL.md",
+      "line": 279,
+      "text": "## Revision — the full re-read"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/SKILL.md",
+      "line": 286,
+      "text": "sections — never append a delta."
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/elicitation.md",
+      "line": 28,
+      "text": "below, and the Capture Moment sweep at a user-signed closing (`SKILL.md`) — each"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/reconciliation.md",
+      "line": 48,
+      "text": "worklist, worked per the kb `## Revision` doctrine, one document at a"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/knowledge.py",
+      "line": 1823,
+      "text": "The recall reflex (SKILL.md section \"Topic Recall\") needs the graph in"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_capture.py",
+      "line": 3,
+      "text": "\"\"\"F-040 battery — the capture moment (second-brain unit 2)."
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_capture.py",
+      "line": 8,
+      "text": "1. Doctrine invariants — SKILL.md's Capture Moment section and its Write"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_capture.py",
+      "line": 55,
+      "text": "class TestCaptureDoctrine(unittest.TestCase):"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_capture.py",
+      "line": 61,
+      "text": "\"## The Capture Moment\","
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_capture.py",
+      "line": 83,
+      "text": "\"at a user-signed closing (the Capture Moment sweep)\","
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_recall.py",
+      "line": 9,
+      "text": "1. Doctrine invariants — SKILL.md's Topic Recall section and taxonomy.md's"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_recall.py",
+      "line": 66,
+      "text": "class TestRecallDoctrine(unittest.TestCase):"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_recall.py",
+      "line": 72,
+      "text": "\"## Topic Recall — the answer-side consult\","
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_remind.py",
+      "line": 45,
+      "text": "# path, the claim currency and the capture moment in the line itself."
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_revision.py",
+      "line": 24,
+      "text": "CANONICAL = \"never append a delta\""
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_revision.py",
+      "line": 28,
+      "text": "POINTER = \"full re-read per `## Revision`\""
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_revision.py",
+      "line": 42,
+      "text": "class RevisionDoctrineTests(unittest.TestCase):"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_kb_revision.py",
+      "line": 48,
+      "text": "self.assertIn(\"## Revision\", self.skill)"
+    },
+    {
+      "path": "distributions/kb-agentic-skill/skills/kb-agentic-skill/taxonomy.md",
+      "line": 84,
+      "text": "The descent above also serves ANSWERING (`SKILL.md` §Topic Recall): when a reply would"
+    },
+    {
+      "path": "distributions/mkt-agentic-sdlc/CHANGELOG.md",
+      "line": 196,
+      "text": "delta section. Ported from the kb lens's `## Revision` doctrine (kb 1.10.0),"
+    },
+    {
+      "path": "distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/knowledge.py",
+      "line": 1823,
+      "text": "The recall reflex (SKILL.md section \"Topic Recall\") needs the graph in"
+    },
+    {
+      "path": "skills/agentic-sdlc-skill/scripts/knowledge.py",
+      "line": 1823,
+      "text": "The recall reflex (SKILL.md section \"Topic Recall\") needs the graph in"
+    },
+    {
+      "path": "ai_docs/solutions/harness_question_discipline/probe.py",
+      "line": 28,
+      "text": "P6  kb: the claim-conflict hand-over keeps its own timing, and the Capture Moment"
+    },
+    {
+      "path": "ai_docs/solutions/harness_question_discipline/probe.py",
+      "line": 194,
+      "text": "check(\"P6\", lens, \"Capture Moment sweep\" in qd and \"each a planned occasion\" in qd,"
+    },
+    {
+      "path": "ai_docs/solutions/harness_question_discipline/probe.py",
+      "line": 195,
+      "text": "\"kb's Capture Moment sweep is not a planned occasion\")"
+    }
+  ],
+  "doctrine_limits": "Separate text probe for transferred Markdown clauses and their test classes, across the same file population. Includes producers, pointers and tests; it is not an API call graph or proof of absence of paraphrases."
+}

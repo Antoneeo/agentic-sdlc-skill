@@ -1,0 +1,6 @@
+[ok] ANALYSIS index regenerated: D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\ai_docs\solutions\harness_software_knowledge\behavior\candidate\project\ai_docs\strategic\features_history.md
+[info] no canonical documents: INDEX.md not generated
+[ok] guide router regenerated (empty stub): D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\ai_docs\solutions\harness_software_knowledge\behavior\candidate\project\ai_docs\reference\INDEX.md
+[ok] topics index regenerated: D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\ai_docs\solutions\harness_software_knowledge\behavior\candidate\project\ai_docs\topics\INDEX.md
+[ok] corpus index regenerated: D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\ai_docs\solutions\harness_software_knowledge\behavior\candidate\project\ai_docs\corpus\INDEX.md
+[ok] project memory regenerated: D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\ai_docs\solutions\harness_software_knowledge\behavior\candidate\project\ai_docs\memory\INDEX.md

@@ -40,6 +40,12 @@ SHARED_FILES = (
     "scripts/knowledge.py",
     "scripts/test_project_memory.py",
     "memory.md",
+    "scripts/test_software_knowledge.py",
+    "distillation.md",
+    "taxonomy.md",
+    "reconciliation.md",
+    "portability.md",
+    "knowledge-templates.md",
     "scripts/entry_point.py",
     "scripts/shared_files.py",
     # the shared batteries: a test that differs between distributions is a test
@@ -67,7 +73,7 @@ SHARED_FILES = (
 # Deliberately NOT shared, and named here so the absence reads as a decision:
 #   SKILL.md, templates.md, ENFORCEMENT.md  -- each domain's own wording
 #   the entry point (sdlc_check.py / mkt_check.py) -- that IS the domain
-#   the overlay files (architect/tdd/debugging | taxonomy/distillation |
+#   the overlay files (architect/tdd/debugging |
 #     frameworks/research) -- the overlays are supposed to differ
 #   elicitation.md -- the question ROUND is each domain's own: marketing runs
 #     question waves, not the six-question spec round, and its copy already

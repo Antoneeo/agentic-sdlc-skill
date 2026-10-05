@@ -228,3 +228,10 @@ The prompt is not enforcement. When the project needs repeatable guarantees:
 - run `scripts/mkt_check.py check` before declaring any E2/E3 deliverable done.
 
 The validator is a support, not a universal prerequisite: the skill must stay usable in environments without Python, declaring what it cannot verify automatically.
+
+## Shared knowledge methods (on demand)
+
+`memory.md` is the common recall/capture/revision entry. For source intake read
+`distillation.md`; for placement `taxonomy.md`; for additions and updates
+`reconciliation.md`; for bundles `portability.md`. Formats live in
+`knowledge-templates.md`. Read on the corresponding trigger, under this lens's triage.

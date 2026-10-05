@@ -298,6 +298,12 @@ review is due), and collapsing it into a bare `PASS` erases exactly that.
 
 When you are the reviewer:
 
+- For software knowledge touched by this work, at the review already due verify
+  claim nature, source chains/conditions, affected derivations and the capture delta.
+  Approval is not observation; MATCHED is not execution or complete dependency coverage.
+  Compare local tests with the claimed user path and require unresolved limits to remain
+  visible. Use the existing findings and log fields; this adds no separate gate.
+
 - Verify claims against the real source, not against the diff's own
   description of itself.
 - **Your verdict is your final output.** Deliver findings and verdict as the text

@@ -352,7 +352,8 @@ checks: [marketing.funnel]      # optional — extra portable checks to run on t
 
 ## Impact
 <!-- existing files touched, APIs/contracts, performance, new dependencies.
-     Derived from the ledger above: every INADEQUATE/MISSING row appears here. -->
+     Derived from the ledger above: every INADEQUATE/MISSING row appears here.
+     Cite reused project claims/ground and affected properties or gaps (memory.md). -->
 
 ## Security and Threat Model
 <!-- ALWAYS mandatory, also in Standalone.
@@ -364,11 +365,13 @@ checks: [marketing.funnel]      # optional — extra portable checks to run on t
 
 ## Test Strategy
 <!-- AAA unit tests, integration, examples. If the environment is not executable (firmware/HIL):
-     explicit alternative verification and reason. -->
+     explicit alternative verification and reason. Re-verify affected knowledge,
+     including indirect inputs; state what proves local behavior vs the complete path. -->
 
 ## Diary / Current State
 <!-- updated at every milestone: where I am, last problem, next step.
-     It is the handoff source for this feature. -->
+     It is the handoff source for this feature. Cite knowledge added/reconciled and
+     unresolved evidence here; no separate capture log or whole-ledger copy. -->
 ```
 
 Allowed frontmatter states: `PLANNED` | `IN_PROGRESS` | `COMPLETED` | `CANCELLED`. `COMPLETED` requires `end_date`. (The validator also accepts the deprecated Italian keys `stato`/`livello`/`data_inizio`/`data_fine` in existing projects.)

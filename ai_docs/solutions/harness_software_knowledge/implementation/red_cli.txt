@@ -1,0 +1,38 @@
+............s.......usage: sdlc_check.py [-h]
+                     {check,validate,index,stale,migrate,mark,gate,benefit,orient,remind,plan} ...
+sdlc_check.py: error: argument cmd: invalid choice: 'capture-source' (choose from check, validate, index, stale, migrate, mark, gate, benefit, orient, remind, plan)
+Fusage: sdlc_check.py [-h]
+                     {check,validate,index,stale,migrate,mark,gate,benefit,orient,remind,plan} ...
+sdlc_check.py: error: argument cmd: invalid choice: 'evidence' (choose from check, validate, index, stale, migrate, mark, gate, benefit, orient, remind, plan)
+FF
+======================================================================
+FAIL: test_e7_capture_and_json_cli_with_nested_docs_root (__main__.SoftwareEvidenceTests.test_e7_capture_and_json_cli_with_nested_docs_root)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 294, in test_e7_capture_and_json_cli_with_nested_docs_root
+    self.assertEqual(rc, 0, out)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: 2 != 0 : 
+
+======================================================================
+FAIL: test_e7_legacy_requires_review_and_design_is_not_observed (__main__.SoftwareEvidenceTests.test_e7_legacy_requires_review_and_design_is_not_observed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 304, in test_e7_legacy_requires_review_and_design_is_not_observed
+    self.assertEqual(rc, 1, out)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: 2 != 1 : 
+
+======================================================================
+FAIL: test_e7_stale_and_seam_warn_on_drift_without_changing_legacy_exit (__main__.SoftwareEvidenceTests.test_e7_stale_and_seam_warn_on_drift_without_changing_legacy_exit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 318, in test_e7_stale_and_seam_warn_on_drift_without_changing_legacy_exit
+    self.assertIn("CHANGED", out.getvalue())
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'CHANGED' not found in ''
+
+----------------------------------------------------------------------
+Ran 23 tests in 2.581s
+
+FAILED (failures=3, skipped=1)

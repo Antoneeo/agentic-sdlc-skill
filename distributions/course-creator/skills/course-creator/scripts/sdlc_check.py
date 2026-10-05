@@ -16,7 +16,7 @@ sdlc_core.set_profile(
     skill_name="course-creator", unit_noun="course",
     support_files=("slide_content.md", "templates.md", "learning_design.md", "source_check.md",
                    "simulation.md", "feedback.md", "elicitation.md", "ENFORCEMENT.md",
-                   "memory.md", "review.md", "routing.md", "vision.md", "guides.md",
+                   "memory.md", "distillation.md", "taxonomy.md", "reconciliation.md", "portability.md", "knowledge-templates.md", "review.md", "routing.md", "vision.md", "guides.md",
                    "dispatch.md"),
     capabilities=("triage", "write_triggers", "workstream_registry", "vision_gate",
                   "design_review_gate", "guide_router", "worktree_hygiene",

@@ -162,73 +162,15 @@ Guides are consulted, created, and distilled per `guides.md`.
 
 ## Topic Recall — the answer-side consult
 
-The graph is only a second brain if it is READ when answering, not only written when
-distilling. The descent (`taxonomy.md`) fires here with a new trigger — the answer-side
-twin of the guide consult above.
-
-- **Trigger — unconditional scan on domain assertions.** Whenever the reply would assert
-  facts about the PROJECT'S domain (its topics, decisions, sources, constraints), scan
-  `topics/INDEX.md`. Plausibility of coverage is judged ON the scanned top rows, never
-  before them — "the KB probably doesn't have this" is model memory talking, the exact
-  judgement this reflex removes. Exempt: pure mechanics (running a command, editing per
-  explicit instruction), general knowledge outside the project's domain, L1 gestures.
-- **Once per topic per SESSION.** The dedup key is the matched slug (known ex post); a
-  question plainly within an already-descended branch reuses that consult, and a
-  placement descent already run this session counts. A compaction starts a new session.
-- **The act.** Descend per `taxonomy.md` §6 (same doctrine, answer mode). On claims,
-  answer FROM them citing claim ids; a claim whose `state` is `SUPERSEDED <id>` is never
-  cited without naming its successor.
-- **The declared verdict — only when the recall ran**, never a per-turn ritual. Four
-  legal values:
-  - `kb: <slug>[, <slug> …] → N claims cited` — **every** slug the descent opened, not
-    only the one that answered. The descent is multi-branch by mandate (`taxonomy.md`
-    §1: follow every parent, open the final candidates), so a single-slug form cannot
-    state what a correct descent did: the agent either under-reports the branches it
-    read or invents a shape for them, and both make a thorough descent
-    indistinguishable from a lucky one. Which branches were opened is the part of this
-    verdict a reader can actually check.
-  - `kb: <slug>[, <slug> …] → node matched, no claims` — surface the node's `gaps:` when
-    it answers the question: "the KB knows it doesn't know" is a first-class answer.
-  - `kb: no coverage` — index read, nothing fits.
-  - `kb: index absent — regenerate (sdlc_check.py index)` — the INDEX is missing, not
-    necessarily the graph (nodes routinely exist while the index lags); regenerate and
-    rescan.
-  Never fake the verdict: an always-"no coverage" verdict certifies a lookup that did
-  not happen. The `router:` and `kb:` verdicts are independent and may co-occur, one
-  line each — a how-to question can match a guide AND carry claims.
-- **Anti-echo — the re-touch rule.** When a DERIVED claim grounds a decision the user is
-  about to take, walk its chain to non-DERIVED ground — a GIVEN artifact, an ELICITED or
-  RULING note — and cite that ground beside the claim id; re-opening only the immediate
-  target may re-read the agent's own synthesis, which is the echo chamber itself. If the
-  ground does not resolve (imported bundle without originals, external `original_path:`,
-  tombstone): say so beside the claim id and treat the claim as **unverified for
-  decision-grounding** — surfaced, never silently cited. Per-provenance stance: GIVEN's
-  source column is already the direct citation; ELICITED/RULING carry the practitioner's
-  own authority; an IMPORTED claim grounding a decision is named as un-re-ratified
-  foreign authority.
-- **Citation scope — the row's test is scope, not fidelity.** Before citing a claim in
-  an answer or a document, verify every part of the row belongs to the question: a row
-  can be atomic as provenance and plural as meaning (`distillation.md` §3), and a
-  faithful quote of the whole row then asserts what the source did not — a capability
-  borrowed across subjects, another actor's surface, a silently switched referent.
-  If part of the row is out of scope, **cite the part and say where the rest
-  belongs** — never cite the whole row on the grounds that it "says what I quoted",
-  and never silently drop the off-topic part (that loses an assertion — the other
-  half of the north star). A row that keeps forcing this test is a split candidate
-  (`reconciliation.md` §Splitting a bundled row).
-- **The trace persists.** When the decision is recorded (a ruling note, a diary entry),
-  that record cites the claim id AND the re-touched ground — the trace survives in the
-  corpus, not in ephemeral chat.
-- **Under dispatch**, recall is an orchestrator concern: the orchestrator runs the
-  descent itself; a context-free subagent never runs its own. The task schema has no
-  claims field today, so until a dispatch-focused unit adds one, the orchestrator
-  inlines the cited claim rows in the task's free text — an explicit interim.
+For KB answers, unconditional scan on domain assertions: coverage is judged ON the
+scanned top rows, never before them. Exempt: pure mechanics and general knowledge
+outside the project's domain, L1 gestures. Apply `memory.md` §Topic Recall for descent,
+verdicts, citation scope, re-touch and dispatch; `taxonomy.md` owns the descent.
 
 ## The Capture Moment — the day's decisions reach the ledger
 
-Capture today is what makes recall honest tomorrow: a captured elicited or ruled note
-is exactly the non-DERIVED ground the re-touch rule above walks to. The rails all
-exist — this section adds only the MOMENT.
+Use `memory.md` §Capture for source channeling, idempotence and reconciliation.
+The KB-specific timing and question remain here:
 
 - **When — user-signed closings, once per session.** Phase 5 of a governed unit, or
   any closing signal from the user in an un-governed session ("chiudiamo", "we're
@@ -248,56 +190,30 @@ exist — this section adds only the MOMENT.
   in the same family as the phase-3 round, not a blocking question (nothing stalls;
   the session is ending), so the blocking form does not attach; the inline result
   satisfies the search-first duty. "Niente" ends it.
-- **The sweep is idempotent.** It verifies the day's decisions are on the rails; a
-  decision already noted at phase 4 is verified, never re-captured — no second note,
-  no duplicate claim row. The moment closes gaps; the phase-4 row stays the primary
-  channel.
-- **What counts as a decision**: domain choices made or confirmed today — a value, a
-  threshold, a rule, a stated preference, a rejected alternative with its reason.
-  NOT mechanics (commands run, files edited), NOT process state (the handoff's job).
-- **The channeling — existing rails, explicit provenance.**
-  - The user's words → `corpus/notes/*` with `origin: elicited` and a `date:`; a
-    claim row distilled from it carries `prov: ELICITED`, source = that note with a
-    legal `L<a>-<b>` locator.
-  - A synthesis of the day's discussion → a note with `derived_from:` → claim
-    `prov: DERIVED`.
-  - **RULING only when the decision resolves an existing contested set** — then
-    `reconciliation.md` §2 applies in full (mandatory `basis:`, supersession of the
-    whole prior set). A fresh conflict-free decision is captured elicited: a preference
-    is not a fact, and `basis:` is reserved for the fact the corpus lacks.
-  - A fact on an existing topic → claim row, L1 (`id` empty; `claim-id --fill`).
-  - No owning topic → the note is written NOW and the placement is declared as the
-    next kb unit. Capture never smuggles an L3 hierarchy change, and
-    `topics/unplaced.md` is never a decision park — UNPLACED is for topic-less
-    scraps and is invisible to recall.
-- **Reconciliation is wired.** A captured claim meeting an existing claim on the
-  node classifies per `reconciliation.md` — capture can confirm, refine, coexist or
-  CONTEST, never silently overwrite.
-- **Silence stays legal where no one signed off**: no closing signal → no question,
-  no ritual line.
+- Domain decisions include values, thresholds, rules, preferences and rejected
+  alternatives with reasons; commands and process state belong in the handoff.
+- A fact on an existing topic is L1 under KB triage. Without an owning topic, capture
+  the note now and declare placement as the next KB unit; no implicit hierarchy change.
+- **Silence stays legal where no one signed off**: no closing signal, no question.
 
 ## Revision — the full re-read
 
-Incorporating new knowledge into an existing document is a rewrite, not an
-append: anchored edits are each correct while the global invariant — the body
-reads as CURRENT state — is never re-verified. The gesture:
-- Re-read the WHOLE document before editing; then rewrite the body so it reads
-  as written today — new knowledge fused, never quarantined in dated
-  sections — never append a delta.
-- History goes to the Diary/notes, never an inline chronicle — and past Diary
-  entries are never rewritten: a correction is a new entry.
-- A SUPERSEDED banner is a tombstone, never a revision device in a living doc.
-- Claim tables are EXEMPT (rows move only per `reconciliation.md`) and node
-  frontmatter moves only per `taxonomy.md` — a revision never re-parents; the
-  rewrite governs prose, never the ledger or the graph edges.
-- A multi-document pass re-reads PER DOCUMENT; set coverage is not integrity.
-- The re-read raises the probability of catching a false premise; it cannot
-  guarantee it — domain judgment stays the human's.
+Apply `memory.md` §Revision, the single shared prose-revision authority. The L2 and
+Phase-4 pointers to this anchor retain their existing scope.
 
 ## Mechanical Enforcement
+- `capture-source`: preserve a selected software span and version with `scripts/sdlc_check.py`.
+- `evidence`: report declared software evidence and its limits with the same entry point.
 - `scripts/sdlc_check.py index`: updates `ai_docs/INDEX.md` and `ai_docs/reference/INDEX.md`.
 - `scripts/sdlc_check.py validate`: validates YAML frontmatter (`status`, `description`).
 - `scripts/sdlc_check.py check`: checks dirty closures and missing indexes.
 - `scripts/sdlc_check.py stale`: spine staleness plus `## claims` --
   superseded-cited documents, expired `valid` windows, superseded
   derivation chains (the time cycle's consolidated view).
+
+## Shared knowledge methods (on demand)
+
+`memory.md` is the common recall/capture/revision entry. For source intake read
+`distillation.md`; for placement `taxonomy.md`; for additions and updates
+`reconciliation.md`; for bundles `portability.md`. Formats live in
+`knowledge-templates.md`. Read on the corresponding trigger, under this lens's triage.

@@ -93,3 +93,10 @@ Run `sdlc_check.py index` then `sdlc_check.py check`; include course material, V
 ## Operative Guides and memory
 
 The guide router is `ai_docs/reference/INDEX.md`. A missing router is `router: absent`, not `router: no match`; run `index` to create its generated stub. `guides.md` governs consumption and creation. `memory.md` governs shared recall and capture. `dispatch.md` governs context passed to separate reviewers or simulated learners. `ENFORCEMENT.md` describes optional CI and hooks; `scripts/sdlc_core.py` remains the shared spine and `scripts/course_check.py` adds only course structure.
+
+## Shared knowledge methods (on demand)
+
+`memory.md` is the common recall/capture/revision entry. For source intake read
+`distillation.md`; for placement `taxonomy.md`; for additions and updates
+`reconciliation.md`; for bundles `portability.md`. Formats live in
+`knowledge-templates.md`. Read on the corresponding trigger, under this lens's triage.

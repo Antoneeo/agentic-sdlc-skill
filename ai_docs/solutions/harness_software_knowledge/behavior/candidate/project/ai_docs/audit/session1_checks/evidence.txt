@@ -1,0 +1,165 @@
+Evidence: declared inputs only; no semantic or completeness certification.
+card-continuity f83e247f972f kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity c851903ffb2f kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity 5d84a6da65fa kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity 6a1608487f13 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity d9589e60c80a kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity 790458f8bdd4 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity 17204bef97e0 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity 2d75f0db110b kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity 12357b9a1829 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity 1f440b39d02d kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity b6d8c3b260a4 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity 45683e104e0e kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity 8e36a139af3d kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity 253a9eb30ee4 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity c4289356c1c2 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity bc3f06866ab9 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity a0f0320859cf kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity 6a005d2f7c8b kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity fd3dc15f6116 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity 9a196a7b52e9 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity b991b26957ae kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity 86859c605229 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity f1513c4d9357 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity 23c2ef0bb5d7 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity afc5c69cccc2 kind=REQUIREMENT state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity a1146625de15 kind=REQUIREMENT state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity 117acfc19073 kind=REQUIREMENT state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity 00423d7ae0c6 kind=REQUIREMENT state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity 665cd7e49ab8 kind=REQUIREMENT state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity 051d5c32322e kind=REQUIREMENT state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity b8b43bca0573 kind=REQUIREMENT state=OK
+  MATCHED corpus/given/source-8d2e82955248f265d8551c7a29c698984748f45d705a2c680597ed4e93cf2a59-516aebfbb5d32fc8883135d13c5c6739fa9a39f111ec1872c54ca4f6772dd2ee.txt: declared file bytes match
+card-continuity b138cec58fc4 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity ba57d1aa2717 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 8da6c390f6ea kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 1effc0864f30 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity f56372ee2a2a kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity b02160c319ff kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity f8e7f9b10c58 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity c6d7a6db479f kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity b2eb7460669f kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity d61cb1b37707 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 99d0b5bbaa17 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 4b4ea8c6ce3d kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 3e4b68265d9c kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 6f26fe627786 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 4902f07dae43 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 243eaa4ec781 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity d577efce2dfa kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 79fcc16d8d5f kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 2dc98a10f042 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 5592c0fc92f1 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 43bae65c5376 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 915719f66ed6 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 7a0407f424e8 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity ad668ac44399 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 1b22dfa42106 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 74143412dd55 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 1456e76d3430 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity cc912a8b91ce kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 206ba1bc5b61 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 7e3b3eb37150 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 217f591e1794 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity 4cf787e73a67 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-6d29099a0334b41c2532c017de7d2f8e41331d7a0957b650a2e66d57580cc0be-bcccab54641d42ddb6e7f68d5445cede3e928108e25cc756982d58de81ae668f.txt: declared file bytes match
+card-continuity fae58a5e73a9 kind=OBSERVATION state=OK
+  MATCHED corpus/notes/card-continuity.md: all declared premises match
+card-identity ca323e332851 kind=OBSERVATION state=OK
+  MATCHED corpus/notes/card-identity.md: all declared premises match
+card-identity 530a1405d7a5 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-2fa49ba256129b7988272b97f272e6cc1a15a7930c46ebb5b7b102c1ab70ca13-34aed586813e7deca317b429aa10be22f03db52c4a3c523ac08255fc49c2999f.txt: declared file bytes match
+card-identity 5488954c2729 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-2fa49ba256129b7988272b97f272e6cc1a15a7930c46ebb5b7b102c1ab70ca13-34aed586813e7deca317b429aa10be22f03db52c4a3c523ac08255fc49c2999f.txt: declared file bytes match
+card-identity a6f03a3c8e5b kind=REQUIREMENT state=OK
+  MATCHED corpus/notes/card-identity.md: all declared premises match
+retry-policy ed7529803c5c kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-898a80b765d5d2169c8f5db93fca941627b94be4e681307302345dd05294e5e1-fbba7af07ce1b2ad333491ea024532cb72f90121bb4ea19dae074971e65ade9b.txt: declared file bytes match
+retry-policy f579af228875 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-e3ceac7c82d50a3f6a5d26bbb6872d97daf0429cb9ef5c320dfd6dd201bdfeba-181d2eeeefc0a6400827d3c53a9f6742536a7d72719891ddc71308703f9ec260.txt: declared file bytes match
+retry-policy fe81bb4c27b5 kind=OBSERVATION state=OK
+  MATCHED corpus/given/source-e3ceac7c82d50a3f6a5d26bbb6872d97daf0429cb9ef5c320dfd6dd201bdfeba-181d2eeeefc0a6400827d3c53a9f6742536a7d72719891ddc71308703f9ec260.txt: declared file bytes match
+retry-policy a3cf8c487f67 kind=OBSERVATION state=OK
+  MATCHED corpus/notes/retry-policy.md: all declared premises match
+retry-policy cf3fdca6a96c kind=OBSERVATION state=OK
+  MATCHED corpus/notes/retry-policy.md: all declared premises match
+retry-policy 3b6aae6dc920 kind=OBSERVATION state=OK
+  MATCHED corpus/notes/retry-policy.md: all declared premises match
+retry-policy 4a2ef53d0481 kind=OBSERVATION state=OK
+  MATCHED corpus/notes/retry-policy.md: all declared premises match
+retry-policy e6e3c025289c kind=OBSERVATION state=OK
+  MATCHED corpus/notes/retry-policy.md: all declared premises match
+retry-policy 57647275bed3 kind=REQUIREMENT state=OK
+  MATCHED corpus/notes/retry-policy.md: all declared premises match
+retry-policy 8cbe4c563a35 kind=DESIGN state=OK
+  UNTRACKED corpus/given/retry-proposal-9f23ebb4.txt: no software binding
+retry-policy 987cdc1555d1 kind=DESIGN state=OK
+  UNTRACKED corpus/given/retry-proposal-9f23ebb4.txt: no software binding
+retry-policy 00dac20b6be6 kind=DESIGN state=OK
+  UNTRACKED corpus/given/retry-proposal-9f23ebb4.txt: no software binding
+retry-policy c26ac671370b kind=OBSERVATION state=OK
+  UNTRACKED corpus/given/retry-proposal-9f23ebb4.txt: no software binding
+software-properties da858797af4b kind=REQUIREMENT state=OK
+  UNTRACKED corpus/notes/project-placement.md: no software binding

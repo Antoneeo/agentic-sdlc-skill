@@ -1,0 +1,9 @@
+{
+  "old_identity_missing": true,
+  "old_identity_result_missing": true,
+  "renamed_identity_same_bytes": true,
+  "current_retry_config": {
+    "attempts": 1
+  },
+  "retry_code_unchanged": true
+}

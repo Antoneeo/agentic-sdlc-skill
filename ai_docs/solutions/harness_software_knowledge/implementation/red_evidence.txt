@@ -1,0 +1,75 @@
+..........s.EEEEFF
+======================================================================
+ERROR: test_e4_changed_missing_and_foreign_are_distinct_read_only (__main__.SoftwareEvidenceTests.test_e4_changed_missing_and_foreign_are_distinct_read_only)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 196, in test_e4_changed_missing_and_foreign_are_distinct_read_only
+    report = self.findings()
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 190, in findings
+    return kb.kb_software_findings(self.project, self.docs)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'knowledge' has no attribute 'kb_software_findings'
+
+======================================================================
+ERROR: test_e5_contested_or_superseded_never_gets_green_from_bytes (__main__.SoftwareEvidenceTests.test_e5_contested_or_superseded_never_gets_green_from_bytes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 248, in test_e5_contested_or_superseded_never_gets_green_from_bytes
+    self.assertEqual(kb.kb_cmd_evidence(self.project, self.docs), 1)
+                     ^^^^^^^^^^^^^^^^^^
+AttributeError: module 'knowledge' has no attribute 'kb_cmd_evidence'. Did you mean: 'kb_cmd_orient'?
+
+======================================================================
+ERROR: test_e5_cycle_and_dangling_are_integrity_errors (__main__.SoftwareEvidenceTests.test_e5_cycle_and_dangling_are_integrity_errors)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 235, in test_e5_cycle_and_dangling_are_integrity_errors
+    self.assertTrue(any("cycle" in e for e in self.findings()["errors"]))
+                                              ~~~~~~~~~~~~~^^
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 190, in findings
+    return kb.kb_software_findings(self.project, self.docs)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'knowledge' has no attribute 'kb_software_findings'
+
+======================================================================
+ERROR: test_e5_transitive_and_or_and_untracked (__main__.SoftwareEvidenceTests.test_e5_transitive_and_or_and_untracked)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 218, in test_e5_transitive_and_or_and_untracked
+    self.assertEqual(self.findings()["claims"][0][4][0]["status"], "MATCHED")
+                     ~~~~~~~~~~~~~^^
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 190, in findings
+    return kb.kb_software_findings(self.project, self.docs)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'knowledge' has no attribute 'kb_software_findings'
+
+======================================================================
+FAIL: test_e6_export_closes_derivations_and_refuses_broken_closure (__main__.SoftwareEvidenceTests.test_e6_export_closes_derivations_and_refuses_broken_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 256, in test_e6_export_closes_derivations_and_refuses_broken_closure
+    self.assertTrue({raw, side, note}.issubset(artifacts))
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+======================================================================
+FAIL: test_e6_import_never_adopts_project_readme_and_rejects_bad_typed_row (__main__.SoftwareEvidenceTests.test_e6_import_never_adopts_project_readme_and_rejects_bad_typed_row)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\skills\agentic-sdlc-skill\scripts\test_software_knowledge.py", line 266, in test_e6_import_never_adopts_project_readme_and_rejects_bad_typed_row
+    self.assertEqual(errors, [])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: Lists differ: ['README.md exists with different bytes (t[82 chars]ent'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'README.md exists with different bytes (target 15a5cd9d… vs bundle e492ef02…): content-addressed names must mean equal content'
+
++ []
+- ['README.md exists with different bytes (target 15a5cd9d… vs bundle '
+-  'e492ef02…): content-addressed names must mean equal content']
+
+----------------------------------------------------------------------
+Ran 18 tests in 1.090s
+
+FAILED (failures=2, errors=4, skipped=1)

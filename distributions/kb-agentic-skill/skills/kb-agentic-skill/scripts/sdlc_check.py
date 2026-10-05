@@ -25,7 +25,7 @@ sdlc_core.set_profile(
     support_files=("templates.md", "taxonomy.md", "guides.md", "vision.md",
                    "distillation.md", "reconciliation.md", "elicitation.md",
                    "review.md", "dispatch.md", "routing.md", "portability.md",
-                   "ENFORCEMENT.md", "memory.md"),
+                   "ENFORCEMENT.md", "memory.md", "knowledge-templates.md"),
     capabilities=(
         # spine
         "triage", "write_triggers", "workstream_registry", "vision_gate",

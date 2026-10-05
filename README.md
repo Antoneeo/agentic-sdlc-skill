@@ -11,9 +11,19 @@ status and evidence: discovery is not approval or proof of implementation.
 
 Registration happens at `index`/documentation closure, not through a background
 watcher. Existing projects acquire the catalog on their next `index`; `recall`
-also sees live metadata. The KB lens remains the specialist for ingestion and
-taxonomy. Marketing retains its numerical validators. See the skill's `memory.md`.
+also sees live metadata. Shared intake, placement and reconciliation methods now
+ship with every lens; KB keeps its independent corpus workflow and triage.
+Software analysis adds reusable knowledge as it emerges, including analysis without
+code changes, and re-verifies affected claims after changes. One project topic graph
+connects properties to behavior and evidence across milestones. L1 stays lightweight.
+Marketing retains its numerical validators. See the skill's `memory.md`.
 Vendoring requires all three files: the entry point, `sdlc_core.py`, `knowledge.py`.
+
+`capture-source src/file.py --lines 10:25 --role code` stores a selected UTF-8 span
+with its project/version binding; `evidence --topics subject` reports matched,
+changed, unavailable or unbound inputs. It does not infer claims or certify truth,
+test execution or complete dependency coverage. Typed topics distinguish observed,
+required, hypothetical and designed claims; legacy rows remain readable, unclassified.
 
 
 `agentic-sdlc` is a Documentation-First SDLC protocol for AI coding agents. It supports Claude Code, Codex, Gemini CLI, Google Antigravity 2.0, Cursor/Windsurf-style project instructions, and optional devPNT governance.
@@ -32,7 +42,7 @@ Vendoring requires all three files: the entry point, `sdlc_core.py`, `knowledge.
 - **devPNT symbiosis**: when devPNT is available, Master Plan, Action Plan, M-VISION, and governed artifacts become the authoritative planning layer, with independent fresh-context reviews of technical artifacts and diffs.
 - **Independent review, twice**: the design is reviewed before it is implemented and the diff before the work is declared done — by somebody other than its author. Three rungs of independence (fresh-context subagent > one-shot run > a declared self-pass, legal only when no higher rung is usable: absent, or permission-gated and declined — a gated rung is asked about, never silently skipped, and the log says which), capped at 3 rounds, one log line per review, and a PASS is invalid on "found nothing" — it must state where each constraint is satisfied.
 - **Question discipline**: a real doubt is asked when it emerges, before its answer is written into any document — grouped, with the pros and cons of each option. A choice whose pros clearly win is taken without asking, and the weighing is written next to it; a fact is settled by evidence or asked, never weighed. A question is legal only when the agent searched first, names the search with its result, and names the decision it unblocks — never a stream of "shall I proceed?".
-- **Installed support files**: Claude, Codex, Gemini, and Google Antigravity receive the full skill folder, including `templates.md`, `architect.md`, `guides.md`, `vision.md`, `tdd.md`, `debugging.md`, `elicitation.md`, `review.md`, `dispatch.md`, `routing.md`, `hybrid.md`, `ENFORCEMENT.md`, `memory.md`, and the validator's three files, `scripts/sdlc_check.py` + `scripts/sdlc_core.py` + `scripts/knowledge.py` — plus the `LICENSE` and `NOTICE` it ships under.
+- **Installed support files**: Claude, Codex, Gemini, and Google Antigravity receive the full skill folder, including `templates.md`, `architect.md`, `guides.md`, `vision.md`, `tdd.md`, `debugging.md`, `elicitation.md`, `review.md`, `dispatch.md`, `routing.md`, `hybrid.md`, `ENFORCEMENT.md`, `memory.md`, the common `distillation.md`, `taxonomy.md`, `reconciliation.md`, `portability.md`, `knowledge-templates.md`, and the validator's three files, `scripts/sdlc_check.py` + `scripts/sdlc_core.py` + `scripts/knowledge.py` — plus the `LICENSE` and `NOTICE` it ships under.
 - **Mechanical checks**: optional validator for document structure, generated feature history, stale audit areas, and protected-path gates — `check`, `validate`, `index`, `stale`, `mark`, `benefit`, `gate`, `plan`, `orient`, `migrate`. `benefit` reports what the review gates have already caught, beside what the doctrine costs to read — it always exits 0 and carries no verdict, because a measurement that can fail a build becomes a target.
 
 ## Installation
@@ -102,6 +112,11 @@ skills/agentic-sdlc-skill/
 ├── routing.md
 ├── hybrid.md
 ├── memory.md
+├── distillation.md
+├── taxonomy.md
+├── reconciliation.md
+├── portability.md
+├── knowledge-templates.md
 ├── ENFORCEMENT.md
 ├── LICENSE
 ├── NOTICE
@@ -126,7 +141,7 @@ Same process, four fidelity disciplines — what the agent's assertions must be 
 | Package | Faithful to | Unit of work | Own doctrine |
 |---|---|---|---|
 | [`@antoneeo/agentic-sdlc-skill`](https://www.npmjs.com/package/@antoneeo/agentic-sdlc-skill) | this repository's code | feature | `architect.md`, `tdd.md`, `debugging.md` |
-| [`@antoneeo/kb-agentic-skill`](https://www.npmjs.com/package/@antoneeo/kb-agentic-skill) | the documents you supply | topic | `taxonomy.md`, `distillation.md`, `reconciliation.md` |
+| [`@antoneeo/kb-agentic-skill`](https://www.npmjs.com/package/@antoneeo/kb-agentic-skill) | the documents you supply | topic | corpus triage and capture timing; knowledge methods are shared |
 | [`@antoneeo/mkt-agentic-sdlc-skill`](https://www.npmjs.com/package/@antoneeo/mkt-agentic-sdlc-skill) | market evidence | engagement | `frameworks.md`, `research.md` |
 | [`@antoneeo/course-creator`](distributions/course-creator/README.md) | the learner's starting point and verified teaching sources | course | `learning_design.md`, `source_check.md`, `simulation.md`, `feedback.md` |
 

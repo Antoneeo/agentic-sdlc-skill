@@ -1,0 +1,13 @@
+✔ the four supported clients install the course skill under its own name (1.8765ms)
+✔ init creates a course-default project once and preserves the owner edits (4856.6191ms)
+✔ install and uninstall preserve unowned or modified files (706.1481ms)
+✔ an existing unowned skill directory is not overwritten (5.1335ms)
+﹣ a symlinked ownership marker cannot redirect install or uninstall (4.7898ms) # symlinks unavailable
+ℹ tests 5
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 5648.5639

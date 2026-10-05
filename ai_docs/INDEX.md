@@ -14,6 +14,7 @@ not manifested here.
 | `vision/features/VISION_course_agentic-sdlc-kb-agentic.md` | APPROVED | Vision del corso per sviluppatori su kb-agentic e agentic-sdlc, usato come primo banco di prova di course_creator. |
 | `vision/features/VISION_course_creator.md` | APPROVED | Vision approvata di course_creator per spiegazioni progressive, anche quando chi richiede il corso parte da zero. |
 | `vision/features/VISION_kb_second_brain.md` | APPROVED | Feature vision for the kb-agentic "second brain" milestone - the recall reflex, the daily gesture, and the time cycle that keep a project KB honest over mont... |
+| `vision/features/VISION_software_knowledge.md` | APPROVED | Vision della conoscenza cumulativa del software, comune ad agentic-sdlc e kb-agentic e riutilizzabile fra milestone e sessioni. |
 | `vision/features/VISION_vision_governance.md` | CURRENT | Feature vision for the Vision governance layer (ai_docs/vision/, Vision Gate) delivered in 1.4.0. |
 | `vision/principles.md` | DRAFT | Vision Principles |
 | `vision/project_vision.md` | APPROVED | (by Antonio Pinto — v6 2026-07-27, v7 amendment 2026-07-31, **v8 amendment 2026-08-01**) |
@@ -27,7 +28,7 @@ not manifested here.
 | Document | Status | Description |
 |---|---|---|
 | `reference/GUIDE_release.md` | CURRENT | How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish. |
-| `reference/GUIDE_shared_project_memory.md` | CURRENT | Consult before changing shared-memory discovery, docs-root resolution, or validator composition across the four distributions. |
+| `reference/GUIDE_shared_project_memory.md` | CURRENT | Consult before changing shared memory, software evidence, derivations or validator composition across the four distributions. |
 
 ## architecture/
 
@@ -52,6 +53,7 @@ not manifested here.
 | `architecture/ADR_2026-09-11_probes_that_cannot_fail.md` | CURRENT | ADR - a probe over a computed output must RECOMPUTE the expected value and compare; a probe over prose must be labelled a wording anchor. Adopted after the s... |
 | `architecture/ADR_2026-09-19_shared_project_memory.md` | CURRENT | Why project memory is shared by every lens while document authority and specialist workflows remain separate. |
 | `architecture/ADR_2026-09-27_course_overlay_single_index.md` | CURRENT | Why course creation owns its teaching artifacts while the shared core owns the ai_docs index. |
+| `architecture/ADR_2026-10-04_software_knowledge.md` | CURRENT | Why software development captures and updates project concepts through the shared KB engine. |
 
 ## functional/
 
