@@ -1,6 +1,6 @@
 {
   "name": "@antoneeo/course-creator",
-  "version": "0.1.0-beta.1",
+  "version": "0.1.0-beta.2",
   "description": "Design sourced, progressive courses for a defined learner with Agentic SDLC governance and diagnostic learner simulations.",
   "keywords": ["claude-code", "gemini-cli", "codex", "course-design", "skill", "ai-agent"],
   "author": "Antonio Pinto (https://github.com/Antoneeo)",

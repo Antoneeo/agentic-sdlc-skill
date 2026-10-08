@@ -404,3 +404,21 @@ Round 1: 3 BLOCK (dispatch.md and mkt hybrid.md missing from the Impact; hybrid.
 | 2026-10-08 | F-065 implementation diff (worktree claude/review-mandate vs 2d5a5c6) | closure | deep (invoking session normal mode) | fresh-context subagent, rung 1, read-only; request opened with the REVIEW MANDATE block | 5 | 5 | FAIL -> PASS | 2 |
 
 Closure round 1: B1 memory index stale after the last Diary edit, so the claimed CLEAN check was false on the reviewed tree; W1 R5 reached artifacts no review moment covers; W2 line-ending hash churn (pre-existing, filed separately); W3 mkt README still said devPNT has review gates; W4 ANALYSIS self-contradiction. Round 2: all addressed, W2 deferred; new WARN left open (READMEs broader than narrowed R5).
+
+
+## 2026-10-08 — family release 1.38.0 / 1.21.0 / 0.16.0 / beta.2
+
+| date | doc_key | tier | model | reviewer | findings_raised | findings_real | verdict | revise_rounds |
+|---|---|---|---|---|---|---|---|---|
+| 2026-10-08 | release metadata diff vs 9970e66 and release_2026-10-08.md | closure | gpt-6-astra; fresh read-only context; invoking session default normal mode | release_review native subagent; REVIEW MANDATE supplied whole | 1 WARN | 1 | PASS; scoped correction PASS | 2 |
+
+W1 corrected: 29/29/28/34 counts packed files, not the 27/27/26/32 explicit
+allowlist entries. Author confirmed fresh exec outputs and labels the recorded
+suite summaries as excerpts; October 2 logs are not fresh proof. Web login
+completed (whoami antoneeo). Scoped review verified the owner's superseding
+Course policy: default installs receive the newest version; publish beta.2,
+then explicitly set latest to beta.2 and verify both. Guide snapshot/hash,
+README and resume match this ruling; publisher runtime remains unchanged.
+Parent repeat pack/init/fresh-project checks after the final README edit passed
+for all packages (exec 94352). Publication and remote identity remain execution
+obligations, not claims certified by these pre-publication reviews.
