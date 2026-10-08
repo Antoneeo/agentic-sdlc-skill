@@ -1,14 +1,15 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**Release preparation (2026-10-02).** The registry confirms code 1.36.0, KB
-1.19.0 and marketing 0.14.0 already published. New prepared targets: code 1.37.0,
-KB 1.20.0, marketing 0.15.0 and course 0.1.0-beta.1 on beta. Antonio authorized
-commit and publication; GUIDE_release.md is the runbook. Independent release and
-integration reviews PASS; four full suites, package allowlists and scratch checks
-pass. npm browser login completed. Commit, tags and publication remain pending;
-HANDOFF_release_stable_course_beta.md carries the resume. Exclude ongoing
-presentations; publish the exact committed export. C-001 remains open.
+**Release preparation (2026-10-08).** Published: code 1.37.0, KB 1.20.0,
+marketing 0.15.0 and course 0.1.0-beta.1. Targets: 1.38.0 / 1.21.0 / 0.16.0 /
+0.1.0-beta.2. Antonio requested GUIDE_release.md execution. Fresh Python suites
+and four package/init/scratch checks pass; publication is pending commit/tag/push. npm web
+login completed; whoami confirms antoneeo. Release review PASS. HANDOFF_release_stable_course_beta.md carries the resume.
+Course latest still names beta.1; the owner now requires newest-version
+default installs, so promote beta.2 to latest after publication and verify both
+channels. This replaces the earlier beta-only requirement.
+C-001 stays open. Publish only the exact committed export.
 
 **What the 2026-09-12 tranche does NOT claim.** The read surface GREW in all three
 lenses (+6.2% code, +8.2% kb, +7.8% mkt across all `.md`), even though the code and mkt

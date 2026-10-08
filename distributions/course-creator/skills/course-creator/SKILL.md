@@ -1,6 +1,6 @@
 ---
 name: course-creator
-version: 0.1.0-beta.1
+version: 0.1.0-beta.2
 description: Design and improve courses that teach a defined learner through sourced, progressive explanations. Use when the deliverable is instruction or a learning path; route corpus intake to kb-agentic and persuasive campaigns to marketing-agentic.
 author: Antonio Pinto (https://github.com/Antoneeo)
 copyright: (c) 2026 Antonio Pinto
