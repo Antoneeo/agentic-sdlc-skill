@@ -54,5 +54,5 @@
 | F-059 | Profilo course nel validatore condiviso | code | L3 | COMPLETED | 2026-09-26 | 2026-09-27 | solutions/ANALYSIS_course_domain_core.md |
 | F-060 | Contenuto completo e metodo didattico verificabile dei corsi | code | L3 | COMPLETED | 2026-09-27 | 2026-10-02 | solutions/ANALYSIS_course_slide_content.md |
 | F-061 | Evidence-driven debugging and clean Poka-Yoke correction | code | L3 | COMPLETED | 2026-10-02 | 2026-10-02 | solutions/ANALYSIS_evidence_driven_debugging.md |
-| F-062 | Stable family release and course beta | code | L3 | IN_PROGRESS | 2026-10-02 |  | solutions/ANALYSIS_release_stable_course_beta.md |
+| F-062 | Stable family release and course beta | code | L3 | COMPLETED | 2026-10-02 | 2026-10-08 | solutions/ANALYSIS_release_stable_course_beta.md |
 | F-065 | Review Mandate Contract and Hybrid review ordering | code | L3 | COMPLETED | 2026-10-07 | 2026-10-08 | solutions/ANALYSIS_review_mandate_contract.md |
