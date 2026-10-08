@@ -2,6 +2,18 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [Unreleased]
+
+### Fixed
+- **`memory/INDEX.md` no longer depends on the checkout's line endings.** The catalog
+  fingerprint hashed raw bytes, so an index regenerated on a `core.autocrlf=true`
+  checkout was "not aligned" on an LF one and vice versa. It is now LF-normalized,
+  like the guides' `source_hash`.
+- **`check` prints its verdict after every check that can fail.** The knowledge
+  overlay ran memory/topic/corpus index validation, graph and corpus after the spine's
+  summary, so `check: CLEAN` could be followed by an `[ERROR]` and exit 1. Those checks
+  now ride `cmd_check` hooks (validate stage and own sections) and count in the summary.
+
 ## [1.37.0] - 2026-10-02
 
 ### Changed

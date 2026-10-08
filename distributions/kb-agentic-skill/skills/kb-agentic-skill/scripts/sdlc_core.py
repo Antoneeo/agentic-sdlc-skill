@@ -1869,15 +1869,26 @@ def print_orient_hook_note(root):
         pass  # detection must never break check
 
 
-def cmd_check(root, strict=False, hybrid=False):
+def cmd_check(root, strict=False, hybrid=False, extra_validate=None, extra_sections=()):
+    """An overlay adds its checks through the two hooks, never after the call:
+    the summary line is the verdict, so every check that can fail runs before
+    it. `extra_validate()` folds into the validate stage; each
+    (title, fn) in `extra_sections` gets its own banner and summary rc."""
     print("===== validate =====")
     rc_v = cmd_validate(root, strict=strict, hybrid=hybrid)
+    if extra_validate is not None:
+        rc_v = max(rc_v, extra_validate())
     print("\n===== stale =====")
     rc_s = cmd_stale(root, hybrid=hybrid)
-    print(f"\ncheck: {'CLEAN' if not (rc_v or rc_s) else 'NOT CLEAN'} "
-          f"(validate rc={rc_v}, stale rc={rc_s})")
+    rcs = [("validate", rc_v), ("stale", rc_s)]
+    for title, fn in extra_sections:
+        print(f"\n===== {title} =====")
+        rcs.append((title, fn()))
+    failed = any(rc for _, rc in rcs)
+    print(f"\ncheck: {'NOT CLEAN' if failed else 'CLEAN'} "
+          f"({', '.join(f'{title} rc={rc}' for title, rc in rcs)})")
     print_orient_hook_note(root)
-    return 1 if (rc_v or rc_s) else 0
+    return 1 if failed else 0
 
 
 # --------------------------------------------------------------------- gate
