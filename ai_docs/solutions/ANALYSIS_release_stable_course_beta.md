@@ -2,19 +2,21 @@
 id: F-062
 feature: Stable family release and course beta
 description: Release preparation, channel separation, verification and publication record.
-status: IN_PROGRESS
+status: COMPLETED
 level: L3
 domain: code
 start_date: 2026-10-02
-end_date:
+end_date: 2026-10-08
 ---
 # Stable family release and course beta
 
 ## Objective
-Release the pending software, knowledge and marketing changes on npm latest;
-release course-creator as an explicit beta. Antonio authorized commit and publication
-on 2026-10-02. Work remains in the primary main checkout. Course content production
-C-001 stays open and is not certified by releasing its authoring skill.
+Publish the reviewed family increments using GUIDE_release.md: code 1.38.0,
+KB 1.21.0, marketing 0.16.0 and course 0.1.0-beta.2. Antonio requested execution
+on 2026-10-08 and requires default Course installation to receive its newest
+version. Course retains beta and is explicitly promoted to latest after publication.
+Use the isolated release branch and exact tagged export. C-001 content stays open;
+releasing its authoring skill does not certify course readiness or human learning.
 
 ## Feature Vision
 The approved project Vision's shared-core family and proportional governance guide
@@ -22,23 +24,25 @@ this maintenance increment. The approved VISION_course_creator governs the cours
 capability. No Vision change or claim of demonstrated human learning is introduced.
 
 ## Use Cases / User Needs
-- Maintainer publishes the stable packages and the course beta without accidentally
-  promoting the beta to latest.
-- Early adopter deliberately selects the beta and sees its experimental limits.
+- Maintainer publishes the stable packages and explicitly promotes the newest
+  Course version to latest under the owner's 2026-10-08 ruling.
+- Course users receive the newest version through default install or beta and see
+  its experimental limits.
 - Next maintainer can distinguish published versions from completed local tests.
 
 ## Functional Spec
-1. Bump software to 1.37.0, knowledge to 1.20.0, marketing to 0.15.0 and course to
-   0.1.0-beta.1. Registry latest is currently 1.36.0 / 1.19.0 / 0.14.0; course returns
-   E404. Recheck target versions before publication.
+1. Bump software to 1.38.0, knowledge to 1.21.0, marketing to 0.16.0 and course to
+   0.1.0-beta.2. Preflight baseline: 1.37.0 / 1.20.0 / 0.15.0 and course beta.1.
+   Recheck each target version before publication.
 2. course package publishConfig declares beta. Publisher reads each package's tag,
    defaults to latest for stable packages, passes it to publish and verifies that tag.
 3. Re-run all four Python suites, package allowlists, course client installer tests
    and temporary-project initialization. Existing synthetic debugging results remain
    bounded evidence, not generalized efficacy measurements.
-   Verification also queries npm dist-tag ls directly and rejects a non-latest
-   release if latest points to that prerelease. First-publish behavior observed
-   below means selecting beta alone is insufficient for this additional predicate.
+   Run the existing publisher's beta verification before explicit Course promotion.
+   Then add latest to course beta.2 and verify both beta and latest directly. The
+   unchanged publisher guard can reject a rerun after intentional promotion;
+   direct registry version/hash/channel evidence certifies the final state.
 4. Reconcile audit references only after reviewing changed surfaces and derived
    documents. Legacy nonfatal warnings remain disclosed; do not fabricate past reviews.
 5. Commit release files deliberately. Exclude ongoing course presentation/rendering
@@ -46,15 +50,16 @@ capability. No Vision change or claim of demonstrated human learning is introduc
    work leaves main dirty; an export has no unrelated user edits.
 
 ## Interface Contract
-The maintainer invokes the existing publisher. Stable consumers use latest; beta
-consumers explicitly select beta. Publication failures return failure. npm browser
+The maintainer invokes the existing publisher, then explicitly promotes Course
+to latest. Default and beta Course installs resolve to its newest published version.
+Publication failures return failure. npm browser
 authorization remains human-owned and, if required, publication remains pending.
 
 ## Capability Ledger
 | Capability | Verdict | Evidence |
 |---|---|---|
 | Stable publication | EXISTS | publish_all.bat :pub / :verify |
-| Separate course beta | INADEQUATE | publisher currently uses bare npm publish and queries latest for every package |
+| Explicit Course publication and promotion | EXISTS | publisher :channel selects beta; owner-authorized npm dist-tag add selects latest after stock verification |
 | Version metadata and package allowlists | EXISTS | four package.json, gemini-extension.json, SKILL.md and CHANGELOG.md files |
 | Shared-core drift detection | EXISTS | shared_files.py: 22 identical files across four distributions |
 
@@ -92,16 +97,17 @@ course sources, internal governance, eval artifacts or dependencies.
 3. Run publisher mocks (channel, skip and failure), four-suite tests and package smoke.
 4. Independent closure review of release diff and previously uncommitted integration.
 5. Refresh audit references and indexes, require plain and Hybrid gates CLEAN.
-6. Commit on main, tag each package, push; publish exact committed packages and verify
-   registry versions and tags. Record a genuine authentication blocker if encountered.
+6. Commit on the release branch, tag each package, fast-forward origin/main; publish
+   exact committed packages, promote Course latest and verify registry hashes/tags.
+   Record authentication expiry separately from pending registry processing.
 
 ## Test Strategy
 Publisher mock executes the real batch file with a fake npm command in a temporary
 PATH. Assert stable latest, beta course, existing-version skip and verification failure.
 Python tests, course Node client tests, dry-run packing and temporary initialization
 exercise deployed contracts. Post-publication registry queries check all versions and
-the course beta tag; latest must not point at this prerelease. Preserve logs in the
-release harness, outside npm allowlists.
+the course beta and latest tags, both at beta.2 under the owner's current ruling.
+Preserve evidence in the release harness, outside npm allowlists.
 
 ## Diary / Current State
 2026-10-02: design drafted. Three stable suites, three pack allowlists and three init
@@ -132,3 +138,23 @@ Explicit channel isolation was added to the existing verification after a failin
 mock demonstrated false success. Seven mocks now pass, including failed or empty
 tag queries. Independent guard review PASS; conditional manual-removal hint resolves
 its WARN. Release tags stay on 3e56773.
+
+
+2026-10-08: owner requested GUIDE_release.md execution and superseded beta-only
+Course policy: default installation must receive its newest version. Guide/source
+and Course README updated; no publisher runtime change. Independent release
+review PASS, one packed-count WARN corrected, scoped re-review PASS. Fresh suites
+1162 tests/49 skips, publisher 7 pass, Node clients 53 pass plus Course 4 pass/1 skip;
+four pack/init/scratch checks pass twice, final plain and Hybrid gates CLEAN.
+Release commit 61eb56e and tags v1.38.0/kb-v1.21.0/mkt-v0.16.0/
+course-v0.1.0-beta.2 are on origin/main and all point to that commit. Exact git
+archive exported; expected package hashes recorded. First publish auth expired;
+retry after owner browser confirmation accepted all four packages. Stock verify
+timed out while registry was still processing (old code latest remained).
+All four public tarballs match the exact tagged export in both SHA1 and SHA512.
+Direct dist-tag reads confirm latest 1.38.0 / 1.21.0 / 0.16.0; Course beta and
+latest both point to 0.1.0-beta.2 after owner browser authorization (rc 0).
+The stock verification timeout was registry processing, resolved by direct public
+verification without republishing. F-062 is COMPLETED under the current owner
+channel policy. Durable hashes and tag evidence: harness_release_stable_beta/
+publication_2026-10-08.json. C-001 remains open.

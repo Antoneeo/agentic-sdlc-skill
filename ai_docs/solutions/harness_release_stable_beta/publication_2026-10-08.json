@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-08",
+  "release_commit": "61eb56e17f6006befd022a051a35564aaa45f469",
+  "targets": [
+    {
+      "name": "@antoneeo/agentic-sdlc-skill",
+      "version": "1.38.0",
+      "shasum": "76518b03e44078bff7026990cc6521b5fff36b08",
+      "integrity": "sha512-1LnKjoYjQUSKxjxMHNahAxU04i6Tkb+nUhampP8vwPcbyXAuhh+nCUnLn+I2smIUF/dH3FmHdrjcTJnt3w2TKQ=="
+    },
+    {
+      "name": "@antoneeo/kb-agentic-skill",
+      "version": "1.21.0",
+      "shasum": "e2ee8826d95eb2b1333e866885171ef20d0f6420",
+      "integrity": "sha512-m1aFHFeK6L4P/2cuepGLgOXh/PnU7vyq3UCXFslqZ01xVkf081h6bAZX1e4fcQRrIyYs7xCPy/d5ZIVm6De1cg=="
+    },
+    {
+      "name": "@antoneeo/mkt-agentic-sdlc-skill",
+      "version": "0.16.0",
+      "shasum": "4b848ec9ca4c3b49348d3a5cb45246e6ce7d4ea7",
+      "integrity": "sha512-nK/3hjBkXyye7NLmjiGevBwmRc5Qt7k+cFeRUFa7iqApst6XXxp2+Ezo0Lbk5FDfC9WymmElZtEyMDKJNiiHZg=="
+    },
+    {
+      "name": "@antoneeo/course-creator",
+      "version": "0.1.0-beta.2",
+      "shasum": "2996334f9cfa02d26bcbe8ee272aa92ea1ec13c2",
+      "integrity": "sha512-tirPjTK+Cyr/bi0HG1gFJ/vigYEednJrb1v62cUIKRQ1nI847L8fOTj1kiq0XrsWOLCpb6+IhF/DLT+e0OREAQ=="
+    }
+  ],
+  "npm_acceptance": "all four accepted; publish_all verify timed out during registry processing",
+  "owner_course_policy": "beta and latest both target 0.1.0-beta.2 so default installs receive newest Course",
+  "public_verification": [
+    {
+      "name": "@antoneeo/agentic-sdlc-skill",
+      "version": "1.38.0",
+      "sha1": "76518b03e44078bff7026990cc6521b5fff36b08",
+      "integrity": "sha512-1LnKjoYjQUSKxjxMHNahAxU04i6Tkb+nUhampP8vwPcbyXAuhh+nCUnLn+I2smIUF/dH3FmHdrjcTJnt3w2TKQ==",
+      "public_tarball_matches": true,
+      "tags": {
+        "latest": "1.38.0"
+      }
+    },
+    {
+      "name": "@antoneeo/kb-agentic-skill",
+      "version": "1.21.0",
+      "sha1": "e2ee8826d95eb2b1333e866885171ef20d0f6420",
+      "integrity": "sha512-m1aFHFeK6L4P/2cuepGLgOXh/PnU7vyq3UCXFslqZ01xVkf081h6bAZX1e4fcQRrIyYs7xCPy/d5ZIVm6De1cg==",
+      "public_tarball_matches": true,
+      "tags": {
+        "latest": "1.21.0"
+      }
+    },
+    {
+      "name": "@antoneeo/mkt-agentic-sdlc-skill",
+      "version": "0.16.0",
+      "sha1": "4b848ec9ca4c3b49348d3a5cb45246e6ce7d4ea7",
+      "integrity": "sha512-nK/3hjBkXyye7NLmjiGevBwmRc5Qt7k+cFeRUFa7iqApst6XXxp2+Ezo0Lbk5FDfC9WymmElZtEyMDKJNiiHZg==",
+      "public_tarball_matches": true,
+      "tags": {
+        "latest": "0.16.0"
+      }
+    },
+    {
+      "name": "@antoneeo/course-creator",
+      "version": "0.1.0-beta.2",
+      "sha1": "2996334f9cfa02d26bcbe8ee272aa92ea1ec13c2",
+      "integrity": "sha512-tirPjTK+Cyr/bi0HG1gFJ/vigYEednJrb1v62cUIKRQ1nI847L8fOTj1kiq0XrsWOLCpb6+IhF/DLT+e0OREAQ==",
+      "public_tarball_matches": true,
+      "tags": {
+        "latest": "0.1.0-beta.2",
+        "beta": "0.1.0-beta.2"
+      }
+    }
+  ],
+  "closure": "COMPLETED"
+}
