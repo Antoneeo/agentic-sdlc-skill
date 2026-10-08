@@ -8,9 +8,9 @@ phases, the gates and the evidence discipline are `SKILL.md`'s, identical in bot
 modes.
 
 Moved out of `SKILL.md` by F-052 so a Standalone session stops paying for a seam
-it cannot reach. **The content below is unchanged**: a relocation, not a rewrite.
+it cannot reach. **The content below is the relocated text, unchanged except for one declared amendment**: F-065 rewrote the review wording (devPNT performs no review; the agent review precedes the proposal — `ADR_2026-10-07_agent_review_precedes_human` in the code lens). The digest certifies the amended block, re-stamped only after the pre-edit block matched the previous digest and the diff showed only those lines changed.
 
-<!-- moved-block-sha256: b9b19d58a104e858f38460065160a61e64a6cd6f64f92c1bbf47fbf534d25ef6 -->
+<!-- moved-block-sha256: 1627068db8c34b2bbbbb151812b12a3d09d663f4bace41d2d5b490239eb2efb6 -->
 ### Hybrid in symbiosis with devPNT
 
 Use this mode when the `devpnt_*` tools are available and point at the current project.
@@ -24,7 +24,7 @@ Authoritative hierarchy:
 
 ### Ownership matrix (the Hybrid seam)
 
-The skill owns the **process** (triage, phases, gates, lifecycle); devPNT owns the **machinery** (governed storage, versioned proposals, review wiring). The marketing artifacts occupy the same governance slots the software artifacts occupy in the sibling skill:
+The skill owns the **process** (triage, phases, gates, lifecycle); devPNT owns the **machinery** (governed storage, versioned proposals, the human's review and approval surface; devPNT performs no review — the agent review is the client's, under `review.md`, and its PASS precedes the proposal). The marketing artifacts occupy the same governance slots the software artifacts occupy in the sibling skill:
 
 | Artifact | Standalone master | Hybrid master (devPNT slot) | Mirror rule |
 |---|---|---|---|
@@ -44,4 +44,4 @@ Hybrid rules:
 - The skill stays autonomous: if devPNT is not there, switch to Standalone without losing capability.
 - If the user request, the local vision and the M-VISION diverge, stop and make the conflict explicit.
 - Never auto-accept devPNT proposals: present the preview and wait for explicit confirmation.
-- Where the local devPNT protocol imposes stricter gates (vision creation/amendment gates, independent review gates), follow them: they are the same discipline this skill encodes.
+- Where the local devPNT protocol imposes stricter gates (vision creation/amendment gates, the order agent review → proposal → human review), follow them: they are the same discipline this skill encodes.

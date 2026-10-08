@@ -52,6 +52,7 @@ not manifested here.
 | `architecture/ADR_2026-09-11_probes_that_cannot_fail.md` | CURRENT | ADR - a probe over a computed output must RECOMPUTE the expected value and compare; a probe over prose must be labelled a wording anchor. Adopted after the s... |
 | `architecture/ADR_2026-09-19_shared_project_memory.md` | CURRENT | Why project memory is shared by every lens while document authority and specialist workflows remain separate. |
 | `architecture/ADR_2026-09-27_course_overlay_single_index.md` | CURRENT | Why course creation owns its teaching artifacts while the shared core owns the ai_docs index. |
+| `architecture/ADR_2026-10-07_agent_review_precedes_human.md` | CURRENT | ADR - devPNT performs no review; in both modes the agent review is review.md, carried to the reviewer by a verbatim REVIEW MANDATE block, and in Hybrid its P... |
 
 ## functional/
 

@@ -443,7 +443,7 @@ One row per completed review (`review.md` §When a review is due). Append-only; 
 is the record that the gate ran and what it was worth. **One schema for both
 modes** — one required CORE (`date`, `doc_key`, `tier`, `model`, `findings_raised`,
 `findings_real`, `verdict`, `revise_rounds`) plus each mode's own realization
-columns: Standalone adds `reviewer`, a Hybrid devPNT row adds `instrument` and
+columns: Standalone adds `reviewer`, a Hybrid row adds `instrument` and
 `notes` and carries no `reviewer` at all. Both modes write this same file.
 
 ```markdown

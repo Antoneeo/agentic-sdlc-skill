@@ -392,3 +392,15 @@ Isolation guard review maps intended-tag presence, failed/empty query rejection,
 and latest alias rejection to the actual batch diff and seven mock cases. No
 automatic registry mutation. This PASS does not close the external release:
 course latest removal failed E400 after authentication; owner decision remains open.
+
+## F-065 — review mandate contract
+
+| date | doc_key | tier | model | reviewer | findings_raised | findings_real | verdict | revise_rounds |
+|---|---|---|---|---|---|---|---|---|
+| 2026-10-07 | ANALYSIS_review_mandate_contract.md (F-065) | design | deep (author opus, invoking session normal mode) | fresh-context subagent, rung 1, read-only; request opened with the REVIEW MANDATE block under test | 14 | 14 | FAIL -> PASS | 2 |
+
+Round 1: 3 BLOCK (dispatch.md and mkt hybrid.md missing from the Impact; hybrid.md edit inside the conservation-hashed block; R5 escape settled by agent weighing against the owner rule) and 11 WARN. Owner ruled R5 escape and re-stamp; ANALYSIS rewritten to current state. Round 2: all 14 ADDRESSED; two observations (N1 l.1107 message, N2 Objective exception) folded after the PASS and owed to the closure review.
+
+| 2026-10-08 | F-065 implementation diff (worktree claude/review-mandate vs 2d5a5c6) | closure | deep (invoking session normal mode) | fresh-context subagent, rung 1, read-only; request opened with the REVIEW MANDATE block | 5 | 5 | FAIL -> PASS | 2 |
+
+Closure round 1: B1 memory index stale after the last Diary edit, so the claimed CLEAN check was false on the reviewed tree; W1 R5 reached artifacts no review moment covers; W2 line-ending hash churn (pre-existing, filed separately); W3 mkt README still said devPNT has review gates; W4 ANALYSIS self-contradiction. Round 2: all addressed, W2 deferred; new WARN left open (READMEs broader than narrowed R5).

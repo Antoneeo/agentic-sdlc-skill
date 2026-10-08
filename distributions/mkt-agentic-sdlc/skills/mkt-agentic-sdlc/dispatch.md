@@ -99,8 +99,8 @@ Exactly three review touches per task, never a loop:
 
 1. Inline self-review by the implementer subagent before it reports done
    (the standard critical-review pass, not a separate call).
-2. One reviewer pass per task (Hybrid: reuse the devPNT code-review gate;
-   Standalone: the `review.md` discipline).
+2. One reviewer pass per task, under the `review.md` discipline in both modes
+   (Hybrid: against the accepted E-TDD).
 3. One broad final pass over the whole plan at closure, after all tasks are
    DONE — catches cross-task drift a per-task review cannot see.
 
@@ -135,6 +135,6 @@ have added.
 ## Hybrid note
 
 The plan's `derived-from` points at the accepted E-TDD document key. Per-task
-review reuses the devPNT independent reviewers (§4.6 code review gate) rather
-than restating review doctrine — see `review.md` for the single definition
-both modes share.
+review is the closure review of `review.md` against that E-TDD, run by the
+client's agent (devPNT doctrine §4.6 invokes the same review) — `review.md` is
+the single definition both modes share.

@@ -83,7 +83,7 @@ The workstream registry (`audit/handoff.md`) is **generated** from one file per 
 ## Modes
 
 - **Standalone** — everything on the filesystem under `mkt_docs/`.
-- **Hybrid with devPNT** — plans and strategy artifacts governed as versioned devPNT documents (MKT-VISION, ICP/Personas, Threat Map, Strategy, Tactical Plan, Measurement Plan), with proposal/approval workflow and independent review gates.
+- **Hybrid with devPNT** — plans and strategy artifacts governed as versioned devPNT documents (MKT-VISION, ICP/Personas, Threat Map, Strategy, Tactical Plan, Measurement Plan), with proposal/approval workflow; every artifact passes an independent agent review before it is proposed, and devPNT is where you review and approve it.
 
 On a shared `ai_docs/` tree, run `mkt_check.py index --docs-dir ai_docs` to
 generate the common index. An existing marketing-format `ai_docs/INDEX.md`

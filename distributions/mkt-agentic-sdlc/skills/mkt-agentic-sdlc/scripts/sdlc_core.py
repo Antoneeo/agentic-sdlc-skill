@@ -1354,10 +1354,10 @@ def cmd_validate(root, strict=False, hybrid=False):
                               "doing the work it triggers")
         # comment-stripped, anchored: a '<!-- TODO: the ## Capability Ledger -->'
         # must not read as the section being present
-        # Hybrid: the design lives in devPNT and its §4.5 gate owns this slot
-        # (the Hybrid ownership matrix: "run ONE of them, never both"), and its log
-        # rows are keyed on e_isp_/e_tdd_ doc_keys, not on this filename -- so
-        # firing here would be a permanent, unfixable false positive.
+        # Hybrid: the design lives in devPNT, and the agent review of it (the
+        # same review.md review, run before the proposal) logs a row keyed on
+        # its e_isp_/e_tdd_ doc_key, not on this filename -- so firing here
+        # would be a permanent, unfixable false positive.
         if not hybrid and design_review_due(meta) and not review_logged(root, p.name):
             advisories.append(f"{rel}: L3 in implementation with no design-review row in "
                               f"{review_log_rel()} -- the design was reviewed by nobody but its "

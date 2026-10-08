@@ -79,7 +79,9 @@ Qualunque lente sia attiva, l'agente:
    (driver built-in: nessuna configurazione per clone).
 3. **Passa i gate**: Vision gate (DRAFT informa, APPROVED vincola — promozione solo
    tua, dopo il blind check); **design review indipendente prima di implementare**
-   e closure review prima di dichiarare DONE — scala di indipendenza a 3 pioli
+   e closure review prima di dichiarare DONE — ogni richiesta apre con il blocco
+   REVIEW MANDATE copiato alla lettera, che porta al reviewer `review.md` intero;
+   in Hybrid il PASS precede ogni proposta a devPNT — scala di indipendenza a 3 pioli
    (subagent fresco > run one-shot > self-pass dichiarato, illegittimo se un piolo
    superiore è utilizzabile; un piolo presente ma dietro un permesso non è assente
    — il gate si ferma e chiede, una domanda per gate a contesto integro, e il log
@@ -392,8 +394,9 @@ slot di governance con la propria carta:
 
 Regola che li tiene coerenti: **un master solo per artefatto** — in Hybrid il DB
 vince e lo shadow (`SHADOW_[doc_key]_vX.Y.md`) si rigenera; in Standalone il
-documento filesystem è l'autorità. Il design review gate è lo stesso slot nelle
-due forme: si esegue UNA volta, mai due.
+documento filesystem è l'autorità. La review del design è una sola nelle due
+forme: quella dell'agente, secondo `review.md`. devPNT non fa review: in Hybrid
+il PASS dell'agente precede la proposta a devPNT, dove rivedi e approvi tu.
 
 ## Quando convivono nello stesso progetto
 

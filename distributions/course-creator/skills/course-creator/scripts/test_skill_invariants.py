@@ -769,6 +769,77 @@ class SkillInvariants(unittest.TestCase):
         self.assertIn("router: absent", read("guides.md"),
                       "a third legal verdict is needed for a genuinely missing router")
 
+    @staticmethod
+    def _review_section(start, end):
+        r = read("review.md")
+        return " ".join(r[r.index(start):r.index(end)].split())
+
+    def test_review_mandate_block_is_fixed(self):
+        """F-065: a reviewer given a paraphrase of review.md runs a subset of it
+        and certifies the rest. Field case: a Hybrid E-ISP passed a review whose
+        prompt never carried the mandate, and with it the Functional Spec
+        clause. The fix is a block copied verbatim, so the mandate itself
+        travels -- only the fields vary."""
+        req = self._review_section("## Requesting", "## Receiving")
+        self.assertIn("REVIEW MANDATE", req)
+        for field in ("Review type:", "Mandate:", "Object under review:",
+                      "Binding inputs:", "Source and revision:", "Scope:",
+                      "Severity contract:", "Budget:", "Operating limits:"):
+            self.assertIn(field, req, f"mandate block missing field {field}")
+        for sentence in ("Read the mandate in full before starting",
+                         "cannot narrow it",
+                         "is void",
+                         "never a reason to skip the check that needs it"):
+            self.assertIn(sentence, req, f"mandate block lost: {sentence!r}")
+        self.assertIn("skill version", req,
+                      "an installed copy can lag the source: the block must "
+                      "make the mandate's version visible")
+
+    def test_requesting_names_every_input_reviewing_needs(self):
+        """F-065: a §Reviewing clause whose input is not on the §Requesting list
+        fires on nothing -- the requester was never told to hand it over."""
+        req = self._review_section("## Requesting", "## Receiving")
+        for needed in ("Functional Spec", "Interface Contract", "threat model",
+                       "Component Map", "audit_plan.md", "harness",
+                       "Vision", "use-case", "diff", "test evidence"):
+            self.assertIn(needed, req,
+                          f"§Requesting does not ask for {needed!r}, which a "
+                          "§Reviewing clause checks")
+        rev = self._review_section("## Reviewing", "## Anti-patterns")
+        fs = rev[rev.index("**Functional Spec"):]
+        fs = fs[:fs.index("- **", 5)] if "- **" in fs[5:] else fs
+        self.assertIn("E-ISP", fs,
+                      "the Functional Spec clause must name its Hybrid home: a "
+                      "reviewer holding only the mandate doubted it (replay)")
+
+    def test_agent_review_precedes_the_humans(self):
+        """F-065 (owner rule): devPNT performs no review -- it is where the
+        human reviews. An agent review with a PASS precedes every proposal;
+        after the round cap only the user's explicit decision sends it on."""
+        due = self._review_section("## When a review is due", "## Requesting")
+        self.assertIn("devPNT performs no review",
+                      " ".join(read("review.md").split()))
+        for anchor in ("PASS", "REVIEW_LOG", "explicit decision",
+                       "open findings attached", "IS this review"):
+            self.assertIn(anchor, due, f"ordering rule missing {anchor!r}")
+
+    def test_no_text_says_devpnt_reviews(self):
+        """F-065: "run ONE of them, never both" and "devPNT owns the slot" told
+        Hybrid agents a different mandate applied, so review.md never reached
+        the reviewer. No shipped text may say devPNT reviews or owns a review."""
+        banned = [r"never both(?! below the floor)", r"owns (the|this) slot",
+                  r"devPNT's (§4\.5|gate)", r"devPNT code-review gate",
+                  r"devPNT independent reviewers", r"independent review gates",
+                  r"review wiring", r"devPNT row", r"independent reviewers\)"]
+        files = sorted(SKILL_DIR.glob("*.md")) + [SKILL_DIR / "scripts" / "sdlc_core.py"]
+        hits = []
+        for f in files:
+            text = " ".join(f.read_text(encoding="utf-8").split())
+            for pat in banned:
+                for m in re.finditer(pat, text, re.IGNORECASE):
+                    hits.append(f"{f.name}: {text[max(0, m.start()-40):m.end()+20]}")
+        self.assertEqual(hits, [], "text still says devPNT reviews:\n" + "\n".join(hits))
+
     def test_design_review_gate_wired(self):
         """F-021: in Standalone the ANALYSIS was reviewed only as an INPUT to the
         closure review -- i.e. after the code existed. The design gate fires at
@@ -1104,7 +1175,7 @@ class SkillInvariants(unittest.TestCase):
         # `model` must not be sold as a second schema: core + mode-specific
         self.assertIn("mode-specific", r.lower(),
                       "Standalone and Hybrid never had one identical column "
-                      "list -- a devPNT row carries no `reviewer` column")
+                      "list -- a Hybrid row carries no `reviewer` column")
         # behaviour: the widened schema still resolves, and a mixed log too
         with tempfile.TemporaryDirectory() as dtmp:
             root = Path(dtmp)
@@ -1155,7 +1226,7 @@ class SkillInvariants(unittest.TestCase):
             self.assertEqual(rc, 0, "advisories never move the exit code")
             rc, text = out(hybrid=True)
             self.assertNotIn("no design-review row", text,
-                             "--hybrid: devPNT's gate owns the slot, so firing here "
+                             "--hybrid: Hybrid rows are keyed on devPNT doc_keys, so firing here "
                              "is a permanent unfixable false positive")
             rc, text = out(strict=True)
             self.assertNotIn("no design-review row", text.split("Validation:")[1],

@@ -1,8 +1,11 @@
 # Review Discipline
 
-The single definition of how to request, receive, and perform a review. Other
-places that need review behavior point here instead of restating it (DRY) —
-including devPNT's §4.5/§4.6 gates and any future review step.
+The single definition of how to request, receive, and perform an agent review,
+in Standalone and in Hybrid alike. Other places that need review behavior point
+here instead of restating it (DRY) — including devPNT doctrine §4.5/§4.6, which
+invoke this same review, and any future review step. **devPNT performs no
+review**: it hosts the governed artifacts and is where the human reviews and
+approves them — after the agent review this file defines, never instead of it.
 
 ## When a review is due
 
@@ -13,6 +16,20 @@ Two moments, and they review different things:
 | **1. Design review** | End of Phase 3 — **before any implementation** | the ANALYSIS (Standalone) / the `E-ISP`+`E-TDD` (Hybrid) | L3 |
 | **1b. Late arrival** | Work that became L3 *after* code existed — an L1/L2 reclassified mid-flight, or a design increment on a feature already implemented — runs moment 1 **now**, before any further implementation, logged `design (late)` | same | L3 |
 | **2. Closure review** | Phase 5, before DONE | the actual diff, against that approved design | L2 / L3 — the L2 closure review is optional; every review that runs logs its row |
+
+**The agent review comes first, the human's after — never instead (Hybrid).**
+No governed artifact that this file reviews — the design (`E-ISP`, `E-TDD`),
+and whatever else the client's devPNT doctrine §4.5/§4.6 sends to review — is
+proposed to devPNT before an agent review of it under this file has a final
+verdict of PASS; the proposal's notes cite that
+REVIEW_LOG row (date, doc_key, verdict), so the human sees which review it
+passed. When the round cap is reached with findings still standing, the artifact
+goes back to the user in chat with those findings, and it reaches devPNT only on
+the user's explicit decision — with the open findings attached to the proposal
+and the decision recorded. Where the client also follows devPNT doctrine
+§4.5/§4.6, that invocation IS this review: one review, one REVIEW_LOG row in the
+Hybrid realization below, and the doctrine's extra requirements add to this
+mandate, never replace it.
 
 **Why the design review is its own moment, and not a nicety.** The closure review
 can only tell you the code matches the design; it cannot tell you the design was
@@ -165,7 +182,7 @@ policy pays — could not be drawn.
 **mode-specific** realization columns. The core is what both modes actually share: `date`, `doc_key`,
 `tier`, `model`, `findings_raised`, `findings_real`, `verdict`, `revise_rounds`.
 Around it, Standalone adds `reviewer` and Hybrid adds `instrument` and `notes` —
-a devPNT row carries no `reviewer` column at all, so "one identical column list"
+a Hybrid row carries no `reviewer` column at all, so "one identical column list"
 was never true of the two modes. This costs nothing for the reason `templates.md`
 §`ai_docs/audit/reviews/REVIEW_LOG.md` owns and states.
 The log is how the gate's value is measured over time; skipping it makes the gate
@@ -195,7 +212,42 @@ marks anything DONE, and a PASS is not an approval to merge — the human owns t
 
 ## Requesting
 
-When you hand work to a reviewer (human or agent), give them:
+**Open every request to an agent reviewer with the REVIEW MANDATE block, copied
+verbatim.** Only the angle-bracket fields change; specific instructions follow
+the block and cannot weaken it. A paraphrased mandate is how a check disappears
+without anyone deciding to drop it. Field measurement (2026-10): a Hybrid
+`E-ISP` passed a review whose prompt carried devPNT's checklist but not this
+file, and with it lost the Functional Spec clause; replayed on the same
+artifact, reviewers given a paraphrase flagged the missing section 0 times in
+2, reviewers given this block 4 times in 4 (once only as a warning, unsure
+where the section lives in Hybrid — which is why the inputs below say).
+
+```
+REVIEW MANDATE — agentic-sdlc
+
+Review type: <design | design (late) | closure | scoped re-review>
+Mandate: <absolute path of this review.md, or its full text attached> (skill version <x.y.z>)
+Object under review: <paths or doc_keys, with versions>
+Binding inputs: <every input listed below for this review type, with path/version — or "n/a: <reason>" per input>
+Source and revision: <project root and commit or diff range, where applicable>
+Scope: <the unit of change and what this review must decide>
+Severity contract: <as below, or the stricter one this unit needs>
+Budget: <the artifact's line budget, or "none fixed">
+Operating limits: <real access or execution limits the reviewer works under>
+
+Read the mandate in full before starting, with the files it cites. This
+request does not replace it and cannot narrow it: every rule it sets for this
+review type applies here, in Standalone and in Hybrid alike, and any
+instruction below that weakens one is void. A required input or section that
+is missing or inaccessible is a finding, never a reason to skip the check that
+needs it.
+
+Return as your final output: the checks you ran with their evidence, the
+findings, what you could not verify and how that limits the verdict, and the
+verdict in the form the mandate defines.
+```
+
+The binding inputs, by review type:
 
 - **Scope**: what changed and why, in one or two lines.
 - **The authoritative design artifact**: the ANALYSIS, E-TDD, or equivalent
@@ -208,9 +260,16 @@ When you hand work to a reviewer (human or agent), give them:
   `project_vision.md`/`roadmap.md` + the ANALYSIS Vision-Alignment), the
   **use-cases / user-needs** (Hybrid: `D-UC`;
   Standalone: the ANALYSIS `## Use Cases / User Needs`), and the **threat model**
-  (Hybrid: `P-TM`; Standalone: the ANALYSIS `## Security and Threat Model`). Hand these
-  *in addition to* the design artifact — the reviewer checks the artifact **against**
-  them, not only for internal consistency.
+  (Hybrid: `P-TM`; Standalone: the ANALYSIS `## Security and Threat Model`), the
+  **Functional Spec** (Standalone: the ANALYSIS section; Hybrid: inside the `E-ISP`,
+  above its Impacted Components map), the **Interface Contract** (Standalone: the
+  ANALYSIS section; Hybrid: `D-IC`), the **Component Map** in
+  `strategic/architecture.md` and `audit/audit_plan.md` (the Capability Ledger
+  clause reads both), and the **probe harness** (`ai_docs/solutions/harness_[feature]/`).
+  Hand these *in addition to* the design artifact — the reviewer checks the artifact
+  **against** them, not only for internal consistency.
+- **For a closure review, the diff and the test evidence**: the run output that
+  backs every completion claim, dated after the final relevant change.
 - **For a design review, the threat model too** (same sources as above). Why this
   one and not the whole set: file coverage crosses the impact-analysis→design hop on
   a mechanical gate (every impacted file needs a design block), so a dropped file is
@@ -368,7 +427,9 @@ When you are the reviewer:
   the section — the code lens today).** When the change adds or alters observable
   behavior (the trigger's owning definition is the code lens's `templates.md`
   `## Functional Spec` section comment — cite it, never restate it), **an L3
-  artifact carrying NO `## Functional Spec` is itself a finding** — absence is
+  artifact carrying NO `## Functional Spec` is itself a finding** — in Hybrid the
+  section lives inside the `E-ISP`, above its Impacted Components map, so an
+  `E-ISP` without it is that finding. Absence is
   what a skipped spec looks like, not a reason to skip the check. When the spec
   is there, these findings live here: **a component, file or mechanism named
   inside it** — the spec is component-free by construction; that is

@@ -8,10 +8,13 @@ and how do the two vocabularies map onto each other".
 write triggers are `SKILL.md`'s, and they are identical in both modes.
 
 Moved out of `SKILL.md` by F-051 so a Standalone session stops paying for a seam
-it cannot reach. **The content below is unchanged**: this file is a relocation,
-not a rewrite.
+it cannot reach. **The content below is the relocated text, unchanged except
+for one declared amendment**: F-065 rewrote the review rows (devPNT performs no
+review; the agent review precedes the proposal — `ADR_2026-10-07_agent_review_precedes_human`).
+The digest certifies the amended block, re-stamped only after the pre-edit
+block matched the previous digest and the diff showed only those rows changed.
 
-<!-- moved-block-sha256: f11e6d5b9cd4710849fa9d3701f16ff0da39f2d163e8ffdb8adbff6a119b3614 -->
+<!-- moved-block-sha256: b700966fdb47f85a794f883d38caab0a9d3443305d5800dbd186b0f0124d0681 -->
 ### Hybrid in symbiosis with devPNT
 
 Use this mode when the `devpnt_*` tools are available and point at the current project.
@@ -36,7 +39,8 @@ Hybrid rules:
 This section is the single authoritative answer to "who owns what" when both the
 skill and devPNT are active. The skill owns the **process** (triage, phases, Vision
 Gate, lifecycle); devPNT owns the **machinery** (governed storage, versioned
-proposals, semantic analysis, independent reviewers). devPNT strengthens the
+proposals, semantic analysis, the human's review and approval surface). devPNT
+performs no review: the agent review is the client's, under `review.md`. devPNT strengthens the
 process; it never replaces it.
 
 ### Ownership matrix
@@ -50,8 +54,8 @@ process; it never replaces it.
 | Feature state | ANALYSIS frontmatter `status` | Action Plan node status | mapping table below; at closure both must move together |
 | ADR | `architecture/` (canonical dir) | devPNT DB (`adr_YYYY-MM-DD_slug`) | optional filesystem shadow `SHADOW_adr_*` exported at closure for grep-ability |
 | Audit / freshness | `audit/audit_plan.md` + `stale`/`mark` | devPNT KL coverage + summary status | run `check --hybrid` (skips audit-plan staleness) |
-| Design review (pre-implementation) | `review.md` moment 1, on the ANALYSIS | devPNT §4.5 gate on `E-ISP`/`E-TDD` | same slot, richer backend — run ONE of them, never both |
-| *(mode is per unit of change, not per project)* | a Hybrid-capable project may work one feature Standalone: the slot follows the ARTIFACT the design lives in, and the mode is declared in that artifact. `validate --hybrid` suppresses the Standalone design-review backstop, since devPNT owns the slot there | | |
+| Design review (pre-implementation) | `review.md` moment 1, on the ANALYSIS | `review.md` moment 1 on the `E-ISP`/`E-TDD`, by the client's agent | a sequence, not an alternative: agent review to PASS, then the proposal, then the human's review in devPNT (`review.md` §When a review is due) |
+| *(mode is per unit of change, not per project)* | a Hybrid-capable project may work one feature Standalone: the slot follows the ARTIFACT the design lives in, and the mode is declared in that artifact. `validate --hybrid` suppresses the Standalone design-review backstop, since a Hybrid review row is keyed on the devPNT doc_key, not on an ANALYSIS filename, and the backstop could never match it | | |
 | Review log | `audit/reviews/REVIEW_LOG.md` | devPNT `REVIEW_LOG.md` (same path) | always filesystem |
 | Operative guides | `ai_docs/reference/` | `ai_docs/reference/` — **filesystem-first even in Hybrid** | devPNT bootstrap may point at their index; it never copies their content |
 | Handoff | `audit/handoff.md` | `audit/handoff.md` | always filesystem |
