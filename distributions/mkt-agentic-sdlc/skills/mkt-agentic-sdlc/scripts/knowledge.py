@@ -1491,16 +1491,17 @@ def memory_records(docs):
                     paths.append(p)
     records = []
     for p in sorted(set(paths), key=lambda p: p.relative_to(docs).as_posix()):
-        raw = p.read_bytes()
-        text = raw.decode("utf-8", errors="replace")
+        text = p.read_bytes().decode("utf-8", errors="replace")
         meta = sdlc_core.load_frontmatter(text.splitlines())
         title = next((line[2:].strip() for line in text.splitlines()
                       if line.startswith("# ")), p.stem)
+        # LF-normalized like the guides' source_hash: an autocrlf checkout must
+        # regenerate the same catalog as an LF one.
         records.append((p.relative_to(docs).as_posix(),
                         kb_unquote(meta.get("domain")) or default,
                         ", ".join(_as_list(meta.get("topics", ""))),
                         kb_unquote(meta.get("description")) or title,
-                        hashlib.sha256(raw).hexdigest()))
+                        sdlc_core.sha256_file(p)))
     return records
 
 
@@ -1662,17 +1663,18 @@ def kb_cmd_validate(root, docs, strict=False, hybrid=False):
 
 def kb_cmd_check(root, docs, strict=False, hybrid=False):
     # The spine's check owns its banners and summary line: reuse it whole, so a
-    # tree with no kb surface gets byte-identical output. The kb checks run
-    # after, and only when the surface exists.
-    rc = sdlc_core.cmd_check(root, strict=strict, hybrid=hybrid)
-    rc = max(rc, _kb_extra_validate(docs), memory_validate(docs))
+    # tree with no kb surface gets byte-identical output. The kb checks ride its
+    # hooks -- index freshness in the validate stage, graph/corpus as sections
+    # only when the surface exists -- so the summary is printed after all of them.
+    sections = ()
     if (docs / "topics").is_dir() or (docs / "corpus").is_dir():
         cycle = kb_time_cycle(docs)
-        print("===== graph =====")
-        rc = max(rc, kb_cmd_graph(docs, cycle))
-        print("===== corpus =====")
-        rc = max(rc, kb_cmd_corpus(docs, cycle))
-    return rc
+        sections = (("graph", lambda: kb_cmd_graph(docs, cycle)),
+                    ("corpus", lambda: kb_cmd_corpus(docs, cycle)))
+    return sdlc_core.cmd_check(
+        root, strict=strict, hybrid=hybrid,
+        extra_validate=lambda: max(_kb_extra_validate(docs), memory_validate(docs)),
+        extra_sections=sections)
 
 
 def kb_cmd_stale(root, docs, hybrid=False):

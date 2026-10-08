@@ -86,6 +86,38 @@ class ProjectMemory(unittest.TestCase):
         self.cli("index")
         self.assertNotIn("PROMISE.md", (self.docs / "memory/INDEX.md").read_text(encoding="utf-8"))
 
+    def test_catalog_fingerprint_ignores_line_endings(self):
+        # A core.autocrlf=true checkout must regenerate the same INDEX.md as an
+        # LF one, or the committed index is "not aligned" on the other side.
+        text = "---\ndescription: Line endings\n---\n# Source\nBody.\n"
+        p = self.docs / "architecture/ADR_eol.md"
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_bytes(text.encode("utf-8"))
+        self.cli("index")
+        idx = self.docs / "memory/INDEX.md"
+        lf_index = idx.read_bytes()
+        p.write_bytes(text.replace("\n", "\r\n").encode("utf-8"))
+        result = self.cli("validate")
+        self.assertNotIn("memory/INDEX.md", result.stdout)
+        self.cli("index")
+        self.assertEqual(lf_index, idx.read_bytes())
+
+    def test_check_summary_comes_after_every_failing_check(self):
+        self.seed()
+        self.cli("index")
+        p = self.docs / "strategy/PROMISE.md"
+        p.write_text(p.read_text(encoding="utf-8") + "Changed evidence.\n", encoding="utf-8")
+        result = self.cli("check")
+        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+        lines = result.stdout.splitlines()
+        errors = [i for i, ln in enumerate(lines) if "memory/INDEX.md not aligned" in ln]
+        summary = [i for i, ln in enumerate(lines)
+                   if ln.startswith(("check:", "[OK] check", "[FAIL] check"))]
+        self.assertTrue(errors and summary, result.stdout)
+        self.assertGreater(summary[-1], errors[-1], result.stdout)
+        self.assertTrue(lines[summary[-1]].startswith(("check: NOT CLEAN", "[FAIL]")),
+                        lines[summary[-1]])
+
     def test_graph_command_and_full_check_reject_cycle_in_every_distribution(self):
         self.put("topics/loop.md", "---\ndescription: Loop\nparents: [loop]\n---\n# Loop\n")
         self.cli("index")
