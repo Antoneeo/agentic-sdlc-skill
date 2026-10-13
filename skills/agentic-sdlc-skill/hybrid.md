@@ -9,12 +9,14 @@ write triggers are `SKILL.md`'s, and they are identical in both modes.
 
 Moved out of `SKILL.md` by F-051 so a Standalone session stops paying for a seam
 it cannot reach. **The content below is the relocated text, unchanged except
-for one declared amendment**: F-065 rewrote the review rows (devPNT performs no
-review; the agent review precedes the proposal — `ADR_2026-10-07_agent_review_precedes_human`).
-The digest certifies the amended block, re-stamped only after the pre-edit
-block matched the previous digest and the diff showed only those rows changed.
+for two declared amendments**: F-065 rewrote the review rows (devPNT performs no
+review; the agent review precedes the proposal — `ADR_2026-10-07_agent_review_precedes_human`);
+F-066 added one ownership-matrix row (merge review brief and E2E script, always
+filesystem). The digest certifies the amended block, re-stamped each time only
+after the pre-edit block matched the previous digest (F-066: `b700966f…0681`)
+and the diff showed only the declared rows changed.
 
-<!-- moved-block-sha256: b700966fdb47f85a794f883d38caab0a9d3443305d5800dbd186b0f0124d0681 -->
+<!-- moved-block-sha256: 3636fe4a1b65f392ae2978adb70dd59e9a2383646689ad45fa02ebd0574d9c9a -->
 ### Hybrid in symbiosis with devPNT
 
 Use this mode when the `devpnt_*` tools are available and point at the current project.
@@ -59,6 +61,7 @@ process; it never replaces it.
 | Review log | `audit/reviews/REVIEW_LOG.md` | devPNT `REVIEW_LOG.md` (same path) | always filesystem |
 | Operative guides | `ai_docs/reference/` | `ai_docs/reference/` — **filesystem-first even in Hybrid** | devPNT bootstrap may point at their index; it never copies their content |
 | Handoff | `audit/handoff.md` | `audit/handoff.md` | always filesystem |
+| Merge review brief, E2E script | `solutions/MERGE_REVIEW_[feature].md`, `solutions/E2E_TEST_[feature].md` | same paths; they cite the E-TDD shadow and the devPNT doc_keys | always filesystem: they travel in the PR with the code |
 
 ### Triage equivalence (one threshold, two vocabularies)
 

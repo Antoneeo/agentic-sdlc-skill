@@ -167,6 +167,15 @@ Ciò che solo qui l'agente fa:
 - **Guide di comprensione DAL codice**, scritte autonomamente (unico silent-write
   permesso): snapshot = estratti verbatim etichettati `path:symbol`, ogni claim
   tracciabile, aggiornate nella stessa chiusura che cambia il codice descritto.
+- **Brief di merge e script E2E a ogni L3** (F-066): l'integratore riceve
+  `MERGE_REVIEW_[feature].md` — cosa rivedere, cosa ha già verificato quale gate,
+  cosa resta a lui — con la mappa di `sdlc_check.py review-map` che classifica ogni
+  file REVIEW / DESIGN / EVIDENCE / GENERATED (GENERATED = ciò che `index` di quel
+  progetto riscrive, osservato eseguendolo, non dedotto da nomi o marker). I tester
+  ricevono `E2E_TEST_[feature].md` per lo staging dopo il merge: scenari di
+  regressione sempre, scenari nuovi quando il comportamento cambia; nessun nome,
+  nessuna assegnazione. Ordine: E2E prima della closure review, brief dopo, poi
+  `index`, mappa, `index`.
 - **Component Map viva**: riga nuova anche per un componente semplicemente
   *scoperto* esplorando — e il validator la tiene anti-rot (ogni path/simbolo
   nella colonna Where deve risolversi).

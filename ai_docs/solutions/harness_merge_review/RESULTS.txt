@@ -1,0 +1,10 @@
+written by index: ['INDEX.md', 'audit/handoff.md', 'memory/INDEX.md', 'reference/INDEX.md', 'strategic/features_history.md']
+missed by marker: ['memory/INDEX.md']
+A (marker misses a generated file): HOLDS
+B (execution finds the known outputs): HOLDS
+rc=0
+written by index: ['INDEX.md', 'audit/handoff.md', 'memory/INDEX.md', 'reference/INDEX.md', 'strategic/features_history.md']
+missed by marker: []
+A (marker misses a generated file): FAILS
+B (execution finds the known outputs): FAILS
+rc=1
