@@ -5,6 +5,7 @@ Tutte le modifiche significative a questa skill saranno documentate in questo fi
 ## [Unreleased - 1.38.0]
 
 ### Changed
+- F-066: every L3 closure now ships `MERGE_REVIEW_[feature].md` for the integrator (what to review, what was verified by which gate, what only a human can judge) and `E2E_TEST_[feature].md` for human testers in staging after the merge (regression scenarios always, new-behavior scenarios when behavior changed). New code-lens command `sdlc_check.py review-map [--base REF]` classes every changed file REVIEW / DESIGN / EVIDENCE / GENERATED; GENERATED is learned by running the project's own `index` on a throwaway copy, so it cannot drift from the writers.
 - F-065: every agent review request opens with a fixed REVIEW MANDATE block copied verbatim, which carries `review.md` itself to the reviewer in Standalone and Hybrid alike; §Requesting now lists every input its clauses check (Functional Spec, Interface Contract, Component Map, audit plan, probe harness, closure test evidence). devPNT performs no review: in Hybrid an agent review with verdict PASS precedes every proposal to devPNT, where the human reviews; after the round cap only the user's explicit decision sends an artifact on, with open findings attached.
 
 ### Fixed

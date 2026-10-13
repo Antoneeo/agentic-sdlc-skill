@@ -434,6 +434,89 @@ owned, validator-read-only): `{ "<task_id>": {"status": "done", "verify_result":
 sentinel skips re-dispatch; any other value (or a missing `status`) is treated
 as pending. A ledger id absent from the plan is a non-fatal orphan warning.
 
+## ai_docs/solutions/E2E_TEST_[feature].md
+
+Every L3, written before the closure review so it is part of the reviewed diff.
+The reader is a human tester working in staging after the merge, with no design
+document open: write in the actor's and the domain's words, never the design's.
+
+```markdown
+---
+feature: F-001
+analysis: ANALYSIS_[feature].md
+---
+# E2E test: [Feature]
+
+## What changed, in user terms
+<!-- two or three lines. For a change with no visible behavior, say so: the
+     script then carries regression scenarios only. -->
+
+## Environment and preconditions
+<!-- build/version under test, environment, data the scenarios need — BY
+     REFERENCE only (where to find them, who provides them). Never a password,
+     token, key or secret URL: this file is committed. -->
+
+## New-behavior scenarios
+<!-- one per Functional Spec acceptance criterion a human can observe; the
+     criterion's id in the heading. None → one line saying the change has no
+     observable behavior change. -->
+### S1 — [criterion]
+Steps: 1. … 2. …
+Expected: [what the tester sees or receives]
+Result: <!-- left empty: the tester fills their own copy -->
+
+## Regression scenarios
+<!-- ALWAYS present. What must still work exactly as before: the existing
+     flows that reach the components and consumers the change touches (the
+     Impact's consumer set, the existing surfaces in the Interface Contract),
+     each as steps + expected + Result. -->
+
+## Already covered by automated tests
+<!-- what not to retest by hand, naming the test suite. -->
+```
+
+No tester names, no assignment, no due dates and no ordering across changes:
+the script describes what to verify for ONE change, never who does it or when.
+
+## ai_docs/solutions/MERGE_REVIEW_[feature].md
+
+Every L3, written after the closure review, for the integrator who decides the
+merge. It carries citations and the review map, never a claim of its own: each
+"already verified" line names the REVIEW_LOG row or the command that proves it.
+The PR description links this file; it is not copied into the platform.
+
+```markdown
+---
+feature: F-001
+analysis: ANALYSIS_[feature].md
+base: main
+---
+# Merge review: [Feature]
+
+## Purpose
+<!-- one or two lines; the Vision benefit served, cited from the ANALYSIS. -->
+
+## What to review
+<!-- the table printed by `sdlc_check.py review-map --base <base>`, pasted
+     verbatim. REVIEW = review it; DESIGN = the reference the code is checked
+     against; EVIDENCE = spot-check; GENERATED = skip, `check` proves it. -->
+
+## Already verified
+<!-- each gate: REVIEW_LOG row (date, object, verdict, tier) and which
+     docs-root parts it covered; each test/lint command with its result and the
+     commit it ran on. A docs-root file no review covered is said so here. -->
+
+## Your judgement
+<!-- each of these stated, "none" included: deviations from the approved
+     design; accepted residual risks and WARNs left open; CANNOT VERIFY items;
+     declared assumptions; decisions still owed (release, version). -->
+
+## Merge notes
+<!-- conflicts expected in generated files (regenerate with `index`, never
+     resolve by hand); migrations, configuration; post-merge steps (e.g. re-run
+     `mark` after a squash merge); the E2E script to hand to testers. -->
+```
+
 ## ai_docs/audit/audit_plan.md (Standalone mode only)
 
 The `Reference` field (git hash or ISO UTC timestamp) is managed by `sdlc_check.py mark` — do not fill it by hand. Freshness is verified with `sdlc_check.py stale`. Commit the `mark` result as a new commit: amending, rebasing or squash-merging the commit it recorded orphans the reference, and `stale` fails once it no longer resolves — after a squash or rebase merge, re-mark on the integration branch.

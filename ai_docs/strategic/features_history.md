@@ -56,3 +56,4 @@
 | F-061 | Evidence-driven debugging and clean Poka-Yoke correction | code | L3 | COMPLETED | 2026-10-02 | 2026-10-02 | solutions/ANALYSIS_evidence_driven_debugging.md |
 | F-062 | Stable family release and course beta | code | L3 | IN_PROGRESS | 2026-10-02 |  | solutions/ANALYSIS_release_stable_course_beta.md |
 | F-065 | Review Mandate Contract and Hybrid review ordering | code | L3 | COMPLETED | 2026-10-07 | 2026-10-08 | solutions/ANALYSIS_review_mandate_contract.md |
+| F-066 | Merge review brief and human E2E test script at every L3 | code | L3 | COMPLETED | 2026-10-12 | 2026-10-12 | solutions/ANALYSIS_merge_review.md |
