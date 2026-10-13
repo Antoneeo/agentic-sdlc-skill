@@ -267,3 +267,18 @@ Authenticated removal of latest returned E400 after browser authorization. Do no
 assume manual removal will succeed. The publisher must reject beta-only success
 when latest equals the prerelease, or tag queries fail/return empty. Keep closure
 open for owner resolution; do not automatically unpublish or move stable channels.
+
+
+## Course default-install amendment — 2026-10-08
+
+Verbatim owner message in the release session:
+> non ho capito. Spiegami l'effetto dell'alias. Voglio che l'installazione installi l'ultima versione di course.creator
+
+Operational effect explained in the session: a default npm install resolves latest.
+For this release, retain the beta channel and set latest to the same new course
+version, 0.1.0-beta.2. This replaces the previous beta-only requirement for Course.
+Publish and verify with publish_all.bat first; then explicitly promote the new
+course version with npm dist-tag add @antoneeo/course-creator@0.1.0-beta.2 latest
+and verify both channels through the registry. The existing beta-isolation guard
+remains unchanged; it does not certify this owner-authorized dual-channel state.
+Do not remove latest, unpublish versions or move the other packages' channels.

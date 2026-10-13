@@ -2,12 +2,12 @@
 
 `course-creator` helps an AI agent create a course for a defined learner. It maps what the learner already knows, orders concepts by prerequisite, writes explanations in progressive modules, and links factual statements to reopenable sources. Independent fresh learner agents can expose confusing steps; their results are diagnostic. The course is labeled **efficacy not verified** until enough evidence from real learners supports a narrower claim.
 
-The package is the fourth lens of the Agentic SDLC family. It uses the shared `ai_docs/` project memory and governance. Version 0.1.0-beta.1 supports Standalone mode. This is an experimental beta: the authoring method and artifact contracts may change; human learning efficacy has not been established. Its course artifacts remain readable without the skill.
+The package is the fourth lens of the Agentic SDLC family. It uses the shared `ai_docs/` project memory and governance. Version 0.1.0-beta.3 supports Standalone mode. This is an experimental beta: the authoring method and artifact contracts may change; human learning efficacy has not been established. Its course artifacts remain readable without the skill. Each new course keeps a verbatim, append-only record of the requester's own words and decisions in `audit/requests/`, cited by the analysis and checked by its reviews.
 
 ## Install and initialize
 
 ```sh
-npm install -g @antoneeo/course-creator@beta
+npm install -g @antoneeo/course-creator
 course-creator-install-skill
 cd YOUR_PROJECT
 course-creator-init

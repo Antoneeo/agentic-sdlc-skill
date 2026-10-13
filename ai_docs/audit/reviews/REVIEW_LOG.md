@@ -420,3 +420,20 @@ Design round 1 FAIL: B1 Hybrid realization unspecified, hybrid.md x2 missing fro
 | 2026-10-13 | F-067 implementation diff (worktree feat/request-record vs main 9edaf1f) | closure | deep (invoking session normal mode) | fresh-context subagent, rung 1, read-only; request opened with the REVIEW MANDATE block | 10 | 10 | FAIL -> PASS | 1 |
 
 Closure round 1 FAIL: B1 the Interface Contract's feedback (the reply names the record once) and T2's 'path shown to the owner' were in no lens — an independent AC1 replay confirmed the reply said nothing; W1 MERGE_REVIEW template silent on the record; W2 'instead of paraphrasing' stricter than FS5; W3 FS7 half-realized; W4 own record header lacked the template's header; W5 unconditional citation rules in kb capture and mkt EV-01; W6 HANDOFF misquoted R1 and was stale; W7 Diary/Action Plan behind; W8 provisional design PASS unmarked; W9 E2E S4 wording, course CHANGELOG path. Round 2 PASS: all addressed, the AC1 replay variant now plans the one-line reply; the fixes changed the doctrine cost, owner re-confirmed (R10). CANNOT VERIFY: R1-R10, MOTIVATING_CASE and fixture fidelity (transcripts not in repo, T2 residual); AC2 raw output not kept. Owner statements otherwise all resolve to the record (AC5).
+
+## 2026-10-08 — family release 1.38.0 / 1.21.0 / 0.16.0 / beta.2
+
+| date | doc_key | tier | model | reviewer | findings_raised | findings_real | verdict | revise_rounds |
+|---|---|---|---|---|---|---|---|---|
+| 2026-10-08 | release metadata diff vs 9970e66 and release_2026-10-08.md | closure | gpt-6-astra; fresh read-only context; invoking session default normal mode | release_review native subagent; REVIEW MANDATE supplied whole | 1 WARN | 1 | PASS; scoped correction PASS | 2 |
+
+W1 corrected: 29/29/28/34 counts packed files, not the 27/27/26/32 explicit
+allowlist entries. Author confirmed fresh exec outputs and labels the recorded
+suite summaries as excerpts; October 2 logs are not fresh proof. Web login
+completed (whoami antoneeo). Scoped review verified the owner's superseding
+Course policy: default installs receive the newest version; publish beta.2,
+then explicitly set latest to beta.2 and verify both. Guide snapshot/hash,
+README and resume match this ruling; publisher runtime remains unchanged.
+Parent repeat pack/init/fresh-project checks after the final README edit passed
+for all packages (exec 94352). Publication and remote identity remain execution
+obligations, not claims certified by these pre-publication reviews.

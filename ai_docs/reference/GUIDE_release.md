@@ -1,9 +1,9 @@
 ---
 description: How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish.
 status: CURRENT
-source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition; amended 2026-09-25 — plain `check` beside the hybrid one, `mark` inside the release commit, one tag per package, a pending 2FA is pending, not failed).
+source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition; amended 2026-09-25 — plain `check` beside the hybrid one, `mark` inside the release commit, one tag per package, a pending 2FA is pending, not failed; amended 2026-10-08 — Course latest follows the newest published release for default installation).
 distilled_from: ai_docs/reference/.sources/release-runbook-course-creator.md
-source_hash: 535a49d32573c0dbff2f915513deb0c650614e66fc3190482395f0b49a459422
+source_hash: 543adc72dee5d86441b95103288989eb5096ddc664e6c62fe54f8ea10a131776
 ---
 # Guide: Release
 
@@ -86,12 +86,27 @@ Before any commit/tag/publish, four checks:
    all green (aggregates plan + orient + skill-invariants). A failing eval blocks
    the release; if `test_indexes_idempotent` fails, run `sdlc_check.py index` and re-run.
 After publish: verify each version and its intended `dist-tags.latest` or
-`dist-tags.beta`. Course latest must not point at the beta release.
+`dist-tags.beta`. For the owner-authorized Course promotion, verify beta and latest both name
+the newest published course version. See the amendment below.
 On the first course publication (2026-10-02), npm also assigned latest despite
-explicit beta routing, and authenticated removal returned E400. The publisher now
-rejects this state and failed/empty tag queries. Manual removal is subject to registry
-acceptance; keep closure open for owner resolution. Do not automatically unpublish
+explicit beta routing, and authenticated removal returned E400. The publisher
+rejects beta-only verification when the new prerelease is also latest, and rejects
+failed/empty tag queries. The owner replaced the beta-only requirement on
+2026-10-08 with the default-install policy below. Do not automatically unpublish
 or move other channels. (snapshot §Stable and beta release amendment — 2026-10-02)
+
+## Course default-install policy
+[source: release-runbook-course-creator.md#course-default-install-amendment--2026-10-08]
+
+The owner requires default installation to receive the newest Course version.
+For 0.1.0-beta.2, run the publisher and its verification first, then explicitly
+set latest with `npm dist-tag add @antoneeo/course-creator@0.1.0-beta.2 latest`.
+Verify beta and latest both resolve to 0.1.0-beta.2. The version remains an
+experimental beta; the alias does not establish stability or learning efficacy.
+The existing publisher guard is unchanged and does not certify this dual-channel
+state. An already-promoted rerun can fail that guard after skipping publication;
+use direct registry checks to distinguish accepted publication from the intended
+owner-authorized promotion. Do not remove latest or move other package channels.
 
 ## What to watch out for
 [source: release-runbook-course-creator.md#known-traps]

@@ -1,14 +1,22 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**Release preparation (2026-10-02).** The registry confirms code 1.36.0, KB
-1.19.0 and marketing 0.14.0 already published. New prepared targets: code 1.37.0,
-KB 1.20.0, marketing 0.15.0 and course 0.1.0-beta.1 on beta. Antonio authorized
-commit and publication; GUIDE_release.md is the runbook. Independent release and
-integration reviews PASS; four full suites, package allowlists and scratch checks
-pass. npm browser login completed. Commit, tags and publication remain pending;
-HANDOFF_release_stable_course_beta.md carries the resume. Exclude ongoing
-presentations; publish the exact committed export. C-001 remains open.
+**Release prepared (2026-10-13), not yet published.** code 1.39.0, KB 1.22.0,
+marketing 0.17.0, Course 0.1.0-beta.3: F-066 (merge review brief, E2E script,
+`review-map`, code lens) and F-067 (verbatim request record, all four lenses).
+Release commit and tags v1.39.0 / kb-v1.22.0 / mkt-v0.17.0 / course-v0.1.0-beta.3
+exist locally on `release/1.39.0` (merges origin/main 77c7b54 with local main).
+Next, the owner's steps: push branch and tags, then `publish_all.bat` from a clean
+export of the tagged commit (browser 2FA per package), then verify dist-tags.
+
+**Release completed (2026-10-08).** Published and publicly verified: code 1.38.0,
+KB 1.21.0, marketing 0.16.0 and Course 0.1.0-beta.2. Exact tagged export of
+61eb56e; all four public tarballs match SHA1 and SHA512. Stable latest aliases
+name the new releases; Course beta and latest both name beta.2 under Antonio's
+newest-default-install ruling. The publisher polling timeout was resolved by
+direct registry verification without republishing. Fresh tests and package smokes
+passed; release reviews PASS. F-062 is COMPLETED; its Diary and release harness
+carry the durable record. C-001 stays open. Installed PC skills were not updated.
 
 **What the 2026-09-12 tranche does NOT claim.** The read surface GREW in all three
 lenses (+6.2% code, +8.2% kb, +7.8% mkt across all `.md`), even though the code and mkt
