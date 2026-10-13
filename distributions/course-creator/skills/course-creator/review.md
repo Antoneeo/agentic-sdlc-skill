@@ -270,6 +270,10 @@ The binding inputs, by review type:
   **against** them, not only for internal consistency.
 - **For a closure review, the diff and the test evidence**: the run output that
   backs every completion claim, dated after the final relevant change.
+- **For a design or closure review of an L3/E3 unit, the request record**
+  (`audit/requests/REQUEST_[unit].md`): the owner's own words, verbatim, that the
+  artifact's owner statements must resolve to. Without it, every such statement is
+  a CANNOT VERIFY.
 - **For a design review, the threat model too** (same sources as above). Why this
   one and not the whole set: file coverage crosses the impact-analysis→design hop on
   a mechanical gate (every impacted file needs a design block), so a dropped file is
@@ -398,7 +402,11 @@ When you are the reviewer:
   intent choice written with no owner-authored source and no weighing, a weighing
   that names no rejected option or turns on an owner priority not on record, and a
   fact or owner-held datum settled by a weighing instead of evidence are findings;
-  so is a cited source that does not say what the line claims. What makes a ground
+  so is a cited source that does not say what the line claims. An owner statement
+  the artifact relies on — an answer, an approval, a cost acceptance, a ruling, a
+  delegation — that resolves to no entry of the unit's request record, or that the
+  record contradicts, is a finding; so is a quotation in the record carrying what
+  its template says to redact. What makes a ground
   or an assumption legal is each lens's `elicitation.md` §The question discipline —
   cite it, never restate it. The fix is the question, not a better justification.
 - **Restated facts (cite, never copy).** Every governance slot has ONE owning document

@@ -69,7 +69,8 @@ intent choice with neither a source nor a weighing is a finding (`review.md`
 **Declared assumptions exist only where no question can be asked:**
 
 - **Unattended** — the user is not reachable (the Unattended path above).
-- **Delegated** — their own words handed you this choice; quote them. A general
+- **Delegated** — their own words handed you this choice; cite their entry in the
+  request record, or quote them where the engagement has none (below E3). A general
   "go ahead" is not a delegation.
 
 Each states **what it is taken from** and **the alternative it excludes** —
@@ -198,7 +199,9 @@ evidence first (one short paragraph), then ask:
 
 ## Reflect
 
-Fold answers into the artifacts (MKT_VISION, OBJECTIVES, TACTICAL_PLAN) and
+At E3, append the answers verbatim to the request record first
+(`audit/requests/REQUEST_[engagement].md`, template in `templates.md`); an owner-given
+`FACT` cites its entry in the Source cell. Then fold answers into the artifacts (MKT_VISION, OBJECTIVES, TACTICAL_PLAN) and
 the ledger — never leave them only in chat. The written document is what the
 next session and the reviewer read.
 

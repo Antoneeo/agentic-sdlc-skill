@@ -8,9 +8,9 @@ phases, the gates and the evidence discipline are `SKILL.md`'s, identical in bot
 modes.
 
 Moved out of `SKILL.md` by F-052 so a Standalone session stops paying for a seam
-it cannot reach. **The content below is the relocated text, unchanged except for one declared amendment**: F-065 rewrote the review wording (devPNT performs no review; the agent review precedes the proposal — `ADR_2026-10-07_agent_review_precedes_human` in the code lens). The digest certifies the amended block, re-stamped only after the pre-edit block matched the previous digest and the diff showed only those lines changed.
+it cannot reach. **The content below is the relocated text, unchanged except for two declared amendments**: F-065 rewrote the review wording (devPNT performs no review; the agent review precedes the proposal — `ADR_2026-10-07_agent_review_precedes_human` in the code lens); F-067 added one ownership-matrix row (the request record, always filesystem). The digest certifies the amended block, re-stamped each time only after the pre-edit block matched the previous digest (F-067: `1627068d…efb6`) and the diff showed only the declared lines changed.
 
-<!-- moved-block-sha256: 1627068db8c34b2bbbbb151812b12a3d09d663f4bace41d2d5b490239eb2efb6 -->
+<!-- moved-block-sha256: 2979729a2ee7fe00980265db7c9490e5216ac70afcdf164ffd24bdcf42758006 -->
 ### Hybrid in symbiosis with devPNT
 
 Use this mode when the `devpnt_*` tools are available and point at the current project.
@@ -38,6 +38,7 @@ The skill owns the **process** (triage, phases, gates, lifecycle); devPNT owns t
 | Evidence ledger | `research/evidence_ledger.md` | `research/evidence_ledger.md` — **filesystem-first even in Hybrid** | validator needs it on disk; devPNT may reference, never copies |
 | Final plan + one-pager | `deliverables/` | assembled from ACCEPTED artifact versions | PDF via `devpnt_generate_document_pdf` when available |
 | Handoff | `audit/handoff.md` | `audit/handoff.md` | always filesystem |
+| Request record | `audit/requests/REQUEST_[engagement].md` | same path; M-VISION and governed artifacts cite its entries; an approval given in devPNT is named by its proposal, not quoted | always filesystem: devPNT holds no client chat statements |
 
 Hybrid rules:
 - devPNT is the governed source for plans and strategy artifacts; do not create a second truth in `mkt_docs/`.

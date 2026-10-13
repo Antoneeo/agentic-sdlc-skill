@@ -801,7 +801,8 @@ class SkillInvariants(unittest.TestCase):
         req = self._review_section("## Requesting", "## Receiving")
         for needed in ("Functional Spec", "Interface Contract", "threat model",
                        "Component Map", "audit_plan.md", "harness",
-                       "Vision", "use-case", "diff", "test evidence"):
+                       "Vision", "use-case", "diff", "test evidence",
+                       "request record"):
             self.assertIn(needed, req,
                           f"§Requesting does not ask for {needed!r}, which a "
                           "§Reviewing clause checks")
@@ -811,6 +812,23 @@ class SkillInvariants(unittest.TestCase):
         self.assertIn("E-ISP", fs,
                       "the Functional Spec clause must name its Hybrid home: a "
                       "reviewer holding only the mandate doubted it (replay)")
+
+    def test_request_record_is_stated_in_every_lens(self):
+        """F-067: the owner's own words were distilled at once and later
+        decisions lived only in the chat, so reviewers could verify none of
+        them (F-066). Every lens must start the verbatim record, give its
+        template, and route citations to it; the shared review discipline must
+        check owner statements against it."""
+        for rel in ("SKILL.md", "elicitation.md", "templates.md"):
+            self.assertIn("audit/requests/REQUEST_", read(rel),
+                          f"{rel} does not name the request record")
+        self.assertIn("REDACTED", read("templates.md"),
+                      "the record template must state the redaction rule")
+        rev = self._review_section("## Reviewing", "## Anti-patterns")
+        doubt = rev[rev.index("**An unasked doubt is a finding"):]
+        doubt = doubt[:doubt.index("- **", 5)]
+        self.assertIn("request record", doubt,
+                      "owner statements must be checked against the record")
 
     def test_agent_review_precedes_the_humans(self):
         """F-065 (owner rule): devPNT performs no review -- it is where the

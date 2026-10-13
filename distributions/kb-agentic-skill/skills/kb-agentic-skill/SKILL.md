@@ -81,6 +81,7 @@ Triage decides IF documentation is due; this table decides WHICH document each e
 
 | Document | Write trigger | Phase |
 |---|---|---|
+| `audit/requests/REQUEST_[topic].md` | Every L3, the moment the level is declared — before the Vision Gate and the first question: R1 quotes the practitioner's opening words verbatim; every later statement of theirs that settles something for the unit (answer, approval, cost, ruling) is appended before acting on it. Append-only, never deleted; artifacts cite its entries (`templates.md`). | 1 → 6 |
 | `solutions/ANALYSIS_[topic].md` | Every L3, after elicitation and before any drafting. On topic match with an existing analysis, update that one instead of a new file. | 3 |
 | `solutions/SPIKE_[topic].md` | Closing any Spike — including a negative outcome. | — |
 | `vision/features/VISION_[feature].md` | Multi-milestone topic at analysis time, or retroactive trigger (second ANALYSIS on same theme). | 3 |
@@ -114,6 +115,7 @@ Use this mode when devPNT is unavailable, not configured for the current project
 Use this mode when `devpnt_*` tools are available and point at the current project.
 - devPNT governs `M-VISION`, Master Plan, Action Plan, and versioned artifacts.
 - Local `ai_docs/` serves as readable context, Standalone fallback, local handoff, or shadow copy.
+- The request record (`audit/requests/`) always stays on the filesystem — devPNT holds no practitioner statements; governed artifacts cite its entries, and an approval given in devPNT is named by its proposal, not quoted.
 - **Never auto-accept a devPNT proposal**: present the preview and wait for the user's explicit confirmation. This is a human-approval guarantee, not a convenience — an agent that resolves its own proposal has removed the only step where a person can refuse.
 
 ## L3 Workflow
@@ -125,6 +127,7 @@ Use this mode when `devpnt_*` tools are available and point at the current proje
 
 ### 2. Vision Gate
 - Read `project_vision.md`, `roadmap.md`, `principles.md` (or devPNT `M-VISION`).
+- Compare them with the request as recorded in `audit/requests/REQUEST_[topic].md`, not with a paraphrase of it.
 - Verify request aligns with expected benefits, user goals, and success signals.
 
 ### 3. Request Analysis & Taxonomy Pass
@@ -256,7 +259,9 @@ exist — this section adds only the MOMENT.
   threshold, a rule, a stated preference, a rejected alternative with its reason.
   NOT mechanics (commands run, files edited), NOT process state (the handoff's job).
 - **The channeling — existing rails, explicit provenance.**
-  - The user's words → `corpus/notes/*` with `origin: elicited` and a `date:`; a
+  - The user's words → `corpus/notes/*` with `origin: elicited` and a `date:` (at L3,
+    naming the request-record entry they came from (the note keeps its own transcription:
+    an export carries the corpus, not `audit/`)); a
     claim row distilled from it carries `prov: ELICITED`, source = that note with a
     legal `L<a>-<b>` locator.
   - A synthesis of the day's discussion → a note with `derived_from:` → claim
