@@ -3,6 +3,7 @@
 ## [Unreleased - 0.16.0]
 
 ### Changed
+- F-067: every E3 unit now keeps a verbatim, append-only request record `audit/requests/REQUEST_[engagement].md`, started before the Vision Gate: the owner's opening words and every later statement that settles something (answers, approvals, costs, rulings). Artifacts cite its entries instead of paraphrasing; the shared `review.md` asks for the record and makes an owner statement with no resolving entry a finding. Secrets, personal data and confidential third-party or employer information are redacted. An owner-given `FACT` cites its entry in the Source cell.
 - F-065: every agent review request opens with a fixed REVIEW MANDATE block copied verbatim, which carries `review.md` itself to the reviewer in Standalone and Hybrid alike; §Requesting now lists every input its clauses check (Functional Spec, Interface Contract, Component Map, audit plan, probe harness, closure test evidence). devPNT performs no review: in Hybrid an agent review with verdict PASS precedes every proposal to devPNT, where the human reviews; after the round cap only the user's explicit decision sends an artifact on, with open findings attached.
 
 ## [0.15.0] - 2026-10-02

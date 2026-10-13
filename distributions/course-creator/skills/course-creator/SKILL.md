@@ -38,6 +38,7 @@ Before authoring a governed artifact, know which tier is authoring and follow `r
 
 | When | Write or update |
 |---|---|
+| New L3 unit, the moment the level is declared | `audit/requests/REQUEST_course_<slug>.md`: R1 quotes the requester's opening words verbatim, before the Vision Gate and the first question; every later statement of theirs that settles something (answer, approval, cost, ruling) is appended before acting on it. Append-only, never deleted; artifacts cite its entries. |
 | New L3 course | `vision/features/VISION_course_<slug>.md` with explicit `domain: course`; approve it before design. |
 | Approved Vision and a design need | `solutions/ANALYSIS_course_<slug>.md` with course risks; `D-UC.md`, `D-IC.md`, `P-TM.md`, graph and plan detail its IDs. |
 | New production or substantial revision | Deliver the complete textual source in `slide_content.md`; declare its versioned content contract in COURSE_PLAN. |
@@ -58,7 +59,7 @@ Read `ai_docs/README.md`, `ai_docs/INDEX.md`, and `ai_docs/reference/INDEX.md` (
 
 ### 2. Vision Gate
 
-Draft the course Vision with benefit, named learner groups, what they should be able to understand and do, and signals that would count as useful learning. Read `vision.md`, run its blind check, and obtain the person's approval before writing the course design. Project Vision remains above the course Vision. A course may be delivered before human evaluation, visibly labeled **efficacy not verified**.
+Draft from the request as recorded in `audit/requests/REQUEST_course_<slug>.md`, not from a paraphrase of it. Draft the course Vision with benefit, named learner groups, what they should be able to understand and do, and signals that would count as useful learning. Read `vision.md`, run its blind check, and obtain the person's approval before writing the course design. Project Vision remains above the course Vision. A course may be delivered before human evaluation, visibly labeled **efficacy not verified**.
 
 ### 3. Course Design
 

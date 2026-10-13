@@ -75,7 +75,8 @@ REVIEW_INSTRUCTIONS = {
     "REVIEW": "review",
     "DESIGN": "reference the code is checked against; read the changed parts "
               "(the brief states which review covered them)",
-    "EVIDENCE": "spot-check that the verdicts the brief cites exist; do not re-review",
+    "EVIDENCE": "spot-check that what the brief cites exists (verdicts, owner "
+                "statements); do not re-review",
     "GENERATED": "skip; rewritten by `index` (a CLEAN `check` proves it) or, for "
                  "SHADOW_ mirrors, exported from devPNT",
 }
@@ -192,7 +193,7 @@ def classify_path(path, docs_prefix, generated):
     if rel in generated or (rel.startswith("solutions/") and name.startswith("SHADOW_")):
         return "GENERATED"
     if (rel.startswith("audit/reviews/") or rel.startswith("audit/HANDOFF_")
-            or rel.startswith("solutions/harness_")):
+            or rel.startswith("audit/requests/") or rel.startswith("solutions/harness_")):
         return "EVIDENCE"
     return "DESIGN"
 

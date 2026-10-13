@@ -67,14 +67,17 @@ Ask it before the first write that would embed its answer, grouped with every
 doubt open at that point, in one numbered set, with the client's
 structured-question facility where it has one. Never defer a doubt to the
 deliverable, where the practitioner must find it inside the document; never drip
-one question per turn. Fold every answer into the artifact, citing the reply; an
+one question per turn. At L3 record every answer verbatim in the request record
+(`audit/requests/REQUEST_[topic].md`) and fold it into the artifact citing that
+entry; an
 intent choice with neither a source nor a weighing is a finding (`review.md`
 §Reviewing).
 
 **Declared assumptions exist only where no question can be asked:**
 
 - **Unattended** — the practitioner is not reachable (the Unattended path above).
-- **Delegated** — their own words handed you this choice; quote them. A general
+- **Delegated** — their own words handed you this choice; cite their entry in the
+  request record, or quote them where the unit has none (below L3). A general
   "go ahead" is not a delegation.
 
 Each states **what it is taken from** and **the alternative it excludes**, and is
@@ -170,7 +173,8 @@ round). Cover:
 
 ## Reflect
 
-Fold the answers into the ANALYSIS `## Objective` / `## Vision-Alignment`
+At L3, append the answers verbatim to the request record first
+(`audit/requests/REQUEST_[topic].md`, template in `templates.md`). Then fold them into the ANALYSIS `## Objective` / `## Vision-Alignment`
 sections (Standalone) or into the D-UC/E-ISP (Hybrid) — do not leave them
 sitting only in the chat transcript. The written document, not the
 conversation, is what the next session and the next reviewer will read.

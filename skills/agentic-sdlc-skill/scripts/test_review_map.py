@@ -110,6 +110,7 @@ class ReviewMapTests(unittest.TestCase):
         write(self.repo, "ai_docs/architecture/ADR_demo.md", ADR)
         write(self.repo, "ai_docs/audit/reviews/REVIEW_LOG.md", "| row |\n")
         write(self.repo, "ai_docs/solutions/harness_demo/probe.py", "pass\n")
+        write(self.repo, "ai_docs/audit/requests/REQUEST_demo.md", "### R1\n> words\n")
         write(self.repo, "ai_docs/solutions/SHADOW_e_tdd_demo_v1.0.md", "mirror\n")
         write(self.repo, "src/app.py", "print(2)\n")
         write(self.repo, "distributions/x/app.py", "print(3)\n")
@@ -124,6 +125,7 @@ class ReviewMapTests(unittest.TestCase):
         self.assertEqual(got["ai_docs/architecture/ADR_demo.md"], "DESIGN")
         self.assertEqual(got["ai_docs/audit/reviews/REVIEW_LOG.md"], "EVIDENCE")
         self.assertEqual(got["ai_docs/solutions/harness_demo/probe.py"], "EVIDENCE")
+        self.assertEqual(got["ai_docs/audit/requests/REQUEST_demo.md"], "EVIDENCE")
         self.assertEqual(got["ai_docs/solutions/SHADOW_e_tdd_demo_v1.0.md"], "GENERATED")
         for gen in ("ai_docs/INDEX.md", "ai_docs/strategic/features_history.md",
                     "ai_docs/memory/INDEX.md"):

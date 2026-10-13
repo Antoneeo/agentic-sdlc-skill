@@ -84,6 +84,7 @@ Triage decides IF documentation is due; this table decides WHICH document each e
 | Document | Write trigger | Phase |
 |---|---|---|
 | `solutions/ANALYSIS_[feature].md` | Every L3, after elicitation and before any code. On topic match with an existing analysis, update that one instead of a new file -- a revision re-reads the WHOLE document and rewrites it to current state (history in the Diary), never an appended delta section. A capability the architect pass splits out as its own unit of change (`architect.md` §4) gets its own ANALYSIS, and the two documents name each other. | 3 |
+| `audit/requests/REQUEST_[feature].md` | Every L3, the moment the level is declared — before the Vision Gate and the first question: R1 quotes the owner's opening words verbatim; every later owner statement that settles something for the unit (answer, approval, cost, ruling, merge) is appended before acting on it. Append-only, never deleted; artifacts cite its entries, a paraphrase never replacing the citation (`templates.md`). | 1 → 5 |
 | `solutions/SPIKE_[topic].md` | Closing any Spike — including a failed one (a negative outcome is still an outcome). | — |
 | `solutions/E2E_TEST_[feature].md` | Every L3, before the closure review (it is part of the reviewed diff): the human tester's post-merge script — new-behavior scenarios when behavior changed, regression scenarios always (`templates.md`). | 5 |
 | `solutions/MERGE_REVIEW_[feature].md` | Every L3, after the closure review: the integrator's brief — what to review (`sdlc_check.py review-map`), what was verified by which gate, what only a human can judge (`templates.md`). The PR description links it. | 5 |
@@ -150,6 +151,7 @@ devPNT is not there, work Standalone and nothing is lost.
 
 Standalone:
 - Read `project_vision.md`, `roadmap.md`, `principles.md`.
+- Compare them with the request as recorded in `audit/requests/REQUEST_[feature].md`, not with a paraphrase of it.
 - If a document declares `Status: DRAFT`, treat it as a hypothesis: flag conflicts, but do not block an explicit user request.
 - If it declares `Status: APPROVED` and the request conflicts, stop and ask for a choice: update the Vision or modify/reject the request.
 - Never promote a Vision to `APPROVED` without the user's confirmation.

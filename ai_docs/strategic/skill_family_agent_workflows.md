@@ -104,6 +104,14 @@ Qualunque lente sia attiva, l'agente:
    pro e contro di ogni opzione; una scelta i cui pro vincono chiaramente si prende
    scrivendo la pesatura accanto ("scelgo X invece di Z: pro …, contro …"); un fatto
    si risolve con una prova o si chiede, mai con una pesatura.
+
+   **Registra la richiesta alla lettera** (F-067, tutte e quattro le lenti, L3/E3):
+   prima del Vision Gate l'agente apre `audit/requests/REQUEST_[unità].md` con le
+   parole d'apertura dell'owner (R1) e vi aggiunge, prima di agire, ogni sua decisione
+   successiva — risposte, approvazioni, costi, ruling — con la domanda a cui risponde.
+   Solo in aggiunta, mai tradotto né riassunto, segreti e dati riservati oscurati. Gli
+   artefatti citano `#R<n>` invece di parafrasare; la review riceve il registro e una
+   dichiarazione dell'owner senza voce corrispondente è un finding.
 5. **Chiude meccanicamente**: `check` CLEAN, documenti nello stesso commit del
    lavoro, decisione esplicita di merge (mai branch orfani), `HANDOFF_[unit].md`
    cancellato e `index` rieseguito — cancellarlo **è** rimuovere la riga, e nessun
