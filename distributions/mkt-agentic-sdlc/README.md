@@ -25,6 +25,7 @@ Turns an AI agent into a disciplined marketing strategist that produces a profes
 1. **Evidence ledger** — every market number is classified FACT / BENCHMARK / ASSUMPTION and carries an `[EV-nn]` reference to its source. No invented numbers.
 2. **Mechanical validator** (`mkt_check.py` + `sdlc_core.py` + `knowledge.py` — entry point, shared spine and memory; copy all three) — budget sums (±1%), funnel math recomputed cell by cell (±5%) and the objective→tactic→KPI chain are checked mechanically, not rhetorically: `check`, `validate`, `ledger`, `budget`, `funnel`, `trace`, `index`, plus the spine's `stale`/`mark`/`benefit`/`gate`/`plan`/`orient`/`migrate`. `benefit` reports what the review gates have already caught, beside what the doctrine costs to read; it always exits 0 and carries no verdict.
 3. **Adversarial CMO review** — an independent, fresh-context reviewer attacks the strategy before the user sees it (generic-positioning swap test, untraced claims, orphan tactics).
+4. **Verbatim request record** — every E3 engagement starts `audit/requests/REQUEST_[engagement].md` before Wave 1: the client's own words and every later decision, append-only and redacted for secrets; owner-given FACT rows and the plan cite its entries, and reviews check client statements against it.
 
 The agent asks the user only for facts the user uniquely owns (product, price, budget, capacity); everything else — market sizing, competitor analysis, channel benchmarks — is derived from real web research.
 
