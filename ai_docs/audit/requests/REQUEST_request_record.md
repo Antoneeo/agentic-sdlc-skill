@@ -57,3 +57,7 @@ Context (agent): "Ruling r26: 'keeps the owner's words for a unit as the record 
 ### R10 — 2026-10-13 — cost re-confirmed after the closure-review fixes
 Context (agent): "Confermi il nuovo costo?" (after the table: SKILL.md code +553 → +562, kb +882 → +890, mkt and course unchanged; templates.md code +1871 → +2170, kb +2020 → +2233, mkt +1827 → +2078, course +1741 → +1954; review.md, elicitation.md, hybrid.md unchanged)
 > confermo
+
+### R11 — 2026-10-13 — merge to main
+Context (agent): "Should I fast-forward `main` to `2608eba`, as for F-066?"
+> Yes
