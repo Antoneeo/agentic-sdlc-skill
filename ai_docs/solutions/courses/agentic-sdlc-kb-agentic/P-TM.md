@@ -1,13 +1,16 @@
-# Rischi didattici e di contenuto
+# Rischi didattici
 
-Gli ID e il rischio canonico sono in `ai_docs/solutions/ANALYSIS_course_agentic-sdlc-kb-agentic.md#learning-and-content-risks`.
+Gli ID canonici e le mitigazioni sono in ANALYSIS C-001. Sono preservati C-1–C-7, aggiunti C-8–C-10 per questa revisione.
 
 | Risk ID | Vector | Mitigation | Residual |
 |---|---|---|---|
-| C-1 | Versione o citazione errata delle skill | Registro unico delle fonti, controllo fattuale separato dalla chiarezza | Una nuova release può richiedere revisione del corso. |
-| C-2 | Competenza dedotta dal ruolo | Stati iniziali non provati, definizioni prima dell'uso, grafo e simulazione | Le conoscenze dei destinatari reali non sono ancora misurate. |
-| C-3 | Catalogo di sigle, slide o esercizi al posto di spiegazioni | Prima spiegare causa ed esempio, poi nominare artefatto e verifica | La review non dimostra apprendimento umano. |
-| C-4 | Settimana, mese e anni letti come rendimento garantito | Scenario ipotetico con condizioni di consultazione e manutenzione, senza numeri inventati | Il beneficio reale varia fra progetti. |
-| C-5 | Controllo simulato contaminato o scambiato per prova umana | Sessioni fresche, pacchetti chiusi, accesso simmetrico e limiti espliciti | Gli agenti non rappresentano persone reali. |
-| C-6 | Governance devPNT insegnata come requisito delle skill | Distinzione esplicita Standalone/Hybrid e fonte `hybrid.md` | Le sigle simili richiedono esempi accurati. |
-| C-7 | Assenza di un canale feedback diretto | D-IC dichiara `not available`; eventuale riscontro ricevuto viene registrato con versione e modulo | Silenzio non significa comprensione. |
+| C-1 | Versione o citazione errata | Fonti riaperte e snapshot; controllo fattuale separato | Una nuova release può richiedere revisione |
+| C-2 | Prerequisito presunto dal ruolo | Definizioni prima dell’uso; grafo e diagnostica | Baseline reale non misurata |
+| C-3 | Sigle o esercizi al posto della spiegazione | Ragione causale e confronto concreto nel testo | La review non prova apprendimento umano |
+| C-4 | Accumulo letto come produttività garantita | Scenari condizionati, confronto equo e limiti | Beneficio non misurato sul team |
+| C-5 | Contaminazione o simulazione scambiata per prova umana | Sessioni distinte, accesso comparabile e limiti dichiarati | Isolamento dei reader solo per istruzioni |
+| C-6 | devPNT scambiato per requisito | Standalone completo e prodotto opzionale in S32 | Nessun test di servizi esterni |
+| C-7 | Feedback diretto assente | D-IC not available; correzioni e riscontri in FEEDBACK_REPORT | Silenzio non prova comprensione |
+| C-8 | Persona addestrata a sostituire l’agente | Check su uscita del tool o richiesta della persona | Simulatore agente può avere competenze superiori |
+| C-9 | Perdita da compattazione | Richiesta e verifica del salvataggio prima della compattazione | Nessuna garanzia di continuità senza perdite |
+| C-10 | Riuso di conoscenza obsoleta | Distinguere storia e validità, dipendenti da rivedere | Recupero e manutenzione possono fallire |

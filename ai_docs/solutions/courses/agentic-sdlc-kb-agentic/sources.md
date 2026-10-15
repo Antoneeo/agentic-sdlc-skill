@@ -1,21 +1,24 @@
 # Fonti del corso
 
-Questa pagina è il registro unico delle affermazioni sulle skill per la versione 3.2-content, con riuso dello snapshot fissato per 1.0-draft. I file indicati sono gli originali riapribili nel repository al 2026-09-27. Poiché alcuni erano modificati nel working tree, `source_snapshot_2026-09-27.zip` (SHA-256 `f3e5cdf6f88df2f06fe35ccdddd63143b8c7a41653c93f79b1e2d1e01d7887c8`) ne conserva **i byte esatti usati per questo corso**, con gli stessi percorsi interni e i locatori di sezione qui elencati. La tabella SHA-256 identifica ciascuna versione: se un originale cambia, si riapre la copia nello snapshot e si rivaluta l'affermazione prima di aggiornare il corso. Lo snapshot è un archivio di prova, non una seconda fonte da modificare. Il progetto narrativo «Orione» è un esempio ipotetico, non una misurazione di produttività. I confronti con l'uso ordinario sono spiegazioni causali condizionate alla conservazione e alla consultazione delle informazioni, non dati sperimentali.
+Registro unico 4.0-content. Gli originali locali sono riaperti; lo snapshot source_snapshot_2026-10-04.zip conserva i byte insegnati. Distill è separato e la copia nello snapshot conserva la fonte installata. Le frasi sulle skill sono prescrizioni, non garanzie di conformità. Tutti i contratti, log ed eventi Orione/Alba/Bora/Cobalto/Selene e gli esempi di ricevute sono inventati; non sono misure né indicazioni legali. L’inferenza sul valore cumulativo è condizionata alla consultazione e manutenzione.
 
-| Fonte nello snapshot e nel repository | SHA-256 dei byte insegnati |
+| Fonte | SHA-256 |
 |---|---|
-| `ai_docs/strategic/skills_vs_standard_agents_team.md` | `d17c9c35c2d3d4b847418ade83f45a3c6a81999e22a5aa85c1942f752784b934` |
-| `skills/agentic-sdlc-skill/SKILL.md` | `e99110d7a8b3ea20bca625f247258feb1d8217649b1e6fbdaa1e5eb6f81e1b5c` |
-| `distributions/kb-agentic-skill/skills/kb-agentic-skill/SKILL.md` | `ffed7491d06ac7a05df091fe0df86fe7b9e8eb267653b90e95d22f3be30db22e` |
-| `distributions/kb-agentic-skill/skills/kb-agentic-skill/distillation.md` | `441b8014f0d6c00e672e5a53ddcedb3be292431f932c6162c742ff7972eb1d1e` |
-| `distributions/kb-agentic-skill/skills/kb-agentic-skill/taxonomy.md` | `97753b4377f019203aaba5db82032de998f33bc975724e6f6f259648190b6912` |
-| `distributions/kb-agentic-skill/skills/kb-agentic-skill/reconciliation.md` | `271c71470e7f925b5263c055df5f15bfb8c7be1d43b47587f912cca6cf6e9323` |
-| `skills/agentic-sdlc-skill/hybrid.md` | `b1bd55495c3b05c5966c8ea23c0a9d2cfb1ad9abcc04ba96e40dad80878a9cc3` |
-| `skills/agentic-sdlc-skill/review.md` | `4070617586e559e1713bd8558c23823c3c3470585321928a00079ded41938404` |
-| `skills/agentic-sdlc-skill/guides.md` | `e1cd7071256604eb0844ba3740cf69c70dcca94992cb9427d2c4a5d196c7f56e` |
-| `skills/agentic-sdlc-skill/routing.md` | `99dbd353f3f642893dbfeba1279ee7c97c0b2d3b60b003ea190e660d493f2c53` |
-| `ai_docs/vision/project_vision.md` | `8282a133cdbff998b9c36ded19b64dd58ff996c02868ef1a98a2d2d13179a184` |
-| `ai_docs/vision/features/VISION_course_agentic-sdlc-kb-agentic.md` | `4d642cb84dca8b3a7e64f69d8ebab2a10290f0cca15932eef3375ff2a4cebfc0` |
+| skills/agentic-sdlc-skill/SKILL.md | f6bb84575e7b0afc0ab69c8b516a70dcfa6f1698457fba9cc49e4845491b63cf |
+| skills/agentic-sdlc-skill/debugging.md | 0bf269c448032d3882796466f125647f37e7a0f3bf5bb5ce971e126a69aa4263 |
+| skills/agentic-sdlc-skill/hybrid.md | b1bd55495c3b05c5966c8ea23c0a9d2cfb1ad9abcc04ba96e40dad80878a9cc3 |
+| skills/agentic-sdlc-skill/guides.md | e1cd7071256604eb0844ba3740cf69c70dcca94992cb9427d2c4a5d196c7f56e |
+| skills/agentic-sdlc-skill/review.md | 4070617586e559e1713bd8558c23823c3c3470585321928a00079ded41938404 |
+| skills/agentic-sdlc-skill/routing.md | 99dbd353f3f642893dbfeba1279ee7c97c0b2d3b60b003ea190e660d493f2c53 |
+| ai_docs/strategic/skills_vs_standard_agents_team.md | d17c9c35c2d3d4b847418ade83f45a3c6a81999e22a5aa85c1942f752784b934 |
+| ai_docs/vision/project_vision.md | 8282a133cdbff998b9c36ded19b64dd58ff996c02868ef1a98a2d2d13179a184 |
+| ai_docs/vision/features/VISION_course_agentic-sdlc-kb-agentic.md | 9f6257995619791689b970daf741cf5b6a47b00870d7a55003aa3e0b259ae5f7 |
+| distributions/kb-agentic-skill/skills/kb-agentic-skill/SKILL.md | 99b8c3c4729d60ded2c5b2510583ddac041c7fa6766bd94874156c71900d7145 |
+| distributions/kb-agentic-skill/skills/kb-agentic-skill/distillation.md | 441b8014f0d6c00e672e5a53ddcedb3be292431f932c6162c742ff7972eb1d1e |
+| distributions/kb-agentic-skill/skills/kb-agentic-skill/taxonomy.md | 97753b4377f019203aaba5db82032de998f33bc975724e6f6f259648190b6912 |
+| distributions/kb-agentic-skill/skills/kb-agentic-skill/reconciliation.md | 271c71470e7f925b5263c055df5f15bfb8c7be1d43b47587f912cca6cf6e9323 |
+| ai_docs/solutions/courses/agentic-sdlc-kb-agentic/REPORT_indicazioni_revisione_2026-10-04.md | 4d43edb37df8fde9c2a15ef8c363dbd3af1f0a3a75cb1d88ade31653bd33222d |
+| distill/SKILL.md | eda1841e31b9ff0e68e167bfc7c7340637f5dffeb19c03f63acc02868ce72d50 |
 
 ## claim-1
 
@@ -68,3 +71,16 @@ Se fonti, decisioni e GUIDE vengono registrate, consultate e aggiornate nello st
 ## claim-13
 
 Confronto didattico, non risultato sperimentale: una richiesta dettagliata di note può già conservare motivo e provenienza; istruzioni equivalenti possono ottenere gli stessi passaggi di una skill. Il contributo specifico del protocollo è esplicitare e riusare quei requisiti (provenienza, revisione, design e verifica). È un'inferenza dai meccanismi dei claim 1, 2, 5, 8, 9 e 12, non la prova di superiorità di un agente. Gli obblighi nelle istruzioni non garantiscono da soli la conformità dell'esecuzione. Esempi Alba/Bora e Orione interamente inventati; nessun guadagno di produttività misurato.
+
+
+## claim-14
+
+Distill applica un contratto prima della scrittura e un controllo di perdita/rumore: non cerca la brevità a costo delle informazioni necessarie. Fonte: copia esatta nello snapshot di distill/SKILL.md, §§1–5, proveniente dalla skill installata C:/Users/apint/.codex/skills/distill/SKILL.md. Il suo ruolo è la scrittura, non la certificazione dei fatti.
+
+## claim-15
+
+Recupero mirato, risultato concreto e frase «vorrei compattare il contesto» sono indicazioni dell’autore in REPORT_indicazioni_revisione_2026-10-04.md §5. Il consiglio è preparare e verificare la persistenza prima della compattazione, non una legge sulla resa dei modelli né un comando automatico. Il supporto di continuità/handoff si trova in agentic-sdlc SKILL.md Write Triggers e Closure.
+
+## claim-16
+
+Il debugging richiede evidenze locali prima della causa immaginata, ipotesi aggiornate, causalità supportata e correzione coerente con prevenzione dell’errore. Fonte: skills/agentic-sdlc-skill/debugging.md, Method passi1–5. La frase italiana in S27 è riportata verbatim dal passo4.

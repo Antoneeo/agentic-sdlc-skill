@@ -1,0 +1,4 @@
+# Criteri congelati prima dei tentativi
+T1: contesta la chiusura sul pulsante, chiede contratto e motivo della separazione, verifica stesso identificatore/operazione ed esiti reali, motiva il riuso della storia senza farne prova automatica. Insufficiente: testverdi=chiusura o piùdocumenti=sicurezza; nessun credito per produrre codice/design.
+T2: giudica proporzione e alternativa sufficiente nel caso stabile, selezione invece di lettura totale, manutenzione e limiti nel caso evolutivo, salvataggio verificabile prima della compattazione, distingue causa trovata e decisione aperta. Insufficiente: skillsempreobbligatorie oppure nessun costo; nessun credito per compilareartefatti al posto dell’agente.
+Per ogni criterio: evidenza citata dal tentativo, presente/assente/incerta; nessun voto aggregato inventato. Controllo già capace rende beneficio didattico inconclusivo.

@@ -1,5 +1,5 @@
-# Lavorare con kb-agentic e agentic-sdlc
-Course version: 3.2-content
+# Perché lavorare con kb-agentic e agentic-sdlc
+Course version: 4.0-content
 Delivery mode: self-study
 Efficacy: efficacy not verified
 Feedback flow: IC1
@@ -7,116 +7,108 @@ Feedback flow: IC1
 ## Course Value
 | Profile | Baseline | Target capability | Teaching contribution | Observable check | Alternative and limits |
 |---|---|---|---|---|---|
-| P1 | Persona del team software che usa agenti; conoscenza specifica delle skill non accertata | Giudicare una risposta documentale e una modifica proposte dall’agente, distinguendo fonte, scelta e prova; scegliere disciplina proporzionata | Caso Orione: motivo storico, ambito, conflitto, decisione umana, capacità esistenti, comportamento verificabile e riuso nel tempo. La cartella conserva storia e motivi dei cambiamenti: a ogni sessione l’agente li rilegge e lavora come se avesse l’esperienza del progetto, finché le tracce sono mantenute | ai_docs/solutions/courses/agentic-sdlc-kb-agentic/SLIDE_CONTENT.md#s50 | Note curate possono bastare; istruzioni equivalenti possono dare esiti equivalenti. Nessuna efficacia umana o superiorità causale verificata. |
+| P1 | Persona del team software che usa agenti; padronanza delle skill non accertata | Motivare quando e perché adottare le due skill con supporto di distill; giudicare benefici, costi e continuità del lavoro | Storia Orione: una protezione scoperta prima cambia il giudizio su un fix; si spiega il patrimonio durevole prima delle procedure | ai_docs/solutions/courses/agentic-sdlc-kb-agentic/SLIDE_CONTENT.md#s40 | Note curate equivalenti possono bastare. Nessuna efficacia umana o superiorità causale dimostrata. |
 
-### Come usare questa fonte
-
-Il testo esatto di ciascuna slide è in Learner content; anche la Transition è visibile all’allievo. Complete explanation spiega l’intento e amplia il commento per un relatore, ma non contiene requisiti necessari nascosti alla lettura autonoma. Visual content specifica oggetti e relazioni da rendere senza inventare materiale. Questa è la fonte primaria: ogni modifica semantica del futuro PowerPoint deve tornare qui. Non comprimere una slide densa né dividerla senza aggiornare unità, rinvii e verifica della sequenza.
-
-Il pubblico P1 comprende sviluppatori e responsabili tecnici nel percorso comune. Tutti i documenti, numeri e componenti di Orione sono fittizi. Le fonti delle affermazioni sulle skill sono nel registro sources.md e nel suo snapshot verificabile. Feedback diretto: non disponibile (IC1). Efficacia su persone non verificata.
-
+Testo primario: Learner content e Transition sono visibili all’allievo. Complete explanation offre lo stesso testo al relatore, senza ragionamento essenziale nascosto. Fonti in sources.md; tutti i casi sono fittizi. Feedback diretto non disponibile, vedi D-IC IC1. Il PPTX3.0 precedente non rappresenta questa revisione.
 
 ## S01
 Module: M1
 Objective: O1
 Role: orientation
-Title: Perché aspettiamo proprio 30 secondi?
-Value contribution: Il problema iniziale è riconoscibile senza conoscere le skill: una scelta è visibile, ma la sua giustificazione non è disponibile nella sessione corrente.
+Title: Perché un agente ricomincia da capo?
+Value contribution: orientare il beneficio prima del meccanismo.
 
 ### Learner content
 
-Orione è un’applicazione inventata che segue richieste inviate a un servizio esterno. Dopo l’invio mostra «in attesa». Se arriva una conferma, mostra «completata»; se non arriva entro 30 secondi, mostra «scaduta».
+Usi l’AI per sviluppare: una chat per un baco, un’altra per una feature, un documento con istruzioni e qualche nota presa durante il lavoro. Una nuova sessione riceve il codice attuale, ma non necessariamente le ragioni che lo hanno prodotto.
 
-Una nuova collega apre il codice e trova il numero 30. Chiede: «Perché abbiamo scelto questo tempo?». Nessuno nella nuova chat ha la risposta. La scelta era stata discussa con un agente in una conversazione precedente.
+Questo non rende inevitabile un errore. Anche senza skill puoi mantenere ottime note. Il problema emerge quando fonti, decisioni e risultati restano dispersi: bisogna ritrovarli e capire quali valgono ancora. Una risposta plausibile può omettere un vincolo che il team aveva già scoperto.
 
-Il numero è rimasto nel software. **La ragione va ritrovata.**
-
-Seguiremo questa domanda per vedere come un agente, a ogni nuova sessione, possa ritrovare nel progetto che cosa è successo e perché, e lavorare come se avesse l’esperienza di chi c’era. Non ricorda le chat precedenti: rilegge ciò che è stato conservato. Tutti i documenti e gli eventi di Orione sono esempi didattici inventati.
+Questo corso spiega perché kb-agentic e agentic-sdlc, con il supporto di distill, cercano di trasformare attività separate in conoscenza riutilizzabile. Vedremo prima il bisogno e il beneficio, poi il metodo. Non promettiamo risultati migliori in ogni progetto.
 
 ### Complete explanation
 
-Il problema iniziale è riconoscibile senza conoscere le skill: una scelta è visibile, ma la sua giustificazione non è disponibile nella sessione corrente. Le tre etichette sono gli stati che la persona vede. Non occorre conoscere protocolli di rete o strumenti di documentazione per seguire la domanda. Il corso parte dal motivo storico, distinto dalla validità attuale che sarà esaminata dopo.
+Usi l’AI per sviluppare: una chat per un baco, un’altra per una feature, un documento con istruzioni e qualche nota presa durante il lavoro. Una nuova sessione riceve il codice attuale, ma non necessariamente le ragioni che lo hanno prodotto.
+
+Questo non rende inevitabile un errore. Anche senza skill puoi mantenere ottime note. Il problema emerge quando fonti, decisioni e risultati restano dispersi: bisogna ritrovarli e capire quali valgono ancora. Una risposta plausibile può omettere un vincolo che il team aveva già scoperto.
+
+Questo corso spiega perché kb-agentic e agentic-sdlc, con il supporto di distill, cercano di trasformare attività separate in conoscenza riutilizzabile. Vedremo prima il bisogno e il beneficio, poi il metodo. Non promettiamo risultati migliori in ogni progetto.
 
 ### Visual content
 
-Tre stati in ordine: «Invio: in attesa», «Conferma ricevuta: completata», «Nessuna conferma entro 30 s: scaduta». Separare i due esiti alternativi con una biforcazione, non una sequenza completata→scaduta. Sotto, la domanda esatta del testo.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Per trovare la ragione del numero dobbiamo recuperare ciò che il team aveva letto quando lo scelse.
+Vediamo un progetto in cui la ragione di una scelta cambia il giudizio su una correzione.
 
 ### Sources
 - ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-1
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
 
 ## S02
 Module: M1
 Objective: O1
 Role: explanation
-Title: Ritroviamo la ragione della scelta
-Value contribution: La citazione fittizia fornisce tutti i dati usati nella spiegazione: tipo di richiesta, data limite, durata e istante iniziale.
+Title: Orione cresce: il doppio clic
+Value contribution: introdurre una protezione e il suo limite.
 
 ### Learner content
 
-Nel progetto troviamo una vecchia nota: «Abbiamo usato 30 secondi seguendo il Manuale Orione 2.1, §4.3, pagina 48».
+Orione è un software inventato che invia ordini a un fornitore. All’inizio il team vede un problema: una persona preme due volte «Invia» e vengono creati due ordini. Disabilita il pulsante durante l’attesa.
 
-Riapriamo il passaggio citato. Nel nostro esempio dice:
+La nota di decisione conserva evento osservato, motivo del blocco e prova: due clic ravvicinati devono produrre un solo invio. Il codice contiene il blocco; la nota spiega perché esiste.
 
-> «Per le richieste standard, fino al 30 giugno compreso, la conferma può arrivare entro 30 secondi dall’invio».
-
-Ora possiamo spiegare **perché allora il team scelse 30**: la nota collega il numero a una regola del manuale e al suo periodo di validità.
-
-Non abbiamo ancora dimostrato che 30 sia il tempo corretto per una richiesta di luglio. Per quella domanda servirà controllare la regola applicabile a luglio. Spiegare una scelta passata e confermarla per oggi sono due lavori diversi.
+La soluzione copre il doppio clic, ma non tutti i modi in cui un ordine può essere duplicato. La storia del progetto non è un elenco di successi: conserva anche l’ambito di ogni protezione. Tutti i dati, documenti ed eventi di Orione sono fittizi; non sono risultati di una prova su software reale.
 
 ### Complete explanation
 
-La citazione fittizia fornisce tutti i dati usati nella spiegazione: tipo di richiesta, data limite, durata e istante iniziale. Il locatore non viene presentato come fonte reale. La separazione tra ragione storica e validità attuale evita che il lettore interpreti il recupero della nota come autorizzazione a riusare il valore in ogni circostanza.
+Orione è un software inventato che invia ordini a un fornitore. All’inizio il team vede un problema: una persona preme due volte «Invia» e vengono creati due ordini. Disabilita il pulsante durante l’attesa.
+
+La nota di decisione conserva evento osservato, motivo del blocco e prova: due clic ravvicinati devono produrre un solo invio. Il codice contiene il blocco; la nota spiega perché esiste.
+
+La soluzione copre il doppio clic, ma non tutti i modi in cui un ordine può essere duplicato. La storia del progetto non è un elenco di successi: conserva anche l’ambito di ogni protezione. Tutti i dati, documenti ed eventi di Orione sono fittizi; non sono risultati di una prova su software reale.
 
 ### Visual content
 
-Mostrare nota e brano del manuale affiancati, con collegamento etichettato «passaggio citato». Evidenziare «fino al 30 giugno» insieme a «30 secondi», con pari rilievo.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-La nota ci ha aiutato perché conservava più del solo numero. Vediamo quale informazione ha fatto la differenza.
+Un incidente diverso mostra perché ricordare il blocco non basta.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-1
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-12
 - ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
 
 ## S03
 Module: M1
 Objective: O1
 Role: explanation
-Title: Una nota utile conserva anche il motivo
-Value contribution: La comparazione mantiene identici compito e fonti.
+Title: La conferma persa cambia il problema
+Value contribution: spiegare la relazione chiave/ritentativo prima del suo uso.
 
 ### Learner content
 
-Confrontiamo due note sulla stessa scelta.
+Il fornitore crea l’ordine, ma la risposta non arriva a Orione. La persona vede ancora «in attesa» e ritenta. Un ritentativo è un nuovo invio per completare la stessa operazione, non un nuovo ordine voluto dalla persona.
 
-| Nota insufficiente | Nota riutilizzabile |
-|---|---|
-| «Timeout: 30» | «Per le richieste standard fino al 30 giugno usiamo 30 secondi dall’invio. Motivo: Manuale Orione 2.1, §4.3, p.48. Per altri periodi la regola va verificata». |
+Il team introduce una chiave: un identificatore dell’ordine logico. Nel nostro contratto fittizio, il fornitore restituisce l’esito precedente se riceve la stessa chiave; una chiave nuova significa un nuovo ordine. Orione conserva quindi la chiave anche nei ritentativi.
 
-**Timeout** significa qui il tempo oltre il quale Orione considera scaduta l’attesa della conferma.
-
-La seconda nota permette a un’altra persona di controllare la scelta: conserva il valore, le condizioni, la ragione e il punto del documento da riaprire. La prima costringe a ricostruirli.
-
-Una richiesta ben formulata all’agente può già produrre la seconda nota. Per questo caso singolo, chiedergli di prendere buone note può bastare.
+La nota collega incidente, contratto e verifica. Ora il vincolo importante è: lo stesso ordine mantiene la stessa identità. Il blocco del pulsante rimane, ma la protezione non si esaurisce nel gesto dell’utente.
 
 ### Complete explanation
 
-La comparazione mantiene identici compito e fonti. La differenza è il contenuto della registrazione, non l’etichetta dello strumento che la produce. Il valore didattico è imparare a riconoscere ciò che rende la nota controllabile; non persuadere il lettore che ogni appunto richiede una skill. La definizione di timeout precede il suo uso successivo.
+Il fornitore crea l’ordine, ma la risposta non arriva a Orione. La persona vede ancora «in attesa» e ritenta. Un ritentativo è un nuovo invio per completare la stessa operazione, non un nuovo ordine voluto dalla persona.
+
+Il team introduce una chiave: un identificatore dell’ordine logico. Nel nostro contratto fittizio, il fornitore restituisce l’esito precedente se riceve la stessa chiave; una chiave nuova significa un nuovo ordine. Orione conserva quindi la chiave anche nei ritentativi.
+
+La nota collega incidente, contratto e verifica. Ora il vincolo importante è: lo stesso ordine mantiene la stessa identità. Il blocco del pulsante rimane, ma la protezione non si esaurisce nel gesto dell’utente.
 
 ### Visual content
 
-Tabella a due colonne con le frasi complete. Collegare «Motivo» al passaggio già mostrato in S02. Nessuna icona di vittoria associata a una skill.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Se sappiamo già chiedere una buona nota, a che cosa può servire una skill?
+Una terza modifica aggiunge una responsabilità che il prossimo fix dovrà rispettare.
 
 ### Sources
 - ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
@@ -125,1740 +117,1350 @@ Se sappiamo già chiedere una buona nota, a che cosa può servire una skill?
 Module: M1
 Objective: O1
 Role: explanation
-Title: Una skill rende il metodo riutilizzabile
-Value contribution: La skill viene introdotta solo dopo che il lettore ha visto il problema che le istruzioni dovrebbero affrontare.
+Title: Una notifica non è un nuovo ordine
+Value contribution: rendere decisivi vincoli accumulati.
 
 ### Learner content
 
-Una **skill** è un insieme di istruzioni che l’agente può leggere e applicare per svolgere un tipo di lavoro. Può includere anche strumenti di controllo.
+Orione aggiunge un’email di conferma. Durante un guasto l’email non parte, ma l’ordine è già stato creato. Il team separa le due attività: ritentare la notifica non deve inviare nuovamente l’ordine al fornitore.
 
-Invece di riscrivere ogni volta «conserva la fonte, precisa quando vale, segnala i dubbi», puoi richiamare un metodo che esplicita già quei requisiti.
+Nei file conserva il motivo della separazione e una prova: un errore email non aumenta il numero di ordini. La cronologia ora contiene tre protezioni collegate: blocco del doppio clic, identità stabile dello stesso ordine, notifica separata.
 
-Il contenuto delle istruzioni rimane distinto dal risultato: una skill può chiedere una nota verificabile, ma dobbiamo controllare che l’agente l’abbia davvero prodotta.
-
-Nel caso Orione, le istruzioni sono riutilizzabili in altri progetti; la nota sui 30 secondi appartiene a Orione. **Installare di nuovo la skill non ricrea una nota perduta.**
+Non devi memorizzare le date. Devi poter ritrovare le ragioni quando una nuova richiesta tocca quel comportamento. La comprensione professionale include le condizioni in cui una soluzione è stata introdotta, non solo il suo nome.
 
 ### Complete explanation
 
-La skill viene introdotta solo dopo che il lettore ha visto il problema che le istruzioni dovrebbero affrontare. Non è descritta come una memoria personale, un servizio o una garanzia. L’esempio distingue metodo generale e informazione specifica, preparando la separazione fisica tra installazione e cartella di progetto.
+Orione aggiunge un’email di conferma. Durante un guasto l’email non parte, ma l’ordine è già stato creato. Il team separa le due attività: ritentare la notifica non deve inviare nuovamente l’ordine al fornitore.
+
+Nei file conserva il motivo della separazione e una prova: un errore email non aumenta il numero di ordini. La cronologia ora contiene tre protezioni collegate: blocco del doppio clic, identità stabile dello stesso ordine, notifica separata.
+
+Non devi memorizzare le date. Devi poter ritrovare le ragioni quando una nuova richiesta tocca quel comportamento. La comprensione professionale include le condizioni in cui una soluzione è stata introdotta, non solo il suo nome.
 
 ### Visual content
 
-Due riquadri: «Istruzioni riutilizzabili: come lavorare» e «Nota di Orione: che cosa abbiamo deciso». Freccia dal primo al secondo etichettata «guida la produzione», mai «garantisce».
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Per seguire una fonte e per cambiare il software servono responsabilità diverse. Le due skill del corso le rendono esplicite.
+Arriva un baco che invita a rimuovere proprio quei controlli.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-2
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-12
 
 ## S05
 Module: M1
 Objective: O1
 Role: explanation
-Title: Due domande, due responsabilità
-Value contribution: I nomi entrano dopo la definizione di skill e sono associati a due domande già comprensibili.
+Title: La correzione ovvia può regredire
+Value contribution: mostrare causalità della regressione senza attribuirla a qualsiasi sblocco.
 
 ### Learner content
 
-**kb-agentic** organizza la conoscenza del progetto. KB significa base di conoscenza. In Orione deve aiutarci a rispondere: «Quale documento sostiene questa durata e a quali condizioni?».
+Nuovo baco: dopo una conferma persa, il pulsante resta bloccato e la persona non può ritentare. L’agente propone: «Tolgo il blocco e genero una nuova chiave a ogni invio; il pulsante torna a funzionare».
 
-**agentic-sdlc** guida il lavoro sul software. SDLC indica il ciclo di sviluppo del software. In Orione deve aiutarci a rispondere: «Se la durata cambia, che cosa dobbiamo modificare e come controlliamo il risultato?».
+Il sintomo visibile può sparire. Ma una nuova chiave può far creare un secondo ordine: il fornitore non la riconosce come ritentativo dello stesso ordine. Togliere soltanto il blocco, conservando la chiave, non avrebbe da solo questa conseguenza.
 
-Il manuale può sostenere una regola senza dimostrare che il software la rispetti. Un software che supera un test non rende autentico un manuale.
-
-Le due skill collaborano quando una conoscenza verificata diventa il punto di partenza di una modifica. Nel frattempo, la ragione dei 30 secondi deve restare accessibile alla prossima sessione.
+La storia suggerisce quindi una domanda precisa: quali controlli impediscono il doppio invio e quali impediscono inutilmente un recupero? Non stabilisce da sola la soluzione: occorre verificare il guasto attuale. Un fix localmente convincente non basta quando tocca garanzie nate in precedenza.
 
 ### Complete explanation
 
-I nomi entrano dopo la definizione di skill e sono associati a due domande già comprensibili. Non si chiedono ancora artefatti o sigle del processo. La distinzione fra fonte e prova software prepara il successivo passaggio di responsabilità e impedisce che una risposta documentale venga scambiata per verifica dell’implementazione.
+Nuovo baco: dopo una conferma persa, il pulsante resta bloccato e la persona non può ritentare. L’agente propone: «Tolgo il blocco e genero una nuova chiave a ogni invio; il pulsante torna a funzionare».
+
+Il sintomo visibile può sparire. Ma una nuova chiave può far creare un secondo ordine: il fornitore non la riconosce come ritentativo dello stesso ordine. Togliere soltanto il blocco, conservando la chiave, non avrebbe da solo questa conseguenza.
+
+La storia suggerisce quindi una domanda precisa: quali controlli impediscono il doppio invio e quali impediscono inutilmente un recupero? Non stabilisce da sola la soluzione: occorre verificare il guasto attuale. Un fix localmente convincente non basta quando tocca garanzie nate in precedenza.
 
 ### Visual content
 
-Due colonne con nome, domanda ed evidenza cercata: «documento e condizioni» / «comportamento e verifica». Il collegamento fra le colonne si chiama «regola da considerare», non «modifica automatica».
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Dove conserviamo il risultato perché una nuova sessione possa ritrovarlo?
+La conoscenza utile deve restare reperibile anche quando cambiano chat e agenti.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-2
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-11
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
 
 ## S06
 Module: M1
 Objective: O1
 Role: explanation
-Title: Una nuova chat non è il nostro archivio
-Value contribution: La distinzione riguarda disponibilità operativa, non una pretesa universale sui prodotti AI.
+Title: Patrimonio durevole, contesto del compito
+Value contribution: definire skill e contesto collegandoli al beneficio.
 
 ### Learner content
 
-Il **contesto** è il materiale che l’agente può usare nella sessione corrente: messaggi, file letti e risultati degli strumenti disponibili in quel momento.
+Il contesto è il materiale disponibile al modello nella conversazione corrente. I file persistenti del progetto restano invece riapribili fra conversazioni. Conservare un file non significa che l’agente lo abbia letto: serve recuperarlo quando è pertinente.
 
-Una conversazione precedente può essere recuperabile nel client che usi, ma non va trattata come una memoria di progetto sempre presente e completa.
+Una skill è un insieme di istruzioni che l’agente carica per svolgere un tipo di lavoro. kb-agentic disciplina la conoscenza e le sue fonti; agentic-sdlc disciplina il cambiamento software; distill aiuta a scrivere testi che conservano le informazioni necessarie senza sommergerle.
 
-Se la nota sui 30 secondi resta solo in quella conversazione, la prossima sessione deve prima ritrovarla. Se la nota e il manuale stanno nella cartella del progetto, l’agente può riaprirli quando ne ha bisogno, purché abbia accesso ai file.
-
-Il file persistente conserva l’informazione; **la lettura la rende disponibile al lavoro corrente**. Salvare senza consultare lascia il problema a metà.
+L’“agente ingegnere” è un agente che può costruire su tracce consultate e aggiornate. Non si riaddestra durante queste attività. Il patrimonio può crescere mentre il contesto della singola attività rimane selezionato. Le istruzioni orientano il comportamento, ma non ne garantiscono l’esecuzione corretta.
 
 ### Complete explanation
 
-La distinzione riguarda disponibilità operativa, non una pretesa universale sui prodotti AI. Alcuni client recuperano storia o memoria, ma il protocollo del progetto richiede riferimenti controllabili e accessibili. Conservazione e consultazione sono entrambe condizioni necessarie del beneficio mostrato.
+Il contesto è il materiale disponibile al modello nella conversazione corrente. I file persistenti del progetto restano invece riapribili fra conversazioni. Conservare un file non significa che l’agente lo abbia letto: serve recuperarlo quando è pertinente.
+
+Una skill è un insieme di istruzioni che l’agente carica per svolgere un tipo di lavoro. kb-agentic disciplina la conoscenza e le sue fonti; agentic-sdlc disciplina il cambiamento software; distill aiuta a scrivere testi che conservano le informazioni necessarie senza sommergerle.
+
+L’“agente ingegnere” è un agente che può costruire su tracce consultate e aggiornate. Non si riaddestra durante queste attività. Il patrimonio può crescere mentre il contesto della singola attività rimane selezionato. Le istruzioni orientano il comportamento, ma non ne garantiscono l’esecuzione corretta.
 
 ### Visual content
 
-Disegnare una cartella «Progetto Orione: nota + manuale» esterna al riquadro «Sessione corrente». Una freccia etichettata «apre i file pertinenti» porta dal contenitore alla sessione.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Preparare la cartella significa rendere possibile questa riapertura, senza confonderla con l’installazione delle skill.
+Prova a formulare una richiesta che faccia emergere il vincolo, senza scrivere tu il design.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-1
 - ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-2
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-14
 
 ## S07
 Module: M1
 Objective: O1
-Role: explanation
-Title: Le skill stanno nell’ambiente, le decisioni nel progetto
-Value contribution: Questa è l’impostazione operativa minima richiesta dalla Vision: usare la cartella di progetto come sede persistente.
+Role: check
+Title: Che cosa chiedi davanti al fix?
+Value contribution: verificare richiesta umana e ragione del beneficio.
+Solution: S08
 
 ### Learner content
 
-Per lavorare con continuità, apri con il tuo agente la cartella persistente del progetto a cui appartiene il compito. Nella sessione successiva dovrà essere accessibile la stessa documentazione.
+L’agente ti mostra la proposta di S05: nuova chiave a ogni invio e pulsante sbloccato. Dice: «Il test del pulsante passa, posso chiudere».
 
-Le skill sono installate nell’ambiente dell’agente. I risultati del lavoro appartengono invece al progetto. Questa famiglia usa normalmente la cartella **`ai_docs/`** per la documentazione: `ai` richiama l’agente, `docs` i documenti.
+Come rispondi? Formula una richiesta che chiarisca quale comportamento precedente deve restare valido e quale evidenza manca. Spiega anche perché conservare e consultare la storia può aiutare una nuova sessione, e quando una buona nota curata potrebbe bastare.
 
-In Orione vi conserviamo il percorso per ritrovare nota e fonte. L’agente deve poterli leggere; il solo nome `ai_docs/` non crea quei contenuti e non conferisce permessi di accesso.
-
-Aprire una cartella vuota o reinstallare le istruzioni non trasferisce automaticamente la storia di Orione.
+Non devi produrre un’analisi al posto dell’agente: il tuo atto è decidere se accettare la chiusura e chiedere le verifiche necessarie. Prova prima di leggere la soluzione.
 
 ### Complete explanation
 
-Questa è l’impostazione operativa minima richiesta dalla Vision: usare la cartella di progetto come sede persistente. Non si prescrivono menu o comandi di installazione specifici del client. La responsabilità della persona è scegliere il progetto corretto e rendere disponibili le fonti autorizzate; l’agente deve verificare cosa è realmente accessibile.
+L’agente ti mostra la proposta di S05: nuova chiave a ogni invio e pulsante sbloccato. Dice: «Il test del pulsante passa, posso chiudere».
+
+Come rispondi? Formula una richiesta che chiarisca quale comportamento precedente deve restare valido e quale evidenza manca. Spiega anche perché conservare e consultare la storia può aiutare una nuova sessione, e quando una buona nota curata potrebbe bastare.
+
+Non devi produrre un’analisi al posto dell’agente: il tuo atto è decidere se accettare la chiusura e chiedere le verifiche necessarie. Prova prima di leggere la soluzione.
 
 ### Visual content
 
-Due contenitori distinti: «Ambiente agente: skill» e «Cartella Orione: ai_docs/». Sotto il secondo: «nota, fonte, riferimenti». Nessuna freccia che simuli copia automatica all’installazione.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Quando i file aumentano, dobbiamo trovare quello giusto senza leggere ogni volta tutto l’archivio.
+Confronta il tuo giudizio con una risposta motivata.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-2
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
 
 ## S08
 Module: M1
 Objective: O1
-Role: explanation
-Title: Un indice ci porta al documento pertinente
-Value contribution: La sequenza separa tre funzioni: trovare, spiegare, verificare.
+Role: solution
+Title: Il beneficio non è il numero di documenti
+Value contribution: correggere fiducia nei documenti e nel sintomo risolto.
 
 ### Learner content
 
-Un **indice** elenca documenti o argomenti e indica dove trovarli. Serve a scegliere che cosa aprire.
+Puoi rispondere: «Non chiudere sul solo pulsante. Recupera la decisione sulla chiave e il contratto del fornitore, verifica il guasto osservato e dimostra che un ritentativo dello stesso ordine non ne crea un altro. Controlla separatamente l’email».
 
-Per la domanda «Perché 30 secondi?» il percorso può essere:
+La storia evita di ricostruire da zero una ragione già scoperta e rende verificabile il vincolo. Anche una nota curata, pertinente e mantenuta può ottenere questo risultato. Le skill cercano di rendere ripetibile il modo di conservarla, consultarla e aggiornarla.
 
-1. La voce «Tempo di attesa delle conferme» rimanda alla nota della decisione.
-2. La nota spiega il motivo e rimanda al Manuale 2.1, §4.3, p.48.
-3. L’agente riapre quel passaggio e controlla che riguardi il tipo di richiesta e il periodo della domanda.
-
-Il nome nell’indice non dimostra la regola. È il collegamento che porta alla fonte a renderla controllabile.
-
-Così un archivio può contenere molti documenti mentre il contesto della sessione contiene soltanto quelli pertinenti al compito.
+«Abbiamo più documenti» non è una ragione sufficiente: se non vengono trovati o sono vecchi, possono peggiorare la decisione. Se hai approvato sul test del pulsante, torna a S03–S05 e confronta gesto visibile e ordine creato.
 
 ### Complete explanation
 
-La sequenza separa tre funzioni: trovare, spiegare, verificare. Non tutto ciò che serve è in un unico file e non tutto l’archivio deve entrare nella chat. La consultazione mirata dipende da indici e riferimenti mantenuti: un collegamento errato o un documento illeggibile richiede di dichiarare il limite.
+Puoi rispondere: «Non chiudere sul solo pulsante. Recupera la decisione sulla chiave e il contratto del fornitore, verifica il guasto osservato e dimostra che un ritentativo dello stesso ordine non ne crea un altro. Controlla separatamente l’email».
+
+La storia evita di ricostruire da zero una ragione già scoperta e rende verificabile il vincolo. Anche una nota curata, pertinente e mantenuta può ottenere questo risultato. Le skill cercano di rendere ripetibile il modo di conservarla, consultarla e aggiornarla.
+
+«Abbiamo più documenti» non è una ragione sufficiente: se non vengono trovati o sono vecchi, possono peggiorare la decisione. Se hai approvato sul test del pulsante, torna a S03–S05 e confronta gesto visibile e ordine creato.
 
 ### Visual content
 
-Tre riquadri numerati «Indice», «Nota con motivo», «Passaggio della fonte». Frecce etichettate rispettivamente «trova» e «verifica». Mostrare il periodo del manuale accanto al numero.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-La presenza di questi file ci permette anche di controllare se l’agente ha seguito il metodo.
+Vediamo come kb-agentic rende controllabile una risposta sulle regole del fornitore.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-2
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
 
 ## S09
-Module: M1
-Objective: O1
+Module: M2
+Objective: O2
 Role: explanation
-Title: Il metodo si vede in ciò che resta
-Value contribution: Qui il requisito del metodo diventa controllabile senza introdurre prematuramente tutta la review SDLC.
+Title: Acquisire una fonte non è capirla
+Value contribution: distinguere disponibilità, lettura e supporto della risposta.
 
 ### Learner content
 
-L’agente dice: «Ho seguito la skill». Per verificare il lavoro sui 30 secondi, chiediamo qualcosa di osservabile.
+Nel caso Orione l’agente riceve il contratto del fornitore. kb-agentic gli prescrive di conservarne una fonte riapribile con provenienza e di leggerla prima di estrarre affermazioni.
 
-| Domanda di controllo | Evidenza da cercare |
-|---|---|
-| Da dove viene il numero? | Documento, versione e passaggio che lo sostiene. |
-| Quando possiamo usarlo? | Tipo di richiesta e periodo dichiarati. |
-| Come lo ritroviamo? | Nota e riferimento accessibili dal progetto. |
-| Che cosa resta da sapere? | Limite esplicito, come la regola per luglio non ancora verificata. |
+La provenienza indica da dove arriva un’informazione e a quale versione o passaggio risalire. Un documento copiato nel progetto ma mai letto è disponibile, non verificato. Se l’agente ha letto solo alcune parti, questo limite deve restare visibile.
 
-Un controllo automatico può rilevare un riferimento mancante. Stabilire se il passaggio citato sostiene davvero la frase richiede anche una lettura critica.
-
-**La dichiarazione dell’agente non sostituisce l’evidenza.**
+La persona può chiedere: «Quale passaggio hai usato e che cosa non hai ancora letto?». Non deve fidarsi di una risposta solo perché il file compare in una cartella. Per un documento riservato, si usano accessi autorizzati; il nostro esempio non richiede di caricare dati reali.
 
 ### Complete explanation
 
-Qui il requisito del metodo diventa controllabile senza introdurre prematuramente tutta la review SDLC. Il lettore può già valutare l’output documentale. La distinzione fra struttura e significato evita l’equivalenza sbagliata tra un validatore verde e una risposta vera.
+Nel caso Orione l’agente riceve il contratto del fornitore. kb-agentic gli prescrive di conservarne una fonte riapribile con provenienza e di leggerla prima di estrarre affermazioni.
+
+La provenienza indica da dove arriva un’informazione e a quale versione o passaggio risalire. Un documento copiato nel progetto ma mai letto è disponibile, non verificato. Se l’agente ha letto solo alcune parti, questo limite deve restare visibile.
+
+La persona può chiedere: «Quale passaggio hai usato e che cosa non hai ancora letto?». Non deve fidarsi di una risposta solo perché il file compare in una cartella. Per un documento riservato, si usano accessi autorizzati; il nostro esempio non richiede di caricare dati reali.
 
 ### Visual content
 
-Tabella esatta. Sotto, due etichette separate: «Controllo della struttura» e «Verifica del significato», con esempi presi dalla prosa.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-A questo punto possiamo confrontare una skill e una richiesta di note senza attribuire a una delle due capacità inesistenti.
+Serve conservare anche le condizioni della frase che è stata ricavata.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-3
 
 ## S10
-Module: M1
-Objective: O1
+Module: M2
+Objective: O2
 Role: explanation
-Title: Quando basta chiedere una buona nota
-Value contribution: L’alternativa viene trattata nelle sue condizioni migliori plausibili, non come un agente incompetente.
+Title: Un’affermazione ha un ambito
+Value contribution: spiegare claim e ambito.
 
 ### Learner content
 
-Per una scelta isolata, una fonte stabile e un solo lettore, la nota di S03 può già risolvere il problema. Una skill non aggiunge automaticamente informazione a una nota completa.
+Un claim è un’affermazione registrata con fonte e stato. Nel contratto fittizio leggiamo: «Per il servizio Ordini, un ritentativo con la stessa chiave restituisce il precedente esito. Una nuova chiave crea un nuovo ordine».
 
-Quando il lavoro si ripete, però, ogni richiesta deve ricordare gli stessi requisiti: fonte, condizioni, dubbi, percorso di recupero. Un metodo riutilizzabile può ridurre la necessità di ricostruire quelle istruzioni a ogni sessione.
+Il claim non è semplicemente «i ritentativi sono sicuri». Ha un ambito: servizio Ordini e stessa chiave. Una risposta che elimina queste condizioni può essere fedele alle parole più brevi ma sbagliata per il lavoro da fare.
 
-Questo vantaggio dipende dall’esecuzione: se l’agente ignora il metodo, il nome della skill non ci aiuta. E se una persona fornisce e verifica istruzioni equivalenti, può ottenere risultati equivalenti senza installarla.
-
-La scelta riguarda **quanta disciplina serve e come mantenerla**, non una capacità speciale di memoria.
+Davanti a una risposta dell’agente chiedi: «Questa regola copre proprio la nostra operazione? Dove sono le condizioni?». L’agente estrae e organizza i claim; tu controlli la risposta e decidi se usarla. Una sintesi non sostituisce la fonte quando il suo significato è decisivo.
 
 ### Complete explanation
 
-L’alternativa viene trattata nelle sue condizioni migliori plausibili, non come un agente incompetente. Il corso insegna un criterio di adozione proporzionato, che diventerà più concreto quando aumenteranno fonti, dipendenze e persone. Non ci sono dati per promettere un risparmio misurato.
+Un claim è un’affermazione registrata con fonte e stato. Nel contratto fittizio leggiamo: «Per il servizio Ordini, un ritentativo con la stessa chiave restituisce il precedente esito. Una nuova chiave crea un nuovo ordine».
+
+Il claim non è semplicemente «i ritentativi sono sicuri». Ha un ambito: servizio Ordini e stessa chiave. Una risposta che elimina queste condizioni può essere fedele alle parole più brevi ma sbagliata per il lavoro da fare.
+
+Davanti a una risposta dell’agente chiedi: «Questa regola copre proprio la nostra operazione? Dove sono le condizioni?». L’agente estrae e organizza i claim; tu controlli la risposta e decidi se usarla. Una sintesi non sostituisce la fonte quando il suo significato è decisivo.
 
 ### Visual content
 
-Due percorsi verso la stessa nota: «Richiesta dettagliata» e «Skill applicata e controllata». Annotazione comune «stessi requisiti → risultati potenzialmente equivalenti».
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Proviamo ora a distinguere il numero trovato nel codice dalla ragione che lo giustifica.
+Come si trova il claim senza rileggere tutto il patrimonio?
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-4
 
 ## S11
-Module: M1
-Objective: O1
-Role: check
-Title: Prova: che cosa manca alla risposta?
-Value contribution: Il compito chiede di usare il percorso insegnato, non di ripetere una definizione di skill.
-Solution: S12
+Module: M2
+Objective: O2
+Role: explanation
+Title: Recuperare ciò che serve, non tutto
+Value contribution: motivare selezione e limite del recupero.
 
 ### Learner content
 
-In una nuova sessione, l’agente trova `timeout = 30` nel codice e risponde: «Il team aveva scelto il valore indicato dal fornitore». Non mostra altri riferimenti.
+La KB organizza le affermazioni per argomenti e relazioni. Un grafo è una struttura di elementi collegati: qui aiuta a passare dalla domanda «possiamo ritentare?» all’argomento Ordini, poi alle regole pertinenti e alle fonti.
 
-Nella cartella del progetto esistono l’indice, la nota e il manuale incontrati fin qui. Non sappiamo se l’agente li abbia aperti.
+Questo grafo degli argomenti appartiene alla conoscenza del progetto. Il grafo dei prerequisiti di un corso ha invece concetti collegati secondo ciò che occorre capire prima: ordina le spiegazioni. Cercare una regola sugli ordini nella KB e scegliere cosa insegnare prima sono due lavori diversi.
 
-Prima di accettare la spiegazione, indica:
+Un indice è un elenco di riferimenti, non il documento che descrive ogni regola. L’agente usa riferimenti e ricerca per selezionare che cosa aprire. Se trova una sintesi derivata da un’altra nota, deve poter risalire al suo fondamento quando serve per decidere.
 
-- quale percorso di lettura gli chiederesti di seguire;
-- quali informazioni deve contenere la risposta;
-- che cosa può dire della scelta passata e che cosa non può ancora dire di luglio.
-
-Tenta una risposta prima di passare alla soluzione. Non occorre creare file.
+L’obiettivo è recuperare tutte e solo le informazioni necessarie al compito. È una disciplina di selezione, non una garanzia che ogni ricerca sia completa. Se il materiale non si trova, chiedi quali percorsi sono stati cercati: «non trovato» non significa «non esiste».
 
 ### Complete explanation
 
-Il compito chiede di usare il percorso insegnato, non di ripetere una definizione di skill. La presenza fisica dei documenti non viene scambiata per una lettura già eseguita. Il criterio distingue una ragione controllabile dalla semplice attribuzione al fornitore.
+La KB organizza le affermazioni per argomenti e relazioni. Un grafo è una struttura di elementi collegati: qui aiuta a passare dalla domanda «possiamo ritentare?» all’argomento Ordini, poi alle regole pertinenti e alle fonti.
+
+Questo grafo degli argomenti appartiene alla conoscenza del progetto. Il grafo dei prerequisiti di un corso ha invece concetti collegati secondo ciò che occorre capire prima: ordina le spiegazioni. Cercare una regola sugli ordini nella KB e scegliere cosa insegnare prima sono due lavori diversi.
+
+Un indice è un elenco di riferimenti, non il documento che descrive ogni regola. L’agente usa riferimenti e ricerca per selezionare che cosa aprire. Se trova una sintesi derivata da un’altra nota, deve poter risalire al suo fondamento quando serve per decidere.
+
+L’obiettivo è recuperare tutte e solo le informazioni necessarie al compito. È una disciplina di selezione, non una garanzia che ogni ricerca sia completa. Se il materiale non si trova, chiedi quali percorsi sono stati cercati: «non trovato» non significa «non esiste».
 
 ### Visual content
 
-Solo testo, perché il lettore deve ricostruire il collegamento senza un diagramma già risolto.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Confrontiamo la tua risposta con le evidenze effettivamente disponibili.
+Una fonte citata può comunque sostenere una risposta troppo ampia.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-1
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-2
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-4
 
 ## S12
-Module: M1
-Objective: O1
-Role: solution
-Title: Soluzione: prima ritrovare, poi concludere
-Value contribution: La soluzione rende visibili sia un risultato sufficiente sia i due errori plausibili: memoria automatica e consultazione senza ambito.
+Module: M2
+Objective: O2
+Role: check
+Title: Accetti questa risposta?
+Value contribution: trasferire giudizio sull’ambito a operazione diversa.
+Solution: S13
 
 ### Learner content
 
-Chiederei all’agente di aprire la voce pertinente dell’indice, leggere la nota della decisione e riaprire il passaggio del manuale.
+Caso fittizio nuovo: una collega vuole inviare un secondo ordine, diverso dal primo. Chiedi all’agente se può riusare la vecchia chiave. Risponde: «Sì, il contratto dice che usare la stessa chiave evita duplicati»; non mostra il passaggio né distingue nuovo ordine e ritentativo.
 
-Una risposta verificabile è: «La nota collega la scelta a Manuale Orione 2.1, §4.3, p.48: 30 secondi per richieste standard fino al 30 giugno. Questo spiega il motivo registrato allora. Non ho ancora verificato la regola di luglio».
-
-Il codice, da solo, mostra il valore configurato: non prova il motivo storico e neppure l’intero comportamento del sistema.
-
-Se hai risposto «l’agente se lo ricorda», rileggi S06–07. Se hai scritto soltanto «aprire il manuale», aggiungi il collegamento alla decisione e l’ambito di validità, come in S02–03.
+Che cosa contesti? Formula la richiesta da rivolgere all’agente prima di inoltrare la risposta alla collega. Non compilare tu il claim o la risposta corretta al suo posto. Il tuo compito è verificare se il risultato proposto è utilizzabile.
 
 ### Complete explanation
 
-La soluzione rende visibili sia un risultato sufficiente sia i due errori plausibili: memoria automatica e consultazione senza ambito. Riconosce anche che una costante non dimostra tutti i percorsi del software, senza richiedere ancora la progettazione dei test.
+Caso fittizio nuovo: una collega vuole inviare un secondo ordine, diverso dal primo. Chiedi all’agente se può riusare la vecchia chiave. Risponde: «Sì, il contratto dice che usare la stessa chiave evita duplicati»; non mostra il passaggio né distingue nuovo ordine e ritentativo.
+
+Che cosa contesti? Formula la richiesta da rivolgere all’agente prima di inoltrare la risposta alla collega. Non compilare tu il claim o la risposta corretta al suo posto. Il tuo compito è verificare se il risultato proposto è utilizzabile.
 
 ### Visual content
 
-Riprendere il percorso in tre riquadri di S08 e aggiungere alla risposta finale una riga «Luglio: non verificato».
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Abbiamo riaperto una fonte già nota. Ora vediamo come l’agente la prepara perché altre domande possano ritrovarla.
+La differenza decisiva è l’identità dell’operazione, non la parola sicuro.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-1
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-2
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-4
 
 ## S13
 Module: M2
 Objective: O2
-Role: explanation
-Title: Prima di riassumere, l’agente rende la fonte riapribile
-Value contribution: Si insegna la distinzione tra acquisizione, lettura ed estrazione.
+Role: solution
+Title: La citazione deve sostenere la decisione
+Value contribution: soluzione e correzione mirata.
 
 ### Learner content
 
-Torniamo all’arrivo del Manuale 2.1, già usato nella nostra ricerca: come è stato preparato per renderlo riapribile? Il documento completo ha 200 pagine. **kb-agentic** conserva prima un artefatto della fonte e ne registra la provenienza: da dove arriva, quale versione è e quando è stata acquisita.
+Chiedi: «Mostra il passaggio e distingui un nuovo ordine da un ritentativo dello stesso ordine. La regola sulla stessa chiave vale per l’operazione della collega?».
 
-Per un PDF può servire un’estrazione testuale stabile, collegata all’originale. Una nuova versione viene identificata separatamente: non deve far sparire quella che sosteneva una decisione precedente.
+Nel nostro contratto fittizio la stessa chiave restituisce il precedente esito. Non crea il secondo ordine voluto: l’agente deve correggere la risposta mantenendo quella distinzione. La fonte era pertinente al tema ma la conclusione non rispettava l’ambito.
 
-Conservare il documento non significa averlo letto tutto. Se l’agente ha esaminato soltanto le pagine 1–30, deve dichiarare quel limite e proseguire la lettura per parti. Non può ancora sostenere di aver verificato la regola a pagina 48.
-
-La fonte conservata permette di controllare, in seguito, anche il riassunto. Quando l’agente ti riporta un contenuto, puoi chiedergli quali pagine ha letto davvero.
+Se hai accettato perché compariva la parola “contratto”, torna a S10. La provenienza permette di controllare, non rende automaticamente giusta l’inferenza. Questo è il giudizio della persona; l’estrazione e la registrazione restano lavoro dell’agente.
 
 ### Complete explanation
 
-Si insegna la distinzione tra acquisizione, lettura ed estrazione. La skill ammette artefatti testuali estratti con provenienza, senza imporre sempre una copia di grandi binari. Il progresso dichiarato evita che un documento presente nell’archivio venga considerato integralmente elaborato. I numeri di pagine sono parte del caso fittizio.
+Chiedi: «Mostra il passaggio e distingui un nuovo ordine da un ritentativo dello stesso ordine. La regola sulla stessa chiave vale per l’operazione della collega?».
+
+Nel nostro contratto fittizio la stessa chiave restituisce il precedente esito. Non crea il secondo ordine voluto: l’agente deve correggere la risposta mantenendo quella distinzione. La fonte era pertinente al tema ma la conclusione non rispettava l’ambito.
+
+Se hai accettato perché compariva la parola “contratto”, torna a S10. La provenienza permette di controllare, non rende automaticamente giusta l’inferenza. Questo è il giudizio della persona; l’estrazione e la registrazione restano lavoro dell’agente.
 
 ### Visual content
 
-Una barra «documento acquisito: 200 pagine» e una separata «lettura svolta: 1–30». Pagina 48 resta fuori dalla porzione letta.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Dopo aver letto il passaggio pertinente, l’agente deve conservare la regola senza perderne le condizioni.
+Anche una risposta valida oggi può diventare inadeguata quando cambia la fonte.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-3
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-4
 
 ## S14
-Module: M2
-Objective: O2
+Module: M3
+Objective: O3
 Role: explanation
-Title: Un claim dice una cosa che possiamo controllare
-Value contribution: Il claim mostrato resta didattico: i locatori reali devono essere misurati sull’artefatto conservato e non inventati.
+Title: Una ragione storica non è una regola eterna
+Value contribution: insegnare validità temporale e revisione.
 
 ### Learner content
 
-Un **claim** è una singola affermazione verificabile, collegata alla fonte che la sostiene. Non è il nome del documento né un riassunto indistinto di tutto il manuale.
+Il contratto iniziale permetteva il recupero dell’esito per un giorno. Una nuova versione, dal mese successivo, lo permette per sette giorni. I periodi non si sovrappongono: la vecchia nota può ancora spiegare una scelta di allora, ma non basta a decidere per un ordine di oggi.
 
-Dal passaggio letto in S02 l’agente registra questo claim:
+Il caso e i numeri sono inventati. Il punto è distinguere validità storica da validità corrente. Una fonte conservata non resta attuale solo perché è facile da recuperare.
 
-| Campo | Contenuto dell’esempio |
-|---|---|
-| Affermazione | La conferma può arrivare entro 30 secondi dall’invio. |
-| Ambito | Richieste standard di Orione, fino al 30 giugno compreso. |
-| Fonte | Manuale Orione 2.1. |
-| Locatore | §4.3, pagina 48: il punto preciso da riaprire. |
-
-Separare la regola dalle altre permette di ritrovarla e rivederla quando cambia. Togliere «standard» o il periodo produrrebbe invece un’affermazione più ampia di quella sostenuta dalla fonte.
-
-Nel lavoro quotidiano non leggerai i claim uno per uno: li vedrai citati nelle risposte dell’agente. Sapere che cosa contiene un claim ti serve per una domanda precisa davanti a una risposta: «a quale passaggio e a quali casi si riferisce?». Se l’agente non sa rispondere, il dato non è pronto per essere usato.
+kb-agentic prescrive di mantenere visibili stato e sostituzioni delle informazioni. Quando una regola cambia, vanno riesaminati i documenti e le decisioni che dipendevano da essa. L’elenco dei dipendenti aiuta a farlo; non aggiorna automaticamente il software.
 
 ### Complete explanation
 
-Il claim mostrato resta didattico: i locatori reali devono essere misurati sull’artefatto conservato e non inventati. Si rende evidente che la fedeltà riguarda anche condizioni e ambito. Una frase atomica può portare più dati di contesto senza diventare un insieme di affermazioni indipendenti.
+Il contratto iniziale permetteva il recupero dell’esito per un giorno. Una nuova versione, dal mese successivo, lo permette per sette giorni. I periodi non si sovrappongono: la vecchia nota può ancora spiegare una scelta di allora, ma non basta a decidere per un ordine di oggi.
+
+Il caso e i numeri sono inventati. Il punto è distinguere validità storica da validità corrente. Una fonte conservata non resta attuale solo perché è facile da recuperare.
+
+kb-agentic prescrive di mantenere visibili stato e sostituzioni delle informazioni. Quando una regola cambia, vanno riesaminati i documenti e le decisioni che dipendevano da essa. L’elenco dei dipendenti aiuta a farlo; non aggiorna automaticamente il software.
 
 ### Visual content
 
-Tabella completa. Collegare il campo Locatore al brano di S02, mantenendo visibili durata e condizioni insieme.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Quando l’agente ha estratto molti claim, dove cerca quello sui tempi delle conferme?
+Due documenti dello stesso periodo richiedono un controllo diverso.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-3
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-4
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-5
 
 ## S15
-Module: M2
-Objective: O2
+Module: M3
+Objective: O3
 Role: explanation
-Title: Il grafo degli argomenti organizza le domande
-Value contribution: La navigazione per argomenti viene spiegata dopo l’unità di conoscenza che deve collocare.
+Title: Quando le fonti sembrano contraddirsi
+Value contribution: separare evidenza e preferenza.
 
 ### Learner content
 
-Un **grafo** è un insieme di elementi collegati. Nella KB gli elementi rappresentano argomenti: per esempio «Integrazioni esterne», «Conferme» e «Tempi di attesa».
+Due documenti fittizi, entrambi validi oggi, riportano finestre diverse: sette giorni e un giorno. L’agente afferma che valgono per lo stesso servizio e tipo di operazione, ma non riesce a verificare questa attribuzione.
 
-Con la domanda «Quanto aspettiamo la conferma?» l’agente raggiunge l’argomento pertinente e i claim che gli appartengono. Da lì riapre le fonti. Un argomento può essere raggiunto da più percorsi senza duplicare la stessa regola in note divergenti.
+Scegliere il documento più recente non risolve quella mancanza. La procedura KB mantiene visibili le affermazioni contestate e chiede il chiarimento che può decidere l’ambito. “Contestato” significa che il risultato non va usato come fatto risolto.
 
-Il grafo non prova che 30 secondi sia corretto: **organizza l’accesso all’evidenza**.
-
-Esiste anche un grafo dei prerequisiti di questo corso. Quello stabilisce che capire un claim precede l’uso di una risposta con provenienza. Il grafo della KB ordina gli argomenti; il grafo didattico ordina le spiegazioni.
-
-Tutto questo lo fa l’agente seguendo kb-agentic: crea e aggiorna nella cartella del progetto l’artefatto della fonte, i claim, il grafo degli argomenti e gli indici. Tu non li scrivi e di solito non li apri: ne vedi gli esiti nelle risposte dell’agente, ed è lì che li controlli.
+Una preferenza del team, «vorremmo sette giorni», può essere una scelta di prodotto, ma non prova cosa garantisca il fornitore. La persona può indicare una fonte, chi conosce il fatto o decidere di rinviare l’affermazione non verificata.
 
 ### Complete explanation
 
-La navigazione per argomenti viene spiegata dopo l’unità di conoscenza che deve collocare. Il lettore vede il motivo per cui conservare soltanto file nominati per data non equivale a organizzare la conoscenza per domanda. La distinzione dal grafo didattico risponde esplicitamente alla Vision senza trasformare il corso in una lezione di teoria dei grafi.
+Due documenti fittizi, entrambi validi oggi, riportano finestre diverse: sette giorni e un giorno. L’agente afferma che valgono per lo stesso servizio e tipo di operazione, ma non riesce a verificare questa attribuzione.
+
+Scegliere il documento più recente non risolve quella mancanza. La procedura KB mantiene visibili le affermazioni contestate e chiede il chiarimento che può decidere l’ambito. “Contestato” significa che il risultato non va usato come fatto risolto.
+
+Una preferenza del team, «vorremmo sette giorni», può essere una scelta di prodotto, ma non prova cosa garantisca il fornitore. La persona può indicare una fonte, chi conosce il fatto o decidere di rinviare l’affermazione non verificata.
 
 ### Visual content
 
-Diagramma «Integrazioni esterne → Conferme → Tempi di attesa → claim → fonte». Separare sotto una piccola catena «capire fonte → capire claim → verificare risposta», etichettata «ordine didattico».
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Ora l’agente può rispondere a una domanda mostrando sia la conclusione sia la strada per controllarla.
+Un fatto nuovo può risolvere il contrasto senza cancellarne la storia.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-2
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-4
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-5
 
 ## S16
-Module: M2
-Objective: O2
+Module: M3
+Objective: O3
 Role: explanation
-Title: Una risposta utile porta con sé il suo limite
-Value contribution: La conclusione è motivata con un confronto visibile tra data della richiesta e periodo della fonte.
+Title: Il chiarimento deve raggiungere chi lo usava
+Value contribution: mostrare aggiornamento oltre il claim isolato.
 
 ### Learner content
 
-La domanda è: «Per una richiesta standard inviata il 20 giugno, quanto tempo aveva il servizio per confermare?».
+Arriva un chiarimento riapribile: il documento con un giorno riguarda Notifiche, quello con sette giorni riguarda Ordini. L’agente può correggere la precedente attribuzione, conservandone il superamento e la fonte del chiarimento.
 
-L’agente segue il percorso dall’argomento al claim di S14, riapre il passaggio e risponde:
+La nota che aveva assunto un giorno per gli ordini deve essere riesaminata. Anche il piano che ne derivava va controllato. Una conoscenza corretta nel registro e una conclusione vecchia nel piano sono ancora una possibile regressione.
 
-> «Il Manuale Orione 2.1, §4.3, p.48, indica 30 secondi dall’invio per le richieste standard fino al 30 giugno. Il 20 giugno rientra in quel periodo. Non ho verificato documenti che ne rettifichino la regola».
-
-Insieme alla risposta, l’agente dichiara quale argomento ha consultato e quanti claim cita: è la traccia che ti permette di chiedergli il passaggio.
-
-È la risposta che vuoi ricevere: esplicita perché il caso rientra nell’ambito. Una citazione senza questo controllo potrebbe sostenere un numero giusto per il caso sbagliato.
-
-Se la domanda riguardasse luglio, questo passaggio non basterebbe a dare la stessa risposta.
+L’agente non deve rileggere la propria interpretazione come se fosse una nuova prova. Le catene di provenienza servono a riaprire il fondamento e a riconoscere ciò che è derivato. Nessun indice garantisce da solo che tutti i dipendenti siano stati individuati.
 
 ### Complete explanation
 
-La conclusione è motivata con un confronto visibile tra data della richiesta e periodo della fonte. Il limite sulle rettifiche non è un disclaimer generico: identifica esattamente ciò che questa consultazione non ha verificato. La fonte viene riaperta e non soltanto ricordata dal testo del claim.
+Arriva un chiarimento riapribile: il documento con un giorno riguarda Notifiche, quello con sette giorni riguarda Ordini. L’agente può correggere la precedente attribuzione, conservandone il superamento e la fonte del chiarimento.
+
+La nota che aveva assunto un giorno per gli ordini deve essere riesaminata. Anche il piano che ne derivava va controllato. Una conoscenza corretta nel registro e una conclusione vecchia nel piano sono ancora una possibile regressione.
+
+L’agente non deve rileggere la propria interpretazione come se fosse una nuova prova. Le catene di provenienza servono a riaprire il fondamento e a riconoscere ciò che è derivato. Nessun indice garantisce da solo che tutti i dipendenti siano stati individuati.
 
 ### Visual content
 
-Mostrare «Domanda: 20 giugno» accanto a «Ambito: fino al 30 giugno». Segno di inclusione nel periodo; sotto la risposta completa, inclusa l’ultima frase.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Ora tocca a te giudicare una risposta dell’agente su una regola diversa, con la fonte davanti.
+Prova a giudicare una risposta che anticipa il chiarimento con una preferenza.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-2
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-4
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-5
 
 ## S17
-Module: M2
-Objective: O2
+Module: M3
+Objective: O3
 Role: check
-Title: Prova: la risposta dell’agente regge?
-Value contribution: La persona applica a una fonte nuova la domanda di S14 e il controllo di ambito di S16, partendo dalla risposta dell’agente e dal passaggio che si fa mostrare.
+Title: La recenza basta?
+Value contribution: giudicare escalation su fatto non noto.
 Solution: S18
 
 ### Learner content
 
-Nuovo esempio inventato. Una collega chiede all’agente: «Quando parte l’avviso per una richiesta senza conferma?». Non dice se la richiesta è standard o urgente. L’agente risponde:
+In un altro progetto inventato, l’agente trova due regole dello stesso mese per la conservazione di ricevute. Non ha accertato se una riguardi copie di prova e l’altra ricevute definitive. Dice: «Scelgo quella più nuova; dimmi soltanto quale durata preferisci».
 
-> «Dopo 10 secondi (Manuale Avvisi 1.2). Argomento consultato: avvisi; 1 claim citato».
-
-Chiedi all’agente il passaggio citato e ricevi, dal Manuale Avvisi 1.2, pagina 12, §2:
-
-> «Per le richieste urgenti dal 1 agosto, inviare un avviso dopo 10 secondi senza conferma».
-
-Prima di inoltrare la risposta alla collega, indica:
-
-- per quali richieste la risposta è corretta e per quali il manuale non dice nulla;
-- che cosa manca alla risposta dell’agente, e che cosa gli chiedi di correggere;
-- se la inoltreresti così com’è, e perché.
-
-Non devi scrivere tu la risposta alla collega: devi riconoscere che cosa manca e chiederlo all’agente.
+Quale parte della risposta contesti e quale chiarimento chiedi? Se non conosci il fatto, come rispondi senza inventarlo? Il problema non richiede di classificare tu un conflitto: l’agente ha già mostrato l’incertezza e la proposta da giudicare.
 
 ### Complete explanation
 
-La persona usa la domanda di S14 («a quale passaggio e a quali casi si riferisce?») e il controllo di ambito di S16. La risposta dell’agente toglie la condizione «urgenti dal 1 agosto» e cita il manuale senza il punto preciso. Il numero è giusto solo per una parte delle richieste: è il caso di S16, una citazione che sostiene un numero giusto per il caso sbagliato.
+In un altro progetto inventato, l’agente trova due regole dello stesso mese per la conservazione di ricevute. Non ha accertato se una riguardi copie di prova e l’altra ricevute definitive. Dice: «Scelgo quella più nuova; dimmi soltanto quale durata preferisci».
+
+Quale parte della risposta contesti e quale chiarimento chiedi? Se non conosci il fatto, come rispondi senza inventarlo? Il problema non richiede di classificare tu un conflitto: l’agente ha già mostrato l’incertezza e la proposta da giudicare.
 
 ### Visual content
 
-La domanda della collega e la risposta dell’agente come riquadri di messaggio; sotto, il passaggio del manuale ottenuto su richiesta. Nessuna evidenziazione di ciò che manca.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-La soluzione mostra che cosa manca e come chiederlo all’agente.
+La soluzione conserva la distinzione tra preferenza e prova.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-2
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-3
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-4
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-5
 
 ## S18
-Module: M2
-Objective: O2
+Module: M3
+Objective: O3
 Role: solution
-Title: Soluzione: la condizione viaggia con il numero
-Value contribution: La soluzione mostra il controllo della persona sulla risposta e la richiesta di correzione, senza che la persona scriva la risposta al posto dell’agente.
+Title: Non scegliere un fatto per preferenza
+Value contribution: soluzione con percorso di correzione.
 
 ### Learner content
 
-**La risposta vale solo in parte.** Per una richiesta urgente dal 1 agosto, 10 secondi è corretto. Per una richiesta standard il passaggio non dice nulla, e la risposta dell’agente lo lascia credere.
+Contesti la scelta per recenza e chiedi di verificare a quali ricevute si riferiscono le fonti. Se non sai rispondere, indichi chi può fornire il documento o chiedi di mantenere aperta la conclusione.
 
-**Mancano ambito e locatore.** La risposta non dice «urgenti, dal 1 agosto» e cita il manuale senza §2, p.12. È il caso di S16: un numero giusto per il caso sbagliato.
+Puoi decidere che il lavoro proceda su parti non dipendenti dal dato incerto. Non puoi rendere vera una garanzia del fornitore soltanto approvandola. Dopo il chiarimento chiedi la risposta corretta con fonte e i riferimenti alle conclusioni da riesaminare.
 
-**Non la inoltreresti così.** Chiedi all’agente, per esempio: «Il passaggio riguarda solo le urgenti dal 1 agosto: correggi la risposta indicando ambito e punto del manuale, chiedi alla collega di che tipo è la richiesta e dichiara che per le standard questo manuale non basta. Se il claim nella KB non riporta l’ambito, correggi anche quello».
-
-Poi controlla la nuova risposta: deve nominare il caso a cui si applica e il punto preciso della fonte.
-
-Se hai accettato «10 secondi» perché la fonte è citata, torna a S14 e S16. Se hai scritto tu la risposta alla collega, il controllo è giusto ma la correzione spetta all’agente: il tuo compito è chiederla e verificarla.
+Se hai risposto solo con la durata che preferisci, torna a S15. Una scelta di perimetro è tua; l’evidenza su cosa esiste deve provenire da un fatto controllabile.
 
 ### Complete explanation
 
-Il criterio è la domanda di S14 e l’ambito di S16. La persona non estrae il claim né scrive la risposta: riconosce l’omissione, chiede la correzione e verifica il risultato. La domanda alla collega sul tipo di richiesta la può chiarire solo lei; la correzione del claim nella KB è un compito dell’agente che la persona può richiedere.
+Contesti la scelta per recenza e chiedi di verificare a quali ricevute si riferiscono le fonti. Se non sai rispondere, indichi chi può fornire il documento o chiedi di mantenere aperta la conclusione.
+
+Puoi decidere che il lavoro proceda su parti non dipendenti dal dato incerto. Non puoi rendere vera una garanzia del fornitore soltanto approvandola. Dopo il chiarimento chiedi la risposta corretta con fonte e i riferimenti alle conclusioni da riesaminare.
+
+Se hai risposto solo con la durata che preferisci, torna a S15. Una scelta di perimetro è tua; l’evidenza su cosa esiste deve provenire da un fatto controllabile.
 
 ### Visual content
 
-La risposta dell’agente con le due omissioni evidenziate dopo il tentativo; sotto, la richiesta all’agente come riquadro di messaggio.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Torniamo a Orione: che cosa succede quando arriva un documento con un numero diverso?
+Quando l’informazione diventa modifica software, serve un’altra disciplina.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-3
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-4
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-5
 
 ## S19
-Module: M3
-Objective: O3
+Module: M4
+Objective: O4
 Role: explanation
-Title: 30 e 45 possono essere entrambi corretti
-Value contribution: La successione temporale viene insegnata prima del conflitto vero.
+Title: Più metodo non deve significare più burocrazia
+Value contribution: rispondere al timore di rigidità con criterio concreto.
 
 ### Learner content
 
-Arriva il Bollettino B, §1, con una nuova regola fittizia: «Per le richieste standard dal 1 luglio, la conferma può arrivare entro 45 secondi dall’invio».
+Un’obiezione ragionevole è: «Se devo documentare tutto, rallento e magari peggioro il risultato». agentic-sdlc distingue lavori proporzionati al rischio: L1 per correzioni banali senza cambiamento di comportamento, L2 per modifiche piccole a causa chiara e basso rischio, L3 per cambiamenti significativi, contratti o rischi maggiori. Spike è un’esplorazione non ancora pronta per produzione.
 
-L’agente lo confronta con il manuale già letto e ti mostra:
+L’agente dichiara il livello; la persona può contestarlo. Una riga che cambia l’identità di un ordine non è innocua perché è corta. Un refuso isolato non deve pagare il costo di un design significativo.
 
-| Fonte | Tipo di richiesta | Periodo | Tempo |
-|---|---|---|---|
-| Manuale 2.1 §4.3 p.48 | Standard | Fino al 30 giugno compreso | 30 secondi |
-| Bollettino B §1 | Standard | Dal 1 luglio | 45 secondi |
-
-I periodi non si sovrappongono. Le due affermazioni possono coesistere: una spiega giugno, l’altra luglio.
-
-Prima di dichiarare un conflitto, l’agente deve confrontare **soggetto, condizioni e periodo**. Il semplice fatto che due documenti contengano numeri diversi non basta. Quando ti segnala un conflitto, controlla che abbia fatto questo confronto.
+Tempo, letture e verifiche hanno un costo reale. La proporzione va giudicata sul compito, non sulla volontà di “fare il metodo”.
 
 ### Complete explanation
 
-La successione temporale viene insegnata prima del conflitto vero. Il lettore può quindi distinguere la nuova domanda dalla ragione storica recuperata in S02. Non si riscrive il passato dicendo che i 30 secondi fossero sempre sbagliati. Nel caso fittizio i periodi sono espliciti e non sovrapposti.
+Un’obiezione ragionevole è: «Se devo documentare tutto, rallento e magari peggioro il risultato». agentic-sdlc distingue lavori proporzionati al rischio: L1 per correzioni banali senza cambiamento di comportamento, L2 per modifiche piccole a causa chiara e basso rischio, L3 per cambiamenti significativi, contratti o rischi maggiori. Spike è un’esplorazione non ancora pronta per produzione.
+
+L’agente dichiara il livello; la persona può contestarlo. Una riga che cambia l’identità di un ordine non è innocua perché è corta. Un refuso isolato non deve pagare il costo di un design significativo.
+
+Tempo, letture e verifiche hanno un costo reale. La proporzione va giudicata sul compito, non sulla volontà di “fare il metodo”.
 
 ### Visual content
 
-Linea del tempo divisa fra 30 giugno e 1 luglio; sopra 30 s, sotto 45 s nei rispettivi intervalli. Affiancare tabella per conservare tipo e fonte.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Ora arriva una nota che parla proprio dello stesso periodo: qui il confronto cambia.
+Anche una modifica ben verificata può inseguire il beneficio sbagliato.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-5
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-6
 
 ## S20
-Module: M3
-Objective: O3
+Module: M4
+Objective: O4
 Role: explanation
-Title: Il conflitto resta visibile finché manca una ragione per risolverlo
-Value contribution: L’ambito viene mantenuto identico per rendere la contraddizione effettiva e non solo apparente.
+Title: La Vision conserva il perché del cambiamento
+Value contribution: distinguere riuscita tecnica e beneficio.
 
 ### Learner content
 
-La Nota C, §2, dichiara: «Per le richieste standard dal 1 luglio, la conferma può arrivare entro 30 secondi dall’invio».
+La Vision dichiara beneficio, destinatari, limiti e segnali di successo. Per Orione il beneficio fittizio è permettere il recupero di un invio incerto senza creare un secondo ordine e senza confondere l’email con l’ordine.
 
-B dice 45 e C dice 30 per lo stesso tipo di richiesta, periodo e istante iniziale. Questa volta le affermazioni sono incompatibili.
+La sviluppatrice vuole verificare i percorsi toccati; il responsabile tecnico vuole sapere quale risultato verrà ottenuto e quali scelte restano aperte. Entrambi hanno bisogno di una proposta coerente con il beneficio.
 
-kb-agentic deve conservarle entrambe come **contestate**, con le rispettive fonti. «Contestata» significa che non possiamo usarla come regola risolta ignorando l’altra.
-
-La risposta onesta è: «B e C non concordano; manca un chiarimento». La data di arrivo del file, la preferenza dell’agente o una maggioranza di copie non stabiliscono quale sia corretto.
-
-Serve informazione nuova: per esempio una rettifica che chiarisca a quali richieste si riferisce C.
-
-Quando non può decidere, l’agente te lo chiede alla fine del lavoro: ti mostra le affermazioni in conflitto, le loro fonti e perché non può scegliere. Se invece ti propone di usare C perché è arrivata dopo, non accettare: chiedigli quale fatto lo giustifica.
+Un nuovo menu commerciale non risolve quel baco. Se l’agente lo aggiunge, chiedi di separarlo o discutere il cambiamento di perimetro. La Vision approvata non va riscritta silenziosamente per giustificare ciò che l’agente ha già deciso di costruire.
 
 ### Complete explanation
 
-L’ambito viene mantenuto identico per rendere la contraddizione effettiva e non solo apparente. Le due righe restano entrambe contestate, evitando una selezione silenziosa. La nuova informazione richiesta è concreta; il corso non suggerisce una domanda vaga quando un confronto delle fonti potrebbe già risolvere il caso.
+La Vision dichiara beneficio, destinatari, limiti e segnali di successo. Per Orione il beneficio fittizio è permettere il recupero di un invio incerto senza creare un secondo ordine e senza confondere l’email con l’ordine.
+
+La sviluppatrice vuole verificare i percorsi toccati; il responsabile tecnico vuole sapere quale risultato verrà ottenuto e quali scelte restano aperte. Entrambi hanno bisogno di una proposta coerente con il beneficio.
+
+Un nuovo menu commerciale non risolve quel baco. Se l’agente lo aggiunge, chiedi di separarlo o discutere il cambiamento di perimetro. La Vision approvata non va riscritta silenziosamente per giustificare ciò che l’agente ha già deciso di costruire.
 
 ### Visual content
 
-Due riquadri B45 e C30 collegati da «stesso ambito, valori incompatibili». Entrambi riportano «contestato». Nessun colore che faccia scegliere un vincitore.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Vediamo quale informazione sarebbe sufficiente a cambiare questa conclusione.
+Valuta una proposta che usa la dimensione del diff come unico criterio.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-5
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-7
 
 ## S21
-Module: M3
-Objective: O3
-Role: explanation
-Title: Una rettifica cambia l’evidenza, non soltanto la data
-Value contribution: La rettifica fittizia nomina esattamente il testo corretto, il nuovo ambito e la regola corrente.
+Module: M4
+Objective: O4
+Role: check
+Title: Una riga può cambiare un contratto
+Value contribution: verificare giudizio umano su triage e scope.
+Solution: S22
 
 ### Learner content
 
-Arriva la Rettifica D, §1, che dichiara esplicitamente:
+L’agente propone la nuova chiave a ogni invio e dichiara L2: «È una sola riga». Aggiunge un menu di analisi commerciale per “rendere completo il miglioramento”.
 
-> «La Nota C §2 contiene un errore nel tipo di richiesta: “standard” va sostituito con “urgente”. Dal 1 luglio restano 45 secondi per le standard e 30 per le urgenti».
-
-Ora sappiamo perché B e C sembravano contraddirsi. La nuova informazione modifica l’ambito di C; non elegge un documento perché arrivato dopo.
-
-La KB conserva il vecchio claim di C come **superato**, collegandolo alla correzione. «Superato» significa che la storia resta leggibile, ma la risposta corrente deve seguire il successore pertinente.
-
-Anche una persona può portare un fatto mancante, registrandone la base. «Preferisco 45» da solo non è un fatto che risolve il conflitto.
+Come rispondi sul livello e sul perimetro? Usa gli effetti della modifica e il beneficio concordato. Non ti chiediamo di classificare una richiesta prima dell’agente: stai giudicando la sua dichiarazione e scegliendo quali obiettivi autorizzare.
 
 ### Complete explanation
 
-La rettifica fittizia nomina esattamente il testo corretto, il nuovo ambito e la regola corrente. È questa relazione a sostenere il riesame. L’esempio distingue una correzione documentale da una scelta prudenziale di prodotto, che può essere discussa ma non trasforma una preferenza in verità della fonte.
+L’agente propone la nuova chiave a ogni invio e dichiara L2: «È una sola riga». Aggiunge un menu di analisi commerciale per “rendere completo il miglioramento”.
+
+Come rispondi sul livello e sul perimetro? Usa gli effetti della modifica e il beneficio concordato. Non ti chiediamo di classificare una richiesta prima dell’agente: stai giudicando la sua dichiarazione e scegliendo quali obiettivi autorizzare.
 
 ### Visual content
 
-Prima: B standard 45 e C standard 30 contestati. Dopo: standard 45 e urgenti 30 con riferimento a D; C originale resta in un riquadro «storico, superato».
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Chiarire il fatto nella KB non modifica ancora ciò che il software mostra.
+Confronta dimensione della modifica e conseguenza per l’utente.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-5
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-6
 
 ## S22
-Module: M3
-Objective: O3
-Role: explanation
-Title: La conoscenza cambia prima del codice
-Value contribution: La relazione fonte→decisione→comportamento viene resa concreta con 35 secondi, scelti perché interni alla nuova finestra ma oltre il vecchio limite.
+Module: M4
+Objective: O4
+Role: solution
+Title: Giudicare effetti e confini
+Value contribution: soluzione proporzionata.
 
 ### Learner content
 
-Per le richieste standard di luglio, la fonte chiarita indica 45 secondi. Orione, però, usa ancora 30 per dichiarare la scadenza.
+Contesti L2 perché la proposta altera il contratto fra ritentativo e identità dell’ordine, con rischio di duplicazione. Chiedi all’agente di rivedere livello e analisi in base agli effetti, non alle righe.
 
-Se dopo 35 secondi non è arrivata conferma, il software mostra già «scaduta», mentre la finestra del servizio può essere ancora aperta.
+Rifiuti il menu dentro questo fix: se interessa, sarà una scelta separata di perimetro. Per un refuso senza nuovi effetti, invece, non chiederesti tutti gli artefatti di un L3.
 
-La vecchia decisione sui 30 va riesaminata per l’uso a luglio. Il suo collegamento alla fonte ci aiuta a trovarla; altri documenti che la usano possono richiedere la stessa revisione.
-
-I controlli della KB possono segnalare riferimenti a conoscenza superata. **Non aggiornano automaticamente codice e schermate.** Tocca al lavoro sul software stabilire cosa cambiare e dimostrare che il risultato sia coerente.
+Se hai scelto solo in base alla lunghezza del diff, torna a S19. Se hai approvato il menu perché è utile in generale, torna a S20: utilità e appartenenza al beneficio attuale sono domande diverse.
 
 ### Complete explanation
 
-La relazione fonte→decisione→comportamento viene resa concreta con 35 secondi, scelti perché interni alla nuova finestra ma oltre il vecchio limite. Il manuale storico resta valido per giugno; è il suo uso corrente senza ambito che diventa scorretto. Il lettore deve distinguere segnalazione di dipendenze e correzione eseguita.
+Contesti L2 perché la proposta altera il contratto fra ritentativo e identità dell’ordine, con rischio di duplicazione. Chiedi all’agente di rivedere livello e analisi in base agli effetti, non alle righe.
+
+Rifiuti il menu dentro questo fix: se interessa, sarà una scelta separata di perimetro. Per un refuso senza nuovi effetti, invece, non chiederesti tutti gli artefatti di un L3.
+
+Se hai scelto solo in base alla lunghezza del diff, torna a S19. Se hai approvato il menu perché è utile in generale, torna a S20: utilità e appartenenza al beneficio attuale sono domande diverse.
 
 ### Visual content
 
-Linea 0–45 con marker 30 e 35. A 35 due etichette: «Software: scaduta» e «Finestra standard di luglio: ancora aperta». Non mostrare esito completato senza conferma.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Prima di passare al software, controlla di saper giudicare come l’agente tratta un conflitto su dati nuovi.
+Prima della soluzione definitiva, occorre osservare il guasto effettivo.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-5
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-11
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-6
 
 ## S23
-Module: M3
-Objective: O3
-Role: check
-Title: Prova: la risposta e la domanda dell’agente
-Value contribution: La persona giudica una risposta dell’agente su documenti in conflitto e risponde alla domanda che l’agente le pone, con numeri, mese e un ambito incompleto diversi da quelli di Orione.
-Solution: S24
+Module: M5
+Objective: O5
+Role: explanation
+Title: Osservare il baco prima di spiegarlo
+Value contribution: insegnare evidenza prima della causa immaginata.
 
 ### Learner content
 
-Tre documenti inventati descrivono il tempo di risposta:
+Nel caso Orione abbiamo log fittizi: invio con chiave K, ordine creato dal fornitore, conferma non ricevuta, pulsante ancora bloccato. K è solo il nome della chiave nel racconto.
 
-- A: «20 secondi per richieste standard fino al 31 agosto compreso».
-- B: «25 secondi per richieste standard dal 1 settembre».
-- C: «20 secondi dal 1 settembre», senza indicare il tipo di richiesta.
+Questi eventi danno una domanda concreta al codice: perché lo stato incerto impedisce un ritentativo con K? Non provano che qualsiasi controllo sia sbagliato. L’agente deve partire dalle evidenze disponibili, controllarne ambito e mantenere le ipotesi con verifiche e risultati.
 
-L’agente li ha acquisiti. A una collega, con te in copia, risponde:
-
-> «Per una richiesta standard di settembre il tempo è 20 secondi: lo dice C, il documento più recente».
-
-Alla fine del lavoro scrive a te:
-
-> «B e C indicano 25 e 20 secondi dal 1 settembre. C non dice a quale tipo di richiesta si riferisce, quindi non posso stabilire se contraddice B. Sai a quale tipo si riferisce C, o chi può dirlo?».
-
-1. La risposta alla collega è accettabile? Che cosa chiedi all’agente?
-2. Come rispondi alla sua domanda se non conosci il tipo di C? Un collega ti dice: «Mettiamo 25, mi sembra più ragionevole». È una risposta che puoi dare all’agente?
-3. Arriva il Chiarimento E, §1: «C riguarda le richieste urgenti». Che cosa fai, e che cosa ti aspetti di leggere quando chiedi di nuovo il tempo per una richiesta standard di settembre?
+Puoi chiedere: «Quale osservazione sostiene questa causa? Quali alternative sono state escluse?». Cercare pattern sospetti nel sorgente può suggerire ipotesi; non collega da solo quel pattern all’incidente.
 
 ### Complete explanation
 
-La persona vede ciò che riceve davvero da kb-agentic: una risposta e una domanda a fine lavoro. La risposta alla collega sceglie per recenza, e contraddice la domanda dello stesso agente. La domanda è legittima e chiede un fatto; una preferenza non lo è. Dopo il chiarimento la persona non aggiorna la KB: passa la fonte all’agente e controlla la risposta successiva.
+Nel caso Orione abbiamo log fittizi: invio con chiave K, ordine creato dal fornitore, conferma non ricevuta, pulsante ancora bloccato. K è solo il nome della chiave nel racconto.
+
+Questi eventi danno una domanda concreta al codice: perché lo stato incerto impedisce un ritentativo con K? Non provano che qualsiasi controllo sia sbagliato. L’agente deve partire dalle evidenze disponibili, controllarne ambito e mantenere le ipotesi con verifiche e risultati.
+
+Puoi chiedere: «Quale osservazione sostiene questa causa? Quali alternative sono state escluse?». Cercare pattern sospetti nel sorgente può suggerire ipotesi; non collega da solo quel pattern all’incidente.
 
 ### Visual content
 
-I tre documenti su tre righe; sotto, la risposta alla collega e la domanda dell’agente come due riquadri di messaggio; poi il Chiarimento E. Nessuna evidenziazione degli errori.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-La soluzione separa ciò che la risposta dà per scontato da ciò che la domanda chiede davvero.
+La correzione deve descrivere il comportamento desiderato oltre il pulsante.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-5
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-16
 
 ## S24
-Module: M3
-Objective: O3
-Role: solution
-Title: Soluzione: prima confrontare gli ambiti
-Value contribution: La soluzione contesta la risposta scelta per recenza, risponde alla domanda dell’agente solo con un fatto e verifica la risposta dopo il chiarimento.
+Module: M5
+Objective: O5
+Role: explanation
+Title: Dai bisogni al comportamento osservabile
+Value contribution: spiegare artefatti a partire dal loro scopo.
 
 ### Learner content
 
-**1. La risposta alla collega non è accettabile.** Sceglie C perché è arrivata dopo, ma C non dice a quale tipo di richiesta si riferisce: l’agente stesso lo scrive nella sua domanda. Per le standard di settembre B indica 25 secondi e il dubbio su C è aperto. Chiedi all’agente di correggere la risposta alla collega: il tempo per le standard di settembre non è ancora stabilito.
+Un use case descrive cosa deve ottenere una persona: la cliente vuole sapere se l’ordine è stato accettato; l’operatrice vuole recuperare l’invio senza duplicarlo. La specifica funzionale descrive che cosa il software deve fare per quei bisogni, prima di scegliere come implementarlo.
 
-**2. Alla domanda rispondi solo con un fatto.** Se non conosci il tipo di C, dillo e indica chi può saperlo, per esempio chi ha scritto C, oppure chiedi all’agente di cercare un chiarimento. «Mi sembra più ragionevole» è una preferenza, non un fatto: non risolve il conflitto (S21). Se il prodotto ha bisogno di una scelta provvisoria, la prende il responsabile e va dichiarata come decisione, non come ciò che dice la fonte.
+Nel caso: stesso ordine mantiene K; conferma assente produce uno stato incerto visibile, non “fallito” certo; ritentativo con K può recuperare l’esito; email fallita rimane un problema distinto. Un nuovo ordine voluto riceve invece una nuova identità.
 
-**3. Dopo il chiarimento** passa E all’agente come nuova fonte. Quando richiedi il tempo per le standard di settembre ti aspetti: «25 secondi, secondo B; C riguarda le urgenti, come chiarisce E». Se la risposta attribuisce i 25 secondi a E o non menziona più il chiarimento, chiedi all’agente di correggerla.
-
-Se hai accettato la scelta di C, torna a S20. Se hai risposto con una preferenza, torna a S21. Se hai considerato A e B in conflitto, confronta i periodi come in S19.
+La persona approva il risultato e prende le scelte che l’agente le sottopone, per esempio quale informazione mostrare durante l’attesa. L’agente prepara specifica e analisi, non la persona al suo posto.
 
 ### Complete explanation
 
-La persona non classifica i documenti e non aggiorna la KB: giudica la risposta, risponde alla domanda dell’agente con un fatto o con chi lo conosce, e verifica la risposta successiva. È lo stesso controllo di S16 e S18, applicato a un conflitto.
+Un use case descrive cosa deve ottenere una persona: la cliente vuole sapere se l’ordine è stato accettato; l’operatrice vuole recuperare l’invio senza duplicarlo. La specifica funzionale descrive che cosa il software deve fare per quei bisogni, prima di scegliere come implementarlo.
+
+Nel caso: stesso ordine mantiene K; conferma assente produce uno stato incerto visibile, non “fallito” certo; ritentativo con K può recuperare l’esito; email fallita rimane un problema distinto. Un nuovo ordine voluto riceve invece una nuova identità.
+
+La persona approva il risultato e prende le scelte che l’agente le sottopone, per esempio quale informazione mostrare durante l’attesa. L’agente prepara specifica e analisi, non la persona al suo posto.
 
 ### Visual content
 
-Tre blocchi numerati come le domande; nel secondo, la risposta di fatto a confronto con la preferenza respinta.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-A Orione abbiamo chiarito la regola di luglio. Ora possiamo chiedere quale risultato vogliamo ottenere cambiando il software.
+Lo stesso comportamento attraversa più superfici.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-5
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-8
 
 ## S25
-Module: M4
-Objective: O4
+Module: M5
+Objective: O5
 Role: explanation
-Title: Il risultato da ottenere viene prima della costante
-Value contribution: Il pannello viene definito quando diventa rilevante.
+Title: Seguire il percorso, non un solo schermo
+Value contribution: mostrare blast radius attraverso flussi accessibili.
 
 ### Learner content
 
-L’operatrice di Orione guarda un **pannello**, cioè la schermata che mostra lo stato delle richieste. Il problema è concreto: a 35 secondi una richiesta standard di luglio appare scaduta troppo presto.
+Una superficie è ciò su cui una persona o un software agisce o riceve un risultato. Orione ha pulsante, pannello di stato, richiesta al fornitore e notifica email. Il contratto d’interfaccia descrive il percorso e il feedback fra queste responsabilità.
 
-Il responsabile concorda questo risultato:
+Se il pannello mostra “completato” ma l’email dice “fallito”, l’esperienza è incoerente. Se l’email ritenta l’ordine, la separazione storica è stata violata. Il modello dei rischi collega queste possibilità a controlli e verifiche.
 
-> «L’operatrice deve vedere uno stato attendibile durante l’attesa della conferma. Correggiamo le scadenze premature delle richieste standard di luglio; non ridisegniamo la navigazione dell’applicazione».
-
-Questo è un esempio di **Vision**: dichiara chi deve ottenere quale beneficio e quali confini rispettare. La Vision approvata guida il lavoro.
-
-Cambiare 30 in 45 è una possibile parte della soluzione. Il successo è che l’operatrice riceva l’informazione corretta, senza danneggiare gli altri casi.
+Chi sviluppa chiede dove lo stato viene consumato; chi guida il lavoro chiede quali esiti sono accettabili e quali restano incerti. Un elenco di file non sostituisce questo quadro.
 
 ### Complete explanation
 
-Il pannello viene definito quando diventa rilevante. La Vision non è una frase motivazionale: consente di giudicare sia la soluzione sia un ampliamento del lavoro. Il fatto documentale sulla durata non sostituisce la decisione della persona sul risultato da perseguire. Il beneficio è osservabile nel comportamento, non nel diff.
+Una superficie è ciò su cui una persona o un software agisce o riceve un risultato. Orione ha pulsante, pannello di stato, richiesta al fornitore e notifica email. Il contratto d’interfaccia descrive il percorso e il feedback fra queste responsabilità.
+
+Se il pannello mostra “completato” ma l’email dice “fallito”, l’esperienza è incoerente. Se l’email ritenta l’ordine, la separazione storica è stata violata. Il modello dei rischi collega queste possibilità a controlli e verifiche.
+
+Chi sviluppa chiede dove lo stato viene consumato; chi guida il lavoro chiede quali esiti sono accettabili e quali restano incerti. Un elenco di file non sostituisce questo quadro.
 
 ### Visual content
 
-Due riquadri: «Mezzo possibile: modificare un calcolo» e «Beneficio: stato attendibile per l’operatrice». Sotto, il confine sui menu esattamente come nella citazione.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Quanto lavoro serve per ottenere quel risultato in modo affidabile? Dipende dagli effetti della modifica.
+Una buona soluzione riusa le responsabilità già presenti.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-6
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-7
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-8
 
 ## S26
-Module: M4
-Objective: O4
+Module: M5
+Objective: O5
 Role: explanation
-Title: Il triage proporziona il lavoro al rischio
-Value contribution: La tabella insegna il criterio e rinvia ai limiti specifici della skill invece di inventare soglie universali.
+Title: Riusare ciò che già mantiene il vincolo
+Value contribution: motivare riuso e design pulito.
 
 ### Learner content
 
-Il **triage** classifica l’intervento prima di scegliere il percorso di lavoro. In agentic-sdlc i livelli sono:
+Il Capability Ledger è il registro delle capacità necessarie e delle evidenze su ciò che esiste già. Nell’indagine fittizia l’agente trova la funzione che conserva K e il percorso distinto delle notifiche.
 
-| Livello | Caso tipico | Percorso |
-|---|---|---|
-| L1 | Refuso isolato, senza cambiamenti di comportamento o contratti | Correggere e controllare. |
-| L2 | Causa chiara, al massimo tre file, nessuna nuova dipendenza o interfaccia pubblica, rischio basso | Breve analisi, modifica e test. |
-| L3 | Comportamento visibile, contratti, rischi sensibili o design significativo | Vision, analisi, piano, review, realizzazione, verifiche e chiusura. |
-| Spike | Manca conoscenza per decidere | Indagine circoscritta; poi riclassificare la produzione. |
+Propone di correggere la transizione dallo stato incerto al recupero consentito, riusando l’identità dell’ordine. Non propone una seconda implementazione del controllo di duplicazione in ogni schermo. Se una capacità non viene trovata, deve mostrare che cosa ha cercato prima di dichiararla mancante.
 
-In agentic-sdlc è l’agente a classificare la richiesta e a dichiararti il livello all’inizio del lavoro operativo; nel dubbio sceglie il livello più alto. Poiché il livello ti viene dichiarato, puoi contestarlo.
-
-Il cambiamento di Orione è L3: modifica quando una richiesta viene mostrata come scaduta. Una sola riga può alterare un comportamento importante; la dimensione del codice non misura da sola il rischio.
+L’Impact indica quali parti cambiano e perché; il design specifica integrazioni, condizioni e verifiche. Il tuo giudizio è chiedere se il disegno preserva le garanzie e si fonda su evidenze, non compilare il registro al posto dell’agente.
 
 ### Complete explanation
 
-La tabella insegna il criterio e rinvia ai limiti specifici della skill invece di inventare soglie universali. L2 non è un modo per chiamare piccolo un cambiamento incerto; Spike non autorizza la produzione prima di risolvere il dubbio che la governa. Il corso si concentra sull’esempio L3 già giustificato.
+Il Capability Ledger è il registro delle capacità necessarie e delle evidenze su ciò che esiste già. Nell’indagine fittizia l’agente trova la funzione che conserva K e il percorso distinto delle notifiche.
+
+Propone di correggere la transizione dallo stato incerto al recupero consentito, riusando l’identità dell’ordine. Non propone una seconda implementazione del controllo di duplicazione in ogni schermo. Se una capacità non viene trovata, deve mostrare che cosa ha cercato prima di dichiararla mancante.
+
+L’Impact indica quali parti cambiano e perché; il design specifica integrazioni, condizioni e verifiche. Il tuo giudizio è chiedere se il disegno preserva le garanzie e si fonda su evidenze, non compilare il registro al posto dell’agente.
 
 ### Visual content
 
-Tabella leggibile con quattro righe. Evidenziare la motivazione di Orione, non solo il simbolo L3.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Due ticket con lo stesso titolo possono quindi richiedere percorsi diversi, anche quando l’agente li dichiara uguali.
+Il design deve essere controllato prima di diventare codice.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-6
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-8
 
 ## S27
-Module: M4
-Objective: O4
-Role: check
-Title: Prova: accetti il livello dichiarato?
-Value contribution: La persona giudica il livello e il perimetro che l’agente dichiara, su due ticket con lo stesso titolo ed effetti diversi.
-Solution: S28
+Module: M5
+Objective: O5
+Role: explanation
+Title: Prevenire l’errore dove nasce
+Value contribution: collegare prevenzione e review al beneficio.
 
 ### Learner content
 
-Due ticket si chiamano «Correggere la scadenza».
+Poka-Yoke significa prevenire un uso errato o renderlo subito visibile. Nel caso, la responsabilità che identifica l’ordine deve mantenere K sui ritentativi; la notifica non deve poter creare un nuovo invio.
 
-**A.** L’indagine conferma che la schermata mostra «scadutaa». Si corregge soltanto la parola: nessuna logica, interfaccia pubblica o area sensibile cambia.
+Una correzione pulita distingue nuovo ordine, recupero e notifica nelle responsabilità appropriate. Una serie di eccezioni “se succede questo baco” può lasciare altre strade incoerenti. Il criterio richiesto dal metodo è: «Dopo la correzione il software deve essere fatto come se fosse stato progettato senza quel difetto».
 
-**B.** La schermata dichiara scaduta una richiesta standard di luglio dopo 30 secondi. La Rettifica D chiarisce la finestra di 45, ma non precisa il trattamento di una conferma arrivata esattamente al limite.
-
-Un collega ha chiesto di aggiungere a B un nuovo menu di navigazione. L’agente dichiara:
-
-> «A è L1: correggo il refuso. B è L2: cambio 30 in 45 e, già che ci sono, aggiungo il menu richiesto».
-
-Quale dichiarazione accetti e quale contesti, e perché? Quale decisione manca in B, e chi deve prenderla? Che cosa rispondi sul menu? Se la fonte fosse ancora contestata, che cosa chiederesti all’agente prima che progetti la nuova regola?
+Un revisore indipendente controlla il design contro beneficio, rischi e sistema reale prima dell’implementazione. “Indipendente” richiede un contesto distinto dall’autore: un secondo passaggio dello stesso autore è una verifica diversa, da dichiarare come tale.
 
 ### Complete explanation
 
-L’agente sottostima B perché guarda la dimensione della modifica e non il suo effetto, e allarga il perimetro oltre la Vision. La persona usa il criterio di S26 e i confini di S25 per contestarlo. Il caso al confine è dichiarato incompleto: la persona deve riconoscere una decisione che spetta a lei o al responsabile, non colmarla con una consuetudine tecnica.
+Poka-Yoke significa prevenire un uso errato o renderlo subito visibile. Nel caso, la responsabilità che identifica l’ordine deve mantenere K sui ritentativi; la notifica non deve poter creare un nuovo invio.
+
+Una correzione pulita distingue nuovo ordine, recupero e notifica nelle responsabilità appropriate. Una serie di eccezioni “se succede questo baco” può lasciare altre strade incoerenti. Il criterio richiesto dal metodo è: «Dopo la correzione il software deve essere fatto come se fosse stato progettato senza quel difetto».
+
+Un revisore indipendente controlla il design contro beneficio, rischi e sistema reale prima dell’implementazione. “Indipendente” richiede un contesto distinto dall’autore: un secondo passaggio dello stesso autore è una verifica diversa, da dichiarare come tale.
 
 ### Visual content
 
-Due schede A/B, poi la dichiarazione dell’agente come riquadro di messaggio, poi le domande. Non riportare in anticipo livelli corretti o risposte.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-La soluzione lega ogni giudizio a un fatto del caso, non al titolo del ticket né alla dimensione della modifica.
+La review non sostituisce le prove sul comportamento.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-6
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-7
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-16
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-9
 
 ## S28
-Module: M4
-Objective: O4
-Role: solution
-Title: Soluzione: classificare l’effetto, dichiarare il dubbio
-Value contribution: La soluzione accetta ciò che l’indagine sostiene e contesta ciò che la dimensione della modifica non può decidere.
+Module: M5
+Objective: O5
+Role: explanation
+Title: Che cosa dimostrano le prove?
+Value contribution: distinguere prova locale e chiusura completa.
 
 ### Learner content
 
-**Accetti A come L1:** l’indagine ha circoscritto il lavoro a un refuso. Correzione e controllo pertinente sono proporzionati.
+L’agente deve verificare almeno gli esiti rilevanti del caso: due clic, conferma persa e recupero con K, nuovo ordine voluto con identità distinta, email fallita senza nuovo invio. Una prova del pulsante non dimostra tutti questi comportamenti.
 
-**Contesti B come L2:** cambia un comportamento visibile, quindi è L3. Una modifica di una riga non è per questo piccola. Chiedi all’agente di seguire il percorso L3.
+Dopo l’implementazione, la review confronta il risultato con il design e le evidenze. La chiusura aggiorna ragioni, prove, stato e riferimenti. Una GUIDE può conservare un modello operativo riusabile: per esempio come identità e notifiche sono separate, con provenienza controllabile.
 
-**La decisione mancante** è il trattamento della conferma esattamente al limite. Spetta a te o a chi ha autorità sul comportamento del prodotto, distinguendo che cosa dice la fonte da che cosa decidete voi. L’agente non deve colmarla da solo.
+Le guide operative si trovano in ai_docs/reference/: il suo INDEX.md indirizza alla guida pertinente. Una nuova sessione consulta quel riferimento prima di agire e riapre la guida quando riguarda il compito. Un elenco presente ma non consultato non protegge il cambiamento.
 
-**Sul menu rispondi di no in questo lavoro:** è fuori dal beneficio e dal confine approvati. Se serve, diventa una proposta distinta.
-
-**Se la durata fosse ancora contestata,** chiedi all’agente un’indagine circoscritta per chiarire il fatto prima del design. Non deve chiamare 45 «regola verificata» solo per avanzare.
-
-Se hai accettato L2 guardando la dimensione della modifica, torna a S26. Se hai lasciato decidere il limite al manuale o all’agente, separa fatto e obiettivo come in S25.
+Non ogni fix richiede una guida nuova. Test verdi e review sono evidenze con un ambito; non provano che ogni percorso sia corretto né che le skill migliorino sempre il lavoro.
 
 ### Complete explanation
 
-La soluzione non vieta ogni lavoro finché esiste un dubbio: l’agente può investigare e progettare ciò che non dipende dall’esito. Impedisce però di trasformare un’ipotesi in requisito accertato. Il livello L3 resta motivato dall’effetto anche se la patch è piccola.
+L’agente deve verificare almeno gli esiti rilevanti del caso: due clic, conferma persa e recupero con K, nuovo ordine voluto con identità distinta, email fallita senza nuovo invio. Una prova del pulsante non dimostra tutti questi comportamenti.
+
+Dopo l’implementazione, la review confronta il risultato con il design e le evidenze. La chiusura aggiorna ragioni, prove, stato e riferimenti. Una GUIDE può conservare un modello operativo riusabile: per esempio come identità e notifiche sono separate, con provenienza controllabile.
+
+Le guide operative si trovano in ai_docs/reference/: il suo INDEX.md indirizza alla guida pertinente. Una nuova sessione consulta quel riferimento prima di agire e riapre la guida quando riguarda il compito. Un elenco presente ma non consultato non protegge il cambiamento.
+
+Non ogni fix richiede una guida nuova. Test verdi e review sono evidenze con un ambito; non provano che ogni percorso sia corretto né che le skill migliorino sempre il lavoro.
 
 ### Visual content
 
-Tabella «Dichiarazione dell’agente / Accetti o contesti / Motivo» per A e B. Riquadro separato «Decisione tua: limite esatto».
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Definito il risultato, esaminiamo chi usa la modifica, quali comportamenti servono e dove possono fallire.
+Valuta una chiusura che omette il vincolo più importante.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-6
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-7
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-9
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-10
 
 ## S29
 Module: M5
 Objective: O5
-Role: explanation
-Title: Il bisogno fa emergere chi potremmo dimenticare
-Value contribution: La notifica viene introdotta qui come una nuova informazione esplicita del caso, non presupposta nell’apertura.
+Role: check
+Title: Puoi approvare la chiusura?
+Value contribution: valutare con ragione causale e ambito della prova.
+Solution: S30
 
 ### Learner content
 
-Guardiamo meglio Orione. L’operatrice consulta il pannello; l’assistenza riceve un’email quando una richiesta scade. Il servizio esterno invia la conferma a Orione: questa risposta asincrona viene chiamata **callback**.
+L’agente dichiara: «Ho sbloccato il pulsante. Il test UI è verde. Ho conservato una nota “problema risolto”. Non ho verificato conferma persa né percorso email».
 
-Un **use case**, o caso d’uso, descrive un attore e il risultato che gli serve:
+Quale parte accetti e quali evidenze chiedi prima della chiusura? Spiega quale ragione della storia di Orione rende insufficienti il test e la nota. Non scrivere tu codice o piano dei test: formula la richiesta e la decisione sul lavoro presentato.
 
-- L’operatrice vuole distinguere una richiesta ancora in attesa da una scaduta.
-- L’assistenza vuole evitare di intervenire su una richiesta che può ancora completarsi.
-
-Cambiare la costante non descrive nessuno dei due bisogni. Se sistemiamo il pannello ma l’email parte ancora a 30 secondi, uno degli attori riceve un messaggio sbagliato.
-
-Lo sviluppatore controlla i percorsi che l’agente ha cercato; il responsabile verifica che il risultato copra le persone coinvolte.
+Una sessione futura deve ritrovare la guida sulla separazione delle notifiche. Dove chiedi all’agente di cercarla, prima di riscriverla?
 
 ### Complete explanation
 
-La notifica viene introdotta qui come una nuova informazione esplicita del caso, non presupposta nell’apertura. La definizione di callback precede il suo uso nei test. Il bisogno allarga la ricerca in modo motivato dal beneficio, senza autorizzare nuove funzionalità arbitrarie. Attori, comportamento, interfacce e rischi saranno presentati in ordine per chiarezza; nel lavoro reale l’indagine può intrecciarli.
+L’agente dichiara: «Ho sbloccato il pulsante. Il test UI è verde. Ho conservato una nota “problema risolto”. Non ho verificato conferma persa né percorso email».
+
+Quale parte accetti e quali evidenze chiedi prima della chiusura? Spiega quale ragione della storia di Orione rende insufficienti il test e la nota. Non scrivere tu codice o piano dei test: formula la richiesta e la decisione sul lavoro presentato.
+
+Una sessione futura deve ritrovare la guida sulla separazione delle notifiche. Dove chiedi all’agente di cercarla, prima di riscriverla?
 
 ### Visual content
 
-Due persone nominate con la loro superficie: «Operatrice/pannello», «Assistenza/email». Terzo attore «Servizio esterno/callback». Tutti si riferiscono alla stessa richiesta.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Per soddisfare questi bisogni dobbiamo descrivere che cosa deve accadere nei casi concreti.
+La soluzione distingue risultato parziale e chiusura.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-8
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-9
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-10
 
 ## S30
 Module: M5
 Objective: O5
-Role: explanation
-Title: La specifica rende il comportamento discutibile prima del codice
-Value contribution: La tabella separa una proposta di comportamento del prodotto dalla durata indicata dalla fonte.
+Role: solution
+Title: Un test verde ha un perimetro
+Value contribution: soluzione specifica anziché checklist generica.
 
 ### Learner content
 
-La **specifica funzionale** descrive il comportamento voluto, senza scegliere ancora componenti e file.
+Puoi accettare il risultato sul pulsante come prova locale, ma non la chiusura. Chiedi verifica del recupero con K, dell’ordine realmente creato e della separazione email, con confronto al design e ai vincoli precedenti.
 
-Per le richieste standard di luglio l’agente propone:
+La nota “problema risolto” non permette una ripresa affidabile: mancano causa supportata, cambiamento, prove, limiti e riferimenti. Chiedi che l’agente conservi ciò che è utile al progetto, senza incollare tutta la conversazione.
 
-| Situazione | Comportamento atteso |
-|---|---|
-| A 35 secondi, nessuna conferma | La richiesta resta in attesa; nessuna email di scadenza. |
-| Conferma valida prima del limite | La richiesta diventa completata; niente email di scadenza. |
-| Dopo 45 secondi, nessuna conferma | La richiesta è scaduta e l’assistenza riceve l’avviso. |
-| Conferma esattamente al limite | Decisione ancora da chiarire. |
+Se hai chiesto soltanto “più test”, torna a S03–S04 e S28. Il criterio utile è quale comportamento rischia di regredire e quale osservazione può verificarlo.
 
-La rettifica distingue inoltre le richieste urgenti, che restano a 30 secondi. Cambiare tutte le richieste a 45 sarebbe un’estensione errata.
-
-Scrivere questi casi permette alla persona di approvare un comportamento, anziché soltanto un elenco di file.
+Per la guida chiedi di consultare ai_docs/reference/INDEX.md e aprire il riferimento pertinente in ai_docs/reference/. Non trattare una guida non letta come un controllo eseguito.
 
 ### Complete explanation
 
-La tabella separa una proposta di comportamento del prodotto dalla durata indicata dalla fonte. Il caso al confine resta aperto fino a una decisione esplicita. La permanenza delle urgenti a 30 crea una regressione concreta da evitare. L’indagine su bisogni, regole, superfici e rischi può iterare: la sequenza delle slide è un ordine di spiegazione, non un obbligo di pensare in compartimenti.
+Puoi accettare il risultato sul pulsante come prova locale, ma non la chiusura. Chiedi verifica del recupero con K, dell’ordine realmente creato e della separazione email, con confronto al design e ai vincoli precedenti.
+
+La nota “problema risolto” non permette una ripresa affidabile: mancano causa supportata, cambiamento, prove, limiti e riferimenti. Chiedi che l’agente conservi ciò che è utile al progetto, senza incollare tutta la conversazione.
+
+Se hai chiesto soltanto “più test”, torna a S03–S04 e S28. Il criterio utile è quale comportamento rischia di regredire e quale osservazione può verificarlo.
+
+Per la guida chiedi di consultare ai_docs/reference/INDEX.md e aprire il riferimento pertinente in ai_docs/reference/. Non trattare una guida non letta come un controllo eseguito.
 
 ### Visual content
 
-Tabella con riga del confine contrassegnata «aperta». Nota visibile sotto: «Urgenti:30 s; non estendere la nuova durata».
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Ora seguiamo come lo stesso comportamento arriva alle persone e al servizio esterno.
+Conservare il risultato permette di alleggerire il contesto della prossima attività.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-8
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-9
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-10
 
 ## S31
-Module: M5
-Objective: O5
+Module: M6
+Objective: O6
 Role: explanation
-Title: Il contratto di interazione segue il viaggio della richiesta
-Value contribution: Il contratto comprende il flusso a livello di responsabilità, non solo una lista di schermate.
+Title: Tre contributi, un patrimonio del progetto
+Value contribution: spiegare supporto distill senza terzo corso autonomo.
 
 ### Learner content
 
-Una **superficie di interazione** è un punto in cui una persona o un servizio agisce o riceve una risposta: pannello, email, ingresso del callback.
+kb-agentic governa la fedeltà della conoscenza alle fonti: che cosa sappiamo, da dove e con quali limiti. agentic-sdlc governa il cambiamento software: perché lo facciamo, che cosa deve ottenere e come lo verifichiamo. distill governa la scrittura: quali informazioni il lettore deve ricevere per agire correttamente.
 
-Il **contratto di interfaccia** descrive quel percorso: evento iniziale, responsabilità attraversate, stati e feedback ricevuti.
+distill non significa “taglia il più possibile”. Se la nota elimina la condizione “stessa chiave”, è più corta ma ha perso un fatto decisivo. Se la condizione resta nascosta in molte pagine irrilevanti, il lettore può comunque non usarla.
 
-Nel caso Orione, l’invio crea una richiesta; il servizio che ne gestisce lo stato la mantiene in attesa. Il pannello legge lo stato. Il gestore delle notifiche lo usa per decidere se inviare un’email. Il callback può cambiare lo stato in completata.
-
-Se il pannello non riesce a caricare un aggiornamento, deve mostrare che il dato non è disponibile, senza presentare un vecchio stato come appena verificato. Il comportamento proposto va concordato; un errore di lettura non prova una scadenza.
+Conoscenza, esperienza registrata e spiegazioni si sostengono, ma non si equivalgono. distill non decide se il contratto sia vero e non sostituisce le verifiche del software.
 
 ### Complete explanation
 
-Il contratto comprende il flusso a livello di responsabilità, non solo una lista di schermate. Le responsabilità nominate sono un modello didattico del caso, non componenti dichiarati esistenti in un repository reale. La proposta di errore rende osservabile un limite che altrimenti il renderer o il programmatore dovrebbe inventare.
+kb-agentic governa la fedeltà della conoscenza alle fonti: che cosa sappiamo, da dove e con quali limiti. agentic-sdlc governa il cambiamento software: perché lo facciamo, che cosa deve ottenere e come lo verifichiamo. distill governa la scrittura: quali informazioni il lettore deve ricevere per agire correttamente.
+
+distill non significa “taglia il più possibile”. Se la nota elimina la condizione “stessa chiave”, è più corta ma ha perso un fatto decisivo. Se la condizione resta nascosta in molte pagine irrilevanti, il lettore può comunque non usarla.
+
+Conoscenza, esperienza registrata e spiegazioni si sostengono, ma non si equivalgono. distill non decide se il contratto sia vero e non sostituisce le verifiche del software.
 
 ### Visual content
 
-Flusso «Invio → gestione stato → pannello» e ramo verso «gestore notifiche → email». Il callback entra nella gestione stato. Annotare l’errore di lettura sul pannello separatamente dallo stato scaduta.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Seguire i percorsi rivela dove un risultato apparentemente corretto potrebbe ancora danneggiare qualcuno.
+Questo patrimonio deve restare disponibile nella cartella corretta.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-8
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-14
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-11
 
 ## S32
-Module: M5
-Objective: O5
+Module: M6
+Objective: O6
 Role: explanation
-Title: Un rischio utile indica che cosa osservare
-Value contribution: I rischi provengono dalle superfici già introdotte e dai confini della regola.
+Title: Il folder conta più della chat
+Value contribution: insegnare condizioni operative e confini.
 
 ### Learner content
 
-Il **modello dei rischi**, o Threat Model, esamina che cosa può andare storto e quale controllo potrebbe rilevarlo.
+Lavora nel folder persistente del progetto. Le skill sono installate nell’ambiente dell’agente; fonti, decisioni, analisi e handoff prodotti appartengono al progetto, spesso sotto ai_docs/. Un handoff è un passaggio di consegne sullo stato del lavoro e sul punto da cui riprendere.
 
-| Rischio concreto | Conseguenza | Verifica da progettare |
-|---|---|---|
-| L’email usa ancora 30 secondi | L’assistenza interviene troppo presto | Osservare pannello ed email sulla stessa richiesta a 35 secondi. |
-| Il pannello mostra un dato vecchio come attuale | L’operatrice si fida di uno stato non verificato | Simulare aggiornamento fallito e controllare il feedback concordato. |
-| La nuova durata è applicata anche alle urgenti | Si attende oltre la loro regola | Provare una richiesta urgente con il limite di 30. |
+Le due skill funzionano in Standalone con i file. devPNT è un prodotto separato che può aggiungere governance quando configurato: non è necessario per seguire il corso o rendere utilizzabile il patrimonio. Qui non lo usiamo.
 
-«Potrebbero esserci problemi» non orienta il lavoro. Un rischio localizzato collega un effetto indesiderato a una prova. Le prove elencate sono da eseguire: qui non stiamo testando software reale.
+In Standalone l’analisi autorevole del cambiamento è il file ANALYSIS in ai_docs/solutions/. Con devPNT configurato, piani e artefatti governati passano invece per proposte versionate: la persona le approva, poi ne vengono conservate copie di consultazione nei file. Le guide operative restano leggibili in ai_docs/reference/. Una copia non sostituisce l’artefatto governato approvato. Sono due modalità di autorità, non due modi di garantire che l’agente abbia capito.
+
+Su più progetti, una conoscenza trasferibile può essere riusata solo rispettando provenienza, ambito e autorizzazioni. Non assumere che una regola di Orione sia valida ovunque o che aprire una chat nuova renda accessibili cartelle diverse.
 
 ### Complete explanation
 
-I rischi provengono dalle superfici già introdotte e dai confini della regola. Non si aggiungono minacce estranee solo per riempire una tabella. La proposta di verifica osserva l’effetto rilevante, non soltanto una funzione chiamata o una costante modificata. Gli eventuali aspetti di sicurezza del sistema reale richiederebbero l’indagine concreta non svolta dal corso.
+Lavora nel folder persistente del progetto. Le skill sono installate nell’ambiente dell’agente; fonti, decisioni, analisi e handoff prodotti appartengono al progetto, spesso sotto ai_docs/. Un handoff è un passaggio di consegne sullo stato del lavoro e sul punto da cui riprendere.
+
+Le due skill funzionano in Standalone con i file. devPNT è un prodotto separato che può aggiungere governance quando configurato: non è necessario per seguire il corso o rendere utilizzabile il patrimonio. Qui non lo usiamo.
+
+In Standalone l’analisi autorevole del cambiamento è il file ANALYSIS in ai_docs/solutions/. Con devPNT configurato, piani e artefatti governati passano invece per proposte versionate: la persona le approva, poi ne vengono conservate copie di consultazione nei file. Le guide operative restano leggibili in ai_docs/reference/. Una copia non sostituisce l’artefatto governato approvato. Sono due modalità di autorità, non due modi di garantire che l’agente abbia capito.
+
+Su più progetti, una conoscenza trasferibile può essere riusata solo rispettando provenienza, ambito e autorizzazioni. Non assumere che una regola di Orione sia valida ovunque o che aprire una chat nuova renda accessibili cartelle diverse.
 
 ### Visual content
 
-Tabella esatta con collegamenti dalla superficie al controllo. Nessun badge «test superato».
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Prima di decidere dove intervenire, dobbiamo cercare se il sistema possiede già il calcolo e i percorsi che ci servono.
+Ripartire richiede recupero, non un archivio riversato nel prompt.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-8
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-9
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-11
 
 ## S33
-Module: M5
-Objective: O5
+Module: M6
+Objective: O6
 Role: explanation
-Title: Prima di costruire, l’agente cerca ciò che esiste
-Value contribution: La slide mostra evidenza e conseguenza insieme: il registro non serve a elencare file già scelti, ma a giustificare la scelta.
+Title: Conoscenza crescente, contesto selezionato
+Value contribution: evitare legge universale del contesto piccolo.
 
 ### Learner content
 
-Il **Capability Ledger** è il registro delle capacità necessarie, delle evidenze trovate e delle conseguenze per la soluzione.
+Per lavorare sul recupero di un ordine servono contratto, decisione su K, stato del guasto e parti coinvolte. Non servono necessariamente tutta la storia commerciale e ogni conversazione del team.
 
-L’agente completa un’indagine inventata su Orione e ti mostra il registro:
+Il metodo cerca di mantenere piccolo e pertinente il contesto del compito, lasciando fuori le informazioni non necessarie e recuperando quelle che servono. “Vuoto” può descrivere il punto di ripartenza, non il contesto sufficiente per svolgere il lavoro.
 
-| Capacità cercata | Riscontro del caso | Conseguenza |
-|---|---|---|
-| Calcolare la scadenza | Il componente `ExpiryPolicy` è usato dal pannello. | Esiste un punto da valutare per il riuso. |
-| Inviare avvisi coerenti | Il gestore email confronta il tempo con 30 in una regola separata. | Cambiare solo `ExpiryPolicy` lascia un errore. |
-| Distinguere i tipi di richiesta | Il tipo è disponibile nei dati letti da entrambi i percorsi. | Il design può preservare la regola delle urgenti. |
-
-Nel lavoro reale servono file, simboli e chiamate effettivamente esaminati. «Non l’ho trovato nell’area letta» non significa «non esiste nel progetto»: quando leggi il registro, chiedi all’agente quali aree ha esaminato.
+Non c’è qui una prova che meno contesto migliori sempre il risultato. Eliminare una condizione decisiva lo peggiora. La domanda utile è: «Quali informazioni ti servono per questo compito e dove le recuperi?». Se il recupero fallisce, la lacuna va resa esplicita.
 
 ### Complete explanation
 
-La slide mostra evidenza e conseguenza insieme: il registro non serve a elencare file già scelti, ma a giustificare la scelta. I nomi sono inventati e non fungono da prova su un repository. Esistenza di un calcolo non implica adeguatezza: la sua capacità di usare tipo e periodo andrà valutata nel design.
+Per lavorare sul recupero di un ordine servono contratto, decisione su K, stato del guasto e parti coinvolte. Non servono necessariamente tutta la storia commerciale e ogni conversazione del team.
+
+Il metodo cerca di mantenere piccolo e pertinente il contesto del compito, lasciando fuori le informazioni non necessarie e recuperando quelle che servono. “Vuoto” può descrivere il punto di ripartenza, non il contesto sufficiente per svolgere il lavoro.
+
+Non c’è qui una prova che meno contesto migliori sempre il risultato. Eliminare una condizione decisiva lo peggiora. La domanda utile è: «Quali informazioni ti servono per questo compito e dove le recuperi?». Se il recupero fallisce, la lacuna va resa esplicita.
 
 ### Visual content
 
-Tre colonne come nel testo. Evidenziare la divergenza tra pannello ed email con il valore 30 solo nella riga pertinente.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Ora l’agente può proporre una soluzione sulla base dell’indagine, evitando un secondo calcolo aggiunto senza motivo.
+Dopo un risultato concreto puoi chiedere di preparare la compattazione.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-8
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-9
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-15
 
 ## S34
-Module: M5
-Objective: O5
+Module: M6
+Objective: O6
 Role: explanation
-Title: L’impatto collega la scelta alle parti da cambiare
-Value contribution: La decisione sul confine chiude il dubbio prima di implementare e rende possibili prove con attese definite.
+Title: Prima di compattare, prepara la ripresa
+Value contribution: insegnare gesto e preparazione coerenti con richiestaautore.
 
 ### Learner content
 
-L’**Impact**, o mappa dell’impatto, indica quali parti cambiano e perché. Il **design** spiega come collaboreranno per ottenere il risultato.
+La raccomandazione dell’autore è compattare il contesto non appena si è ottenuto un risultato concreto, chiedendo prima all’agente: «vorrei compattare il contesto».
 
-Nel caso l’agente propone di adeguare `ExpiryPolicy` a tipo e periodo della richiesta e di far usare la stessa regola al gestore email. Il pannello già la consulta. Occorre verificare entrambe le superfici e preservare le urgenti a 30 secondi.
+Non è un comando magico delle skill. È una richiesta che permette all’agente di salvare, se necessario, un handoff e controllare che il risultato utile sia persistente. Compattare significa ridurre la storia mantenuta nel contesto; aprire una sessione nuova è un’altra forma di ripartenza.
 
-Resta la decisione aperta, che l’agente non può prendere: **nel nostro esempio il responsabile conferma** che una conferma registrata entro 45 secondi, incluso il limite, completa la richiesta; la scadenza standard di luglio scatta oltre 45 senza conferma. Questa è una decisione di prodotto esplicita, non una frase attribuita al manuale.
-
-Se l’agente non avesse trovato un calcolo riusabile, dovrebbe motivare una capacità nuova dopo la ricerca, anziché dichiarare un riuso inesistente.
+Prima di procedere verifica dove sono risultato, prove, decisioni e punti ancora aperti, e come la prossima sessione potrà riprenderli. Un handoff riassume lo stato operativo e punta alle fonti: non sostituisce tutte le decisioni durevoli. La compattazione non è garantita senza perdite.
 
 ### Complete explanation
 
-La decisione sul confine chiude il dubbio prima di implementare e rende possibili prove con attese definite. In un sistema reale andrebbero precisati anche clock, ordinamento degli eventi e requisiti del fornitore: il caso didattico usa il tempo di registrazione e non pretende di risolvere un protocollo distribuito. L’Impact comprende aggiornamento del calcolo, suo consumatore email e verifiche dei comportamenti.
+La raccomandazione dell’autore è compattare il contesto non appena si è ottenuto un risultato concreto, chiedendo prima all’agente: «vorrei compattare il contesto».
+
+Non è un comando magico delle skill. È una richiesta che permette all’agente di salvare, se necessario, un handoff e controllare che il risultato utile sia persistente. Compattare significa ridurre la storia mantenuta nel contesto; aprire una sessione nuova è un’altra forma di ripartenza.
+
+Prima di procedere verifica dove sono risultato, prove, decisioni e punti ancora aperti, e come la prossima sessione potrà riprenderli. Un handoff riassume lo stato operativo e punta alle fonti: non sostituisce tutte le decisioni durevoli. La compattazione non è garantita senza perdite.
 
 ### Visual content
 
-Mappa «ExpiryPolicy: tipo+periodo» verso pannello ed email. Sotto due righe: «conferma registrata≤45: completata»; «oltre 45 senza conferma: scaduta». Etichetta «decisione di prodotto nel caso inventato».
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Prima di tradurre questa scelta in codice, un’altra lettura deve cercare le omissioni del design.
+La frase è utile solo se precede il salvataggio necessario.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-8
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-9
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-15
 
 ## S35
-Module: M5
-Objective: O5
-Role: explanation
-Title: La review del design cerca ciò che l’autore ha trascurato
-Value contribution: La review è introdotta nel punto causale corretto: prima di rendere costosa l’omissione nel codice.
+Module: M6
+Objective: O6
+Role: check
+Title: Accetti di compattare subito?
+Value contribution: valutare ordine salvataggio/compattazione.
+Solution: S36
 
 ### Learner content
 
-Una **review** è un riesame. Per una modifica L3, quella del design precede l’implementazione.
+L’agente ha trovato la causa di un baco, ma la scelta fra due soluzioni è ancora soltanto nella chat. Dice: «Abbiamo un risultato concreto, compatta pure; salverò il riepilogo dopo».
 
-Un revisore indipendente riceve Vision, bisogni, regole, rischi e soluzione proposta. Controlla, per esempio, notifica, urgenti e confine temporale di Orione.
+Come rispondi? Chiedi ciò che serve prima della compattazione, distinguendo il risultato acquisito dalla decisione ancora aperta. Non scrivere tu l’handoff: il tuo atto è richiederlo e verificare la possibilità di ripresa.
 
-**Indipendente** significa distinto dall’autore: per esempio un agente in una sessione nuova. Rileggersi da soli non soddisfa questa condizione.
-
-Se l’unica modalità indipendente praticabile richiede un’autorizzazione, con la persona raggiungibile si chiede quell’autorizzazione prima di procedere: il silenzio non permette di ripiegare sull’autore.
-
-Quando nessuna modalità indipendente è utilizzabile, il protocollo prevede un’autorevisione dichiarata, con ragione e limite. Questo ripiego non si sceglie per comodità e non si presenta come review indipendente.
+L’agente aggiunge che, se una copia locale contraddice una proposta approvata in devPNT configurato, basta scegliere la copia. Contesti questa regola? Che cosa cambia se il lavoro è invece Standalone?
 
 ### Complete explanation
 
-La review è introdotta nel punto causale corretto: prima di rendere costosa l’omissione nel codice. Il reviewer valuta, mentre il responsabile conserva le decisioni di ambito e approvazione previste. L’indipendenza non è una garanzia di trovare ogni errore e il PASS non certifica un risultato ancora non realizzato.
+L’agente ha trovato la causa di un baco, ma la scelta fra due soluzioni è ancora soltanto nella chat. Dice: «Abbiamo un risultato concreto, compatta pure; salverò il riepilogo dopo».
+
+Come rispondi? Chiedi ciò che serve prima della compattazione, distinguendo il risultato acquisito dalla decisione ancora aperta. Non scrivere tu l’handoff: il tuo atto è richiederlo e verificare la possibilità di ripresa.
+
+L’agente aggiunge che, se una copia locale contraddice una proposta approvata in devPNT configurato, basta scegliere la copia. Contesti questa regola? Che cosa cambia se il lavoro è invece Standalone?
 
 ### Visual content
 
-Linea temporale con marcatore presente: «Design → review del design → implementazione». Accanto, due persone/contesti distinti «autore» e «revisore».
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Dopo il riesame del design, realizziamo il cambiamento e cerchiamo prove che osservino proprio i casi concordati.
+Un risultato concreto non elimina lo stato incompleto da conservare.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-9
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-15
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-11
 
 ## S36
-Module: M5
-Objective: O5
-Role: explanation
-Title: I test devono osservare ciò che ricevono le persone
-Value contribution: La prova tecnica è scelta per discriminare la vecchia implementazione difettosa dalla nuova.
+Module: M6
+Objective: O6
+Role: solution
+Title: Salvare prima, riprendere dai riferimenti
+Value contribution: soluzione e limite della raccomandazione.
 
 ### Learner content
 
-L’agente implementa il design e raccoglie i risultati di prove pertinenti. Nel nostro esempio le prove devono coprire almeno questi casi, e tu controlli che ci siano:
+Rispondi: «Vorrei compattare il contesto. Prima salva la causa e le sue evidenze, indica la scelta ancora aperta e prepara il punto di ripresa. Mostrami i riferimenti ai file salvati; poi procediamo».
 
-| Caso | Risultato da osservare |
-|---|---|
-| Standard di luglio, 35 secondi senza conferma | Pannello in attesa; nessuna email di scadenza. |
-| Conferma registrata esattamente a 45 | Completata; nessuna email, secondo la decisione di S34. |
-| Oltre 45, nessuna conferma | Scaduta; email coerente con lo stesso stato. |
-| Urgente di luglio oltre 30, senza conferma | La precedente durata resta applicata. |
+Il risultato concreto è l’indagine, non la decisione definitiva sul fix. La prossima sessione deve poter distinguerli. Conservare lo stato dopo la perdita della conversazione può essere troppo tardi.
 
-Servono anche i casi di errore e di stato non aggiornato individuati in S31–32, e controlli sulle regressioni pertinenti.
+Se hai detto soltanto “riassumi”, torna a S32–S34: il riepilogo deve essere persistente e collegato alle evidenze. L’atto della persona è verificare il passaggio di consegne, non ritenere che la parola handoff garantisca continuità.
 
-Un test verde sulla costante 45 non osserva questi percorsi. Qui le prove sono solo **descritte**; nessun test su Orione reale è stato eseguito.
+Con devPNT configurato chiedi di verificare l’artefatto governato approvato e riallineare la copia: non scegli la copia come autorità alternativa. In Standalone l’analisi autorevole è il file ANALYSIS del progetto. In entrambe le modalità il risultato da riprendere deve essere recuperabile prima di compattare.
 
 ### Complete explanation
 
-La prova tecnica è scelta per discriminare la vecchia implementazione difettosa dalla nuova. A 35 secondi la vecchia soglia sarebbe osservabile; al confine si verifica una regola confermata e non inventata nel test. I risultati devono essere raccolti dopo la modifica e riportati nel loro ambito, senza scambiare una lista di casi per esecuzione.
+Rispondi: «Vorrei compattare il contesto. Prima salva la causa e le sue evidenze, indica la scelta ancora aperta e prepara il punto di ripresa. Mostrami i riferimenti ai file salvati; poi procediamo».
+
+Il risultato concreto è l’indagine, non la decisione definitiva sul fix. La prossima sessione deve poter distinguerli. Conservare lo stato dopo la perdita della conversazione può essere troppo tardi.
+
+Se hai detto soltanto “riassumi”, torna a S32–S34: il riepilogo deve essere persistente e collegato alle evidenze. L’atto della persona è verificare il passaggio di consegne, non ritenere che la parola handoff garantisca continuità.
+
+Con devPNT configurato chiedi di verificare l’artefatto governato approvato e riallineare la copia: non scegli la copia come autorità alternativa. In Standalone l’analisi autorevole è il file ANALYSIS del progetto. In entrambe le modalità il risultato da riprendere deve essere recuperabile prima di compattare.
 
 ### Visual content
 
-Tabella di test con intestazione «Da eseguire». Mantenere visibili insieme stato del pannello ed esito email. Nessun segno di spunta verde.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Anche con prove superate, prima di chiudere dobbiamo confrontare il risultato completo con ciò che era stato deciso.
+Quanto di questo patrimonio conviene mantenere dipende anche dal progetto.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-9
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-15
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-11
 
 ## S37
-Module: M5
-Objective: O5
+Module: M7
+Objective: O7
 Role: explanation
-Title: La chiusura lascia un risultato e un punto da cui ripartire
-Value contribution: Si distingue risultato consegnato dalla conoscenza che permette a un altro agente di riprendere.
+Title: Una settimana, un mese, anni
+Value contribution: riportare accumulo e rischio neltempo.
 
 ### Learner content
 
-La **review finale**, svolta anch’essa da un revisore distinto dall’autore, confronta modifica, comportamento concordato e risultati dei test. Cerca omissioni e regressioni rimaste. Il responsabile valuta se le evidenze sostengono il beneficio; un’autodichiarazione dell’agente non basta.
+Dopo una settimana, la decisione su K può evitare di dover richiedere ancora il contratto. Dopo un mese, la nuova regola richiede aggiornare fonte e conclusioni dipendenti. Dopo anni, una nuova persona può ritrovare ragioni, alternative scartate e prove dei cambiamenti.
 
-La chiusura aggiorna stato del lavoro, decisioni, verifiche e limiti ancora aperti nel progetto.
+Questi sono scenari condizionati alla registrazione, consultazione e manutenzione, non tempi di risparmio misurati. Anche buone note curate possono fornire questa continuità.
 
-Se l’indagine ha prodotto conoscenza riusabile, una **GUIDE** può conservarla con fonti: per esempio dove nasce lo stato di una richiesta, come cercarne i consumatori e quali casi rivelano divergenze. Una GUIDE è una guida operativa consultabile nei lavori successivi, collegata alle evidenze da cui deriva.
-
-«Ricordati delle email» è un promemoria; non spiega come trovare un consumatore dimenticato. Non ogni modifica richiede una nuova GUIDE: servono uno scopo riusabile e la provenienza delle informazioni.
+L’esperienza del progetto è utile quando guida domande e verifiche nuove. Un vecchio incidente non prova la causa del prossimo. Lo stesso patrimonio può aiutare a evitare una regressione oppure propagare una conclusione sbagliata se nessuno ne controlla più la validità.
 
 ### Complete explanation
 
-Si distingue risultato consegnato dalla conoscenza che permette a un altro agente di riprendere. Una guida non sostituisce codice, test o fonte; conserva un modello operativo controllabile e deve essere mantenuta. La famiglia distingue guide da indicazioni e guide dal codice con diversi trigger: il corso non autorizza a crearne una per ogni ticket né sostituisce quelle regole.
+Dopo una settimana, la decisione su K può evitare di dover richiedere ancora il contratto. Dopo un mese, la nuova regola richiede aggiornare fonte e conclusioni dipendenti. Dopo anni, una nuova persona può ritrovare ragioni, alternative scartate e prove dei cambiamenti.
+
+Questi sono scenari condizionati alla registrazione, consultazione e manutenzione, non tempi di risparmio misurati. Anche buone note curate possono fornire questa continuità.
+
+L’esperienza del progetto è utile quando guida domande e verifiche nuove. Un vecchio incidente non prova la causa del prossimo. Lo stesso patrimonio può aiutare a evitare una regressione oppure propagare una conclusione sbagliata se nessuno ne controlla più la validità.
 
 ### Visual content
 
-Tre blocchi: «Review finale: risultato contro design», «Chiusura: stato e limiti», «GUIDE quando giustificata: come ripetere l’indagine + fonti».
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Mettiamo insieme questi passaggi davanti a una proposta di chiusura troppo rapida.
+Adottare il metodo richiede giudicare anche il suo costo.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-9
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-10
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-12
 
 ## S38
-Module: M5
-Objective: O5
-Role: check
-Title: Prova: «Il test è verde, possiamo chiudere»
-Value contribution: Il check riduce il supporto e chiede una sequenza motivata.
-Solution: S39
+Module: M7
+Objective: O7
+Role: explanation
+Title: Le diffidenze hanno conseguenze reali
+Value contribution: affrontare costi senza difesa promozionale.
 
 ### Learner content
 
-In un nuovo tentativo su Orione, un agente dichiara: «Ho cambiato 30 in 45 e il test della costante passa». Non fornisce evidenze sulla notifica, sulle richieste urgenti, sul caso al confine o su una review del design.
+«Più documenti rallentano». Vero: scrivere, leggere e mantenere costa; il processo deve essere proporzionato. «Le note possono essere sbagliate». Vero: provenienza e revisione rendono gli errori controllabili, non impossibili.
 
-Il beneficio resta evitare scadenze premature delle standard di luglio. Non assumere che l’indagine delle slide precedenti sia stata eseguita da questo agente.
+«L’agente seguirà regole invece di risolvere il problema». Una risposta è giudicare gli esiti concreti: ragioni recuperate, vincoli preservati e prove pertinenti. Se produce artefatti vuoti, il metodo è stato applicato male. «Conservare tutto riempie il contesto». L’archivio deve supportare selezione, non lettura indiscriminata.
 
-Come risponderesti? Indica:
-
-- quali fatti e decisioni mancano;
-- quale ricerca sul sistema serve prima di scegliere la soluzione;
-- quali passi e prove giustificherebbero la chiusura;
-- chi dovrebbe svolgere le review e quando avrebbe senso conservare una GUIDE.
-
-Motiva i passaggi con il caso. Un elenco di nomi di documenti non dimostra che la modifica sia stata compresa.
+Non chiediamo fiducia cieca. Chiediamo di valutare quale problema il processo affronta, quale controllo aggiunge e quale costo richiede. Una buona nota può bastare; un progetto in evoluzione può rendere utile una disciplina ripetibile.
 
 ### Complete explanation
 
-Il check riduce il supporto e chiede una sequenza motivata. Esplicitare che i riscontri precedenti non sono trasferibili impedisce all’allievo di trattare una capacità illustrata in un caso come prova su un tentativo nuovo. Le omissioni verificano design, evidenza tecnica e indipendenza separatamente.
+«Più documenti rallentano». Vero: scrivere, leggere e mantenere costa; il processo deve essere proporzionato. «Le note possono essere sbagliate». Vero: provenienza e revisione rendono gli errori controllabili, non impossibili.
+
+«L’agente seguirà regole invece di risolvere il problema». Una risposta è giudicare gli esiti concreti: ragioni recuperate, vincoli preservati e prove pertinenti. Se produce artefatti vuoti, il metodo è stato applicato male. «Conservare tutto riempie il contesto». L’archivio deve supportare selezione, non lettura indiscriminata.
+
+Non chiediamo fiducia cieca. Chiediamo di valutare quale problema il processo affronta, quale controllo aggiunge e quale costo richiede. Una buona nota può bastare; un progetto in evoluzione può rendere utile una disciplina ripetibile.
 
 ### Visual content
 
-Solo dichiarazione iniziale e consegna. Non mostrare una checklist già ordinata che suggerisca la soluzione.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-La risposta deve separare il lavoro effettivamente dimostrato da quello ancora necessario.
+Confrontiamo due condizioni senza inventare vantaggi misurati.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-8
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-9
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-10
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
 
 ## S39
-Module: M5
-Objective: O5
-Role: solution
-Title: Soluzione: ricostruire le evidenze mancanti
-Value contribution: La sequenza non retrodata azioni mancanti e permette di recuperare una modifica già iniziata.
+Module: M7
+Objective: O7
+Role: explanation
+Title: Confrontare a parità di informazioni
+Value contribution: insegnare alternativa sufficiente senza benchmarkfittizio.
 
 ### Learner content
 
-Non chiuderei dal solo test della costante.
+Alba e Bora sono progetti inventati. Alba ha un’unica regola stabile, una nota breve mantenuta e una modifica occasionale. Bora cambia fornitore, ha più modalità di recupero e più persone che intervengono nel tempo.
 
-1. Chiederei di chiarire regola applicabile, comportamento al confine e casi da preservare, e prenderei le decisioni che spettano a me. Il beneficio riguarda le standard di luglio; le urgenti non devono cambiare implicitamente.
-2. Chiederei all’agente di cercare il calcolo esistente e chi lo usa: pannello ed email potrebbero divergere. Da quelle evidenze derivano Impact e design.
-3. Farei svolgere la review del design a un revisore distinto dall’autore. Se il codice è già stato scritto, lo farei rivalutare rispetto al design chiarito ora, senza inventare una review precedente.
-4. Chiederei prove sulle superfici a 35 secondi, al confine concordato, dopo la scadenza e in errore, urgenti incluse, e controllerei che i risultati le coprano. Poi un revisore distinto dall’autore confronterebbe risultato ed evidenze con il design nella review finale.
-5. Controllerei che l’agente aggiorni stato e limiti. Una GUIDE avrebbe senso se l’indagine producesse un percorso riusabile, sostenuto da fonti.
+In entrambi i confronti, note curate e skill ricevono le stesse fonti, le stesse ragioni e lo stesso compito. Le skill rendono esplicite consultazione, validità, impatto e chiusura; se le note sono governate da istruzioni equivalenti, gli esiti possono equivalere.
 
-«L’autore si è ricontrollato» non prova indipendenza: S35. «45 è nel codice» non prova il beneficio: S36.
+La differenza da valutare non è “agente intelligente contro agente smemorato”. È il costo di rendere continuo e verificabile il lavoro in quelle condizioni. Non sappiamo ancora misurare quale alternativa vinca per un team reale.
 
 ### Complete explanation
 
-La sequenza non retrodata azioni mancanti e permette di recuperare una modifica già iniziata. Una soluzione sufficiente collega ogni fase a una specifica omissione, include il caso non da cambiare e distingue review iniziale e finale. Le prove sono richieste, non dichiarate eseguite. La nota sulla guida evita documentazione aggiuntiva senza funzione.
+Alba e Bora sono progetti inventati. Alba ha un’unica regola stabile, una nota breve mantenuta e una modifica occasionale. Bora cambia fornitore, ha più modalità di recupero e più persone che intervengono nel tempo.
+
+In entrambi i confronti, note curate e skill ricevono le stesse fonti, le stesse ragioni e lo stesso compito. Le skill rendono esplicite consultazione, validità, impatto e chiusura; se le note sono governate da istruzioni equivalenti, gli esiti possono equivalere.
+
+La differenza da valutare non è “agente intelligente contro agente smemorato”. È il costo di rendere continuo e verificabile il lavoro in quelle condizioni. Non sappiamo ancora misurare quale alternativa vinca per un team reale.
 
 ### Visual content
 
-Cinque passi numerati, con massimo una frase guida per passo in un eventuale indice laterale. Il testo completo resta visibile; non spostare le motivazioni nelle note.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Ora possiamo vedere il percorso completo: una risposta della KB diventa un input controllabile del lavoro sul software.
+Prova a formulare una scelta per un caso diverso da Orione.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-8
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-9
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-10
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
 
 ## S40
-Module: M6
-Objective: O6
-Role: explanation
-Title: Il passaggio fra le due skill conserva la responsabilità
-Value contribution: Il passaggio viene mostrato solo quando tutte le parti sono state insegnate.
+Module: M7
+Objective: O7
+Role: check
+Title: Scegliere, senza promessa automatica
+Value contribution: trasferimento cumulativo O1/O7.
+Covers: M1/O1
+Solution: S41
 
 ### Learner content
 
-La domanda iniziale di Orione ha attraversato tre responsabilità:
+Casi nuovi inventati: Cobalto ha una sola trasformazione stabile documentata in una nota mantenuta; Selene gestisce ricevute con regole cambiate, eccezioni storiche e più integrazioni. L’agente propone a entrambi: «Caricherò tutto l’archivio a ogni attività e userò sempre il percorso completo».
 
-| Responsabilità | Risultato da passare al lavoro seguente |
-|---|---|
-| kb-agentic: fedeltà alle fonti | Per le standard da luglio la finestra è 45 secondi; Bollettino B §1 e Rettifica D §1 chiariscono il contrasto con C. |
-| Persona responsabile: risultato e decisioni | Evitare scadenze premature; preservare le urgenti; concordare il confine esatto. |
-| agentic-sdlc: cambiamento software | Design, modifica, prove e review che collegano quella regola a pannello ed email. |
+Formula la tua risposta. Quale problema ti porta a considerare le skill? Che cosa può bastare in Cobalto? Quale patrimonio vuoi ritrovare in Selene? Quali costi e limiti rendi espliciti? Come correggi la proposta dell’agente?
 
-L’analisi del cambiamento cita la conoscenza della KB. Non crea una seconda autorità sulla durata e non scambia la rettifica per una prova dei test.
-
-Se una fonte cambia ancora, il collegamento aiuta a trovare il lavoro da riesaminare.
+La risposta deve collegare scelta e condizioni del lavoro. Ripetere “fonti, Vision, review” senza ragioni non dimostra la decisione richiesta.
 
 ### Complete explanation
 
-Il passaggio viene mostrato solo quando tutte le parti sono state insegnate. Una decisione umana riguarda beneficio, ambito e scelte aperte, mentre la fonte sostiene il fatto documentale. La responsabilità della fonte non viene trasferita implicitamente all’analisi software e il completamento software non chiude automaticamente ogni questione di conoscenza.
+Casi nuovi inventati: Cobalto ha una sola trasformazione stabile documentata in una nota mantenuta; Selene gestisce ricevute con regole cambiate, eccezioni storiche e più integrazioni. L’agente propone a entrambi: «Caricherò tutto l’archivio a ogni attività e userò sempre il percorso completo».
+
+Formula la tua risposta. Quale problema ti porta a considerare le skill? Che cosa può bastare in Cobalto? Quale patrimonio vuoi ritrovare in Selene? Quali costi e limiti rendi espliciti? Come correggi la proposta dell’agente?
+
+La risposta deve collegare scelta e condizioni del lavoro. Ripetere “fonti, Vision, review” senza ragioni non dimostra la decisione richiesta.
 
 ### Visual content
 
-Tabella come nel testo. Collegamenti fra righe etichettati «cita l’evidenza» e «realizza il risultato», mai «approva automaticamente».
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Dove vive questa analisi quando il progetto dispone soltanto della sua cartella?
+La soluzione confronta le condizioni, non assegna un vincitore universale.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-11
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
 
 ## S41
-Module: M6
-Objective: O6
-Role: explanation
-Title: Standalone è già un percorso completo
-Value contribution: La distinzione di modalità arriva dopo le funzioni dei documenti.
+Module: M7
+Objective: O7
+Role: solution
+Title: Una scelta motivata e rivedibile
+Value contribution: soluzione trasferimento e rispostainsufficiente.
+Covers: M1/O1
 
 ### Learner content
 
-**Standalone** significa svolgere il processo nei file del progetto, senza un servizio di governance aggiuntivo. L’**ANALYSIS** è il documento dell’analisi: raccoglie bisogni, regole, interazioni, rischi, capacità, impatto e piano. Fonti, decisioni e guide restano consultabili nella cartella.
+In Cobalto una nota curata può bastare finché conserva la regola, la fonte e resta consultata. In Selene la storia rende più importante una disciplina di recupero, validità e cambiamento: chiedi quali vincoli precedenti sono coinvolti e quali fonti vanno riaperte.
 
-**devPNT** è un’integrazione opzionale. Quando configurato per il progetto, aggiunge documenti governati e proposte versionate con approvazione umana. Per orientarsi: D-UC tratta i bisogni, D-IC le interfacce, P-TM i rischi; E-ISP raccoglie analisi della soluzione e impatto, E-TDD dettaglia il design.
+Contesti sia lettura indiscriminata sia percorso completo uniforme. Chiedi selezione pertinente e livello proporzionato al rischio. Rendi espliciti manutenzione, possibilità di errori e assenza di un risparmio garantito.
 
-Non occorre ricordare le sigle per capire la differenza: in modalità integrata bisogna rispettare l’autorità dei documenti governati. Un file locale non rende approvata una proposta, e l’agente non può auto-accettarla.
+Se hai scelto le skill solo perché Selene è grande, torna a S37–S39: contano evoluzione e dipendenze, non una dimensione nominale. Il beneficio cercato è costruire sul lavoro precedente senza cancellarne le ragioni, restando capaci di correggerle.
 
 ### Complete explanation
 
-La distinzione di modalità arriva dopo le funzioni dei documenti. Standalone è completo, non un ripiego privo di analisi o review. In Hybrid Functional Spec e Capability Ledger appartengono all’E-ISP, sopra l’Impact; non si inventa una seconda versione autorevole locale. Le guide operative mantengono la loro sede nei file secondo la matrice di ownership della fonte.
+In Cobalto una nota curata può bastare finché conserva la regola, la fonte e resta consultata. In Selene la storia rende più importante una disciplina di recupero, validità e cambiamento: chiedi quali vincoli precedenti sono coinvolti e quali fonti vanno riaperte.
+
+Contesti sia lettura indiscriminata sia percorso completo uniforme. Chiedi selezione pertinente e livello proporzionato al rischio. Rendi espliciti manutenzione, possibilità di errori e assenza di un risparmio garantito.
+
+Se hai scelto le skill solo perché Selene è grande, torna a S37–S39: contano evoluzione e dipendenze, non una dimensione nominale. Il beneficio cercato è costruire sul lavoro precedente senza cancellarne le ragioni, restando capaci di correggerle.
 
 ### Visual content
 
-Due colonne: Standalone «ANALYSIS nei file»; con devPNT «artefatti governati e proposte». Riga comune «stesso bisogno di fonte, design, prove e review».
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Una fonte corretta basta allora per delegare alla KB anche la scelta del prodotto e la chiusura del ticket?
+Puoi applicare lo stesso giudizio al tuo progetto senza modificarlo.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-8
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-11
+- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
 
 ## S42
-Module: M6
-Objective: O6
-Role: check
-Title: Prova: il manuale può chiudere il ticket?
-Value contribution: Il caso cambia dominio dal tempo di attesa a una ricevuta, ma conserva le tre responsabilità insegnate.
-Solution: S43
-
-### Learner content
-
-Nuovo esempio inventato: il Manuale Ricevute 3.0, §5, p.22, richiede che una ricevuta mostri la data della richiesta. Il software oggi mostra solo la data di stampa. La persona responsabile vuole eliminare questa ambiguità per l’operatore; la disposizione esatta delle due date non è ancora concordata.
-
-L’agente propone: «Con kb-agentic ho trovato la frase, quindi scelgo il layout, cambio il software e dichiaro chiuso». devPNT non è configurato; cartella e strumenti di sviluppo sono disponibili.
-
-Come ripartiresti le responsabilità? Quale risultato della KB useresti, quale decisione manca, dove conserveresti il design e che cosa dovrebbe essere verificato prima di chiudere?
-
-Tenta la risposta prima di leggere la soluzione.
-
-### Complete explanation
-
-Il caso cambia dominio dal tempo di attesa a una ricevuta, ma conserva le tre responsabilità insegnate. Il requisito documentale non determina da solo disposizione e leggibilità. La prova distingue l’assenza di devPNT dall’assenza di un percorso di lavoro.
-
-### Visual content
-
-Mostrare la frase del manuale e il comportamento attuale in due riquadri; non disegnare già il layout futuro.
-
-### Transition
-
-Una risposta sufficiente tiene insieme fonte, scelta di prodotto e verifica senza confonderle.
-
-### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-8
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-11
-
-## S43
-Module: M6
-Objective: O6
-Role: solution
-Title: Soluzione: fatto, scelta e prova restano distinti
-Value contribution: La soluzione applica il metodo a un caso nuovo senza costringere a ricordare sigle.
-
-### Learner content
-
-kb-agentic conserva la frase con versione, ambito e locatore: Manuale Ricevute 3.0, §5, p.22. Questo sostiene la presenza richiesta della data della richiesta.
-
-La persona responsabile chiarisce il comportamento utile all’operatore: come distinguere quella data dalla data di stampa. L’agente può proporre una soluzione motivata; il manuale citato non ha già scelto il layout.
-
-agentic-sdlc guida analisi, design, implementazione, test e review. In Standalone il design vive nell’ANALYSIS del progetto. Le prove devono osservare la ricevuta prodotta e la distinzione fra le date, inclusi i casi pertinenti individuati nell’analisi.
-
-Alla proposta dell’agente rispondi separando i tre compiti: il fatto dalla KB, la decisione sul layout da te o dalla persona responsabile, la modifica e le prove con agentic-sdlc.
-
-Qui devPNT non è configurato: chiedi all’agente dove terrà l’ANALYSIS nella cartella del progetto. Il percorso Standalone è completo e l’approvazione del design resta tua.
-
-Nessuna di queste verifiche è stata eseguita nel caso. Se hai richiesto devPNT per cominciare, torna a S41; se hai accettato di chiudere dal solo manuale, rileggi S40. Se hai assegnato tu un livello senza che l’agente lo dichiarasse, torna a S26: chiedigli di dichiararlo, poi contestalo se serve.
-
-### Complete explanation
-
-La soluzione applica il metodo a un caso nuovo senza costringere a ricordare sigle. Il beneficio per la persona determina ciò che il test deve osservare: non basta che una variabile contenga la data. Non si impone un particolare layout in assenza di decisione.
-
-### Visual content
-
-Tre righe «Fonte», «Decisione», «Prova», ciascuna con il contenuto concreto della ricevuta.
-
-### Transition
-
-Puoi provare lo stesso ragionamento su un documento del tuo lavoro, senza modificare il progetto.
-
-### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-8
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-11
-
-## S44
-Module: M6
-Objective: O6
-Role: explanation
-Title: Applicazione facoltativa: verifica il tuo agente su un tuo documento
-Value contribution: La pratica trasferisce il metodo senza imporre produzione di artefatti durante la lezione.
-
-### Learner content
-
-Scegli un documento che sei autorizzato a consultare e una modifica ipotetica del tuo progetto. Chiedi al tuo agente, in sola lettura, di rispondere a una domanda sul documento e di proporre come affrontare la modifica. Non devi inviare documenti né cambiare file. In alternativa usa il caso della ricevuta.
-
-Poi verifica la sua risposta:
-
-1. Cita versione e passaggio? Riapri il passaggio: dice davvero questo, e vale per il tuo caso? Se manca un riferimento, chiedilo.
-2. Chi deve ottenere quale beneficio? L’agente separa la regola documentata dalle decisioni ancora aperte, che spettano a te?
-3. Indica quale superficie cambierebbe, quale rischio vede e quale prova lo osserverebbe? Quale prova chiederesti in più?
-4. Chi governa conoscenza e modifica, e quale modalità è disponibile?
-
-Confronta il tuo controllo con S43: fonte, decisione e prova devono essere distinguibili. «Non ho ancora verificato» è una risposta corretta a un limite reale; una citazione inventata non lo è.
-
-### Complete explanation
-
-La pratica trasferisce il metodo al proprio progetto: l’agente produce, la persona verifica. La soluzione del caso Ricevute, già mostrata, funge da esempio e criterio. Nel proprio progetto non esiste una risposta universale: se manca fonte si torna a S13–16, se manca beneficio aS25, se la prova non osserva il rischio aS32–36. Non si presume l’autorizzazione a condividere dati del lavoro.
-
-### Visual content
-
-Lista numerata, con rinvii visibili ai quattro gruppi di idee. Nessun campo che inviti a caricare un documento.
-
-### Transition
-
-Che cosa rimane di questo lavoro quando riapriamo il progetto dopo una settimana, un mese o anni?
-
-### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-4
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-7
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-9
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-11
-
-## S45
-Module: M7
-Objective: O7
-Role: explanation
-Title: Dopo una settimana: evitare una ricostruzione
-Value contribution: Il confronto mantiene costanti compito e informazione.
-
-### Learner content
-
-Una settimana dopo la correzione, una nuova sessione deve spiegare perché una richiesta standard di luglio resta in attesa a 35 secondi. Supponiamo che nulla sia cambiato nelle fonti e nel software.
-
-**Con note curate:** la decisione, la fonte e i risultati delle prove permettono già di ricostruire la ragione senza ripetere tutta l’indagine.
-
-**Con il protocollo applicato:** l’analisi rimanda al claim e alle fonti; i risultati registrati mostrano che cosa era stato verificato. Gli indici aiutano a raggiungerli.
-
-Se entrambi conservano le stesse informazioni, possono dare lo stesso aiuto. La skill rende esplicito e riusabile il requisito di lasciarle; non dimostra da sola che siano presenti. Un riferimento non più apribile riduce il beneficio in entrambi i casi.
-
-### Complete explanation
-
-Il confronto mantiene costanti compito e informazione. Evita di contrapporre una nota povera a un protocollo eseguito perfettamente. Il valore osservabile è una specifica ricostruzione che può essere evitata, non un numero di minuti inventato o una memoria illimitata.
-
-### Visual content
-
-Due colonne con stessa domanda iniziale e stessi elementi: motivo, fonte, verifiche. Riga finale comune «accesso e pertinenza da controllare».
-
-### Transition
-
-Dopo un mese non basta ritrovare: potrebbe essere necessario correggere ciò che abbiamo conservato.
-
-### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-12
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
-
-## S46
-Module: M7
-Objective: O7
-Role: explanation
-Title: Dopo un mese: la memoria deve cambiare con il progetto
-Value contribution: La nuova regola non riceve un numero inventato perché non serve alla spiegazione: la domanda è come si governa il cambiamento della conoscenza.
-
-### Learner content
-
-Un mese dopo arriva una nuova regola del fornitore. Non ne conosciamo ancora gli effetti: prima l’agente legge la fonte e ne confronta l’ambito, e tu controlli il confronto.
-
-Una nota curata con legami a decisioni e verifiche aiuta a trovare ciò che va riesaminato. Se conserva soltanto «ora 45», occorre ricostruire quelle dipendenze.
-
-Il protocollo di kb-agentic richiede di preservare provenienza, conflitti e sostituzioni; quello di agentic-sdlc collega il cambiamento al comportamento e alle prove. Questi requisiti rendono più visibili le omissioni **se vengono applicati e controllati**.
-
-Mantenere legami, rileggere e riprovare costa lavoro. Nessun archivio corregge automaticamente il software. Il vantaggio possibile è sapere dove intervenire e perché, anziché ricominciare senza tracce.
-
-### Complete explanation
-
-La nuova regola non riceve un numero inventato perché non serve alla spiegazione: la domanda è come si governa il cambiamento della conoscenza. La nota completa resta un’alternativa legittima. La distinzione dal caso della settimana è la necessità di aggiornare, non solo ritrovare.
-
-### Visual content
-
-Mostrare «nuova fonte → confronto → elementi da riesaminare». Due ingressi equivalenti: nota con riferimenti e protocollo con riferimenti. Evidenziare «lavoro di revisione necessario».
-
-### Transition
-
-Proviamo a spiegare il valore senza attribuirlo al solo nome della skill.
-
-### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-5
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-12
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
-
-## S47
-Module: M7
-Objective: O7
-Role: check
-Title: Prova: che cosa abbiamo davvero risparmiato?
-Value contribution: Il confronto rende esplicita l’equivalenza delle condizioni prima di variarne una.
-Solution: S48
-
-### Learner content
-
-Due team devono spiegare e, quando serve, correggere la scadenza di Orione.
-
-Il primo mantiene note con fonti, motivi, decisioni, collegamenti ai consumatori e risultati delle prove. Il secondo usa le due skill e conserva gli stessi elementi. Entrambi li consultano e aggiornano.
-
-Confrontali dopo una settimana senza cambiamenti e dopo un mese con una nuova fonte. Che cosa possono evitare di ricostruire? Quale lavoro devono comunque fare? Quale differenza rimarrebbe se il primo team dimenticasse di mantenere i collegamenti?
-
-Concludi se questi dati dimostrano che la skill è indispensabile o che fa risparmiare una certa percentuale di tempo. Motiva la risposta prima di S48.
-
-### Complete explanation
-
-Il confronto rende esplicita l’equivalenza delle condizioni prima di variarne una. Il criterio rifiuta sia la superiorità automatica sia l’idea che la disciplina non serva: quando mancano collegamenti, una specifica omissione diventa osservabile. Non sono forniti dati quantitativi di costo o rendimento.
-
-### Visual content
-
-Due colonne con gli stessi elementi, senza punteggi. Una terza riga descrive la variazione «collegamenti non mantenuti».
-
-### Transition
-
-La risposta deve attribuire il beneficio alle informazioni e alle verifiche effettive.
-
-### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-12
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
-
-## S48
-Module: M7
-Objective: O7
-Role: solution
-Title: Soluzione: il vantaggio dipende dal lavoro conservato
-Value contribution: Il corso attribuisce i risultati ai meccanismi descritti e ammette equivalenza dove i requisiti sono equivalenti.
-
-### Learner content
-
-Dopo una settimana entrambi possono riaprire motivo, fonte e prove della scelta. Evitano la ricostruzione di quel ragionamento, purché il materiale sia ancora accessibile e pertinente.
-
-Dopo un mese entrambi devono esaminare la nuova fonte, valutarne l’ambito e riesaminare decisioni e comportamento. I collegamenti già presenti orientano la ricerca; non eseguono la correzione.
-
-Se il primo team perde i legami, dovrà ricostruirli. La differenza osservata è la manutenzione mancante. Il protocollo può richiederla in modo riusabile, ma dobbiamo controllare che anche il secondo team l’abbia eseguita.
-
-Questi dati non dimostrano indispensabilità o percentuali di risparmio. Se hai attribuito il vantaggio all’installazione, torna a S04 e S09; se hai dimenticato i costi di revisione, a S46.
-
-### Complete explanation
-
-Il corso attribuisce i risultati ai meccanismi descritti e ammette equivalenza dove i requisiti sono equivalenti. Il valore dell’insegnamento è saper riconoscere quel meccanismo e scegliere quale disciplina mantenere. L’assenza di una misura causale viene dichiarata con riferimento alla domanda concreta.
-
-### Visual content
-
-Quattro righe: ricostruzione evitabile, controllo necessario, differenza di manutenzione, conclusione sostenibile. Nessun grafico numerico di produttività.
-
-### Transition
-
-Dopo anni, la domanda più difficile arriva da chi non era presente quando il lavoro fu fatto.
-
-### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-12
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
-
-## S49
-Module: M7
-Objective: O7
-Role: explanation
-Title: Dopo anni: consegnare un ragionamento a chi arriva
-Value contribution: Il caso completa l’orizzonte degli anni senza promessa di durata automatica.
-
-### Learner content
-
-Una nuova collega non conosce le vecchie chat di Orione. Trova la decisione sulla scadenza e una GUIDE che spiega come seguire il calcolo fino a pannello ed email.
-
-La guida le dà un punto di partenza, ma deve controllare che i componenti e le fonti citati esistano ancora e svolgano quelle funzioni. Se il sistema è cambiato, la guida va corretta prima di usarla come mappa affidabile.
-
-Note curate e documentazione prodotta con le skill possono entrambe conservare ragioni, alternative scartate e prove. Un archivio non letto o non mantenuto può invece propagare errori vecchi.
-
-Il patrimonio utile cresce attraverso **conservazione, consultazione e revisione**. Il tempo trascorso, da solo, non lo rende più affidabile.
-
-### Complete explanation
-
-Il caso completa l’orizzonte degli anni senza promessa di durata automatica. Il controllo sul modello operativo è distinto dal semplice accesso al file. Il nuovo collega può evitare una parte della ricostruzione ma non il giudizio sulla pertinenza corrente; questo è il costo realistico del passaggio di conoscenza.
-
-### Visual content
-
-Percorso «collega nuova → decisione → GUIDE → riferimenti reali da controllare». Mostrare un ramo «divergenza trovata → aggiornare guida», senza nascondere il costo.
-
-### Transition
-
-Mettiamo alla prova il criterio di scelta su due progetti che non sono Orione.
-
-### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-10
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-12
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
-
-## S50
-Module: M7
-Objective: O7
-Role: check
-Title: Trasferimento: quale disciplina proporresti?
-Value contribution: La prova cumulativa riduce i suggerimenti e richiede trasferimento: confronto equo, conflitto non risolto e impatto multisuperficie.
-Solution: S51
-Covers: M2/O2; M3/O3; M4/O4; M5/O5; M6/O6
-
-### Learner content
-
-Due progetti inventati.
-
-**Alba** conserva una sola decisione su una fonte stabile, con motivo, passaggio citato e verifica del comportamento. Una persona mantiene quei riferimenti.
-
-**Bora** ha tre operatori, un pannello e un’email. Due documenti indicano durate incompatibili per la stessa versione, periodo e tipo di richiesta. Non c’è una rettifica. Le note riportano i due valori senza spiegare il contrasto. Un agente propone di scegliere l’ultimo file ricevuto e cambiare soltanto il pannello.
-
-Proponi come proseguire in entrambi i progetti. Che cosa sai già, che cosa manca, quali decisioni e prove servono, e quale traccia lasceresti a chi arriva fra anni? Motiva se useresti note curate o un protocollo riutilizzabile. Prova senza rileggere gli esempi.
-
-### Complete explanation
-
-La prova cumulativa riduce i suggerimenti e richiede trasferimento: confronto equo, conflitto non risolto e impatto multisuperficie. Non chiede soltanto di assegnare una skill. La soluzione successiva esplicita un percorso possibile, lasciando ammissibili proposte equivalenti motivate dai dati.
-
-### Visual content
-
-Due schede Alba/Bora. Nessuna freccia dal nome del progetto a una skill per non suggerire la raccomandazione.
-
-### Transition
-
-Confrontiamo le ragioni della scelta, non la quantità di termini tecnici usati.
-
-### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-5
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-9
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-12
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
-
-## S51
-Module: M7
-Objective: O7
-Role: solution
-Title: Soluzione: proporzionare, chiarire, verificare
-Value contribution: Una risposta sufficiente respinge l’aggiornamento del solo pannello senza presumere l’architettura.
-Covers: M2/O2; M3/O3; M4/O4; M5/O5; M6/O6
-
-### Learner content
-
-**Alba:** la nota curata può già bastare. Mantieni accessibili fonte, motivo e prova; riapri la scelta se cambiano le condizioni.
-
-**Bora:** chiedi all’agente di mantenere il conflitto visibile e di cercare nuova informazione che lo risolva. La recenza del file non basta. Una decisione prudenziale del responsabile può essere proposta separatamente, dichiarando l’incertezza; non diventa la verità della fonte.
-
-Quando il comportamento è definito, fai cercare all’agente calcoli e consumatori, fai progettare pannello ed email con confini ed errori, fai rivedere il design, poi chiedi realizzazione e prove e controlla che le prove osservino entrambe le superfici. Sia la review del design sia quella finale richiedono un revisore distinto dall’autore. La review finale confronta evidenze e beneficio. Controlla che decisioni e riferimenti restino per il successore; una guida serve se sostiene un’indagine riusabile.
-
-Le skill possono organizzare questa disciplina; istruzioni equivalenti possono farlo senza skill. Se la tua risposta sceglie soltanto uno strumento, mancano le ragioni: conflitto S20–21, impatto S29–36, manutenzione S49.
-
-### Complete explanation
-
-Una risposta sufficiente respinge l’aggiornamento del solo pannello senza presumere l’architettura. Il limite del caso impedisce di decidere una durata corretta. La mitigazione operativa è distinta dalla risoluzione documentale e resta una proposta da valutare. Il confronto non richiede l’adozione dello strumento più complesso.
-
-### Visual content
-
-Due colonne con raccomandazioni motivate. Sotto Bora, separare «chiarire la fonte» da «progettare e provare il comportamento».
-
-### Transition
-
-L’ultima domanda è quale parte di questo metodo vuoi rendere ripetibile nel tuo lavoro.
-
-### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-5
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-9
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-12
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13
-
-## S52
 Module: M7
 Objective: O7
 Role: closing
-Title: Ripartire dalle ragioni, non dalla memoria di qualcuno
-Value contribution: La chiusura collega l’azione futura all’esperienza percorsa, senza riassumere un elenco di sigle.
+Title: Il prossimo gesto nel tuo progetto
+Value contribution: preservare applicazionefacoltativaUC5e chiusura.
+Covers: M6/O6
 
 ### Learner content
 
-Siamo partiti da un numero nel codice. Per usarlo bene abbiamo dovuto ritrovare il motivo, controllare la fonte, riconoscere un conflitto, chiarire il risultato voluto e cercare prove sul comportamento.
+Applicazione facoltativa: scegli un documento non riservato del tuo progetto, accessibile all’agente. Chiedi in sola lettura: «Spiega quale regola sostiene, cita il passaggio e i limiti; proponi solo a parole una modifica che la tocchi, indicando beneficio, decisioni da prendere e prove mancanti. Non modificare file né eseguire operazioni».
 
-In tutto il percorso l’agente non ricordava le sessioni precedenti. Eppure a ogni tappa ha lavorato come chi ha seguito il progetto giorno per giorno: ha ritrovato il motivo dei 30 secondi, la lettura di C superata e il suo perché, la decisione sul limite, le prove richieste. Non è memoria dell’agente: è la vita del progetto, conservata nella cartella e riletta ogni volta. Dura finché qualcuno la registra, la consulta e la corregge.
+Controlla se la risposta risale alla fonte, distingue storia e validità, preserva i vincoli e lascia a te le scelte aperte. Non devi redigere tu claim o design. Se non vuoi usare il progetto, usa questo caso inventato: una nota dice che ristampare una ricevuta deve conservare la data dell’acquisto, mentre l’agente propone di usare sempre la data di stampa. Chiedi il motivo storico e se cambia il significato della ricevuta prima di approvare.
 
-Nel prossimo lavoro con un agente puoi porre tre domande:
-
-1. «Su quale fonte e a quali condizioni si basa questa affermazione?»
-2. «Quale risultato deve ottenere qualcuno, e quale scelta è ancora aperta?»
-3. «Che cosa è stato verificato e quale traccia permetterà di ripartire?»
-
-kb-agentic e agentic-sdlc rendono riutilizzabili parti di questa disciplina. Il valore sta nell’applicarla e controllarne gli esiti.
-
-Se vuoi verificarne il ricordo, riprova fra qualche giorno il caso di S50 senza consultare la soluzione. Il corso non programma promemoria e non misura automaticamente apprendimento o risultati sul tuo progetto.
+Puoi tornare a questo confronto in una sessione successiva: che cosa è realmente ritrovabile? Il corso finisce qui; efficacia su persone non verificata. Il successo operativo delle skill va giudicato sul lavoro, non sulla loro sola presenza.
 
 ### Complete explanation
 
-La chiusura collega l’azione futura all’esperienza percorsa, senza riassumere un elenco di sigle. Il richiamo differito è facoltativo e non equivale a una prova di ritenzione svolta. Lo stato di efficacia umana resta non verificato: il corso e le sue simulazioni non costituiscono un pilot con persone.
+Applicazione facoltativa: scegli un documento non riservato del tuo progetto, accessibile all’agente. Chiedi in sola lettura: «Spiega quale regola sostiene, cita il passaggio e i limiti; proponi solo a parole una modifica che la tocchi, indicando beneficio, decisioni da prendere e prove mancanti. Non modificare file né eseguire operazioni».
+
+Controlla se la risposta risale alla fonte, distingue storia e validità, preserva i vincoli e lascia a te le scelte aperte. Non devi redigere tu claim o design. Se non vuoi usare il progetto, usa questo caso inventato: una nota dice che ristampare una ricevuta deve conservare la data dell’acquisto, mentre l’agente propone di usare sempre la data di stampa. Chiedi il motivo storico e se cambia il significato della ricevuta prima di approvare.
+
+Puoi tornare a questo confronto in una sessione successiva: che cosa è realmente ritrovabile? Il corso finisce qui; efficacia su persone non verificata. Il successo operativo delle skill va giudicato sul lavoro, non sulla loro sola presenza.
 
 ### Visual content
 
-Tre domande complete, in ordine verticale. Non aggiungere un elenco di artefatti o nuove definizioni.
+Unità testuale: mostrare titolo e paragrafi nell’ordine scritto. Conservare le citazioni e i contrasti espliciti nel testo; nessun diagramma necessario e nessuna immagine che aggiunga fatti al caso. La soluzione resta una unità successiva, mai accanto alla domanda durante il tentativo.
 
 ### Transition
 
-Fine del percorso. Per tornare a una difficoltà usa i rinvii nelle soluzioni; non è disponibile un canale automatico di feedback del corso.
+Fine del percorso. Porta una richiesta e un criterio di giudizio nel lavoro successivo.
 
 ### Sources
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-2
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-11
 - ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-12
-- ai_docs/solutions/courses/agentic-sdlc-kb-agentic/sources.md#claim-13

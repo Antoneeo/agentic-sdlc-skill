@@ -1,9 +1,3 @@
-# Feedback ricevuto
+# Riscontri del proprietario
 
-## Revisione contenuto 2026-09-27
-| Date | Source/channel | Course version | Module ID | Context | Feedback | Correction |
-|---|---|---|---|---|---|---|
-| 2026-09-27 | Proprietario, chat di lavoro | PPTX iniziale e v2 da 1.0-draft | M1–M7 | Lettura autonoma delle slide | Occorre immaginare i pezzi mancanti; non emerge perché serva una skill oltre a chiedere note | Documento completo per slide; confronto equo con note curate, meccanismi, limiti e trasferimento |
-| 2026-09-27 | Proprietario, chat di lavoro | Contratto course-creator 0.1.0 | M1–M7 | Feedback sul metodo | Ogni corso deve portare VALORE distinguibile | F-060 rende obbligatori capacità prima/dopo, contributo esplicativo e prova su caso nuovo; output testuale integrale |
-
-Non sono misure di apprendimento. Il feedback giustifica la correzione, non una dichiarazione di efficacia.
+2026-10-04: indicazioni raccolte nel REPORT_indicazioni_revisione_2026-10-04.md. Versione3.2: valore centrale troppo spostato sul giudizio; caso timeout troppo semplice per motivare patrimonio storico; necessarie obiezioni, contributo distill e preparazione della compattazione. Versione4.0: obiettivi, apertura, caso evolutivo e ripresa riscritti. Review indipendente finale PASS dopo correzione di grafo, distinzioni promesse, citazioni e baseline. Il controllo senza corso era già capace: nessuna efficacia umana o superiorità causale verificata. DIAGNOSIS distingue difetti del corso da lacune del metodo; le prescrizioni esistenti coprono i difetti osservati, nessuna nuova guida o regola introdotta. Fonte pronta per lettura dell’autore prima del rendering.
