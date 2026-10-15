@@ -393,6 +393,26 @@ and latest alias rejection to the actual batch diff and seven mock cases. No
 automatic registry mutation. This PASS does not close the external release:
 course latest removal failed E400 after authentication; owner decision remains open.
 
+## C-001 revisione del corso 4.0-content — 2026-10-04
+
+| Date | Feature and artifact | Moment | Reviewer model/session | Findings raised | Findings real | Verdict | Revise rounds |
+|---|---|---|---|---|---|---|---|
+| 2026-10-04 | C-001 DESIGN_revisione_4_0.md | design | gpt-6-astra, fresh read-only course_revision_design_review | 2 BLOCK, 3 WARN | 5: UC5/IC4 preservati, risk ID stabili, causalità chiave, criterio O1, builder non certificato | PASS after FAIL | 1 |
+| 2026-10-04 | C-001 SLIDE_CONTENT/graph/source/plan4.0 | material | gpt-6-astra, fresh read-only course40_material_review | 2 BLOCK, 2 WARN | 4: traccia concetti, promesse Vision, citazioni, baseline | PASS scoped after FAIL | 1 |
+
+Design review preceded production. Material re-review returned two residual WARN
+on locators and new citations, corrected before the final closure review. Neither
+gate establishes human efficacy. Prefix S01–S06 and both transfer attempts are in
+simulation_4_0/ATTEMPTS.md; final criterion review is logged separately below.
+
+| Date | Feature and artifact | Moment | Reviewer model/session | Findings raised | Findings real | Verdict | Revise rounds |
+|---|---|---|---|---|---|---|---|
+| 2026-10-04 | C-001 4.0-content material, design conformance, simulation, method diagnosis | closure | gpt-6-astra, fresh read-only course40_material_review | 0 new; 2 residual WARN rechecked | 2 previous locators/citations corrected | PASS | 2 |
+
+Evidence and criterion-by-criterion conformance: simulation_4_0/REVIEW.md.
+The no-course control was already capable; no causal benefit claimed. Tool access
+restriction is instructional, with the reader's packet-delivery exception explicit.
+
 ## F-065 — review mandate contract
 
 | date | doc_key | tier | model | reviewer | findings_raised | findings_real | verdict | revise_rounds |

@@ -40,7 +40,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/ANALYSIS_capability_tiers.md | code |  | F-048 - the capability dimension gets an owner. A capability floor no review gate may start below (with the independence-vs-capability arbitration), the delegation boundary written down, and the REVIEW_LOG core schema widened with `model` so both policies become falsifiable. | 9848ea33143d2321895dc1abfd932379bd18fb0e059e7f150ad91f9057c22a46 |
 | solutions/ANALYSIS_claim_ledger.md | code |  | Feature Analysis: Claim Ledger | 5ebd8a20e761710caa11deeaea19058ea75e28bde8a264c877a0b10139f3dc31 |
 | solutions/ANALYSIS_comprehension_guides.md | code |  | ANALYSIS — Code-Comprehension Guides | 226bb3b1864b7abb9c42ee2fffc83dc279d65516797f92a9c2fde202c942695e |
-| solutions/ANALYSIS_course_agentic-sdlc-kb-agentic.md | course |  | Course Analysis: kb-agentic e agentic-sdlc | d6d26d9c6773f3a03c425c215e7116dbccba5d00ed54d364c4cf4a070278a6ab |
+| solutions/ANALYSIS_course_agentic-sdlc-kb-agentic.md | course |  | Course Analysis: kb-agentic e agentic-sdlc | 65f8e13919767be6174cf096ec57265c2a356f96a8c0b7e947d024f0d7304e17 |
 | solutions/ANALYSIS_course_creator.md | code |  | Analisi: course_creator | 87c5495a77d505ccaeecea30740a3d264c4a29d84a548aea83fd9c51fa9fb482 |
 | solutions/ANALYSIS_course_domain_core.md | code |  | Analisi: profilo course nel core | 295c59f824cc9221ada348055b1cf22d734c9451192f79e06aec79f01b6be86b |
 | solutions/ANALYSIS_course_slide_content.md | code |  | Course Creator: contenuto, progressione e ruoli indipendenti | 939971d44484cf4d0aa2eb6b4c5bba180cd6594f13ea1e700d413cba32679143 |
@@ -105,15 +105,18 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/SPIKE_kb_composition.md | code |  | Studio della composizione di KB autonome A/B/C; comportamento attuale, proposta e verifiche necessarie. | 1a412f093169e5fdfe6c2cdf8515244331e0b4c9dee10d449bc853359a20b574 |
 | solutions/SPIKE_kb_recall_second_instrument.md | code |  | Negative spike — whether kb's recall needs a mandated text probe (and a claims inventory) to stop a false `kb: no coverage`. Two replays refuted the defect; the one real finding became the multi-slug verdict. | 42b7155550904d97006b862576cfde0d9c89cd25180bb6205de8be399e59dfc1 |
 | solutions/antigravity_skills_guide.md | code |  | Guide: Creating Skills and MCP Integration in Antigravity 2.0 | 9cb286c2801500519da793bca9be29a46387b2733da3661f4d8ed056b15e04b9 |
-| solutions/courses/agentic-sdlc-kb-agentic/CONCEPT_GRAPH.md | code |  | Grafo dei prerequisiti e attraversamento del testo | 673ec71b6c03f5e230e03f997f143bf3c48ea225ec58cbc7199e740cccd21dd4 |
-| solutions/courses/agentic-sdlc-kb-agentic/COURSE_PLAN.md | code |  | Piano del corso: lavorare con kb-agentic e agentic-sdlc | cb3b53f79c959f4549a078cd530c43e9c9b6dcdf0c284b36357df522cca2077d |
-| solutions/courses/agentic-sdlc-kb-agentic/D-IC.md | code |  | Interazione con il corso | ba75eab8de3a75eaf6527dbe14abb6f18d13b421773d1474a821d58dbdf8a1ff |
-| solutions/courses/agentic-sdlc-kb-agentic/D-UC.md | code |  | Destinatari e bisogni del corso | a5a8018fcf1e226cd5577694046ec7981c945c08a7a6fa840968daa7f2a3aba5 |
-| solutions/courses/agentic-sdlc-kb-agentic/FEEDBACK_REPORT.md | code |  | Feedback ricevuto | b6e00ea924f9e83fd3f77c298822f0df171a61f1d98c9f805d0ed219fc7e1a11 |
-| solutions/courses/agentic-sdlc-kb-agentic/P-TM.md | code |  | Rischi didattici e di contenuto | 9db2b84e1ee8954f02efaa819fef4b772e9ea29223ad60b2679f487bfad0b88e |
-| solutions/courses/agentic-sdlc-kb-agentic/SIMULATION_REPORT.md | code |  | Diagnostica del corso 3.1-content | 02b37a1c3d6ec05ef50315f8c2a4948d3accdfa291587191e20183c9bc368bf1 |
+| solutions/courses/agentic-sdlc-kb-agentic/CONCEPT_GRAPH.md | code |  | Grafo dei prerequisiti | 29f5c9d8b832a5b22360702694aa5611388ca815c8eb710ac958f3b46d6dd3b5 |
+| solutions/courses/agentic-sdlc-kb-agentic/COURSE_PLAN.md | code |  | Piano del corso | 23bdb7b41b2e37203a160cc40cfd96e2f88e36c4aa7cbd8b0558b8d8bc644ca0 |
+| solutions/courses/agentic-sdlc-kb-agentic/D-IC.md | code |  | Interazione4.0 | ddb059abfced64c167bfd23d2958ae9001dd3b8370473d847aca91db86ce25d1 |
+| solutions/courses/agentic-sdlc-kb-agentic/D-UC.md | code |  | Destinatari e bisogni | 1416b48c92b999523a7a1069aef956b06dab19030df0e32476d71a0de55e6832 |
+| solutions/courses/agentic-sdlc-kb-agentic/DESIGN_revisione_4_0.md | code |  | Design della revisione 4.0-content | ae70ab65b31fac21144997a72c521672bb506e882ce2fd8a2a021bd3c07c8640 |
+| solutions/courses/agentic-sdlc-kb-agentic/DIAGNOSIS_metodo_2026-10-04.md | code |  | Diagnosi: corso e metodo di progettazione | 1598e29a40881ecc83abad29344e5994d04c9945220d64e1053c8246fdffdcd8 |
+| solutions/courses/agentic-sdlc-kb-agentic/FEEDBACK_REPORT.md | code |  | Riscontri del proprietario | 1997e41be9ed7dd9d5fafa22d30567a45f6a225ffa440984b6c3c48a0f1dab7e |
+| solutions/courses/agentic-sdlc-kb-agentic/P-TM.md | code |  | Rischi didattici | b98e7cdf812fb2637c37135d7a59d2c8ffebef47b04ebdf90d049b273358b93c |
+| solutions/courses/agentic-sdlc-kb-agentic/REPORT_indicazioni_revisione_2026-10-04.md | code |  | Indicazioni di Antonio per riorientare il corso sul perché delle skill, sul valore cumulativo e sulla storia del software; base per la successiva analisi di revisione. | 4d43edb37df8fde9c2a15ef8c363dbd3af1f0a3a75cb1d88ade31653bd33222d |
+| solutions/courses/agentic-sdlc-kb-agentic/SIMULATION_REPORT.md | code |  | Diagnostica 4.0-content | 2656a3f8560130df4c180f4dd2258e2e743db9f16efea0d4bbdb8b07cff7ec65 |
 | solutions/courses/agentic-sdlc-kb-agentic/SIMULATION_REPORT_1.0-draft.md | code |  | Simulazione diagnostica del corso | ac850cbaf015f40e3ee38928501e8a045bb67ee0a4d1d760df5c3b7387f0bbbe |
-| solutions/courses/agentic-sdlc-kb-agentic/SLIDE_CONTENT.md | code |  | Lavorare con kb-agentic e agentic-sdlc | d146626a80ce30d21a692467ccc38b6f2b32154989bf3c6d3c67b22133a4d2c2 |
+| solutions/courses/agentic-sdlc-kb-agentic/SLIDE_CONTENT.md | code |  | Perché lavorare con kb-agentic e agentic-sdlc | 32878452727ebeed85d5bb4a989a8aec226450442c6cdde7aff88bcb50d372a0 |
 | solutions/courses/agentic-sdlc-kb-agentic/history_2_1/CONCEPT_GRAPH.md | code |  | Grafo dei prerequisiti didattici | 42392392ab516ab19e292ad4e56d4fdff796de86455a491ad54949eb07db2105 |
 | solutions/courses/agentic-sdlc-kb-agentic/history_2_1/COURSE_PLAN.md | code |  | Piano del corso: kb-agentic e agentic-sdlc | a3a683e5a9e231c5c113ad79ab174418dc71a92a323b7331d9152d472daabf0d |
 | solutions/courses/agentic-sdlc-kb-agentic/history_2_1/D-IC.md | code |  | Interazione con il corso | f951611bb7e53bbbdad63f1e6d25ba2ca078905a109d8c37da0ea5cd2d903396 |
@@ -131,13 +134,30 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/courses/agentic-sdlc-kb-agentic/history_3_1/SIMULATION_REPORT.md | code |  | Diagnostica del corso 3.1-content | 02b37a1c3d6ec05ef50315f8c2a4948d3accdfa291587191e20183c9bc368bf1 |
 | solutions/courses/agentic-sdlc-kb-agentic/history_3_1/SLIDE_CONTENT.md | code |  | Lavorare con kb-agentic e agentic-sdlc | 1a5bed150e1e5fbc6a7e637e48134041ea0f641d4bac2b5ba691537c88154fe7 |
 | solutions/courses/agentic-sdlc-kb-agentic/history_3_1/sources.md | code |  | Fonti del corso | a297ad511affe5a508778e416289bb75872a2e6772d93b81ef13b0ad6dc08b0d |
-| solutions/courses/agentic-sdlc-kb-agentic/modules/M1.md | code |  | M1 — La memoria non è la chat | 3f59895ab9f0700dbebfff0202c0b6471f5071381e7db2e3fd50a086fac528d7 |
-| solutions/courses/agentic-sdlc-kb-agentic/modules/M2.md | code |  | M2 — Dal manuale alla risposta rintracciabile | 3780bfbde44c190302ccd5512957e7b40f937eeb00eefc60fc8dae3445abcbc7 |
-| solutions/courses/agentic-sdlc-kb-agentic/modules/M3.md | code |  | M3 — La memoria che sa correggersi | 78ef737369fc9716cf465789f2e35e1dfe9c0494dbccbef2797a3cfbaaceab3c |
-| solutions/courses/agentic-sdlc-kb-agentic/modules/M4.md | code |  | M4 — Dal beneficio al livello di lavoro | 8a16ab195b75e51f14a7d5574e9a967d1192e28327d07b8a01c10da7866debfc |
-| solutions/courses/agentic-sdlc-kb-agentic/modules/M5.md | code |  | M5 — Tre lenti e una soluzione verificabile | 7a2f4ee540a0d12b03147563d6f6155dbe018534cd21ecccdfb6a66dfcaf79c0 |
-| solutions/courses/agentic-sdlc-kb-agentic/modules/M6.md | code |  | M6 — Due skill, una memoria di progetto | deaad7c121beaa98eb210ced98bff74d9e8be704dcd6bcaa6de06707fb27822e |
-| solutions/courses/agentic-sdlc-kb-agentic/modules/M7.md | code |  | M7 — Che cosa cresce nel tempo | 87c2a3a2bb458f197294bdc7a229948e658a1984a3e78b92172f642b093cee73 |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_2/ANALYSIS_course_agentic-sdlc-kb-agentic.md | course |  | Course Analysis: kb-agentic e agentic-sdlc | d6d26d9c6773f3a03c425c215e7116dbccba5d00ed54d364c4cf4a070278a6ab |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_2/CONCEPT_GRAPH.md | code |  | Grafo dei prerequisiti e attraversamento del testo | 673ec71b6c03f5e230e03f997f143bf3c48ea225ec58cbc7199e740cccd21dd4 |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_2/COURSE_PLAN.md | code |  | Piano del corso: lavorare con kb-agentic e agentic-sdlc | cb3b53f79c959f4549a078cd530c43e9c9b6dcdf0c284b36357df522cca2077d |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_2/D-IC.md | code |  | Interazione con il corso | ba75eab8de3a75eaf6527dbe14abb6f18d13b421773d1474a821d58dbdf8a1ff |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_2/D-UC.md | code |  | Destinatari e bisogni del corso | a5a8018fcf1e226cd5577694046ec7981c945c08a7a6fa840968daa7f2a3aba5 |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_2/FEEDBACK_REPORT.md | code |  | Feedback ricevuto | b6e00ea924f9e83fd3f77c298822f0df171a61f1d98c9f805d0ed219fc7e1a11 |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_2/P-TM.md | code |  | Rischi didattici e di contenuto | 9db2b84e1ee8954f02efaa819fef4b772e9ea29223ad60b2679f487bfad0b88e |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_2/SIMULATION_REPORT.md | code |  | Diagnostica del corso 3.1-content | 02b37a1c3d6ec05ef50315f8c2a4948d3accdfa291587191e20183c9bc368bf1 |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_2/SLIDE_CONTENT.md | code |  | Lavorare con kb-agentic e agentic-sdlc | d146626a80ce30d21a692467ccc38b6f2b32154989bf3c6d3c67b22133a4d2c2 |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_2/modules/M1.md | code |  | M1 — La memoria non è la chat | 3f59895ab9f0700dbebfff0202c0b6471f5071381e7db2e3fd50a086fac528d7 |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_2/modules/M2.md | code |  | M2 — Dal manuale alla risposta rintracciabile | 3780bfbde44c190302ccd5512957e7b40f937eeb00eefc60fc8dae3445abcbc7 |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_2/modules/M3.md | code |  | M3 — La memoria che sa correggersi | 78ef737369fc9716cf465789f2e35e1dfe9c0494dbccbef2797a3cfbaaceab3c |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_2/modules/M4.md | code |  | M4 — Dal beneficio al livello di lavoro | 8a16ab195b75e51f14a7d5574e9a967d1192e28327d07b8a01c10da7866debfc |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_2/modules/M5.md | code |  | M5 — Tre lenti e una soluzione verificabile | 7a2f4ee540a0d12b03147563d6f6155dbe018534cd21ecccdfb6a66dfcaf79c0 |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_2/modules/M6.md | code |  | M6 — Due skill, una memoria di progetto | deaad7c121beaa98eb210ced98bff74d9e8be704dcd6bcaa6de06707fb27822e |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_2/modules/M7.md | code |  | M7 — Che cosa cresce nel tempo | 87c2a3a2bb458f197294bdc7a229948e658a1984a3e78b92172f642b093cee73 |
+| solutions/courses/agentic-sdlc-kb-agentic/history_3_2/sources.md | code |  | Fonti del corso | 336f32c4a7befbe23657391990c7e03710bad41bd05a5fa6aebb1f522e80eb05 |
+| solutions/courses/agentic-sdlc-kb-agentic/modules/M1.md | code |  | Modulo M1 | fc1fc42a559b97e378522a5a7222552d1e86365bf9700f2209f7fa24e25db5ed |
+| solutions/courses/agentic-sdlc-kb-agentic/modules/M2.md | code |  | Modulo M2 | bb881a396d77da5e6e924951ee9595a2cd548641725141c044f483cc4b6180f1 |
+| solutions/courses/agentic-sdlc-kb-agentic/modules/M3.md | code |  | Modulo M3 | 1871ece148a18d401095c41e383a9337c3c652918237ce3d9fdd62ff599e0a03 |
+| solutions/courses/agentic-sdlc-kb-agentic/modules/M4.md | code |  | Modulo M4 | 55e2aa73ae143b9d902b347bf2d0688861fdc6d7abd875fc8108b669330c042a |
+| solutions/courses/agentic-sdlc-kb-agentic/modules/M5.md | code |  | Modulo M5 | 8c2b5b1338300f650c0be3a5abbaf276c0132957278ba4f7fd76960567dcf445 |
+| solutions/courses/agentic-sdlc-kb-agentic/modules/M6.md | code |  | Modulo M6 | 1adc420002a19ca459f93c13319ce74bf725a761bcf8fe30850c362e54c0593d |
+| solutions/courses/agentic-sdlc-kb-agentic/modules/M7.md | code |  | Modulo M7 | 37eb9132cd51fe031d66df8c2d856798c2495baa549e153638032d45dfe68217 |
 | solutions/courses/agentic-sdlc-kb-agentic/simulation_2_1/CRITERIA.md | code |  | Criteri congelati prima delle risposte | 463df28f8d79b96f08b66f5de41fbfcdea86f01f980c81ba164bf3eee43e5246 |
 | solutions/courses/agentic-sdlc-kb-agentic/simulation_2_1/control_response.md | code |  | control_response | edc721c33587df71cfd66461f0335cfceaa351400e1f134702975884dbf04252 |
 | solutions/courses/agentic-sdlc-kb-agentic/simulation_2_1/learner_packet.md | code |  | learner_packet | 4dbfe068dbc07bdf189f98ac980a113ec8aa1dcfe2dbe01d69ce58a3aea4df7a |
@@ -250,9 +270,13 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S50.md | code |  | S50 | b5eef621f83eea1aa97566db92f55000fdecb5ea67a4d380f7ceca5903f281ea |
 | solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S51.md | code |  | S51 | c1a1b82db22036c94845724a606a75c384b20137bc84fbdbc8b2efbddfc55b2b |
 | solutions/courses/agentic-sdlc-kb-agentic/simulation_3_1/responses/S52.md | code |  | S52 | e59ecb61f1682fd9b5a9b81c9914e83d8eb6747d8c008b10306dce1b209b5081 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_4_0/ATTEMPTS.md | code |  | Tentativi preservati — 4.0-content | bff3d61ad346eaa5affb827aa175a819cccda30dbe971b47fee5b1f1d79397c5 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_4_0/CRITERIA.md | code |  | Criteri congelati prima dei tentativi | ee463d08efe924519843543ca4f4428f4c83985bf4f524162d6364a3d9a7e93f |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_4_0/REVIEW.md | code |  | Review indipendente finale — 2026-10-04 | 2715ca42333b5d24d1ca059dfc2fd7acdbb4321590fb445669e65d98b6707976 |
+| solutions/courses/agentic-sdlc-kb-agentic/simulation_4_0/TASKS.md | code |  | Compiti congelati4.0 | a591bee107ee917f208286399a5b12f53ce13fb4977c21de1db18619d3ae70a8 |
 | solutions/courses/agentic-sdlc-kb-agentic/simulation_control_p1_response.md | code |  | simulation_control_p1_response | 86bf58dccd77bd63018ffab67eeb99c9535c81a63be5a0a2437db4a4ac250918 |
 | solutions/courses/agentic-sdlc-kb-agentic/simulation_course_p1_response.md | code |  | simulation_course_p1_response | 2bd2daaebb08755f4492911b2b54f842eefb52d22acb79b25f0767b2e9c91ff2 |
-| solutions/courses/agentic-sdlc-kb-agentic/sources.md | code |  | Fonti del corso | 336f32c4a7befbe23657391990c7e03710bad41bd05a5fa6aebb1f522e80eb05 |
+| solutions/courses/agentic-sdlc-kb-agentic/sources.md | code |  | Fonti del corso | 712b51e3d0cf34b921f638eca63f5c814af7193fdffeda42901bc8fbb7bc8761 |
 | strategic/architecture.md | code |  | Stack, package structure, component map and architectural patterns of the skill repository. | 2bbcf6a442f88fa0e5a9c4526da1e97b29133053420170206b400dd9160c1b90 |
 | strategic/capabilities_and_positioning.md | code |  | Dated, evidence-based comparison of agentic-sdlc 1.26.1 and Superpowers 6.2.0: advantages, parity, remaining gaps and deliberate non-adoptions. | 8c7e8acae048545eaf5707db24c242b8701af5a2e32cd10090f9c9d6146ea394 |
 | strategic/existing_features.md | code |  | Concise catalog of the skill's existing features. | e12afc0272414b0cffc365c84312b9bced3868a72561460466ea883ab8dd0150 |
