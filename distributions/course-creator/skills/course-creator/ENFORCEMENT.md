@@ -47,8 +47,8 @@ The consolidated view is `sdlc_check.py stale` (the overlay intercepts
 the spine command, preserves its output, flags and exit code --
 `--hybrid` included -- and appends `## claims` only when nonempty). The
 orient append prints one count line at session start, only when dirty
-and always fail-open. Event-driven by design: reconciliation §2 runs
-`stale` after recording a supersession; nothing polls per turn.
+and always fail-open. Event-driven by design: reconciliation §2 runs `stale` at the unit's
+closure, once for every supersession since the last one; nothing polls per turn.
 
 ## 2. Check in CI (recommended for teams)
 

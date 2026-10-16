@@ -70,7 +70,8 @@ Cross-cutting rules:
 - **Domain routing (multi-lens installs only).** After the level is set, and only when a sibling lens skill of this family is installed (`agentic-sdlc`, `mkt-agentic-sdlc`, `course-creator`), run the router in `routing.md` for every L2, L3 and Spike: it decides which lens's method and validation rules govern this unit of work. L1 never reaches it, and a single-lens install never reads the file — detection fails open. In such a project, never refer to a document whose meaning differs by lens ("threat model", "vision", `principles.md`, `handoff.md`) by its bare name: qualify it with its domain, or name its path.
 - Personal data, credentials, security-sensitive processes, authN/authZ specs are high-risk: never L1.
 - **Escalation triggers — ANY of these makes it L3, whatever the file count:** the change touches the topic hierarchy (`parents:`, a `GENERALIZES` verdict, a re-parent); it touches more than one node's frontmatter; it creates or supersedes a node other nodes reference. Re-shaping the graph is a unit of change, never a side effect of placing one claim.
-- Adding one claim row to an existing topic is L1: the `id` may be left empty (the validator fills it — `claim-id --fill`), and no check errors on a hand-written row.
+- Adding one claim row to an existing topic is L1. The locator comes from `anchor <path> <phrase>`, not from counting lines by hand except for a form `anchor` does not produce; the `id` is left empty and filled by `claim-id --fill` once, after the row is complete (`qty` included), and no check errors on a hand-written row. `graph` verifies that the span exists and that the id matches locator and `qty` — never that the span says what the claim says — so such a hand-counted locator is re-read at its span before the row is written.
+- **An open unit absorbs.** A unit is open while its `audit/HANDOFF_*.md` exists, in the checkout its `branch:` names (from another checkout, its row in the registry says so); its scope is the `scope:` field of that HANDOFF's frontmatter — the file every open unit has by construction (a unit opened on a live front declares a front-wide scope there). A source or practitioner statement the scope covers is not a new unit: work in that checkout, declare `ingestion step of <unit>` in place of a new triage, and do only this — the request-record entry; the `given/` artifact with sidecar, or the note; the claim rows; the reconciliation classification, recording any supersession or contested set at once and presenting its escalations at the end of the step (a step is a run for `reconciliation.md` §4); `graph`, fixed until clean; one resume line in the HANDOFF body ("alignment pending since <date>: <what landed>"), frontmatter untouched. The step reply states what landed on the ledger, any escalation, any immediate exception (Phase 4), and that alignment is pending — this is how the practitioner knows the dependent documents lag. A step does not rewrite dependent documents, run `stale`, edit HANDOFF frontmatter or the registry, run `index` or `check`, or commit — that is the closure's work (Phase 5). One exception: on a project with no branch isolation (every session in one shared checkout), the step may end with a save commit once `graph` is clean, its message marked `ingestion step`, so history protects the work; such a commit has not passed the closure gate, which stays mandatory before the closure commit and before any push or integration. Without isolation the residual risk is higher — the save commit lands on the shared line itself, where other sessions read it before any closure gate, and another session's `index` or a sync tool can pick up uncommitted step files — and the step reply says so once per session. When coverage is doubtful, or two open units' scopes both cover it, ask one question before ingesting, naming the candidate units. When the step would fire an escalation trigger the approved ANALYSIS did not plan, stop, declare it, and amend the ANALYSIS with the practitioner's approval before continuing. No open unit, or outside every scope: triage as usual.
 - If a bigger impact emerges during L1/L2 work, stop, reclassify and declare it.
 - When in doubt, pick the higher level.
 - **Doubts asked, questions legal.** A real doubt is asked when it emerges, before its answer is written; every question passes the legality test of the question discipline (`elicitation.md`): searched first with the search named, and the blocked decision named. Claim-conflict escalations additionally carry their own mandated form and are batched at run end (`reconciliation.md` §4).
@@ -85,8 +86,8 @@ Triage decides IF documentation is due; this table decides WHICH document each e
 | `solutions/ANALYSIS_[topic].md` | Every L3, after elicitation and before any drafting. On topic match with an existing analysis, update that one instead of a new file. | 3 |
 | `solutions/SPIKE_[topic].md` | Closing any Spike — including a negative outcome. | — |
 | `vision/features/VISION_[feature].md` | Multi-milestone topic at analysis time, or retroactive trigger (second ANALYSIS on same theme). | 3 |
-| `audit/handoff.md` (workstream registry) | **Never by hand — generated by `sdlc_check.py index` from the `HANDOFF_*.md` sources**, and `validate` errors when the two disagree. Regenerate at every L3 closure and at session end; the `Date:` header is derived, so no writer touches it. Inventory for lookup, never a work board. | 5 / session end |
-| `audit/HANDOFF_[topic].md` | **One per OPEN workstream, with or without volatile state** — it is the authored home of that workstream's registry row (frontmatter `workstream`/`level`/`branch`/`status`/`since`/`next`/`details`/`updated`), so no file means no row. Carries the resume logistics too; the ANALYSIS Diary keeps the durable narrative (DRY). DELETED at closure — deleting it *is* removing the row. | 4 / 5 / session end |
+| `audit/handoff.md` (workstream registry) | **Never by hand — generated by `sdlc_check.py index` from the `HANDOFF_*.md` sources**, and `validate` errors when the two disagree. Regenerate at every L3 closure (alignment or unit, Phase 5) and at session end — never at an ingestion step; the `Date:` header is derived, so no writer touches it. Inventory for lookup, never a work board. | 5 / session end |
+| `audit/HANDOFF_[topic].md` | **One per OPEN workstream, with or without volatile state** — it is the authored home of that workstream's registry row (frontmatter `workstream`/`level`/`branch`/`status`/`since`/`next`/`details`/`updated`, plus `scope` for a unit that absorbs ingestion steps), so no file means no row. Carries the resume logistics too; the ANALYSIS Diary keeps the durable narrative (DRY). Frontmatter updated at a closure or session end, never at an ingestion step (a step adds only its body resume line). DELETED at unit closure — deleting it *is* removing the row. | 4 / 5 / session end |
 | `audit/project_notes.md` | A note true for the whole project rather than one workstream. Appended verbatim to the generated registry, so regenerating cannot destroy notes that belong to no workstream. | 5 / session end |
 | `audit/handoff.md` — converting an existing project | **Lazily, at the first write — and then ALL AT ONCE.** Converting one row at a time is the state that loses the others, so `index` refuses to write while anything in the file is unaccounted for and names it. Until the first source exists nothing generates and nothing errors. | 5 / session end |
 | `audit/audit_plan.md` (Standalone) | Bootstrap, and whenever a mapped area changes state (`sdlc_check.py mark`). | 1 |
@@ -140,21 +141,25 @@ Use this mode when `devpnt_*` tools are available and point at the current proje
 - **Design review gate (end of Phase 3, before any drafting):** the analysis is reviewed by somebody other than its author — a subagent with fresh context, or a declared self-pass when no higher rung is usable — a permission-gated rung is asked about, never silently skipped (`review.md`). Follow `review.md`; log the outcome in `audit/reviews/REVIEW_LOG.md`. A knowledge structure reviewed only by the person who chose it is not reviewed.
 
 ### 4. Knowledge Processing & Distillation
-- **Isolate the work (Branch/worktree hygiene).** Distillation rewrites existing notes — full re-read per `## Revision` — and does it on a branch or a worktree, never directly on the shared corpus, so a half-finished reconciliation is never what the next reader finds.
+- **Isolate the work (Branch/worktree hygiene).** Distillation rewrites existing notes — full re-read per `## Revision` — and does it on a branch or a worktree, never directly on the shared corpus, so a half-finished reconciliation is never what the next reader finds. Where a project does not isolate (one shared checkout), that is a departure from this rule, not a second mode: Rule Zero's step save commit and its declared residual apply.
 - Before drafting (L2/L3; L1 exempt), **consult the guide router** for a guide covering the task and read it first (the consult trigger, `guides.md` §0). A targeted description match, not a blanket read. Its result is the router verdict already declared with the triage level (Rule Zero).
 - Execute knowledge extraction using **Signal Distillation** (`distillation.md`).
 - **Opt-in subagent execution**: for an L3 with an approved analysis, the work MAY be executed via subagents per `dispatch.md`; default stays same-session. `dispatch.md` also carries the family-wide **delegation boundary** (what may be delegated at all, and what never may) — that section is not gated by the opt-in trigger and applies at any level, dispatch or no dispatch.
 - Handle conflicting or outdated information via **Reconciliation** (`reconciliation.md`). Mark obsolete files `status: SUPERSEDED`.
+- **New information on an open unit arrives as ingestion steps** (Rule Zero, *An open unit absorbs*), and the dependent documents wait for the closure — with two exceptions that never wait: a communication draft in progress whose sentence a new fact changes is updated in the same step, and a new fact that makes false a sentence already delivered to the practitioner in this session is flagged in the same reply, naming the sentence and the fact. Across sessions what was delivered is unknowable; the HANDOFF resume line and the request record are what the next session reads.
 
 ### 5. Closure & Indexing
-- Run verification checks (`sdlc_check.py check --root <project_root>`).
-- If the session recorded any supersession, run `sdlc_check.py stale`: its
-  `## claims` section is the revision worklist (superseded-cited documents,
-  expired windows, superseded derivation chains), worked per `## Revision`
-  -- one document, one full re-read.
-- If the work was governed by user-provided indications and is reusable, **PROPOSE distilling a guide** (proactive trigger, `guides.md` §1) — a proposal for the user, never a silent write, never from model knowledge.
-- Update `audit/handoff.md`.
-- Regenerate manifests: `python <skill_dir>/scripts/sdlc_check.py index --root <project_root>`.
+- **Phase 5 fires only on the practitioner's request** ("allinea", "chiudi") or on a session-closing signal (the Capture Moment's); propose it when the planned work is done. A unit that absorbed no ingestion step closes as before, when its planned work is done. It covers everything since the last closure, enumerated from the request-record entries since then and the uncommitted changes on the unit's branch, and runs once, in this order:
+  - the Capture Moment sweep;
+  - `sdlc_check.py stale`: its `## claims` section is the revision worklist (superseded-cited documents, expired windows, superseded derivation chains);
+  - the revision, per `## Revision` — one document, one full re-read — of every document that worklist names and every document the enumerated entries affect;
+  - if the work was governed by user-provided indications and is reusable, **PROPOSE distilling a guide** (proactive trigger, `guides.md` §1) — a proposal for the user, never a silent write, never from model knowledge;
+  - the HANDOFF update (below), then `python <skill_dir>/scripts/sdlc_check.py index --root <project_root>`;
+  - the closure gate, `sdlc_check.py check --root <project_root>` — the only gate command: it already runs `validate`, `graph` and `corpus`, so those are not run separately before it. Its stale stage is the spine's and does not print the kb `## claims` worklist (expired windows above all), which is why the `stale` step above stays — then the commit.
+- **Alignment closure** — the unit stays open: update the HANDOFF frontmatter and body to current state; commit on the unit's branch and propose its integration, so the day's ledger reaches the shared line the same day; the integration choice is the practitioner's.
+- **Unit closure** — the practitioner declares the work done: run the closure review (`review.md`) before DONE, then delete the HANDOFF; deleting it *is* removing the registry row, and the registry is never edited by hand. When it was the last one, `index` empties the generated registry.
+- When the closure gate is red: no commit; the unit stays open; name the failing checks, fix, re-run.
+- The closure reply states the closure-gate result, the documents revised, and the commit — or, when red, that nothing was committed.
 - Mark output clean and complete.
 
 ## Operative Guides & Router
@@ -233,10 +238,14 @@ Capture today is what makes recall honest tomorrow: a captured elicited or ruled
 is exactly the non-DERIVED ground the re-touch rule above walks to. The rails all
 exist — this section adds only the MOMENT.
 
-- **When — user-signed closings, once per session.** Phase 5 of a governed unit, or
+- **When — user-signed closings, once per session** — and at every Phase 5, so
+  also again at the session's closing when an alignment closure already ran earlier
+  in it; the sweep is idempotent, so a later run only adds what came after the
+  earlier one. Phase 5 of a governed unit, or
   any closing signal from the user in an un-governed session ("chiudiamo", "we're
-  done"); the session-end pass that updates `handoff.md`/`project_notes.md` then runs
-  at that same closing. Never per-turn, never a standing interruption. **Declared
+  done"); the session-end pass that updates the `HANDOFF_*.md` files and
+  `project_notes.md`, then regenerates the registry with `index`, runs at that same
+  closing. Never per-turn, never a standing interruption. **Declared
   residual**: an unsignaled end (the user simply stops writing) captures nothing —
   the phase-4 duty (a decision stated mid-session owes its note WHEN SAID) is the
   protection for sessions that never close, and the orient's recency line makes the

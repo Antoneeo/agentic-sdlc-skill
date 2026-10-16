@@ -287,6 +287,15 @@ basis accanto.
 (claim del set, fonti riapribili, date, provenienze, perché la macchina non può
 decidere). L'ingestione non si ferma mai a farti domande.
 
+**6. Ritmo su un fronte aperto (F-068).** Una fonte o una dichiarazione che
+ricade nello `Scope:` di un'unità L3 aperta non apre un'unità nuova: è un **passo
+di ingestione** (voce di richiesta, nota o artefatto, righe di claim con `anchor`
+e un solo `--fill`, riconciliazione, `graph`, una riga di ripresa nella HANDOFF).
+Riscrittura dei documenti dipendenti, cascata `stale`, registro, `check` e commit
+girano una volta, alla chiusura che chiedi tu («allinea») o a fine sessione.
+Non aspettano due cose: una bozza di comunicazione in corso e una frase già
+consegnata che il fatto nuovo rende falsa.
+
 Deliberatamente **assente**: qualsiasi stato di copertura per nodo — `gaps:` dice
 cosa manca a QUEL nodo, e niente lo colleziona (il Non-Goal work-management). I
 check emettono findings, mai righe di stato. Una **fonte** invece registra fin
