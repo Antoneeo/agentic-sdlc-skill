@@ -573,9 +573,10 @@ status: PROGRESS
 since: 2026-06-10
 next: wire the callback tests
 details: ANALYSIS_login_sso.md
+scope: every source and statement on the SSO login front
 updated: 2026-06-11
 ---
-# HANDOFF: [topic] (ephemeral — deleted at closure)
+# HANDOFF: [topic] (ephemeral — deleted at unit closure)
 
 ## Resume state
 <!-- uncommitted files, half-run migrations, env vars, running services -->
@@ -587,11 +588,16 @@ updated: 2026-06-11
 <!-- traps discovered this session that bite on resume (locks, CRLF, flaky test) -->
 ```
 
-`updated:` is the date this file last changed, and the newest one across all sources
+`updated:` is the date this file last changed — an ingestion step's body resume line
+excepted, which leaves the frontmatter alone until the next closure refreshes it
+(`SKILL.md` Rule Zero, *An open unit absorbs*) — and the newest one across all sources
 becomes the registry's `Date:` header — which is why no writer ever edits that header
 and why two concurrent writers no longer collide on it. `details:` holds the *other*
 pointers (the ANALYSIS, a review log entry); the generator prepends this file's own
-name, so nothing points at itself by hand.
+name, so nothing points at itself by hand. `scope:` is what an ingestion step is
+tested against (`SKILL.md` Rule Zero, *An open unit absorbs*): the topics, front or
+counterpart the unit covers — on a live front, front-wide ("K-02: every source and
+statement on X"). The registry does not show it.
 
 ## ai_docs/audit/project_notes.md — the registry's project-wide notes (source)
 
