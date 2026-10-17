@@ -16,11 +16,13 @@ Date: 2026-10-17 (UTC)
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**2026-10-17 — release 1.41.0 tagged, publication pending.** Code 1.41.0, KB 1.24.0,
-marketing 0.19.0, Course 0.1.0-beta.5 (F-073; Course also moves to `latest`). Tags
-v1.41.0 / kb-v1.24.0 / mkt-v0.19.0 / course-v0.1.0-beta.5 on the release commit. Next:
-`publish_all.bat` from a clean `git archive` of the tag (browser 2FA is the owner's), then
-verify each version and `dist-tags.latest`, and record the publication here.
+**2026-10-17 — release 1.41.0 completed.** Published and verified on the registry at
+21:43 UTC: code 1.41.0, KB 1.24.0, marketing 0.19.0, Course 0.1.0-beta.5 (F-073; Course
+now publishes on `latest` with no promotion step). Tags v1.41.0 / kb-v1.24.0 /
+mkt-v0.19.0 / course-v0.1.0-beta.5 on 0aa963b, published by the owner from the clean
+`wt-release` worktree at that commit. `latest` names each new version; Course `beta` stays
+on beta.4, as the policy says. A global install one minute after publishing failed with
+ETARGET: npm metadata cache, not a failed publish (`--prefer-online` resolves it).
 
 **2026-10-17 — release completed.** Published and verified on the registry: code
 1.40.0, KB 1.23.0, marketing 0.18.0, Course 0.1.0-beta.4 (F1, F-068, F-069), tags
