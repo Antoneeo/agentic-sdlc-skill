@@ -1,10 +1,10 @@
 ---
 description: F-073 - readable chronology and parallel workstreams. One grammar for a dated entry, read by shared validator readers so F-072's chronology can parse events; `next:` holds only the next step; feature ids checked against every ref; the shared-log and shared-checkout defects answered with the smallest measured remedy.
-status: IN_PROGRESS
+status: COMPLETED
 feature: F-073
 id: F-073
 start_date: 2026-10-17
-end_date:
+end_date: 2026-10-17
 level: L3
 ---
 # Feature Analysis: readable chronology and parallel workstreams
@@ -385,7 +385,7 @@ No secrets, personal data, network or authorization surface is touched.
 - [x] C — doctrine: `templates.md` ×4, `SKILL.md` ×4; invariants.
 - [x] D — dogfood: `.gitattributes` stanza; four project notes reopened; `check` CLEAN.
 - [x] E — `SHARED_FILES` ×4, `shared_files.py --update` ×4, four batteries, drift guard; doctrine bytes and A3 runtime measured and reported to the owner.
-- [ ] F — closure review on the diff; `index`; CHANGELOG ×4; owner decides merge and release.
+- [x] F — closure review on the diff; `index`; CHANGELOG ×4; owner decides merge and release.
 - Out of this unit, for the owner: the duplicate `r19` in `vision/rulings.md` (a ledger row changes only by owner ruling); the untracked `agentic-sdlc-skill/` in the primary checkout; the registry not fitting the orientation cap; kb topic-node conflicts measured on the field machine.
 
 ## Test Strategy
@@ -479,3 +479,13 @@ skipped instead of reporting clean; F9 the Diary's mkt sentence corrected. Round
 WARN, folded: the reader table names `section_lines`; only refs that resolve to a commit are
 grepped (a tag on a blob no longer disables A3); output split on newline only, with a test across
 the batch boundary. Next: the owner's commit decision, then `mark` and closure.
+
+**2026-10-17 — closed: COMPLETED, merged into main by the owner.** Committed as 3accde9
+(implementation) and c394531 (`mark`), on the owner's approval; `check` CLEAN. No ADR: the
+readers and advisories follow the patterns already in place (shared readers in the spine,
+epoch-gated advisories, `git` shelled with fixed arguments as `mark` does), so no new
+architectural decision was taken. Left for the owner, outside this unit: the duplicate `r19`
+in `vision/rulings.md`; the untracked `agentic-sdlc-skill/` copy in the primary checkout;
+the registry not fitting the orient cap; kb topic-node conflicts measured on the field machine;
+whether marketing engagement HANDOFFs declare `level: L3` (A2) and how A3 should identify an
+engagement with no ANALYSIS; F-072 wiring its chronology to these readers. Release not decided.
