@@ -1,7 +1,7 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**Release completed (2026-10-17).** Published and verified on the registry: code
+**2026-10-17 — release completed.** Published and verified on the registry: code
 1.40.0, KB 1.23.0, marketing 0.18.0, Course 0.1.0-beta.4 (F1, F-068, F-069), tags
 v1.40.0 / kb-v1.23.0 / mkt-v0.18.0 / course-v0.1.0-beta.4 on 1b6d2c0. Published from
 the primary checkout at that commit: the tarballs equal a `git archive` of the tag
@@ -10,7 +10,7 @@ except for CRLF line endings. `latest` names each new version; Course `beta` and
 publishes on `latest` directly (2026-10-17 ruling, `GUIDE_release.md`). Next: ask the
 K-02 field to time `graph` and `check`; `--only` opens only if `graph` stays slow.
 
-**Release completed (2026-10-08).** Published and publicly verified: code 1.38.0,
+**2026-10-08 — release completed.** Published and publicly verified: code 1.38.0,
 KB 1.21.0, marketing 0.16.0 and Course 0.1.0-beta.2. Exact tagged export of
 61eb56e; all four public tarballs match SHA1 and SHA512. Stable latest aliases
 name the new releases; Course beta and latest both name beta.2 under Antonio's
@@ -19,7 +19,7 @@ direct registry verification without republishing. Fresh tests and package smoke
 passed; release reviews PASS. F-062 is COMPLETED; its Diary and release harness
 carry the durable record. C-001 stays open. Installed PC skills were not updated.
 
-**What the 2026-09-12 tranche does NOT claim.** The read surface GREW in all three
+**2026-09-12 — what the tranche does NOT claim.** The read surface GREW in all three
 lenses (+6.2% code, +8.2% kb, +7.8% mkt across all `.md`), even though the code and mkt
 contracts shrank: the cost moved out of the file `benefit` prints rather than falling,
 and kb received doctrine with no diet at all. The one blind A/B in the tranche returned
@@ -57,7 +57,7 @@ rule "a PASS is invalid on found-nothing" extends to APPROVALS.
 **Still owed in the devPNT repo**, not here: the governed `D-IC` artifact (sequence
 D-UC → D-IC → P-TM → E-ISP), from F-032.
 
-**Registry cleanup, 2026-09-12.** Nineteen workstream rows were closed at once: each had
+**2026-09-12 — registry cleanup.** Nineteen workstream rows were closed at once: each had
 been verified against the npm registry, the git tags and the merge state, and each was
 released or superseded while its row still said UNRELEASED, AWAITING MERGE or AWAITING
 PUBLISH. Their durable narrative is in the matching `solutions/ANALYSIS_*.md` Diary, and

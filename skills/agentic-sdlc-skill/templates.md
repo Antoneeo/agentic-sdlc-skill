@@ -216,7 +216,7 @@ Only for features spanning multiple ANALYSIS documents or multiple milestones: o
 
 The frontmatter is the source of truth for the feature state (the `features_history.md` index is generated from it).
 
-`domain:` and `checks:` are optional for ordinary analyses and only earn their place in a project where more than one lens is installed; a course ANALYSIS always declares `domain: course`. `checks:` names **portable checks** imported from another domain — e.g. `domain: knowledge` with `checks: [marketing.funnel]`. An imported check can only ADD findings, never relax what the owning domain requires, so importing one is always safe; naming a check this installation does not carry produces a visible warning, never a silent pass. `id:` is unique **within a domain**, and its prefix says which: `F-` code, `K-` knowledge, `M-` marketing, `C-` course. Projects that predate the prefixes keep their `F-` ids — uniqueness was already scoped to the one domain they have.
+`domain:` and `checks:` are optional for ordinary analyses and only earn their place in a project where more than one lens is installed; a course ANALYSIS always declares `domain: course`. `checks:` names **portable checks** imported from another domain — e.g. `domain: knowledge` with `checks: [marketing.funnel]`. An imported check can only ADD findings, never relax what the owning domain requires, so importing one is always safe; naming a check this installation does not carry produces a visible warning, never a silent pass. `id:` is unique **within a domain**, and its prefix says which: `F-` code, `K-` knowledge, `M-` marketing, `C-` course. Projects that predate the prefixes keep their `F-` ids — uniqueness was already scoped to the one domain they have. Choose a new unit's id **after fetching**, as the first id free on every branch and tag the checkout can see: `check` names an open L3 unit whose id another ref uses for a different analysis.
 
 ```markdown
 ---
@@ -367,8 +367,13 @@ checks: [marketing.funnel]      # optional — extra portable checks to run on t
      explicit alternative verification and reason. -->
 
 ## Diary / Current State
-<!-- updated at every milestone: where I am, last problem, next step.
-     It is the handoff source for this feature. -->
+<!-- One dated entry per event, newest last. Open every entry with its date, once:
+       **YYYY-MM-DD — label.** body
+     The latest entry IS the current state (where I am, last problem, next step),
+     dated the day it was written. An undated paragraph is read as part of the
+     dated entry above it, so a new event never starts undated; `####`
+     sub-headings inside an entry are fine. It is the handoff source for this
+     feature. -->
 ```
 
 Allowed frontmatter states: `PLANNED` | `IN_PROGRESS` | `COMPLETED` | `CANCELLED`. `COMPLETED` requires `end_date`. (The validator also accepts the deprecated Italian keys `stato`/`livello`/`data_inizio`/`data_fine` in existing projects.)
@@ -382,6 +387,7 @@ Allowed frontmatter states: `PLANNED` | `IN_PROGRESS` | `COMPLETED` | `CANCELLED
 ## Time-box
 ## What was tried
 ## Answer / Outcome
+<!-- open with **YYYY-MM-DD — label.**, dated the day the answer was reached -->
 ## Consequences
 <!-- max 1 page. Spike code is NOT mergeable: for production reclassify L2/L3. -->
 ```
@@ -732,12 +738,22 @@ and why two concurrent writers no longer collide on it. `details:` holds the *ot
 pointers (the ANALYSIS, a review log entry); the generator prepends this file's own
 name, so nothing points at itself by hand.
 
+`next:` is **the next concrete step, in one sentence** (at most 240 characters;
+`validate` notes a longer one on an L3 file updated under the rule). What happened,
+and the state of the work, go to the Diary as a dated entry: the registry is what
+`orient` shows at every session start, cut at a fixed size, so a paragraph here
+costs the next agent the rows below it.
+
 ## ai_docs/audit/project_notes.md — the registry's project-wide notes (source)
 
 Plain lines, no frontmatter, appended verbatim to the generated registry under
 `## Project-wide notes`. Release pending, environment quirks, anything true for
 everyone rather than for one workstream. It exists so that generating the registry
 cannot destroy notes that belong to no workstream.
+
+A note that records an **event** (a release, a migration, an incident) opens with its
+date — `**YYYY-MM-DD — label.**` — so it is read as one; a **standing** note (an
+environment quirk) stays undated, and is not an event.
 
 ## ai_docs/strategic/architecture.md and existing_features.md
 

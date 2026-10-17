@@ -3,6 +3,7 @@
 ## [Unreleased - 0.1.0-beta.5]
 
 ### Changed
+- F-073: one written form for a dated entry, `**YYYY-MM-DD — label.**`, is taught for Diary entries, spike outcomes and project notes that record an event, and shared readers (`entry_openers`, `request_entries`, `adr_date`, `frontmatter_date`) let a chronology list those events the same way the validator reads them. Three new advisories, which never fail a build, not even `--strict`: undated text in the Diary of an L3 analysis started on or after 2026-10-18; a HANDOFF `next:` longer than 240 characters on an L3 file updated on or after that date (`next:` now holds only the next step, and the state of the work goes to the Diary); and, in `check` only, an open L3 unit whose id another branch or tag uses for a different analysis (one `git grep` over local refs, silent without git). The doctrine now says to choose a new unit's id after fetching, and that a session sharing a checkout with another session works in its own git worktree.
 - The package publishes on npm `latest`, like the other three: `npm i @antoneeo/course-creator` installs the newest version with no separate promotion. The version keeps its `-beta.N` suffix and the README its experimental statement; the `beta` dist-tag no longer advances.
 
 ## [0.1.0-beta.4] - 2026-10-17

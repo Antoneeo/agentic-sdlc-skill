@@ -106,10 +106,10 @@ end_date:
 ## Test Strategy
 <Structural, source, explanation and simulated checks; human evidence limits.>
 ## Diary / Current State
-<Dated state and decisions.>
+<One dated entry per event, newest last, each opened **YYYY-MM-DD — label.**; the latest entry is the current state.>
 ```
 
-For parallel work, `audit/HANDOFF_[course].md` carries resume logistics, not a duplicate Diary. Its frontmatter includes `workstream: <slug>`. `audit/handoff.md` is the GENERATED workstream registry: convert existing handoffs all at once, then run `index`; do not edit the generated file by hand.
+For parallel work, `audit/HANDOFF_[course].md` carries resume logistics, not a duplicate Diary. Its frontmatter includes `workstream: <slug>`. `audit/handoff.md` is the GENERATED workstream registry: convert existing handoffs all at once, then run `index`; do not edit the generated file by hand. Its `next:` is the next concrete step in one sentence (at most 240 characters); the state of the work goes to the Diary as a dated entry. Choose a new course's id after fetching, as the first id free on every branch and tag.
 
 ## Course detail files — `solutions/courses/<slug>/`
 

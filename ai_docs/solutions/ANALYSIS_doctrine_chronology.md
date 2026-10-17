@@ -1,6 +1,6 @@
 ---
 description: F-073 - readable chronology and parallel workstreams. One grammar for a dated entry, read by shared validator readers so F-072's chronology can parse events; `next:` holds only the next step; feature ids checked against every ref; the shared-log and shared-checkout defects answered with the smallest measured remedy.
-status: PLANNED
+status: IN_PROGRESS
 feature: F-073
 id: F-073
 start_date: 2026-10-17
@@ -108,10 +108,10 @@ Normative form: the `OPENER` regex and `is_opener` in `probe_rules.py`, which sh
 
 | Event kind (F-072's list) | Rule | Reader | Check |
 |---|---|---|---|
-| ANALYSIS Diary entry | every entry starts with an opener; "current state" is the latest entry, dated the day it was written | `entry_openers(section_body(text, DIARY))` | **A1** |
+| ANALYSIS Diary entry | every entry starts with an opener; "current state" is the latest entry, dated the day it was written | `entry_openers(section_lines(text, DIARY)[1])` | **A1** |
 | Request-record entry | `### R<n> — YYYY-MM-DD — <label>`, unchanged (34/34 here, 54/54 on `feat/kb-site-spec`, 25/26 in the field) | `request_entries(text) -> (entries, unparsed)`; a non-matching heading is unparsed and named, never dropped | none (r26) |
 | Project note | a note recording an **event** opens with an opener; a **standing** note (an environment fact) stays undated and is not an event | `entry_openers(text)` | none: a check cannot tell an event from a standing fact |
-| Spike outcome | `## Answer / Outcome` opens with an opener dated the day the answer was reached | `entry_openers(section_body(text, OUTCOME))` | none |
+| Spike outcome | `## Answer / Outcome` opens with an opener dated the day the answer was reached | `entry_openers(section_lines(text, OUTCOME)[1])` | none |
 | Note / decision note (kb `corpus/notes/`) | frontmatter `date:` (existing; 236/236 in the field) | `knowledge.frontmatter_date(meta)` | existing kb checks |
 | Source document received (kb sidecar) | frontmatter `date:` = **the day the source was received** (stated now; the template showed the field without saying what it dates) | `knowledge.frontmatter_date(meta)` | existing |
 | Review-log row | the `date` cell (existing) | `sdlc_core.parse_review_log` | existing |
@@ -224,7 +224,7 @@ budget balances by itself.
    prints the message with its "same unit under its old name" clause — the declared
    residual, not a silence.
 7. F-072 can build its event list from `entry_openers`, `request_entries`,
-   `frontmatter_date`, `parse_review_log`, `adr_date` and `section_body` alone (checked
+   `frontmatter_date`, `parse_review_log`, `adr_date` and `section_lines` alone (checked
    on its branch after merge, by its owner — not in this unit).
 
 ## Interface Contract
@@ -380,11 +380,11 @@ No secrets, personal data, network or authorization surface is touched.
 
 ## Action Plan
 
-- [ ] A — readers, `CHRONOLOGY_EPOCH`, `NEXT_MAX_CHARS`, `adr_date`, `frontmatter_date` (TDD from `test_chronology.py`).
-- [ ] B — A1/A2 via `chronology_advisories` in `cmd_validate`; A3 via `ids_on_other_refs` in `cmd_check`; mkt wiring on both roots.
-- [ ] C — doctrine: `templates.md` ×4, `SKILL.md` ×4; invariants.
-- [ ] D — dogfood: `.gitattributes` stanza; four project notes reopened; `check` CLEAN.
-- [ ] E — `SHARED_FILES` ×4, `shared_files.py --update` ×4, four batteries, drift guard; doctrine bytes and A3 runtime measured and reported to the owner.
+- [x] A — readers, `CHRONOLOGY_EPOCH`, `NEXT_MAX_CHARS`, `adr_date`, `frontmatter_date` (TDD from `test_chronology.py`).
+- [x] B — A1/A2 via `chronology_advisories` in `cmd_validate`; A3 via `ids_on_other_refs` in `cmd_check`; mkt wiring on both roots.
+- [x] C — doctrine: `templates.md` ×4, `SKILL.md` ×4; invariants.
+- [x] D — dogfood: `.gitattributes` stanza; four project notes reopened; `check` CLEAN.
+- [x] E — `SHARED_FILES` ×4, `shared_files.py --update` ×4, four batteries, drift guard; doctrine bytes and A3 runtime measured and reported to the owner.
 - [ ] F — closure review on the diff; `index`; CHANGELOG ×4; owner decides merge and release.
 - Out of this unit, for the owner: the duplicate `r19` in `vision/rulings.md` (a ledger row changes only by owner ruling); the untracked `agentic-sdlc-skill/` in the primary checkout; the registry not fitting the orientation cap; kb topic-node conflicts measured on the field machine.
 
@@ -446,3 +446,36 @@ on the cost (A1, A2, A3, doctrine bytes) before implementation.
 **2026-10-17 — cost accepted (R8).** The owner accepted A1, A2, A3 and the doctrine
 bytes; the bytes are still measured at implementation and reported before release.
 Design committed on `doctrine-chronology`, not pushed. Next: implementation step A.
+
+**2026-10-17 — implemented, steps A–E; closure review next.** `test_chronology.py` was written
+first and run red (no `CHRONOLOGY_EPOCH`); 28 tests now green, and each declared mutation
+turns one red (block rule, level gate, epoch gate, the 240 cap, the unparsed list, refs not
+consulted, a closed unit's record counted, the mkt guard removed). Batteries green ×4: code
+280, kb 471, mkt 292, course 287; manifests identical; `npm pack` lists no test file.
+`check` here: the same 0 errors, 22 warnings, 16 advisories as before (criterion 2); `stale`
+fails only until closure's `mark`.
+
+Measured for the owner: A3 takes 0.33 s over this repository's 121 refs, with no collision;
+doctrine bytes (UTF-8 LF) are SKILL.md +529 per lens, templates.md +1,198 code, +1,289 kb,
++676 mkt, +316 course. `CHRONOLOGY_EPOCH` is 2026-10-18; A3 is skipped above 300 refs.
+
+Deviations from the design, both small: `id_advisories(root)` formats A3 once for the spine
+and for mkt (the design named only `ids_on_other_refs`); `ids_on_other_refs` returns one
+tuple per (id, other analysis) with every ref listed, so a branch and its remote print one
+line. A residual the design did not name: a marketing request record carries `unit:` and no
+`analysis:`, and identity is the ANALYSIS name, so a marketing engagement with no ANALYSIS
+is not checked by A3; the mkt CHANGELOG says so, and the mkt SKILL.md drops the coverage claim
+the other lenses make.
+
+**2026-10-17 — closure code review: FAIL, then PASS (2 rounds).** Same reviewer as the design,
+fresh context, read-only. Round 1, 1 BLOCK + 7 WARN + 1 CANNOT VERIFY, all fixed with a test
+each: F1 `entry_openers` now blanks comments like `undated_diary_lines`, so an entry under the
+template comment is an event to both; F2 A3 found nothing when the docs root sits in a repository
+subdirectory (prefix doubled); F3/F4 `git grep -z -n` with quotePath off, and only frontmatter
+keys count; F5 a new shared reader `section_lines` keeps the body unstripped, so A1 prints the
+file line and an indented first line is not an opener; F6 `--strict` exit codes asserted; F7 T8
+and T9 tested; F8 refs grepped in batches of 50, and a failed or timed-out scan says it was
+skipped instead of reporting clean; F9 the Diary's mkt sentence corrected. Round 2 PASS with 3
+WARN, folded: the reader table names `section_lines`; only refs that resolve to a commit are
+grepped (a tag on a blob no longer disables A3); output split on newline only, with a test across
+the batch boundary. Next: the owner's commit decision, then `mark` and closure.
