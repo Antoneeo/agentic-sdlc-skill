@@ -1,6 +1,6 @@
 ---
 name: course-creator
-version: 0.1.0-beta.4
+version: 0.1.0-beta.5
 description: Design and improve courses that teach a defined learner through sourced, progressive explanations. Use when the deliverable is instruction or a learning path; route corpus intake to kb-agentic and persuasive campaigns to marketing-agentic.
 author: Antonio Pinto (https://github.com/Antoneeo)
 copyright: (c) 2026 Antonio Pinto
@@ -48,7 +48,7 @@ Before authoring a governed artifact, know which tier is authoring and follow `r
 | A course is tested | `SIMULATION_REPORT.md` names both independent attempts, control, material version and limitations; no simulated PASS changes efficacy status. |
 | Real feedback arrives | `FEEDBACK_REPORT.md` identifies course/version/module and evidence; propose a course correction or a method improvement. |
 | L3 design or closure review | Append a `REVIEW_LOG.md` row with findings, tier, reviewer and verdict before claiming the gate passed. |
-| Concurrent work | Write `audit/HANDOFF_[course].md` with resume logistics; `audit/handoff.md` is the generated workstream registry rebuilt by `index`. |
+| Concurrent work | Write `audit/HANDOFF_[course].md` with resume logistics; `audit/handoff.md` is the generated workstream registry rebuilt by `index`. Its `next:` is the next concrete step in one sentence; what happened, and the state of the work, go to the Diary as a dated entry. |
 | A repeatable lesson from source or work | PROPOSE distilling a guide with provenance under `reference/`; Propose proactively when the knowledge would otherwise be lost. |
 
 An operative guide is not a dumping ground. Follow `guides.md`: source provenance and section-level fidelity make a guide useful in a later session.
@@ -91,7 +91,7 @@ Run `python <skill_dir>/scripts/sdlc_check.py course <slug> --root <project_root
 
 Read `feedback.md` when real learner feedback or observed use arrives. A single reproducible defect may justify correcting the course or proposing a skill guide or change. It does not prove effectiveness. Human effectiveness needs comparable learners, observable criteria, results including contrary cases and stated limits; a formal pilot is optional. Keep **efficacy not verified** until that evidence supports a different claim.
 
-Run `sdlc_check.py index` then `sdlc_check.py check`; include course material, Vision, ANALYSIS and documentation in the same change. Close with an independent diff review against the approved design, tests, and a truthful efficacy label. Isolate the work on its own branch/worktree for L3. Branch/worktree hygiene follows the project owner’s integration choice; do not discard unmerged work without authorization.
+Run `sdlc_check.py index` then `sdlc_check.py check`; include course material, Vision, ANALYSIS and documentation in the same change. Close with an independent diff review against the approved design, tests, and a truthful efficacy label. Isolate the work on its own branch/worktree for L3. A session that may run while another session uses the same checkout works in its **own git worktree**, and never switches branch, stashes, resets or runs `index` in a checkout another session may be using. Parallel work also shares ids: choose a new unit's id **after fetching**, as the first id free on every branch and tag the checkout can see (`check` names a collision while the unit is open). Branch/worktree hygiene follows the project owner’s integration choice; do not discard unmerged work without authorization.
 
 ## Operative Guides and memory
 

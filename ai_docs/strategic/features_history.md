@@ -62,3 +62,4 @@
 | F-069 | F-069 | code | L3 | COMPLETED | 2026-10-16 | 2026-10-16 | solutions/ANALYSIS_kb_graph_speed.md |
 | F-071 | Intent focus — the anti-myopia promise at the level of intent | code | L3 | PLANNED | 2026-10-04 |  | solutions/ANALYSIS_intent_focus.md |
 | F-072 | F-072 | code | L3 | IN_PROGRESS | 2026-10-16 |  | solutions/ANALYSIS_kb_site.md |
+| F-073 | F-073 | code | L3 | COMPLETED | 2026-10-17 | 2026-10-17 | solutions/ANALYSIS_doctrine_chronology.md |

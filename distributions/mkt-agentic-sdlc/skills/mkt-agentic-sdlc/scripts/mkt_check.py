@@ -735,6 +735,15 @@ def main(argv=None):
             code = max(code, sdlc_core.cmd_validate(root, strict=args.strict))
         code = max(code, knowledge.kb_validate_surface(root / sdlc_core.docs_dir(),
                                                        full=args.command == "check"))
+        # F-073 advisories: Report has no advisory channel and --strict fails on
+        # any warning, so they print here, outside Report, never in `code`. On an
+        # ai_docs root cmd_validate above already printed A1/A2 -- once is the
+        # contract. A3 has no other path: this overlay never calls cmd_check.
+        notes = [] if sdlc_core.docs_dir() == "ai_docs" else sdlc_core.chronology_advisories(root)
+        if args.command == "check":
+            notes += sdlc_core.id_advisories(root)
+        for a in notes:
+            print(f"[advisory] {a}")
     if code == 0:
         print(f"[OK] {args.command} clean "
               f"({len(rep.warnings)} warning(s))" if rep.warnings else f"[OK] {args.command} clean")

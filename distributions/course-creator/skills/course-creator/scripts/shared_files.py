@@ -51,6 +51,7 @@ SHARED_FILES = (
     "scripts/test_plan.py",
     "scripts/test_drift.py",
     "scripts/test_migrate.py",
+    "scripts/test_chronology.py",
     "scripts/test_merge_safety.py",
     "scripts/test_audit_refs.py",
     # the docs site (F-072): generator, its battery and its page
