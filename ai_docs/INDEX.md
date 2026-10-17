@@ -16,7 +16,7 @@ not manifested here.
 | `vision/features/VISION_kb_second_brain.md` | APPROVED | Feature vision for the kb-agentic "second brain" milestone - the recall reflex, the daily gesture, and the time cycle that keep a project KB honest over mont... |
 | `vision/features/VISION_vision_governance.md` | CURRENT | Feature vision for the Vision governance layer (ai_docs/vision/, Vision Gate) delivered in 1.4.0. |
 | `vision/principles.md` | DRAFT | Vision Principles |
-| `vision/project_vision.md` | APPROVED | (by Antonio Pinto — v6 2026-07-27, v7 amendment 2026-07-31, **v8 amendment 2026-08-01**) |
+| `vision/project_vision.md` | APPROVED | (by Antonio Pinto — v6 2026-07-27, v7 amendment 2026-07-31, v8 amendment 2026-08-01, **v9 amendment 2026-10-17**) |
 | `vision/roadmap.md` | DRAFT | Vision Roadmap |
 | `vision/roadmap_evoluzione_agenti.md` | DRAFT | Roadmap della milestone di evoluzione — subagent operativi, guide operative/KB agente, eliminazione conflitti di convivenza con devPNT e posizionamento open-... |
 | `vision/roadmap_evoluzione_agenti_v1.md` | SUPERSEDED | "Roadmap di evoluzione di agentic-sdlc: esecuzione a subagent operativi e strato di documentazione per la formazione degli agenti. Input per la prossima mile... |
