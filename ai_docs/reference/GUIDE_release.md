@@ -1,9 +1,9 @@
 ---
 description: How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish.
 status: CURRENT
-source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition; amended 2026-09-25 — plain `check` beside the hybrid one, `mark` inside the release commit, one tag per package, a pending 2FA is pending, not failed; amended 2026-10-08 — Course latest follows the newest published release for default installation).
+source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition; amended 2026-09-25 — plain `check` beside the hybrid one, `mark` inside the release commit, one tag per package, a pending 2FA is pending, not failed; amended 2026-10-08 — Course latest follows the newest published release for default installation; amended 2026-10-17 — Course publishes on latest like the stable packages, so no separate promotion).
 distilled_from: ai_docs/reference/.sources/release-runbook-course-creator.md
-source_hash: 543adc72dee5d86441b95103288989eb5096ddc664e6c62fe54f8ea10a131776
+source_hash: 9e02316e39428cad656b6d6ec1785e6d52c1c84f2283f208ff7e68f7374bfd69
 ---
 # Guide: Release
 
@@ -65,9 +65,11 @@ tags → merge → publish.
    release is normal: the others that did not change are skipped, not failures,
    and an interrupted run is resumed by re-running. It packs the WORKING TREE,
    so run it from the clean tagged checkout — step 5 must have happened first.
-   Stable packages default to `latest`; course declares `publishConfig.tag: beta`.
-   The script passes the channel explicitly and verifies that dist-tag. A beta
-   suffix alone does not select the channel. (snapshot §Publish, §publish_all.bat,
+   Every package publishes on `latest`: none declares `publishConfig.tag`, Course
+   included (its version keeps the `-beta.N` suffix). The script passes the channel
+   explicitly and verifies that dist-tag; a package that declared another channel
+   would get the isolation guard below. A beta suffix alone does not select the
+   channel. (snapshot §Publish, §publish_all.bat,
    §Stable and beta release amendment — 2026-10-02)
 
 ## How to verify it is done right
@@ -85,9 +87,8 @@ Before any commit/tag/publish, four checks:
    `python -m unittest discover -s skills/agentic-sdlc-skill/scripts -p "test_*.py"`
    all green (aggregates plan + orient + skill-invariants). A failing eval blocks
    the release; if `test_indexes_idempotent` fails, run `sdlc_check.py index` and re-run.
-After publish: verify each version and its intended `dist-tags.latest` or
-`dist-tags.beta`. For the owner-authorized Course promotion, verify beta and latest both name
-the newest published course version. See the amendment below.
+After publish: verify each version and its `dist-tags.latest`. Course needs no separate
+promotion since 2026-10-17 (see the policy below).
 On the first course publication (2026-10-02), npm also assigned latest despite
 explicit beta routing, and authenticated removal returned E400. The publisher
 rejects beta-only verification when the new prerelease is also latest, and rejects
@@ -97,16 +98,18 @@ or move other channels. (snapshot §Stable and beta release amendment — 2026-1
 
 ## Course default-install policy
 [source: release-runbook-course-creator.md#course-default-install-amendment--2026-10-08]
+[source: release-runbook-course-creator.md#course-on-the-normal-channel--2026-10-17]
 
-The owner requires default installation to receive the newest Course version.
-For 0.1.0-beta.2, run the publisher and its verification first, then explicitly
-set latest with `npm dist-tag add @antoneeo/course-creator@0.1.0-beta.2 latest`.
-Verify beta and latest both resolve to 0.1.0-beta.2. The version remains an
-experimental beta; the alias does not establish stability or learning efficacy.
-The existing publisher guard is unchanged and does not certify this dual-channel
-state. An already-promoted rerun can fail that guard after skipping publication;
-use direct registry checks to distinguish accepted publication from the intended
-owner-authorized promotion. Do not remove latest or move other package channels.
+The owner requires default installation to receive the newest Course version
+(2026-10-08), through the normal publication (2026-10-17). Course declares no
+`publishConfig.tag`, so `publish_all.bat` publishes it with `--tag latest` and
+verifies latest, like the stable packages; there is no separate promotion step. The
+version keeps its `-beta.N` suffix and the README its experimental statement: the
+channel does not establish stability or learning efficacy. The `beta` dist-tag no
+longer advances and is left on the last version it named. A version published before
+this change on beta only (0.1.0-beta.4) needs one owner-run promotion,
+`npm dist-tag add @antoneeo/course-creator@<version> latest` (browser 2FA), then a
+registry check. Do not remove latest or move other package channels.
 
 ## What to watch out for
 [source: release-runbook-course-creator.md#known-traps]

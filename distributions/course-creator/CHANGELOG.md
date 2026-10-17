@@ -1,5 +1,10 @@
 # Changelog
 
+## [Unreleased - 0.1.0-beta.5]
+
+### Changed
+- The package publishes on npm `latest`, like the other three: `npm i @antoneeo/course-creator` installs the newest version with no separate promotion. The version keeps its `-beta.N` suffix and the README its experimental statement; the `beta` dist-tag no longer advances.
+
 ## [0.1.0-beta.4] - 2026-10-17
 
 ### Changed
