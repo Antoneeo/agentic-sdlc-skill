@@ -1,5 +1,10 @@
 # Changelog
 
+## [Unreleased - 0.19.0]
+
+### Added
+- F-072: `scripts/docs_site.py --root <project>` writes a static, read-only website of what the agent reads in the project: what it is (reading guide, Vision, rules, documents), its open work with each next step verbatim, and — with a knowledge base — a map of topics, the facts with the exact passage each comes from, what an inferred fact rests on, and the source documents. It opens from disk with the network off, writes outside the docs root, changes nothing in it, and selects, ranks or recommends nothing. Each analysis opens with the chain the agent works through — Vision, use cases, flows and interfaces, risks, solution study, design and tests, merge brief and E2E script, Diary — the Vision's North Star is shown above the home page, and the guides have a page of their own: the guide router, the operative guides with when to read each, and the code-comprehension guides. The chronology page lists no event until the dated-entry rules of F-073 land. Shared by the four packages (generator, page and battery are byte-identical spine files).
+
 ## [0.18.0] - 2026-10-17
 
 ### Changed
