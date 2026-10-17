@@ -1596,5 +1596,28 @@ class SkillInvariants(unittest.TestCase):
             self.assertNotIn(tok, src, f"driver must not reference {tok} (T4)")
 
 
+class ChronologyDoctrine(unittest.TestCase):
+    """F-073, in every lens: the written form the readers parse is the one this
+    lens's templates teach, and SKILL.md carries the parallel-work clauses."""
+
+    FORM = "**YYYY-MM-DD — label.**"
+
+    def test_templates_teach_the_form_the_reader_parses(self):
+        tpl = read("templates.md")
+        self.assertIn(self.FORM, tpl)
+        sample = self.FORM.replace("YYYY-MM-DD", "2026-10-18") + " body"
+        self.assertEqual(sc.entry_openers(sample)[0][:2], ("2026-10-18", "label"),
+                         "the taught form must be one the shared reader reads")
+
+    def test_next_is_one_step_in_templates_and_skill(self):
+        for rel in ("templates.md", "SKILL.md"):
+            self.assertIn("next concrete step", read(rel), rel)
+
+    def test_skill_states_the_worktree_and_id_clauses(self):
+        skill = read("SKILL.md")
+        self.assertIn("own git worktree", skill)
+        self.assertIn("after fetching", skill)
+
+
 if __name__ == "__main__":
     unittest.main()

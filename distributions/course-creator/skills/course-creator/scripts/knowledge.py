@@ -125,6 +125,21 @@ def kb_unquote(value):
     return v
 
 
+def frontmatter_date(meta):
+    """A note's or a sidecar's `date:` as `YYYY-MM-DD`, or None (F-073).
+    Quotes stripped, a datetime suffix tolerated, an impossible date refused --
+    the one parser behind orient's recency probe and any chronology reader."""
+    m = re.match(r"(\d{4}-\d{2}-\d{2})", kb_unquote((meta or {}).get("date")))
+    if not m:
+        return None
+    try:
+        import datetime as _dt
+        _dt.date.fromisoformat(m.group(1))
+    except ValueError:
+        return None
+    return m.group(1)
+
+
 def kb_parse_scope(text):
     """'-' | 'from X' | 'until X' | 'from X until Y' | 'if <cond>' ->
     ('always',) | ('window', from, until) | ('if', cond). Raises on junk."""
@@ -1945,14 +1960,13 @@ def kb_cmd_orient(argv):
                     # it -- the file was already fully read, so the cap bought
                     # only failure. load_frontmatter is the authoritative
                     # reader (fence-bounded, so a column-0 date: in the body
-                    # still cannot misdate the note); kb_unquote covers quoted
-                    # dates; the prefix match tolerates a datetime suffix.
+                    # still cannot misdate the note); frontmatter_date covers
+                    # quoted dates and tolerates a datetime suffix.
                     meta = sdlc_core.load_frontmatter(
                         sdlc_core.read_text(p).splitlines()) or {}
-                    m = re.match(r"(\d{4}-\d{2}-\d{2})",
-                                 kb_unquote(meta.get("date")))
-                    if m:
-                        stamp = _dt.date.fromisoformat(m.group(1))
+                    day = frontmatter_date(meta)
+                    if day:
+                        stamp = _dt.date.fromisoformat(day)
                 except Exception:
                     pass
                 if stamp is None:
