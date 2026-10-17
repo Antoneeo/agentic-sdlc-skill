@@ -5,7 +5,7 @@
   "keywords": ["claude-code", "gemini-cli", "codex", "course-design", "skill", "ai-agent"],
   "author": "Antonio Pinto (https://github.com/Antoneeo)",
   "license": "Apache-2.0",
-  "publishConfig": { "access": "public", "tag": "beta" },
+  "publishConfig": { "access": "public" },
   "bin": {
     "course-creator-init": "scripts/init.js",
     "course-creator-install-skill": "scripts/postinstall.js"
