@@ -35,3 +35,11 @@ Context (agent): the session could not start on this machine (repository trust p
 ### R6 — 2026-10-17 — publish the handoff branch
 Context (agent): proposal to create branch `doctrine-chronology` from main with the HANDOFF, this record and the measurement, then commit and push, so the work can start on the other machine.
 > ok
+
+### R7 — 2026-10-17 — L2 work stays out of the chronology
+Context (agent): structured question during the analysis: should small fixes (L2, no analysis) leave a dated line in project notes so the chronology shows them, at the cost of a new mandatory L2 step?
+> No, keep L2 free (Recommended)
+
+### R8 — 2026-10-17 — cost accepted, commit the design
+Context (agent): next-step box after the design review PASS: "Do you accept the ceremony cost of the three advisories (A1, A2, A3) and the doctrine text?"
+> I accept the cost of A1, A2, A3 and the doctrine bytes. Commit the design on doctrine-chronology (no push yet).

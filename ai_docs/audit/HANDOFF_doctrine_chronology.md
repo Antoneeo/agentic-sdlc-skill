@@ -4,8 +4,8 @@ level: L3
 branch: doctrine-chronology
 status: PLANNED
 since: 2026-10-17
-next: measure the parallel-workstream issues (a)-(c), then write ANALYSIS_doctrine_chronology.md through the design review
-details: REQUEST_doctrine_chronology.md · harness_doctrine_chronology/misura_cronologia_2026-10-17.md
+next: implementation step A (readers, TDD from test_chronology.py); design approved and cost accepted (R8)
+details: ANALYSIS_doctrine_chronology.md · REQUEST_doctrine_chronology.md · harness_doctrine_chronology/
 updated: 2026-10-17
 ---
 
