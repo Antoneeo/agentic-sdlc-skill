@@ -160,13 +160,12 @@ guide says in one line when they appear. Rules shows the Vision, principles and 
 and links to Guides; it no longer lists guides.
 Result:
 
-### S13 — Chronology (acceptance 3) — after F-073
-Steps: once the dated-entry rules of F-073 are merged and the reader is in, open
-**Chronology** and the home's **Lately** block.
-Expected now (before F-073): the page says in one line that dated events appear as
-the documents record them, and lists none. Expected after: dated events, most recent
-first, each linking to its document; no analysis start or end, no state filter, no
-commit history.
+### S13 — Chronology (acceptance 3)
+Steps: open **Chronology**, then the home's **Lately** block.
+Expected: dated events, most recent first, each with its date, its label as written, the
+kind of document and a link that opens it; Lately shows the first ten. No analysis start
+or end date, no state filter, no commit history. On this repository (2026-10-17): 525
+events. A project with nothing dated shows the one-line empty message.
 Result:
 
 ## Regression scenarios

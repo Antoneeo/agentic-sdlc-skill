@@ -346,7 +346,7 @@ module).
 | the orientation's sources | EXISTS | `sdlc_core.orient_docs` |
 | topics, claims, cited paths; the catalog | EXISTS | `knowledge.kb_load_topics`, `kb_parse_claims`, `kb_claim_sources`, `memory_records` |
 | open workstreams; analyses; default domain | EXISTS | `sdlc_core.list_workstreams`, `list_analyses`, `project_default_domain` |
-| Diary section; review-log rows | EXISTS | `sdlc_core.section_body`, `parse_review_log` |
+| Diary section; review-log rows | EXISTS | `sdlc_core.section_lines`, `parse_review_log` |
 | sources and reading state; `derived_from` entries | EXISTS | `knowledge.kb_build_corpus_index`, `kb_coverage_cell`, `_kb_df_entries` |
 | commit and changed files; one file in four packages | EXISTS | `sdlc_core.git_head`, `git_changed_since`; `shared_files.py`, `test_drift.py` |
 | resolve a `derived_from` entry | INADEQUATE | the ladder is a closure inside `knowledge.kb_time_cycle`; the site's walk is tested against `kb_time_cycle`'s edges |
@@ -356,7 +356,7 @@ module).
 | lay out a graph; format Markdown; render a page | MISSING | none in the repository; stdlib has no Markdown renderer |
 
 New components: a **passage extractor** (reads exactly as `kb_check_locator`, cached per
-file); a **chronology reader** (the R22 rules plus `section_body` and
+file); a **chronology reader** (the R22 rules plus `section_lines` and
 `parse_review_log`); a **chain walker** (every branch of a replacement chain; inferred
 grounds, following only paths inside the docs root); a **graph layout** computed at
 generation (deterministic; a layout left to browser animation stays tangled in a
@@ -402,7 +402,7 @@ unit. Not touched: `sdlc_core.py`, `knowledge.py`, `entry_point.py`.
 
 1. `test_docs_site.py` with its three code-built fixtures, red.
 2. Data: orientation sources, project notes, work and units, documents, knowledge base.
-3. Passage extractor, chain walker; chronology reader once the R22 rules exist.
+3. Passage extractor, chain walker; chronology reader on the R22 rules (F-073).
 4. Formatter and sanitizer; layout; search index.
 5. Pages, strings table, look.
 6. Shared-file list and copies; packages, READMEs, CHANGELOGs, `SKILL.md` lines; workflows
@@ -468,3 +468,30 @@ reuses).
   agent's answer to R26 (the owner found the guides missing): a page of their own
   (`build_guides`, `pageGuides`); Rules keeps the Vision, principles and decisions. Round 4,
   run beyond the cap on the owner's instruction (R27): PASS.
+
+**2026-10-17 — chronology reader built on F-073; criterion 3 met.** F-073 merged into main
+and released in 1.41.0; this branch took main (879ff3b), and F-072's CHANGELOG entries moved
+to the next unreleased versions. `chronology(docs, pages)` now reads, with the validator's own
+readers: Diary entries and spike outcomes (`section_lines` + `entry_openers`, so an entry
+under the template comment is an event to both), dated project notes, request-record
+entries (`request_entries`), review-log rows (`parse_review_log`), decision records
+(`adr_date`), notes and sources received (`knowledge.frontmatter_date`). Tests first
+(`Criterion03Chronology`: red on the empty reader, then green); one string added,
+`event_spike` ("exploration outcome"). On this repository: 525 events (230 Diary, 208
+review rows, 62 request entries, 20 decisions, 5 project notes, no spike outcome yet in
+dated form), every one linking to its page; the probe's earlier 343 counted before the
+grammar existed. Labels are shown as written, markup included.
+
+**2026-10-18 — closure review of the chronology reader: FAIL, fixed.** Fresh-context reviewer,
+read-only; numbers reproduced (525 events on main), T5 held end to end. 1 BLOCK, 5 WARN: marketing
+spike outcomes live in `spikes/RESEARCH_*.md` and were not read (now read, with a test); a
+received source's event now opens its source page; shadow mirrors are skipped as
+`list_analyses` skips them (UC5); the reader test now patches `entry_openers` and sees the page
+change, and T5, marketing and shadow cases are tested; the tie rule is stated (between
+documents on one day the order is fixed, not a time order). Declared residual, owned by F-073:
+an opener with an impossible date (`2026-13-45`) is shown as written, since `entry_openers`
+does not validate the date.
+
+**2026-10-18 — round 2 PASS; its one WARN fixed.** A received source's event linked to
+`#/source/<name>` even on a project with no knowledge base, where that page does not exist;
+the link is now made only when `C.meta.has_kb`, otherwise the label stays text.

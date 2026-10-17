@@ -199,7 +199,8 @@
       return el("li", { "class": "event" },
         el("span", { "class": "date", text: e.date }),
         el("span", null, el("div", { "class": "kind", text: t("event_" + e.kind) }),
-           e.path ? docLink(e.path, e.label) : e.label));
+           e.source && C.meta.has_kb ? link("#/source/" + encodeURIComponent(e.source), e.label)
+             : e.path ? docLink(e.path, e.label) : e.label));
     }));
   }
 
