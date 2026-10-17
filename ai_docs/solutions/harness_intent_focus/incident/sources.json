@@ -1,0 +1,81 @@
+{
+  "captured": "2026-10-04",
+  "origin_tree": "D:\\SoftwareDev\\skill_sdlc\\agentic-sdlc-skill",
+  "branch": "codex/software-knowledge",
+  "base_commit": "2d5a5c67402487200fe5df3929d0b093fad6e761",
+  "state": "UNCOMMITTED working tree; memory.md and REVIEW reports include the 2026-10-04 Claude follow-up fixes (shared-file sync), design docs are GPT-authored",
+  "files": [
+    {
+      "snapshot": "ai_docs__vision__features__VISION_software_knowledge.md",
+      "origin": "ai_docs/vision/features/VISION_software_knowledge.md",
+      "sha256": "e8ff2f9308953d17be4a34c463a921c0f5ced798063d7bdd3af152255e7a122a",
+      "bytes": 3103
+    },
+    {
+      "snapshot": "ai_docs__solutions__ANALYSIS_software_knowledge.md",
+      "origin": "ai_docs/solutions/ANALYSIS_software_knowledge.md",
+      "sha256": "9b79e28d7c17753e4fc0f4f6bc431ddd36c21e4256ac774e1898bcf33152a2ff",
+      "bytes": 32870
+    },
+    {
+      "snapshot": "ai_docs__solutions__ANALYSIS_kb_evidence.md",
+      "origin": "ai_docs/solutions/ANALYSIS_kb_evidence.md",
+      "sha256": "449a32d4eaeffd4c301d521ae11f149c3709dd5fffd03d693d5c96abd5fa0d74",
+      "bytes": 24927
+    },
+    {
+      "snapshot": "ai_docs__solutions__DESIGN_software_knowledge_files.md",
+      "origin": "ai_docs/solutions/DESIGN_software_knowledge_files.md",
+      "sha256": "2a66db35d52484261ee51a6ebdfcd1ecd698ab99cafd39ef239cd2f694341a29",
+      "bytes": 29046
+    },
+    {
+      "snapshot": "ai_docs__audit__reviews__REVIEW_software_knowledge_design_2026-10-04.md",
+      "origin": "ai_docs/audit/reviews/REVIEW_software_knowledge_design_2026-10-04.md",
+      "sha256": "a185d810beeee3cad3b2354ab19194fef470734eae248d56f7187dd0a8faede1",
+      "bytes": 7099
+    },
+    {
+      "snapshot": "ai_docs__audit__reviews__REVIEW_software_knowledge_code_2026-10-04.md",
+      "origin": "ai_docs/audit/reviews/REVIEW_software_knowledge_code_2026-10-04.md",
+      "sha256": "fcc1927308ad6f7011137ce376722fd526b98edbd0044b912ef4da5d4ca6ae26",
+      "bytes": 5075
+    },
+    {
+      "snapshot": "ai_docs__audit__reviews__TEST_software_knowledge_2026-10-04.md",
+      "origin": "ai_docs/audit/reviews/TEST_software_knowledge_2026-10-04.md",
+      "sha256": "d464b6b7a2d54b3bbdf72840628851933bdcd814bf0b6191ba4ae9743a9faefd",
+      "bytes": 6628
+    },
+    {
+      "snapshot": "ai_docs__solutions__harness_software_knowledge__BEHAVIOR_RUBRIC.md",
+      "origin": "ai_docs/solutions/harness_software_knowledge/BEHAVIOR_RUBRIC.md",
+      "sha256": "ac9fcc129406a76b1ff0bdda5da97878478c30a0be96cfa3a58621610dfd07a0",
+      "bytes": 1585
+    },
+    {
+      "snapshot": "ai_docs__solutions__harness_software_knowledge__behavior__comparison.json",
+      "origin": "ai_docs/solutions/harness_software_knowledge/behavior/comparison.json",
+      "sha256": "c25131e4bc6eb669875607d49722d7d2698e61f29d6dc0a387fd67d1bbcc5dd9",
+      "bytes": 1081
+    },
+    {
+      "snapshot": "ai_docs__solutions__harness_software_knowledge__behavior__candidate__task1.txt",
+      "origin": "ai_docs/solutions/harness_software_knowledge/behavior/candidate/task1.txt",
+      "sha256": "61777f7f8d0623e721d7df82da3efeeaeaf515cc785111c98e25a08a7e50a487",
+      "bytes": 529
+    },
+    {
+      "snapshot": "ai_docs__solutions__harness_software_knowledge__behavior__candidate__task2.txt",
+      "origin": "ai_docs/solutions/harness_software_knowledge/behavior/candidate/task2.txt",
+      "sha256": "b376338ad297a90f16064c2da908108c76f204a78df5d70090deca6f02aa6ad1",
+      "bytes": 546
+    },
+    {
+      "snapshot": "skills__agentic-sdlc-skill__memory.md",
+      "origin": "skills/agentic-sdlc-skill/memory.md",
+      "sha256": "eacc7c3c4cd63f07d3ab93ca247f0b797cc1f25c41b9372963fd539409a47430",
+      "bytes": 9455
+    }
+  ]
+}
