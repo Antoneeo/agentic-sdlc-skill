@@ -1,6 +1,12 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
+**2026-10-17 — release 1.41.0 tagged, publication pending.** Code 1.41.0, KB 1.24.0,
+marketing 0.19.0, Course 0.1.0-beta.5 (F-073; Course also moves to `latest`). Tags
+v1.41.0 / kb-v1.24.0 / mkt-v0.19.0 / course-v0.1.0-beta.5 on the release commit. Next:
+`publish_all.bat` from a clean `git archive` of the tag (browser 2FA is the owner's), then
+verify each version and `dist-tags.latest`, and record the publication here.
+
 **2026-10-17 — release completed.** Published and verified on the registry: code
 1.40.0, KB 1.23.0, marketing 0.18.0, Course 0.1.0-beta.4 (F1, F-068, F-069), tags
 v1.40.0 / kb-v1.23.0 / mkt-v0.18.0 / course-v0.1.0-beta.4 on 1b6d2c0. Published from
