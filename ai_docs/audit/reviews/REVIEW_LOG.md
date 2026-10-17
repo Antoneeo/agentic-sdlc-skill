@@ -465,6 +465,10 @@ Design round 3 PASS, provisional under the cap: every round-1 and round-2 dispos
 
 Round 4 (owner-requested beyond the cap) FAIL: B1 test_docs_site.py listed in every package.json files, against GUIDE_release verification 1 (no test_*.py in the tarball); B2 criterion 5 requires inferred-ground counts equal to the probe's while the spec makes absolute derived_from paths untraceable and the probe follows them (field 152/25/13 vs 148/23/19), losing the statement notice on two facts. Majors: 'Features' generalised to every lens without an owner entry (unit_noun differs per lens); workflows line 444 '22 file condivisi' left stale; the working-documents tree misstated against the memory guide's exclusions; the criterion-16 test matches 16 existing lines. Ten WARNs incl. round-3 W5 and W6 not held. Back to the owner.
 
+| 2026-10-17 | ANALYSIS_kb_site.md (F-072) | design | deep (invoking session normal mode) | fresh-context subagent, rung 1, read-only; round 5 beyond the cap at owner request (REQUEST R21), review of the R20 rewrite (608 -> 367 lines), REVIEW MANDATE block | 21 | 21 | FAIL | 4 |
+
+Design round 5 FAIL, returned to the owner. B1 project-wide notes and the canonical manifest, read at orientation, appear on no page; B2 the chronology's 'selects nothing' is contradicted by 'Lately' and by a kind filter that selects ended units (r9), with no distinction lines and r29 unworded; B3 the ledger rules review-log and Diary readers MISSING while parse_review_log and section_body exist. Ten majors include the cut fact qualifiers (valid/qty/about), the removed r28 guard, forks in replacement chains, the sanitizer allow-list, chronology links to documents outside the site, and marketing projects having no analyses behind 'Engagements'. The same day the side session reported that dated entries are written in 15 forms and opened a doctrine unit for them (REQUEST R22).
+
 ## 2026-10-08 — family release 1.38.0 / 1.21.0 / 0.16.0 / beta.2
 
 | date | doc_key | tier | model | reviewer | findings_raised | findings_real | verdict | revise_rounds |

@@ -4,7 +4,7 @@ level: L3
 branch: feat/kb-site-spec
 status: PLANNED
 since: 2026-10-16
-next: owner decision on the round-4 rewrite; then merge origin/main into this branch (main moved to 1.40.0 and holds SPIKE_kb_viewer.md), commit and push for implementation on the owner's other machine
+next: implementation on the owner's other machine from this branch, after the dated-entry doctrine unit (REQUEST R22) on which the chronology depends
 details: ANALYSIS_kb_site.md · PROPOSAL_vision_v9_state_view.md · REQUEST_kb_site.md · harness_kb_site/probe.py
 updated: 2026-10-17
 ---

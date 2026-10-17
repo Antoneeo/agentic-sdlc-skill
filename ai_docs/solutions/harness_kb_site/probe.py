@@ -304,6 +304,32 @@ def main():
     analyses = sdlc_core.list_analyses(docs.parent if docs.name == "ai_docs" else docs)
     out["analyses"] = len(analyses)
     out["analyses_declaring_updated"] = sum(1 for a in analyses if (a[1] if isinstance(a, tuple) else {}).get("updated"))
+    # the chronology: dated events the documents declare, never git (R20, R23); read with the
+    # validator's own readers where they exist (section_body, parse_review_log)
+    date_re = r"(\d{4}-\d{2}-\d{2})"
+    ev = collections.Counter()
+    for a in analyses:
+        meta, text = a[1], a[2]
+        diary = sdlc_core.section_body(text, ("## Diary", "## Diario")) or ""
+        ev["analysis_diary_entries"] += len(re.findall(r"^- \*\*" + date_re, diary, re.M))
+    req = docs / "audit" / "requests"
+    if req.is_dir():
+        for p in req.glob("*.md"):
+            ev["request_entries"] += len(re.findall(r"^### R\d+ — " + date_re, sdlc_core.read_text(p), re.M))
+    if (docs / "corpus" / "notes").is_dir():
+        ev["notes_dated"] = sum(1 for p in (docs / "corpus" / "notes").glob("*.md")
+                                if re.match(date_re, str(frontmatter(p).get("date") or "")))
+    ev["sources_dated"] = sum(1 for p in sidecars if re.match(date_re, str(frontmatter(p).get("date") or "")))
+    log = docs / "audit" / "reviews" / "REVIEW_LOG.md"
+    if log.is_file():
+        rows_log, _unparsed = sdlc_core.parse_review_log(sdlc_core.read_text(log))
+        ev["review_rows"] = sum(1 for r in rows_log if re.match(date_re, str(r.get("date") or "")))
+    if (docs / "architecture").is_dir():
+        ev["decision_records"] = sum(1 for p in (docs / "architecture").glob("*.md") if re.search(date_re, p.name))
+    for k, v in sorted(ev.items()):
+        out["dated_" + k] = v
+    out["dated_entries_total"] = sum(ev.values())
+
     ws = sdlc_core.list_workstreams(docs.parent if docs.name in ("ai_docs", "mkt_docs") else docs)
     out["open_workstreams"] = len(ws)
     out["open_workstreams_declaring_updated"] = sum(1 for _, m in ws if str(m.get("updated") or "").strip())
