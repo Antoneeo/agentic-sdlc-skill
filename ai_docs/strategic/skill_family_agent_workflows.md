@@ -20,6 +20,13 @@ Il catalogo non è un quadro degli stati del lavoro: l'agente apre le fonti per
 distinguere proposta, approvazione e comportamento osservato. Nessun watcher,
 nessuna estrazione automatica di claim, nessuna nuova autorità sulla Vision.
 
+`docs_site.py --root <progetto>` (F-072, in tutti i pacchetti) scrive fuori da
+`ai_docs/` un sito statico e in sola lettura di ciò che l'agente legge per
+orientarsi e riprendere il lavoro: il progetto, il lavoro aperto con il passo
+successivo, le analisi, le regole, i documenti e, con una KB, mappa, fatti con il
+passaggio esatto della fonte e documenti sorgente. Si apre da disco senza rete;
+non seleziona, non ordina per stato fuori dalle viste di lavoro, non raccomanda.
+
 **Per chi**: il proprietario, e chiunque debba scegliere quale skill installare o
 capire perché un agente si comporta diversamente in quattro progetti.
 **Risponde a**: "cosa fa *concretamente* di diverso un agente sotto ogni lente".
@@ -51,6 +58,7 @@ gate, il vocabolario, i controlli — discende da quella scelta.
 | **Albero documenti** | `ai_docs/` | `ai_docs/` + `corpus/` + `topics/` | `mkt_docs/`, oppure `ai_docs/` migrato | `ai_docs/` + `solutions/courses/<slug>/` |
 | **File di dottrina propri** | `architect.md`, `tdd.md`, `debugging.md` | `taxonomy.md`, `distillation.md`, `reconciliation.md` | `frameworks.md`, `research.md` | `learning_design.md`, `source_check.md`, `simulation.md`, `feedback.md` |
 | **Comandi validator** | spina + memoria/KB condivisa | spina + memoria/KB condivisa | spina + `ledger`, `budget`, `funnel`, `trace` | spina + `course <slug>` |
+| **Sito dei documenti** (`docs_site.py`) | Features | Features + mappa, fatti, fonti | nessuna pagina delle unità | Courses |
 | **Validazione** | struttura, Component Map, memoria e integrità KB | struttura, memoria e integrità KB | evidenza e aritmetica | struttura del grafo didattico, ordine e riferimenti; qualità della spiegazione ed efficacia richiedono altri giudizi |
 
 ## La spina comune (identica byte per byte, su tutte e quattro)
@@ -441,7 +449,7 @@ il PASS dell'agente precede la proposta a devPNT, dove rivedi e approvi tu.
 - **DRY fra lenti**: un fatto ha una casa sola; le altre lo **citano, mai lo
   copiano** — un fatto ricopiato è un finding di review. I nomi ambigui per lente
   ("threat model", "vision", `handoff.md`) si qualificano sempre.
-- **La spina non può divergere**: 22 file condivisi byte-identici verificati dal
+- **La spina non può divergere**: 28 file condivisi byte-identici verificati dal
   drift guard a ogni build; i check portabili (`marketing.budget` su un documento
   kb con una tabella di budget, `knowledge.sources` altrove) si importano per
   nome e **aggiungono findings, mai autorità**.

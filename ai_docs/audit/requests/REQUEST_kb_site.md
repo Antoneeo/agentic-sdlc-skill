@@ -127,3 +127,23 @@ Context (agent): round 5 FAIL (21 findings) brought back; four structured questi
 > Doc in audit: «Pagina, non albero (Recommended)» — readable pages reached from the chronology and the home (project notes on the home too), the tree stays the catalog's
 > Marketing: «Niente pagina (Recommended)» — no units page on a marketing project
 > Poi: «Correggo e pubblico (Recommended)» — apply the fixes, commit and push without another round
+
+### R24 — 2026-10-17 — a feature's page shows the chain of its analysis
+Context (agent): implementation delivered and closure review passed; the owner was walking the generated site. The agent proposed a feature page showing the analysis as a chain of steps — Vision, use cases, flows and interfaces, risks, solution study, design and tests — and asked whether to proceed.
+> ma il cuore di agentic sdlc invece dovrebbe mostrare chiaramente VISION, use cases, flussi e interfacce, rischi, studio della soluzione e TDD
+>
+> si con anche i documenti per la merge request ed i test end 2 end
+
+### R25 — 2026-10-17 — the Vision's North Star in view
+Context (agent): message received while the agent was building the feature chain of R24.
+> direi se c'è anche la "north star" della vision, occorrerebbe metterla ben in vista
+
+### R26 — 2026-10-17 — the guides are missing
+Context (agent): the owner was walking the generated site; the guides were listed only inside the Rules page, under "How work is done" and "How it works", with no item named Guides.
+> ah.. una cosa importanet eche mi sembra mancare sono le guide
+
+Agent's proposal, not yet an owner statement: a Guides page of its own — the guide router first, then the operative guides with when to read each and their declared status, then the code-comprehension guides; Rules keeps the Vision, principles and decisions.
+
+### R27 — 2026-10-17 — a fourth review round, beyond the cap
+Context (agent): closure review round 3 FAIL, round cap reached; the round-3 fixes and the Guides page of R26 were done, not yet reviewed. Next-step box: "Run a 4th review round, beyond the limit?"
+> Yes: run a 4th scoped review round on the round-3 fixes and the Guides page (R26), then close.

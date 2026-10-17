@@ -1,6 +1,6 @@
 ---
 description: F-072 - docs site. A stdlib-only generator shared by the whole skill family shows the user, simply and visually, what the agent reads to orient itself and to resume work - what the project is, what was done and when, what is open and its next step, what is known - from the project's own documents, offline and read-only.
-status: PLANNED
+status: IN_PROGRESS
 feature: F-072
 id: F-072
 start_date: 2026-10-16
@@ -100,7 +100,8 @@ work*, *statement mark* — NEW.
 | Chronology | always | events the documents date |
 | Open work | always | the open-work register (each workstream's resume notes) and the project notes |
 | Features (code and knowledge projects) / Courses (course projects) | always in those lenses; **absent on a marketing project**, which keeps no analysis per engagement (R23) | each analysis |
-| Rules | always | Vision, principles, operative guides, decision records |
+| Rules | always | Vision, principles, decision records |
+| Guides | always | the guide router, operative guides, code-comprehension guides (R26) |
 | Documents | always | the documents the shared project-memory catalog lists (R17) |
 | Map, topics, facts | when there is at least one topic | the topic index and claim rows |
 | Source documents | when there is at least one source sidecar | sidecars |
@@ -113,8 +114,14 @@ will appear and when (R17).
 
 ### Home
 
+**The North Star first (R25).** When the Vision has a section whose title starts with
+"North Star", it is shown in full, as written, above the four blocks, with the Vision's
+status and a link to it; without one, the Vision's first section stays in **This project**
+and is not called a North Star.
+
 Four blocks, one per question, each opening its page: **This project** (the README's
-first heading and opening paragraph; the Vision's status and first section, as written;
+first heading and opening paragraph; the Vision's status, and its first section as written
+when the Vision has no North Star -- with one, the North Star is shown above the blocks;
 links to Rules and to the manifest); **Lately** (the ten most recent chronology events);
 **Open now** (each open workstream's name, status and next step, and the project notes);
 **What is known** (with a knowledge base, the areas and their topics).
@@ -147,6 +154,21 @@ parsing.
   assignee, owner, due date, iteration, team or role; nothing shipped tells an agent to
   choose, prefer, avoid, skip or order units from these pages.
 
+**A feature's page (R24).** An analysis opens as its document with, above it, the chain
+the agent works through, one step per row, each linking to its sections as written:
+**Vision** (Objective, Feature Vision or Vision Alignment) · **Use cases** · **Flows and
+interfaces** (Functional Spec, Interface Contract) · **Risks** (the lens's risk section:
+Security and Threat Model, Sources and Verification, Threat Map / Plan Risks, Learning and
+Content Risks) · **Solution study** (Capability Ledger, Impact) · **Design and tests**
+(Action Plan, Test Strategy) · **Merge and tests** (the unit's merge brief
+`MERGE_REVIEW_<feature>.md` and E2E script `E2E_TEST_<feature>.md`) · **Diary**. The request
+record `audit/requests/REQUEST_<feature>.md` and the project's North Star (R25) are linked
+beside the Vision. A step with no
+section says "Not in this analysis" — a fact about the document, never a score; the order
+of the document is unchanged; sections outside the chain stay where they are. Headings are
+matched with the validator's own section names; Hybrid governed artifacts are not on the
+filesystem and are out of scope.
+
 **Status words** (case-insensitive): `BLOCKED` blocked (1) · `PLANNED`, `TODO` planned (2) ·
 `IN_PROGRESS`, `PROGRESS` in progress (3) · `PAUSED`, `ON_HOLD` paused (4) · `COMPLETED`,
 `DONE` completed (5) · `CANCELLED` cancelled (6) · `ARCHIVED` archived (7) · anything else
@@ -159,9 +181,11 @@ and date only.
 
 ### Rules and documents
 
-**Rules**: the Vision (status shown as declared), principles, operative guides with their
-when-to-consult line, decision records — what the project has decided and how work is
-done. Code-comprehension guides appear under "How it works", not as rules. The canonical
+**Rules**: the Vision (status shown as declared), principles and decision records — what
+the project has decided. **Guides** (R26), a page of its own: the guide router first (which
+guide to read before which task), then the operative guides with their when-to-consult
+line and declared status, then the code-comprehension guides ("How it works") — how work
+is done here and how its complex parts work. The canonical
 manifest is shown as written, as a lookup inventory. **Documents**: the catalog's list by
 folder with plain folder names, title per entry, no status or date in the tree; a document
 page shows its frontmatter as labels and the body formatted. With a knowledge base, a
@@ -268,6 +292,11 @@ committed" (or "not a git repository"). Usable from 1024 px.
     verbatim and complete.
 14. The lines this unit adds to `SKILL.md`, READMEs and CHANGELOGs name the command and
     what the site shows, and tell no agent to choose or order units from it.
+15. Every analysis page shows the chain above the document: each step links to the
+    sections of that step as written, a step with none says so, the merge brief, the E2E
+    script and the request record are linked when they exist, and no step carries a count,
+    score or completeness mark (R24). The Vision's North Star, when it has one, is shown in
+    full above the home page's blocks and linked from every analysis's Vision step (R25).
 
 ## Interface Contract
 
@@ -297,7 +326,8 @@ and exit 1 when any; a note when the output folder is not git-ignored.
   ("Loading documents…").
 - *Search (UC6)*: `Ctrl+K` → results from the index built at generation → Enter opens.
 
-**Addresses**: `#/`, `#/chronology`, `#/work`, `#/units`, `#/rules`, `#/doc/<path>`,
+**Addresses**: `#/`, `#/chronology`, `#/work`, `#/units`, `#/rules`, `#/guides`,
+`#/documents`, `#/doc/<path>` (optionally `?at=<heading id>`),
 `#/map`, `#/map/<slug>`, `#/topic/<slug>`, `#/fact/<id>`, `#/sources`, `#/source/<name>`;
 back and bookmarks work. **Feedback**: an address for an absent page or a removed item
 shows "Not found — it may have changed since this site was generated" with a link home;
@@ -406,3 +436,35 @@ reuses).
   unit (R22); chronology reduced to dated events, audit documents given pages, no units
   page on marketing projects (R23). Review history: `REVIEW_LOG.md`,
   `audit/reviews/REVIEW_kb_site_design.md`.
+- **2026-10-17** — Implemented from this spec, TDD from `test_docs_site.py` (65 tests, three
+  code-built projects): generator, page, strings table, shared-file list and copies, four
+  packages, READMEs, CHANGELOGs, `SKILL.md` lines, workflows document, Component Map,
+  existing features, r29. F-073 is still open (handoff only), so the chronology reader is
+  not built: the page lists no event and says so (criterion 3 open). Probe green on this
+  repository; the site's counts match it (6 open, 59 analyses, 298 catalog documents).
+  The field-KB run stays on the owner's work machine. E2E script: `E2E_TEST_kb_site.md`.
+- **2026-10-17** — Owner walked the map in a browser pane: map navigation reworked (a
+  topic click opens it up close, Map always returns to the topics view, zoom buttons, a
+  collapsible legend, a top bar under 1000 px, system cursors), and every node labelled
+  wherever its whole label fits without colliding — fact text wrapped, never cut.
+  Closure review round 1 FAIL (2 BLOCK, 9 WARN): the statement mark was missing from
+  search hits and map labels and its test could not fail (now one title function, a
+  test enumerating every place fact text is shown, red under the old tooltip); an
+  unreadable file met by a shared reader crashed the run (now one guard over
+  `sdlc_core.read_text` for the run, tests patch the shared reader); home links now come
+  from `orient_docs`; the walk is checked against the file the time cycle reaches; the
+  `SKILL.md` line is 130 bytes and names no chronology.
+- **2026-10-17** — Owner rulings R24 (an analysis shows the chain the agent works through,
+  with its merge brief and E2E script) and R25 (the Vision's North Star in view): spec,
+  criterion 15 and their tests added first, then the generator (`analysis_chain`,
+  `chain_step` on the validator's own section names, `link_companions`, `vision_lead`) and
+  the page (`chainStrip`, the North Star banner).
+- **2026-10-17** — Closure review round 3 FAIL (1 BLOCK, 3 WARN): an analysis with no Vision
+  section showed its Vision step as filled because the North Star link sat in its list; now
+  only the step's own sections (and, for "merge and tests", its merge brief and E2E script)
+  decide "Not in this analysis", the North Star and request record sit beside it, and a test
+  runs the page's own `chainStrip` in Node (red under the old code). The Home paragraph and
+  the derived documents now name the chain and the North Star. Round cap reached. The
+  agent's answer to R26 (the owner found the guides missing): a page of their own
+  (`build_guides`, `pageGuides`); Rules keeps the Vision, principles and decisions. Round 4,
+  run beyond the cap on the owner's instruction (R27): PASS.

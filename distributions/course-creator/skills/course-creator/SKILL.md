@@ -13,6 +13,8 @@ Create a course that helps a specific learner understand and use something. The 
 
 This is the course lens of the Agentic SDLC family. It shares `vision.md`, `review.md`, `guides.md`, `routing.md`, `dispatch.md`, `memory.md`, `scripts/sdlc_core.py`, and `scripts/knowledge.py` with the other lenses. It adds `slide_content.md`, `templates.md`, `learning_design.md`, `source_check.md`, `simulation.md`, `feedback.md`, `elicitation.md`, `ENFORCEMENT.md`, `scripts/sdlc_check.py` and `scripts/course_check.py`. Read a support file when its phase needs it.
 
+`scripts/docs_site.py --root <project>`: writes an offline, read-only site of what the agent reads here, for the user to browse.
+
 ## Rule Zero: Triage and route
 
 If `agentic-sdlc`, `kb-agentic`, or `mkt-agentic-sdlc` is installed alongside this skill, consult `routing.md` for the owner of the **deliverable**, then declare the lens. L1 never reaches it. A course from supplied documents is course work; ingestion and verification of the corpus is a separate knowledge unit. A commercial campaign is marketing work. If the request contains distinct deliverables, split them before choosing a lens.
