@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KB Viewer</title>
+<style>
+:root {
+  --bg: #f6f5f1; --panel: #ffffff; --ink: #1f1e1b; --muted: #6b6a64; --faint: #a3a29b;
+  --line: #e3e1da; --accent: #2f6fb3; --accent-bg: #e6f0fa; --ok: #2f7a3e; --ok-bg: #e7f3e6;
+  --warn: #8a5a00; --warn-bg: #fbf0d6; --old: #8b8a84; --old-bg: #efeee9; --hit: #c98a00;
+  --mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #181816; --panel: #22221f; --ink: #ecebe6; --muted: #a3a29b; --faint: #6f6e68;
+    --line: #34332f; --accent: #7fb2ea; --accent-bg: #1f3247; --ok: #8fd19a; --ok-bg: #1f3324;
+    --warn: #f0c46a; --warn-bg: #3a2f14; --old: #8b8a84; --old-bg: #2b2b27; --hit: #f0c46a;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.5 system-ui, "Segoe UI", sans-serif; }
+header { padding: 14px 20px; border-bottom: 1px solid var(--line); display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap; }
+header h1 { font-size: 17px; font-weight: 600; margin: 0; }
+header .sub { color: var(--muted); font-size: 13px; }
+nav.tabs { margin-left: auto; display: flex; gap: 4px; }
+nav.tabs button { border: 1px solid var(--line); background: var(--panel); color: var(--ink); padding: 4px 12px; border-radius: 6px; cursor: pointer; font: inherit; }
+nav.tabs button[aria-selected="true"] { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); }
+main { display: grid; grid-template-columns: 280px minmax(0, 1fr) 420px; height: calc(100vh - 54px); }
+aside, section { overflow: auto; padding: 14px 16px; }
+aside { border-right: 1px solid var(--line); }
+#detail { border-left: 1px solid var(--line); background: var(--panel); }
+input[type=search] { width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel); color: var(--ink); font: inherit; }
+.hint { color: var(--muted); font-size: 12px; margin: 6px 0 12px; }
+.result { padding: 8px 10px; border-radius: 6px; cursor: pointer; border: 1px solid transparent; margin-bottom: 4px; }
+.result:hover { background: var(--panel); border-color: var(--line); }
+.path { font-size: 12px; color: var(--muted); }
+.path b { color: var(--accent); font-weight: 600; }
+.snippet { font-size: 13px; margin-top: 2px; }
+mark { background: var(--warn-bg); color: inherit; padding: 0 1px; }
+h2 { font-size: 15px; margin: 0 0 4px; }
+h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 18px 0 6px; font-weight: 600; }
+.chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chip { border: 1px solid var(--line); border-radius: 999px; padding: 1px 9px; font-size: 12px; background: var(--bg); }
+button.chip { cursor: pointer; color: var(--accent); font: inherit; font-size: 12px; }
+.claim { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; background: var(--panel); }
+.claim.superseded .text { color: var(--old); text-decoration: line-through; }
+.claim.flash { outline: 2px solid var(--accent); }
+.claim .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; font-size: 12px; color: var(--muted); }
+.badge { border-radius: 4px; padding: 0 6px; font-size: 11px; font-weight: 600; letter-spacing: .02em; }
+.b-ok { background: var(--ok-bg); color: var(--ok); }
+.b-contested { background: var(--warn-bg); color: var(--warn); }
+.b-superseded { background: var(--old-bg); color: var(--old); }
+.b-prov { background: var(--accent-bg); color: var(--accent); }
+.linkish { color: var(--accent); cursor: pointer; text-decoration: underline dotted; }
+details.src { margin-top: 8px; font-size: 12px; }
+details.src summary { cursor: pointer; color: var(--muted); font-family: var(--mono); }
+pre.excerpt { margin: 6px 0 0; padding: 8px; background: var(--bg); border-radius: 6px; font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; }
+pre.excerpt .cited { background: var(--warn-bg); display: block; }
+pre.excerpt .ln { color: var(--faint); user-select: none; display: inline-block; width: 3.2em; }
+.gap { color: var(--warn); }
+svg text { font: 13px system-ui, "Segoe UI", sans-serif; fill: var(--ink); }
+.node rect { fill: var(--panel); stroke: var(--line); stroke-width: 1.2; rx: 8; cursor: pointer; }
+.node.hit rect { stroke: var(--hit); stroke-width: 2.4; }
+.node.onpath rect { stroke: var(--accent); stroke-width: 1.8; }
+.node.selected rect { fill: var(--accent-bg); stroke: var(--accent); stroke-width: 2.4; }
+.node.dim { opacity: .35; }
+.node .syn { fill: var(--muted); font-size: 11px; }
+.edge { fill: none; stroke: var(--faint); stroke-width: 1.4; }
+.edge.onpath { stroke: var(--accent); stroke-width: 2.4; }
+.edge.about { stroke-dasharray: 5 4; }
+.legend { color: var(--muted); font-size: 12px; margin-top: 8px; }
+.empty { color: var(--muted); }
+.findings { background: var(--warn-bg); color: var(--warn); border-radius: 6px; padding: 8px 10px; font-size: 13px; margin-bottom: 10px; }
+.srcrow { border-bottom: 1px solid var(--line); padding: 10px 0; }
+.srcrow code { font-family: var(--mono); font-size: 12px; }
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: 2px 10px; font-size: 12px; margin-top: 4px; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; overflow-wrap: anywhere; }
+@media (max-width: 1100px) {
+  main { grid-template-columns: 1fr; height: auto; }
+  aside, #detail { border: 0; border-top: 1px solid var(--line); }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>KB · <span id="corpus"></span></h1>
+  <span class="sub" id="stats"></span>
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="graph" aria-selected="true">Grafo</button>
+    <button role="tab" data-tab="sources" aria-selected="false">Fonti</button>
+  </nav>
+</header>
+<main>
+  <aside>
+    <input type="search" id="q" placeholder="Cerca argomento, sinonimo o affermazione" autocomplete="off">
+    <p class="hint">Come fa l'agente: scende dalla radice seguendo ogni genitore, usa i sinonimi, poi legge le affermazioni del nodo.</p>
+    <div id="results"></div>
+  </aside>
+  <section id="center"></section>
+  <section id="detail"><p class="empty">Seleziona un argomento nel grafo o nei risultati.</p></section>
+</main>
+<script>
+const DATA = /*__DATA__*/null;
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const topics = new Map(DATA.topics.map(t => [t.slug, t]));
+const children = new Map(DATA.topics.map(t => [t.slug, []]));
+for (const t of DATA.topics) for (const p of t.parents) children.get(p)?.push(t.slug);
+const claimIndex = new Map();
+for (const t of DATA.topics) for (const c of t.claims) if (c.id) claimIndex.set(c.id, t.slug);
+const sourceMeta = new Map(DATA.sources.map(s => [s.path, s]));
+const state = { tab: 'graph', selected: null, query: '', hits: new Set() };
+
+function stateOf(c) {
+  const s = (c.state || '').trim();
+  if (s.startsWith('SUPERSEDED')) return { kind: 'superseded', by: s.split(/\s+/)[1]?.split(',') ?? [] };
+  if (s.startsWith('CONTESTED')) return { kind: 'contested', by: s.split(/\s+/)[1]?.split(',') ?? [] };
+  return { kind: 'ok', by: [] };
+}
+
+// Every root-to-node chain through every parent: the descent the agent walks.
+function descents(slug, seen = new Set()) {
+  const t = topics.get(slug);
+  if (!t || seen.has(slug)) return [[slug]];
+  const live = t.parents.filter(p => topics.has(p));
+  if (live.length === 0) return [[slug]];
+  const next = new Set(seen).add(slug);
+  return live.flatMap(p => descents(p, next).map(chain => [...chain, slug]));
+}
+
+// Layered layout: a node sits one row below its deepest parent.
+function layout() {
+  const depth = new Map();
+  const visit = (slug, seen = new Set()) => {
+    if (depth.has(slug)) return depth.get(slug);
+    if (seen.has(slug)) return 0;
+    seen.add(slug);
+    const ps = topics.get(slug).parents.filter(p => topics.has(p));
+    const d = ps.length ? Math.max(...ps.map(p => visit(p, seen))) + 1 : 0;
+    depth.set(slug, d);
+    return d;
+  };
+  DATA.topics.forEach(t => visit(t.slug));
+  const rows = [];
+  for (const [slug, d] of depth) (rows[d] ??= []).push(slug);
+  const avgX = new Map();
+  const pos = new Map();
+  const W = 190, H = 46, GX = 30, GY = 70;
+  rows.forEach((row, d) => {
+    row.sort((a, b) => {
+      const pa = topics.get(a).parents.map(p => avgX.get(p) ?? 0);
+      const pb = topics.get(b).parents.map(p => avgX.get(p) ?? 0);
+      const ma = pa.length ? pa.reduce((x, y) => x + y) / pa.length : 0;
+      const mb = pb.length ? pb.reduce((x, y) => x + y) / pb.length : 0;
+      return ma - mb || a.localeCompare(b);
+    });
+    row.forEach((slug, i) => {
+      const x = i * (W + GX);
+      pos.set(slug, { x, y: d * (H + GY), w: W, h: H });
+      avgX.set(slug, x);
+    });
+  });
+  const width = Math.max(...rows.map(r => r.length)) * (W + GX);
+  rows.forEach(row => {
+    const rowWidth = row.length * (W + GX);
+    row.forEach(slug => { pos.get(slug).x += (width - rowWidth) / 2 + GX / 2; });
+  });
+  return { pos, width, height: rows.length * (H + GY) };
+}
+const LAYOUT = layout();
+
+function renderGraph() {
+  const { pos, width, height } = LAYOUT;
+  const path = new Set(), pathEdges = new Set();
+  if (state.selected) for (const chain of descents(state.selected)) {
+    chain.forEach(s => path.add(s));
+    for (let i = 1; i < chain.length; i++) pathEdges.add(chain[i - 1] + '>' + chain[i]);
+  }
+  let edges = '';
+  for (const t of DATA.topics) for (const p of t.parents) {
+    const a = pos.get(p), b = pos.get(t.slug);
+    if (!a || !b) continue;
+    const x1 = a.x + a.w / 2, y1 = a.y + a.h, x2 = b.x + b.w / 2, y2 = b.y, my = (y1 + y2) / 2;
+    edges += `<path class="edge ${pathEdges.has(p + '>' + t.slug) ? 'onpath' : ''}" d="M${x1},${y1} C${x1},${my} ${x2},${my} ${x2},${y2}"/>`;
+  }
+  for (const t of DATA.topics) for (const c of t.claims) {
+    const m = /->\s*([\w-]+)/.exec(c.about || '');
+    const a = pos.get(t.slug), b = m && pos.get(m[1]);
+    if (!a || !b) continue;
+    edges += `<path class="edge about" d="M${a.x + a.w},${a.y + a.h / 2} L${b.x},${b.y + b.h / 2}"><title>${esc(c.about)}</title></path>`;
+  }
+  const filtering = state.query.trim() !== '';
+  let nodes = '';
+  for (const t of DATA.topics) {
+    const p = pos.get(t.slug);
+    const cls = ['node',
+      t.slug === state.selected ? 'selected' : '',
+      path.has(t.slug) && t.slug !== state.selected ? 'onpath' : '',
+      state.hits.has(t.slug) ? 'hit' : '',
+      filtering && !state.hits.has(t.slug) && !path.has(t.slug) ? 'dim' : ''].join(' ');
+    const syn = t.synonyms.slice(0, 2).join(', ');
+    nodes += `<g class="${cls}" data-slug="${esc(t.slug)}" transform="translate(${p.x},${p.y})">
+      <title>${esc(t.description)}</title>
+      <rect width="${p.w}" height="${p.h}"></rect>
+      <text x="12" y="${syn ? 20 : 28}">${esc(t.slug)}${t.status === 'SUPERSEDED' ? ' (tombstone)' : ''}</text>
+      ${syn ? `<text class="syn" x="12" y="36">${esc(syn)}</text>` : ''}</g>`;
+  }
+  const findings = [...DATA.graph_errors, ...DATA.graph_warnings];
+  $('#center').innerHTML = `
+    ${findings.length ? `<div class="findings">Il checker segnala: ${findings.map(esc).join('<br>')}</div>` : ''}
+    <svg viewBox="-10 -10 ${width + 20} ${height + 10}" width="100%" style="max-height: calc(100vh - 140px)">${edges}${nodes}</svg>
+    <p class="legend">Linee: genitore → figlio (un nodo può avere più genitori). Tratteggio: relazione <code>about</code>. In blu il percorso di discesa del nodo selezionato.</p>`;
+  $('#center').querySelectorAll('.node').forEach(n => n.addEventListener('click', () => select(n.dataset.slug)));
+}
+
+function excerptHtml(src) {
+  if (src.text == null) return `<pre class="excerpt">${esc(src.loc ? 'Locatore ' + src.loc + ': estratto non disponibile nello spike (solo #L).' : 'Nessun locatore.')}</pre>`;
+  const lines = src.text.split('\n');
+  return `<pre class="excerpt">${lines.map((ln, i) => {
+    const n = src.from + i;
+    const cited = n >= src.cited[0] && n <= src.cited[1];
+    return `<span class="${cited ? 'cited' : ''}"><span class="ln">${n}</span>${esc(ln)}</span>`;
+  }).join('')}</pre>`;
+}
+
+function sourceMetaHtml(path) {
+  const s = sourceMeta.get(path);
+  if (!s) return '';
+  const keys = ['provenance', 'date', 'origin', 'extracted_through', 'supersedes', 'basis'];
+  const rows = keys.filter(k => s.meta[k]).map(k => `<dt>${k}</dt><dd>${esc(s.meta[k])}</dd>`).join('');
+  return rows ? `<dl class="kv">${rows}</dl>` : '';
+}
+
+function claimHtml(c) {
+  const st = stateOf(c);
+  const by = st.by.map(id => `<span class="linkish" data-claim="${esc(id)}">${esc(id)}</span>`).join(', ');
+  const stateBadge = st.kind === 'ok' ? '<span class="badge b-ok">OK</span>'
+    : st.kind === 'contested' ? `<span class="badge b-contested">CONTESTATA</span> con ${by}`
+    : `<span class="badge b-superseded">SOSTITUITA</span> da ${by}`;
+  const about = /->\s*([\w-]+)/.exec(c.about || '');
+  const meta = [
+    stateBadge,
+    `<span class="badge b-prov">${esc(c.prov)}</span>`,
+    c.qty && c.qty !== '-' ? `quantità: ${esc(c.qty)}` : '',
+    c.valid && c.valid !== '-' ? `validità: ${esc(c.valid)}` : '',
+    about ? `relazione: <span class="linkish" data-topic="${esc(about[1])}">${esc(c.about)}</span>` : '',
+    `<span title="id calcolato da fonte, locatore e quantità">id ${esc(c.id || '—')}</span>`,
+  ].filter(Boolean).join(' · ');
+  const srcs = c.sources.map(s => `<details class="src"><summary>${esc(s.path)}${s.loc ? '#' + esc(s.loc) : ''}</summary>
+      ${excerptHtml(s)}${sourceMetaHtml(s.path)}</details>`).join('');
+  return `<div class="claim ${st.kind}" id="claim-${esc(c.id)}"><div class="text">${highlight(c.claim)}</div><div class="meta">${meta}</div>${srcs}</div>`;
+}
+
+function renderDetail() {
+  const t = topics.get(state.selected);
+  if (!t) { $('#detail').innerHTML = '<p class="empty">Seleziona un argomento nel grafo o nei risultati.</p>'; return; }
+  const chip = s => topics.has(s) ? `<button class="chip" data-topic="${esc(s)}">${esc(s)}</button>` : `<span class="chip">${esc(s)}</span>`;
+  const kids = children.get(t.slug) ?? [];
+  const live = t.claims.filter(c => stateOf(c).kind !== 'superseded');
+  const old = t.claims.filter(c => stateOf(c).kind === 'superseded');
+  $('#detail').innerHTML = `
+    <h2>${esc(t.slug)}</h2>
+    <div>${esc(t.description)}</div>
+    <div class="path" style="margin-top:6px">${descents(t.slug).map(ch => ch.map((s, i) => i === ch.length - 1 ? `<b>${esc(s)}</b>` : esc(s)).join(' › ')).join('<br>')}</div>
+    ${t.redirect_to ? `<p>Tombstone: rimanda a ${chip(t.redirect_to)}</p>` : ''}
+    <h3>Genitori</h3><div class="chips">${t.parents.map(chip).join('') || '<span class="empty">radice</span>'}</div>
+    <h3>Figli</h3><div class="chips">${kids.map(chip).join('') || '<span class="empty">nessuno</span>'}</div>
+    ${t.synonyms.length ? `<h3>Sinonimi</h3><div class="chips">${t.synonyms.map(s => `<span class="chip">${esc(s)}</span>`).join('')}</div>` : ''}
+    ${t.gaps.length ? `<h3>Lacune dichiarate dal nodo</h3>${t.gaps.map(g => `<div class="gap">• ${esc(g)}</div>`).join('')}` : ''}
+    <h3>Affermazioni in vigore</h3>${live.map(claimHtml).join('') || '<p class="empty">Nessuna.</p>'}
+    ${old.length ? `<h3>Sostituite (storia)</h3>${old.map(claimHtml).join('')}` : ''}
+    <p class="hint">File: <code>${esc(t.file)}</code></p>`;
+}
+
+function renderSources() {
+  const citing = new Map();
+  for (const t of DATA.topics) for (const c of t.claims) for (const s of c.sources)
+    (citing.get(s.path) ?? citing.set(s.path, []).get(s.path)).push({ t: t.slug, c });
+  $('#center').innerHTML = DATA.sources.map(s => {
+    const refs = citing.get(s.path) ?? [];
+    return `<div class="srcrow">
+      <span class="badge b-prov">${esc(s.kind === 'ruling' ? 'RULING' : s.meta.provenance || s.kind)}</span>
+      <code>${esc(s.path)}</code>
+      ${sourceMetaHtml(s.path)}
+      ${s.note ? `<div class="hint" style="margin:6px 0 0">${esc(s.note)}</div>` : ''}
+      <div class="chips" style="margin-top:6px">${refs.map(r => `<button class="chip" data-topic="${esc(r.t)}" data-claim="${esc(r.c.id)}" title="${esc(r.c.claim)}">${esc(r.t)} · ${esc(r.c.id)}</button>`).join('') || '<span class="empty">nessuna affermazione la cita</span>'}</div>
+    </div>`;
+  }).join('');
+}
+
+function highlight(text) {
+  const words = state.query.trim().toLowerCase().split(/\s+/).filter(w => w.length > 1);
+  let out = esc(text);
+  for (const w of words) out = out.replace(new RegExp('(' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi'), '<mark>$1</mark>');
+  return out;
+}
+
+function search() {
+  const words = state.query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  state.hits = new Set();
+  if (!words.length) { $('#results').innerHTML = ''; return; }
+  const has = s => words.every(w => s.toLowerCase().includes(w));
+  const items = [];
+  for (const t of DATA.topics) {
+    const by = has(t.slug) ? 'nome' : has(t.synonyms.join(' ')) ? 'sinonimo' : has(t.description) ? 'descrizione' : '';
+    if (by) { state.hits.add(t.slug); items.push({ slug: t.slug, html: `<div class="snippet">${highlight(t.description)}</div><div class="hint" style="margin:0">trovato per ${by}</div>` }); }
+    for (const c of t.claims) if (has(c.claim)) {
+      state.hits.add(t.slug);
+      items.push({ slug: t.slug, claim: c.id, html: `<div class="snippet">${highlight(c.claim)}</div>` });
+    }
+  }
+  $('#results').innerHTML = items.length ? items.map(it => `<div class="result" data-topic="${esc(it.slug)}" ${it.claim ? `data-claim="${esc(it.claim)}"` : ''}>
+      <div class="path">${descents(it.slug)[0].map((s, i, a) => i === a.length - 1 ? `<b>${esc(s)}</b>` : esc(s)).join(' › ')}</div>${it.html}</div>`).join('')
+    : '<p class="empty">Nessun argomento copre questa ricerca.</p>';
+}
+
+function select(slug, claimId) {
+  state.selected = slug;
+  if (state.tab !== 'graph') setTab('graph');
+  render();
+  if (claimId) {
+    const el = document.getElementById('claim-' + claimId);
+    el?.closest('details')?.setAttribute('open', '');
+    el?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    el?.classList.add('flash');
+    setTimeout(() => el?.classList.remove('flash'), 1600);
+  }
+}
+
+function setTab(tab) {
+  state.tab = tab;
+  document.querySelectorAll('nav.tabs button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === tab)));
+  render();
+}
+
+function render() {
+  if (state.tab === 'graph') renderGraph(); else renderSources();
+  renderDetail();
+}
+
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-topic], [data-claim]');
+  if (!el || el.closest('svg')) return;
+  const claim = el.dataset.claim;
+  const slug = el.dataset.topic ?? claimIndex.get(claim);
+  if (slug) select(slug, claim);
+});
+document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
+$('#q').addEventListener('input', e => { state.query = e.target.value; search(); render(); });
+
+const nClaims = DATA.topics.reduce((n, t) => n + t.claims.length, 0);
+$('#corpus').textContent = DATA.corpus;
+$('#stats').textContent = `${DATA.topics.length} argomenti · ${nClaims} affermazioni · ${DATA.sources.length} fonti`;
+select(DATA.topics.find(t => t.parents.length === 0)?.slug ?? null);
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "instructions\\SKILL.md": {
+    "origin": "C:\\Users\\apint\\.codex\\skills\\agentic-sdlc\\SKILL.md",
+    "sha256": "e7814add1489280435d404e4087860e6b84e8a69f75f98ca9bb6d6bde953bc59",
+    "bytes": 46563
+  },
+  "instructions\\review.md": {
+    "origin": "C:\\Users\\apint\\.codex\\skills\\agentic-sdlc\\review.md",
+    "sha256": "4070617586e559e1713bd8558c23823c3c3470585321928a00079ded41938404",
+    "bytes": 31782
+  },
+  "PROTOCOL.md": {
+    "sha256": "60dcbe01fa8c857c0e0979fdfe77034de6f6cd79d71ae24d458af5c16b68d83c",
+    "bytes": 3938
+  },
+  "trial_packet.md": {
+    "sha256": "1f2e9e1cfe8483162704ae8b6bfa9d358d7031a66c0d59c4342545233952d723",
+    "bytes": 2828
+  },
+  "fixture.py": {
+    "sha256": "51526861f18f9168128d5be1d35ad6e33569528d2e2c94da336d4864fc18a299",
+    "bytes": 1925
+  },
+  "probe.py": {
+    "sha256": "8f1172f0bb4255efa37500a59514f34804d9bac4c27c92645a1b3d0cda9ed388",
+    "bytes": 2726
+  }
+}

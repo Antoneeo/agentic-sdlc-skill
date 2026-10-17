@@ -8,6 +8,8 @@ Date: 2026-10-17 (UTC)
 | C-001 Corso kb-agentic e agentic-sdlc | L3 | main | IN_PROGRESS | 2026-09-27 | Owner reviews the delivered 4.0 PPTX; 4.0 source is committed on main, incorporate feedback there. No devPNT. | HANDOFF_course_agentic_sdlc_kb_agentic.md · ANALYSIS_course_agentic-sdlc-kb-agentic.md |
 | F-015 Code-Comprehension Guides | L3 | main | PAUSED | 2026-07-19 | dogfood #8: write one real `source_kind: code` guide | HANDOFF_comprehension_guides.md · ANALYSIS_comprehension_guides.md |
 | F-055 Apache-2.0 with NOTICE (four packages, two repositories) | L3 | feat/apache-license | DONE, AWAITING PUBLISH | 2026-09-13 | publish_all.bat from the repo root (owner's act, 2FA opens a browser per package; all three changed), then npm publish in distill-skill (2FA); then npm view returns code 1.34.0, kb 1.17.0, mkt 0.12.0, distill 0.9.0 | HANDOFF_apache_license.md · ANALYSIS_apache_license.md · harness_apache_license/probe.py |
+| F-070 "What's new" for users on the npm pages | L3 | main | PLANNED | 2026-10-13 | Elicitation round, then ANALYSIS_npm_whats_new.md (no devPNT). | HANDOFF_npm_whats_new.md · audit/requests/REQUEST_npm_whats_new.md |
+| F-071 Intent focus (anti-myopia at the level of intent) | L3 | main | PLANNED | 2026-10-04 | Owner answers open question 1 (was the "why" in the original request?); then elicitation round, design, replay harness red/green on the incident. | HANDOFF_intent_focus.md · solutions/ANALYSIS_intent_focus.md |
 | F-072 docs site (static site generated from ai_docs, shared by the family) | L3 | feat/kb-site-spec | PLANNED | 2026-10-16 | owner decision on the round-4 rewrite; then merge origin/main into this branch (main moved to 1.40.0 and holds SPIKE_kb_viewer.md), commit and push for implementation on the owner's other machine | HANDOFF_kb_site.md · ANALYSIS_kb_site.md · PROPOSAL_vision_v9_state_view.md · REQUEST_kb_site.md · harness_kb_site/probe.py |
 
 ## Project-wide notes
@@ -15,13 +17,14 @@ Date: 2026-10-17 (UTC)
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**Release prepared (2026-10-13), not yet published.** code 1.39.0, KB 1.22.0,
-marketing 0.17.0, Course 0.1.0-beta.3: F-066 (merge review brief, E2E script,
-`review-map`, code lens) and F-067 (verbatim request record, all four lenses).
-Release commit and tags v1.39.0 / kb-v1.22.0 / mkt-v0.17.0 / course-v0.1.0-beta.3
-exist locally on `release/1.39.0` (merges origin/main 77c7b54 with local main).
-Next, the owner's steps: push branch and tags, then `publish_all.bat` from a clean
-export of the tagged commit (browser 2FA per package), then verify dist-tags.
+**Release completed (2026-10-17).** Published and verified on the registry: code
+1.40.0, KB 1.23.0, marketing 0.18.0, Course 0.1.0-beta.4 (F1, F-068, F-069), tags
+v1.40.0 / kb-v1.23.0 / mkt-v0.18.0 / course-v0.1.0-beta.4 on 1b6d2c0. Published from
+the primary checkout at that commit: the tarballs equal a `git archive` of the tag
+except for CRLF line endings. `latest` names each new version; Course `beta` and
+`latest` both name beta.4 (one-time owner promotion). From the next release Course
+publishes on `latest` directly (2026-10-17 ruling, `GUIDE_release.md`). Next: ask the
+K-02 field to time `graph` and `check`; `--only` opens only if `graph` stays slow.
 
 **Release completed (2026-10-08).** Published and publicly verified: code 1.38.0,
 KB 1.21.0, marketing 0.16.0 and Course 0.1.0-beta.2. Exact tagged export of

@@ -170,7 +170,7 @@ from one strings table; the generator emits a fixed reason code with parameters.
 A value that marks a unit as available or next to take (`READY`, `NEXT`, `UP NEXT` and the
 like) is not a group: under v9 it is priority by another name, so it falls into "other
 status", shown as written, with no position of its own. (Field: 26 of 26 open workstreams
-and 45 of 45 analyses fall in groups 1–7; this repository: 3 of 4 workstreams — one
+and 45 of 45 analyses fall in groups 1–7; this repository: 5 of 6 workstreams — one
 declares a compound status, shown under "other status".)
 
 Content — titles, descriptions, fact text, document bodies, frontmatter values, next
@@ -290,7 +290,7 @@ Address `#/fact/<id>`; a row without an id: `#/fact/<topic>:<row number>`.
 The tree holds **the documents the shared project-memory catalog lists** (R17) — the docs
 root's `README.md` and the Markdown under the catalog's folders, leaving out hidden and
 harness folders, the raw corpus and the generated indexes — **plus the resume notes**,
-which Open work opens (field: 443 documents; this repository: 297). Folders carry plain
+which Open work opens (field: 443 documents; this repository: 303). Folders carry plain
 names (vision → "Vision and rules", strategic → "Architecture and catalog", architecture
 → "Decisions", reference → "Guides", solutions → "Analyses and specifications", topics →
 "Topics", corpus/notes → "Notes", resume notes → "Resume notes"), others their path;
@@ -437,9 +437,9 @@ which would shadow Python's standard `site` module when run from its own folder.
 |---|---|---|---|
 | resolve the docs root (`ai_docs`, `mkt_docs`) | EXISTS | `sdlc_core.resolve_docs_dir`, `DOCS_DIR_CANDIDATES` | re-read |
 | read topics, claim rows, cited paths | EXISTS | `knowledge.kb_load_topics`, `kb_parse_claims`, `kb_claim_sources` | probe: 74 topics, 5,626 rows, 0 parse errors; 0 topics here |
-| list the working documents | EXISTS | `knowledge.memory_records` (the catalog) + `sdlc_core.list_workstreams` | probe: 443 field, 297 here |
+| list the working documents | EXISTS | `knowledge.memory_records` (the catalog) + `sdlc_core.list_workstreams` | probe: 443 field, 303 here |
 | read frontmatter, text | EXISTS | `sdlc_core.load_frontmatter`, `read_text` | probe executes the multi-line drop |
-| list analyses; id order; default domain | EXISTS | `sdlc_core.list_analyses`; the sort in `sdlc_core.build_index`; `sdlc_core.project_default_domain` | probe: 45 field, 57 here |
+| list analyses; id order; default domain | EXISTS | `sdlc_core.list_analyses`; the sort in `sdlc_core.build_index`; `sdlc_core.project_default_domain` | probe: 45 field, 59 here |
 | one row per source with reading state | EXISTS | `knowledge.kb_build_corpus_index`, `kb_coverage_cell` | re-read: seven outcomes as labelled above |
 | commit, changed files | EXISTS | `sdlc_core.git_head`, `git_changed_since` | re-read |
 | parse `derived_from` entries | EXISTS | `knowledge._kb_df_entries` | used by `kb_time_cycle` |

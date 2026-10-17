@@ -1,0 +1,104 @@
+{
+  "variant": "baseline",
+  "scope": "synthetic functional mechanism only",
+  "cases": [
+    {
+      "case": "complete_catalogue",
+      "expected": {
+        "state": "delivered",
+        "content": "Atlas\nOrion"
+      },
+      "observed": {
+        "state": "blocked",
+        "content": null
+      },
+      "passed": false
+    },
+    {
+      "case": "empty_complete_catalogue",
+      "expected": {
+        "state": "delivered",
+        "content": ""
+      },
+      "observed": {
+        "state": "blocked",
+        "content": null
+      },
+      "passed": false
+    },
+    {
+      "case": "complete_summary",
+      "expected": {
+        "state": "delivered",
+        "content": "Atlas"
+      },
+      "observed": {
+        "state": "delivered",
+        "content": "Atlas"
+      },
+      "passed": true
+    },
+    {
+      "case": "declared_failure",
+      "expected": {
+        "state": "blocked",
+        "content": null
+      },
+      "observed": {
+        "state": "blocked",
+        "content": null
+      },
+      "passed": true
+    },
+    {
+      "case": "partial_catalogue",
+      "expected": {
+        "state": "blocked",
+        "content": null
+      },
+      "observed": {
+        "state": "blocked",
+        "content": null
+      },
+      "passed": true
+    },
+    {
+      "case": "malformed_catalogue",
+      "expected": {
+        "state": "blocked",
+        "content": null
+      },
+      "observed": {
+        "state": "blocked",
+        "content": null
+      },
+      "passed": true
+    },
+    {
+      "case": "unknown_contract",
+      "expected": {
+        "state": "blocked",
+        "content": null
+      },
+      "observed": {
+        "state": "blocked",
+        "content": null
+      },
+      "passed": true
+    },
+    {
+      "case": "stop_dominates",
+      "expected": {
+        "state": "stopped",
+        "content": null
+      },
+      "observed": {
+        "state": "stopped",
+        "content": null
+      },
+      "passed": true
+    }
+  ],
+  "passed": 6,
+  "total": 8
+}
