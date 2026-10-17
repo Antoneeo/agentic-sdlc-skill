@@ -924,3 +924,41 @@ not a defect. Open for the owner: an APPROVED gate delegates "milestones and
 sequencing" to a document whose own status is DRAFT, and neither document states what
 a DRAFT delegate binds — this is the promotion question itself.
 
+## Round 12 — 2026-10-16/17, the v9 amendment (read-only state view), two rounds
+
+Gate lens, fresh context, a different model from the author, the full candidate (Vision
+plus ledger) and nothing else. Round 1: 21 reject-side and 11 accept-side proposals;
+round 2 confirming on the fixed text. Both **PASS-conditional**, no BLOCK, no
+ledger-class attack through; every finding answered in
+`solutions/PROPOSAL_vision_v9_state_view.md`, approved by the owner 2026-10-17.
+
+### New standing fixtures (rewords that worked at least once — keep)
+
+1. **Declared ordering field.** The state view ordered by a `priority:`/`rank:` field the
+   documents declare — "declared, not computed". *Class: a bar on computation does not
+   bar a declared value that does the same job.* Closed: the order is fixed.
+2. **Hand-kept copy of the collection.** A table in an operative guide, one row per unit
+   with its declared status. *Class: an admission for a generated surface read as an
+   admission for any surface.* Closed: derived mechanically; hand- or agent-kept copies out.
+3. **Queue-meaning status.** `status: NEXT_UP` / `READY` shown as a column. *Class: a
+   status vocabulary that is open lets priority in as a status.* Closed by effect.
+4. **Assignment in free text.** "assign to Bob" / "P0" written into `next:`. *Class:
+   a field shown verbatim carries what the structured bars forbid.* Closed: shown
+   verbatim, never parsed or highlighted; templates never ask for it.
+5. **Direction as a queue.** Oldest-updated first. *Class: an admitted sort key with an
+   unfixed direction becomes a staleness queue.* Closed: direction fixed.
+6. **Computation moved into the producer.** A validator writes `ready:`/`STALE` into
+   frontmatter; the view shows the "declared" value. Closed: a tool-written computed
+   value is computed, whoever stores it.
+7. **Launcher.** "Open in agent" on each card. Closed: launching an agent against a
+   unit starts it.
+8. **Tracker by documents.** One document per issue, each declaring its status, shown
+   read-only. Closed: a shipped mechanism or template whose purpose is to open, number,
+   file or close work items is a tracker.
+
+### Recorded, not caused by v9 (separate units)
+
+- A new triage level cannot be admitted through the amendment rule (it has no
+  justification apart from itself).
+- `sdlc_check.py stale` outputs a validator-judged stale set; r9 rejects that shape.
+- Two ledger rows carry the id r19.

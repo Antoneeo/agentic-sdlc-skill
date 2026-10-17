@@ -1,5 +1,5 @@
 # Project Vision
-Status: APPROVED (by Antonio Pinto — v6 2026-07-27, v7 amendment 2026-07-31, **v8 amendment 2026-08-01**)
+Status: APPROVED (by Antonio Pinto — v6 2026-07-27, v7 amendment 2026-07-31, v8 amendment 2026-08-01, **v9 amendment 2026-10-17**)
 
 *Binding authority for the Vision Gate. Provenance and revision history at the end of this document.*
 
@@ -224,19 +224,57 @@ bind the same way.
   generated output, procedure, or a standing instruction the agent follows are all
   the same thing here, and it makes no difference whether the answer is stored or
   derived on demand and never written down. Sequencing the steps inside one approved
-  change is not this. Two consequences, because both have been reached in practice:
-  a view assembled only from fields this rule admits, sorting and filtering nothing,
-  is still out — collecting each document's own state into one surface is itself the
-  capability; and a guide whose body is a procedure for producing that answer is out
-  for the same reason, being an instruction we ship. In: an ANALYSIS whose
-  own frontmatter says `IN_PROGRESS`. Out: a manifest view listing the ones that
-  are. The generated manifest is the permitted form: an inventory of what exists and
-  whether each document is current, ordered for lookup and carrying no further
-  per-document state. The discriminator, stated because the two sentences above meet
-  on real cases: **the manifest answers a lookup about a document you name; anything
-  whose output is the set that is not current — or any other selection by state —
-  answers what to do next, and is out.** It crosses the line the moment it is
-  reorganized, or enriched with such state, to serve that second question.
+  change is not this. Two consequences, because both have been reached in practice: a guide whose body is a
+  procedure for producing that answer is out, being an instruction we ship; and a view
+  is judged by what it computes, not by what it collects.
+  **One collected form is admitted, the read-only state view** (v9). It gathers the
+  state each document declares about itself in its own fields — a workstream's
+  registry fields, an analysis's own status, declared level and dates, the next step it
+  writes for itself — and shows it grouped by status. It is admitted only while all of
+  these hold:
+  - **It is derived mechanically from the documents' own fields, each time it is
+    produced.** A file regenerated from those fields by a command we ship, never edited
+    by hand and checked by the validator against its sources (the generated workstream
+    registry is one), is such a derivation. A hand-kept or agent-kept copy of the
+    collection — in a guide, a document or a field — is out; so is a field a tool we
+    ship writes from a computation (that value is computed, whoever stores it).
+  - **It computes nothing the documents do not state**: no score, priority, rank,
+    readiness, freshness, age, recommendation, estimate, forecast, count, total,
+    percentage, velocity or burndown. A date is a date a document declares in its own
+    fields, never a file or commit time.
+  - **Its order is fixed**: status groups with blocked first and then the lifecycle,
+    and within a group the most recently updated first by the declared date; or the
+    lookup order of the generated manifest. No other order is admitted: no ordering
+    field, declared or computed (`priority`, `rank`, `order`), no other direction, and
+    no status that exists to mark a unit as available or next to take (`next`, `ready`,
+    `up next`): those are priority by another name. Lifecycle statuses (planned, in
+    progress, blocked, paused, completed, cancelled) are not.
+  - **It is read-only.** The only action is opening a document to read it, in a viewer
+    or editor. Nothing is edited, acknowledged, claimed or written back from it, and
+    nothing starts work on a unit: a control that launches an agent against a unit
+    starts it, and is out.
+  - **It carries no assignment**: no person, agent, team or role as the one who must do
+    it, no assignee or owner field, no due, target or review-by date, no sprint or
+    iteration. A next step is shown verbatim and never parsed, extracted or highlighted;
+    templates and guidance we ship ask for the step only, never for a name, role,
+    urgency or order, and such text in a document is that document's defect, not an
+    admitted feature of the view.
+  - **Nothing we ship or instruct tells an agent to choose, prefer, avoid, skip or order
+    units from it.**
+  
+  What separates this from the tracker that stays out is how units come to exist: a
+  unit here is a document the methodology already requires (a workstream's resume
+  notes, an analysis), created when the work needs it. A shipped mechanism or template
+  whose purpose is to open, number, file or close work items is a tracker, whatever
+  view shows them. Everything else this rule names stays out, under any name: a
+  tracker, an editable board, assignment, sprints, velocity, burndown, and any output —
+  stored or derived, view, field or procedure — whose answer to "what next, in what
+  order, by whom" goes beyond showing what the documents themselves declare. In: an
+  ANALYSIS whose own frontmatter says `IN_PROGRESS`; the generated manifest, an
+  inventory ordered for lookup; a read-only view showing every analysis grouped by its
+  declared status. Out: that view with a "ready next" column, an assignee, a due date,
+  a priority order, a count per status, an "open only" filter, or a button that
+  changes, claims or starts a unit.
 - **One triage authority per kind of work.** Exactly one thing may classify any
   given change. A second authority over work something here already governs is out —
   whether it arrives as a sibling skill, as a mode or profile inside an existing one,
@@ -418,6 +456,18 @@ superseded drafts inside the entries below describe text **not in the current
 document** — a cold reader applies what the sections above state, never a rule an
 entry says was once drafted.
 
+- **v9 — 2026-10-17, APPROVED by Antonio Pinto ("Approvo il testo v9 così com'è").** Amends Non-Goal 1: admits
+  the read-only state view under six conditions. It advances the Goal "keep
+  understanding durable across sessions" and the team-lead Actor's "one source of
+  truth": what each unit declares about itself is seen together, and nothing is
+  decided for the reader. Owner decision 2026-10-16
+  (`audit/requests/REQUEST_kb_site.md` R11), ruled apart from F-072, which depends on
+  it; it also reconciles the text with the workstream registry (F-019) and feature
+  history the product already generated. Blind round 1 PASS-conditional (four rewords
+  closed); confirming round 2 PASS-conditional (fixed order and direction, declared
+  dates only, generated-file derivation, free-text next step, the launcher, the
+  tracker distinction, r9 reconciled). Disposition:
+  `solutions/PROPOSAL_vision_v9_state_view.md`.
 - **v8 — 2026-08-01, APPROVED by Antonio Pinto ("promuovi").** F-023. Amends
   `## The admission test`, restated by function after the owner rejected the
   surface-hardening trajectory ("stiamo curando la superficie e perdendo di vista la
