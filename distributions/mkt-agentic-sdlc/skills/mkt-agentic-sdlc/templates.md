@@ -461,7 +461,8 @@ status: DRAFT
 ## Time-box
 ## Method & sources
 ## Answer / Outcome
-<!-- ledger rows created: EV-nn..EV-mm -->
+<!-- open with **YYYY-MM-DD — label.**, dated the day the answer was reached;
+     ledger rows created: EV-nn..EV-mm -->
 ## Consequences
 <!-- max 1 page. For strategy decisions, feed into E2/E3. -->
 ```
@@ -644,12 +645,22 @@ and why two concurrent writers no longer collide on it. `details:` holds the *ot
 pointers (the ANALYSIS, a review log entry); the generator prepends this file's own
 name, so nothing points at itself by hand.
 
+`next:` is **the next concrete step, in one sentence** (at most 240 characters;
+`validate` notes a longer one on an L3 file updated under the rule). What happened,
+and the state of the work, go to the Diary as a dated entry: the registry is what
+`orient` shows at every session start, cut at a fixed size, so a paragraph here
+costs the next agent the rows below it.
+
 ## audit/project_notes.md — the registry's project-wide notes (source)
 
 Plain lines, no frontmatter, appended verbatim to the generated registry under
 `## Project-wide notes`. Release pending, environment quirks, anything true for
 everyone rather than for one workstream. It exists so that generating the registry
 cannot destroy notes that belong to no workstream.
+
+A note that records an **event** (a release, a migration, an incident) opens with its
+date — `**YYYY-MM-DD — label.**` — so it is read as one; a **standing** note (an
+environment quirk) stays undated, and is not an event.
 
 ## strategic/architecture.md and existing_features.md (under the docs root)
 

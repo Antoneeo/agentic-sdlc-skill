@@ -8,3 +8,8 @@ ai_docs/reference/.sources/** -text
 # that rewrote their line endings would fail the test for a reason that has
 # nothing to do with the validator's behaviour.
 skills/agentic-sdlc-skill/scripts/fixtures/** -text
+
+# agentic-sdlc: the review log is append-only and its rows are date-stamped,
+# so a union merge keeps both sides instead of asking a human to pick one.
+# (init.js writes this for every user; this repository lacked it -- F-073.)
+ai_docs/audit/reviews/REVIEW_LOG.md merge=union

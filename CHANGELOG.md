@@ -2,10 +2,15 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
-## [Unreleased - 1.41.0]
+## [Unreleased - 1.42.0]
 
 ### Added
 - F-072: `scripts/docs_site.py --root <project>` writes a static, read-only website of what the agent reads in the project: what it is (reading guide, Vision, rules, documents), its open work with each next step verbatim, its analyses, and — with a knowledge base — a map of topics, the facts with the exact passage each comes from, what an inferred fact rests on, and the source documents. It opens from disk with the network off, writes outside the docs root, changes nothing in it, and selects, ranks or recommends nothing. Each analysis opens with the chain the agent works through — Vision, use cases, flows and interfaces, risks, solution study, design and tests, merge brief and E2E script, Diary — the Vision's North Star is shown above the home page, and the guides have a page of their own: the guide router, the operative guides with when to read each, and the code-comprehension guides. The chronology page lists no event until the dated-entry rules of F-073 land. Shared by the four packages (generator, page and battery are byte-identical spine files).
+
+## [1.41.0] - 2026-10-17
+
+### Changed
+- F-073: one written form for a dated entry, `**YYYY-MM-DD — label.**`, is taught for Diary entries, spike outcomes and project notes that record an event, and shared readers (`entry_openers`, `request_entries`, `adr_date`, `frontmatter_date`) let a chronology list those events the same way the validator reads them. Three new advisories, which never fail a build, not even `--strict`: undated text in the Diary of an L3 analysis started on or after 2026-10-18; a HANDOFF `next:` longer than 240 characters on an L3 file updated on or after that date (`next:` now holds only the next step, and the state of the work goes to the Diary); and, in `check` only, an open L3 unit whose id another branch or tag uses for a different analysis (one `git grep` over local refs, silent without git). The doctrine now says to choose a new unit's id after fetching, and that a session sharing a checkout with another session works in its own git worktree.
 
 ## [1.40.0] - 2026-10-17
 

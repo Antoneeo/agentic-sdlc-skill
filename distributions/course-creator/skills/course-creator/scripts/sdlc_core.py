@@ -89,6 +89,14 @@ ARCHITECT_PASS_EPOCH = "2026-07-28"
 # row. Same grandfathering discipline as the pass above -- never nag work that
 # predates the rule.
 DESIGN_REVIEW_EPOCH = "2026-07-28"
+# Chronology (F-073): an L3 ANALYSIS started, or an L3 HANDOFF updated, on/after
+# this date is read for undated Diary text and a multi-step `next:`. Advisories,
+# like the two gates above: a fixed epoch cannot protect a late upgrader, so a
+# warning here would redden --strict CI on work written before the upgrade.
+CHRONOLOGY_EPOCH = "2026-10-18"
+NEXT_MAX_CHARS = 240        # this repository's longest `next:` was 214 at the epoch
+ID_SCAN_MAX_REFS = 300      # A3 is skipped above it (one advisory says so, T9)
+ID_SCAN_REFS_PER_CALL = 50  # keeps one git command line far below 32k chars
 def review_log_rel():
     return f"{docs_dir()}/audit/reviews/REVIEW_LOG.md"
 # Component Map 'Where' refs: a dotted token counts as a path only with one of
@@ -1101,6 +1109,298 @@ def section_body(text, aliases):
     return None
 
 
+def section_lines(text, aliases):
+    """(heading_line, body) for the first matching `## ` section, or None: the
+    body NOT stripped, so body line n is file line heading_line + n, and an
+    indented first line keeps its indentation. The readers below use it; a
+    stripped body would shift every line number and move `  - DATE` to column 0."""
+    lines = (text or "").splitlines()
+    for i, line in enumerate(lines):
+        if any(line.startswith(a) for a in aliases):
+            body = []
+            for nxt in lines[i + 1:]:
+                if nxt.startswith("## "):
+                    break
+                body.append(nxt)
+            return i + 1, "\n".join(body)
+    return None
+
+
+# ---------------------------------------------------------------- chronology
+# One grammar for a dated entry (F-073), read by the validator and by any
+# consumer that lists events (F-072's chronology): both call these readers, so
+# they cannot disagree on what an event is. The readers return openers only --
+# date, label, line -- and format nothing for display.
+
+DIARY_SECTION = next(s for s in ANALYSIS_SECTIONS if s[0] == "## Diary")
+_ISO = r"\d{4}-\d{2}-\d{2}"
+# At column 0: optional list marker, optional `###`/`####`, optional bold, then
+# the ISO date and a word boundary. The date FIRST is the rule; markup is
+# tolerated so the dated forms already written stay readable with no migration.
+ENTRY_OPENER = re.compile(r"^(?:([-*]) |(#{3,4}) )?(\*\*)?(" + _ISO + r")\b(.*)$")
+_LABEL_SEP = re.compile(r"^(?:\*\*)?\s*(?:[—–:-])?\s*")
+_REQUEST_HEADING = re.compile(r"^### (R\d+) [—–-] (" + _ISO + r") [—–-] (.+)$")
+_ADR_BODY_DATE = re.compile(r"^\**Date:\**\s*(" + _ISO + r")\b", re.M)
+_ADR_NAME_DATE = re.compile(r"^ADR_(" + _ISO + r")_", re.I)
+UNIT_ID_RE = re.compile(r"\b([A-Z]-\d{3,})\b")
+
+
+def _entry_label(bold, rest):
+    rest = _LABEL_SEP.sub("", rest, count=1)
+    if bold and "**" in rest:
+        rest = rest.split("**", 1)[0]
+    else:
+        rest = re.split(r"(?<=[.!?])\s", rest, maxsplit=1)[0]
+    return rest.strip(" .:—–-*")[:120]
+
+
+def _opener_at(lines, i):
+    """The match when lines[i] opens an entry. It must also START A BLOCK -- the
+    line above is blank, absent or a heading, or the line is itself a list item
+    or a heading -- so a hard-wrapped prose line that happens to begin with a
+    date is never an event. (A separator after the date is NOT required: real
+    openers read `DATE (qualifier)` and `DATE word`.)"""
+    m = ENTRY_OPENER.match(lines[i])
+    if not m:
+        return None
+    prev = lines[i - 1] if i else ""
+    if not prev.strip() or prev.startswith("#") or m.group(1) or m.group(2):
+        return m
+    return None
+
+
+def entry_openers(body):
+    """[(date, label, line)] -- one per dated entry opener; line is 1-based
+    within `body`. An undated paragraph belongs to the entry above it. Comments
+    are blanked first, exactly as `undated_diary_lines` does, so an entry
+    written under the template's comment is an event to both."""
+    lines = _blank_comments(body).splitlines()
+    out = []
+    for i in range(len(lines)):
+        m = _opener_at(lines, i)
+        if m:
+            out.append((m.group(4), _entry_label(m.group(3), m.group(5)), i + 1))
+    return out
+
+
+def _blank_comments(text):
+    # comments become blank lines, so line numbers still point at the file's lines
+    return re.sub(r"<!--.*?-->", lambda m: "\n" * m.group(0).count("\n"), text or "",
+                  flags=re.S)
+
+
+def undated_diary_lines(body):
+    """[(line, text)] a Diary body cannot date: text before the first opener,
+    and any `### ` heading that is not an opener. `####` and deeper headings are
+    sub-structure of an entry and stay legal. Comments are ignored."""
+    lines = _blank_comments(body).splitlines()
+    out, seen_opener = [], False
+    for i, line in enumerate(lines):
+        if _opener_at(lines, i):
+            seen_opener = True
+        elif line.startswith("### "):
+            out.append((i + 1, line.strip()))
+        elif not seen_opener and line.strip():
+            out.append((i + 1, line.strip()))
+    return out
+
+
+def request_entries(text):
+    """(entries, unparsed) for a request record: entries are
+    [(rid, date, label, line)]; a `### ` heading that does not match
+    `### R<n> — YYYY-MM-DD — <label>` is returned in unparsed as (line, text),
+    never dropped."""
+    entries, unparsed = [], []
+    for i, line in enumerate((text or "").splitlines()):
+        if not line.startswith("### "):
+            continue
+        m = _REQUEST_HEADING.match(line.rstrip())
+        if m:
+            entries.append((m.group(1), m.group(2), m.group(3).strip(), i + 1))
+        else:
+            unparsed.append((i + 1, line.rstrip()))
+    return entries, unparsed
+
+
+def adr_date(name, text):
+    """An ADR's date: `**Date:** YYYY-MM-DD` in the body, else the
+    `ADR_YYYY-MM-DD_*` file name, else None."""
+    m = _ADR_BODY_DATE.search(text or "") or _ADR_NAME_DATE.match(name or "")
+    return m.group(1) if m else None
+
+
+def _meta_date(meta, key):
+    return parse_iso(str(meta.get(key) or "").strip().strip("'\"")[:10])
+
+
+def chronology_advisories(root):
+    """A1 (undated Diary text) and A2 (`next:` is not one step), as advisory
+    strings. Gated on `level: L3` and on a date the file carries -- never an
+    mtime -- so L1/L2 work and anything written before the epoch see nothing."""
+    epoch = parse_iso(CHRONOLOGY_EPOCH)
+    out = []
+    for p, meta, text in list_analyses(root):
+        started = _meta_date(meta, "start_date")
+        if str(meta.get("level", "")).upper() != "L3" or not started or started < epoch:
+            continue
+        section = section_lines(text, DIARY_SECTION)
+        if section is None:
+            continue
+        head, body = section
+        rel = "solutions/" + p.name
+        lines = undated_diary_lines(body)
+        preface = [(n, t) for n, t in lines if not t.startswith("### ")]
+        if preface:
+            out.append(f"{rel}: line {head + preface[0][0]}: Diary text '{preface[0][1][:60]}' "
+                       "comes before the first dated entry -- open entries with "
+                       "**YYYY-MM-DD — label.**, and write the current state as the latest "
+                       "dated entry")
+        for n, t in lines:
+            if t.startswith("### "):
+                out.append(f"{rel}: line {head + n}: Diary heading '{t[:60]}' is not a dated "
+                           "entry -- open entries with **YYYY-MM-DD — label.**")
+    for p, meta in list_workstreams(root):
+        updated = _meta_date(meta, "updated")
+        if str(meta.get("level", "")).upper() != "L3" or not updated or updated < epoch:
+            continue
+        nxt = str(meta.get("next") or "").strip()
+        if len(nxt) > NEXT_MAX_CHARS:
+            out.append(f"audit/{p.name}: next: is {len(nxt)} chars (> {NEXT_MAX_CHARS}): one "
+                       "next step here, the state goes to the Diary as a dated entry")
+    return out
+
+
+def _open_units(root):
+    """{id: {analysis name}} for the tree's open L3 units: an L3 ANALYSIS that is
+    PLANNED or IN_PROGRESS, or a request record (L3 only, r26) whose `analysis:`
+    is absent from the tree or names such an open ANALYSIS. A closed unit's
+    record, kept forever, does not count."""
+    units, present, open_names = {}, set(), set()
+    for p, meta, _ in list_analyses(root):
+        present.add(p.name)
+        if (str(meta.get("level", "")).upper() == "L3"
+                and meta.get("status") in ("PLANNED", "IN_PROGRESS")):
+            m = UNIT_ID_RE.search(str(meta.get("id") or ""))
+            if m:
+                open_names.add(p.name)
+                units.setdefault(m.group(1), set()).add(p.name)
+    req = ai_path(root, "audit", "requests")
+    if req.is_dir():
+        for p in sorted(req.glob("REQUEST_*.md")):
+            meta = load_frontmatter(read_text(p).splitlines())
+            name = str(meta.get("analysis") or "").strip().strip("'\"`")
+            m = UNIT_ID_RE.search(str(meta.get("unit") or meta.get("id") or ""))
+            if m and name and (name not in present or name in open_names):
+                units.setdefault(m.group(1), set()).add(name)
+    return units
+
+
+def _git_out(root, *args, timeout=30):
+    r = subprocess.run(["git", *args], cwd=str(root), capture_output=True, text=True,
+                       encoding="utf-8", errors="replace", timeout=timeout)
+    return r.stdout if r.returncode == 0 else None
+
+
+def ids_on_other_refs(root, max_refs=ID_SCAN_MAX_REFS):
+    """[(id, mine, theirs, [refs])] -- an open unit's id that another ref (heads,
+    remotes, tags) uses for a DIFFERENT analysis. Identity is the ANALYSIS file
+    name, declared by the ANALYSIS or announced by a request record's
+    `analysis:`. One `git grep` over local refs, fixed arguments only (T8);
+    as fresh as the last fetch. [] with no open L3 unit or no git; None when
+    skipped -- above `max_refs` refs, or git failed or timed out -- so the
+    caller can say the check did not run instead of reporting it clean."""
+    mine = _open_units(root)
+    if not mine or not git_available(root):
+        return []
+    try:
+        head = (_git_out(root, "rev-parse", "HEAD") or "").strip()
+        listing = _git_out(root, "for-each-ref",
+                           "--format=%(objectname) %(objecttype) %(*objecttype) %(refname)",
+                           "refs/heads", "refs/remotes", "refs/tags")
+        if listing is None:
+            return None
+        refs = []
+        for line in listing.split("\n"):
+            parts = line.split(" ")
+            if len(parts) == 3:                     # %(*objecttype) empty: not a tag
+                parts.insert(2, "")
+            if len(parts) != 4:
+                continue
+            sha, kind, peeled, ref = parts
+            # only refs that resolve to a commit can be grepped (a tag on a blob
+            # would fail the whole batch); the tree's own commit is not "another
+            # ref"; symbolic HEADs repeat a branch
+            if "commit" not in (kind, peeled) or ref.endswith("/HEAD") or sha == head:
+                continue
+            refs.append(ref)
+        if not refs:
+            return []
+        if len(refs) > max_refs:
+            return None
+        # Pathspecs are relative to cwd=root, so a docs root inside a monorepo
+        # subdirectory is found. -z keeps a path with ':' or non-ASCII intact
+        # (quotePath off); -n plus the fence lines confine hits to frontmatter.
+        docs = docs_dir()
+        chunks = []
+        for i in range(0, len(refs), ID_SCAN_REFS_PER_CALL):   # command-line length
+            r = subprocess.run(
+                ["git", "-c", "core.quotePath=false", "grep", "-z", "-n", "-I", "-E",
+                 r"^(id|unit|analysis):|^---\s*$", *refs[i:i + ID_SCAN_REFS_PER_CALL],
+                 "--", f"{docs}/solutions/ANALYSIS_*.md", f"{docs}/audit/requests/REQUEST_*.md"],
+                cwd=str(root), capture_output=True, text=True, encoding="utf-8",
+                errors="replace", timeout=60)
+            if r.returncode not in (0, 1):                     # 1 = no match
+                return None
+            chunks.append(r.stdout)
+    except Exception:
+        return None
+    per = {}
+    for line in "".join(chunks).split("\n"):     # not splitlines: \x1c.. are content
+        parts = line.split("\0")
+        if len(parts) != 3 or ":" not in parts[0] or not parts[1].isdigit():
+            continue
+        ref, path = parts[0].split(":", 1)          # a ref name cannot hold ':'
+        content = parts[2].rstrip("\r")
+        st = per.setdefault((ref, path), {"fences": 0, "kv": {}})
+        if int(parts[1]) == 1 and content.strip() == "---":
+            st["fences"] = 1                        # frontmatter opens on line 1
+        elif st["fences"] == 1 and content.strip() == "---":
+            st["fences"] = 2                        # ...and closes here
+        elif st["fences"] == 1:
+            key, _, val = content.partition(":")
+            st["kv"].setdefault(key, val.strip())
+    found = {}
+    for (ref, path), st in per.items():
+        kv = st["kv"]
+        fname = path.replace("\\", "/").rsplit("/", 1)[-1]
+        name = fname if fname.startswith("ANALYSIS_") else kv.get("analysis", "").strip("'\"`")
+        m = UNIT_ID_RE.search(kv.get("id") or kv.get("unit") or "")
+        if not (m and name) or m.group(1) not in mine or name in mine[m.group(1)]:
+            continue
+        short = re.sub(r"^refs/(heads|remotes|tags)/", "", ref)
+        found.setdefault((m.group(1), name), [])
+        if short not in found[(m.group(1), name)]:
+            found[(m.group(1), name)].append(short)
+    return sorted((fid, ", ".join(sorted(mine[fid])), theirs, sorted(refs_))
+                  for (fid, theirs), refs_ in found.items())
+
+
+def id_advisories(root):
+    """A3 as advisory strings, for every entry point's `check`."""
+    hits = ids_on_other_refs(root)
+    if hits is None:
+        return [f"id check skipped (more than {ID_SCAN_MAX_REFS} refs, or git grep failed "
+                "or timed out) -- choose a new unit's id after fetching, as the first id "
+                "free on every ref"]
+    out = []
+    for fid, mine, theirs, refs in hits:
+        more = f" (+{len(refs) - 1} more)" if len(refs) > 1 else ""
+        out.append(f"id {fid} ({mine}) is also used by {theirs} on {refs[0]}{more}: choose "
+                   "the first id free on every ref -- if this is the same unit under its "
+                   "old name, ignore it")
+    return out
+
+
 def design_review_due(meta):
     """True when an L3 ANALYSIS owes a design-review row (review.md moment 1):
     implementation has started or finished, and it began on/after the gate
@@ -1556,6 +1856,7 @@ def cmd_validate(root, strict=False, hybrid=False):
             except ValueError:
                 warnings.append("audit/handoff.md: date not parseable")
 
+    advisories.extend(chronology_advisories(root))   # A1, A2 (F-073)
     for a in advisories:
         print(f"[note]  {a}")
     for w in warnings:
@@ -1925,6 +2226,10 @@ def cmd_check(root, strict=False, hybrid=False, extra_validate=None, extra_secti
     rc_v = cmd_validate(root, strict=strict, hybrid=hybrid)
     if extra_validate is not None:
         rc_v = max(rc_v, extra_validate())
+    # A3 (F-073): check only -- it reads git refs, and validate stays file-local.
+    # Advisory: printed, never part of any rc.
+    for a in id_advisories(root):
+        print(f"[note]  {a}")
     print("\n===== stale =====")
     rc_s = cmd_stale(root, hybrid=hybrid)
     rcs = [("validate", rc_v), ("stale", rc_s)]
