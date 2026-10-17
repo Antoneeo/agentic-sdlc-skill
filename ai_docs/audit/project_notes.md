@@ -1,12 +1,13 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**2026-10-18 — release 1.42.0 tagged, publication pending.** Code 1.42.0, KB 1.25.0,
-marketing 0.20.0, Course 0.1.0-beta.6: the docs site (F-072, `scripts/docs_site.py`), its
-chronology read with F-073's readers. Tags v1.42.0 / kb-v1.25.0 / mkt-v0.20.0 /
-course-v0.1.0-beta.6 on the release commit. Next: `publish_all.bat` from the clean
-`wt-release` worktree (browser 2FA is the owner's), verify versions and `dist-tags.latest`,
-record the publication here.
+**2026-10-18 — release 1.42.0 completed.** Published and verified on the registry at
+22:29–22:30 UTC (2026-10-17): code 1.42.0, KB 1.25.0, marketing 0.20.0, Course
+0.1.0-beta.6 — the docs site (F-072), its chronology read with F-073's readers. Tags
+v1.42.0 / kb-v1.25.0 / mkt-v0.20.0 / course-v0.1.0-beta.6 on a6e1faa, published by the
+owner from the clean `wt-release` worktree. `latest` names each new version. An install two
+minutes after publishing failed with ETARGET again (npm metadata cache, not the package);
+`--prefer-online` resolves it, and users installing later are not affected.
 
 **2026-10-17 — release 1.41.0 completed.** Published and verified on the registry at
 21:43 UTC: code 1.41.0, KB 1.24.0, marketing 0.19.0, Course 0.1.0-beta.5 (F-073; Course
