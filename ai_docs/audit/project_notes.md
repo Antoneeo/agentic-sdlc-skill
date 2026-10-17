@@ -1,15 +1,14 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**Release prepared (2026-10-17), publication pending.** code 1.40.0, KB 1.23.0,
-marketing 0.18.0, Course 0.1.0-beta.4: F1 (generated registry emptied when the last
-workstream closes), F-068 (kb ingestion rhythm on an open front) and F-069 (kb graph
-faster, same output). Release commit and tags v1.40.0 / kb-v1.23.0 / mkt-v0.18.0 /
-course-v0.1.0-beta.4 on `main`. Next, the owner's step: `publish_all.bat` from a clean
-export of the tagged commit (browser 2FA per package), then verify dist-tags and point
-Course `latest` at beta.4. The 2026-10-13 release (1.39.0 / 1.22.0 / 0.17.0 / beta.3)
-is on the registry with `latest` on each. After publication: ask the K-02 field to
-time `graph` and `check`; `--only` opens only if `graph` stays slow (F-069 R2).
+**Release completed (2026-10-17).** Published and verified on the registry: code
+1.40.0, KB 1.23.0, marketing 0.18.0, Course 0.1.0-beta.4 (F1, F-068, F-069), tags
+v1.40.0 / kb-v1.23.0 / mkt-v0.18.0 / course-v0.1.0-beta.4 on 1b6d2c0. Published from
+the primary checkout at that commit: the tarballs equal a `git archive` of the tag
+except for CRLF line endings. `latest` names each new version; Course `beta` and
+`latest` both name beta.4 (one-time owner promotion). From the next release Course
+publishes on `latest` directly (2026-10-17 ruling, `GUIDE_release.md`). Next: ask the
+K-02 field to time `graph` and `check`; `--only` opens only if `graph` stays slow.
 
 **Release completed (2026-10-08).** Published and publicly verified: code 1.38.0,
 KB 1.21.0, marketing 0.16.0 and Course 0.1.0-beta.2. Exact tagged export of
