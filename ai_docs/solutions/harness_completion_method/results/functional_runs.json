@@ -1,0 +1,54 @@
+[
+  {
+    "name": "existing_smoke",
+    "command": [
+      "python",
+      "-B",
+      "existing_smoke.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "stdout": "3 existing smoke assertions passed\n",
+    "stderr": ""
+  },
+  {
+    "name": "functional_red",
+    "command": [
+      "python",
+      "-B",
+      "probe.py",
+      "--variant",
+      "baseline"
+    ],
+    "exit_code": 1,
+    "expected_exit": 1,
+    "stdout": "{\n  \"variant\": \"baseline\",\n  \"scope\": \"synthetic functional mechanism only\",\n  \"cases\": [\n    {\n      \"case\": \"complete_catalogue\",\n      \"expected\": {\n        \"state\": \"delivered\",\n        \"content\": \"Atlas\\nOrion\"\n      },\n      \"observed\": {\n        \"state\": \"blocked\",\n        \"content\": null\n      },\n      \"passed\": false\n    },\n    {\n      \"case\": \"empty_complete_catalogue\",\n      \"expected\": {\n        \"state\": \"delivered\",\n        \"content\": \"\"\n      },\n      \"observed\": {\n        \"state\": \"blocked\",\n        \"content\": null\n      },\n      \"passed\": false\n    },\n    {\n      \"case\": \"complete_summary\",\n      \"expected\": {\n        \"state\": \"delivered\",\n        \"content\": \"Atlas\"\n      },\n      \"observed\": {\n        \"state\": \"delivered\",\n        \"content\": \"Atlas\"\n      },\n      \"passed\": true\n    },\n    {\n      \"case\": \"declared_failure\",\n      \"expected\": {\n        \"state\": \"blocked\",\n        \"content\": null\n      },\n      \"observed\": {\n        \"state\": \"blocked\",\n        \"content\": null\n      },\n      \"passed\": true\n    },\n    {\n      \"case\": \"partial_catalogue\",\n      \"expected\": {\n        \"state\": \"blocked\",\n        \"content\": null\n      },\n      \"observed\": {\n        \"state\": \"blocked\",\n        \"content\": null\n      },\n      \"passed\": true\n    },\n    {\n      \"case\": \"malformed_catalogue\",\n      \"expected\": {\n        \"state\": \"blocked\",\n        \"content\": null\n      },\n      \"observed\": {\n        \"state\": \"blocked\",\n        \"content\": null\n      },\n      \"passed\": true\n    },\n    {\n      \"case\": \"unknown_contract\",\n      \"expected\": {\n        \"state\": \"blocked\",\n        \"content\": null\n      },\n      \"observed\": {\n        \"state\": \"blocked\",\n        \"content\": null\n      },\n      \"passed\": true\n    },\n    {\n      \"case\": \"stop_dominates\",\n      \"expected\": {\n        \"state\": \"stopped\",\n        \"content\": null\n      },\n      \"observed\": {\n        \"state\": \"stopped\",\n        \"content\": null\n      },\n      \"passed\": true\n    }\n  ],\n  \"passed\": 6,\n  \"total\": 8\n}\n",
+    "stderr": ""
+  },
+  {
+    "name": "functional_green",
+    "command": [
+      "python",
+      "-B",
+      "probe.py",
+      "--variant",
+      "reference"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "stdout": "{\n  \"variant\": \"reference\",\n  \"scope\": \"synthetic functional mechanism only\",\n  \"cases\": [\n    {\n      \"case\": \"complete_catalogue\",\n      \"expected\": {\n        \"state\": \"delivered\",\n        \"content\": \"Atlas\\nOrion\"\n      },\n      \"observed\": {\n        \"state\": \"delivered\",\n        \"content\": \"Atlas\\nOrion\"\n      },\n      \"passed\": true\n    },\n    {\n      \"case\": \"empty_complete_catalogue\",\n      \"expected\": {\n        \"state\": \"delivered\",\n        \"content\": \"\"\n      },\n      \"observed\": {\n        \"state\": \"delivered\",\n        \"content\": \"\"\n      },\n      \"passed\": true\n    },\n    {\n      \"case\": \"complete_summary\",\n      \"expected\": {\n        \"state\": \"delivered\",\n        \"content\": \"Atlas\"\n      },\n      \"observed\": {\n        \"state\": \"delivered\",\n        \"content\": \"Atlas\"\n      },\n      \"passed\": true\n    },\n    {\n      \"case\": \"declared_failure\",\n      \"expected\": {\n        \"state\": \"blocked\",\n        \"content\": null\n      },\n      \"observed\": {\n        \"state\": \"blocked\",\n        \"content\": null\n      },\n      \"passed\": true\n    },\n    {\n      \"case\": \"partial_catalogue\",\n      \"expected\": {\n        \"state\": \"blocked\",\n        \"content\": null\n      },\n      \"observed\": {\n        \"state\": \"blocked\",\n        \"content\": null\n      },\n      \"passed\": true\n    },\n    {\n      \"case\": \"malformed_catalogue\",\n      \"expected\": {\n        \"state\": \"blocked\",\n        \"content\": null\n      },\n      \"observed\": {\n        \"state\": \"blocked\",\n        \"content\": null\n      },\n      \"passed\": true\n    },\n    {\n      \"case\": \"unknown_contract\",\n      \"expected\": {\n        \"state\": \"blocked\",\n        \"content\": null\n      },\n      \"observed\": {\n        \"state\": \"blocked\",\n        \"content\": null\n      },\n      \"passed\": true\n    },\n    {\n      \"case\": \"stop_dominates\",\n      \"expected\": {\n        \"state\": \"stopped\",\n        \"content\": null\n      },\n      \"observed\": {\n        \"state\": \"stopped\",\n        \"content\": null\n      },\n      \"passed\": true\n    }\n  ],\n  \"passed\": 8,\n  \"total\": 8\n}\n",
+    "stderr": ""
+  },
+  {
+    "name": "mediation",
+    "command": [
+      "python",
+      "-B",
+      "mediation.py"
+    ],
+    "exit_code": 0,
+    "expected_exit": 0,
+    "stdout": "{\n  \"unchanged\": {\n    \"state\": \"blocked\",\n    \"content\": null\n  },\n  \"added_status_only\": {\n    \"state\": \"delivered\",\n    \"content\": \"Atlas\\nOrion\"\n  },\n  \"removed_status_only\": {\n    \"state\": \"blocked\",\n    \"content\": null\n  }\n}\n",
+    "stderr": ""
+  }
+]
