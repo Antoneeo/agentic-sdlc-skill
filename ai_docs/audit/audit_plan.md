@@ -6,8 +6,8 @@ States: PENDING (to analyze) | ANALYZED (analyzed, with reference) | SKIPPED (wi
 |---|---|---|---|
 | examples/ | PENDING | - | legacy docs/ layout examples, predate the ai_docs structure |
 | sdlc-test-project/ | SKIPPED | - | manual test fixture, not product code |
-| skills/agentic-sdlc-skill/ | ANALYZED | c8b96c671ef6 | re-analysis here is not complete until the two DERIVED documents say the same thing: `strategic/skill_family_agent_workflows.md` (what an agent does differently under each lens) and the distribution's `README.md` (the npm front page — support-files bullet, Runtime Shape tree, validator commands). `mark` is the last step, not the first |
+| skills/agentic-sdlc-skill/ | ANALYZED | 3accde98a947 | re-analysis here is not complete until the two DERIVED documents say the same thing: `strategic/skill_family_agent_workflows.md` (what an agent does differently under each lens) and the distribution's `README.md` (the npm front page — support-files bullet, Runtime Shape tree, validator commands). `mark` is the last step, not the first |
 | scripts/ | ANALYZED | 7bb935190caf |  |
-| distributions/ | ANALYZED | c8b96c671ef6 | same duty as the row above, per distribution: doctrine changed here means `strategic/skill_family_agent_workflows.md` and that distribution's `README.md` are stale until refreshed. `stale` fires on this row at the first doctrine edit — that is the prompt |
-| ai_docs/ | ANALYZED | 2026-10-17T06:18:33Z | owns no component; the governance tree itself, not an analyzable area: marking it rewrites this file, which sits inside it, so a hash-based row chases its own tail forever. Its freshness is what `check` already verifies directly |
-| skills/ | ANALYZED | c8b96c671ef6 |  |
+| distributions/ | ANALYZED | 3accde98a947 | same duty as the row above, per distribution: doctrine changed here means `strategic/skill_family_agent_workflows.md` and that distribution's `README.md` are stale until refreshed. `stale` fires on this row at the first doctrine edit — that is the prompt |
+| ai_docs/ | ANALYZED | 3accde98a947 | owns no component; the governance tree itself, not an analyzable area: marking it rewrites this file, which sits inside it, so a hash-based row chases its own tail forever. Its freshness is what `check` already verifies directly |
+| skills/ | ANALYZED | 3accde98a947 |  |
