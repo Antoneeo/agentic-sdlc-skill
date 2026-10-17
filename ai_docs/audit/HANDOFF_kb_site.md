@@ -4,7 +4,7 @@ level: L3
 branch: feat/kb-site-spec
 status: IN_PROGRESS
 since: 2026-10-16
-next: release 1.42.0 with the chronology in; then the field run of the probe and the site on the owner's work machine
+next: field run of the probe and the site on the owner's work machine (released in 1.42.0)
 details: ANALYSIS_kb_site.md · REQUEST_kb_site.md · E2E_TEST_kb_site.md · MERGE_REVIEW_kb_site.md · harness_kb_site/probe.py
 updated: 2026-10-17
 ---
