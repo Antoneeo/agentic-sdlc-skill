@@ -1,0 +1,56 @@
+[
+  {
+    "variant": "baseline",
+    "session": 1,
+    "seconds": 200.0577227,
+    "read_paths": 17,
+    "input_reads": 8,
+    "write_paths": 8,
+    "project_writes": 7
+  },
+  {
+    "variant": "baseline",
+    "session": 2,
+    "seconds": 261,
+    "read_paths": 20,
+    "input_reads": 7,
+    "write_paths": 8,
+    "project_writes": 7
+  },
+  {
+    "variant": "instructions",
+    "session": 1,
+    "seconds": 391.554681,
+    "read_paths": 30,
+    "input_reads": 8,
+    "write_paths": 30,
+    "project_writes": 29
+  },
+  {
+    "variant": "instructions",
+    "session": 2,
+    "seconds": 320,
+    "read_paths": 33,
+    "input_reads": 7,
+    "write_paths": 18,
+    "project_writes": 17
+  },
+  {
+    "variant": "candidate",
+    "session": 1,
+    "seconds": 546.678801,
+    "read_paths": 48,
+    "input_reads": 8,
+    "write_paths": 37,
+    "project_writes": 36
+  },
+  {
+    "variant": "candidate",
+    "session": 2,
+    "seconds": 535,
+    "read_paths": 47,
+    "input_reads": 7,
+    "write_paths": 21,
+    "project_writes": 20
+  }
+]

@@ -282,3 +282,20 @@ course version with npm dist-tag add @antoneeo/course-creator@0.1.0-beta.2 lates
 and verify both channels through the registry. The existing beta-isolation guard
 remains unchanged; it does not certify this owner-authorized dual-channel state.
 Do not remove latest, unpublish versions or move the other packages' channels.
+
+## Course on the normal channel — 2026-10-17
+
+Verbatim owner messages in the 1.40.0 release session, after the agent explained that
+Course latest still named beta.3 and moving it needed a second browser 2FA:
+> ma come possiamo evitare questo e lasciare che anche course-creator rientri nella normale pubblicazione
+
+and, to the agent's proposal (drop `publishConfig.tag: beta`, so publish_all.bat
+publishes Course with `--tag latest` like the stable packages):
+> si
+
+Effect: from the next Course release, the normal publish moves latest; no separate
+dist-tag promotion. The version keeps its prerelease suffix and the README keeps the
+experimental statement. The beta dist-tag stops advancing (left at the last version
+it named). The publisher is unchanged: its isolation guard runs only for a package
+whose channel is not latest, and no package declares one now. Releases already
+published on beta only (0.1.0-beta.4) still need the one-time promotion.

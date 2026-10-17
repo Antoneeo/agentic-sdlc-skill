@@ -2,6 +2,13 @@
 
 Every significant change to this skill is recorded here.
 
+## [1.23.0] - 2026-10-17
+
+### Changed
+- F-068: on a live front, a new source or statement inside the declared `scope:` of an open unit (HANDOFF frontmatter) enters as an *ingestion step* of that unit: request entry, artifact or note, claim rows, reconciliation, `graph` until clean, one resume line. It does not reopen the full L3 cycle. Alignment (cascade on dependents, `stale`, registry, `index`, the `check` gate, commit) runs once, at an explicit closure the practitioner asks for or at session end. Two exceptions stay immediate: an in-flight draft is updated in the same step, and a sentence already delivered that a new fact falsifies is flagged in the same reply. Without isolation, a save commit marked `ingestion step` is allowed after a clean `graph`. Row locators come from `anchor`, ids from `claim-id --fill`. The Phase-5 instruction to update `handoff.md` by hand is gone: the registry is generated.
+- F1: closing the last open workstream now empties the generated registry `audit/handoff.md` instead of leaving its stale row behind: with zero `HANDOFF_*.md` sources `index` rewrites it empty (keeping `project_notes.md`), and `validate` reports a generated registry that still has rows but no sources as an error.
+- F-069: `graph`, `check`, `stale` and the session-start count are faster on a mature knowledge base, with byte-identical output. Citations of superseded claim ids are found with one pass per living document instead of one scan per (document, id) pair, and one check run reads and resolves each cited extraction once instead of once per claim row. On a synthetic ledger of 2183 rows and 1000 living documents, `graph` drops from 14 s to 4 s. No new flag.
+
 ## [1.22.0] - 2026-10-13
 
 ### Changed
