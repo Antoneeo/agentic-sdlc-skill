@@ -110,3 +110,33 @@ and warned that F-069 was taken on `main` (R18): the unit is renumbered F-072 an
 | W8 no ledger row for the family scope | Fixed: r29 (basis R14), written at closure. |
 | W9 unnamed symbols; the "one-release rule" | Fixed: `build_index`, `project_default_domain` named; one release cited to R14. |
 | W10 length; review history in the Diary | Fixed: Diary reduced to decisions; verdicts left to the log. |
+
+## Round 5 — 2026-10-17, review of the R20 rewrite, beyond the cap (R21), FAIL, 21 findings
+
+Brought back to the owner, who decided the chronology, the audit documents, the
+marketing units page and to publish without a further round (R23); the side session's
+dated-entry unit is a dependency (R22).
+
+| Finding | Disposition |
+|---|---|
+| B1 project notes and manifest on no page | Fixed: project notes on Home and Open work; manifest shown as a lookup inventory from Home and Rules. |
+| B2 chronology "selects nothing" false; no placement | Owner ruled (R23): dated events only, no analysis start/end, no state filter, "Lately" = most recent; r29 worded now. |
+| B3 Diary and review-log readers ruled MISSING | Fixed: `section_body`, `parse_review_log` EXISTS; probe uses them (653 field, 343 here). |
+| M1 holds when, value, also concerns cut | Fixed: shown as written, never evaluated; criterion 6. |
+| M2 criterion 4 pointed at a removed Overview | Fixed: per-item counts against the probe. |
+| M3 guard against state outside the work pages; r28 | Fixed: restored, sorting by name and date only. |
+| M4 forks and loops in replacement chains | Fixed: every branch, stop message; tested. |
+| M5 12-hex qualifier | Fixed. |
+| M6 sanitizer and injection tests | Fixed: tags, link schemes, no images; tests named. |
+| M7 Interface Contract below the template | Fixed: idioms, five flows, addresses, feedback for removed items and missing data. |
+| M8 chronology links outside the site | Owner ruled (R23): request records, review log, project and resume notes have pages, not tree entries. |
+| M9 marketing has no analyses | Owner ruled (R23): no units page on a marketing project. |
+| M10 the check rule excluded the chronology | Fixed: the rule covers orienting and resuming, where the agent reads the Diary and what lies behind it. |
+| W1 no Actors | Fixed. |
+| W2 grounding of new names; guides "as rules" | Fixed: names declared NEW; comprehension guides under "How it works". |
+| W3 units order justification | Fixed. |
+| W4 dropped edge cases | Fixed where they change behaviour (missing source, not readable, not a git repository, missing root, merged topic, ties). |
+| W5 search, absence, traversal untested | Fixed: criterion 9; traversal test. |
+| W6 `derived_from` resolution hidden as EXISTS | Fixed: INADEQUATE, tested against `kb_time_cycle`'s edges. |
+| W7 chronology reader under-specified | Superseded by R22: the dated-entry unit sets the rules. |
+| W8 revision narrative in the Diary | Fixed. |

@@ -102,3 +102,28 @@ Checked: on `origin/main`, F-069 is "kb graph fast enough for the ingestion step
 ### R19 — 2026-10-17 — merge main, commit, push
 Context (agent): spec rewritten on round 4 and R17; "Merge main into the branch, commit and push it to GitHub?"
 > Sì: integra main nel branch feat/kb-site-spec, committa e fai push su GitHub.
+
+### R20 — 2026-10-17 — the purpose of the site
+Context (agent): relayed from the owner's side session of the same conversation (session `local_b5c4bb33…`), four statements in this order; the fourth answers that session's proposal to forward the principle "the site shows the user what the agent reads to orient itself — the same sources, simply and visually, no more and no less". The side session edited no file.
+> lo scopo è quello di comunicare all'utente in modo semplice e visivo cosa la skill ha creato e gestisce in mod oda fargli comprendere cosa è stato fatto, quando, cosa c'è da fare, quali conoscenze sono state acquisite, etc
+>
+> la cronologia non è quella di git
+>
+> chiariamo ancora un attimo meglio. Fa sempre parte del rendere "quello che l'agente vede" visibile anche all'utente. L'agente sa cosa c'è da fare e le ultime cose fatte, le cose aperte etc..
+>
+> si ok ma cerchiamo davvero di mantenere la vision senza perderci in dettagli che poco contribuiscono
+
+### R21 — 2026-10-17 — review the R20 rewrite before committing
+Context (agent): spec rewritten around the R20 principle (603 → 367 lines); "Commit and push the new version, or have it reviewed first?"
+> Prima fai rivedere la nuova versione, poi me la riporti.
+
+### R22 — 2026-10-17 — the chronology depends on a doctrine unit
+Context (agent): relayed from the owner's side session (`local_b5c4bb33…`). A read-only measurement there found Diary entries written in 15 different forms and `next:` fields used as state summaries, so the chronology cannot yet be read reliably from documents; the side session is starting a separate doctrine unit (own branch off `main`: date-first Diary entries checked by `validate`, `next:` = next step only, a dated line in project notes for work without an analysis). Its instruction for this spec: state the chronology as dependent on that unit's rules, name its sources, do not detail the parsing. The owner's go-ahead in that session:
+> procedi nel modo che ritieni più opportuno
+
+### R23 — 2026-10-17 — after round 5: chronology, documents in audit/, marketing, next step
+Context (agent): round 5 FAIL (21 findings) brought back; four structured questions — how to set the chronology (reduced and dependent on the doctrine unit, or as is with a ruling); what to do with chronology links to documents in `audit/` outside the tree; what the units page shows on a marketing project, which has no per-engagement analyses; whether to publish after the fixes or review again.
+> Cronologia: «Ridotta e dipendente (Recommended)» — dated events only, no analysis start/end, no filter by state; "lately" = the most recent; sources and date rules from the doctrine unit
+> Doc in audit: «Pagina, non albero (Recommended)» — readable pages reached from the chronology and the home (project notes on the home too), the tree stays the catalog's
+> Marketing: «Niente pagina (Recommended)» — no units page on a marketing project
+> Poi: «Correggo e pubblico (Recommended)» — apply the fixes, commit and push without another round
