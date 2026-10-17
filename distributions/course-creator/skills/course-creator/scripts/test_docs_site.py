@@ -1011,5 +1011,149 @@ class Documents(SiteCase):
         self.assertFalse(meta["git"])
 
 
+
+def build_dated(root):
+    """Every dated-event kind the chronology lists, plus the dated lines it must not."""
+    d = "ai_docs/"
+    write(root, d + "README.md", "# Dated project\n\nWhat happened.\n")
+    write(root, d + "INDEX.md", "# Manifest\n")
+    write(root, d + "solutions/ANALYSIS_api.md",
+          "---\nstatus: IN_PROGRESS\nid: F-001\nlevel: L3\nstart_date: 2026-01-01\n"
+          "end_date: 2026-12-31\n---\n# ANALYSIS: api\n\n## Objective\n\nThe 2026-02-02 plan.\n\n"
+          "## Diary / Current State\n\n<!-- template comment\n     two lines -->\n"
+          "**2026-03-01 — opened.** Standalone.\n\nAn undated paragraph of the same entry.\n\n"
+          "- 2026-03-05: review round 1 FAIL. Fixed.\n")
+    write(root, d + "solutions/SPIKE_cache.md",
+          "# Spike: cache\n\n## Question to answer\n\nIs it fast?\n\n## Answer / Outcome\n\n"
+          "**2026-03-03 — yes, under 1 ms.** Measured.\n\n## Consequences\n\nNone.\n")
+    write(root, d + "audit/requests/REQUEST_api.md",
+          "---\nunit: F-001 — api\nanalysis: ANALYSIS_api.md\n---\n# Request record: api\n\n"
+          "### R1 — 2026-02-28 — opening request\n> build the api\n")
+    write(root, d + "audit/reviews/REVIEW_LOG.md",
+          "# Review log\n\n| date | doc_key | tier | model | instrument | findings_raised | "
+          "findings_real | verdict | revise_rounds |\n|---|---|---|---|---|---|---|---|---|\n"
+          "| 2026-03-04 | ANALYSIS_api.md | design | deep | subagent | 2 | 2 | PASS | 1 |\n")
+    write(root, d + "audit/project_notes.md",
+          "Standing note: the repo is CRLF.\n\n**2026-03-06 — release completed.** 1.0 out.\n")
+    write(root, d + "architecture/ADR_2026-03-02_pick_store.md",
+          "# ADR: pick the store\n\n**Status:** Accepted\n**Date:** 2026-03-02\n")
+    write(root, d + "corpus/notes/decided.md",
+          "---\ndate: '2026-03-07'\n---\n# Use the manual\n\nUse it.\n")
+    write(root, d + "corpus/given/manual.txt.meta.md",
+          "---\nsha256: x\ndate: 2026-03-08\nprovenance: GIVEN\n---\nHanded over.\n")
+    return Path(root)
+
+
+class Criterion03Chronology(unittest.TestCase):
+    """Criterion 3 with F-073's readers: every dated event kind, most recent first, no
+    analysis start or end, nothing from git -- and the page reads the same openers as
+    `validate` (an entry under the template comment is an event)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = tempfile.mkdtemp(prefix="docs_site_dated_")
+        cls.project = build_dated(Path(cls.tmp) / "p")
+        cls.code, cls.text = run(cls.project)
+        cls.core = load_js(cls.project / ".docs-site" / "data" / "core.js")
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.tmp, ignore_errors=True)
+
+    def test_every_kind_most_recent_first(self):
+        self.assertEqual(self.code, 0, self.text)
+        got = [(e["date"], e["kind"]) for e in self.core["chronology"]]
+        self.assertEqual(got, [
+            ("2026-03-08", "source"), ("2026-03-07", "note"), ("2026-03-06", "project_note"),
+            ("2026-03-05", "diary"), ("2026-03-04", "review"), ("2026-03-03", "spike"),
+            ("2026-03-02", "decision"), ("2026-03-01", "diary"), ("2026-02-28", "request")])
+
+    def test_labels_and_links(self):
+        by = {(e["date"], e["kind"]): e for e in self.core["chronology"]}
+        self.assertEqual(by[("2026-03-01", "diary")]["label"], "opened")
+        self.assertEqual(by[("2026-03-01", "diary")]["path"], "solutions/ANALYSIS_api.md")
+        self.assertEqual(by[("2026-03-05", "diary")]["label"], "review round 1 FAIL")
+        self.assertEqual(by[("2026-02-28", "request")]["label"], "R1 — opening request")
+        self.assertEqual(by[("2026-03-02", "decision")]["label"], "ADR: pick the store")
+        self.assertEqual(by[("2026-03-06", "project_note")]["label"], "release completed")
+        self.assertEqual(by[("2026-03-07", "note")]["label"], "Use the manual")
+        self.assertIn("ANALYSIS_api.md", by[("2026-03-04", "review")]["label"])
+        for e in self.core["chronology"]:
+            if e.get("path") is not None:
+                self.assertIn(e["path"], load_js(self.project / ".docs-site" / "data"
+                                                 / "docs.js"))
+
+    def test_no_start_end_or_body_dates(self):
+        dates = {e["date"] for e in self.core["chronology"]}
+        for d in ("2026-01-01", "2026-12-31", "2026-02-02"):
+            self.assertNotIn(d, dates)
+
+    def test_within_a_day_the_later_entry_comes_first(self):
+        with tempfile.TemporaryDirectory() as d:
+            write(d, "ai_docs/solutions/ANALYSIS_x.md", "---\nid: F-1\n---\n# X\n\n## Diary\n\n"
+                  "**2026-05-01 — first.** a\n\n**2026-05-01 — second.** b\n")
+            got = docs_site.chronology(Path(d) / "ai_docs", {})
+            self.assertEqual([e["label"] for e in got], ["second", "first"])
+
+    def test_lately_is_the_ten_most_recent(self):
+        self.assertEqual(self.core["home"]["lately"], self.core["chronology"][:10])
+
+    def test_the_reader_is_the_validators(self):
+        """UC5: the page calls the validator's reader, so changing it changes the page."""
+        import unittest.mock as um
+        docs = self.project / "ai_docs"
+        with um.patch.object(docs_site.sdlc_core, "entry_openers",
+                             lambda body: [("2099-01-01", "patched", 1)]):
+            got = docs_site.chronology(docs, {})
+        self.assertIn(("2099-01-01", "patched"), [(e["date"], e["label"]) for e in got])
+
+    def test_a_source_event_opens_the_source_page(self):
+        src = [e for e in self.core["chronology"] if e["kind"] == "source"]
+        self.assertEqual([e["source"] for e in src], ["manual.txt"])
+        app = (PAGE_DIR / "app.js").read_text(encoding="utf-8")
+        # the source page exists only with a knowledge base; without one the label is text
+        self.assertIn('e.source && C.meta.has_kb ? link("#/source/"', app)
+
+    def test_a_shadow_mirror_is_not_read(self):
+        with tempfile.TemporaryDirectory() as d:
+            write(d, "ai_docs/solutions/ANALYSIS_old.md", "<!-- SHADOW generated from devPNT -->\n"
+                  "---\nid: F-9\n---\n# Old\n\n## Diary\n\n**2026-04-04 — shadow entry.** x\n")
+            self.assertEqual(docs_site.chronology(Path(d) / "ai_docs", {}), [])
+
+    def test_marketing_research_spikes_are_read(self):
+        with tempfile.TemporaryDirectory() as d:
+            write(d, "mkt_docs/spikes/RESEARCH_demand.md", "# Research Spike: demand\n\n"
+                  "## Answer / Outcome\n\n**2026-04-02 — demand exists.** x\n")
+            got = docs_site.chronology(Path(d) / "mkt_docs", {})
+            self.assertEqual([(e["date"], e["kind"], e["label"]) for e in got],
+                             [("2026-04-02", "spike", "demand exists")])
+
+    def test_a_label_with_markup_is_data_never_markup(self):          # T5
+        with tempfile.TemporaryDirectory() as d:
+            write(d, "ai_docs/README.md", "# X\n")
+            write(d, "ai_docs/audit/project_notes.md",
+                  "**2026-04-05 — <img src=x onerror=alert(1)></script>.** x\n")
+            code, text = run(Path(d))
+            self.assertEqual(code, 0, text)
+            raw = (Path(d) / ".docs-site" / "data" / "core.js").read_text(encoding="utf-8")
+            self.assertNotIn("</script", raw)
+            self.assertNotIn("<img", raw)
+            app = (PAGE_DIR / "app.js").read_text(encoding="utf-8")
+            body = app[app.index("function eventList"):app.index("function pageHome")]
+            self.assertNotIn("innerHTML", body)
+            self.assertNotIn("html(", body)
+
+    def test_every_event_kind_has_a_label_string(self):
+        strings = (PAGE_DIR / "strings.js").read_text(encoding="utf-8")
+        for e in self.core["chronology"]:
+            self.assertIn("event_%s:" % e["kind"], strings)
+
+    def test_an_empty_project_has_an_empty_chronology(self):
+        with tempfile.TemporaryDirectory() as d:
+            write(d, "ai_docs/README.md", "# Empty\n")
+            docs = Path(d) / "ai_docs"
+            self.assertEqual(docs_site.chronology(docs, {}), [])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

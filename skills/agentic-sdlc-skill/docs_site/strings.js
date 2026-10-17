@@ -59,6 +59,7 @@ window.DOCS_SITE_STRINGS = {
   event_review: "review",
   event_decision: "decision record",
   event_project_note: "project note",
+  event_spike: "exploration outcome",
 
   work_title: "Open work",
   work_why: "Each piece of open work, as its own resume notes declare it. Nothing here is computed.",

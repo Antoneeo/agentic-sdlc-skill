@@ -1143,7 +1143,7 @@ def build_home(docs, pages, work, kb, facts):
             st, sb, is_ns = vision_lead(body)
             vision = {"path": vp, "status": vision_status(pairs, body), "north_star": is_ns,
                       "section_title": st, "section_html": markdown(sb or "", "vision", facts)}
-    events = chronology(docs)
+    events = chronology(docs, pages)
     known = []
     if kb:
         for s in kb["order"]:
@@ -1164,11 +1164,91 @@ def build_home(docs, pages, work, kb, facts):
             "lately": events[:10], "lately_all": events, "known": known}
 
 
-def chronology(docs):
-    """Dated events the documents declare. The rules on which lines count as dated
-    events come from the doctrine unit on dated entries (F-073, R22); until they
-    exist the site lists none rather than guessing a parse."""
-    return []
+SPIKE_OUTCOME = ("## Answer / Outcome",)
+
+
+def chronology(docs, pages):
+    """Dated events the documents declare, most recent first: {date, kind, label,
+    path}. Which lines are events is F-073's rule (R22), read with the validator's
+    own readers -- `section_lines` + `entry_openers` for Diary entries, spike
+    outcomes and project notes, `request_entries`, `parse_review_log`, `adr_date`,
+    `knowledge.frontmatter_date` -- so the page and `validate` cannot disagree. No
+    analysis start or end date, no state, nothing from git. `path` is the page the
+    event opens, or None when the site has no page for it."""
+    events = []
+
+    def add(date, kind, label, rel, source=None):
+        e = {"date": date, "kind": kind, "label": label,
+             "path": rel if rel in pages else None}
+        if source:
+            e["source"] = source        # opens the source's own page (#/source/<name>)
+        events.append(e)
+
+    def openers(rel, kind, aliases=None):
+        text = _text(docs / rel) if (docs / rel).is_file() else None
+        if text is None:
+            return
+        if aliases is not None:
+            section = sdlc_core.section_lines(text, aliases)
+            if section is None:
+                return
+            text = section[1]
+        for date, label, _ in sdlc_core.entry_openers(text):
+            add(date, kind, label, rel)
+
+    def title_of(rel, text):
+        return pages[rel]["title"] if rel in pages else (
+            first_heading(split_frontmatter(text)[1]) or posixpath.basename(rel))
+
+    for p in sorted(docs.glob("solutions/ANALYSIS_*.md")):
+        text = _text(p)
+        # a shadow mirror is not an analysis to `validate` (list_analyses): not here either
+        if text is not None and not sdlc_core.is_shadow(p, (text.splitlines() or [""])[0]):
+            openers("solutions/" + p.name, "diary", sdlc_core.DIARY_SECTION)
+    # spike outcomes: SPIKE_* in the code/kb/course lenses, RESEARCH_* in marketing
+    for rel in sorted(["solutions/" + p.name for p in docs.glob("solutions/SPIKE_*.md")]
+                      + ["spikes/" + p.name for p in docs.glob("spikes/RESEARCH_*.md")]):
+        openers(rel, "spike", SPIKE_OUTCOME)
+    openers("audit/" + sdlc_core.PROJECT_NOTES, "project_note")
+    for p in sorted(docs.glob("audit/requests/REQUEST_*.md")):
+        rel = "audit/requests/" + p.name
+        text = _text(p)
+        for rid, date, label, _ in sdlc_core.request_entries(text or "")[0]:
+            add(date, "request", "%s — %s" % (rid, label), rel)
+    rel = "audit/reviews/REVIEW_LOG.md"
+    text = _text(docs / rel) if (docs / rel).is_file() else None
+    if text is not None:
+        for row in sdlc_core.parse_review_log(text)[0]:
+            add(row["date"], "review", "%s — %s: %s" % (
+                row["doc_key"], row["tier"], row["verdict"]), rel)
+    for p in sorted(docs.glob("architecture/ADR_*.md")):
+        rel = "architecture/" + p.name
+        text = _text(p)
+        date = sdlc_core.adr_date(p.name, text or "")
+        if date:
+            add(date, "decision", title_of(rel, text or ""), rel)
+    for folder, kind, suffix in (("corpus/notes", "note", ".md"),
+                                 ("corpus/given", "source", ".meta.md")):
+        for p in sorted(docs.glob(folder + "/*" + suffix)):
+            rel = folder + "/" + p.name
+            text = _text(p)
+            if text is None:
+                continue
+            date = knowledge.frontmatter_date(
+                sdlc_core.load_frontmatter(text.splitlines()))
+            if not date:
+                continue
+            if kind == "source":
+                name = p.name[:-len(suffix)]
+                add(date, kind, name, rel, source=name)
+            else:
+                add(date, kind, title_of(rel, text), rel)
+    # Most recent first. Within one day a document's later entry is the more recent
+    # one, so the reading order is reversed too. Entries carry no time of day, so
+    # between DIFFERENT documents on one day the order is fixed but not a time order:
+    # the kinds come in the reverse of the reading order above.
+    ranked = sorted(enumerate(events), key=lambda ne: (ne[1]["date"], ne[0]), reverse=True)
+    return [e for _, e in ranked]
 
 
 # ----------------------------------------------------------------- writing
