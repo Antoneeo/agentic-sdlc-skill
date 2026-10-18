@@ -689,6 +689,12 @@ class Criterion14Announcements(unittest.TestCase):
         self.assertEqual(len(lines), 1, "one line announces the site")
         self.assertLessEqual(len(lines[0].encode("utf-8")), 160, "the owner accepted about 160 bytes (R13, R15)")
         self.assertNotRegex(lines[0], r"(?i)\b(choose|prefer|avoid|skip|pick|order)\b")
+        # Field run 2026-10-18 (REQUEST_kb_site.md R28): asked for the project's state,
+        # the agent opened index.html in its client's browser pane, a static snapshot with
+        # no scripts, and improvised a server. The line names the sure way and the moment.
+        self.assertIn("--open", lines[0], "the line names the flag that opens the site")
+        self.assertIn("user's browser", lines[0], "the site opens in the user's browser, not a pane")
+        self.assertIn("project state", lines[0], "the line says when to show it")
 
     def test_the_package_ships_the_page_and_no_test(self):
         pkg = HERE.parent.parent.parent / "package.json"

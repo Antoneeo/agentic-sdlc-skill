@@ -147,3 +147,11 @@ Agent's proposal, not yet an owner statement: a Guides page of its own — the g
 ### R27 — 2026-10-17 — a fourth review round, beyond the cap
 Context (agent): closure review round 3 FAIL, round cap reached; the round-3 fixes and the Guides page of R26 were done, not yet reviewed. Next-step box: "Run a 4th review round, beyond the limit?"
 > Yes: run a 4th scoped review round on the round-3 fixes and the Guides page (R26), then close.
+
+### R28 — 2026-10-18 — field run: the agent did not open the site the sure way
+Context (agent): asked "Mi mostri lo stato corrente?" and then "se ti chiedo la situazione.. non dovresti mostrarmi il sito web?", the agent opened `.docs-site/index.html` in the client's browser pane (a static snapshot without scripts, blank page) and improvised a local server; SKILL.md's line names neither `--open` nor when to show the site.
+> mi pare di aver visto un piccolo passo falso.. la skill non suggerisce un modo a colpo sicuro di creare ed aprire il minisito?
+
+### R29 — 2026-10-18 — fix it now
+Context (agent): "Si chiude aggiungendo `--open` a quella riga e dicendo quando usarlo, nei quattro `SKILL.md` della famiglia. […] vuoi che la prepari?"
+> si facciamola subito

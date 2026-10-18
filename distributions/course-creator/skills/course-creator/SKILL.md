@@ -13,7 +13,7 @@ Create a course that helps a specific learner understand and use something. The 
 
 This is the course lens of the Agentic SDLC family. It shares `vision.md`, `review.md`, `guides.md`, `routing.md`, `dispatch.md`, `memory.md`, `scripts/sdlc_core.py`, and `scripts/knowledge.py` with the other lenses. It adds `slide_content.md`, `templates.md`, `learning_design.md`, `source_check.md`, `simulation.md`, `feedback.md`, `elicitation.md`, `ENFORCEMENT.md`, `scripts/sdlc_check.py` and `scripts/course_check.py`. Read a support file when its phase needs it.
 
-`scripts/docs_site.py --root <project>`: writes an offline, read-only site of what the agent reads here, for the user to browse.
+`scripts/docs_site.py --root <project> --open`: opens in the user's browser a read-only site of what the agent reads; use it to show the project state.
 
 ## Rule Zero: Triage and route
 

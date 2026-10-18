@@ -18,7 +18,7 @@ Support files in the skill directory:
 - `templates.md`: templates for every artifact and deliverable.
 - `review.md`: the family's shared review discipline (independence ladder, rounds, log). The marketing-specific attack surface — swap test, untraced numbers, orphan tactics, missing kill/scale — lives in `frameworks.md`'s falsification rules; the adversarial CMO review applies them through `review.md`'s procedure.
 - `scripts/mkt_check.py` + `scripts/sdlc_core.py`: the mechanical validator (`check`, `validate`, `ledger`, `benefit`, `budget`, `funnel`, `trace`, `index`, plus the spine's `stale`/`mark`/`gate`/`orient`/`plan`/`migrate`).  Keep the entry point, `scripts/sdlc_core.py` and `scripts/knowledge.py` together; the last supplies common memory and KB integrity.
-- `scripts/docs_site.py --root <project>`: writes an offline, read-only site of what the agent reads here, for the user to browse.
+- `scripts/docs_site.py --root <project> --open`: opens in the user's browser a read-only site of what the agent reads; use it to show the project state.
 - `hybrid.md`: the devPNT seam — the authoritative hierarchy, the ownership matrix (which artifact is mastered where), and the Hybrid rules. Read it when the `devpnt_*` tools point at this project; a Standalone engagement never needs it.
 - `ENFORCEMENT.md`: optional setup for CI and hooks.
 

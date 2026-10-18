@@ -495,3 +495,15 @@ does not validate the date.
 **2026-10-18 — round 2 PASS; its one WARN fixed.** A received source's event linked to
 `#/source/<name>` even on a project with no knowledge base, where that page does not exist;
 the link is now made only when `C.meta.has_kb`, otherwise the label stays text.
+
+**2026-10-18 — field run on this repository, after the 1.43.0 release: one defect, fixed.**
+Asked for the project's state (REQUEST_kb_site.md R28), the agent did not show the site; asked
+again, it opened `index.html` in its client's browser pane — a static snapshot without
+scripts, a blank page — and improvised a local server. Mechanism: the `SKILL.md` line named
+neither `--open` nor when to show the site. The line in all four lenses now reads
+"`scripts/docs_site.py --root <project> --open`: opens in the user's browser a read-only
+site of what the agent reads; use it to show the project state." (153 bytes, inside the
+160 accepted in R13/R15, so no new cost). `test_docs_site.py` Criterion 14 asserts the flag,
+the user's browser and the moment; replayed red on the old line, green on the new. E2E S17
+added. Batteries green in all four lenses.
+
