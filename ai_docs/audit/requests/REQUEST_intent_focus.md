@@ -34,3 +34,7 @@ Chosen options as the agent wrote them (the owner's pick adopts them; agent word
 ### R5 — 2026-10-18 — design and cost approved
 Context (agent): design review FAIL -> PASS; doctrine diff (`harness_intent_focus/proposed.patch`) and ceremony cost shown; asked "Approvi il design F-071 e il costo dichiarato?". Open question 1 (Rule Zero copy count) not answered in this entry.
 > Approvo il design F-071 e confermo il costo dichiarato nell'ANALYSIS.
+
+### R6 — 2026-10-18 — Rule Zero copy count (Open question 1)
+Context (agent): "Come contano le copie nelle distribuzioni per Rule Zero?", options "Una volta per modifica" / "Ogni file conta".
+> Una modifica copiata identica nelle distribuzioni conta una volta sola per il limite di file di Rule Zero.
