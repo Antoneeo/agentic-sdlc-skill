@@ -11,10 +11,9 @@ branch: main
 ---
 # Intent focus — effort weighed against the value and risk it serves
 
-For the owner: approve this design and its ceremony cost (§Ceremony disclosure), and
-answer the open question in §Open questions; the doctrine diff is
-`harness_intent_focus/proposed.patch`. For the implementer: §Impact and §Action Plan.
-Nothing is applied yet.
+Design and ceremony cost approved by the owner (REQUEST R5). For the owner: answer
+§Open questions 1. For the implementer: apply `harness_intent_focus/proposed.patch`
+per §Impact and §Action Plan; nothing is applied yet.
 
 ## Objective
 
@@ -208,7 +207,7 @@ Net: the remedy is not self-financing; the owner accepts the remainder or it is 
 
 ## Action Plan
 
-1. Owner: approve design and cost; answer question 1 (verbatim in the request record).
+1. Owner: design and cost approved (R5); question 1 open (verbatim in the request record when answered).
 2. Apply `proposed.patch`; copy `review.md` to the three distributions; `shared_files.py --update`.
 3. `cmd_benefit` (FS5) ×4 via shared copy; `templates.md` ×4; workflow document line 92;
    `test_intent_focus.py` red on `main`, green after.
@@ -241,3 +240,5 @@ Net: the remedy is not self-financing; the owner accepts the remainder or it is 
   kinds narrowed to the owner's R4 list, finding corrections excluded, probe scoped to
   the code lens and triggered by the owner's words, behavioural replay made gating, the
   F-074 delta's findings stated as real, the Rule Zero copy-count question raised.
+- 2026-10-18: owner approved the design and confirmed the declared cost (REQUEST R5).
+  Open question 1 still open; implementation not started.
