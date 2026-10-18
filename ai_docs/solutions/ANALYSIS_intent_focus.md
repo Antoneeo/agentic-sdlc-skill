@@ -74,6 +74,7 @@ Measured facts:
 | M2 | Nothing measures where effort goes against the promise | Gates reward completeness: an agent that completes everything with equal care drowns the centre in detail |
 | M3 | The promise is tested last, by a test that cannot discriminate | Execute-Before-Specify covers claims about *existing* code, not the claim that the feature will deliver its benefit |
 | M4 | Reviews check conformance to the design, not the design's fidelity to the intent | `review.md` conformance statement maps each input constraint; a dropped essence is not an input row |
+| M5 | Steps fire by level and moment, not by the risk they lower or the value they serve, so work that lowers no risk is done anyway (efficiency, added 2026-10-18 at the owner's request) | an L3 switches on every gate for every delta; nothing asks a step "which risk do you lower, at what cost?" or licenses skipping it; the Vision's "No ceremony ratchet" binds doctrine authors, never the agent at work. Evidence (F-074/F-072 session, 2026-10-18): an independent review launched on a one-line fix already pinned by a red/green test and green batteries (stopped by the owner); a closure review on a version-bump delta returned three cosmetic WARNs; by contrast the F-074 design review found two real BLOCKs — reviews are not the waste, reviews by calendar are |
 
 ## Candidate remedies (direction only — designed after elicitation)
 
@@ -145,10 +146,11 @@ The owner decides whether to commit it as a parked branch; it is not merged.
   renumbered F-065 -> F-071: F-065 was already taken on `main` by
   `ANALYSIS_review_mandate_contract.md`. The archive tag `archive/software-knowledge`
   and its commit message still call this unit F-065.
-
-## Diary
-
 - 2026-10-18 — M1 is closed for Vision authoring by F-074 (`ANALYSIS_vision_interview.md`):
   every Vision is written only after an owner interview and an owner-approved north
   star, and elicitation's skip path no longer reaches a Vision. R1's coverage of the
   core promise in downstream artifacts, and M2–M4, remain here.
+- 2026-10-18 — scope widened by the owner (REQUEST_intent_focus.md R2, R3): efficiency is
+  part of this unit, as M5. The objective now reads both ways — effort goes where the
+  promise is (M2), and no step is done that lowers no risk and serves no value (M5).
+
