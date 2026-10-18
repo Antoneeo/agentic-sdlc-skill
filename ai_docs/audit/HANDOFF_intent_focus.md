@@ -4,7 +4,7 @@ level: L3
 branch: main
 status: PLANNED
 since: 2026-10-04
-next: owner approval of the F-071 design and its ceremony cost, and an answer to Open question 1 (Rule Zero copy count); then implementation per the ANALYSIS Action Plan.
+next: owner answer to Open question 1 (Rule Zero copy count); then implementation per the ANALYSIS Action Plan (design and cost approved, R5).
 details: solutions/ANALYSIS_intent_focus.md
 updated: 2026-10-18
 ---

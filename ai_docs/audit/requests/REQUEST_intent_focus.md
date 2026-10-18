@@ -30,3 +30,7 @@ Chosen options as the agent wrote them (the owner's pick adopts them; agent word
 - 1: "Solo le review: una review opzionale ha un trigger dichiarato (senza trigger non si fa), e un delta post-PASS che solo riformula lavoro già revisionato (bump, CHANGELOG, indici, copie shared) non riapre la review."
 - 2: "Prima del codice: la prova che dimostra l'esito dell'owner esiste, pone la domanda giusta (in F-063 nessuna domanda chiedeva il 'perché') e gira rossa sul baseline; il candidato si misura dopo."
 - 3: "Replay rosso/verde su entrambi gli incidenti + batterie verdi; più, sulle prossime 3 unità L3, il REVIEW_LOG mostra righe 'not due' con motivo e nessun difetto trovato poi in un delta saltato."
+
+### R5 — 2026-10-18 — design and cost approved
+Context (agent): design review FAIL -> PASS; doctrine diff (`harness_intent_focus/proposed.patch`) and ceremony cost shown; asked "Approvi il design F-071 e il costo dichiarato?". Open question 1 (Rule Zero copy count) not answered in this entry.
+> Approvo il design F-071 e confermo il costo dichiarato nell'ANALYSIS.
