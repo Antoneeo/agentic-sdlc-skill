@@ -38,3 +38,7 @@ Context (agent): design review FAIL -> PASS; doctrine diff (`harness_intent_focu
 ### R6 — 2026-10-18 — Rule Zero copy count (Open question 1)
 Context (agent): "Come contano le copie nelle distribuzioni per Rule Zero?", options "Una volta per modifica" / "Ogni file conta".
 > Una modifica copiata identica nelle distribuzioni conta una volta sola per il limite di file di Rule Zero.
+
+### R7 — 2026-10-18 — implement and release here
+Context (agent): proposed a separate session "Implement F-071 (intent focus) and release" (apply the patch, FS5, test, guide proposal, batteries, closure review, r31, bump).
+> Esegui questa attività qui: “Implement F-071 (intent focus) and release”

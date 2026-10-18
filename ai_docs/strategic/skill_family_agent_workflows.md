@@ -89,7 +89,9 @@ Qualunque lente sia attiva, l'agente:
    tua, dopo il blind check; ogni Vision, M-VISION compresa, nasce da un'intervista
    all'owner in sei domande e da una north star approvata nelle tue parole, prima
    di qualunque testo — `vision.md` §The owner interview); **design review indipendente prima di implementare**
-   e closure review prima di dichiarare DONE — ogni richiesta apre con il blocco
+   e closure review prima di dichiarare DONE (non dovuta su un delta post-PASS che solo
+   riformula lavoro già giudicato, né a livello 2 fuori dalle aree security, F-071; la
+   design review non è mai saltata) — ogni richiesta apre con il blocco
    REVIEW MANDATE copiato alla lettera, che porta al reviewer `review.md` intero;
    in Hybrid il PASS precede ogni proposta a devPNT — scala di indipendenza a 3 pioli
    (subagent fresco > run one-shot > self-pass dichiarato, illegittimo se un piolo

@@ -1,8 +1,9 @@
 """F-071 probe: how `sdlc_check.py benefit` counts a NOT DUE row today.
 
 Builds a temp project whose REVIEW_LOG holds one closure PASS and one NOT DUE row,
-then runs `benefit`. Expected on the current code: the NOT DUE row is counted as a
-closure review and as "inconclusive" (the reason for FS5). Exit 0 when that holds.
+then runs `benefit`. Before F-071 the NOT DUE row was counted as a closure review
+and as "inconclusive" (the reason for FS5; this probe exited 1 on that code, 2026-10-18).
+After FS5 it is counted apart. Exit 0 when it is counted apart.
 """
 import subprocess, sys, tempfile
 from pathlib import Path
@@ -26,4 +27,6 @@ print(out)
 counted = "reviews with a stated moment: 2" in out
 inconclusive = "(+1 inconclusive)" in out
 print("NOT DUE counted as a review:", counted, "| as inconclusive:", inconclusive)
-sys.exit(0 if counted and inconclusive else 1)
+apart = "reviews ruled not due (logged, counted in no figure below): 1" in out
+print("NOT DUE counted apart:", apart)
+sys.exit(0 if apart and not counted and not inconclusive else 1)

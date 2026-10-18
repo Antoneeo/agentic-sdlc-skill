@@ -74,3 +74,8 @@ names), prompt as above; full answers in the F-071 session transcript, summarize
 Gaps the proposed-text agent named: whether a skipped L2 review logs a row (closed by
 adding "and logs no row" to the L2 trigger) and what check proves a version bump (left
 to the delta's own tooling, named in the row).
+
+Re-run on the applied text (Action Plan step 4): not run. The applied `review.md`
+differs from the replayed one by one clause, "and logs no row", added to close the gap
+above; `SKILL.md` is identical (compared LF-normalized, 2026-10-18). No case ruling can
+change, so a second ~140k-token cold run would lower no risk.

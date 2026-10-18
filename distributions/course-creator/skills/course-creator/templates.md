@@ -210,12 +210,12 @@ The module material itself names course/version/module, explains the concept for
 
 ## Review log and project architecture
 
-Use the shared `review.md` schema at `audit/reviews/REVIEW_LOG.md`:
+Use the shared `review.md` schema at `audit/reviews/REVIEW_LOG.md`. A review ruled not due (`review.md` §When a review is due) is still a row: `tier` `closure`, `model` `none (not due)`, findings and rounds `0`, verdict `NOT DUE: <the kinds; the check that ran and its result>`; `benefit` counts it apart. The schema:
 
 | date | doc_key | tier | model | reviewer | findings_raised | findings_real | verdict | revise_rounds |
 |---|---|---|---|---|---|---|---|---|
 
-The `model` cell identifies the available capability: `deep`, `light`, `economy`, `single (client exposes no choice)` or `below floor: <reason>`. A declared self-pass is labeled as such. This log records evidence and limits; it does not grant approval.
+The `model` cell identifies the available capability: `deep`, `light`, `economy`, `single (client exposes no choice)`, `below floor: <reason>` or `none (not due)`. A declared self-pass is labeled as such. This log records evidence and limits; it does not grant approval.
 
 The shared `strategic/architecture.md` still records components actually discovered. A fresh project has an empty map; never invent one from the course template.
 

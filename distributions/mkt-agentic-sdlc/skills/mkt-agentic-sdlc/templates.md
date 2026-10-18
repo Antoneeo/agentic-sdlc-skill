@@ -616,6 +616,7 @@ round verifies them (`review.md` §Receiving) — and 3 is the ceiling, past whi
 residue goes to the user rather than into a fourth round. `verdict` carries the
 round-1 verdict and the final one when they differ (`FAIL → PASS`): collapsing a
 first-round FAIL into a bare `PASS` erases the evidence this log exists to keep.
+A review ruled not due (`review.md` §When a review is due) is still a row: `tier` `closure`, `model` `none (not due)`, findings and rounds `0`, verdict `NOT DUE: <the kinds; the check that ran and its result>`; `benefit` counts it apart.
 Concurrent reviews: `init` writes a `.gitattributes` stanza giving this file
 `merge=union` — a **built-in** driver (no per-clone `git config`, unlike
 `merge=ours`, which silently does nothing until every clone configures it).
