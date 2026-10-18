@@ -15,7 +15,24 @@ Two moments, and they review different things:
 |---|---|---|---|
 | **1. Design review** | End of Phase 3 — **before any implementation** | the ANALYSIS (Standalone) / the `E-ISP`+`E-TDD` (Hybrid) | L3 |
 | **1b. Late arrival** | Work that became L3 *after* code existed — an L1/L2 reclassified mid-flight, or a design increment on a feature already implemented — runs moment 1 **now**, before any further implementation, logged `design (late)` | same | L3 |
-| **2. Closure review** | Phase 5, before DONE | the actual diff, against that approved design | L2 / L3 — the L2 closure review is optional; every review that runs logs its row |
+| **2. Closure review** | Phase 5, before DONE | the actual diff, against that approved design | L2 / L3 — at level 2 (L2; E2 in a lens that counts E-levels) it is due only on a security-sensitive area the lens's Rule Zero names, or at the owner's request, and otherwise does not run and logs no row; every review that runs logs its row |
+
+**A delta after a PASS reopens a review only where it changes what was judged.**
+A review lowers one risk — a judgement its author is blind to — at the cost of a
+deep reviewer's full read. After a design or closure PASS, a delta made only of
+these kinds carries no new judgement, and the closure review is **not due** on it:
+version numbers and release metadata; regenerated indexes and audit-mark records;
+copies of a shared file that a tool verifies identical to the reviewed one; and
+CHANGELOG lines that state nothing the reviewed artifacts do not already state. The
+list is closed and content governs it: a CHANGELOG line adding a claim is judged
+work, and a change answering a review finding is never in it (§Review-driven
+corrections governs that). Such a delta is verified by its own check and logged as a
+row with `tier` `closure`, `model` `none (not due)`, findings `0`, rounds `0` and
+verdict `NOT DUE: <the kinds; the check that ran and its result>`; a failing check
+makes the delta judged work. Any other change after the PASS — README or overview
+prose, an E2E script, a rulings row, doctrine, design, behaviour, a test — is
+reviewed, scoped to that part. In Hybrid, devPNT doctrine §4.6 adds to this rule,
+never yields to it.
 
 **The agent review comes first, the human's after — never instead (Hybrid).**
 No governed artifact that this file reviews — the design (`E-ISP`, `E-TDD`),
@@ -172,7 +189,7 @@ logging only passes would erase exactly that evidence. The row goes in
 `| date | doc_key | tier | model | reviewer | findings_raised | findings_real | verdict | revise_rounds |`,
 with `tier` = `design` or `closure` in Standalone. **`model` records the capability
 tier that actually ran** — `deep`, `light`, `economy`, `single (client exposes no
-choice)`, or `below floor: <reason>` — never a provider name in doctrine (a project
+choice)`, `below floor: <reason>`, or `none (not due)` on a NOT DUE row — never a provider name in doctrine (a project
 may of course write its own model names in its own log). Without it the floor above
 is a belief: the row would say a gate ran and never whether it could do its job, and
 the correlation with `revise_rounds` and `findings_real` — the only evidence the
@@ -394,7 +411,15 @@ When you are the reviewer:
   every use-case/user-need (and the Actor it serves — a use-case with no defined Actor,
   or an Actor UX expectation the solution does not meet, is a finding), every threat, and
   every applicable Vision benefit/Non-Goal, state WHERE the artifact satisfies it (section
-  or `file:line`) or raise it as a finding. A PASS/approve is **not valid on "found nothing"** — the conformance
+  or `file:line`) or raise it as a finding. **For an L3/E3 unit, each outcome the owner
+  named — in the request record (the opening request and every entry widening scope) or
+  in an approved north star — is a row too, weighed by effort**: where the design serves
+  it and what share of the design (its sections and planned changes) goes to it. An
+  outcome no section serves, or one served by a minor share while a secondary concern
+  takes the bulk, is a finding — the drift every per-constraint row misses when each
+  constraint is met. In the lens whose `SKILL.md` defines Execute-Before-Specify, an
+  outcome whose owner's words name a comparative effect also needs, as evidence, the
+  probe that shows it, red on the baseline; you rule whether the words name one. A PASS/approve is **not valid on "found nothing"** — the conformance
   statement is the proof the check ran; an unfalsifiable "I checked" is the review
   theater this discipline exists to prevent (the reviewer-side twin of §Receiving's
   silent-drop rule). Plain code reviews stay findings-only.

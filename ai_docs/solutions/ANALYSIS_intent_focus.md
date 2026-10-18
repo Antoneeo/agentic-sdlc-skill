@@ -2,7 +2,7 @@
 id: F-071
 feature: Intent focus — effort weighed against the value and risk it serves
 description: Why every gate stayed green while F-063/F-064 lost the owner's core promise, and why reviews ran where they lowered no risk; the doctrine that rules both, replayed red/green on both incidents.
-status: PLANNED
+status: IN_PROGRESS
 level: L3
 domain: code
 topics: [anti-myopia, vision-gate, review, proportionality, efficiency]

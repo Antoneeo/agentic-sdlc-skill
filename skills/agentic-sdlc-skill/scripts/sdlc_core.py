@@ -2598,6 +2598,13 @@ def _is_pass(verdict):
     return re.search(r"\bPASS\b", (verdict or "").upper()) is not None
 
 
+def _is_not_due(verdict):
+    """A review ruled not due (review.md, a delta that only restates judged
+    work): logged so a skip stays visible, but it is neither a review nor a
+    finding, so it stays out of every count below (F-071)."""
+    return (verdict or "").strip().upper().startswith("NOT DUE")
+
+
 def _print_read_cost():
     """The cost side, printed with the benefit and NEVER without it: a catch
     rate with no cost term justifies unbounded doctrine, and a cost term with
@@ -2638,6 +2645,8 @@ def cmd_benefit(root):
         _print_read_cost()
         return 0
     rows, unparsed = parse_review_log(read_text(log))
+    not_due = [r for r in rows if _is_not_due(r["verdict"])]
+    rows = [r for r in rows if not _is_not_due(r["verdict"])]
     # `tier` carries the MOMENT in Standalone (design / closure) and the
     # reviewer WEIGHT in Hybrid (deep / light / code / guide / vision). A
     # Hybrid row is a real review whose moment this column does not state, so
@@ -2662,9 +2671,11 @@ def cmd_benefit(root):
                     unstated_code += n
     classified = moments["design"] + moments["closure"]
     print("rows parsed: %d   rows unparsed: %d%s"
-          % (len(rows), len(unparsed),
+          % (len(rows) + len(not_due), len(unparsed),
              ("  -> " + "; ".join("line %d: %s" % u for u in unparsed[:5]))
              if unparsed else ""))
+    print("reviews ruled not due (logged, counted in no figure below): %d"
+          % len(not_due))
     print("reviews with a stated moment: %d   moment not stated by `tier`: %d%s"
           % (len(classified), sum(unstated.values()),
              ("  (" + ", ".join("%s x%d" % (t, n) for t, n
