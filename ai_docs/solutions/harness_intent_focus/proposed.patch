@@ -1,0 +1,69 @@
+diff --git a/skills/agentic-sdlc-skill/review.md b/skills/agentic-sdlc-skill/review.md
+index 8ad02b8..a274a4a 100644
+--- a/skills/agentic-sdlc-skill/review.md
++++ b/skills/agentic-sdlc-skill/review.md
+@@ -15,7 +15,24 @@ Two moments, and they review different things:
+ |---|---|---|---|
+ | **1. Design review** | End of Phase 3 — **before any implementation** | the ANALYSIS (Standalone) / the `E-ISP`+`E-TDD` (Hybrid) | L3 |
+ | **1b. Late arrival** | Work that became L3 *after* code existed — an L1/L2 reclassified mid-flight, or a design increment on a feature already implemented — runs moment 1 **now**, before any further implementation, logged `design (late)` | same | L3 |
+-| **2. Closure review** | Phase 5, before DONE | the actual diff, against that approved design | L2 / L3 — the L2 closure review is optional; every review that runs logs its row |
++| **2. Closure review** | Phase 5, before DONE | the actual diff, against that approved design | L2 / L3 — at level 2 (L2; E2 in a lens that counts E-levels) it is due only on a security-sensitive area the lens's Rule Zero names, or at the owner's request, and otherwise does not run and logs no row; every review that runs logs its row |
++
++**A delta after a PASS reopens a review only where it changes what was judged.**
++A review lowers one risk — a judgement its author is blind to — at the cost of a
++deep reviewer's full read. After a design or closure PASS, a delta made only of
++these kinds carries no new judgement, and the closure review is **not due** on it:
++version numbers and release metadata; regenerated indexes and audit-mark records;
++copies of a shared file that a tool verifies identical to the reviewed one; and
++CHANGELOG lines that state nothing the reviewed artifacts do not already state. The
++list is closed and content governs it: a CHANGELOG line adding a claim is judged
++work, and a change answering a review finding is never in it (§Review-driven
++corrections governs that). Such a delta is verified by its own check and logged as a
++row with `tier` `closure`, `model` `none (not due)`, findings `0`, rounds `0` and
++verdict `NOT DUE: <the kinds; the check that ran and its result>`; a failing check
++makes the delta judged work. Any other change after the PASS — README or overview
++prose, an E2E script, a rulings row, doctrine, design, behaviour, a test — is
++reviewed, scoped to that part. In Hybrid, devPNT doctrine §4.6 adds to this rule,
++never yields to it.
+ 
+ **The agent review comes first, the human's after — never instead (Hybrid).**
+ No governed artifact that this file reviews — the design (`E-ISP`, `E-TDD`),
+@@ -172,7 +189,7 @@ logging only passes would erase exactly that evidence. The row goes in
+ `| date | doc_key | tier | model | reviewer | findings_raised | findings_real | verdict | revise_rounds |`,
+ with `tier` = `design` or `closure` in Standalone. **`model` records the capability
+ tier that actually ran** — `deep`, `light`, `economy`, `single (client exposes no
+-choice)`, or `below floor: <reason>` — never a provider name in doctrine (a project
++choice)`, `below floor: <reason>`, or `none (not due)` on a NOT DUE row — never a provider name in doctrine (a project
+ may of course write its own model names in its own log). Without it the floor above
+ is a belief: the row would say a gate ran and never whether it could do its job, and
+ the correlation with `revise_rounds` and `findings_real` — the only evidence the
+@@ -394,7 +411,15 @@ When you are the reviewer:
+   every use-case/user-need (and the Actor it serves — a use-case with no defined Actor,
+   or an Actor UX expectation the solution does not meet, is a finding), every threat, and
+   every applicable Vision benefit/Non-Goal, state WHERE the artifact satisfies it (section
+-  or `file:line`) or raise it as a finding. A PASS/approve is **not valid on "found nothing"** — the conformance
++  or `file:line`) or raise it as a finding. **For an L3/E3 unit, each outcome the owner
++  named — in the request record (the opening request and every entry widening scope) or
++  in an approved north star — is a row too, weighed by effort**: where the design serves
++  it and what share of the design (its sections and planned changes) goes to it. An
++  outcome no section serves, or one served by a minor share while a secondary concern
++  takes the bulk, is a finding — the drift every per-constraint row misses when each
++  constraint is met. In the lens whose `SKILL.md` defines Execute-Before-Specify, an
++  outcome whose owner's words name a comparative effect also needs, as evidence, the
++  probe that shows it, red on the baseline; you rule whether the words name one. A PASS/approve is **not valid on "found nothing"** — the conformance
+   statement is the proof the check ran; an unfalsifiable "I checked" is the review
+   theater this discipline exists to prevent (the reviewer-side twin of §Receiving's
+   silent-drop rule). Plain code reviews stay findings-only.
+diff --git a/skills/agentic-sdlc-skill/SKILL.md b/skills/agentic-sdlc-skill/SKILL.md
+index 0a85259..65037ed 100644
+--- a/skills/agentic-sdlc-skill/SKILL.md
++++ b/skills/agentic-sdlc-skill/SKILL.md
+@@ -182,7 +182,7 @@ For any L3, run the spec elicitation round in `elicitation.md` BEFORE drafting t
+ 
+ **Blast-radius enumeration is an authoring duty, not a review finding.** Before writing the Impact (the list of what changes), for every symbol whose signature you change, thread a new field through, or that has more than one caller: mechanically enumerate EVERY consumer with the best symbol-graph tool your toolchain offers — an LSP/IDE call hierarchy or a find-usages / call-graph capability — with `grep` only as a last-resort fallback, and list the full set in the Impact. Anchor to symbol identity, not line numbers (they rot). This is deterministic and cheap: doing it up-front collapses the review into one pass, instead of the reviewer returning "you missed a consumer" one round at a time. Leaving completeness to the closure review is the myopia failure this whole workflow exists to prevent.
+ 
+-**Execute-Before-Specify — behavioural claims about existing code are probed, not read.** Every claim in an L3 design artifact of the form "the code today does X" MUST derive from an executed probe (a small script or assertion harness run against the real system in its real states) before the prose is written, never from reading the source alone. The duty is proportional: it covers the claims the design RESTS on — where a wrong answer changes the design — never every mention of existing code; structural facts (a file exists, a symbol's signature, who calls it) belong to the blast-radius enumeration above, not to a probe. A deliverable that is itself text — doctrine, a schema, a prompt, a reviewer definition — is probed the same way: replay it against the recorded case that motivated it (the incident artifact, the tool-usage transcript, the review that missed the defect), red under the old text, green under the new. "No probe is possible" is shown, never declared. And a probe must be able to FAIL: show it red first — negate the condition or the state it asserts — then green against the real system (the RED gesture of `tdd.md`, applied to the experiment); a probe you cannot make fail establishes nothing. Keep the probes as an assertion harness that ships WITH the artifact, in the repo (e.g. `ai_docs/solutions/harness_[feature]/` — a scratchpad dies with the session): the reviewer re-runs assertions instead of re-deriving claims, and every later revision re-verifies them for free. Field measurement (2026-08): eight consecutive design-review FAILs, every finding the class "the design describes intent, not behaviour", converged to a PASS in one round once each behavioural claim was executed first — probed claims held in every subsequent round; read claims failed in every one.
++**Execute-Before-Specify — behavioural claims about existing code are probed, not read.** Every claim in an L3 design artifact of the form "the code today does X" MUST derive from an executed probe (a small script or assertion harness run against the real system in its real states) before the prose is written, never from reading the source alone. The duty is proportional: it covers the claims the design RESTS on — where a wrong answer changes the design — never every mention of existing code; structural facts (a file exists, a symbol's signature, who calls it) belong to the blast-radius enumeration above, not to a probe. A deliverable that is itself text — doctrine, a schema, a prompt, a reviewer definition — is probed the same way: replay it against the recorded case that motivated it (the incident artifact, the tool-usage transcript, the review that missed the defect), red under the old text, green under the new. The claim the unit exists to make true is probed too: where the owner's words for an outcome (request record, approved north star) name a comparative effect — an agent understands better, a task gets faster — the probe that would show it is built before code, asks the question the outcome names, and is shown red on the baseline; the candidate is measured after. How the author frames the unit (a new capability, a fix) does not exempt it. "No probe is possible" is shown, never declared. And a probe must be able to FAIL: show it red first — negate the condition or the state it asserts — then green against the real system (the RED gesture of `tdd.md`, applied to the experiment); a probe you cannot make fail establishes nothing. Keep the probes as an assertion harness that ships WITH the artifact, in the repo (e.g. `ai_docs/solutions/harness_[feature]/` — a scratchpad dies with the session): the reviewer re-runs assertions instead of re-deriving claims, and every later revision re-verifies them for free. Field measurement (2026-08): eight consecutive design-review FAILs, every finding the class "the design describes intent, not behaviour", converged to a PASS in one round once each behavioural claim was executed first — probed claims held in every subsequent round; read claims failed in every one.
+ 
+ **Before authoring, know which tier is authoring.** Authoring a governed artifact is a **deep-floor role** — its output is judgement and nothing downstream scores it — and `review.md` §The capability floor owns the rule: where this session can determine that it is below that floor, say so once, before drafting, rather than producing a confident artifact nobody flags. Where it cannot determine its own tier it owes nothing. The reliably working half of that rule is addressed to the user, in the package README.
+ 

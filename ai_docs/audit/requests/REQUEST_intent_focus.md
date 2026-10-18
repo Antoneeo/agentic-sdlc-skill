@@ -20,3 +20,13 @@ Context (agent): asked "F-071 cosa fa? cosa risolve?", then the owner's observat
 ### R3 — 2026-10-18 — accepted; why it matters
 Context (agent): "Vuoi che F-071 includa anche la pragmaticità, e la avvio in una sessione nuova?"
 > si accetto. E' molto importante che l'uso della skill permetta anche di mantenere alta l'efficienza e non solo l'efficacia. Altrimenti finisce per essere dannosa
+
+### R4 — 2026-10-18 — elicitation round answers
+Context (agent): three numbered questions with options (structured-question facility); the owner picked one option per question. Question and chosen option quoted.
+> 1. Ampiezza del rimedio di efficienza (M5) → "Stretta (Recommended)"
+> 2. Prova della promessa prima del codice (M3) → "Progettata, rossa sul baseline (Recommended)"
+> 3. Come riconosci che F-071 è riuscita (accettazione)? → "Replay + segnale sul campo (Recommended)"
+Chosen options as the agent wrote them (the owner's pick adopts them; agent words, not the owner's):
+- 1: "Solo le review: una review opzionale ha un trigger dichiarato (senza trigger non si fa), e un delta post-PASS che solo riformula lavoro già revisionato (bump, CHANGELOG, indici, copie shared) non riapre la review."
+- 2: "Prima del codice: la prova che dimostra l'esito dell'owner esiste, pone la domanda giusta (in F-063 nessuna domanda chiedeva il 'perché') e gira rossa sul baseline; il candidato si misura dopo."
+- 3: "Replay rosso/verde su entrambi gli incidenti + batterie verdi; più, sulle prossime 3 unità L3, il REVIEW_LOG mostra righe 'not due' con motivo e nessun difetto trovato poi in un delta saltato."
