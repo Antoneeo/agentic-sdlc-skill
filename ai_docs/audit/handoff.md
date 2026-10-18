@@ -11,7 +11,7 @@ Date: 2026-10-18 (UTC)
 | F-070 "What's new" for users on the npm pages | L3 | main | PLANNED | 2026-10-13 | Elicitation round, then ANALYSIS_npm_whats_new.md (no devPNT). | HANDOFF_npm_whats_new.md · audit/requests/REQUEST_npm_whats_new.md |
 | F-071 Intent focus (anti-myopia at the level of intent) | L3 | main | PLANNED | 2026-10-04 | Owner answers open question 1 (was the "why" in the original request?); then elicitation round, design, replay harness red/green on the incident. | HANDOFF_intent_focus.md · solutions/ANALYSIS_intent_focus.md |
 | F-072 docs site (static site generated from ai_docs, shared by the family) | L3 | feat/kb-site-spec | IN_PROGRESS | 2026-10-16 | field run of the probe and the site on the owner's work machine (released in 1.42.0) | HANDOFF_kb_site.md · ANALYSIS_kb_site.md · REQUEST_kb_site.md · E2E_TEST_kb_site.md · MERGE_REVIEW_kb_site.md · harness_kb_site/probe.py |
-| F-074 Vision born from an owner interview (family-wide) | L3 | feature/vision-interview | DONE, AWAITING RELEASE | 2026-10-18 | owner releases per GUIDE_release.md steps 5-9: tags v1.43.0 kb-v1.26.0 mkt-v0.21.0 course-v0.1.0-beta.7, merge to main, publish_all.bat | HANDOFF_vision_interview.md · ANALYSIS_vision_interview.md · MERGE_REVIEW_vision_interview.md · E2E_TEST_vision_interview.md |
+| F-074 Vision born from an owner interview (family-wide) | L3 | feature/vision-interview | DONE, AWAITING PUBLISH | 2026-10-18 | owner runs publish_all.bat from a clean export of tag v1.43.0 (browser 2FA per package), then verifies the four versions and latest | HANDOFF_vision_interview.md · ANALYSIS_vision_interview.md · MERGE_REVIEW_vision_interview.md · E2E_TEST_vision_interview.md |
 
 ## Project-wide notes
 
