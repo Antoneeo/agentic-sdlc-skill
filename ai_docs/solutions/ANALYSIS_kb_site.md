@@ -1,13 +1,13 @@
 ---
 description: F-072 - docs site. A stdlib-only generator shared by the whole skill family shows the user, simply and visually, what the agent reads to orient itself and to resume work - what the project is, what was done and when, what is open and its next step, what is known - from the project's own documents, offline and read-only.
-status: IN_PROGRESS
+status: COMPLETED
 feature: F-072
 id: F-072
 start_date: 2026-10-16
-end_date:
+end_date: 2026-10-18
 level: L3
 domain: code
-branch: feat/kb-site-spec
+branch: main
 ---
 # ANALYSIS: docs site — what the agent sees, made visible (F-072)
 
@@ -506,4 +506,10 @@ site of what the agent reads; use it to show the project state." (153 bytes, ins
 160 accepted in R13/R15, so no new cost). `test_docs_site.py` Criterion 14 asserts the flag,
 the user's browser and the moment; replayed red on the old line, green on the new. E2E S17
 added. Batteries green in all four lenses.
+
+**2026-10-18 — closed.** The owner ran the field pass on the work machine and ruled it PASS
+(REQUEST_kb_site.md R30). Released in 1.42.0; the `--open` field fix ships in the patch
+release 1.43.1 / kb 1.26.1 / mkt 0.21.1 / course 0.1.0-beta.8. `feat/kb-site-spec` was
+fully contained in `main` and is deleted. Set aside by the owner on 2026-10-17 and not part of
+this unit: a page explaining the skills; a validator check on the canonical chain headings.
 

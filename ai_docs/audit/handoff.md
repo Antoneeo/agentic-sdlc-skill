@@ -10,14 +10,15 @@ Date: 2026-10-17 (UTC)
 | F-055 Apache-2.0 with NOTICE (four packages, two repositories) | L3 | feat/apache-license | DONE, AWAITING PUBLISH | 2026-09-13 | publish_all.bat from the repo root (owner's act, 2FA opens a browser per package; all three changed), then npm publish in distill-skill (2FA); then npm view returns code 1.34.0, kb 1.17.0, mkt 0.12.0, distill 0.9.0 | HANDOFF_apache_license.md · ANALYSIS_apache_license.md · harness_apache_license/probe.py |
 | F-070 "What's new" for users on the npm pages | L3 | main | PLANNED | 2026-10-13 | Elicitation round, then ANALYSIS_npm_whats_new.md (no devPNT). | HANDOFF_npm_whats_new.md · audit/requests/REQUEST_npm_whats_new.md |
 | F-071 Intent focus (anti-myopia at the level of intent) | L3 | main | PLANNED | 2026-10-04 | Owner answers open question 1 (was the "why" in the original request?); then elicitation round, design, replay harness red/green on the incident. | HANDOFF_intent_focus.md · solutions/ANALYSIS_intent_focus.md |
-| F-072 docs site (static site generated from ai_docs, shared by the family) | L3 | feat/kb-site-spec | IN_PROGRESS | 2026-10-16 | field run of the probe and the site on the owner's work machine (released in 1.42.0) | HANDOFF_kb_site.md · ANALYSIS_kb_site.md · REQUEST_kb_site.md · E2E_TEST_kb_site.md · MERGE_REVIEW_kb_site.md · harness_kb_site/probe.py |
 
 ## Project-wide notes
 
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**2026-10-18 — release 1.42.0 completed.** Published and verified on the registry at
+**2026-10-18 — release 1.43.0 completed (F-074, the owner interview for every Vision). Published and verified on the registry: code 1.43.0, KB 1.26.0, marketing 0.21.0, Course 0.1.0-beta.7, each on latest; tags v1.43.0 / kb-v1.26.0 / mkt-v0.21.0 / course-v0.1.0-beta.7 on 5098156. kb and Course appeared on the registry minutes after the publish (propagation, not a failure). Patch 1.43.1 / kb 1.26.1 / mkt 0.21.1 / course-v0.1.0-beta.8 tagged for the F-072 `--open` fix, awaiting publish.
+
+2026-10-18 — release 1.42.0 completed.** Published and verified on the registry at
 22:29–22:30 UTC (2026-10-17): code 1.42.0, KB 1.25.0, marketing 0.20.0, Course
 0.1.0-beta.6 — the docs site (F-072), its chronology read with F-073's readers. Tags
 v1.42.0 / kb-v1.25.0 / mkt-v0.20.0 / course-v0.1.0-beta.6 on a6e1faa, published by the

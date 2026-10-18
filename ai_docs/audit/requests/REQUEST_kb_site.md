@@ -155,3 +155,7 @@ Context (agent): asked "Mi mostri lo stato corrente?" and then "se ti chiedo la 
 ### R29 — 2026-10-18 — fix it now
 Context (agent): "Si chiude aggiungendo `--open` a quella riga e dicendo quando usarlo, nei quattro `SKILL.md` della famiglia. […] vuoi che la prepari?"
 > si facciamola subito
+
+### R30 — 2026-10-18 — field run PASS; close the unit
+Context (agent): "Per chiudere F-072 restano tre cose: 1. La prova sul campo sul tuo PC di lavoro […] 2. La chiusura del documento di F-072 […] 3. Un rilascio che pubblichi questa correzione nei quattro pacchetti."
+> la prova sul campo è fatta e mi piace PASS. Facciamo il resto e chiudiamo.
