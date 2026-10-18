@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.21.1] - 2026-10-18
+
+### Fixed
+- F-072 (field run): the `SKILL.md` line that announces the docs site now reads `scripts/docs_site.py --root <project> --open` and says to use it to show the project state. Asked for the state, an agent had opened the site in its own client pane, where it renders blank, and improvised a local server; `--open` opens it in the user's browser, where it works offline.
+
 ## [0.21.0] - 2026-10-18
 
 ### Added
