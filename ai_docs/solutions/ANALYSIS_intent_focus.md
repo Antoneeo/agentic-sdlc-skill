@@ -13,7 +13,7 @@ branch: main
 
 Design and ceremony cost approved by the owner (REQUEST R5); Open question 1 answered
 (R6). For the implementer: apply `harness_intent_focus/proposed.patch` per §Impact and
-§Action Plan; nothing is applied yet.
+§Action Plan; applied in 52723c2.
 
 ## Objective
 
@@ -130,7 +130,7 @@ the judged part, if any.
 | hand the owner's own words to the reviewer | EXISTS | request record, `review.md` §Requesting | r26 |
 | probe a claim red then green before writing it | EXISTS | Execute-Before-Specify, `SKILL.md` §3 | extended to the unit's benefit claim |
 | rule whether a review is due | INADEQUATE | `review.md` §When a review is due | by level and moment only |
-| report review outcomes | INADEQUATE | `sdlc_core.py` `cmd_benefit` | counts a NOT DUE row as a closure review and as inconclusive (`probe_benefit.py`, exit 0 on today's code) |
+| report review outcomes | INADEQUATE | `sdlc_core.py` `cmd_benefit` | counts a NOT DUE row as a closure review and as inconclusive (`probe_benefit.py` exited 1 on that code; exits 0 after FS5) |
 
 ## Impact
 
@@ -249,3 +249,10 @@ Net: the remedy is not self-financing; the owner accepts the remainder or it is 
   Open question 1 still open; implementation not started.
 - 2026-10-18: owner answered Open question 1 (R6): identical distribution copies count
   once. Design phase complete; implementation not started.
+- 2026-10-18: implemented (52723c2, owner R7): patch applied byte-identical to the
+  reviewed one, FS5, test red on 8ea116b / green, batteries ×4 green. Cold-agent replay
+  not re-run on the applied text (one clause differs, replay.py GREEN) — departure from
+  Action Plan step 4, shown to the owner. Closure review round 1 FAIL: B1 memory index
+  misaligned (fixed by `index`); W1 state lag, W2 template wording (fixed); W2 `model`
+  lists in three templates, W4 test wording left open. Scoped re-review, r31, the
+  copy-count guide proposal and the release remain.
