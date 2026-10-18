@@ -2,7 +2,8 @@
 id: F-071
 feature: Intent focus — effort weighed against the value and risk it serves
 description: Why every gate stayed green while F-063/F-064 lost the owner's core promise, and why reviews ran where they lowered no risk; the doctrine that rules both, replayed red/green on both incidents.
-status: IN_PROGRESS
+status: COMPLETED
+end_date: 2026-10-18
 level: L3
 domain: code
 topics: [anti-myopia, vision-gate, review, proportionality, efficiency]
@@ -13,7 +14,7 @@ branch: main
 
 Design and ceremony cost approved by the owner (REQUEST R5); Open question 1 answered
 (R6). For the implementer: apply `harness_intent_focus/proposed.patch` per §Impact and
-§Action Plan; applied in 52723c2.
+§Action Plan; applied in 52723c2, released in 1.44.0.
 
 ## Objective
 
@@ -252,7 +253,12 @@ Net: the remedy is not self-financing; the owner accepts the remainder or it is 
 - 2026-10-18: implemented (52723c2, owner R7): patch applied byte-identical to the
   reviewed one, FS5, test red on 8ea116b / green, batteries ×4 green. Cold-agent replay
   not re-run on the applied text (one clause differs, replay.py GREEN) — departure from
-  Action Plan step 4, shown to the owner. Closure review round 1 FAIL: B1 memory index
-  misaligned (fixed by `index`); W1 state lag, W2 template wording (fixed); W2 `model`
-  lists in three templates, W4 test wording left open. Scoped re-review, r31, the
-  copy-count guide proposal and the release remain.
+  Action Plan step 4, shown to the owner. Closure review round 1 FAIL (B1 memory index
+  misaligned; W1 state lag; W2 template wording and `model` lists; W4 test wording),
+  all fixed in b2fe44d and a7f98fa; round 2 PASS.
+- 2026-10-18: owner ruled r31 ADMIT, accepted the R6 guide and a direct push to main
+  (R8). `GUIDE_skill_family_changes.md` written from R6. Released code 1.44.0, kb 1.27.0,
+  mkt 0.22.0, course 0.1.0-beta.9. The release delta (bump, CHANGELOG ×4 checked against
+  FS1–FS5, indexes) is logged NOT DUE under FS4; the MERGE_REVIEW, guide and r31 row were
+  written after the closure PASS and are listed in MERGE_REVIEW as unreviewed records.
+  Field signal (R4) open: the next three L3 units.
