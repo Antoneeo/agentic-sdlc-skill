@@ -145,3 +145,10 @@ The owner decides whether to commit it as a parked branch; it is not merged.
   renumbered F-065 -> F-071: F-065 was already taken on `main` by
   `ANALYSIS_review_mandate_contract.md`. The archive tag `archive/software-knowledge`
   and its commit message still call this unit F-065.
+
+## Diary
+
+- 2026-10-18 — M1 is closed for Vision authoring by F-074 (`ANALYSIS_vision_interview.md`):
+  every Vision is written only after an owner interview and an owner-approved north
+  star, and elicitation's skip path no longer reaches a Vision. R1's coverage of the
+  core promise in downstream artifacts, and M2–M4, remain here.

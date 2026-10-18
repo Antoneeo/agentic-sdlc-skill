@@ -49,6 +49,22 @@ exports), `spikes/` (research spikes), `audit/` (handoff).
 
 ## mkt_docs/vision/MKT_VISION.md
 
+Until the owner interview (`vision.md` §The owner interview) has an approved north
+star, the file is this stub, and nothing traces to it:
+
+```markdown
+---
+description: Marketing vision — awaiting the owner interview.
+status: DRAFT
+---
+# Marketing Vision
+Status: DRAFT
+<!-- STUB: awaiting the owner interview (vision.md §The owner interview). Not a
+     Vision: no artifact traces to it. Wave 1 facts live in the evidence ledger. -->
+```
+
+After Gate 1, written from the interview's answers:
+
 ```markdown
 ---
 description: Marketing vision — expected benefit, market, non-goals, success signals.
@@ -56,8 +72,16 @@ status: DRAFT
 ---
 # Marketing Vision
 Status: DRAFT
-<!-- Status: DRAFT (reconstructed by the agent, NOT a gating authority)
+<!-- Status: DRAFT (written from the owner interview, NOT yet a gating authority)
      or APPROVED (by <who>, <date>) — only after the user's explicit confirmation -->
+
+## North Star
+<!-- One or two sentences in the owner's words, approved before any other section
+     (vision.md §The owner interview, Gate 1): REQUEST_[engagement].md#R<n>. -->
+
+## Problem
+<!-- One concrete case that today does not get the expected result, with its
+     example (interview question 1). -->
 
 ## Business Goal
 <!-- the business outcome marketing must serve, in one paragraph. Cite FACTs. -->
@@ -67,17 +91,22 @@ Status: DRAFT
 
 ## Market & Audience
 <!-- target market, geography, deliverable language; who we serve (short — the
-     detailed ICP lives in strategy/ICP_PERSONAS.md) -->
+     detailed ICP lives in strategy/ICP_PERSONAS.md). Name who receives the
+     benefit, who acts, and who has the initiative (interview question 3). -->
 
 ## Non-Goals
-<!-- what this plan explicitly does NOT pursue (markets, segments, channels).
+<!-- what this plan explicitly does NOT pursue (markets, segments, channels) —
+     scope, not a ban on what the business already does.
      The strategy review checks divergence against these. -->
 
 ## Success Signals
-<!-- how the user recognizes the plan is working, in their words -->
+<!-- how the user recognizes the plan is working, in their words, each with its
+     starting value -->
 
 ## Constraints
-<!-- budget range [EV-nn], team capacity [EV-nn], legal/brand limits -->
+<!-- budget range [EV-nn], team capacity [EV-nn], legal/brand limits — each with
+     its provenance: owner REQUEST_[engagement].md#R<n>, a FACT, or an inference
+     the owner confirmed. -->
 ```
 
 ## mkt_docs/vision/principles.md

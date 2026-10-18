@@ -47,13 +47,66 @@ Four consequences, each operational:
 
 Extracting the benefit from a discussion is real work: a discourse arrives with
 solutions, preferences and constraints tangled together, and the Vision is the
-distilled benefit only. The elicitation round (`elicitation.md`) asks for it first
-— and a mechanism ("a dashboard") is not an acceptable answer to a benefit
-question ("never lose the thread"); ask again until the answer names what the
-actor obtains.
+distilled benefit only. The owner interview below asks for it — and a mechanism
+("a dashboard") is not an acceptable answer to a benefit question ("never lose
+the thread"); ask again until the answer names what the actor obtains.
 
 The deletion test decides **which** rules exist. Everything below decides **how**
 to write a rule so it holds once you know it must exist.
+
+## The owner interview (before any Vision text)
+
+A Vision is the **owner's** statement of what is to be obtained. Nothing in this
+file after this section can detect a Vision the author wrote alone: the blind
+check (§6) tests whether the rules survive a hostile reader, never whether they
+are the owner's. So every Vision is born from an interview of the owner, and its
+north star is approved **before** a line of it is drafted.
+
+**Scope — every Vision, in every mode:** `project_vision.md`, a feature
+`VISION_*.md`, a lens Vision (course, marketing), and the devPNT M-VISION in
+Hybrid; also an ANALYSIS `## Feature Vision` that states a benefit no existing
+Vision names (one that cites an approved Vision's benefit is alignment, not a
+Vision). An amendment re-runs the questions whose answers it changes, and Gate 1
+again when the north star changes. **There is no skip path**: one sentence from
+the user plus a spike is not a complete spec — that exact shortcut produced a
+Vision with an imported prohibition, no north star and a missing actor, and four
+downstream artifacts built on it (field case, 2026-10). A reply already on record
+in the owner's words is read back for confirmation, never re-asked as an open
+question; an answer the author derived (from a spike, the code, another Vision)
+is never an answer — it is a proposal the owner confirms or rejects.
+
+**The questions, in this order.** Each is repeated until its answer has the form
+stated; the wrong form is named so it can be recognized and asked again.
+
+| # | Question | Right form | Wrong form — ask again |
+|---|---|---|---|
+| 1 | **Problem** — which concrete case today does not get the expected result? | one real case, with an example | a missing feature ("there is no drawing tool") |
+| 2 | **Benefit** — once solved, who obtains what? | a result for a named actor | a function or mechanism ("a renderer") |
+| 3 | **Actors** — who receives the benefit, who acts, who has the initiative? | all three named, initiative included | only the one who asks — the actor who acts unprompted goes missing |
+| 4 | **Success** — what observable signal shows the benefit arrived? | a signal with its starting value | a feeling, or a signal with no baseline |
+| 5 | **Boundaries** — what does this NOT pursue? | scope excluded from this work | a ban on behaviour ("X must never happen") — that is a constraint (6) or an obligation (2, 4) |
+| 6 | **Known constraints** — each with its provenance: owner, a quoted line of a higher Vision, or author inference | every constraint sourced; every inference asked here | a constraint written in silently, or imported from a higher Vision without asking whether it applies here |
+
+A **Non-Goal bounds scope**: it rejects a proposal that pursues what it names; it
+is not a ban on behaviour that already exists, and it creates no obligation.
+Obligations come from the Benefit and the Success Signals.
+
+**Gate 1 — north star.** One or two sentences, in the owner's words, explicitly
+approved by the owner. The author may compose a wording from the answers; the
+approval is of that exact text, recorded verbatim in the request record
+(`audit/requests/REQUEST_[unit].md`; a Vision written outside any unit, such as
+the project Vision after bootstrap, records its interview in
+`audit/requests/REQUEST_project_vision.md`). **Without it no Vision text is written** —
+not a DRAFT, not a reconstruction: bootstrap writes a stub awaiting the
+interview, and what the agent observed goes to `strategic/`.
+Unattended, the unit is `BLOCKED on the user` (`elicitation.md` Unattended path).
+
+**Gate 2 — the full Vision**, written from the answers. Every section traces to
+an answer or a stated provenance (`REQUEST_[unit].md#R<n>`); every rule carries
+its provenance; an author inference the owner did not confirm is not in it. The
+blind check (§6) verifies that it holds; the approved north star verifies that it
+is the owner's. Promotion to APPROVED still needs the owner's explicit
+confirmation — Gate 2 is that confirmation, given on the written text.
 
 ## 0. The one-line test
 
@@ -138,7 +191,14 @@ rule that survived and the same rule leaking.
 This is the most common structural failure and it is invisible from the inside.
 
 - **A Goal cannot reject anything.** If the admission test says "advances a Goal
-  and violates no Non-Goal", then rejection power lives *only* in the Non-Goals.
+  and violates no Non-Goal", then rejection power lives *only* in the Non-Goals
+  (and the Invariants, where the Vision has them).
+- **A Non-Goal rejects scope, not behaviour.** It turns away a proposal that
+  pursues what it names; it never forbids a behaviour the product already has, and
+  it never creates an obligation — obligations come from the Benefit and the
+  Success Signals. A behaviour the product must never have is an Invariant, or a
+  constraint with its provenance (§The owner interview, question 6). Written as a
+  Non-Goal, it reads as a ban the owner never stated.
   A Goal that says "scale cost to risk in both directions" cannot stop cost
   inflation — you need a prohibition for that.
 - **A prohibition scoped to one rung of your own scale protects only that rung.**
@@ -204,7 +264,10 @@ it.
 ## 6. The blind check (procedure)
 
 Run this **before promoting any Vision to APPROVED, and before any amendment of an
-approved one**. Not for DRAFT edits — promotion is when authority is granted, and
+approved one**. It runs on a Vision that already passed Gate 1 (§The owner
+interview): it tests whether the rules hold against a hostile reader, and it
+cannot see whether they are the owner's — a Vision the author wrote alone passes
+it cleanly. Not for DRAFT edits — promotion is when authority is granted, and
 it is rare, so the cost lands where it buys most.
 
 1. **Give the reviewer the document text and nothing else.** Not a path — the

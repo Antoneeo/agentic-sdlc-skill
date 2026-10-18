@@ -4,7 +4,7 @@ These are starting shapes, not substitute explanations. Keep one authority for e
 
 ## Course Vision — `vision/features/VISION_course_<slug>.md`
 
-Read `vision.md` and use its blind check before APPROVED. The person approves benefit and scope, not the agent.
+Written only after the owner interview (`vision.md` §The owner interview), with its north star approved first. Read `vision.md` and use its blind check before APPROVED. The person approves benefit and scope, not the agent.
 
 ```markdown
 ---
@@ -15,16 +15,20 @@ domain: course
 # Course Vision: <title>
 Status: DRAFT
 
+## North Star
+<One or two sentences in the person's words, approved before the rest: REQUEST_course_<slug>.md#R<n>.>
+## Problem
+<One concrete case that today does not get the expected result, with its example.>
 ## Expected Benefit
 <Why the learner needs the knowledge and what becomes possible.>
 ## Learners and Starting Point
-<Who, context of use, what is known with evidence, what remains uncertain.>
+<Who, context of use, what is known with evidence, what remains uncertain; who receives the benefit, who acts, who has the initiative.>
 ## Promised Understanding and Ability
 <Knowledge and usable capability, not a list of slides.>
 ## Success Signals
-<Observable understanding or use; distinguish simulated diagnosis from real evidence.>
+<Observable understanding or use, each with its starting value; distinguish simulated diagnosis from real evidence.>
 ## Scope and Non-Goals
-<Boundaries, delivery constraints and facts outside this course.>
+<Scope this course does not pursue (not a ban on existing behaviour); delivery constraints and facts outside this course, each with its provenance: owner REQUEST_course_<slug>.md#R<n>, a higher Vision quoted, or an inference the person confirmed.>
 ```
 
 Approval changes both `status:` and `Status:` to `APPROVED`.

@@ -2,6 +2,17 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.43.0] - 2026-10-18
+
+### Added
+- F-074: every Vision is born from an owner interview. Before any Vision text is written (project, feature, lens, and the devPNT M-VISION), the agent asks the owner six questions in order, re-asking an answer that has the wrong form: the problem as one concrete case, the benefit as a result for someone, the actors including who takes the initiative, a success signal with its starting value, the boundaries, and the known constraints with where each comes from. Then the owner approves a one- or two-sentence north star in their own words; without it no Vision is written, not even a draft. The blind check still tests that the rules hold; the approved north star shows they are the owner's. `vision.md` §The owner interview.
+
+### Changed
+- `elicitation.md`: the skip path never covers a Vision; one sentence plus a spike is not a complete spec.
+- Bootstrap no longer writes a Vision reconstructed by the agent: `agentic-sdlc-init` seeds `ai_docs/vision/project_vision.md` as a stub awaiting the interview (an existing file is never overwritten).
+- A Non-Goal now bounds scope. It rejects a proposal that pursues what it names; it is not a ban on behaviour that already exists and creates no obligation. A behaviour that must never happen is an Invariant or a constraint with its source.
+- Vision templates ask for the north star in the owner's words with its approval, the problem as a case, the actor with the initiative, signals with starting values, and the source of every rule. Regression: `evals/scenarios/vision_needs_owner_interview.md`.
+
 ## [1.42.0] - 2026-10-18
 
 ### Added

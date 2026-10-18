@@ -86,7 +86,9 @@ Qualunque lente sia attiva, l'agente:
    stato che perde le altre. `REVIEW_LOG.md` prende `merge=union` da `init`
    (driver built-in: nessuna configurazione per clone).
 3. **Passa i gate**: Vision gate (DRAFT informa, APPROVED vincola — promozione solo
-   tua, dopo il blind check); **design review indipendente prima di implementare**
+   tua, dopo il blind check; ogni Vision, M-VISION compresa, nasce da un'intervista
+   all'owner in sei domande e da una north star approvata nelle tue parole, prima
+   di qualunque testo — `vision.md` §The owner interview); **design review indipendente prima di implementare**
    e closure review prima di dichiarare DONE — ogni richiesta apre con il blocco
    REVIEW MANDATE copiato alla lettera, che porta al reviewer `review.md` intero;
    in Hybrid il PASS precede ogni proposta a devPNT — scala di indipendenza a 3 pioli

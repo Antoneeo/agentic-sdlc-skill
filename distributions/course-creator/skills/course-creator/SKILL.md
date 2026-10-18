@@ -1,6 +1,6 @@
 ---
 name: course-creator
-version: 0.1.0-beta.6
+version: 0.1.0-beta.7
 description: Design and improve courses that teach a defined learner through sourced, progressive explanations. Use when the deliverable is instruction or a learning path; route corpus intake to kb-agentic and persuasive campaigns to marketing-agentic.
 author: Antonio Pinto (https://github.com/Antoneeo)
 copyright: (c) 2026 Antonio Pinto
@@ -61,7 +61,7 @@ Read `ai_docs/README.md`, `ai_docs/INDEX.md`, and `ai_docs/reference/INDEX.md` (
 
 ### 2. Vision Gate
 
-Draft from the request as recorded in `audit/requests/REQUEST_course_<slug>.md`, not from a paraphrase of it. Draft the course Vision with benefit, named learner groups, what they should be able to understand and do, and signals that would count as useful learning. Read `vision.md`, run its blind check, and obtain the person's approval before writing the course design. Project Vision remains above the course Vision. A course may be delivered before human evaluation, visibly labeled **efficacy not verified**.
+Draft from the request as recorded in `audit/requests/REQUEST_course_<slug>.md`, not from a paraphrase of it. Run the owner interview in `vision.md` §The owner interview first and obtain the north star in the person's words before drafting. Then draft the course Vision from the answers, with benefit, named learner groups, what they should be able to understand and do, and signals that would count as useful learning. Read `vision.md`, run its blind check, and obtain the person's approval before writing the course design. Project Vision remains above the course Vision. A course may be delivered before human evaluation, visibly labeled **efficacy not verified**.
 
 ### 3. Course Design
 

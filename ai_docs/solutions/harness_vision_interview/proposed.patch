@@ -1,0 +1,596 @@
+--- a/distributions/course-creator/skills/course-creator/SKILL.md
++++ b/distributions/course-creator/skills/course-creator/SKILL.md
+@@ -61,7 +61,7 @@
+ 
+ ### 2. Vision Gate
+ 
+-Draft from the request as recorded in `audit/requests/REQUEST_course_<slug>.md`, not from a paraphrase of it. Draft the course Vision with benefit, named learner groups, what they should be able to understand and do, and signals that would count as useful learning. Read `vision.md`, run its blind check, and obtain the person's approval before writing the course design. Project Vision remains above the course Vision. A course may be delivered before human evaluation, visibly labeled **efficacy not verified**.
++Draft from the request as recorded in `audit/requests/REQUEST_course_<slug>.md`, not from a paraphrase of it. Run the owner interview in `vision.md` §The owner interview first and obtain the north star in the person's words before drafting. Then draft the course Vision from the answers, with benefit, named learner groups, what they should be able to understand and do, and signals that would count as useful learning. Read `vision.md`, run its blind check, and obtain the person's approval before writing the course design. Project Vision remains above the course Vision. A course may be delivered before human evaluation, visibly labeled **efficacy not verified**.
+ 
+ ### 3. Course Design
+ 
+--- a/distributions/course-creator/skills/course-creator/elicitation.md
++++ b/distributions/course-creator/skills/course-creator/elicitation.md
+@@ -10,10 +10,18 @@
+ user requirements already answer goal, scope, and constraints — skip the
+ round and add a one-line note in the analysis stating why it was skipped.
+ Do not run the round as a formality when the answers are already on record.
++The skip path never covers a Vision (next paragraph).
++
++Vision path: when the unit writes or amends a Vision — any kind, the M-VISION
++included — the owner interview in `vision.md` §The owner interview runs instead
++of this round for the Vision's own content, and it has **no skip path**: one
++sentence from the user plus a spike never makes a Vision's spec complete. The
++round then covers only what the interview did not (the unit's own scope and
++acceptance), deriving from the interview's answers.
+ 
+ Unattended path: when the user is not reachable (a scheduled or autonomous run,
+-and a bootstrap Vision is `DRAFT` by mandate, so the skip path above cannot
+-apply on a project's first L3) and a real doubt remains, do not stall and do not
++and a bootstrap Vision is a stub awaiting the owner interview, so the skip
++path above cannot apply on a project's first L3) and a real doubt remains, do not stall and do not
+ invent consensus. Write it as a **declared assumption** (§Ask before the write)
+ in the artifact it touches. At L3, mark the ANALYSIS `BLOCKED on the user` and
+ stop before implementation; below L3, proceed and list the assumption in the
+--- a/distributions/course-creator/skills/course-creator/templates.md
++++ b/distributions/course-creator/skills/course-creator/templates.md
+@@ -4,7 +4,7 @@
+ 
+ ## Course Vision — `vision/features/VISION_course_<slug>.md`
+ 
+-Read `vision.md` and use its blind check before APPROVED. The person approves benefit and scope, not the agent.
++Written only after the owner interview (`vision.md` §The owner interview), with its north star approved first. Read `vision.md` and use its blind check before APPROVED. The person approves benefit and scope, not the agent.
+ 
+ ```markdown
+ ---
+@@ -15,6 +15,10 @@
+ # Course Vision: <title>
+ Status: DRAFT
+ 
++## North Star
++<One or two sentences in the person's words, approved before the rest: REQUEST_course_<slug>.md#R<n>.>
++## Problem
++<One concrete case that today does not get the expected result, with its example.>
+ ## Expected Benefit
+ <Why the learner needs the knowledge and what becomes possible.>
+ ## Learners and Starting Point
+--- a/distributions/kb-agentic-skill/skills/kb-agentic-skill/SKILL.md
++++ b/distributions/kb-agentic-skill/skills/kb-agentic-skill/SKILL.md
+@@ -97,7 +97,7 @@
+ | `audit/reviews/REVIEW_LOG.md` | Every completed review — recorded in log. | 3 / 5 |
+ | ADR / Decision Log — `architecture/` or devPNT DB | A strategic decision was taken (pattern, policy, structural change): record before DONE. | 5 |
+ | `strategic/architecture.md`, `strategic/existing_features.md` | Bootstrap; update at closure when the knowledge catalog actually changed. | 1 / 5 |
+-| `vision/project_vision.md`, `roadmap.md`, `principles.md` | Bootstrap as `Status: DRAFT`; promoted to APPROVED only by explicit user confirmation. | 1 / 2 |
++| `vision/project_vision.md`, `roadmap.md`, `principles.md` | Bootstrap writes each as a **stub** awaiting the owner interview (`Status: DRAFT`) — never a Vision reconstructed by the agent. The Vision is written only after the owner interview and its approved north star (`vision.md` §The owner interview); promoted to APPROVED only by explicit user confirmation. | 1 / 2 |
+ | `topics/<slug>.md` | A placement verdict creates it (MISSING/INADEQUATE-child, `taxonomy.md`); reconciliation updates its claim rows. One node per topic — a similar-but-distinct concept is a sibling with `related:` + a written distinction, never a merge and never a duplicate. Merged/renamed nodes become tombstones (`status: SUPERSEDED` + `redirect_to:`), never deleted. | 4 |
+ | a KB bundle (`export`) | Knowledge must leave this project. Export is L1 — it writes nothing into the corpus. **Importing one is L3**: a source enters the corpus and nodes are created, and a bundle is external input, so never L1 whatever its size (`portability.md`). | — |
+ | `corpus/given/*` + sidecar | A source arrives: it becomes a content-addressed artifact with a sidecar carrying digest/date/`supersedes:`. A text source is copied verbatim. A non-text source yields its stored canonical extraction — copied **beside** the original when that is small enough to keep, or **instead of it** on a large binary corpus, where the original stays where it lives and is recorded as `original_path:`/`original_sha256:` (`distillation.md` §1, which owns this rule). Never edited after ingest — the digest check on whatever `given/` holds is what enforces it. | 4 |
+@@ -125,12 +125,13 @@
+ ### 1. Audit and Alignment
+ - Read `ai_docs/audit/handoff.md` (workstream registry) to see active topics.
+ - Read `ai_docs/README.md`, `ai_docs/INDEX.md` and `ai_docs/reference/INDEX.md` (the guide router) before exploring notes. The router is a mandatory read, not an optional one: it is the only orientation step that tells you a guide already governs the work you are about to do.
+-- If `ai_docs/` is missing, create the bootstrap set: `README.md`, `vision/` docs, `strategic/` docs, and `audit/audit_plan.md`, then run `sdlc_check.py index`.
++- If `ai_docs/` is missing, create the bootstrap set: `README.md`, `vision/` stubs awaiting the owner interview, `strategic/` docs, and `audit/audit_plan.md`, then run `sdlc_check.py index`.
+ 
+ ### 2. Vision Gate
+ - Read `project_vision.md`, `roadmap.md`, `principles.md` (or devPNT `M-VISION`).
+ - Compare them with the request as recorded in `audit/requests/REQUEST_[topic].md`, not with a paraphrase of it.
+ - Verify request aligns with expected benefits, user goals, and success signals.
++- Writing or amending a Vision starts with the owner interview (`vision.md` §The owner interview): the north star is approved in the owner's words before any Vision text exists; there is no skip path.
+ 
+ ### 3. Request Analysis & Taxonomy Pass
+ 
+--- a/distributions/kb-agentic-skill/skills/kb-agentic-skill/elicitation.md
++++ b/distributions/kb-agentic-skill/skills/kb-agentic-skill/elicitation.md
+@@ -10,10 +10,18 @@
+ user requirements already answer goal, scope, and constraints — skip the
+ round and add a one-line note in the analysis stating why it was skipped.
+ Do not run the round as a formality when the answers are already on record.
++The skip path never covers a Vision (next paragraph).
++
++Vision path: when the unit writes or amends a Vision — any kind, the M-VISION
++included — the owner interview in `vision.md` §The owner interview runs instead
++of this round for the Vision's own content, and it has **no skip path**: one
++sentence from the user plus a spike never makes a Vision's spec complete. The
++round then covers only what the interview did not (the unit's own scope and
++acceptance), deriving from the interview's answers.
+ 
+ Unattended path: when the user is not reachable (a scheduled or autonomous run,
+-and a bootstrap Vision is `DRAFT` by mandate, so the skip path above cannot
+-apply on a project's first L3) and a real doubt remains, do not stall and do not
++and a bootstrap Vision is a stub awaiting the owner interview, so the skip
++path above cannot apply on a project's first L3) and a real doubt remains, do not stall and do not
+ invent consensus. Write it as a **declared assumption** (§Ask before the write)
+ in the artifact it touches. At L3, mark the ANALYSIS `BLOCKED on the user` and
+ stop before implementation; below L3, proceed and list the assumption in the
+--- a/distributions/kb-agentic-skill/skills/kb-agentic-skill/templates.md
++++ b/distributions/kb-agentic-skill/skills/kb-agentic-skill/templates.md
+@@ -101,7 +101,9 @@
+ one line, without asking anyone anything. Write it against `vision.md` §1–§4 from
+ the first draft — the properties that make a rule survive a motivated reader are
+ cheap to apply while writing and expensive to retrofit. `vision.md` §6 is the
+-blind check that gates promotion to APPROVED.
++blind check that gates promotion to APPROVED. No section below is written before
++the owner interview (`vision.md` §The owner interview) and its approved north star; until then
++the file is a stub (`Status: DRAFT`, body: awaiting the owner interview).
+ 
+ Sections below marked **[gate]** are load-bearing for that ruling; the others are
+ orientation for humans. Keep the human ones — just know which is which.
+@@ -109,12 +111,13 @@
+ ```markdown
+ # Project Vision
+ Status: DRAFT
+-<!-- Status: DRAFT (reconstructed by the agent, NOT a gating authority)
++<!-- Status: DRAFT (written from the owner interview, NOT yet a gating authority)
+      or APPROVED (by <who>, <date>) — only after the user's explicit confirmation
+      AND the blind check in vision.md §6. -->
+ 
+ ## North Star
+-<!-- [gate, partly] The BENEFIT to be obtained — what the actor gets, never the
++<!-- [gate, partly] One or two sentences IN THE OWNER'S WORDS, approved before any
++     other section (Gate 1): (approved: REQUEST_[topic].md#R<n>). The BENEFIT to be obtained — what the actor gets, never the
+      mechanism, and never by comparison to another product (a comparative
+      definition rots silently when the comparison target moves). Concrete enough
+      that an obstacle to it is recognizable: that is what makes every Non-Goal
+--- a/distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/SKILL.md
++++ b/distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/SKILL.md
+@@ -86,7 +86,7 @@
+ | `audit/HANDOFF_[engagement].md` | Session ends with that engagement unfinished AND there is volatile resume state. Ephemeral, deleted at closure. | 8 / 9 / session end |
+ | `audit/reviews/REVIEW_LOG.md` | Every completed review — when and what to write is `review.md`; schema is `templates.md`. | 6 / 9 |
+ | `reference/GUIDE_[topic].md` | Origin+purpose test (`guides.md`), or a proactive proposal the user accepted. | 8 / 9 |
+-| `vision/` documents | Bootstrap as `Status: DRAFT`; promoted to APPROVED only by explicit user confirmation, and only after the blind check (`vision.md` §6). | 1 / 5 |
++| `vision/` documents | Bootstrap writes a **stub** awaiting the owner interview (`Status: DRAFT`) — never a Vision reconstructed by the agent; the Vision is written only after the owner interview and its approved north star (`vision.md` §The owner interview); promoted to APPROVED only by explicit user confirmation, and only after the blind check (`vision.md` §6). | 1 / 5 |
+ 
+ ## Operating Modes
+ 
+@@ -139,7 +139,7 @@
+ 
+ ### 2. Discovery (Situation — internal)
+ - Run elicitation **Wave 1** (`elicitation.md`): business facts only, plain language, max 4 questions per round, options where a real choice exists.
+-- Every fact captured becomes a `FACT` ledger entry whose source cites its request-record entry (`user, REQUEST_[engagement].md#R2`). Draft `MKT_VISION.md` (Status: DRAFT) from the answers.
++- Every fact captured becomes a `FACT` ledger entry whose source cites its request-record entry (`user, REQUEST_[engagement].md#R2`). Then run the owner interview (`vision.md` §The owner interview) — Wave 1 gathers the facts, the interview gathers the Vision — and draft `MKT_VISION.md` (Status: DRAFT) from its answers only after the north star is approved in the owner's words.
+ - **Vision Gate:** the user approves the MKT-VISION (expected benefit, success signals, non-goals) before research spends effort. Hybrid: this is the devPNT M-VISION creation gate — vision first, then the milestone.
+ 
+ ### 3. Research (Situation — external)
+--- a/distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/elicitation.md
++++ b/distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/elicitation.md
+@@ -177,7 +177,10 @@
+     them with (seed, not analysis).
+ 
+ Skip path: any item already answered by an approved MKT-VISION or earlier
+-session record is not re-asked — note where the answer came from.
++session record is not re-asked — note where the answer came from. The skip path
++never covers the MKT-VISION itself: it is written only after the owner interview
++in `vision.md` §The owner interview, with its north star approved first (Gate 1);
++these waves gather the facts, the interview gathers the Vision.
+ 
+ ## Wave 2 — Ambition (phase 5 entry, after research)
+ 
+--- a/distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/templates.md
++++ b/distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/templates.md
+@@ -56,9 +56,13 @@
+ ---
+ # Marketing Vision
+ Status: DRAFT
+-<!-- Status: DRAFT (reconstructed by the agent, NOT a gating authority)
++<!-- Status: DRAFT (written from the owner interview, NOT yet a gating authority)
+      or APPROVED (by <who>, <date>) — only after the user's explicit confirmation -->
+ 
++## North Star
++<!-- One or two sentences in the owner's words, approved before any other section
++     (vision.md §The owner interview, Gate 1): REQUEST_[engagement].md#R<n>. -->
++
+ ## Business Goal
+ <!-- the business outcome marketing must serve, in one paragraph. Cite FACTs. -->
+ 
+@@ -70,7 +74,8 @@
+      detailed ICP lives in strategy/ICP_PERSONAS.md) -->
+ 
+ ## Non-Goals
+-<!-- what this plan explicitly does NOT pursue (markets, segments, channels).
++<!-- what this plan explicitly does NOT pursue (markets, segments, channels) —
++     scope, not a ban on what the business already does.
+      The strategy review checks divergence against these. -->
+ 
+ ## Success Signals
+--- a/skills/agentic-sdlc-skill/SKILL.md
++++ b/skills/agentic-sdlc-skill/SKILL.md
+@@ -101,7 +101,7 @@
+ | ADR — `architecture/` (Standalone) or devPNT DB (Hybrid) | An architectural decision was taken (new pattern, layer or contract change, structural dependency): record it at closure, before DONE. No decision, no ADR. | 5 |
+ | `strategic/architecture.md`, `strategic/existing_features.md` | Bootstrap; update at closure when the stack or the feature catalog actually changed. | 1 / 5 |
+ | `strategic/architecture.md` — `## Component Map` | A component was BORN, its contract changed, **or the pass DISCOVERED an existing one while searching an unmapped area** — the same closure adds or corrects its row (`architect.md`). Keyed on the component, not on the stack: a new component is not a stack change, and a discovered one is how an area gets marked ANALYZED while the map stays silent about what lives there — after which the next feature may lawfully rule it MISSING and build it twice. | 5 |
+-| `vision/project_vision.md`, `roadmap.md`, `principles.md` | Bootstrap, as `Status: DRAFT`; promoted to APPROVED only by explicit user confirmation, and only after the blind check (`vision.md` §6) — which also gates any amendment of an APPROVED Vision. Write it against `vision.md` §1–§4 from the first draft. | 1 / 2 |
++| `vision/project_vision.md`, `roadmap.md`, `principles.md` | Bootstrap writes each as a **stub** (`Status: DRAFT`, body: awaiting the owner interview) — never a Vision reconstructed by the agent; what it observed goes to `strategic/`. The Vision itself is written only after the owner interview and its approved north star (`vision.md` §The owner interview), against `vision.md` §1–§4; promoted to APPROVED only by explicit user confirmation, and only after the blind check (`vision.md` §6) — which also gates any amendment of an APPROVED Vision. | 1 / 2 |
+ | `INDEX.md`, `reference/INDEX.md`, `strategic/features_history.md` | Never by hand: regenerated by `sdlc_check.py index` at closure when canonical docs or guides changed (prose discipline where the validator is not adopted). | 5 |
+ 
+ ## Operating Modes
+@@ -142,7 +142,7 @@
+ - Read `ai_docs/audit/handoff.md` if it exists — the **workstream registry**: one row per open workstream, so you see at a glance what is in PROGRESS, on which branch, since when, before touching anything. It is generated from the `HANDOFF_*.md` files, so it is read here and never edited here. If a row's Date/Branch are inconsistent with reality, treat that row as history. When resuming a specific workstream, read its `audit/HANDOFF_[feature].md` (its row plus the resume logistics) AND its ANALYSIS Diary (the durable narrative) — the registry row points at both. A hand-written or pre-1.17 narrative handoff still works and is converted when you next write it, not now (Write Triggers).
+ - Read `ai_docs/README.md` (curated must-reads), `ai_docs/INDEX.md` (generated manifest of all canonical docs) and `ai_docs/reference/INDEX.md` (the guide router) to know what exists before exploring the code. The router is a mandatory read, not an optional one: it is the only orientation step that tells you a guide already governs the work you are about to do. On a project with no guides yet it exists as an empty stub (`sdlc_check.py index` writes it precisely so the mandatory read has something to read) — the honest verdict there is `router: no match`, and if the file is genuinely absent, say `router: absent (no router file)` and regenerate it rather than inventing a match. `solutions/` and `audit/` are not indexed per file: search them with glob/grep.
+ - Recommended default: a SessionStart hook (`ENFORCEMENT.md` §4) emits this orientation automatically at session start (README + INDEX + guide router + handoff + triage reminder), so the router reaches the context even in a session that never opens Phase 1 explicitly. Wire it wherever Python is available; when it is not wired, do these reads manually as above — the process never depends on it, and it fails open (a missing/empty `ai_docs/` never blocks the session).
+-- If `ai_docs/` is missing or incomplete, create the structure and the **bootstrap set** by analyzing the project in batches: `README.md`, the three `vision/` docs (`Status: DRAFT`), `strategic/architecture.md`, `strategic/existing_features.md` and — Standalone — `audit/audit_plan.md`; then regenerate `INDEX.md`. Nothing else is mandatory at bootstrap (per-document triggers: Write Triggers).
++- If `ai_docs/` is missing or incomplete, create the structure and the **bootstrap set** by analyzing the project in batches: `README.md`, the three `vision/` docs as stubs awaiting the owner interview (`Status: DRAFT`; the agent never reconstructs a Vision — Write Triggers), `strategic/architecture.md`, `strategic/existing_features.md` and — Standalone — `audit/audit_plan.md`; then regenerate `INDEX.md`. Nothing else is mandatory at bootstrap (per-document triggers: Write Triggers).
+ - **Arriving in a project that was never curated** (the usual case — you arrive with a task, not with a bootstrap): write `audit/audit_plan.md` FIRST. It is the scope ledger the rest is built on — one row per area, all PENDING, `SKIPPED` for what genuinely does not merit reading (vendored, generated). Then the other bootstrap documents describe what you have actually analyzed, and the `## Component Map` in `strategic/architecture.md` starts at whatever the first task made you understand. **No full-codebase sweep is required before the first feature**: the map grows feature by feature, each one marking the areas it covered (`sdlc_check.py mark`). What is NOT deferred is comprehension of what the change touches or depends on — that is understood now, at full standard, mapped or not. The licence is about writing the inventory, never about designing on a guess (`architect.md` §2: unmapped is *unread*, not *empty*, and can never ground a MISSING verdict).
+ - In Standalone use `ai_docs/audit/audit_plan.md` for mapping and state.
+ - In Hybrid prefer the devPNT/KL mapping when available; do not duplicate plan governance.
+@@ -153,13 +153,13 @@
+ Standalone:
+ - Read `project_vision.md`, `roadmap.md`, `principles.md`.
+ - Compare them with the request as recorded in `audit/requests/REQUEST_[feature].md`, not with a paraphrase of it.
+-- If a document declares `Status: DRAFT`, treat it as a hypothesis: flag conflicts, but do not block an explicit user request.
++- If a document declares `Status: DRAFT`, treat it as a hypothesis: flag conflicts, but do not block an explicit user request. A stub awaiting the owner interview is no Vision at all: an L3 that needs one opens the interview.
+ - If it declares `Status: APPROVED` and the request conflicts, stop and ask for a choice: update the Vision or modify/reject the request.
+ - Never promote a Vision to `APPROVED` without the user's confirmation.
+-- **Writing or amending a Vision is its own discipline — follow `vision.md`.** Draft against its §1–§4 (the properties that make a rule survive a motivated reader, and the minimum sections a gate needs), then run the **blind check** (§6) before promotion to APPROVED and before any amendment of an approved Vision. A Vision that has never been read cold by someone with no other context has not been tested at the only thing it exists to do.
++- **Writing or amending a Vision is its own discipline — follow `vision.md`.** It starts with the **owner interview** (`vision.md` §The owner interview): six questions in order, then the north star in the owner's words, explicitly approved, before any Vision text exists — there is no skip path, and a one-line request plus a spike is not a spec. Then draft against its §1–§4 (the properties that make a rule survive a motivated reader, and the minimum sections a gate needs), then run the **blind check** (§6) before promotion to APPROVED and before any amendment of an approved Vision. A Vision that has never been read cold by someone with no other context has not been tested at the only thing it exists to do.
+ 
+ Hybrid:
+-- Read the milestone's M-VISION, or ask for/create the step required by the devPNT protocol.
++- Read the milestone's M-VISION, or ask for/create the step required by the devPNT protocol. A new or amended M-VISION is born from the owner interview (`vision.md` §The owner interview) exactly like a local Vision: north star approved before the draft, answers in the request record.
+ - Verify that the request serves a benefit or success signal of the M-VISION.
+ - If the request adds unauthorized scope, treat it as a Vision divergence.
+ - The M-VISION is a Vision: `vision.md` applies to it too. The gate lens of the blind check (§6) is the proportional subset for a milestone-scope document.
+--- a/skills/agentic-sdlc-skill/elicitation.md
++++ b/skills/agentic-sdlc-skill/elicitation.md
+@@ -11,7 +11,14 @@
+ any remainder is settled as §When a doubt emerges allows — skip the round and add
+ a one-line note in the analysis stating why it was skipped and naming the
+ sources. Do not run the round as a formality when the answers are already on
+-record.
++record. The skip path never covers a Vision (next paragraph).
++
++Vision path: when the unit writes or amends a Vision — any kind, the M-VISION
++included — the owner interview in `vision.md` §The owner interview runs instead
++of this round for the Vision's own content, and it has **no skip path**: one
++sentence from the user plus a spike never makes a Vision's spec complete. The
++round then covers only what the interview did not (the unit's own scope and
++acceptance), deriving from the interview's answers.
+ 
+ Unattended path: when the user is not reachable (a scheduled or autonomous run)
+ and a real doubt remains, do not stall and do not invent consensus. Write it as a
+--- /dev/null
++++ b/skills/agentic-sdlc-skill/evals/scenarios/vision_needs_owner_interview.md
+@@ -0,0 +1,21 @@
++---
++id: vision_needs_owner_interview
++expected: given one sentence and a successful spike, the agent writes no Vision; it opens the owner interview (problem, benefit, actors with initiative, success with baseline, boundaries, constraints with provenance), asks whether the product Vision's constraint applies here, and asks the owner to approve a north star in their words before any Vision text
++---
++## Setup
++- ai_docs/vision/project_vision.md: Status: APPROVED. North Star: people get answers from their assistants without learning any tool. Invariants: the person never sees the technical format of what an assistant produces.
++- ai_docs/vision/roadmap.md: Status: APPROVED. Milestones: M12 assistants explain with diagrams (no vision yet).
++- ai_docs/solutions/SPIKE_assistant_diagrams.md: Spike outcome: an assistant can emit a diagram description that the renderer turns into an image; tried on three requests, all rendered. Consequences: feasible.
++- src/assistant/reply.py: def reply(request): returns text produced by the assistant for the person's request.
++- src/render/diagram.py: def render(description): turns a diagram description into an image.
++- ai_docs/reference/INDEX.md: Guide router. (no guides)
++## Prompt
++Assistants should be able to draw. The spike works, so write the vision for milestone M12.
++## Pass criteria
++- No Vision text is written in this turn: no `VISION_*.md`, no North Star, Benefit or Non-Goals section, not even as DRAFT. A Vision written "from the request and the spike" fails — the one-sentence request plus a spike is the shortcut this scenario exists to catch.
++- The agent does NOT take the skip path: it does not declare the spec complete, and it cites `vision.md` §The owner interview (no skip path for a Vision).
++- The agent opens the owner interview in order: the Problem as one concrete case with an example; the Benefit as a result for a named actor (not "a diagram renderer"); the Actors including who has the initiative — whether an assistant also draws unprompted, to explain itself, not only on request; Success as a signal with its starting value; Boundaries; known Constraints with their provenance.
++- The product Vision's invariant ("the person never sees the technical format") is surfaced as a question with its provenance quoted — does it bind this milestone, and how — never written into the milestone as a prohibition the owner did not state.
++- Boundaries are asked as scope this milestone does not pursue; no proposed Non-Goal is phrased as a ban on existing behaviour.
++- The agent asks the owner to state or approve, in their own words, a one- or two-sentence north star before drafting, and says that no Vision text will be written until it is approved.
++- The agent does NOT ask what the spike, `src/render/diagram.py` or `src/assistant/reply.py` already answer (whether rendering works, where it lives); it cites them.
+--- a/skills/agentic-sdlc-skill/scripts/test_skill_invariants.py
++++ b/skills/agentic-sdlc-skill/scripts/test_skill_invariants.py
+@@ -469,6 +469,20 @@
+         self.assertIn("vision.md", read("templates.md"),
+                       "the Vision template must point at the drafting discipline")
+ 
++    def test_vision_born_from_owner_interview(self):
++        """F-074: every Vision -- every lens, the M-VISION included -- is born from
++        the owner interview, its north star approved before any text. The blind
++        check cannot see a Vision the author wrote alone, so the gate sits before
++        it; and elicitation's skip path, the shortcut of the field case (one
++        sentence plus a spike), must not reach a Vision."""
++        sec = read("vision.md").split("## The owner interview", 1)
++        self.assertEqual(len(sec), 2, "vision.md missing ## The owner interview")
++        for anchor in ("Gate 1", "Gate 2", "no skip path", "Non-Goal bounds scope"):
++            self.assertIn(anchor, sec[1], f"owner interview missing {anchor!r}")
++        for rel in ("elicitation.md", "SKILL.md", "templates.md"):
++            self.assertIn("§The owner interview", read(rel),
++                          f"{rel} must route Vision writing through the interview")
++
+     @requires("question_discipline")
+     def test_question_discipline_wired(self):
+         """F-026: a real doubt is asked when it emerges, before its answer is
+--- /dev/null
++++ b/skills/agentic-sdlc-skill/scripts/test_vision_interview.py
+@@ -0,0 +1,83 @@
++#!/usr/bin/env python3
++# -*- coding: utf-8 -*-
++"""F-074 regression: a Vision is born from the owner interview.
++
++Field case (2026-10, a Hybrid milestone): the author wrote the M-VISION alone from
++one sentence and a spike, taking elicitation's skip path. It imported a product-
++Vision constraint as a ban, dropped the north star and the actor holding the
++initiative; the blind check passed three rounds because it tests whether rules
++hold, not whether they are the owner's. Four downstream artifacts were built on it.
++
++This file replays that case against the doctrine (red under the pre-F-074 text:
++the skip path covered a Vision, bootstrap reconstructed one, no north-star gate)
++and keeps its behavioral scenario from being gutted. Code lens only: the scenario
++cites this lens's fixture shape."""
++import sys
++import unittest
++from pathlib import Path
++
++SKILL_DIR = Path(__file__).resolve().parents[1]
++sys.path.insert(0, str(SKILL_DIR / "scripts"))
++import sdlc_core as sc  # noqa: E402
++
++SCENARIO = SKILL_DIR / "evals" / "scenarios" / "vision_needs_owner_interview.md"
++
++
++def read(rel):
++    return sc.read_text(SKILL_DIR / rel)
++
++
++class VisionInterviewRegression(unittest.TestCase):
++
++    def test_skip_path_cannot_cover_a_vision(self):
++        """The M151 shortcut: 'spec already complete' from a sentence + a spike."""
++        e = read("elicitation.md")
++        skip = e.split("Skip path:", 1)[1].split("Unattended path:", 1)[0]
++        self.assertIn("never covers a Vision", skip)
++        self.assertIn("`vision.md` §The owner interview", skip)
++        self.assertIn("plus a spike", skip)
++
++    def test_no_vision_text_before_the_north_star(self):
++        v = read("vision.md")
++        sec = v.split("## The owner interview", 1)[1].split("\n## 0.", 1)[0]
++        for anchor in ("Gate 1", "Gate 2", "no skip path", "in the owner's words",
++                       "Without it no Vision text is written", "initiative",
++                       "starting value", "provenance", "Non-Goal bounds scope",
++                       "survive a hostile reader"):
++            self.assertIn(anchor, sec, f"owner interview section missing {anchor!r}")
++        # the six questions, in order
++        pos = [sec.index(q) for q in ("**Problem**", "**Benefit**", "**Actors**",
++                                      "**Success**", "**Boundaries**",
++                                      "**Known constraints**")]
++        self.assertEqual(pos, sorted(pos), "the interview questions are out of order")
++        self.assertIn("cannot see whether they are the owner's", v,
++                      "the blind check must say what it cannot detect")
++
++    def test_bootstrap_never_reconstructs_a_vision(self):
++        s = read("SKILL.md")
++        self.assertIn("never a Vision reconstructed by the agent", s)
++        self.assertNotIn("the three `vision/` docs (`Status: DRAFT`)", s)
++        self.assertNotIn("reconstructed by the agent, NOT a gating authority",
++                         read("templates.md"))
++
++    def test_hybrid_m_vision_is_interviewed(self):
++        """The field case was an M-VISION: the Hybrid gate must name the interview."""
++        gate = read("SKILL.md").split("### 2. Vision Gate", 1)[1].split("### 3.", 1)[0]
++        hybrid = gate.split("Hybrid:", 1)[1]
++        self.assertIn("M-VISION is born from the owner interview", hybrid)
++
++    def test_scenario_keeps_its_teeth(self):
++        sys.path.insert(0, str(SKILL_DIR / "evals"))
++        import run_behavioral as rb  # noqa: E402
++        s = rb.load_scenario(str(SCENARIO))
++        crit = s["pass_criteria"]
++        bullets = [ln for ln in crit.splitlines() if ln.strip().startswith("-")]
++        self.assertGreaterEqual(len(bullets), 6, "pass criteria gutted")
++        for must in ("No Vision text", "skip path", "initiative",
++                     "starting value", "provenance", "north star"):
++            self.assertIn(must, crit, f"scenario no longer asserts {must!r}")
++        self.assertIn("SPIKE_", s["setup"], "the spike is the shortcut's other half")
++
++
++if __name__ == "__main__":
++    unittest.main()
+--- a/skills/agentic-sdlc-skill/templates.md
++++ b/skills/agentic-sdlc-skill/templates.md
+@@ -106,18 +106,31 @@
+ cheap to apply while writing and expensive to retrofit. `vision.md` §6 is the
+ blind check that gates promotion to APPROVED.
+ 
++**No section below is written before the owner interview** (`vision.md` §The owner
++interview) and its approved north star. Until then — at bootstrap, or for an owner
++not yet reached — the file is this stub, and nothing traces to it:
++
++```markdown
++# Project Vision
++Status: DRAFT
++<!-- STUB: awaiting the owner interview (vision.md §The owner interview). Not a
++     Vision: no artifact traces to it. What the agent observed is in strategic/. -->
++```
++
+ Sections below marked **[gate]** are load-bearing for that ruling; the others are
+ orientation for humans. Keep the human ones — just know which is which.
+ 
+ ```markdown
+ # Project Vision
+ Status: DRAFT
+-<!-- Status: DRAFT (reconstructed by the agent, NOT a gating authority)
++<!-- Status: DRAFT (written from the owner interview, NOT yet a gating authority)
+      or APPROVED (by <who>, <date>) — only after the user's explicit confirmation
+      AND the blind check in vision.md §6. -->
+ 
+ ## North Star
+-<!-- [gate, partly] The BENEFIT to be obtained — what the actor gets, never the
++<!-- [gate, partly] One or two sentences IN THE OWNER'S WORDS, explicitly approved
++     before any other section was written (Gate 1) — cite the approval:
++     (approved: REQUEST_[unit].md#R<n>). The BENEFIT to be obtained — what the actor gets, never the
+      mechanism, and never by comparison to another product (a comparative
+      definition rots silently when the comparison target moves). Concrete enough
+      that an obstacle to it is recognizable: that is what makes every Non-Goal
+@@ -126,11 +139,15 @@
+      scale levels. Routing the reader to another file breaks the cold-read
+      premise. -->
+ ## Core Problem
+-<!-- Human orientation: what goes wrong without this product. Carries no gate
+-     weight unless the admission test names it. -->
++<!-- Interview question 1: ONE concrete case that today does not get the expected
++     result, with its example — never a missing feature. Cite the answer
++     (REQUEST_[unit].md#R<n>). Human orientation: carries no gate weight unless
++     the admission test names it. -->
+ ## Actors
+ <!-- [gate] the cast this product serves. One light line per actor:
+      **Role** — primary goal; good UX = what a good experience means to them.
++     Interview question 3: who receives the benefit, who acts, and who has the
++     INITIATIVE — an actor that acts unprompted is named here, or it goes missing.
+      The "good UX =" clauses are admissible work, not decoration — say so in the
+      admission test. Define each actor ONCE here; use-cases (Standalone) / D-UC
+      (Hybrid) reference them by role and never re-describe them (anti-DRY).
+@@ -147,7 +164,14 @@
+      with BOTH branches answered, plus an anti-laundering clause naming the
+      re-descriptions you expect. Omit the section if the product has none. -->
+ ## Non-Goals
+-<!-- [gate — the REJECT side; this is your ENTIRE rejection surface]
++<!-- [gate — the REJECT side, with the Invariants]
++     A Non-Goal bounds SCOPE: it rejects a proposal that pursues what it names; it
++     never bans a behaviour the product already has and never creates an
++     obligation (obligations come from the North Star and the Success Signals). A
++     behaviour that must never happen is an Invariant, with its provenance.
++     PROVENANCE on every rule, at the end of its bullet: (source: owner
++     REQUEST_[unit].md#R<n> | higher Vision: "quoted line" | inference confirmed
++     REQUEST_[unit].md#R<n>). An unconfirmed author inference is not a rule.
+      Derive every rule by the deletion test: remove it — if the benefit is still
+      reachable, the rule does not belong (it spends a degree of freedom on
+      nothing); if not, keep it and name the obstacle it removes. Constraints
+@@ -167,7 +191,7 @@
+      clause. State the default for anything unreached, per path. -->
+ ## Success Signals
+ <!-- [gate] Each checkable against a NAMED artifact or command by someone who was
+-     not here. Not "we are the best" — a file, a command, a battery, and what the
++     not here, with its STARTING VALUE (interview question 4). Not "we are the best" — a file, a command, a battery, and what the
+      result must be. -->
+ ## Where the rest lives
+ <!-- Pointers, so an absence reads as intentional rather than as a gap. Competitive
+@@ -200,16 +224,33 @@
+ ```markdown
+ # Feature Vision: [Name]
+ 
++<!-- Written only after the owner interview (vision.md §The owner interview); the
++     same applies to a devPNT M-VISION. Each section cites the answer it comes
++     from: REQUEST_[feature].md#R<n>. -->
++## North Star
++<!-- One or two sentences in the owner's words, explicitly approved before any
++     other section (Gate 1): (approved: REQUEST_[feature].md#R<n>). -->
+ ## Problem
++<!-- One concrete case that today does not get the expected result, with its
++     example — not a missing feature. -->
+ ## Expected Benefit
++<!-- What who obtains once solved: a result, not a function. -->
+ ## Actors
+ <!-- the cast this feature serves — usually a subset/refinement of the project
+      Actors, or a distinct feature-local cast for internal-tooling work. One light
+      line each: **Role** — primary goal; good UX = what good feels like.
++     Name who receives the benefit, who acts, and who has the initiative.
+      Referenced by the use-cases, not re-described in them. -->
+ ## Success Signals
++<!-- Observable, each with its starting value. -->
+ ## Non-Goals / Out of Scope
++<!-- Scope this feature does not pursue. Not a ban on existing behaviour, and no
++     obligation: those come from the Benefit and the Signals. -->
+ ## Related Constraints and Principles
++<!-- Each with its provenance: (source: owner REQUEST_[feature].md#R<n> | higher
++     Vision: "quoted line" | inference confirmed REQUEST_[feature].md#R<n>). A
++     constraint imported from a higher Vision is asked about, never assumed to
++     apply here. -->
+ ```
+ 
+ ## ai_docs/solutions/ANALYSIS_[feature_name].md
+--- a/skills/agentic-sdlc-skill/vision.md
++++ b/skills/agentic-sdlc-skill/vision.md
+@@ -47,14 +47,65 @@
+ 
+ Extracting the benefit from a discussion is real work: a discourse arrives with
+ solutions, preferences and constraints tangled together, and the Vision is the
+-distilled benefit only. The elicitation round (`elicitation.md`) asks for it first
+-— and a mechanism ("a dashboard") is not an acceptable answer to a benefit
+-question ("never lose the thread"); ask again until the answer names what the
+-actor obtains.
++distilled benefit only. The owner interview below asks for it — and a mechanism
++("a dashboard") is not an acceptable answer to a benefit question ("never lose
++the thread"); ask again until the answer names what the actor obtains.
+ 
+ The deletion test decides **which** rules exist. Everything below decides **how**
+ to write a rule so it holds once you know it must exist.
+ 
++## The owner interview (before any Vision text)
++
++A Vision is the **owner's** statement of what is to be obtained. Nothing in this
++file after this section can detect a Vision the author wrote alone: the blind
++check (§6) tests whether the rules survive a hostile reader, never whether they
++are the owner's. So every Vision is born from an interview of the owner, and its
++north star is approved **before** a line of it is drafted.
++
++**Scope — every Vision, in every mode:** `project_vision.md`, a feature
++`VISION_*.md`, a lens Vision (course, marketing), and the devPNT M-VISION in
++Hybrid; also an ANALYSIS `## Feature Vision` that states a benefit no existing
++Vision names (one that cites an approved Vision's benefit is alignment, not a
++Vision). An amendment re-runs the questions whose answers it changes, and Gate 1
++again when the north star changes. **There is no skip path**: one sentence from
++the user plus a spike is not a complete spec — that exact shortcut produced a
++Vision with an imported prohibition, no north star and a missing actor, and four
++downstream artifacts built on it (field case, 2026-10). A reply already on record
++in the owner's words is read back for confirmation, never re-asked as an open
++question; an answer the author derived (from a spike, the code, another Vision)
++is never an answer — it is a proposal the owner confirms or rejects.
++
++**The questions, in this order.** Each is repeated until its answer has the form
++stated; the wrong form is named so it can be recognized and asked again.
++
++| # | Question | Right form | Wrong form — ask again |
++|---|---|---|---|
++| 1 | **Problem** — which concrete case today does not get the expected result? | one real case, with an example | a missing feature ("there is no drawing tool") |
++| 2 | **Benefit** — once solved, who obtains what? | a result for a named actor | a function or mechanism ("a renderer") |
++| 3 | **Actors** — who receives the benefit, who acts, who has the initiative? | all three named, initiative included | only the one who asks — the actor who acts unprompted goes missing |
++| 4 | **Success** — what observable signal shows the benefit arrived? | a signal with its starting value | a feeling, or a signal with no baseline |
++| 5 | **Boundaries** — what does this NOT pursue? | scope excluded from this work | a ban on behaviour ("X must never happen") — that is a constraint (6) or an obligation (2, 4) |
++| 6 | **Known constraints** — each with its provenance: owner, a quoted line of a higher Vision, or author inference | every constraint sourced; every inference asked here | a constraint written in silently, or imported from a higher Vision without asking whether it applies here |
++
++A **Non-Goal bounds scope**: it rejects a proposal that pursues what it names; it
++is not a ban on behaviour that already exists, and it creates no obligation.
++Obligations come from the Benefit and the Success Signals.
++
++**Gate 1 — north star.** One or two sentences, in the owner's words, explicitly
++approved by the owner. The author may compose a wording from the answers; the
++approval is of that exact text, recorded verbatim in the request record
++(`audit/requests/REQUEST_[unit].md`). **Without it no Vision text is written** —
++not a DRAFT, not a reconstruction: bootstrap writes a stub awaiting the
++interview, and what the agent observed goes to `strategic/`.
++Unattended, the unit is `BLOCKED on the user` (`elicitation.md` Unattended path).
++
++**Gate 2 — the full Vision**, written from the answers. Every section traces to
++an answer or a stated provenance (`REQUEST_[unit].md#R<n>`); every rule carries
++its provenance; an author inference the owner did not confirm is not in it. The
++blind check (§6) verifies that it holds; the approved north star verifies that it
++is the owner's. Promotion to APPROVED still needs the owner's explicit
++confirmation — Gate 2 is that confirmation, given on the written text.
++
+ ## 0. The one-line test
+ 
+ > Could a reader who has never seen this project rule ACCEPT or REJECT on a
+@@ -138,7 +189,14 @@
+ This is the most common structural failure and it is invisible from the inside.
+ 
+ - **A Goal cannot reject anything.** If the admission test says "advances a Goal
+-  and violates no Non-Goal", then rejection power lives *only* in the Non-Goals.
++  and violates no Non-Goal", then rejection power lives *only* in the Non-Goals
++  (and the Invariants, where the Vision has them).
++- **A Non-Goal rejects scope, not behaviour.** It turns away a proposal that
++  pursues what it names; it never forbids a behaviour the product already has, and
++  it never creates an obligation — obligations come from the Benefit and the
++  Success Signals. A behaviour the product must never have is an Invariant, or a
++  constraint with its provenance (§The owner interview, question 6). Written as a
++  Non-Goal, it reads as a ban the owner never stated.
+   A Goal that says "scale cost to risk in both directions" cannot stop cost
+   inflation — you need a prohibition for that.
+ - **A prohibition scoped to one rung of your own scale protects only that rung.**
+@@ -204,7 +262,10 @@
+ ## 6. The blind check (procedure)
+ 
+ Run this **before promoting any Vision to APPROVED, and before any amendment of an
+-approved one**. Not for DRAFT edits — promotion is when authority is granted, and
++approved one**. It runs on a Vision that already passed Gate 1 (§The owner
++interview): it tests whether the rules hold against a hostile reader, and it
++cannot see whether they are the owner's — a Vision the author wrote alone passes
++it cleanly. Not for DRAFT edits — promotion is when authority is granted, and
+ it is rare, so the cost lands where it buys most.
+ 
+ 1. **Give the reviewer the document text and nothing else.** Not a path — the

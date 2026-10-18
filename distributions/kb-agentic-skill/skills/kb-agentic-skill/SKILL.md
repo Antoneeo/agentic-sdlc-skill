@@ -1,6 +1,6 @@
 ---
 name: kb-agentic
-version: 1.25.0
+version: 1.26.0
 description: Knowledge-Base & Document-First protocol with risk-proportional triage, Vision as a guide, Signal Distillation, a complete Standalone mode and optional symbiosis with devPNT. Use for user documentation, knowledge extraction, SOPs, research notes, decision logs, knowledge management — and for answering project questions from the claim ledger and topic graph.
 author: Antonio Pinto (https://github.com/Antoneeo)
 copyright: (c) 2026 Antonio Pinto
@@ -97,7 +97,7 @@ Triage decides IF documentation is due; this table decides WHICH document each e
 | `audit/reviews/REVIEW_LOG.md` | Every completed review — recorded in log. | 3 / 5 |
 | ADR / Decision Log — `architecture/` or devPNT DB | A strategic decision was taken (pattern, policy, structural change): record before DONE. | 5 |
 | `strategic/architecture.md`, `strategic/existing_features.md` | Bootstrap; update at closure when the knowledge catalog actually changed. | 1 / 5 |
-| `vision/project_vision.md`, `roadmap.md`, `principles.md` | Bootstrap as `Status: DRAFT`; promoted to APPROVED only by explicit user confirmation. | 1 / 2 |
+| `vision/project_vision.md`, `roadmap.md`, `principles.md` | Bootstrap writes each as a **stub** awaiting the owner interview (`Status: DRAFT`) — never a Vision reconstructed by the agent. The Vision is written only after the owner interview and its approved north star (`vision.md` §The owner interview); promoted to APPROVED only by explicit user confirmation. | 1 / 2 |
 | `topics/<slug>.md` | A placement verdict creates it (MISSING/INADEQUATE-child, `taxonomy.md`); reconciliation updates its claim rows. One node per topic — a similar-but-distinct concept is a sibling with `related:` + a written distinction, never a merge and never a duplicate. Merged/renamed nodes become tombstones (`status: SUPERSEDED` + `redirect_to:`), never deleted. | 4 |
 | a KB bundle (`export`) | Knowledge must leave this project. Export is L1 — it writes nothing into the corpus. **Importing one is L3**: a source enters the corpus and nodes are created, and a bundle is external input, so never L1 whatever its size (`portability.md`). | — |
 | `corpus/given/*` + sidecar | A source arrives: it becomes a content-addressed artifact with a sidecar carrying digest/date/`supersedes:`. A text source is copied verbatim. A non-text source yields its stored canonical extraction — copied **beside** the original when that is small enough to keep, or **instead of it** on a large binary corpus, where the original stays where it lives and is recorded as `original_path:`/`original_sha256:` (`distillation.md` §1, which owns this rule). Never edited after ingest — the digest check on whatever `given/` holds is what enforces it. | 4 |
@@ -125,12 +125,13 @@ Use this mode when `devpnt_*` tools are available and point at the current proje
 ### 1. Audit and Alignment
 - Read `ai_docs/audit/handoff.md` (workstream registry) to see active topics.
 - Read `ai_docs/README.md`, `ai_docs/INDEX.md` and `ai_docs/reference/INDEX.md` (the guide router) before exploring notes. The router is a mandatory read, not an optional one: it is the only orientation step that tells you a guide already governs the work you are about to do.
-- If `ai_docs/` is missing, create the bootstrap set: `README.md`, `vision/` docs, `strategic/` docs, and `audit/audit_plan.md`, then run `sdlc_check.py index`.
+- If `ai_docs/` is missing, create the bootstrap set: `README.md`, `vision/` stubs awaiting the owner interview, `strategic/` docs, and `audit/audit_plan.md`, then run `sdlc_check.py index`.
 
 ### 2. Vision Gate
 - Read `project_vision.md`, `roadmap.md`, `principles.md` (or devPNT `M-VISION`).
 - Compare them with the request as recorded in `audit/requests/REQUEST_[topic].md`, not with a paraphrase of it.
 - Verify request aligns with expected benefits, user goals, and success signals.
+- Writing or amending a Vision starts with the owner interview (`vision.md` §The owner interview): the north star is approved in the owner's words before any Vision text exists; there is no skip path.
 
 ### 3. Request Analysis & Taxonomy Pass
 

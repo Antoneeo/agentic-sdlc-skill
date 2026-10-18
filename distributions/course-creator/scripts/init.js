@@ -9,7 +9,7 @@ const { SKILL_SOURCE, INSTALLED_SKILL_NAME, SELF_LENS, SIBLING_LENSES,
 const root = process.cwd();
 const seed = new Map([
   ['ai_docs/README.md', `---\ndefault_domain: course\n---\n# Project knowledge and course work\n\nRead vision/project_vision.md, INDEX.md and reference/INDEX.md first.\n`],
-  ['ai_docs/vision/project_vision.md', `---\ndescription: Project benefit and boundaries.\nstatus: DRAFT\n---\n# Project Vision\nStatus: DRAFT\n\n## Expected Benefit\n<Discuss with the owner.>\n`],
+  ['ai_docs/vision/project_vision.md', `---\ndescription: Project benefit and boundaries.\nstatus: DRAFT\n---\n# Project Vision\nStatus: DRAFT\n<!-- STUB: awaiting the owner interview (vision.md §The owner interview). Not a\n     Vision: no artifact traces to it. -->\n`],
   ['ai_docs/vision/roadmap.md', `---\ndescription: Project learning and delivery roadmap.\nstatus: DRAFT\n---\n# Roadmap\nStatus: DRAFT\n`],
   ['ai_docs/vision/principles.md', `---\ndescription: Decisions that constrain project work.\nstatus: DRAFT\n---\n# Principles\nStatus: DRAFT\n`],
   ['ai_docs/strategic/architecture.md', `---\ndescription: Verified component inventory.\nstatus: CURRENT\n---\n# Architecture\n\n## Component Map\n| Component | Capability it owns | Contract | Where |\n|---|---|---|---|\n\n## Architectural Patterns\n<Add only verified patterns.>\n`],
