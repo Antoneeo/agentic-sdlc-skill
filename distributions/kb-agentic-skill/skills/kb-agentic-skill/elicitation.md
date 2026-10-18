@@ -10,10 +10,20 @@ Skip path: if the spec is already complete — an approved Vision or explicit
 user requirements already answer goal, scope, and constraints — skip the
 round and add a one-line note in the analysis stating why it was skipped.
 Do not run the round as a formality when the answers are already on record.
+The skip path never covers a Vision (next paragraph).
+
+Vision path: when the unit writes or amends a Vision — any kind, the M-VISION
+included — the owner interview in `vision.md` §The owner interview runs instead
+of this round for the Vision's own content, and it has **no skip path**: one
+sentence from the user plus a spike never makes a Vision's spec complete. The
+round then covers only what the interview did not (the unit's own scope and
+acceptance), deriving from the interview's answers. The interview is a planned
+occasion like the round (§Ask before the write): its questions go in one numbered
+set, and only an answer in the wrong form is asked again.
 
 Unattended path: when the user is not reachable (a scheduled or autonomous run,
-and a bootstrap Vision is `DRAFT` by mandate, so the skip path above cannot
-apply on a project's first L3) and a real doubt remains, do not stall and do not
+and a bootstrap Vision is a stub awaiting the owner interview, so the skip
+path above cannot apply on a project's first L3) and a real doubt remains, do not stall and do not
 invent consensus. Write it as a **declared assumption** (§Ask before the write)
 in the artifact it touches. At L3, mark the ANALYSIS `BLOCKED on the user` and
 stop before implementation; below L3, proceed and list the assumption in the
@@ -24,9 +34,10 @@ design is not.
 
 A doubt kept silent is decided by the agent alone and reaches the documents
 looking settled; a useless question wastes the practitioner's attention. This
-section rules on both. The process *plans* questions in two places — the round
-below, and the Capture Moment sweep at a user-signed closing (`SKILL.md`) — each
-a planned occasion that keeps its own form.
+section rules on both. The process *plans* questions in three places — the round
+below, the owner interview for a Vision (`vision.md` §The owner interview), and the
+Capture Moment sweep at a user-signed closing (`SKILL.md`) — each a planned
+occasion that keeps its own form.
 
 ### When a doubt emerges
 

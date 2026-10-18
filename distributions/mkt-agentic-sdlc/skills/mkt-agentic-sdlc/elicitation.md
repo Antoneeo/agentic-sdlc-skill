@@ -177,7 +177,12 @@ Cover, across rounds:
     them with (seed, not analysis).
 
 Skip path: any item already answered by an approved MKT-VISION or earlier
-session record is not re-asked — note where the answer came from.
+session record is not re-asked — note where the answer came from. The skip path
+never covers the MKT-VISION itself: it is written only after the owner interview
+in `vision.md` §The owner interview, with its north star approved first (Gate 1);
+these waves gather the facts, the interview gathers the Vision. The interview is
+a planned occasion like a wave: one numbered set, and only an answer in the wrong
+form is asked again.
 
 ## Wave 2 — Ambition (phase 5 entry, after research)
 

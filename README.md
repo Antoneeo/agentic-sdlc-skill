@@ -21,7 +21,7 @@ Vendoring requires all three files: the entry point, `sdlc_core.py`, `knowledge.
 ## Key Features
 
 - **Risk-proportional workflow**: L1/L2/L3/Spike triage avoids heavyweight process for trivial work, with a symmetric **Write Triggers** table mapping each event to the document it produces (one event, one destination).
-- **Vision-guided governance**: Standalone projects use `ai_docs/vision/`; Hybrid projects use devPNT `M-VISION` as the milestone north star. The Vision names its **Actors** — the cast a feature serves, one light line each — so UX is designed for concrete roles, not an implicit "user".
+- **Vision-guided governance**: Standalone projects use `ai_docs/vision/`; Hybrid projects use devPNT `M-VISION` as the milestone north star. The Vision names its **Actors** — the cast a feature serves, one light line each — so UX is designed for concrete roles, not an implicit "user". Every Vision, the M-VISION included, is written only after a six-question **owner interview** and your explicit approval of a one- or two-sentence north star in your own words — the agent never writes one alone.
 - **Architect pass — capabilities before files**: at L3, before listing what changes, the feature is stated as the *capabilities* it needs and each is ruled against the platform (EXISTS / INADEQUATE / MISSING); what is missing is designed as a component with its own contract, of which the feature is one consumer — never inlined into the feature's code path. A `## Component Map` in `strategic/architecture.md` is the durable inventory the pass reads, so the platform is not re-derived from source every session. On a codebase the methodology arrives in late, the map's silence is treated as **unread, not empty**: it can never ground a MISSING verdict.
 - **Execution disciplines**: explicit TDD (RED/GREEN/REFACTOR), evidence-first debugging with hypotheses ranked by likelihood and verification cost, supported causal questioning and clean Poka-Yoke correction with regression checks; an L3 spec-elicitation round and a single code-review definition wired into the workflow phases.
 - **Operative + comprehension guides + agent-global KB**: distil user-provided indications into source-faithful operative `GUIDE_*.md` (`source_kind: document`), and let the agent autonomously author **code-comprehension guides** (`source_kind: code`) for complex components — a source-faithful mental-model map that survives across sessions, so the next session doesn't re-derive and break the component from partial understanding. Consulted before work; shared cross-project via `~/.agentic-sdlc`.
@@ -71,7 +71,7 @@ The global package also exposes:
 agentic-sdlc-init
 ```
 
-Run it inside a project to create `ai_docs/`, Vision documents, strategic docs, audit plan, and agent protocol files (`AGENTS.md` — also the Antigravity CLI surface, `CLAUDE.md`, `GEMINI.md`, `.cursorrules`).
+Run it inside a project to create `ai_docs/`, Vision stubs awaiting your interview, strategic docs, audit plan, and agent protocol files (`AGENTS.md` — also the Antigravity CLI surface, `CLAUDE.md`, `GEMINI.md`, `.cursorrules`).
 
 It also **wires the SessionStart orientation hook** into `.claude/`, so an agent opening
 the project is handed the reading guide, the generated manifest, the guide router and the

@@ -11,7 +11,16 @@ requirements or an earlier reply already answer goal, scope, and constraints, an
 any remainder is settled as §When a doubt emerges allows — skip the round and add
 a one-line note in the analysis stating why it was skipped and naming the
 sources. Do not run the round as a formality when the answers are already on
-record.
+record. The skip path never covers a Vision (next paragraph).
+
+Vision path: when the unit writes or amends a Vision — any kind, the M-VISION
+included — the owner interview in `vision.md` §The owner interview runs instead
+of this round for the Vision's own content, and it has **no skip path**: one
+sentence from the user plus a spike never makes a Vision's spec complete. The
+round then covers only what the interview did not (the unit's own scope and
+acceptance), deriving from the interview's answers. The interview is a planned
+occasion like the round (§Ask before the write): its questions go in one numbered
+set, and only an answer in the wrong form is asked again.
 
 Unattended path: when the user is not reachable (a scheduled or autonomous run)
 and a real doubt remains, do not stall and do not invent consensus. Write it as a

@@ -469,6 +469,40 @@ class SkillInvariants(unittest.TestCase):
         self.assertIn("vision.md", read("templates.md"),
                       "the Vision template must point at the drafting discipline")
 
+    def test_vision_born_from_owner_interview(self):
+        """F-074: every Vision -- every lens, the M-VISION included -- is born from
+        the owner interview, its north star approved before any text. The blind
+        check cannot see a Vision the author wrote alone, so the gate sits before
+        it; and elicitation's skip path, the shortcut of the field case (one
+        sentence plus a spike), must not reach a Vision."""
+        sec = read("vision.md").split("## The owner interview", 1)
+        self.assertEqual(len(sec), 2, "vision.md missing ## The owner interview")
+        for anchor in ("Gate 1", "Gate 2", "no skip path", "Non-Goal bounds scope"):
+            self.assertIn(anchor, sec[1], f"owner interview missing {anchor!r}")
+        for rel in ("elicitation.md", "SKILL.md", "templates.md"):
+            self.assertIn("§The owner interview", read(rel),
+                          f"{rel} must route Vision writing through the interview")
+        # What bootstrap actually writes: the installers seed the Vision from the
+        # FIRST fenced block of its template section (scripts/lib.js templateFor),
+        # or from a literal in init.js. Either way it must be the stub -- a full
+        # template seeded before the interview is a Vision with no owner behind it.
+        tpl = read("templates.md")
+        seeded = re.findall(r"^## \S*(?:project_vision|MKT_VISION)\.md[^\n]*\n(.*?)```markdown\n(.*?)```",
+                            tpl, re.S | re.M)
+        for _, block in seeded:
+            self.assertIn("awaiting the owner interview", block,
+                          "the first Vision block in templates.md is what bootstrap "
+                          "seeds: it must be the stub")
+        init = SKILL_DIR.parents[1] / "scripts" / "init.js"
+        if init.is_file():
+            js = sc.read_text(init)
+            if "vision/project_vision.md'" in js and "templateFor(sections, 'project_vision.md')" not in js:
+                self.assertIn("awaiting the owner interview", js,
+                              "init.js seeds a literal project Vision: it must be the stub")
+            else:
+                self.assertTrue(seeded, "init.js seeds the Vision from templates.md, "
+                                        "which has no Vision section to seed")
+
     @requires("question_discipline")
     def test_question_discipline_wired(self):
         """F-026: a real doubt is asked when it emerges, before its answer is

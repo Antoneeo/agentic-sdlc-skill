@@ -103,18 +103,30 @@ the first draft — the properties that make a rule survive a motivated reader a
 cheap to apply while writing and expensive to retrofit. `vision.md` §6 is the
 blind check that gates promotion to APPROVED.
 
+**No section below is written before the owner interview** (`vision.md` §The owner
+interview) and its approved north star. Until then — at bootstrap, or for an owner
+not yet reached — the file is this stub, and nothing traces to it:
+
+```markdown
+# Project Vision
+Status: DRAFT
+<!-- STUB: awaiting the owner interview (vision.md §The owner interview). Not a
+     Vision: no artifact traces to it. What the agent observed is in strategic/. -->
+```
+
 Sections below marked **[gate]** are load-bearing for that ruling; the others are
 orientation for humans. Keep the human ones — just know which is which.
 
 ```markdown
 # Project Vision
 Status: DRAFT
-<!-- Status: DRAFT (reconstructed by the agent, NOT a gating authority)
+<!-- Status: DRAFT (written from the owner interview, NOT yet a gating authority)
      or APPROVED (by <who>, <date>) — only after the user's explicit confirmation
      AND the blind check in vision.md §6. -->
 
 ## North Star
-<!-- [gate, partly] The BENEFIT to be obtained — what the actor gets, never the
+<!-- [gate, partly] One or two sentences IN THE OWNER'S WORDS, approved before any
+     other section (Gate 1): (approved: REQUEST_[topic].md#R<n>). The BENEFIT to be obtained — what the actor gets, never the
      mechanism, and never by comparison to another product (a comparative
      definition rots silently when the comparison target moves). Concrete enough
      that an obstacle to it is recognizable: that is what makes every Non-Goal
@@ -123,11 +135,15 @@ Status: DRAFT
      scale levels. Routing the reader to another file breaks the cold-read
      premise. -->
 ## Core Problem
-<!-- Human orientation: what goes wrong without this product. Carries no gate
-     weight unless the admission test names it. -->
+<!-- Interview question 1: ONE concrete case that today does not get the expected
+     result, with its example — never a missing feature. Cite the answer
+     (REQUEST_[topic].md#R<n>). Human orientation: carries no gate weight unless
+     the admission test names it. -->
 ## Actors
 <!-- [gate] the cast this product serves. One light line per actor:
      **Role** — primary goal; good UX = what a good experience means to them.
+     Interview question 3: who receives the benefit, who acts, and who has the
+     INITIATIVE — an actor that acts unprompted is named here, or it goes missing.
      The "good UX =" clauses are admissible work, not decoration — say so in the
      admission test. Define each actor ONCE here; use-cases (Standalone) / D-UC
      (Hybrid) reference them by role and never re-describe them (anti-DRY).
@@ -144,7 +160,14 @@ Status: DRAFT
      with BOTH branches answered, plus an anti-laundering clause naming the
      re-descriptions you expect. Omit the section if the product has none. -->
 ## Non-Goals
-<!-- [gate — the REJECT side; this is your ENTIRE rejection surface]
+<!-- [gate — the REJECT side, with the Invariants]
+     A Non-Goal bounds SCOPE: it rejects a proposal that pursues what it names; it
+     never bans a behaviour the product already has and never creates an
+     obligation (obligations come from the North Star and the Success Signals). A
+     behaviour that must never happen is an Invariant, with its provenance.
+     PROVENANCE on every rule, at the end of its bullet: (source: owner
+     REQUEST_[topic].md#R<n> | higher Vision: "quoted line" | inference confirmed
+     REQUEST_[topic].md#R<n>). An unconfirmed author inference is not a rule.
      Derive every rule by the deletion test: remove it — if the benefit is still
      reachable, the rule does not belong (it spends a degree of freedom on
      nothing); if not, keep it and name the obstacle it removes. Constraints
@@ -164,7 +187,7 @@ Status: DRAFT
      clause. State the default for anything unreached, per path. -->
 ## Success Signals
 <!-- [gate] Each checkable against a NAMED artifact or command by someone who was
-     not here. Not "we are the best" — a file, a command, a battery, and what the
+     not here, with its STARTING VALUE (interview question 4). Not "we are the best" — a file, a command, a battery, and what the
      result must be. -->
 ## Where the rest lives
 <!-- Pointers, so an absence reads as intentional rather than as a gap. Competitive
@@ -197,16 +220,32 @@ Only for features spanning multiple ANALYSIS documents or multiple milestones: o
 ```markdown
 # Feature Vision: [Name]
 
+<!-- Written only after the owner interview (vision.md §The owner interview). Each
+     section cites the answer it comes from: REQUEST_[topic].md#R<n>. -->
+## North Star
+<!-- One or two sentences in the owner's words, explicitly approved before any
+     other section (Gate 1): (approved: REQUEST_[topic].md#R<n>). -->
 ## Problem
+<!-- One concrete case that today does not get the expected result, with its
+     example — not a missing feature. -->
 ## Expected Benefit
+<!-- What who obtains once solved: a result, not a function. -->
 ## Actors
 <!-- the cast this feature serves — usually a subset/refinement of the project
      Actors, or a distinct feature-local cast for internal-tooling work. One light
      line each: **Role** — primary goal; good UX = what good feels like.
+     Name who receives the benefit, who acts, and who has the initiative.
      Referenced by the use-cases, not re-described in them. -->
 ## Success Signals
+<!-- Observable, each with its starting value. -->
 ## Non-Goals / Out of Scope
+<!-- Scope this feature does not pursue. Not a ban on existing behaviour, and no
+     obligation: those come from the Benefit and the Signals. -->
 ## Related Constraints and Principles
+<!-- Each with its provenance: (source: owner REQUEST_[topic].md#R<n> | higher
+     Vision: "quoted line" | inference confirmed REQUEST_[topic].md#R<n>). A
+     constraint imported from a higher Vision is asked about, never assumed to
+     apply here. -->
 ```
 
 ## ai_docs/audit/requests/REQUEST_[topic].md

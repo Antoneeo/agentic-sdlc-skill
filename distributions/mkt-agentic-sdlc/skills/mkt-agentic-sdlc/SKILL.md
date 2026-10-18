@@ -1,6 +1,6 @@
 ---
 name: mkt-agentic-sdlc
-version: 0.20.0
+version: 0.21.0
 description: Evidence-First marketing planning protocol with engagement triage, SOSTAC workflow, evidence ledger, adversarial CMO review, a complete Standalone mode and optional symbiosis with devPNT. Use for marketing plans, go-to-market strategy, campaign planning and market research.
 author: Antonio Pinto (https://github.com/Antoneeo)
 copyright: (c) 2026 Antonio Pinto
@@ -86,7 +86,7 @@ One event, one destination: when the trigger fires and the document does not exi
 | `audit/HANDOFF_[engagement].md` | Session ends with that engagement unfinished AND there is volatile resume state. Ephemeral, deleted at closure. | 8 / 9 / session end |
 | `audit/reviews/REVIEW_LOG.md` | Every completed review — when and what to write is `review.md`; schema is `templates.md`. | 6 / 9 |
 | `reference/GUIDE_[topic].md` | Origin+purpose test (`guides.md`), or a proactive proposal the user accepted. | 8 / 9 |
-| `vision/` documents | Bootstrap as `Status: DRAFT`; promoted to APPROVED only by explicit user confirmation, and only after the blind check (`vision.md` §6). | 1 / 5 |
+| `vision/` documents | Bootstrap writes a **stub** awaiting the owner interview (`Status: DRAFT`) — never a Vision reconstructed by the agent; the Vision is written only after the owner interview and its approved north star (`vision.md` §The owner interview); promoted to APPROVED only by explicit user confirmation, and only after the blind check (`vision.md` §6). | 1 / 5 |
 
 ## Operating Modes
 
@@ -139,7 +139,7 @@ Deliverable language: ask for (or infer) the target market's language in Discove
 
 ### 2. Discovery (Situation — internal)
 - Run elicitation **Wave 1** (`elicitation.md`): business facts only, plain language, max 4 questions per round, options where a real choice exists.
-- Every fact captured becomes a `FACT` ledger entry whose source cites its request-record entry (`user, REQUEST_[engagement].md#R2`). Draft `MKT_VISION.md` (Status: DRAFT) from the answers.
+- Every fact captured becomes a `FACT` ledger entry whose source cites its request-record entry (`user, REQUEST_[engagement].md#R2`). Then run the owner interview (`vision.md` §The owner interview) — Wave 1 gathers the facts, the interview gathers the Vision — and draft `MKT_VISION.md` (Status: DRAFT) from its answers only after the north star is approved in the owner's words.
 - **Vision Gate:** the user approves the MKT-VISION (expected benefit, success signals, non-goals) before research spends effort. Hybrid: this is the devPNT M-VISION creation gate — vision first, then the milestone.
 
 ### 3. Research (Situation — external)

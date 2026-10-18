@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.1.0-beta.7] - 2026-10-18
+
+### Added
+- F-074: every Vision is born from an owner interview. Before any Vision text is written (project, feature, the course Vision, and the devPNT M-VISION), the agent asks the owner six questions in order, re-asking an answer that has the wrong form: the problem as one concrete case, the benefit as a result for someone, the actors including who takes the initiative, a success signal with its starting value, the boundaries, and the known constraints with where each comes from. Then the owner approves a one- or two-sentence north star in their own words; without it no Vision is written, not even a draft. The blind check still tests that the rules hold; the approved north star shows they are the owner's. `vision.md` §The owner interview.
+
+### Changed
+- `elicitation.md`: the skip path never covers a Vision; the interview is a planned occasion like the round.
+- Bootstrap no longer writes a Vision reconstructed by the agent: the installer seeds `ai_docs/vision/project_vision.md` as a stub awaiting the interview (an existing file is never overwritten).
+- A Non-Goal now bounds scope. It rejects a proposal that pursues what it names; it is not a ban on behaviour that already exists and creates no obligation. A behaviour that must never happen is an Invariant or a constraint with its source.
+- The course Vision template gains North Star and Problem, learners with the initiative, signals with starting values, Non-Goals as scope, and the source of every constraint.
+
 ## [0.1.0-beta.6] - 2026-10-18
 
 ### Added
