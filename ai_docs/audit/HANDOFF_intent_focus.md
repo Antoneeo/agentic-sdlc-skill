@@ -4,7 +4,7 @@ level: L3
 branch: main
 status: PLANNED
 since: 2026-10-04
-next: owner answer to Open question 1 (Rule Zero copy count); then implementation per the ANALYSIS Action Plan (design and cost approved, R5).
+next: implementation per the ANALYSIS Action Plan — apply proposed.patch, FS5 in cmd_benefit, test_intent_focus.py, propose the copy-count guide (design approved R5, copy count R6).
 details: solutions/ANALYSIS_intent_focus.md
 updated: 2026-10-18
 ---

@@ -11,9 +11,9 @@ branch: main
 ---
 # Intent focus — effort weighed against the value and risk it serves
 
-Design and ceremony cost approved by the owner (REQUEST R5). For the owner: answer
-§Open questions 1. For the implementer: apply `harness_intent_focus/proposed.patch`
-per §Impact and §Action Plan; nothing is applied yet.
+Design and ceremony cost approved by the owner (REQUEST R5); Open question 1 answered
+(R6). For the implementer: apply `harness_intent_focus/proposed.patch` per §Impact and
+§Action Plan; nothing is applied yet.
 
 ## Objective
 
@@ -198,7 +198,12 @@ Net: the remedy is not self-financing; the owner accepts the remainder or it is 
 
 ## Open questions
 
-1. **How distribution copies count in Rule Zero (this repository).** The `--open` fix
+1. *Answered 2026-10-18 (REQUEST R6): a change copied identically into the distributions
+   counts once against Rule Zero's file bound.* The `--open` fix is therefore L2 (one
+   doctrine line and its test), and FS3 rules its review not due — incident (a) closes.
+   The convention is an owner indication about how this repository operates, so at
+   implementation it is PROPOSED as a guide (`guides.md`), never written silently.
+   Original question: **how distribution copies count in Rule Zero (this repository).** The `--open` fix
    (4543157) touched 17 files: one doctrine line and its test, copied into four lenses,
    plus records. Counted per file it is L3 (more than three files), so the patched text
    would still make its review due as a judged delta; counted once per copied change it
@@ -207,7 +212,7 @@ Net: the remedy is not self-financing; the owner accepts the remainder or it is 
 
 ## Action Plan
 
-1. Owner: design and cost approved (R5); question 1 open (verbatim in the request record when answered).
+1. Owner: design and cost approved (R5); question 1 answered (R6). Propose the copy-count guide.
 2. Apply `proposed.patch`; copy `review.md` to the three distributions; `shared_files.py --update`.
 3. `cmd_benefit` (FS5) ×4 via shared copy; `templates.md` ×4; workflow document line 92;
    `test_intent_focus.py` red on `main`, green after.
@@ -242,3 +247,5 @@ Net: the remedy is not self-financing; the owner accepts the remainder or it is 
   F-074 delta's findings stated as real, the Rule Zero copy-count question raised.
 - 2026-10-18: owner approved the design and confirmed the declared cost (REQUEST R5).
   Open question 1 still open; implementation not started.
+- 2026-10-18: owner answered Open question 1 (R6): identical distribution copies count
+  once. Design phase complete; implementation not started.
