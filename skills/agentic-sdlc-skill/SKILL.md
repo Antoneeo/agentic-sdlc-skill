@@ -21,7 +21,7 @@ Support files in the skill directory:
 - `hybrid.md`: the devPNT seam — the authoritative hierarchy, the ownership matrix (who owns what when both authorities are live), the triage equivalence, the feature-state mapping and the shadow discipline. Read it when the `devpnt_*` tools point at this project; a Standalone session never needs it.
 - `routing.md`: which lens owns this unit of work. Read ONLY when a sibling lens skill is installed alongside this one; a single-lens install never reads it.
 - `scripts/sdlc_check.py` + `scripts/sdlc_core.py`: the mechanical validator for the docs root (`check`, `validate`, `index`, `stale`, `mark`, `benefit`, `gate`, `plan`, `orient`, `migrate`).  Keep the entry point, `scripts/sdlc_core.py` and `scripts/knowledge.py` together; the last supplies common memory and KB integrity.
-- `scripts/docs_site.py --root <project>`: writes an offline, read-only site of what the agent reads here, for the user to browse.
+- `scripts/docs_site.py --root <project> --open`: opens in the user's browser a read-only site of what the agent reads; use it to show the project state.
 - `ENFORCEMENT.md`: optional setup for CI and hooks.
 
 Read these files only when needed. `SKILL.md` is the operating contract; the support files are progressive resources.

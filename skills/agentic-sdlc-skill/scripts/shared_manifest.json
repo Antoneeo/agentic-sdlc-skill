@@ -20,7 +20,7 @@
     "scripts/test_audit_refs.py": "a6f06e73f4c9469dd64bed283024b6b37294e6c26f171d8cbdbdfd03771a6884",
     "scripts/test_chronology.py": "5cffc2711282452fe1148a95e46b0b31940809aed3a63950329d9b3e868d0cda",
     "scripts/test_docs_root.py": "19753e0316c0df63ed321d24b411a9ff36eea2058421fd69fc57e507d75566d0",
-    "scripts/test_docs_site.py": "e0746f7b7745261c3f2557a0696181394811d7e0df34e36c065ca5cc573b1587",
+    "scripts/test_docs_site.py": "22e906a311d4a5a40abcb9707b08bcd6f5e71a2429708b31345cbd27690de195",
     "scripts/test_domain_rules.py": "33542b5dc2bb77c05ece55cf0446065cc4226c763ef5e040aa77364f226937bb",
     "scripts/test_drift.py": "c7b7121a8a308b0f3fe12c0c0c346444e632b7aaeff47dc8818b621e5c20cb38",
     "scripts/test_merge_safety.py": "8b9241077bf7ecd6dd335907c640044ab38968ff4c9fdc464450e732cb77adf4",

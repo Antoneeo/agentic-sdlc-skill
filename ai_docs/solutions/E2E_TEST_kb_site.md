@@ -160,6 +160,14 @@ guide says in one line when they appear. Rules shows the Vision, principles and 
 and links to Guides; it no longer lists guides.
 Result:
 
+### S17 — Asked for the state, the agent opens the site (R28)
+Steps: 1. In an agent client with the skill installed, open this repository and ask
+"Mi mostri lo stato corrente?" (or "what is the state of the project?").
+Expected: the agent runs `docs_site.py --root <project> --open`; the site opens in your
+default browser and works (Home, Open work). It does not open the file in its own
+browser pane and does not start a server.
+Result:
+
 ### S13 — Chronology (acceptance 3)
 Steps: open **Chronology**, then the home's **Lately** block.
 Expected: dated events, most recent first, each with its date, its label as written, the
