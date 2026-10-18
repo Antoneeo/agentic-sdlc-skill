@@ -698,7 +698,8 @@ columns: Standalone adds `reviewer`, a Hybrid row adds `instrument` and
 and `closure` (Standalone); `deep`, `light`, `code`, `guide`, `vision` (devPNT gates
 and the Vision blind check). `model` is a different question about the same review: `tier` says WHICH GATE ran,
 `model` says WHAT CAPABILITY ran it (`deep`, `light`, `economy`,
-`single (client exposes no choice)`, `below floor: <reason>` — the floor and its
+`single (client exposes no choice)`, `below floor: <reason>`, `none (not due)` on a
+NOT DUE row — the floor and its
 arbitration are `review.md` §The capability floor). The two columns share the words
 `deep`/`light` and mean different things by them, which is why they are read by
 header and never by position. The validator reads this column by its header name, so

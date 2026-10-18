@@ -100,6 +100,7 @@ class IntentFocusRegression(unittest.TestCase):
         text = out.getvalue()
         self.assertEqual(rc, 0)
         self.assertIn("reviews ruled not due (logged, counted in no figure below): 1", text)
+        self.assertIn("rows parsed: 2", text)
         self.assertIn("reviews with a stated moment: 1", text)
         self.assertNotIn("inconclusive", text)
 

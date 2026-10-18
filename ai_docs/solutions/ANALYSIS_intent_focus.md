@@ -140,7 +140,7 @@ the judged part, if any.
 | `skills/agentic-sdlc-skill/SKILL.md` | FS2 author half (Execute-Before-Specify) | UC2 |
 | `skills/agentic-sdlc-skill/scripts/sdlc_core.py` (shared ×3) `cmd_benefit` | FS5 | UC4 |
 | `templates.md` ×4 lenses, §`REVIEW_LOG.md` | one sentence: the NOT DUE verdict and its cells, citing `review.md` | UC4 |
-| `skills/agentic-sdlc-skill/scripts/test_intent_focus.py` | ADD: anchors, incident facts, `benefit` on a NOT DUE row | acceptance |
+| `skills/agentic-sdlc-skill/scripts/test_intent_focus.py` | ADD: doctrine anchors, `benefit` on a NOT DUE row (incident facts stay in `replay.py`) | acceptance |
 | `ai_docs/strategic/skill_family_agent_workflows.md` | line 92: closure review "before DONE" becomes conditional (derived document, audit_plan rows 9/11) | consistency |
 | `ai_docs/vision/rulings.md` | r31 at closure, after the owner's ADMIT | admission test |
 
