@@ -226,3 +226,7 @@ templates. Batteries after the round-1 fixes and `index`: code 393 OK, kb 579 OK
   packages, wrote CHANGELOGs, aligned READMEs and the family workflow document, wrote
   the E2E script. Closure review PASS with three WARNs (kb README line, FS7 scenario,
   state lag), all folded. Committed on `feature/vision-interview`; release not started.
+- 2026-10-18 — Released: tags v1.43.0, kb-v1.26.0, mkt-v0.21.0, course-v0.1.0-beta.7 on
+  5098156, `main` fast-forwarded; the owner published all four, and the registry shows
+  each version on `latest` (agentic-sdlc-skill 1.43.0, kb-agentic-skill 1.26.0,
+  mkt-agentic-sdlc-skill 0.21.0, course-creator 0.1.0-beta.7).
