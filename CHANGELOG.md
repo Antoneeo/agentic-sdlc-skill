@@ -2,6 +2,14 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.44.0] - 2026-10-18
+
+### Changed
+- F-071: a review weighs effort against what the owner asked for. In a design review, each outcome the owner named (the opening request, any entry widening scope, an approved north star) is a row of the conformance statement, saying where the design serves it and what share of the design goes to it; an outcome no section serves, or one served by a minor share while a secondary concern takes the bulk, is a finding. `review.md` §Reviewing.
+- F-071: a review runs where something is left to judge. At level 2 the closure review is due only on a security-sensitive area the lens's Rule Zero names, or at the owner's request; otherwise it does not run and logs no row. After a design or closure PASS, a delta made only of version and release metadata, regenerated indexes and audit-mark records, tool-verified copies of a shared file, and CHANGELOG lines adding no claim is not reviewed: its own check runs and a `NOT DUE` row records it. README or overview prose, an E2E script, a rulings row, doctrine, behaviour, tests and any correction of a review finding are still reviewed. `review.md` §When a review is due.
+- `sdlc_check.py benefit` counts `NOT DUE` rows apart, in no review or findings figure.
+- F-071 (this lens): when the owner's words for an outcome name a comparative effect (an agent understands better, a task gets faster), the probe that would show it is built before code, asks the question the outcome names, and is shown red on the baseline; how the author frames the unit does not exempt it. `SKILL.md` Execute-Before-Specify.
+
 ## [1.43.1] - 2026-10-18
 
 ### Fixed

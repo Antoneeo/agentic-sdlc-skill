@@ -42,3 +42,9 @@ Context (agent): "Come contano le copie nelle distribuzioni per Rule Zero?", opt
 ### R7 — 2026-10-18 — implement and release here
 Context (agent): proposed a separate session "Implement F-071 (intent focus) and release" (apply the patch, FS5, test, guide proposal, batteries, closure review, r31, bump).
 > Esegui questa attività qui: “Implement F-071 (intent focus) and release”
+
+### R8 — 2026-10-18 — r31, the R6 guide, the merge
+Context (agent): three numbered questions (structured-question facility); question and chosen option quoted.
+> 1. Ruling r31 … Verdict? → "ADMIT (Recommended)"
+> 2. … Should I distil it into ai_docs/reference/GUIDE_skill_family_changes.md (source: REQUEST R6 verbatim, one rule, nothing added)? → "Yes, write it (Recommended)"
+> 3. Release: … how do I merge into main? → "Direct push to main (Recommended)" (option text: "Fast-forward of main to the release commit and push, as in the F-074 release; then publish_all.bat (the 2FA is yours).")

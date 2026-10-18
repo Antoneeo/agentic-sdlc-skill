@@ -28,6 +28,7 @@ not manifested here.
 |---|---|---|
 | `reference/GUIDE_release.md` | CURRENT | How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish. |
 | `reference/GUIDE_shared_project_memory.md` | CURRENT | Consult before changing shared-memory discovery, docs-root resolution, or validator composition across the four distributions. |
+| `reference/GUIDE_skill_family_changes.md` | CURRENT | Consult when triaging a change to this repository that is copied into the skill distributions — how the copies count against Rule Zero's file bound. |
 
 ## architecture/
 
