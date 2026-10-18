@@ -2,9 +2,9 @@
 workstream: F-071 Intent focus (anti-myopia at the level of intent)
 level: L3
 branch: main
-status: PLANNED
+status: PROGRESS
 since: 2026-10-04
-next: implementation per the ANALYSIS Action Plan — apply proposed.patch, FS5 in cmd_benefit, test_intent_focus.py, propose the copy-count guide (design approved R5, copy count R6).
+next: scoped re-review of the closure-review fixes (B1, W1, W2), then propose the copy-count guide (R6), owner ruling r31, bump and CHANGELOG per GUIDE_release.md.
 details: solutions/ANALYSIS_intent_focus.md
 updated: 2026-10-18
 ---

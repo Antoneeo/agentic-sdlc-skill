@@ -210,7 +210,7 @@ The module material itself names course/version/module, explains the concept for
 
 ## Review log and project architecture
 
-Use the shared `review.md` schema at `audit/reviews/REVIEW_LOG.md`. A review ruled not due (`review.md` §When a review is due) is still a row: `tier` `closure`, `model` `none (not due)`, findings and rounds `0`, verdict `NOT DUE: <the kinds; the check that ran and its result>`; `benefit` counts it apart. The schema:
+Use the shared `review.md` schema at `audit/reviews/REVIEW_LOG.md`. A restating delta ruled not due (`review.md` §When a review is due) is still a row: `tier` `closure`, `model` `none (not due)`, findings and rounds `0`, verdict `NOT DUE: <the kinds; the check that ran and its result>`; `benefit` counts it apart. The schema:
 
 | date | doc_key | tier | model | reviewer | findings_raised | findings_real | verdict | revise_rounds |
 |---|---|---|---|---|---|---|---|---|
