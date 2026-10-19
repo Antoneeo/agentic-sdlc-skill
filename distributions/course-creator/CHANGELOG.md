@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.1.0-beta.11] - 2026-10-19
+
+### Added
+- Docs site: `docs_site.py --zip <file>` also writes the site as one .zip to share; unzipped, `index.html` opens on any system. A zip made by hand with Windows PowerShell 5.1 `Compress-Archive` stores `data\core.js`, and on Linux or macOS the page then finds no data; `--zip` always writes `/` names. It refuses a target inside the docs root or the site folder. The `SKILL.md` line names it.
+
 ## [0.1.0-beta.10] - 2026-10-19
 
 Includes everything listed under [0.1.0-beta.9], which was tagged but never published to npm.
