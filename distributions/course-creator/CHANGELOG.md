@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.0-beta.12] - 2026-10-19
+
+Includes everything listed under [0.1.0-beta.11], which was tagged but never published to npm.
+
+### Added
+- `mark <paths> --note "<what was done>"` writes a dated entry `**YYYY-MM-DD — <what was done>.**` at the top of `audit/project_notes.md`. A release or work outside an open unit used to leave no dated event, because the date had to be copied there by hand. Without `--note`, and with no open unit, `mark` says so.
+- `validate`: an advisory for a dated entry in `project_notes.md` whose bold does not pair; the chronology then showed the label running into the body.
+- Docs site chronology: a Diary entry's label carries its unit id ("F-074 — closed"), so it reads on its own.
+
 ## [0.1.0-beta.11] - 2026-10-19
 
 ### Added
