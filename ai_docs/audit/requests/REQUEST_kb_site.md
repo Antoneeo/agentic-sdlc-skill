@@ -159,3 +159,7 @@ Context (agent): "Si chiude aggiungendo `--open` a quella riga e dicendo quando 
 ### R30 — 2026-10-18 — field run PASS; close the unit
 Context (agent): "Per chiudere F-072 restano tre cose: 1. La prova sul campo sul tuo PC di lavoro […] 2. La chiusura del documento di F-072 […] 3. Un rilascio che pubblichi questa correzione nei quattro pacchetti."
 > la prova sul campo è fatta e mi piace PASS. Facciamo il resto e chiudiamo.
+
+### R31 — 2026-10-19 — byte budget of the SKILL.md line raised to 180
+Context (agent): a zip of the site made with Windows PowerShell 5.1 `Compress-Archive` stored `data\core.js`, and the site failed on Linux; the agent proposed a `--zip <file>` option named in the SKILL.md line (179 bytes) and asked "Accetti di alzare il tetto a 180 byte?"
+> alza il tetto

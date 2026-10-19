@@ -33,6 +33,7 @@ import re
 import shutil
 import subprocess
 import sys
+import zipfile
 import unicodedata
 import urllib.parse
 from datetime import datetime
@@ -1289,6 +1290,29 @@ def check_out(out, docs):
     return out
 
 
+def check_zip(target, docs, out):
+    """Where `--zip` may write: a .zip file outside the docs root and outside the site."""
+    target = target.resolve()
+    if target.suffix.lower() != ".zip":
+        raise SiteError("--zip %s must name a .zip file." % target)
+    for folder, what in ((docs.resolve(), "the docs root"), (out.resolve(), "the site folder")):
+        if target == folder or folder in target.parents:
+            raise SiteError("--zip %s is inside %s %s." % (target, what, folder))
+    if target.exists() and not target.is_file():
+        raise SiteError("--zip %s exists and is not a file." % target)
+    return target
+
+
+def write_zip(out, target):
+    """The site as one file to share. Entry names always use '/': an archive whose names
+    carry '\\' (Windows PowerShell 5.1 Compress-Archive) unpacks on Linux and macOS as
+    files named `data\\core.js`, and the page then finds no data (field case 2026-10-19)."""
+    with zipfile.ZipFile(str(target), "w", zipfile.ZIP_DEFLATED) as z:
+        for p in sorted(out.rglob("*")):
+            if p.is_file() and p.name != MARKER:
+                z.write(str(p), p.relative_to(out).as_posix())
+
+
 def write_site(out, core, pages, kb):
     out.mkdir(parents=True, exist_ok=True)
     for rel in PAGE_FILES + ("data",):
@@ -1339,11 +1363,14 @@ def main(argv=None):
     ap.add_argument("--docs-dir", dest="docs_dir", help="docs root name (ai_docs or mkt_docs)")
     ap.add_argument("--out", help="output folder (default: <project>/%s)" % DEFAULT_OUT)
     ap.add_argument("--open", action="store_true", help="open the site in the browser")
+    ap.add_argument("--zip", metavar="FILE",
+                    help="also write the site as one .zip to share; it opens on any system")
     args = ap.parse_args(argv)
     del _UNREADABLE[:]
     try:
         project, docs, name = resolve_root(args)
         out = check_out(Path(args.out) if args.out else project / DEFAULT_OUT, docs)
+        target = check_zip(Path(args.zip), docs, out) if args.zip else None
     except SiteError as exc:
         print("[ERROR] %s" % exc)
         return 2
@@ -1369,6 +1396,9 @@ def main(argv=None):
     if git_ignored(project, out) is False:
         print("[note] %s is not git-ignored: add it to .gitignore so the site's copy of "
               "your documents is not committed." % out)
+    if target:
+        write_zip(out, target)
+        print("[ok] docs site zipped: %s (unzip it and open index.html)" % target)
     if args.open:
         import webbrowser
         webbrowser.open((out / "index.html").as_uri())

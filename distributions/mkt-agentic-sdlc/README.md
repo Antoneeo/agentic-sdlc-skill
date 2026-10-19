@@ -27,7 +27,7 @@ Turns an AI agent into a disciplined marketing strategist that produces a profes
 3. **Adversarial CMO review** — an independent, fresh-context reviewer attacks the strategy before the user sees it (generic-positioning swap test, untraced claims, orphan tactics).
 4. **Verbatim request record** — every E3 engagement starts `audit/requests/REQUEST_[engagement].md` before Wave 1: the client's own words and every later decision, append-only and redacted for secrets; owner-given FACT rows and the plan cite its entries, and reviews check client statements against it.
 
-The **docs site** (`scripts/docs_site.py --root <project> [--open]`) writes a static, offline, read-only website of what the agent reads in the project — reading guide, Vision, rules, documents, open work with each next step, and, with a knowledge base, the topic map, each fact with its exact source passage, and the source documents. It is written outside the docs root (`mkt_docs/` or `ai_docs/`); nothing is ranked or recommended.
+The **docs site** (`scripts/docs_site.py --root <project> [--open] [--zip <file>]`) writes a static, offline, read-only website of what the agent reads in the project — reading guide, Vision, rules, documents, open work with each next step, and, with a knowledge base, the topic map, each fact with its exact source passage, and the source documents. It is written outside the docs root (`mkt_docs/` or `ai_docs/`); nothing is ranked or recommended.
 
 The agent asks the user only for facts the user uniquely owns (product, price, budget, capacity); everything else — market sizing, competitor analysis, channel benchmarks — is derived from real web research.
 
