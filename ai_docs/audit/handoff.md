@@ -15,6 +15,8 @@ Date: 2026-10-17 (UTC)
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
+**2026-10-19 — mark --note: a release or work outside an open unit writes its own dated entry (field case: releases 1.44.0-1.46.0 left none).**
+
 **2026-10-19 — release 1.46.0 tagged, publish pending.** Docs site `--zip`. Tags
 v1.46.0 / kb-v1.29.0 / mkt-v0.24.0 / course-v0.1.0-beta.11 on 494865b; not yet on the
 registry (latest is 1.45.0 / 1.28.0 / 0.23.0 / 0.1.0-beta.10).

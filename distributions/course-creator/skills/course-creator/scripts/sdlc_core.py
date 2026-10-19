@@ -2041,8 +2041,38 @@ def cmd_stale(root, hybrid=False):
     return 1                                       # stale areas dominate: rc already implied
 
 
-def cmd_mark(root, paths):
+def add_dated_note(root, note, day=None):
+    """Write `**DAY — note.**` into audit/project_notes.md, above the newest dated
+    entry (below any undated preface), so the note opens with the shared grammar and
+    the chronology reads it. The day defaults to today (local)."""
+    import datetime as _dt
+    day = day or _dt.date.today().isoformat()
+    entry = "**%s — %s.**" % (day, note.strip().rstrip("."))
+    f = ai_path(root, "audit", PROJECT_NOTES)
+    if not f.is_file():
+        f.parent.mkdir(parents=True, exist_ok=True)
+        f.write_text(entry + "\n", encoding="utf-8")
+        return entry
+    raw = f.read_bytes()
+    crlf = b"\r\n" in raw
+    lines = raw.decode("utf-8", errors="replace").replace("\r\n", "\n").split("\n")
+    at = next((i for i in range(len(lines)) if _opener_at(lines, i)), None)
+    if at is None:
+        while lines and not lines[-1].strip():
+            lines.pop()
+        lines += ["", entry, ""] if lines else [entry, ""]
+    else:
+        lines[at:at] = [entry, ""]
+    text = "\n".join(lines)
+    f.write_bytes((text.replace("\n", "\r\n") if crlf else text).encode("utf-8"))
+    return entry
+
+
+def cmd_mark(root, paths, note=None):
     if not require_ai_docs(root, "mark"):
+        return 1
+    if note is not None and (not note.strip() or "**" in note or "\n" in note):
+        print("[ERROR] --note must be one line of text without '**'. Nothing was written.")
         return 1
     f, lines, rows = parse_audit_plan(root)
     use_git_ref = git_available(root) and not any(
@@ -2089,6 +2119,13 @@ def cmd_mark(root, paths):
 
     f.parent.mkdir(parents=True, exist_ok=True)
     f.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    if note is not None:
+        print(f"[ok] dated entry added to audit/{PROJECT_NOTES}: {add_dated_note(root, note)}")
+    elif not _open_units(root):
+        # no open unit's Diary covers this work: a release, a fix after closure
+        print(f"[note] no open unit records this work. If it is a release or a change worth "
+              f"finding later, re-run with --note \"<what was done>\": mark writes the "
+              f"dated entry in audit/{PROJECT_NOTES} for you.")
     if use_git_ref:
         # F-056: the reference is born here, so this is where the gestures that
         # orphan it are named. An amend was the observed one.
@@ -3018,6 +3055,8 @@ def main(argv=None):
 
     mp = sub.add_parser("mark", parents=[common], help="record paths as ANALYZED")
     mp.add_argument("paths", nargs="+", help="paths relative to the project root")
+    mp.add_argument("--note", help="also write a dated entry in audit/project_notes.md "
+                                   "(a release, work outside an open unit)")
     gp = sub.add_parser("gate", parents=[common, hybrid_opt], help="PreToolUse hook (exit 2 = block)")
     gp.add_argument("--hook", action="store_true", help="read the hook JSON payload from stdin")
     gp.add_argument("--file", help="file path to evaluate (alternative to --hook)")
@@ -3086,7 +3125,7 @@ def main(argv=None):
     if args.cmd == "stale":
         return cmd_stale(root, hybrid=args.hybrid)
     if args.cmd == "mark":
-        return cmd_mark(root, args.paths)
+        return cmd_mark(root, args.paths, args.note)
     if args.cmd == "benefit":
         return cmd_benefit(root)
     if args.cmd == "migrate":
