@@ -1169,6 +1169,20 @@ def _opener_at(lines, i):
     return None
 
 
+def malformed_openers(body):
+    """[(line, text)] -- dated openers whose bold does not pair: `**DATE …` with no
+    closing `**` on the line, or a bare `DATE …` that closes one. Either way the
+    chronology shows a label running into the entry's body (field case 2026-10-19:
+    two release notes in project_notes.md)."""
+    lines = _blank_comments(body).splitlines()
+    out = []
+    for i in range(len(lines)):
+        m = _opener_at(lines, i)
+        if m and bool(m.group(3)) != ("**" in m.group(5)):
+            out.append((i + 1, lines[i]))
+    return out
+
+
 def entry_openers(body):
     """[(date, label, line)] -- one per dated entry opener; line is 1-based
     within `body`. An undated paragraph belongs to the entry above it. Comments
@@ -1267,6 +1281,11 @@ def chronology_advisories(root):
         if len(nxt) > NEXT_MAX_CHARS:
             out.append(f"audit/{p.name}: next: is {len(nxt)} chars (> {NEXT_MAX_CHARS}): one "
                        "next step here, the state goes to the Diary as a dated entry")
+    notes = ai_path(root, "audit", PROJECT_NOTES)
+    if notes.is_file():
+        for n, t in malformed_openers(read_text(notes)):
+            out.append(f"audit/{PROJECT_NOTES}: line {n}: dated entry '{t[:60]}' has unpaired "
+                       "bold -- open entries with **YYYY-MM-DD — label.**")
     return out
 
 

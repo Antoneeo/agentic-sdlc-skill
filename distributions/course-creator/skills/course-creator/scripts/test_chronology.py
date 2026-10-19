@@ -207,6 +207,19 @@ class A1UndatedDiary(unittest.TestCase):
         self.assertEqual(head, 2)
         self.assertEqual(sc.entry_openers(body), [])
 
+    def test_project_note_with_unpaired_bold_is_an_advisory(self):
+        # field case 2026-10-19: one note lost its opening **, the next its closing **
+        body = ("Intro.\n\n**2026-10-18 — release 1.43.0 completed. Published.\n\n"
+                "2026-10-18 — release 1.42.0 completed.** Published.\n\n"
+                "**2026-10-17 — release 1.41.0 completed.** Published.\n")
+        self.assertEqual([n for n, _ in sc.malformed_openers(body)], [3, 5])
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "ai_docs" / "audit").mkdir(parents=True)
+            (root / "ai_docs" / "audit" / sc.PROJECT_NOTES).write_text(body, encoding="utf-8")
+            found = [a for a in sc.chronology_advisories(root) if "unpaired bold" in a]
+            self.assertEqual(len(found), 2, found)
+
     def test_undated_diary_lines_is_the_shared_reader(self):
         lines = sc.undated_diary_lines("pre\n\n**2026-10-20 — a.** x\n\n### b\n#### c")
         self.assertEqual(lines, [(1, "pre"), (5, "### b")])

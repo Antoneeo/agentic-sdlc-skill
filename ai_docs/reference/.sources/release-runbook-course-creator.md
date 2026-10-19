@@ -299,3 +299,13 @@ experimental statement. The beta dist-tag stops advancing (left at the last vers
 it named). The publisher is unchanged: its isolation guard runs only for a package
 whose channel is not latest, and no package declares one now. Releases already
 published on beta only (0.1.0-beta.4) still need the one-time promotion.
+
+## Dated release note — 2026-10-19
+
+Owner decision (2026-10-19, after a field measurement found releases 1.44.0, 1.45.0 and
+1.46.0 with no dated entry anywhere): every release leaves one dated entry in
+`ai_docs/audit/project_notes.md`, opened as `**YYYY-MM-DD — release X.Y.Z …**`, naming
+the four versions and the tags. Write it in the release commit when the publish is
+still pending, saying so; when the publish is verified, update that entry. `validate`
+reports a dated entry whose bold does not pair.
+

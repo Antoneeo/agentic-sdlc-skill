@@ -1128,9 +1128,10 @@ class Criterion03Chronology(unittest.TestCase):
 
     def test_labels_and_links(self):
         by = {(e["date"], e["kind"]): e for e in self.core["chronology"]}
-        self.assertEqual(by[("2026-03-01", "diary")]["label"], "opened")
+        self.assertEqual(by[("2026-03-01", "diary")]["label"], "F-001 — opened",
+                         "a Diary label carries its unit id, so it reads on its own")
         self.assertEqual(by[("2026-03-01", "diary")]["path"], "solutions/ANALYSIS_api.md")
-        self.assertEqual(by[("2026-03-05", "diary")]["label"], "review round 1 FAIL")
+        self.assertEqual(by[("2026-03-05", "diary")]["label"], "F-001 — review round 1 FAIL")
         self.assertEqual(by[("2026-02-28", "request")]["label"], "R1 — opening request")
         self.assertEqual(by[("2026-03-02", "decision")]["label"], "ADR: pick the store")
         self.assertEqual(by[("2026-03-06", "project_note")]["label"], "release completed")
@@ -1151,7 +1152,7 @@ class Criterion03Chronology(unittest.TestCase):
             write(d, "ai_docs/solutions/ANALYSIS_x.md", "---\nid: F-1\n---\n# X\n\n## Diary\n\n"
                   "**2026-05-01 — first.** a\n\n**2026-05-01 — second.** b\n")
             got = docs_site.chronology(Path(d) / "ai_docs", {})
-            self.assertEqual([e["label"] for e in got], ["second", "first"])
+            self.assertEqual([e["label"] for e in got], ["F-1 — second", "F-1 — first"])
 
     def test_lately_is_the_ten_most_recent(self):
         self.assertEqual(self.core["home"]["lately"], self.core["chronology"][:10])

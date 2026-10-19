@@ -1,7 +1,20 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**2026-10-18 — release 1.43.0 completed (F-074, the owner interview for every Vision).** Published and verified on the registry: code 1.43.0, KB 1.26.0, marketing 0.21.0, Course 0.1.0-beta.7, each on latest; tags v1.43.0 / kb-v1.26.0 / mkt-v0.21.0 / course-v0.1.0-beta.7 on 5098156. kb and Course appeared on the registry minutes after the publish (propagation, not a failure). Patch 1.43.1 / kb 1.26.1 / mkt 0.21.1 / course-v0.1.0-beta.8 tagged for the F-072 `--open` fix, awaiting publish.
+**2026-10-19 — release 1.46.0 tagged, publish pending.** Docs site `--zip`. Tags
+v1.46.0 / kb-v1.29.0 / mkt-v0.24.0 / course-v0.1.0-beta.11 on 494865b; not yet on the
+registry (latest is 1.45.0 / 1.28.0 / 0.23.0 / 0.1.0-beta.10).
+
+**2026-10-19 — release 1.45.0 completed.** Published and verified on the registry, each on
+latest: code 1.45.0, KB 1.28.0, marketing 0.23.0, Course 0.1.0-beta.10 — F-071 (intent
+focus and efficiency) plus the docs site's merge/E2E links and newest-first Features.
+Tags on 281d723. It includes 1.44.0 (F-071, tags on ed2cdd5), which was never published.
+
+**2026-10-18 — release 1.43.1 completed.** Published and verified on the registry: code
+1.43.1, KB 1.26.1, marketing 0.21.1, Course 0.1.0-beta.8 — the F-072 `--open` field fix,
+closing F-072. Tags on 573496d.
+
+**2026-10-18 — release 1.43.0 completed (F-074, the owner interview for every Vision).** Published and verified on the registry: code 1.43.0, KB 1.26.0, marketing 0.21.0, Course 0.1.0-beta.7, each on latest; tags v1.43.0 / kb-v1.26.0 / mkt-v0.21.0 / course-v0.1.0-beta.7 on 5098156. kb and Course appeared on the registry minutes after the publish (propagation, not a failure). The F-072 `--open` fix followed as patch 1.43.1 (entry above).
 
 **2026-10-18 — release 1.42.0 completed.** Published and verified on the registry at
 22:29–22:30 UTC (2026-10-17): code 1.42.0, KB 1.25.0, marketing 0.20.0, Course

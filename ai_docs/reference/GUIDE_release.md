@@ -1,9 +1,9 @@
 ---
 description: How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish.
 status: CURRENT
-source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition; amended 2026-09-25 — plain `check` beside the hybrid one, `mark` inside the release commit, one tag per package, a pending 2FA is pending, not failed; amended 2026-10-08 — Course latest follows the newest published release for default installation; amended 2026-10-17 — Course publishes on latest like the stable packages, so no separate promotion).
+source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition; amended 2026-09-25 — plain `check` beside the hybrid one, `mark` inside the release commit, one tag per package, a pending 2FA is pending, not failed; amended 2026-10-08 — Course latest follows the newest published release for default installation; amended 2026-10-17 — Course publishes on latest like the stable packages, so no separate promotion; amended 2026-10-19 — every release leaves a dated entry in project_notes.md).
 distilled_from: ai_docs/reference/.sources/release-runbook-course-creator.md
-source_hash: 9e02316e39428cad656b6d6ec1785e6d52c1c84f2283f208ff7e68f7374bfd69
+source_hash: 9148d6a19b204132a1018d86910e65930f999e677afcdf7bc698e8e4caa86421
 ---
 # Guide: Release
 
@@ -143,6 +143,12 @@ registry check. Do not remove latest or move other package channels.
 
 ## Post-release
 [source: release-runbook-course-creator.md#post-release]
+[source: release-runbook-course-creator.md#dated-release-note--2026-10-19]
+Every release leaves one dated entry in `ai_docs/audit/project_notes.md`, opened as
+`**YYYY-MM-DD — release X.Y.Z …**` and naming the four versions and the tags: in the
+release commit while the publish is pending, updated once it is verified. Without it the
+release is not a dated event anywhere (field measurement 2026-10-19). `validate` reports a
+dated entry whose bold does not pair.
 Record version + date + next step in `ai_docs/audit/handoff.md` (in the release
 commit when possible); update devPNT milestone/Action Plan state if the release
 closes a unit; regenerate indexes (`sdlc_check.py index`) if canonical docs

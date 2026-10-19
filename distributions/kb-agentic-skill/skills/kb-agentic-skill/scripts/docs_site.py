@@ -1222,7 +1222,14 @@ def chronology(docs, pages):
         text = _text(p)
         # a shadow mirror is not an analysis to `validate` (list_analyses): not here either
         if text is not None and not sdlc_core.is_shadow(p, (text.splitlines() or [""])[0]):
+            # a Diary label ("closed", "Approved (R5)") names no unit: prefix the id, so
+            # the event reads on its own in the chronology (field case 2026-10-19)
+            uid = dict((k.lower(), v) for k, v in split_frontmatter(text)[0]).get("id", "").strip()
+            start = len(events)
             openers("solutions/" + p.name, "diary", sdlc_core.DIARY_SECTION)
+            if uid:
+                for e in events[start:]:
+                    e["label"] = "%s — %s" % (uid, e["label"])
     # spike outcomes: SPIKE_* in the code/kb/course lenses, RESEARCH_* in marketing
     for rel in sorted(["solutions/" + p.name for p in docs.glob("solutions/SPIKE_*.md")]
                       + ["spikes/" + p.name for p in docs.glob("spikes/RESEARCH_*.md")]):
