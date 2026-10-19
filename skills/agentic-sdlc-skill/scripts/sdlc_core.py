@@ -2020,7 +2020,8 @@ def cmd_stale(root, hybrid=False):
                     except ValueError:   # symlink out of the tree: report absolute, never crash
                         name = str(fp)
                     changed.append(name)
-        changed = [c for c in changed if c != plan_rel]
+        docs_rel = docs_root_rel(root)
+        changed = [c for c in changed if c != plan_rel and not _in_docs_root(c, docs_rel)]
         if changed:
             stale.append((rel, changed))
 
@@ -2068,6 +2069,21 @@ def add_dated_note(root, note, day=None):
     return entry
 
 
+def docs_root_rel(root):
+    """The docs root (ai_docs/, mkt_docs/ ...) relative to the project root, or None.
+    It is governance, not an analyzable area: `validate` checks it directly, so `stale`
+    never counts its files and `mark` never records it."""
+    try:
+        return ai_path(root).resolve().relative_to(Path(root).resolve()).as_posix()
+    except ValueError:
+        return None
+
+
+def _in_docs_root(rel, docs_rel):
+    rel = rel.replace("\\", "/").rstrip("/")
+    return bool(docs_rel) and (rel == docs_rel or rel.startswith(docs_rel + "/"))
+
+
 def cmd_mark(root, paths, note=None):
     if not require_ai_docs(root, "mark"):
         return 1
@@ -2100,6 +2116,10 @@ def cmd_mark(root, paths, note=None):
                   "refusing to mark (use a project-relative path, '.' for the root). "
                   "Nothing was written.")
             return 1
+        if _in_docs_root(key, docs_root_rel(root)):
+            print(f"[note] {raw}: the docs root is not an area to mark -- `validate` checks it "
+                  "directly. Skipped.")
+            continue
         keys.append(key)
 
     appended = []
