@@ -1,9 +1,9 @@
 ---
 description: How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish.
 status: CURRENT
-source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition; amended 2026-09-25 — plain `check` beside the hybrid one, `mark` inside the release commit, one tag per package, a pending 2FA is pending, not failed; amended 2026-10-08 — Course latest follows the newest published release for default installation; amended 2026-10-17 — Course publishes on latest like the stable packages, so no separate promotion; amended 2026-10-19 — `mark --note` writes each release's dated entry in project_notes.md).
+source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition; amended 2026-09-25 — plain `check` beside the hybrid one, `mark` inside the release commit, one tag per package, a pending 2FA is pending, not failed; amended 2026-10-08 — Course latest follows the newest published release for default installation; amended 2026-10-17 — Course publishes on latest like the stable packages, so no separate promotion; amended 2026-10-19 — `mark --note` writes each release's dated entry in project_notes.md; tags are set right before the publish).
 distilled_from: ai_docs/reference/.sources/release-runbook-course-creator.md
-source_hash: bf25caa308602f3319ced590f4ce4427d147542d89b0fc29d572ffce03a09578
+source_hash: d07b1c4f877b34404fdb755a69dc3c40ed34648cdab0fbfb212fac2170a7f5c0
 ---
 # Guide: Release
 
@@ -51,6 +51,10 @@ tags → merge → publish.
    `audit/project_notes.md` in the same commit — the date is never copied by hand.
    Marking after the commit forces a second commit and the tag no longer points at
    `HEAD`. [source: release-runbook-course-creator.md#release-note-written-by-mark--2026-10-19-supersedes-the-entry-above]
+   **Tag right before the publish, not when the release is prepared**: a commit landing
+   after the tag and before the publish leaves the tag naming a tree npm never sees. If
+   one did, move the tag (it was never published: delete it locally and on the remote,
+   re-tag `HEAD`) or bump. [source: release-runbook-course-creator.md#tag-right-before-the-publish--2026-10-19]
 5. From the feature branch run
    `git_push_tag.bat "Release vX.Y.Z: <short title>" vX.Y.Z` — one step:
    stage all, commit, tag, push branch + tag. It creates the code tag only.

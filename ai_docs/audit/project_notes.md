@@ -3,7 +3,7 @@ battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Visi
 
 **2026-10-19 — the docs root is not an audit area: stale ignores it, mark refuses it (it was re-marked 15 times in two days).**
 
-**2026-10-19 — release 1.47.0: mark --note, project-notes opener check, unit ids in the chronology; includes the unpublished 1.46.0 (--zip). Tags v1.47.0 / kb-v1.30.0 / mkt-v0.25.0 / course-v0.1.0-beta.12, publish pending.**
+**2026-10-19 — release 1.47.0: mark --note, project-notes opener check, unit ids in the chronology; includes the unpublished 1.46.0 (--zip). Tags v1.47.0 / kb-v1.30.0 / mkt-v0.25.0 / course-v0.1.0-beta.12, publish pending.** The tags were moved, before any publish, to the commit that also makes the docs root not an audit area.
 
 **2026-10-19 — mark --note: a release or work outside an open unit writes its own dated entry (field case: releases 1.44.0-1.46.0 left none).**
 

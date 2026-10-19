@@ -317,3 +317,10 @@ Owner decision, same day: the date must not be copied by hand. Step 4 becomes
 `audit/project_notes.md` itself, in the same dirty tree, so it rides in the release
 commit. When the publish is verified, the post-release update edits that entry's body.
 
+## Tag right before the publish — 2026-10-19
+
+Owner decision: tags 1.44.0, 1.46.0 and 1.47.0 were set when the release was prepared,
+then work continued and the tags fell behind `main`; two were never published and one
+had to be moved. The tag is set only when the owner is about to publish. A commit after
+the tag and before the publish means: move the tag (it was never published) or bump.
+
