@@ -947,6 +947,21 @@ def analysis_chain(body):
     return [{"step": s, "sections": found[s]} for s in CHAIN_STEPS]
 
 
+def companion_paths(stem):
+    """The documents named after a unit's stem: (key, docs-relative path). One list,
+    read by the chain page and by the work and feature lists."""
+    return (("merge", "solutions/MERGE_REVIEW_%s.md" % stem),
+            ("e2e", "solutions/E2E_TEST_%s.md" % stem),
+            ("request", "audit/requests/REQUEST_%s.md" % stem))
+
+
+def verify_links(docs, stem):
+    """The merge brief and E2E script of a unit, where they exist: who merges reads the
+    first while the work is open, who tests reads the second after it closed."""
+    return {key: path for key, path in companion_paths(stem)
+            if key in ("merge", "e2e") and (docs / path).is_file()}
+
+
 def link_companions(docs, pages):
     """Each analysis's merge brief, E2E script and request record, where they exist,
     and the project's North Star (R25)."""
@@ -962,11 +977,8 @@ def link_companions(docs, pages):
             continue
         stem = chain.pop("_stem")
         chain["north_star"] = north_star
-        chain["companions"] = {
-            key: path if path in pages else None
-            for key, path in (("merge", "solutions/MERGE_REVIEW_%s.md" % stem),
-                              ("e2e", "solutions/E2E_TEST_%s.md" % stem),
-                              ("request", "audit/requests/REQUEST_%s.md" % stem))}
+        chain["companions"] = {key: path if path in pages else None
+                               for key, path in companion_paths(stem)}
 
 
 def orientation_sources(docs):
@@ -1055,6 +1067,7 @@ def build_work(project, docs, facts):
         for key in ("status", "level", "since", "updated", "branch", "next"):
             if _v(meta, key):
                 card[key] = _v(meta, key)
+        card.update(verify_links(docs, p.stem[len("HANDOFF_"):]))
         cards.append(card)
     cards.sort(key=lambda c: c["name"].lower())
     cards.sort(key=lambda c: c.get("updated", ""), reverse=True)
@@ -1083,8 +1096,12 @@ def build_units(project, lens):
                 u[key] = _v(meta, field)
         if "id" not in u and _v(meta, "feature"):
             u["id"] = _v(meta, "feature")
+        u.update(verify_links(sdlc_core.ai_path(project), p.stem[len("ANALYSIS_"):]))
         units.append(u)
+    # newest first by declared start date (owner, 2026-10-19); undated last, by id
     units.sort(key=lambda u: (u.get("id", ""), u["path"]))
+    units.sort(key=lambda u: u.get("start", ""), reverse=True)
+    units.sort(key=lambda u: not u.get("start"))
     return units
 
 
