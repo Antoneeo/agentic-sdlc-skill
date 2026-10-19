@@ -1,9 +1,9 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**2026-10-18 — release 1.43.0 completed (F-074, the owner interview for every Vision). Published and verified on the registry: code 1.43.0, KB 1.26.0, marketing 0.21.0, Course 0.1.0-beta.7, each on latest; tags v1.43.0 / kb-v1.26.0 / mkt-v0.21.0 / course-v0.1.0-beta.7 on 5098156. kb and Course appeared on the registry minutes after the publish (propagation, not a failure). Patch 1.43.1 / kb 1.26.1 / mkt 0.21.1 / course-v0.1.0-beta.8 tagged for the F-072 `--open` fix, awaiting publish.
+**2026-10-18 — release 1.43.0 completed (F-074, the owner interview for every Vision).** Published and verified on the registry: code 1.43.0, KB 1.26.0, marketing 0.21.0, Course 0.1.0-beta.7, each on latest; tags v1.43.0 / kb-v1.26.0 / mkt-v0.21.0 / course-v0.1.0-beta.7 on 5098156. kb and Course appeared on the registry minutes after the publish (propagation, not a failure). Patch 1.43.1 / kb 1.26.1 / mkt 0.21.1 / course-v0.1.0-beta.8 tagged for the F-072 `--open` fix, awaiting publish.
 
-2026-10-18 — release 1.42.0 completed.** Published and verified on the registry at
+**2026-10-18 — release 1.42.0 completed.** Published and verified on the registry at
 22:29–22:30 UTC (2026-10-17): code 1.42.0, KB 1.25.0, marketing 0.20.0, Course
 0.1.0-beta.6 — the docs site (F-072), its chronology read with F-073's readers. Tags
 v1.42.0 / kb-v1.25.0 / mkt-v0.20.0 / course-v0.1.0-beta.6 on a6e1faa, published by the
