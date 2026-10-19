@@ -2,6 +2,16 @@
 
 Every significant change to this skill is recorded here.
 
+## [1.28.0] - 2026-10-19
+
+Includes everything listed under [1.27.0], which was tagged but never published to npm.
+
+### Added
+- Docs site: each card in Open work and each feature in Features links its merge review and its end-to-end test script, when they exist. They were reachable only inside a feature's chain page; who merges looks in Open work while the work is open, who tests looks in Features after it closed.
+
+### Changed
+- Docs site: Features are listed newest first by their declared start date; those without a start date come last.
+
 ## [1.27.0] - 2026-10-18
 
 ### Changed
