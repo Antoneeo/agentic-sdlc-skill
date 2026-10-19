@@ -309,3 +309,11 @@ the four versions and the tags. Write it in the release commit when the publish 
 still pending, saying so; when the publish is verified, update that entry. `validate`
 reports a dated entry whose bold does not pair.
 
+## Release note written by mark — 2026-10-19 (supersedes the entry above)
+
+Owner decision, same day: the date must not be copied by hand. Step 4 becomes
+`mark skills/agentic-sdlc-skill/ distributions/ skills/ --note "release X.Y.Z: <title>"`:
+`mark` writes the dated entry `**YYYY-MM-DD — release X.Y.Z: <title>.**` at the top of
+`audit/project_notes.md` itself, in the same dirty tree, so it rides in the release
+commit. When the publish is verified, the post-release update edits that entry's body.
+

@@ -294,5 +294,52 @@ class AuditPlanSelfReference(unittest.TestCase):
         self.assertNotIn("audit_plan.md", out, "the plan itself is never a change")
 
 
+class MarkNote(unittest.TestCase):
+    """Field case 2026-10-19: releases 1.44.0-1.46.0 left no dated event, because the
+    date had to be copied by hand into project_notes.md. `mark --note` writes it."""
+
+    def project(self, d, notes=None):
+        root = Path(d)
+        (root / "ai_docs" / "audit").mkdir(parents=True)
+        (root / "src").mkdir()
+        (root / "src" / "a.py").write_text("x = 1\n", encoding="utf-8")
+        if notes is not None:
+            (root / "ai_docs" / "audit" / sc.PROJECT_NOTES).write_text(notes, encoding="utf-8")
+        return root
+
+    def test_note_becomes_the_newest_dated_entry(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = self.project(d, "Preface line.\n\n**2026-01-01 — older.** body\n")
+            rc, out = run(lambda r, p: sc.cmd_mark(r, p, "release 1.46.0"), root, ["src"])
+            self.assertEqual(rc, 0, out)
+            text = (root / "ai_docs" / "audit" / sc.PROJECT_NOTES).read_text(encoding="utf-8")
+            self.assertTrue(text.startswith("Preface line."), "the preface stays on top")
+            openers = sc.entry_openers(text)
+            self.assertEqual(openers[0][1], "release 1.46.0")
+            self.assertEqual(openers[1][1], "older")
+            self.assertEqual(sc.malformed_openers(text), [])
+
+    def test_note_creates_the_file_when_absent(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = self.project(d)
+            run(lambda r, p: sc.cmd_mark(r, p, "fix after closure"), root, ["src"])
+            text = (root / "ai_docs" / "audit" / sc.PROJECT_NOTES).read_text(encoding="utf-8")
+            self.assertEqual([o[1] for o in sc.entry_openers(text)], ["fix after closure"])
+
+    def test_bad_note_is_refused_before_anything_is_written(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = self.project(d)
+            rc, out = run(lambda r, p: sc.cmd_mark(r, p, "a **bold** note"), root, ["src"])
+            self.assertEqual(rc, 1)
+            self.assertFalse((root / "ai_docs" / "audit" / "audit_plan.md").exists())
+
+    def test_without_note_and_no_open_unit_mark_reminds(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = self.project(d)
+            rc, out = run(sc.cmd_mark, root, ["src"])
+            self.assertEqual(rc, 0)
+            self.assertIn("--note", out)
+
+
 if __name__ == "__main__":
     unittest.main()
