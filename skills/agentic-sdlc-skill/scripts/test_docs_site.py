@@ -646,16 +646,33 @@ class Criterion10to13WorkViews(SiteCase):
                          "read the March mails, then the April ones; keep the order as received")
 
     def test_cards_carry_only_declared_values(self):
-        allowed = {"name", "status", "group", "level", "since", "updated", "branch", "next", "path"}
+        # merge/e2e are links to documents named after the unit, never a computed value
+        allowed = {"name", "status", "group", "level", "since", "updated", "branch", "next", "path",
+                   "merge", "e2e"}
         for c in self.data(self.kb, "core")["work"]["cards"]:
             self.assertLessEqual(set(c), allowed)
         for u in self.data(self.kb, "core")["units"]:
             self.assertLessEqual(set(u), {"name", "id", "status", "group", "level", "lens",
-                                          "start", "end", "path"})
+                                          "start", "end", "path", "merge", "e2e"})
 
-    def test_units_sorted_by_id_as_text(self):
-        units = self.data(self.code, "core")["units"]
-        self.assertEqual([u["id"] for u in units], ["F-001", "F-010"])
+    def test_merge_brief_and_e2e_reachable_from_work_and_features(self):
+        # 2026-10-19: the owner found them reachable only inside a feature's chain page.
+        # Who merges looks in Open work; who tests looks in Features after the unit closed.
+        want = {"merge": "solutions/MERGE_REVIEW_ingest.md", "e2e": "solutions/E2E_TEST_ingest.md"}
+        core = self.data(self.kb, "core")
+        cards = {c["path"]: c for c in core["work"]["cards"]}
+        self.assertEqual({k: cards["audit/HANDOFF_ingest.md"].get(k) for k in want}, want)
+        self.assertNotIn("merge", cards["audit/HANDOFF_blocked.md"], "no brief, no link")
+        units = {u["path"]: u for u in core["units"]}
+        self.assertEqual({k: units["solutions/ANALYSIS_ingest.md"].get(k) for k in want}, want)
+        app = (PAGE_DIR / "app.js").read_text(encoding="utf-8")
+        self.assertEqual(app.count("verifyLinks(c)"), 1, "Open work cards render the links")
+        self.assertGreaterEqual(app.count("verifyLinks(u)"), 2, "both Features views render them")
+
+    def test_units_newest_first_by_start_date_undated_last(self):
+        self.assertEqual([u["id"] for u in self.data(self.kb, "core")["units"]], ["K-001", "K-000"])
+        self.assertEqual([u["id"] for u in self.data(self.code, "core")["units"]], ["F-001", "F-010"],
+                         "F-010 declares no start date")
 
     def test_project_notes_below_the_cards(self):
         notes = self.data(self.kb, "core")["work"]["notes"]

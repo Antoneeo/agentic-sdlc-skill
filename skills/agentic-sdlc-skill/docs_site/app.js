@@ -273,6 +273,11 @@
       C.chronology.length ? eventList(C.chronology) : el("p", { "class": "empty", text: t("chronology_empty") }));
   }
 
+  function verifyLinks(o) {
+    return [o.merge ? docLink(o.merge, t("chain_merge")) : null,
+            o.e2e ? docLink(o.e2e, t("chain_e2e")) : null].filter(Boolean);
+  }
+
   function pageWork() {
     setNav("work");
     var w = C.work;
@@ -289,7 +294,7 @@
             el("h3", { text: c.name }),
             el("dl", null, rows),
             c.next ? el("div", { "class": "next" }, el("b", { text: t("work_next") }), c.next) : null,
-            el("div", { "class": "links" }, docLink(c.path, t("work_resume"))));
+            el("div", { "class": "links" }, docLink(c.path, t("work_resume")), verifyLinks(c)));
         }))
       : el("p", { "class": "empty", text: t("work_empty") });
     main(heading(t("work_title"), t("work_why")), cards,
@@ -331,14 +336,15 @@
             return el("div", { "class": "unit" },
               el("span", { "class": "id", text: u.id || "" }),
               docLink(u.path, u.name),
-              el("div", { "class": "muted" }, [u.status, u.level ? levelLabel(u.level) : null, lensName(u.lens), dates(u)].filter(written).join(" · ")));
+              el("div", { "class": "muted" }, [u.status, u.level ? levelLabel(u.level) : null, lensName(u.lens), dates(u)].filter(written).join(" · ")),
+              verifyLinks(u).length ? el("div", { "class": "links" }, verifyLinks(u)) : null);
           }));
       }));
     } else {
       body = el("table", { "class": "list" },
         el("thead", null, el("tr", null, [t("units_id"), t("units_name"), t("work_status"), t("work_level"), t("units_lens"), t("units_dates")].map(function (h) { return el("th", { text: h }); }))),
         el("tbody", null, shown.map(function (u) {
-          return el("tr", null, el("td", null, el("code", { text: u.id || "" })), el("td", null, docLink(u.path, u.name)),
+          return el("tr", null, el("td", null, el("code", { text: u.id || "" })), el("td", null, docLink(u.path, u.name), verifyLinks(u).length ? el("div", { "class": "links" }, verifyLinks(u)) : null),
             el("td", null, u.status ? statusPill(u.status, u.group) : ""), el("td", { text: u.level ? levelLabel(u.level) : "" }),
             el("td", { text: lensName(u.lens) }), el("td", { text: dates(u) }));
         })));
