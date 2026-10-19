@@ -246,18 +246,20 @@ class DanglingReference(unittest.TestCase):
 
 
 def docs_area_project(root):
-    """A git project whose analyzed area is the docs root itself, which holds the
-    audit plan: marked at a clean HEAD, so the reference is a commit hash."""
+    """A git project whose plan (written before 2026-10-19) lists the docs root itself
+    as an analyzed area, recorded at a clean HEAD as a commit hash. `mark` no longer
+    records the docs root, so the legacy row is written directly."""
     root.mkdir(parents=True, exist_ok=True)
     (root / "ai_docs" / "audit").mkdir(parents=True)
     (root / "ai_docs" / "notes.md").write_text("one\n", encoding="utf-8")
-    (root / "ai_docs" / "audit" / "audit_plan.md").write_text(
-        PLAN + "| ai_docs/ | PENDING | - | |\n", encoding="utf-8")
+    plan = root / "ai_docs" / "audit" / "audit_plan.md"
+    plan.write_text(PLAN + "| ai_docs/ | PENDING | - | |\n", encoding="utf-8")
     git(root, "init", "-q")
     git(root, "add", "-A")
     git(root, "commit", "-q", "-m", "base")
-    rc, out = run(sc.cmd_mark, root, ["ai_docs"])
-    assert rc == 0, out
+    head = subprocess.run(["git", "rev-parse", "--short=12", "HEAD"], cwd=str(root),
+                          capture_output=True, text=True).stdout.strip()
+    plan.write_text(PLAN + "| ai_docs/ | ANALYZED | %s | |\n" % head, encoding="utf-8")
     return root
 
 
@@ -284,14 +286,38 @@ class AuditPlanSelfReference(unittest.TestCase):
         self.assertEqual(rc, 0, f"the mark's own commit made its area stale\n{out}")
         self.assertIn("[ok]", out)
 
-    def test_any_other_change_in_the_area_is_still_stale(self):
+    def test_a_document_edit_never_makes_the_docs_root_stale(self):
+        # owner, 2026-10-19: the docs root is governance that `validate` checks; `stale`
+        # counted every document edit as drift (the row was re-marked 15 times in two days)
         root = docs_area_project(self.tmp / "p")
         git(root, "commit", "-q", "-a", "-m", "record analysis")
         (root / "ai_docs" / "notes.md").write_text("two\n", encoding="utf-8")
         rc, out = run(sc.cmd_stale, root)
-        self.assertEqual(rc, 1, out)
-        self.assertIn("ai_docs/notes.md", out)
-        self.assertNotIn("audit_plan.md", out, "the plan itself is never a change")
+        self.assertEqual(rc, 0, out)
+        self.assertNotIn("notes.md", out)
+
+
+class DocsRootIsNotAnArea(unittest.TestCase):
+    """2026-10-19: an `ai_docs/` row made `stale` fire on every document edit, and was
+    re-marked 15 times in two days; `validate` already checks the docs root."""
+
+    def test_stale_ignores_docs_root_files_and_mark_skips_it(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "ai_docs" / "audit").mkdir(parents=True)
+            (root / "src").mkdir()
+            (root / "src" / "a.py").write_text("x = 1\n", encoding="utf-8")
+            (root / "ai_docs" / "audit" / "audit_plan.md").write_text(
+                PLAN + "| . | ANALYZED | 2000-01-01T00:00:00Z |  |\n", encoding="utf-8")
+            os.utime(root / "src" / "a.py", (946684800, 946684800))   # 2000-01-01
+            (root / "ai_docs" / "notes.md").write_text("new\n", encoding="utf-8")
+            rc, out = run(sc.cmd_stale, root)
+            self.assertNotIn("notes.md", out, "a docs-root edit is not code drift")
+            rc, out = run(sc.cmd_mark, root, ["ai_docs/", "src"])
+            self.assertEqual(rc, 0, out)
+            self.assertIn("docs root is not an area", out)
+            plan = (root / "ai_docs" / "audit" / "audit_plan.md").read_text(encoding="utf-8")
+            self.assertNotIn("| ai_docs", plan)
 
 
 class MarkNote(unittest.TestCase):
