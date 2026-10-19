@@ -622,6 +622,40 @@ class Criterion09Search(SiteCase):
         self.assertEqual(json.loads(r.stdout), [docs_site.normalize(c) for c in cases])
 
 
+class ShareAsZip(SiteCase):
+    """Field case 2026-10-19: a zip made with Windows PowerShell 5.1 stored `data\\core.js`;
+    unpacked on Linux the page found no data. `--zip` writes '/' names on every system."""
+
+    @staticmethod
+    def raw_names(path):
+        d, names, i = Path(path).read_bytes(), [], 0
+        i = d.find(b"PK\x01\x02")
+        while i != -1:
+            n = int.from_bytes(d[i + 28:i + 30], "little")
+            names.append(d[i + 46:i + 46 + n].decode("utf-8"))
+            i = d.find(b"PK\x01\x02", i + 1)
+        return names
+
+    def test_zip_names_use_forward_slashes_and_unpack_into_data(self):
+        with tempfile.TemporaryDirectory() as d:
+            project = build_code(Path(d) / "p")
+            target = Path(d) / "site.zip"
+            self.assertEqual(docs_site.main(["--root", str(project), "--zip", str(target)]), 0)
+            names = self.raw_names(target)
+            self.assertIn("data/core.js", names)
+            self.assertIn("index.html", names)
+            self.assertFalse([n for n in names if "\\" in n], names)
+            self.assertNotIn(docs_site.MARKER, names)
+
+    def test_zip_refused_inside_the_docs_root_or_the_site(self):
+        with tempfile.TemporaryDirectory() as d:
+            project = build_code(Path(d) / "p")
+            for bad in (project / "ai_docs" / "site.zip", project / ".docs-site" / "site.zip",
+                        Path(d) / "site.txt"):
+                self.assertEqual(docs_site.main(["--root", str(project), "--zip", str(bad)]), 2, bad)
+                self.assertFalse(bad.exists(), bad)
+
+
 class Criterion10to13WorkViews(SiteCase):
 
     def test_rebuilt_from_the_documents_on_every_run(self):
@@ -704,7 +738,8 @@ class Criterion14Announcements(unittest.TestCase):
         skill = (HERE.parent / "SKILL.md").read_text(encoding="utf-8")
         lines = [l for l in skill.splitlines() if "docs_site.py" in l]
         self.assertEqual(len(lines), 1, "one line announces the site")
-        self.assertLessEqual(len(lines[0].encode("utf-8")), 160, "the owner accepted about 160 bytes (R13, R15)")
+        self.assertLessEqual(len(lines[0].encode("utf-8")), 180, "the owner raised the budget to 180 bytes (R31)")
+        self.assertIn("--zip", lines[0], "the agent finds the sure way to share the site (R31)")
         self.assertNotRegex(lines[0], r"(?i)\b(choose|prefer|avoid|skip|pick|order)\b")
         # Field run 2026-10-18 (REQUEST_kb_site.md R28): asked for the project's state,
         # the agent opened index.html in its client's browser pane, a static snapshot with
