@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// F-075 probe: where does a given Codex CLI load user skills from, and how does it
+// F-082 probe: where does a given Codex CLI load user skills from, and how does it
 // treat the same skill name in two roots? Behavioural evidence for the ANALYSIS
 // (Execute-Before-Specify), re-runnable on any machine.
 //
@@ -49,7 +49,7 @@ function writeSkill(dir, note) {
   fs.mkdirSync(dir, { recursive: true });
   // No BOM: Codex 0.164.0 silently skips a SKILL.md whose frontmatter starts with one.
   fs.writeFileSync(path.join(dir, 'SKILL.md'),
-    `---\nname: ${NAME}\ndescription: F-075 probe (${note}). Never use.\n---\n# probe\n`);
+    `---\nname: ${NAME}\ndescription: F-082 probe (${note}). Never use.\n---\n# probe\n`);
 }
 
 function link(target, at) {

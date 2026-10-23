@@ -1,8 +1,8 @@
 ---
-description: F-075 - on Codex the installer copies each skill into $HOME/.agents/skills/<name>/ (the user location OpenAI documents); the old $CODEX_HOME/skills/<name> path becomes a directory link to it (older Codex keeps loading, current Codex lists it once), a pre-existing legacy folder is moved to a backup, never deleted. Four distributions here plus distill-skill.
+description: F-082 - on Codex the installer copies each skill into $HOME/.agents/skills/<name>/ (the user location OpenAI documents); the old $CODEX_HOME/skills/<name> path becomes a directory link to it (older Codex keeps loading, current Codex lists it once), a pre-existing legacy folder is moved to a backup, never deleted. Four distributions here plus distill-skill.
 status: PLANNED
-feature: F-075
-id: F-075
+feature: F-082
+id: F-082
 start_date: 2026-10-23
 level: L3
 branch: fix/codex-agents-skills
@@ -26,7 +26,7 @@ user skills, `$HOME/.agents/skills/<name>/`, while every user who loads the skil
 from `$CODEX_HOME/skills/<name>/` (default `~/.codex/skills/<name>/`) keeps loading it,
 once, at the installed version. The course "Un agente personale che ricorda e lavora con
 metodo" (claim-d8) can then state that Codex loads the skills after the npm install, for
-the version that ships F-075.
+the version that ships F-082.
 
 ## Feature Vision
 
@@ -188,7 +188,7 @@ unaffected). The `install-skill` bin is `postinstall.js`.
 | 2 | `scripts/postinstall.js` ×4 (course's is 16 lines with `installOwned`) | Call the reconcile after a successful Codex copy; FS-3 refresh of an existing new copy; print the contract lines. |
 | 3 | `scripts/preuninstall.js` ×4 | FS-4: resolve and unlink the legacy link first, then remove the new copy. |
 | 4 | `scripts/init.js` ×4 | FS-5: scan legacy roots as well. |
-| 5 | `scripts/test_clients.js` ×4 | T7 updated (pins the old Codex target — declared contract change); F-075 cases. |
+| 5 | `scripts/test_clients.js` ×4 | T7 updated (pins the old Codex target — declared contract change); F-082 cases. |
 | 6 | `README.md` (root `:62`, kb `:80`; mkt and course list no paths today — add only if they gain a path list) | FS-8. |
 | 7 | `ENFORCEMENT.md` ×4, if Q5 = yes: Codex paragraph (root `:151`, kb/course `:196`, mkt `:151`) and the "no fixture" reason (root/mkt `:73`, kb/course `:118`) | FS-8, D3. |
 | 8 | `strategic/architecture.md` Component Map rows "Client roster" (`:37`) and "Skill deployer" (`:39`) | New fields and the reconcile duty. |
@@ -252,7 +252,7 @@ course; #7 UC6; #8 the Component Map clause; #10 UC1–UC4 for distill.
 1. Owner answers Q1 and Q5 (Q2–Q4 can follow).
 2. On a POSIX machine with Codex ≥ 0.164.0, run `probe_codex_skill_roots.js`; S4 decides
    FS-7.
-3. RED: F-075 cases in root `scripts/test_clients.js`, T7 updated; `node scripts/test_clients.js`
+3. RED: F-082 cases in root `scripts/test_clients.js`, T7 updated; `node scripts/test_clients.js`
    fails for the stated reasons.
 4. GREEN: `lib.js`, `postinstall.js`, `preuninstall.js`, `init.js` (root).
 5. Propagate to kb, mkt, course (course: `installOwned` for the new copy; `uninstallOwned` only in the uninstall script), each
@@ -260,7 +260,7 @@ course; #7 UC6; #8 the Component Map clause; #10 UC1–UC4 for distill.
 6. Docs: README, ENFORCEMENT (if Q5), Component Map, CHANGELOG.
 7. distill-skill, in its repository (Q3).
 8. Real-machine proof, E2E script, closure review, merge brief.
-9. Release per `GUIDE_release.md`. The version that ships F-075 is the first published
+9. Release per `GUIDE_release.md`. The version that ships F-082 is the first published
    after 1.47.0 (expected 1.48.0 / kb 1.31.0 / mkt 0.26.0 / course 0.1.0-beta.13 /
    distill 0.9.0 if nothing else ships first — set at release). Tell the course project.
 
@@ -298,9 +298,9 @@ user's `config.toml` carries a value the CLI rejects) lists each installed skill
 
 ## Open questions (for the owner; recommendation first)
 
-- **Q1 — legacy path.** Link it to the new copy, also on fresh installs, so older Codex
-  keeps working (recommended, D2); or move it aside and require a Codex version that
-  reads `~/.agents/skills`.
+- **Q1 — legacy path. ANSWERED: link** (REQUEST R3). Link it to the new copy, also on
+  fresh installs, so older Codex keeps working (D2 stands); the alternative — move it
+  aside and require a Codex version that reads `~/.agents/skills` — is dropped.
 - **Q2 — `check` note on Codex.** `sdlc_core.py` does not look at user-level
   `~/.codex/hooks.json`, so a user-level Codex hook still draws the "not wired" note.
   Follow-up unit (recommended) or this unit.
@@ -309,9 +309,9 @@ user's `config.toml` carries a value the CLI rejects) lists each installed skill
 - **Q4 — no uninstall command** in the four packages (E9: npm never runs `preuninstall`).
   Follow-up unit for the whole family, modelled on distill's `distill-uninstall-skill`
   (recommended), or add it here.
-- **Q5 — Codex hook documentation.** The request record does not ask for it; the
-  delegating session did. Include it (recommended: ENFORCEMENT states a reason that E11
-  shows false, and the course cites the hook) or leave ENFORCEMENT as is.
+- **Q5 — Codex hook documentation. ANSWERED: document it** (REQUEST R3). ENFORCEMENT
+  gets the official hook snippet and the `/hooks` trust step, and its stale reason (E11)
+  is corrected; the hook is still not wired automatically (D3).
 
 ## Diary / Current State
 
@@ -321,3 +321,9 @@ user's `config.toml` carries a value the CLI rejects) lists each installed skill
   `audit/reviews/REVIEW_LOG.md`). Evidence now S0–S6 plus the npm probe. Open: POSIX run
   of S4 (FS-7), owner Q1–Q5, design review round 3. The real profile was left as found;
   no code changed. Implementation moves to another PC (R2).
+- **2026-10-23 — renumbered F-075 → F-082; Q1 and Q5 answered** (R3). F-075 was taken in
+  parallel by another unit (session-start orientation, already on the owner's local
+  `main`); F-082 was the first id free on every ref. Q1 = link, Q5 = document. Still open:
+  POSIX run of S4 (FS-7), Q2–Q4, design review round 3. Before merging, bring in `main`:
+  the other F-075 changed `orient` in `sdlc_core.py`, so the line references to
+  `_orient_entries_in` above must be re-derived.

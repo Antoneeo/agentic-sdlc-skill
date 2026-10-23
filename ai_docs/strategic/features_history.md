@@ -64,4 +64,4 @@
 | F-072 | F-072 | code | L3 | COMPLETED | 2026-10-16 | 2026-10-18 | solutions/ANALYSIS_kb_site.md |
 | F-073 | F-073 | code | L3 | COMPLETED | 2026-10-17 | 2026-10-17 | solutions/ANALYSIS_doctrine_chronology.md |
 | F-074 | Vision born from an owner interview | code | L3 | COMPLETED | 2026-10-18 | 2026-10-18 | solutions/ANALYSIS_vision_interview.md |
-| F-075 | F-075 | code | L3 | PLANNED | 2026-10-23 |  | solutions/ANALYSIS_codex_agents_skills.md |
+| F-082 | F-082 | code | L3 | PLANNED | 2026-10-23 |  | solutions/ANALYSIS_codex_agents_skills.md |

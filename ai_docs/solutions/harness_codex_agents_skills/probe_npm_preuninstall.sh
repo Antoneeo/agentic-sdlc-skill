@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# F-075 probe E9: does `npm uninstall -g` run a package's `preuninstall` script?
+# F-082 probe E9: does `npm uninstall -g` run a package's `preuninstall` script?
 # A throwaway package is packed (`npm pack`, as the registry serves it), installed into
 # a temp prefix, then uninstalled; nothing global is touched. Each step is asserted, so
 # a failed install cannot masquerade as "not run".
