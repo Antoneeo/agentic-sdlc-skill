@@ -197,10 +197,12 @@ Ciò che solo qui l'agente fa:
   regressione sempre, scenari nuovi quando il comportamento cambia; nessun nome,
   nessuna assegnazione. Ordine: E2E prima della closure review, brief dopo, poi
   `index`, mappa, `index`.
-- **Divergenza spec/codice dichiarata** (F-080, solo Standalone): una L3 che
-  rinvia la correzione di codice in contrasto con un claim di `topics/` marca il
-  claim (`not-yet-honored-by -> ANALYSIS_<nome>`) e ne cita l'id nella propria
-  ANALYSIS — `check` verifica entrambe le metà. La L2/L3 che fa rispettare il
+- **Divergenza spec/codice dichiarata** (F-080, F-081): una L3 che rinvia la
+  correzione di codice in contrasto con un claim di `topics/` marca il claim
+  (`not-yet-honored-by -> ANALYSIS_<nome>`) e ne cita l'id nella propria ANALYSIS;
+  in Hybrid il target è `SHADOW_<doc_key>` e l'id sta nell'E-ISP/E-TDD, di cui si
+  esporta lo shadow (`check` legge la versione più recente) — `check` verifica
+  entrambe le metà. La L2/L3 che fa rispettare il
   claim toglie il marker nello stesso commit; L1 è esente.
 - **Component Map viva**: riga nuova anche per un componente semplicemente
   *scoperto* esplorando — e il validator la tiene anti-rot (ogni path/simbolo
@@ -254,9 +256,9 @@ che non enuncia un gate → nessuna riga, e un gate sospettato ma non trovato è
 "dal 1/3" NON confliggono); `qty` tipizzata (effort in giorni-persona, costo in
 UNA valuta — misto **rifiuta di sommare**, niente cambi offline); `about` per le
 relazioni, più d'una separate da `;`. Un predicato è riservato (F-080):
-`not-yet-honored-by -> ANALYSIS_<nome>` dice che il codice non rispetta ancora
-questa affermazione della specifica, e nomina l'analisi che ha rinviato la
-correzione; rispondendo, il claim si cita come "richiesto, non ancora fatto".
+`not-yet-honored-by -> ANALYSIS_<nome>` (in Hybrid `SHADOW_<doc_key>`) dice che il
+codice non rispetta ancora questa affermazione della specifica, e nomina l'analisi
+o il design che ha rinviato la correzione; rispondendo, il claim si cita come "richiesto, non ancora fatto".
 Nessuna vista lo elenca o lo conta, e l'export lo toglie. L'estrattore **non inventa nulla**: ciò che la fonte non asserisce
 diventa `gaps:`, mai una riga.
 **La fonte si esaurisce, non si campiona** (F-031). "Non inventa nulla" è un

@@ -95,12 +95,11 @@ class TestRecallDoctrine(unittest.TestCase):
     def test_a_marked_claim_is_never_cited_as_current_behavior(self):
         """F-080 FS1: the code does not yet honor a marked claim."""
         text = normalized(SKILL_DIR / "SKILL.md")
-        self.assertIn("A claim marked `not-yet-honored-by -> ANALYSIS_<name>` is "
-                      "cited as what the specification requires and the code does "
-                      "not yet do, naming that analysis — never as current "
-                      "behavior.", text)
+        self.assertIn("A claim marked `not-yet-honored-by` is cited as what the "
+                      "specification requires and the code does not yet do, naming "
+                      "its target — never as current behavior.", text)
         self.assertIn("cite a claim marked `not-yet-honored-by` as not yet true of "
-                      "the code", normalized(SKILL_DIR / "memory.md"))
+                      "the code, naming its target", normalized(SKILL_DIR / "memory.md"))
 
     def test_nothing_selects_or_counts_claims_by_the_mark(self):
         """F-080 FS7 / r33: only the claim checks and the export drop read the

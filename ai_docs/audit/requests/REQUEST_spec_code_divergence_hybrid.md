@@ -41,3 +41,10 @@ the code SKILL.md Write Triggers row read every session; kb grammar lines; one
 `hybrid.md` shadow line read only in Hybrid); check extended, export unchanged. Accept
 in principle, exact bytes re-confirmed after the ANALYSIS?
 > Accept, confirm later (Recommended)
+
+### R6 — 2026-10-23 — final ceremony cost
+Context (agent): after the design review PASS (two rounds), accept net +201 B of doctrine
+(D1–D6 in `solutions/harness_spec_code_divergence_hybrid/deltas.py`; every session +68 B
+code, −24 B kb, −2 B mkt and course; the `hybrid.md` line priced in R5 dropped, its duty
+carried by the code Write Triggers row), so implementation can start?
+> Accept 201 B (Recommended)

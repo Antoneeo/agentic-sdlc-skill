@@ -1,7 +1,7 @@
 ---
 id: F-081
 feature: Spec/code divergence marker in Hybrid projects
-status: PLANNED
+status: IN_PROGRESS
 level: L3
 start_date: 2026-10-23
 domain: code
@@ -181,7 +181,7 @@ symbol-graph tool being devPNT's and devPNT off):
 | `portability.md`, code `templates.md` | none: `portability.md` names the marker only; code `templates.md` speaks of the ANALYSIS Diary, which Hybrid does not have | checked |
 | request record, this ANALYSIS, harness, E2E, MERGE_REVIEW, HANDOFF, indexes | records | closure |
 
-**Ceremony cost (r35, R5; the owner's confirmation of these figures is pending).** The deltas are
+**Ceremony cost (r35, R5; confirmed by the owner, R6).** The deltas are
 written verbatim as (old, new) pairs in `harness_spec_code_divergence_hybrid/deltas.py`,
 which prints the UTF-8 byte change of each:
 
@@ -233,11 +233,11 @@ cell) and external input (an imported or hand-copied topic).
 
 ## Action Plan
 
-- [ ] Design review gate (`review.md` moment 1).
-- [ ] Owner confirms the ceremony figures (R5).
-- [ ] RED: kb `test_claim_ledger.py` class; invariant anchors.
-- [ ] GREEN: `sdlc_core.newest_shadow`; `knowledge.py` regex and `kb_check_marks`; both copied ×3; manifest.
-- [ ] D1–D6; kb README; workflows doc; Component Map; rulings r35; CHANGELOG ×4.
+- [x] Design review gate (`review.md` moment 1): PASS (8 WARN) → PASS.
+- [x] Owner confirms the ceremony figures: R6 «Accept 201 B».
+- [x] RED: kb `test_claim_ledger.py` class; invariant anchors.
+- [x] GREEN: `sdlc_core.newest_shadow`; `knowledge.py` regex and `kb_check_marks`; both copied ×3; manifest.
+- [x] D1–D6; kb README; workflows doc; Component Map; rulings r35; CHANGELOG ×4.
 - [ ] Probe B1–B7 green, baseline A1/A3 red; four batteries; E2E_TEST; closure
       review; MERGE_REVIEW; `index`; `check` CLEAN; `mark`.
 
@@ -296,3 +296,11 @@ these corrections passes.
 N1 Action Plan behind the Impact (fixed), N2 Success-signals FS count (fixed), N3 the
 stray hint is exact-key only (stated in FS3), N4 `memory.md` is read every session in
 every lens (cost table corrected: +68 B code, −24 B kb, −2 B mkt and course).
+
+**2026-10-23 — implemented.** Owner accepted 201 B (R6); status IN_PROGRESS. RED: 16
+tests in kb `test_claim_ledger.py`, 10 red, 6 green regression guards. GREEN:
+`sdlc_core.newest_shadow`, `knowledge.KB_NOT_HONORED_RE` and `kb_check_marks` (with a
+private `_kb_mark_target` that reads no predicate), copied ×3, manifest updated. D1–D6
+applied verbatim from `deltas.py`; kb README, workflows doc, Component Map, CHANGELOG ×4.
+Probe B1–B7 green; baseline A1/A3 red, A2 green (the flip). Batteries after `index`:
+code 458, kb 669, mkt 460, course 453, all OK. Next: E2E (written), closure review.
