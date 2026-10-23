@@ -1458,6 +1458,15 @@ class TL_F081_NotYetHonoredHybrid(unittest.TestCase):
             errors = self._run("not-yet-honored-by -> " + target)
             self.assertTrue(any("about" in e for e in errors), (target, errors))
 
+    def test_a_versioned_target_gets_the_marker_message(self):
+        # Closure-review W4: the likeliest mistake names the unversioned form.
+        errors = self._run(self.MARK + "_v1.2")
+        self.assertTrue(any("SHADOW_<doc_key>, unversioned" in e for e in errors), errors)
+
+    def test_a_silent_shadow_is_called_a_design(self):
+        errors = self._run(self.MARK, {"SHADOW_e_isp_export_v1.0.md": "# E-ISP\n"})
+        self.assertTrue(any("analysis or design" in e for e in errors), errors)
+
     def test_a_relation_cannot_point_at_a_shadow(self):
         errors = self._run("depends-on -> SHADOW_e_isp_export",
                            {"SHADOW_e_isp_export_v1.0.md": self.cites()})
@@ -1531,6 +1540,16 @@ class TL_F081_NewestShadow(unittest.TestCase):
     def test_exact_key_and_version_names_only(self):
         self.assertIsNone(self._newest(["SHADOW_k_extra_v1.0.md", "SHADOW_k.md",
                                         "SHADOW_k_v1.2a.md", "SHADOW_kk_v1.0.md"]))
+
+    def test_strays_are_exact_key_non_version_names(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            sol = Path(tmp) / "solutions"
+            sol.mkdir()
+            for n in ("SHADOW_k_extra_v1.0.md", "SHADOW_k_v1.0.md"):
+                (sol / n).write_text("x", encoding="utf-8")
+            self.assertIsNone(kc.sdlc_core.stray_shadow(sol, "k"))
+            (sol / "SHADOW_k.md").write_text("x", encoding="utf-8")
+            self.assertEqual(kc.sdlc_core.stray_shadow(sol, "k"), "SHADOW_k.md")
 
     def test_a_missing_directory_has_no_shadow(self):
         with tempfile.TemporaryDirectory() as tmp:
