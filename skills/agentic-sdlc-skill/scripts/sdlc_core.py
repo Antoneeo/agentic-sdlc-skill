@@ -21,6 +21,8 @@ Commands:
   stale      list areas modified after the last analysis recorded in audit_plan.md (exit 1 if any)
   mark       record paths as ANALYZED with the current reference (git hash, else UTC timestamp)
   gate       PreToolUse hook: block writes on protected paths without an IN_PROGRESS ANALYSIS (exit 2)
+  verdict    PreToolUse hook: refuse an edit when the session declared no guide-router
+             verdict, or never read a guide it names (JSON deny on stdout; always exit 0)
 
 Hybrid/devPNT mode: pass --hybrid explicitly on check/stale (skips audit-plan
 staleness, delegated to devPNT/KL) and on gate (also unlocks when an approved
@@ -2401,16 +2403,26 @@ def cmd_remind(args):
         pass
     return 0
 
+def read_hook_payload():
+    """The hook event JSON on stdin as a dict, or None when it cannot be read.
+
+    bytes -> utf-8-sig: the payload is UTF-8 JSON regardless of the console code
+    page; '-sig' strips the BOM (PowerShell pipes)."""
+    try:
+        raw = sys.stdin.buffer.read().decode("utf-8-sig", errors="replace")
+        payload = json.loads(raw)
+    except Exception:
+        return None
+    return payload if isinstance(payload, dict) else None
+
+
 def cmd_gate(args):
     file_path = args.file or ""
     if args.hook:
+        payload = read_hook_payload()
         try:
-            # bytes -> utf-8-sig: the hook payload is UTF-8 JSON regardless of the
-            # console code page; '-sig' strips the BOM (PowerShell pipes)
-            raw = sys.stdin.buffer.read().decode("utf-8-sig", errors="replace")
-            payload = json.loads(raw)
             file_path = (payload.get("tool_input") or {}).get("file_path") or ""
-        except Exception:
+        except AttributeError:
             return 0  # unparseable input: do not block
     if not file_path:
         return 0
@@ -2443,6 +2455,127 @@ def cmd_gate(args):
         "If your analysis already exists, set its frontmatter to 'status: IN_PROGRESS' "
         "(that flip is what opens the gate); otherwise write it first (Phase 3).\n")
     return 2
+
+
+# ------------------------------------------------------------------ verdict
+# F-076: Rule Zero's router verdict, checked at the edit. A field agent edited
+# without declaring one and said nothing stopped it. This reads the session
+# transcript the client hands every hook and refuses the edit (JSON deny, exit
+# 0) only on certainty; whatever it cannot tell resolves to silence. It never
+# prints `allow` -- that would skip the user's permission prompt. Owner: block
+# (REQUEST_guide_verdict_check.md R3), wired by default (R4, rulings.md r34).
+
+VERDICT_EDIT_TOOLS = ("Edit", "Write", "MultiEdit", "NotebookEdit")
+VERDICT_MAX_BYTES = 256 * 1024 * 1024  # a larger transcript: cannot afford to tell
+VERDICT_LINE_MAX = 1024 * 1024         # assistant lines are small; skip the rest unparsed
+_VERDICT_ROUTER_RE = re.compile(r"router\s*:(.*)", re.IGNORECASE)
+_VERDICT_NONE_RE = re.compile(r"[\s`*_\"'(]*(no match|absent)", re.IGNORECASE)
+_VERDICT_TRIVIAL_RE = re.compile(r"\blevel\s*:[\s`*_]*[A-Z]1\b", re.IGNORECASE)
+_GUIDE_NAME_RE = re.compile(r"GUIDE_[A-Za-z0-9_-]+\.md")
+
+
+def transcript_facts(path):
+    """What the session transcript shows about the verdict duty, or None when it
+    cannot be read within the bounds.
+
+    Returns {"assistant": entries parsed, "declared": a router verdict seen,
+    "trivial": a `Level: X1` seen, "named": guides the verdicts name,
+    "read": guide names that appeared in a non-edit tool's input}."""
+    facts = {"assistant": 0, "declared": False, "trivial": False,
+             "named": set(), "read": set()}
+    try:
+        p = Path(path)
+        if not p.is_file() or p.stat().st_size > VERDICT_MAX_BYTES:
+            return None
+        with p.open("rb") as fh:
+            for raw in fh:
+                if len(raw) > VERDICT_LINE_MAX or b'"assistant"' not in raw:
+                    continue
+                try:
+                    entry = json.loads(raw.decode("utf-8", errors="replace"))
+                except ValueError:
+                    continue
+                if not isinstance(entry, dict) or entry.get("type") != "assistant":
+                    continue
+                content = (entry.get("message") or {}).get("content")
+                if not isinstance(content, list):
+                    continue
+                facts["assistant"] += 1
+                for block in content:
+                    if not isinstance(block, dict):
+                        continue
+                    if block.get("type") == "text":
+                        for line in str(block.get("text") or "").splitlines():
+                            if _VERDICT_TRIVIAL_RE.search(line):
+                                facts["trivial"] = True
+                            m = _VERDICT_ROUTER_RE.search(line)
+                            if m:
+                                facts["declared"] = True
+                                if not _VERDICT_NONE_RE.match(m.group(1)):
+                                    facts["named"].update(_GUIDE_NAME_RE.findall(m.group(1)))
+                    elif (block.get("type") == "tool_use"
+                          and block.get("name") not in VERDICT_EDIT_TOOLS):
+                        facts["read"].update(_GUIDE_NAME_RE.findall(
+                            json.dumps(block.get("input"), ensure_ascii=False)))
+    except (OSError, ValueError, TypeError, AttributeError):
+        return None
+    return facts
+
+
+def verdict_reason(payload, root):
+    """The refusal line for this edit event, or None when the edit may proceed."""
+    if payload.get("tool_name") not in VERDICT_EDIT_TOOLS or payload.get("agent_id"):
+        return None
+    tool_input = payload.get("tool_input") or {}
+    target = tool_input.get("file_path") or tool_input.get("notebook_path")
+    transcript = payload.get("transcript_path")
+    if not target or not transcript:
+        return None
+    try:
+        Path(target).resolve().relative_to(root)
+    except (ValueError, OSError):
+        return None  # outside the project: not this check's concern
+    ref = ai_path(root, "reference")
+    if not ref.is_dir():
+        return None
+    guides = {g.name for g in ref.glob("GUIDE_*.md") if g.is_file()}
+    if not guides:
+        return None
+    facts = transcript_facts(transcript)
+    if not facts or not facts["assistant"]:
+        return None  # unreadable, oversized or an unknown format: cannot tell
+    if not (facts["declared"] or facts["trivial"]):
+        return ("[sdlc verdict] No guide-router verdict in this session; this project has "
+                f"guides ({docs_dir()}/reference/INDEX.md). Declare it with the level, e.g. "
+                "\"Level: L2 · router: no match\" or \"router: GUIDE_x.md -> read\" "
+                "(L1: \"Level: L1\"), then retry.")
+    unread = sorted((facts["named"] & guides) - facts["read"])
+    if unread:
+        return (f"[sdlc verdict] The router verdict names {', '.join(unread)}, not read in "
+                "this session. Read it, then retry.")
+    return None
+
+
+def cmd_verdict(args):
+    """PreToolUse hook: print a JSON refusal or nothing. Always 0 -- exit 2 would
+    block blind, and the wired command adds `; exit 0` for validators that cannot
+    run this at all (missing, or older than it)."""
+    if not args.hook:
+        return 0
+    try:
+        payload = read_hook_payload()
+        if payload is None:
+            return 0
+        root = Path(args.root).resolve() if args.root else find_project_root()
+        reason = verdict_reason(payload, root)
+        if reason:
+            print(json.dumps({"hookSpecificOutput": {
+                "hookEventName": "PreToolUse",
+                "permissionDecision": "deny",
+                "permissionDecisionReason": reason}}, ensure_ascii=False))
+    except Exception:
+        pass
+    return 0
 
 
 # --------------------------------------------------------------------- plan
@@ -3290,6 +3423,11 @@ def main(argv=None):
     gp.add_argument("--file", help="file path to evaluate (alternative to --hook)")
     gp.add_argument("--protected", default="", help="protected prefixes separated by ';' (e.g. \"src/auth;src/crypto\")")
 
+    vp = sub.add_parser("verdict", parents=[common],
+                        help="PreToolUse hook: refuse an edit with no router verdict "
+                             "or an unread named guide (fail-open, always exit 0)")
+    vp.add_argument("--hook", action="store_true", help="read the hook JSON payload from stdin")
+
     sub.add_parser("benefit", parents=[common],
                    help="report what the review gates caught (and what the "
                         "doctrine costs to read) -- a report, never a gate: "
@@ -3331,6 +3469,10 @@ def main(argv=None):
             # and says so rather than exiting non-zero.
             print(f"[note] {exc}")
             discovered, name = None, DEFAULT_DOCS_DIR
+        elif args.cmd == "verdict":
+            # F-076: a PreToolUse check that cannot tell which root governs refuses
+            # nothing and says nothing -- its stdout is read as the hook's decision.
+            return 0
         else:
             print(f"[ERROR] {exc}")
             return 1
@@ -3338,6 +3480,8 @@ def main(argv=None):
 
     if args.cmd == "gate":
         return cmd_gate(args)
+    if args.cmd == "verdict":
+        return cmd_verdict(args)
     if args.cmd == "orient":
         return cmd_orient(args)
     if args.cmd == "remind":

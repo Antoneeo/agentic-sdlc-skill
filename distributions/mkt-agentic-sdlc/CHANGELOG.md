@@ -7,6 +7,7 @@
 - The per-turn `remind` line also tells the agent, above L1 and when sibling lenses are installed, to choose the lens with `routing.md` and declare it. The line's limit rises from 500 to 600 characters (`vision/rulings.md` r32).
 
 ### Added
+- `verdict --hook` (PreToolUse): refuses an edit when the session declared no guide-router verdict, or never read a guide its verdict names; silent in projects without guides and whenever it cannot tell. Not wired by this package (`ENFORCEMENT.md` §3).
 - `orient` adds a note when one client runs it from two settings entries, which means each session gets the orientation twice. Claude Code and Codex are counted separately, an identical command counts once, and an entry whose validator is gone is not counted.
 - `orient` adds a line naming the sibling lenses installed beside the skill or in the user's Claude skills directory, and says to choose the lens with `routing.md`. The family list is read from `routing.md` §0, as the installer does.
 - `routing.md` §2 gains worked verdicts for four mixed requests: an interface spec written for another team, the requirements another team must build, a guide whose source spec changed, and code that diverges from a supplied spec.
