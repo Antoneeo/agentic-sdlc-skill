@@ -2,7 +2,7 @@
 
 Every significant change to this skill is recorded here.
 
-## [Unreleased - 1.31.0]
+## [1.31.0] - 2026-10-23
 
 ### Changed
 - `guides.md`: a document snapshot is verbatim except for credentials and personal or confidential data the guide does not need, which become `[REDACTED: <kind>]` before the snapshot is written; the guide lists the kinds in `redacted_at_intake:`.

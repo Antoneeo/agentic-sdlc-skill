@@ -1,6 +1,8 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
+**2026-10-23 — release 1.48.0: field-report units F-075..F-081 (orientation reach, guide verdict check, kb intake hygiene, guide check, docs site naming, spec/code divergence incl. Hybrid); includes the unpublished 1.46.0 and 1.47.0.**
+
 **2026-10-23 — F-078 closed: Guide check section and validate advisory.**
 
 **2026-10-19 — the docs root is not an audit area: stale ignores it, mark refuses it (it was re-marked 15 times in two days).**
