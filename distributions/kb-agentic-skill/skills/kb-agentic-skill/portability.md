@@ -73,6 +73,7 @@ You choose topics; the export decides what must travel with them.
   half its members, so a partial export ships a tree that cannot pass its own checks.
   When a partner row lives in an unselected topic, that topic is **added and reported** —
   never dropped, never silently.
+- **Not the `not-yet-honored-by` markers.** They describe this project's code, so the export drops them and says so, without a number.
 
 If a conflict partner resolves to no row at all, the export **refuses**: exporting a
 broken set is worse than exporting nothing.
