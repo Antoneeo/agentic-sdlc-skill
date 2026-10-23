@@ -10,7 +10,7 @@ question as context when there was one; a correction is a new entry naming the o
 it corrects. The agent transcribes; the owner may correct any quotation.
 
 ### R1 — 2026-10-23 — opening decision (recorded in another project)
-Source: `C:\workspace\corso AI\ai_docs\audit\requests\REQUEST_course_agente-personale-skills.md#R9`
+Source: the course project's request record (`REQUEST_course_agente-personale-skills.md#R9`)
 (course "Un agente personale che ricorda e lavora con metodo", claim-d8 of its
 `sources.md`). The course will describe the corrected installer.
 Context (agent): "Codex: l'installer delle skill le copia in ~/.codex/skills, ma la documentazione attuale di Codex elenca come cartella utente solo ~/.agents/skills (learn.chatgpt.com/codex/build-skills). Non sono riuscito a provarlo: il tuo config.toml blocca codex exec (service_tier). Come procedo per il corso?"
@@ -27,3 +27,7 @@ opened in parallel on another PC, also took F-075 and is already on the owner's 
 legacy path (recommended) or require a Codex that reads `~/.agents/skills`; Q5 —
 document the Codex hook in ENFORCEMENT (recommended) or leave it as is.
 > Sì: rinumera l'unità Codex in F-082 sul branch fix/codex-agents-skills. Q1 = collegamento, Q5 = documentare.
+
+### R4 — 2026-10-23 — local paths removed (agent note, not an owner statement)
+At the owner's request, R1's `Source:` line names the course project's request record
+instead of its local path on the authoring machine; the owner's quotations are unchanged.
