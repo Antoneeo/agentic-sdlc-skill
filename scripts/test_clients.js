@@ -985,3 +985,94 @@ test('F-042 T3b: attribution folds case on win32 (a lowercased hook is still our
       'case variance must never miss the removal (the manufactured-dead-hook false negative)');
   });
 });
+
+// --- F-076: the guide-verdict check (PreToolUse) ----------------------------
+// Wired like remind; the command carries `; exit 0` so a validator that cannot
+// run `verdict` (missing after an uninstall npm 7+ never cleans, or too old
+// after a downgrade) exits 0 instead of 2 -- exit 2 would block every edit.
+const { wireGlobalVerdictHook, removeGlobalCommandHooks } = require('./lib');
+const verdictEntries = (p) => {
+  if (!fs.existsSync(p)) return [];
+  const groups = ((readJson(p).hooks || {}).PreToolUse) || [];
+  return groups.flatMap((g) => (Array.isArray(g.hooks) ? g.hooks : [g]).map((h) => ({ g, h })))
+    .filter(({ h }) => h && typeof h.command === 'string' && / verdict(\s|$)/.test(h.command));
+};
+
+test('F-076: fresh machine wires the verdict check once, wrapped to exit 0', () => {
+  gsandbox(({ home, kbroot, client, python }) => {
+    const r = wireGlobalVerdictHook({ client, python });
+    assert.strictEqual(r.code, 'wired');
+    const found = verdictEntries(userSettings(home));
+    assert.strictEqual(found.length, 1);
+    assert.ok(/ verdict --hook; exit 0$/.test(found[0].h.command), found[0].h.command);
+    assert.strictEqual(found[0].g.matcher, 'Edit|Write|MultiEdit|NotebookEdit');
+    assert.ok(fs.existsSync(path.join(kbroot, 'verdict-hook-wired')), 'its own marker');
+    assert.ok(!fs.existsSync(markerOf(kbroot)), 'the orient marker is not touched');
+  });
+});
+
+test('F-076: wiring twice is already; removal is a standing opt-out', () => {
+  gsandbox(({ home, client, python }) => {
+    assert.strictEqual(wireGlobalVerdictHook({ client, python }).code, 'wired');
+    assert.strictEqual(wireGlobalVerdictHook({ client, python }).code, 'already');
+    assert.strictEqual(verdictEntries(userSettings(home)).length, 1);
+    const s = readJson(userSettings(home));
+    delete s.hooks.PreToolUse;
+    writeSettings(userSettings(home), s);
+    assert.strictEqual(wireGlobalVerdictHook({ client, python }).code, 'opted-out');
+    assert.strictEqual(verdictEntries(userSettings(home)).length, 0);
+  });
+});
+
+test('F-076: remind wiring is unchanged by the generalization', () => {
+  gsandbox(({ home, client, python }) => {
+    assert.strictEqual(wireGlobalRemindHook({ client, python }).code, 'wired');
+    assert.strictEqual(wireGlobalVerdictHook({ client, python }).code, 'wired');
+    assert.strictEqual(remindCount(userSettings(home)), 1);
+    assert.strictEqual(verdictEntries(userSettings(home)).length, 1);
+  });
+});
+
+test('F-076: uninstall removes the verdict and remind entries and says which', () => {
+  gsandbox(({ home, kbroot, client, python }) => {
+    wireGlobalRemindHook({ client, python });
+    wireGlobalVerdictHook({ client, python });
+    const s = readJson(userSettings(home));
+    s.hooks.PreToolUse.push({ matcher: 'Bash', hooks: [{ type: 'command', command: 'foreign' }] });
+    writeSettings(userSettings(home), s);
+    const removed = removeGlobalCommandHooks([path.join(home, 'skills', INSTALLED_SKILL_NAME)]);
+    const events = removed.map((x) => x.event).sort();
+    assert.deepStrictEqual(events, ['PreToolUse', 'UserPromptSubmit']);
+    assert.ok(removed.every((x) => pathsEqual(x.target, userSettings(home))));
+    assert.strictEqual(verdictEntries(userSettings(home)).length, 0);
+    assert.strictEqual(remindCount(userSettings(home)), 0);
+    const after = readJson(userSettings(home));
+    assert.strictEqual(after.hooks.PreToolUse.length, 1, 'the foreign entry survives');
+    assert.ok(!fs.existsSync(path.join(kbroot, 'verdict-hook-wired')), 'marker cleared: removed');
+    assert.strictEqual(wireGlobalVerdictHook({ client, python }).code, 'wired',
+      'reinstall after uninstall wires again');
+  });
+});
+
+test('F-076: postinstall wires and preuninstall removes the verdict check (child process)', () => {
+  const tmpHome = fs.mkdtempSync(path.join(os.tmpdir(), 'f076-post-'));
+  try {
+    fs.mkdirSync(path.join(tmpHome, '.claude', 'skills'), { recursive: true });
+    const childEnv = { ...process.env, HOME: tmpHome, USERPROFILE: tmpHome,
+      AGENTIC_SDLC_KB_ROOT: path.join(tmpHome, 'kbroot') };
+    delete childEnv.CLAUDE_CONFIG_DIR;
+    delete childEnv.GEMINI_HOME;
+    delete childEnv.CODEX_HOME;
+    delete childEnv.ANTIGRAVITY_HOME;
+    execFileSync(process.execPath, [POSTINSTALL], { env: childEnv, stdio: 'ignore' });
+    const settingsPath = path.join(tmpHome, '.claude', 'settings.json');
+    assert.strictEqual(verdictEntries(settingsPath).length, 1, 'postinstall wired it');
+    const out = execFileSync(process.execPath, [PREUNINSTALL], { env: childEnv, encoding: 'utf8' });
+    assert.strictEqual(verdictEntries(settingsPath).length, 0, 'preuninstall removed it');
+    assert.ok(/Removed the guide-verdict check hook entry/.test(out), out);
+    assert.ok(/Removed the per-turn reminder hook entry/.test(out), out);
+    assert.strictEqual(remindCount(settingsPath), 0, 'and the per-turn entry');
+  } finally {
+    fs.rmSync(tmpHome, { recursive: true, force: true });
+  }
+});

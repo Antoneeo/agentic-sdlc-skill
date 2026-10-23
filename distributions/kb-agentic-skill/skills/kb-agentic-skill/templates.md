@@ -35,7 +35,10 @@ a fidelity marker: `[source: <snapshot-file>#<anchor-or-line>]` for covered cont
 (doubling as the detail-lookup pointer into the book), or a literal
 `[not covered by source]` for gaps. Sections are CHOSEN from the repertoire below —
 only those the source actually supports; never force empty ones. A guide approaching
-the source's own length is a paraphrase, not a synthesis.
+the source's own length is a paraphrase, not a synthesis. **With a corpus**, a
+`source_kind: document` guide's book is its `corpus/given/` artifact instead of a
+snapshot: `distilled_from:` and the markers name it, and `source_hash` is its
+line-ending-normalized digest (`distillation.md` §1).
 
 ```markdown
 ---
@@ -746,7 +749,7 @@ status: CURRENT
   belong to reconciliation.
 - `qty`: `<value> <unit> <kind>` — effort in person-days (h/d/w/mo/fte-mo; 8h=1d, 1w=5d,
   1mo=21d), duration in calendar days (h/d/w/mo), cost within one currency, count unit-matched.
-- `about`: `<predicate> -> <slug>` for relationship claims; stored once, under the subject.
+- `about`: `<predicate> -> <slug>` for relationship claims; stored once, under the subject. Several share one cell, separated by `; `; `not-yet-honored-by -> ANALYSIS_<name>` marks a claim the code does not yet honor (`distillation.md` §2).
 - `state`: `OK` | `CONTESTED <id>[,..]` | `SUPERSEDED <id>[,..]` — per claim, never per
   node; a split bundle (`reconciliation.md` §Splitting) names all its successors.
 - A tombstone (merged/renamed topic): `status: SUPERSEDED` + `redirect_to: <slug>`, body empty.
@@ -813,6 +816,25 @@ how a dangling pointer survives a green run:
 
 Write these two values with **no trailing `# comment`**: the frontmatter reader does
 not strip inline comments, so the comment lands inside the value.
+
+**Intake hygiene fields** (`distillation.md` §1 owns the rules):
+
+```markdown
+redacted_at_intake: [password, personal-data]
+credential_scan: reviewed — vendor manual's sample value, not a live credential
+original_ref: wiki://team-space/app-config
+```
+
+- `redacted_at_intake:` — the kinds replaced by `[REDACTED: <kind>]` before storing.
+  When present, the sidecar carries **no `original_sha256:`** and no non-text original
+  is copied beside the extraction.
+- `credential_scan: reviewed — <reason>` — a human cleared a flagged line as a false
+  positive. Only this clears the check; a reason is required.
+- `original_ref:` — a non-local identifier of the original; recorded, never resolved.
+
+A **tombstone** (a withdrawn artifact) is renamed `<stem>-withdrawn-<YYYYMMDD>.<ext>.meta.md`
+and keeps `date:`, `provenance:`, `supersedes:` and `withdrawn: <reason>` — and **no
+`sha256:` or `original_sha256:`**. Its bytes are gone.
 
 `provenance:` has a consumer too: a claim row filed `prov: GIVEN` whose artifact's
 sidecar declares anything else warns. Declare the chain the artifact actually has —

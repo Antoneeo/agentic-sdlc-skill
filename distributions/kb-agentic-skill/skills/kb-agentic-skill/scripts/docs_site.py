@@ -768,6 +768,8 @@ def build_sources(docs, rows_of):
         name = mp.name[:-len(".meta.md")]
         t = _text(mp) or ""
         meta = sdlc_core.load_frontmatter(t.splitlines()) or {}
+        if knowledge.kb_is_tombstone(meta):
+            continue  # withdrawn: no bytes to show; corpus/INDEX.md keeps the row
         through = _v(meta, "extracted_through")
         parsed = knowledge.kb_parse_extracted_through(through) if through else None
         if not through:
@@ -1259,9 +1261,11 @@ def chronology(docs, pages):
             text = _text(p)
             if text is None:
                 continue
-            date = knowledge.frontmatter_date(
-                sdlc_core.load_frontmatter(text.splitlines()))
+            fm = sdlc_core.load_frontmatter(text.splitlines())
+            date = knowledge.frontmatter_date(fm)
             if not date:
+                continue
+            if kind == "source" and knowledge.kb_is_tombstone(fm):
                 continue
             if kind == "source":
                 name = p.name[:-len(suffix)]

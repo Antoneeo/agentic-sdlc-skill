@@ -59,6 +59,57 @@ Semantics: exit code 2 + message on stderr ⇒ the write is blocked and the mess
 - The hook assumes the working directory is the project root (standard behavior of Claude Code hooks).
 - **Hybrid/devPNT projects**: add `--hybrid` to the gate command. Governed designs live in the devPNT DB, so the gate also unlocks when an approved E-TDD shadow (`ai_docs/solutions/SHADOW_*tdd*.md`, exported before implementation — see `hybrid.md` §Shadow discipline) is present. Without the flag the gate would block legitimate governed work. The flag is deliberately explicit: never auto-detected.
 
+### Verdict check: `verdict` (PreToolUse -- wired by default)
+
+Rule Zero makes the agent declare the level with the guide-router verdict and read the
+guide it names before acting. A field agent edited without doing either and said nothing
+had stopped it (F-076). `sdlc_check.py verdict --hook` reads the session transcript
+Claude Code hands every hook and refuses an Edit, Write, MultiEdit or NotebookEdit when:
+
+- the session shows no line of the agent's own text with `router:` (the verdict) and no
+  `Level: L1` (or another lens's level 1), or
+- a guide the verdict names, present in `reference/`, never appeared in the input of a
+  tool call other than an edit (Read, Bash `cat`, Grep, a subagent brief all count).
+
+A verdict whose text after `router:` begins with `no match` or `absent` names no guide.
+The refusal is one line, shown to the agent, saying how to unblock. It is silent — the
+edit proceeds — in a project without guides, for a file outside the project, for a
+subagent's edit (one the client marks with `agent_id`, or one whose transcript is the
+subagent's own), and whenever it cannot tell (no or oversized transcript, unknown format,
+ambiguous docs root, any error). It never approves an edit: compliance leaves the user's
+normal permission flow in place.
+
+Cost (owner-accepted, `ai_docs/vision/rulings.md` r34, the "no ceremony ratchet"
+Non-Goal on r19's precedent): ~0.2–0.5 s per edit and zero tokens when compliant; one
+refusal of at most 250 characters and one retry when not. L1 pays nothing beyond writing
+`Level: L1`, which Rule Zero already asks for. Residuals: edits through a subagent and
+writes made with Bash are not checked (a subagent's edit the client does not mark is judged
+on the orchestrator's verdict); a verdict anywhere earlier in the session counts.
+
+Installing the package wires it machine-wide on Claude Code; **removing that hook entry
+is a standing opt-out.** The command ends in `; exit 0`: a validator that cannot run
+`verdict` — gone after an uninstall, or older after a downgrade — would exit 2, and exit
+2 on PreToolUse blocks every edit. To wire it by hand:
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"C:\\Users\\<user>\\.claude\\skills\\agentic-sdlc\\scripts\\sdlc_check.py\" verdict --hook; exit 0",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
 ## 4. SessionStart hook (orientation, recommended default)
 
 Emits the `ai_docs/` orientation to stdout at session start, in the order an arriving agent needs it: the Rule-Zero triage line, the lens choice when sibling lenses are installed, the guide router (`reference/INDEX.md`, one line per guide), the workstream registry (`audit/handoff.md`, one line per workstream, then the project-wide notes), the reading guide (`README.md`), then pointers to the manifest (`INDEX.md`) and to the full files — so the agent begins already oriented instead of reading them only if it remembers to. The whole output stays under 9,500 characters: Claude Code injects a hook's output up to 10,000 and, above that, only a 2,000-character preview, which is how the router once never reached a session (F-075). A section that does not fit is cut at a line with a pointer to its file, and a note says when one client runs the hook from two settings entries. It is **fail-open**: a missing or unreadable doc is skipped, and it always exits 0 — a broken or empty `ai_docs/` never blocks the session. It is **zero-execution** (it reads and prints, never runs anything).

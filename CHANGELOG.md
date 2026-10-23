@@ -5,15 +5,27 @@ Tutte le modifiche significative a questa skill saranno documentate in questo fi
 ## [Unreleased - 1.48.0]
 
 ### Changed
+- `guides.md`: a document snapshot is verbatim except for credentials and personal or confidential data the guide does not need, which become `[REDACTED: <kind>]` before the snapshot is written; the guide lists the kinds in `redacted_at_intake:`.
 - The session-start orientation (`orient`) now fits under Claude Code's 10,000-character hook limit, even in a project with many documents. Above that limit Claude Code saves the output to a file and shows the agent only the first 2,000 characters, so the guide router never reached the agent. The output is now at most 9,500 characters, including the knowledge layer's lines, and in this order: the triage line, the guide router (one line per guide), the workstream registry (one line per workstream, then the project-wide notes), then the reading guide (README). The manifest (INDEX) and the full files are listed as pointers. A section that does not fit is cut at a line, with a pointer to its file.
 - The per-turn `remind` line also tells the agent, above L1 and when sibling lenses are installed, to choose the lens with `routing.md` and declare it. The line's limit rises from 500 to 600 characters (`vision/rulings.md` r32).
 - `docs_site.py` adds `.docs-site/` to the project's `.gitignore` on its first run in a git repository, so the site's copy of the documents is not committed. It used to print a note only. An entry already in the file is never changed; when git still does not ignore the folder, the note is printed as before.
 - `SKILL.md` names the docs site in the words users use ("docs site", "minisito", "documentation site", "project site"), so a request for it runs `docs_site.py` instead of building a page by hand.
 
 ### Added
+- `check` refuses, in every lens, a line shaped like a credential (a password, token or key with a real value, a private-key header, a password in a URL, a bearer token) in a `corpus/given/` file or in the snapshot of a `source_kind: document` guide. The message names the file, the lines and the kinds, never the value. A human clears a false positive with `credential_scan: reviewed — <reason>` (in the sidecar, or in the guide). A project whose stored sources already hold such a line fails `check` until each is redacted or reviewed (`vision/rulings.md` r35a).
+- `adopt`: a dry run listing the document guides that rest on `.sources/` snapshots and what moving each into `corpus/given/` involves. It writes nothing.
+- `check` warns when the same text is stored both as a guide snapshot and as a corpus artifact.
+- `check` also warns on a `corpus/given/` file with no sidecar, accepts a withdrawn artifact's tombstone sidecar (no bytes, no digest), and, when an `original_path:` is a URI, names `original_ref:` for non-local identifiers. A password inside a URL in that warning is masked.
+- Shared claim checks (`check`): a claim's `about` cell may hold several relations separated by `; `, and one reserved predicate, `not-yet-honored-by -> ANALYSIS_<name>`, marks a specification claim the code does not yet honor. `check` refuses the marker when that analysis is missing from `solutions/` or cites neither the claim id nor the id of a row the claim succeeds. `export` drops the markers and says so in one line. Nothing lists or counts claims by the marker (`vision/rulings.md` r33). `memory.md`: a marked claim is cited as not yet true of the code, naming its analysis.
+- Write Triggers: a Standalone L3 that defers fixing code which contradicts a `topics/` claim marks the claim and cites its id in its ANALYSIS. The L2/L3 change that makes the code honor the claim removes the marker; L1 is exempt.
+- `verdict --hook`, wired by default on Claude Code: an Edit, Write, MultiEdit or NotebookEdit is refused, with one line saying how to unblock, when the session declared no guide-router verdict (or `Level: L1`), or never read a guide its verdict names. Silent in projects without guides, for subagents and whenever it cannot tell. Remove the hook entry to opt out (`ENFORCEMENT.md` §3, `vision/rulings.md` r34).
 - `orient` adds a note when one client runs it from two settings entries, which means each session gets the orientation twice. Claude Code and Codex are counted separately, an identical command counts once, and an entry whose validator is gone is not counted.
 - `orient` adds a line naming the sibling lenses installed beside the skill or in the user's Claude skills directory, and says to choose the lens with `routing.md`. The family list is read from `routing.md` §0, as the installer does.
 - `routing.md` §2 gains worked verdicts for four mixed requests: an interface spec written for another team, the requirements another team must build, a guide whose source spec changed, and code that diverges from a supplied spec.
+- The L3 ANALYSIS template gains a `## Guide check` section: two lines answering the Phase-3 question, whether a CURRENT guide covers what the change touches, and whether understanding it forced a model of a complex component that no guide covers. `validate` adds an advisory when an L3 analysis started on or after 2026-10-24 lacks the section or leaves it unfilled; older analyses are not checked.
+
+### Fixed
+- Uninstalling now also removes the per-turn `remind` hook entry. Left behind, it pointed at a deleted file and Python exited 2, which blocks the prompt.
 
 ## [1.47.0] - 2026-10-19
 
