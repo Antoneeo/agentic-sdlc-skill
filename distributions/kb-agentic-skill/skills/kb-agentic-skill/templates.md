@@ -746,7 +746,7 @@ status: CURRENT
   belong to reconciliation.
 - `qty`: `<value> <unit> <kind>` — effort in person-days (h/d/w/mo/fte-mo; 8h=1d, 1w=5d,
   1mo=21d), duration in calendar days (h/d/w/mo), cost within one currency, count unit-matched.
-- `about`: `<predicate> -> <slug>` for relationship claims; stored once, under the subject.
+- `about`: `<predicate> -> <slug>` for relationship claims; stored once, under the subject. Several share one cell, separated by `; `; `not-yet-honored-by -> ANALYSIS_<name>` marks a claim the code does not yet honor (`distillation.md` §2).
 - `state`: `OK` | `CONTESTED <id>[,..]` | `SUPERSEDED <id>[,..]` — per claim, never per
   node; a split bundle (`reconciliation.md` §Splitting) names all its successors.
 - A tombstone (merged/renamed topic): `status: SUPERSEDED` + `redirect_to: <slug>`, body empty.

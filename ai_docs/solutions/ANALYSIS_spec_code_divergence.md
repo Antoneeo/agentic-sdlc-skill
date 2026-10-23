@@ -263,7 +263,7 @@ No authentication, cryptography, network or personal data is involved.
 - [ ] RED: `test_claim_ledger.py` FS3–FS5/FS8/FS9 cases; doctrine invariants.
 - [ ] GREEN: `knowledge.py` check and export drop; copy ×3; manifest update.
 - [ ] Doctrine deltas D1–D8 as costed; READMEs and `skill_family_agent_workflows.md`.
-- [ ] Probe B1–B6 green, baseline A1/A2/A4 red (the flip).
+- [ ] Probe B1–B6 green, baseline A1/A4 red (the flip).
 - [ ] rulings r33 amendment; Component Map row; CHANGELOG entries; E2E_TEST; closure review; MERGE_REVIEW; `index`; `check` CLEAN; four batteries.
 
 ## Test Strategy
@@ -289,7 +289,7 @@ No authentication, cryptography, network or personal data is involved.
   - code `test_skill_invariants.py` asserts the Write Triggers row names
     "(Standalone)" and "L1 is exempt" (FS2/FS6).
 - **Probe:** `harness_spec_code_divergence/probe.py`, B1–B6 green; `--baseline`
-  A1/A2/A4 go red once shipped (A3 stays green).
+  A1/A4 go red once shipped (A2 and A3 stay green: the reserved predicate with a slug target is still refused).
 - **Batteries:** code, kb, mkt, course `unittest discover`, all green; drift guard green.
 
 ## Diary / Current State
