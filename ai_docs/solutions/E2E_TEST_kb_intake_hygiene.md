@@ -86,8 +86,9 @@ Result:
 
 ### R1 — a clean corpus stays clean
 Steps: Run `check` on an existing kb project with no credentials in `given/`.
-Expected: same result as before the upgrade (no new error; a `given/` file without a
-sidecar is the only possible new warning).
+Expected: same result as before the upgrade, no new error. Possible new warnings,
+each naming its file: a `given/` file without a sidecar, the same text in a snapshot
+and a corpus artifact, a URI in `original_path:` naming `original_ref:`.
 Result:
 
 ### R2 — guides without a corpus

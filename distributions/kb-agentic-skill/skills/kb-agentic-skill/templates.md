@@ -834,7 +834,7 @@ original_ref: wiki://team-space/app-config
 
 A **tombstone** (a withdrawn artifact) is renamed `<stem>-withdrawn-<YYYYMMDD>.<ext>.meta.md`
 and keeps `date:`, `provenance:`, `supersedes:` and `withdrawn: <reason>` — and **no
-`sha256:`**. Its bytes are gone.
+`sha256:` or `original_sha256:`**. Its bytes are gone.
 
 `provenance:` has a consumer too: a claim row filed `prov: GIVEN` whose artifact's
 sidecar declares anything else warns. Declare the chain the artifact actually has —

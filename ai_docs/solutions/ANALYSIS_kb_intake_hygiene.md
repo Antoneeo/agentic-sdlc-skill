@@ -199,9 +199,11 @@ Not flagged: `password.min.length=8`, `max_tokens: 4096`, `tokenizer: x`,
 the reviewed escape): single-word field descriptors in manuals (`Password: required`,
 `Token: optional`, `password: -`), `csrf_token`-style keys. Declared false negatives:
 values containing whitespace (passphrases), Markdown table rows
-(`| password | s3cr3t |`), credentials in XML elements or prose, keys whose credential
-word is not last (`secret_key_base`), vendor key formats in free text (no vendor format
-is matched).
+(`| password | s3cr3t |`), list items (`- POSTGRES_PASSWORD=x`, `- password: x`),
+Markdown emphasis (`**Password:** x`), `-Dpassword=x`, credentials in XML elements or
+prose, keys whose credential word is not last (`secret_key_base`), vendor key formats
+in free text (no vendor format is matched). For a stored `.txt` extraction with no
+sidecar of its own, the escape is read from its artifact's sidecar.
 
 Escapes: for a `given/` artifact, a sidecar field `credential_scan: reviewed — <reason>`
 (the word `reviewed` and a non-empty reason); for a snapshot, the same field in the
@@ -217,7 +219,7 @@ of the withdrawn bytes** (the name's `hash8` goes with the rename), and gains
 The redacted successor's sidecar says `supersedes: <stem>-withdrawn-<YYYYMMDD>.<ext>`.
 Claims citing the old artifact are re-placed on the successor; notes whose
 `derived_from:` named it are re-pointed. `check`: a withdrawn sidecar without bytes is
-accepted (today "sidecar exists but the original is gone"); with a `sha256:` it is an
+accepted (today "sidecar exists but the original is gone"); with a `sha256:` or `original_sha256:` it is an
 error; a second withdrawal of the same stem on the same day takes `-withdrawn-<YYYYMMDD>-2`.
 Any `given/` file with no sidecar is a warning ("no sidecar: an artifact nobody
 declared, or bytes a withdrawal left behind"), so leftover bytes are visible whatever
@@ -340,6 +342,8 @@ New components:
 - `kb_credential_errors(root, docs) -> [str]` — the FS2 errors over `given/` and document
   snapshots, escapes applied; one carrier per command (Impact).
 - `kb_cmd_adopt(root, docs) -> int` — FS7; reads only.
+- Helpers: `kb_credential_line_kind(line)` (one line → kind or None),
+  `kb_is_tombstone(meta)`, `_kb_same_text_warnings(docs)`, `_kb_mask_userinfo(text)`.
 
 Guides: `GUIDE_skill_family_changes.md` (read) — `knowledge.py` counts once.
 `GUIDE_shared_project_memory.md` (read) — the corpus section rides `check` after the
@@ -422,6 +426,12 @@ into logs and CI; paths from guide frontmatter; what intake stores.
   redaction duty is the rule, the check the backstop; secrets already in git history;
   personal data is never detected.
 - **T10 zero writes in `adopt`** → no file opened for writing (AC8).
+- **T11 symlinks in `given/` and `.sources/`** are followed by the scan, the
+  same-text check and `adopt`, as the digest check already does: they print only line
+  numbers, kinds and names. Declared residual; the pointers in guide frontmatter stay
+  confined (T7).
+- **T12 a password in a URL echoed by an existing warning** (`original_path:`) →
+  masked (`***`).
 
 ## Ceremony disclosure
 
