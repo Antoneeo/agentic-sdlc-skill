@@ -13,7 +13,7 @@ redacts first, `check` refuses a credential-shaped line in `corpus/given/` and i
 document-guide snapshots (every lens) without printing the value, a secret-bearing
 artifact can be withdrawn, `adopt` lists what moving document guides into the corpus
 involves, and the same text in two homes is reported. Serves Goal 2 (what stays
-durable is safe to keep) — ANALYSIS §Feature Vision, rulings r34a–c.
+durable is safe to keep) — ANALYSIS §Feature Vision, rulings r35a–c.
 
 ## What to review
 
@@ -96,8 +96,8 @@ kb `templates.md`, kb `SKILL.md`, shared `guides.md` §2 step 3.
 - `check` CLEAN after `mark` and `index` on the closing commit.
 - Owner decisions, `audit/requests/REQUEST_kb_intake_hygiene.md`: R3 error with a
   reviewed escape; R4 language rule; R5 withdrawal; R6 document snapshots scanned in
-  every lens; R7 personal and confidential data redacted by need; R8 cost and r34a/c
-  ADMIT, L1 at-rest exposure ruled admissible; R9 r34b ADMIT; R10 final read cost
+  every lens; R7 personal and confidential data redacted by need; R8 cost and r35a/c
+  ADMIT, L1 at-rest exposure ruled admissible; R9 r35b ADMIT (r34a–c in the record, renumbered at merge); R10 final read cost
   +7,780 bytes accepted.
 
 ## Your judgement
@@ -122,7 +122,9 @@ kb `templates.md`, kb `SKILL.md`, shared `guides.md` §2 step 3.
   also touched by sibling units F-076/F-078..F-080: on conflict, merge the source in
   `skills/agentic-sdlc-skill/`, copy it to the three distributions, and run
   `shared_files.py --update` in each scripts folder — never hand-merge a manifest.
-- `vision/rulings.md`: this branch adds r34a–c; F-080's branch adds r33. Keep both.
+- `vision/rulings.md`: this branch adds r35a–c. The request record (R8, R9) and the
+  review log call them r34a–c: they were renumbered at the merge with main, where
+  F-080 had taken r33 and F-076 r34.
 - Generated files (`audit/handoff.md`, `memory/INDEX.md`,
   `strategic/features_history.md`, `INDEX.md`) are regenerated with `sdlc_check.py
   index`, never resolved by hand.

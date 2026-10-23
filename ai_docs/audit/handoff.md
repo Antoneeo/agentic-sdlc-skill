@@ -9,15 +9,14 @@ Date: 2026-10-22 (UTC)
 | F-015 Code-Comprehension Guides | L3 | main | PAUSED | 2026-07-19 | dogfood #8: write one real `source_kind: code` guide | HANDOFF_comprehension_guides.md · ANALYSIS_comprehension_guides.md |
 | F-055 Apache-2.0 with NOTICE (four packages, two repositories) | L3 | feat/apache-license | DONE, AWAITING PUBLISH | 2026-09-13 | publish_all.bat from the repo root (owner's act, 2FA opens a browser per package; all three changed), then npm publish in distill-skill (2FA); then npm view returns code 1.34.0, kb 1.17.0, mkt 0.12.0, distill 0.9.0 | HANDOFF_apache_license.md · ANALYSIS_apache_license.md · harness_apache_license/probe.py |
 | F-070 "What's new" for users on the npm pages | L3 | main | PLANNED | 2026-10-13 | Elicitation round, then ANALYSIS_npm_whats_new.md (no devPNT). | HANDOFF_npm_whats_new.md · audit/requests/REQUEST_npm_whats_new.md |
-| F-076 Guide verdict check before edits | L3 | main | PLANNED | 2026-10-22 | Starts after F-075; elicitation first, with two owner decisions (warn or block; per-edit ceremony cost). | HANDOFF_guide_verdict_check.md · audit/requests/REQUEST_guide_verdict_check.md |
-| F-078 Guide check section in the L3 analysis | L2 | main | PLANNED | 2026-10-22 | Mini-analysis in the reply, then a `## Guide check` section in templates.md and a validate warning when it is missing. | HANDOFF_guide_check_section.md · audit/requests/REQUEST_session_orientation_reach.md |
 | F-079 Docs site named in the user's words | L2 | main | PLANNED | 2026-10-22 | Mini-analysis, then name the docs site ("docs site", "minisito") in each SKILL.md and add .docs-site/ to .gitignore on first run. | HANDOFF_docs_site_naming.md · audit/requests/REQUEST_session_orientation_reach.md |
-| F-080 Spec/code divergence state shared by the two skills | L3 | main | PLANNED | 2026-10-22 | Vision Gate first: an admission ruling in vision/rulings.md before any design. | HANDOFF_spec_code_divergence.md · audit/requests/REQUEST_spec_code_divergence.md |
 
 ## Project-wide notes
 
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
+
+**2026-10-23 — F-078 closed: Guide check section and validate advisory.**
 
 **2026-10-19 — the docs root is not an audit area: stale ignores it, mark refuses it (it was re-marked 15 times in two days).**
 

@@ -4,6 +4,8 @@
 
     python scripts/test_claim_ledger.py
 """
+import contextlib
+import io
 import os
 import sys
 import tempfile
@@ -1272,6 +1274,133 @@ class TL_F047_RowAtomicity(unittest.TestCase):
         self.assertEqual([e for e in errors
                           if "state must be" in e or "resolves to no row" in e],
                          [], errors)
+
+
+class TL_F080_NotYetHonored(unittest.TestCase):
+    """F-080: a spec claim the code does not yet honor points at the ANALYSIS
+    that records the deferred fix, and that ANALYSIS cites the claim id back."""
+
+    CID = kc.kb_claim_id("corpus/given/c.txt", "p=1@0-8", "")
+    MARK = "not-yet-honored-by -> ANALYSIS_export"
+
+    def _run(self, about, analysis=None):
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(
+                [(self.CID, "A", "-", "-", about, SRC1, "GIVEN", "OK")])},
+                given=GIVEN_TXT)
+            if analysis is not None:
+                (docs / "solutions").mkdir()
+                (docs / "solutions" / "ANALYSIS_export.md").write_text(
+                    analysis, encoding="utf-8")
+            return kc.kb_check_claims(docs)[0]
+
+    def cites(self):
+        return "# A\n\n**2026-10-23 — deferred.** Not yet honored: %s.\n" % self.CID
+
+    def test_a_marker_whose_analysis_cites_the_claim_is_clean(self):
+        self.assertEqual(self._run(self.MARK, self.cites()), [])
+
+    def test_a_marker_whose_analysis_is_missing_is_an_error_naming_it(self):
+        errors = self._run(self.MARK)
+        self.assertTrue(any("solutions/ANALYSIS_export.md" in e for e in errors), errors)
+
+    def test_a_marker_whose_analysis_does_not_cite_the_claim_is_an_error(self):
+        errors = self._run(self.MARK, "# A\n\nnothing here\n")
+        self.assertTrue(any(self.CID in e and "ANALYSIS_export" in e
+                            for e in errors), errors)
+
+    def test_a_relation_and_the_marker_share_one_cell(self):
+        self.assertEqual(self._run("depends-on -> phase-1; " + self.MARK,
+                                   self.cites()), [])
+
+    def test_a_malformed_part_of_a_shared_cell_is_refused(self):
+        errors = self._run("depends-on phase-1; " + self.MARK, self.cites())
+        self.assertTrue(any("about" in e for e in errors), errors)
+
+    def test_the_reserved_predicate_needs_an_analysis_target(self):
+        errors = self._run("not-yet-honored-by -> f-080")
+        self.assertTrue(any("ANALYSIS_" in e for e in errors), errors)
+
+    def test_a_relation_cannot_point_at_an_analysis(self):
+        errors = self._run("depends-on -> ANALYSIS_export", self.cites())
+        self.assertTrue(any("about" in e for e in errors), errors)
+
+    def test_a_traversal_shaped_target_is_refused_by_grammar(self):
+        for target in ("ANALYSIS_../x", "ANALYSIS_a/b", "ANALYSIS_a.b"):
+            errors = self._run("not-yet-honored-by -> " + target)
+            self.assertTrue(any("about" in e for e in errors), (target, errors))
+
+    def test_a_successor_is_satisfied_by_the_predecessors_citation(self):
+        # FS8: supersession copies the marker; no analysis is edited.
+        new = kc.kb_claim_id("corpus/given/c.txt", "p=2@0-10", "")
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md([
+                (self.CID, "A", "-", "-", self.MARK, SRC1, "GIVEN", "SUPERSEDED " + new),
+                (new, "A, refined", "-", "-", self.MARK, SRC2, "GIVEN", "OK")])},
+                given=GIVEN_TXT)
+            (docs / "solutions").mkdir()
+            (docs / "solutions" / "ANALYSIS_export.md").write_text(
+                self.cites(), encoding="utf-8")
+            self.assertEqual(kc.kb_check_claims(docs)[0], [])
+
+    def test_export_drops_the_marker_and_nothing_else(self):
+        # FS9 + T4: the bundle describes no code; every other byte travels.
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(
+                [(self.CID, "A", "-", "-", "depends-on -> phase-1; " + self.MARK,
+                  SRC1, "GIVEN", "OK")])}, given=GIVEN_TXT)
+            selected, artifacts, _a, errors = kc.kb_export_closure(docs, ["t"])
+            self.assertEqual(errors, [])
+            out = Path(tmp) / "bundle"
+            self.assertTrue(kc.kb_bundle_write(docs, out, selected, artifacts, "p"))
+            before = (docs / "topics" / "t.md").read_text(encoding="utf-8")
+            after = (out / "topics" / "t.md").read_text(encoding="utf-8")
+            self.assertNotIn("not-yet-honored-by", after)
+            self.assertEqual(before.replace("; " + self.MARK, ""), after)
+            self.assertEqual(kc.kb_check_claims(out)[0], [])
+
+    def test_export_drops_the_marker_from_a_row_without_a_trailing_pipe(self):
+        # Closure-review B1: the parser accepts such a row, so export must too.
+        with tempfile.TemporaryDirectory() as tmp:
+            text = claims_md([(self.CID, "A", "-", "-", self.MARK, SRC1, "GIVEN", "OK")])
+            text = text.replace("| GIVEN | OK |\n", "| GIVEN | OK\n")
+            docs = make_tree(tmp, {"t.md": text}, given=GIVEN_TXT)
+            selected, artifacts, _a, _e = kc.kb_export_closure(docs, ["t"])
+            out = Path(tmp) / "bundle"
+            self.assertTrue(kc.kb_bundle_write(docs, out, selected, artifacts, "p"))
+            self.assertNotIn("not-yet-honored-by",
+                             (out / "topics" / "t.md").read_text(encoding="utf-8"))
+
+    def test_a_claim_id_inside_a_longer_hex_token_is_not_a_citation(self):
+        # Closure-review W5: a sha that contains the id does not cite it.
+        errors = self._run(self.MARK, "# A\n\ncommit 0a%sff\n" % self.CID)
+        self.assertTrue(any(self.CID in e and "does not cite" in e for e in errors),
+                        errors)
+
+    def test_export_without_markers_reports_no_drop(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(
+                [(self.CID, "A", "-", "-", "-", SRC1, "GIVEN", "OK")])},
+                given=GIVEN_TXT)
+            selected, artifacts, _a, _e = kc.kb_export_closure(docs, ["t"])
+            out = Path(tmp) / "bundle"
+            self.assertFalse(kc.kb_bundle_write(docs, out, selected, artifacts, "p"))
+            self.assertEqual((docs / "topics" / "t.md").read_bytes(),
+                             (out / "topics" / "t.md").read_bytes())
+
+    def test_the_export_line_carries_no_number(self):
+        # FS7/FS9: a count of dropped markers is a count of claims by the mark.
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(
+                [(self.CID, "A", "-", "-", self.MARK, SRC1, "GIVEN", "OK")])},
+                given=GIVEN_TXT)
+            out = Path(tmp) / "bundle"
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                kc.main(["export", "--root", str(docs.parent), "--out", str(out)])
+            lines = [l for l in buf.getvalue().splitlines() if "not-yet-honored" in l]
+            self.assertEqual(len(lines), 1, buf.getvalue())
+            self.assertFalse(any(ch.isdigit() for ch in lines[0]), lines[0])
 
 
 if __name__ == "__main__":

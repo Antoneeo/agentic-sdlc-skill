@@ -162,7 +162,7 @@ Claims live in the owning topic's `## Claims` table (`templates.md` has the temp
   agreement.
 - **about** — `-` or `<predicate> -> <slug>` for a claim about a relationship
   ("depends-on -> phase-1"). Stored once, under the subject; the index computes the
-  reverse direction.
+  reverse direction. Several relations share one cell, separated by `; `. One predicate is reserved: `not-yet-honored-by -> ANALYSIS_<name>` says the code does not yet honor this specification claim and names the analysis that records the deferred fix, which must cite the claim id (`check` verifies both). It states the code's relation to the claim, not what the source asserts: the code-lens unit that defers or makes the fix writes or removes it, never a knowledge unit. It has no reverse direction, and nothing lists or selects claims by it. Export drops it: it describes this project's code.
 - **source** — `<path>#<locator>`; corroborating sources append with `;`. Locators:
   `p=<n>@<start>-<end>` (character offsets into page n of the stored extraction),
   `L<a>-<b>` (line files), `Sheet<s>!<cell>`. The span must exist — the validator opens

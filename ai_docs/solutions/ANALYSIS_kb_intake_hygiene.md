@@ -51,9 +51,9 @@ Measured before design (`harness_kb_intake_hygiene/probe.py`, kb entry point):
   shipped behaviour against a constraint, and the redaction duty restates for the
   corpus the rule request records already carry (`templates.md`, r26).
 
-Admission (`vision/rulings.md`, precedent first) — one row per question, **r34**
-(r33 is taken on the F-080 branch):
-- **r34a — tells the agent to redact secrets, and personal or confidential data the KB
+Admission (`vision/rulings.md`, precedent first) — one row per question, **r35**
+(r33 and r34 are taken by F-080 and F-076):
+- **r35a — tells the agent to redact secrets, and personal or confidential data the KB
   does not need, before a source is stored; refuses (error) credential-shaped lines in
   `given/` artifacts and document-guide snapshots; lets a secret-bearing artifact be
   withdrawn.** Not exempt maintenance: the product now refuses what it accepted and
@@ -68,7 +68,7 @@ Admission (`vision/rulings.md`, precedent first) — one row per question, **r34
   not this document's: the Non-Goal's L1 clause is unconditional, and this proposal's
   reading — a one-time remediation of data at rest, after which trivial changes pay
   nothing — is put to the owner as CONTESTED with the cost question.
-- **r34b — lists, without writing, the document guides that rest on snapshots and what
+- **r35b — lists, without writing, the document guides that rest on snapshots and what
   moving each into the corpus involves.** Near **r2** (collects derived per-document
   state into one surface): distinction line — `adopt` is the dry-run plan of one
   change the user has decided to make (an L3 adoption), run inside that change, like
@@ -77,7 +77,7 @@ Admission (`vision/rulings.md`, precedent first) — one row per question, **r34
   what the move would touch — facts about files, no score, count per status, order
   or recommendation (r3); ordered by path. If the owner reads it as r2's question, the
   row is CONTESTED and theirs to rule.
-- **r34c — reports the same text stored in two places.** A validator finding on two
+- **r35c — reports the same text stored in two places.** A validator finding on two
   named files, like the digest check; no state view.
 - Coupling: the patterns are generic shapes (`key=value` lines, PEM headers, URL
   userinfo, bearer headers), written from those formats' own syntax; nothing is copied
@@ -374,7 +374,7 @@ copied, `shared_files.py --update` ×4.
 | kb `README.md`, `CHANGELOG.md` ×4 | MODIFY | command list; notes (the check reaches every lens) |
 | `ai_docs/strategic/architecture.md` | MODIFY | Component Map: Corpus store row ("verbatim, redacted at intake; withdrawal"), new components |
 | `ai_docs/strategic/skill_family_agent_workflows.md` | CHECK | updated where it describes intake or guide snapshots |
-| `ai_docs/vision/rulings.md` | MODIFY | r34a–c |
+| `ai_docs/vision/rulings.md` | MODIFY | r35a–c |
 | `ai_docs/solutions/harness_kb_intake_hygiene/probe.py` | ADD | probes (P3 wording aligned with FS6's message) |
 
 Blast radius (grep over `*.py`, all five copies):
@@ -454,13 +454,13 @@ into logs and CI; paths from guide frontmatter; what intake stores.
 
 ## Action Plan
 
-- [x] Owner: cost acceptance and r34 ADMIT (mandated, after the design review).
+- [x] Owner: cost acceptance and r35 ADMIT (mandated, after the design review).
 - [x] RED: `test_kb_intake.py` AC1–AC10 (probe red: done).
 - [x] `kb_credential_findings`, `kb_credential_errors`, wiring; withdrawn; URI hint; one-home.
 - [x] `kb_cmd_adopt`, `INTERCEPTED`, parser, help; mkt epilog.
 - [x] Doctrine: `distillation.md`, `portability.md`, kb `templates.md`, kb `SKILL.md`; eval.
 - [x] Copy `knowledge.py` ×4; `shared_files.py --update` ×4.
-- [x] Component Map, workflows doc, README, CHANGELOG ×4, rulings r34.
+- [x] Component Map, workflows doc, README, CHANGELOG ×4, rulings r35.
 - [x] GREEN: four batteries, probe; E2E_TEST, closure review, MERGE_REVIEW; `check` CLEAN.
 
 ## Test Strategy
@@ -477,9 +477,9 @@ doctrine criteria. The probe replays P1–P5, B1–B2. Four batteries
 reviewed escape. R4: language rule.
 
 **2026-10-23 — design review.** PASS in round 3 (REVIEW_LOG); owner R5–R7 settled
-withdrawal, snapshot scanning and personal data. Next: owner cost acceptance and r34.
+withdrawal, snapshot scanning and personal data. Next: owner cost acceptance and r35.
 
-**2026-10-23 — implemented.** R8/R9: cost accepted, r34a–c ADMIT. RED (test_kb_intake.py,
+**2026-10-23 — implemented.** R8/R9: cost accepted, r35a–c ADMIT. RED (test_kb_intake.py,
 45 red), then GREEN: batteries code 420, kb 633, mkt 422, course 415 OK; probe green on
 all twelve lines, including P6 (snapshot flagged once by the code, kb and marketing
 `check` on a tree with no corpus). Read cost measured at +7,500 bytes against 6,600
@@ -489,3 +489,8 @@ estimated (Ceremony disclosure). Next: closure review.
 post-PASS URL-masking fold is covered by a test. Owner R10 accepted the measured read
 cost (+7,780). Batteries code 420, kb 642, mkt 422, course 415 OK; probe 12/12 GREEN.
 Release follows the family's release guide; the CHANGELOG sections stay `[Unreleased]`.
+
+**2026-10-23 — merged with main.** Main already held F-075, F-076, F-078 and F-080; F-076
+had taken r34, so this unit's rows became r35a–c (the request record and the review log
+keep the earlier names). CHANGELOG sections and the Component Map were unioned; the
+shared files and their manifests regenerated identical in all four locations.
