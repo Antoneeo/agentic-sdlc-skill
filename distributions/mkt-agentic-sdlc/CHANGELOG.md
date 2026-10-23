@@ -5,6 +5,8 @@
 ### Changed
 - The session-start orientation (`orient`) now fits under Claude Code's 10,000-character hook limit, even in a project with many documents. Above that limit Claude Code saves the output to a file and shows the agent only the first 2,000 characters, so the guide router never reached the agent. The output is now at most 9,500 characters, including the knowledge layer's lines, and in this order: the triage line, the guide router (one line per guide), the workstream registry (one line per workstream, then the project-wide notes), then the reading guide (README). The manifest (INDEX) and the full files are listed as pointers. A section that does not fit is cut at a line, with a pointer to its file.
 - The per-turn `remind` line also tells the agent, above L1 and when sibling lenses are installed, to choose the lens with `routing.md` and declare it. The line's limit rises from 500 to 600 characters (`vision/rulings.md` r32).
+- `docs_site.py` adds `.docs-site/` to the project's `.gitignore` on its first run in a git repository, so the site's copy of the documents is not committed. It used to print a note only. An entry already in the file is never changed; when git still does not ignore the folder, the note is printed as before.
+- `SKILL.md` names the docs site in the words users use ("docs site", "minisito", "documentation site", "project site"), so a request for it runs `docs_site.py` instead of building a page by hand.
 
 ### Added
 - `orient` adds a note when one client runs it from two settings entries, which means each session gets the orientation twice. Claude Code and Codex are counted separately, an identical command counts once, and an entry whose validator is gone is not counted.

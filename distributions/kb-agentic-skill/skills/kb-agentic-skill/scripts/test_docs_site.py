@@ -747,6 +747,13 @@ class Criterion14Announcements(unittest.TestCase):
         self.assertIn("--open", lines[0], "the line names the flag that opens the site")
         self.assertIn("user's browser", lines[0], "the site opens in the user's browser, not a pane")
         self.assertIn("project state", lines[0], "the line says when to show it")
+        # Field report 2026-10-22: asked to "genera minisito", the agent built a page by
+        # hand -- the site was named only by its file. The next line names it in the
+        # user's words.
+        after = skill.splitlines()[skill.splitlines().index(lines[0]) + 1]
+        for name in ("docs site", "minisito", "documentation site", "project site"):
+            self.assertIn('"%s"' % name, after)
+        self.assertIn("never build a page by hand", after)
 
     def test_the_package_ships_the_page_and_no_test(self):
         pkg = HERE.parent.parent.parent / "package.json"
@@ -1212,6 +1219,66 @@ class Criterion03Chronology(unittest.TestCase):
             write(d, "ai_docs/README.md", "# Empty\n")
             docs = Path(d) / "ai_docs"
             self.assertEqual(docs_site.chronology(docs, {}), [])
+
+
+class GitIgnoreEntry(unittest.TestCase):
+    """F-079: the first run adds `.docs-site/` to the project's .gitignore, so the
+    site's copy of the documents is not committed; an existing entry is left alone."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp(prefix="docs_site_git_")
+        self.project = build_code(Path(self.tmp) / "repo")
+        try:
+            subprocess.run(["git", "init", "-q"], cwd=str(self.project), check=True,
+                           capture_output=True, timeout=20)
+        except Exception:
+            self.skipTest("git not available")
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def ignore(self):
+        return (self.project / ".gitignore").read_bytes()
+
+    def test_the_first_run_adds_the_entry(self):
+        write(self.project, ".gitignore", "node_modules/")
+        code, text = run(self.project)
+        self.assertEqual(code, 0, text)
+        self.assertEqual(self.ignore(), b"node_modules/\n.docs-site/\n")
+        self.assertIn(".gitignore", text, "the run says what it wrote")
+        self.assertIs(docs_site.git_ignored(self.project, self.project / ".docs-site"), True)
+        code, text = run(self.project)
+        self.assertEqual(self.ignore(), b"node_modules/\n.docs-site/\n", "added once")
+
+    def test_a_missing_gitignore_is_created_with_the_entry(self):
+        code, text = run(self.project)
+        self.assertEqual(code, 0, text)
+        self.assertEqual(self.ignore(), b".docs-site/\n")
+
+    def test_the_files_line_endings_are_kept(self):
+        (self.project / ".gitignore").write_bytes(b"build/\r\n")
+        run(self.project)
+        self.assertEqual(self.ignore(), b"build/\r\n.docs-site/\r\n")
+
+    def test_an_existing_entry_is_left_alone(self):
+        for existing in (b"/.docs-site\n", b"*.log\n.docs-site/  \n"):
+            (self.project / ".gitignore").write_bytes(existing)
+            code, text = run(self.project)
+            self.assertEqual(code, 0, text)
+            self.assertEqual(self.ignore(), existing)
+
+    def test_an_entry_overridden_elsewhere_is_reported_not_rewritten(self):
+        write(self.project, ".gitignore", ".docs-site/\n")
+        write(self.project, ".docs-site/.gitignore", "!*\n")
+        before = self.ignore()
+        code, text = run(self.project)
+        self.assertEqual(self.ignore(), before)
+
+    def test_an_out_folder_outside_the_project_touches_no_gitignore(self):
+        with tempfile.TemporaryDirectory() as d:
+            code, text = run(self.project, "--out", str(Path(d) / "site"))
+            self.assertEqual(code, 0, text)
+            self.assertFalse((self.project / ".gitignore").exists())
 
 
 if __name__ == "__main__":
