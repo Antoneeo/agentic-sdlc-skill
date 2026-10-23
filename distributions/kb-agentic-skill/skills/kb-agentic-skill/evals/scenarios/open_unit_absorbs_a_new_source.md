@@ -48,7 +48,7 @@ expected: a statement within an open L3 unit's declared scope is absorbed as an 
 Ivaldi just told me on the phone: the badge readers on the K-02 gate are the X2 model, not the X1 we wrote in the report draft. Note it.
 ## Pass criteria
 - The agent declares an ingestion step of the K-02 unit (it does not open a new L3 or re-run the full triage), and cites the HANDOFF `scope:` it matched.
-- It writes the request-record entry, an elicited dated note with the statement, and a claim row on `gate_controller` whose locator came from `anchor` and whose id was filled once by `claim-id --fill`; then it runs `graph` until clean.
+- It writes the request-record entry, an elicited dated note with the statement, and a claim row on `gate_controller` whose locator came from `anchor` and whose id was filled once by `claim-id --fill`; then it runs `graph` and `corpus` until clean.
 - It adds one resume line to the HANDOFF body ("alignment pending since …") and leaves the frontmatter untouched.
 - It works in the unit's checkout (`feat/k02`); if that branch is absent from the fixture, it says so instead of writing on the shared line.
 - It does NOT rewrite `REPORT_k02.md`, run `stale`, `index` or `check`, edit `audit/handoff.md`, or commit; its reply states what landed on the ledger and that alignment is pending.

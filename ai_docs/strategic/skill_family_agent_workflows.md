@@ -26,6 +26,10 @@ orientarsi e riprendere il lavoro: il progetto, il lavoro aperto con il passo
 successivo, le analisi, le regole, i documenti e, con una KB, mappa, fatti con il
 passaggio esatto della fonte e documenti sorgente. Si apre da disco senza rete;
 non seleziona, non ordina per stato fuori dalle viste di lavoro, non raccomanda.
+Scrive in `.docs-site/` e alla prima esecuzione lo aggiunge al `.gitignore` del
+progetto (F-079); ogni `SKILL.md` lo nomina con le parole dell'utente ("docs site",
+"minisito", "documentation site", "project site"), perché una richiesta del sito
+esegua lo script invece di far costruire una pagina a mano.
 
 **Per chi**: il proprietario, e chiunque debba scegliere quale skill installare o
 capire perché un agente si comporta diversamente in quattro progetti.
@@ -216,7 +220,9 @@ argomenti — negli archi del grafo) e la **certezza** (quanto il corpus sostien
 un'affermazione — nelle righe di claim). L'algoritmo di ingestione:
 
 **1. Intake — la fonte diventa intoccabile.** Ogni documento entra verbatim in
-`corpus/given/`, content-addressed con **hash raw dei byte** (non quello
+`corpus/given/` — salvo credenziali e dati personali non necessari, sostituiti da
+`[REDACTED: <kind>]` prima di salvarlo e dichiarati in `redacted_at_intake:`
+(F-077; `check` rifiuta una riga a forma di credenziale) — content-addressed con **hash raw dei byte** (non quello
 LF-normalizzato delle guide: una coppia 0D0A/0A ostile collideerebbe); versione
 nuova = append con `supersedes:` nel sidecar, mai sovrascrittura. I non-testuali
 ricevono l'**estrazione canonica conservata** (`.txt`, pagine separate da

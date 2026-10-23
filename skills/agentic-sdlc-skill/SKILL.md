@@ -22,6 +22,7 @@ Support files in the skill directory:
 - `routing.md`: which lens owns this unit of work. Read ONLY when a sibling lens skill is installed alongside this one; a single-lens install never reads it.
 - `scripts/sdlc_check.py` + `scripts/sdlc_core.py`: the mechanical validator for the docs root (`check`, `validate`, `index`, `stale`, `mark`, `benefit`, `gate`, `plan`, `orient`, `migrate`).  Keep the entry point, `scripts/sdlc_core.py` and `scripts/knowledge.py` together; the last supplies common memory and KB integrity.
 - `scripts/docs_site.py --root <project> --open` (`--zip <file>` to share): opens in the user's browser a read-only site of what the agent reads; use it to show the project state.
+  It is what users mean by "docs site", "minisito", "documentation site" or "project site": run it, never build a page by hand.
 - `ENFORCEMENT.md`: optional setup for CI and hooks.
 
 Read these files only when needed. `SKILL.md` is the operating contract; the support files are progressive resources.
