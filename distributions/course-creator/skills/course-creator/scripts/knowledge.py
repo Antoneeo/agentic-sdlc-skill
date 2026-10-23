@@ -1169,7 +1169,7 @@ KB_CRED_ASSIGN_RE = re.compile(
     r"""^\s*(?:export\s+)?(["']?)([A-Za-z0-9_.\-]+)\1\s*[=:]\s*(.*)$""")
 KB_CRED_SEGMENT_RE = re.compile(r"[A-Z]?[a-z0-9]+|[A-Z]+(?![a-z])")
 KB_CRED_PEM_RE = re.compile(r"-----BEGIN [A-Z0-9 ]*PRIVATE KEY-----")
-KB_CRED_URL_RE = re.compile(r"[A-Za-z][A-Za-z0-9+.\-]*://[^/\s:@]+:([^@\s/]+)@")
+KB_CRED_URL_RE = re.compile(r"[A-Za-z][A-Za-z0-9+.\-]*://[^/\s:@]*:([^@\s/]+)@")
 KB_CRED_QUERY_RE = re.compile(r"[?&;](?:password|pwd|passwd)=([^&\s;#]+)", re.I)
 KB_CRED_BEARER_RE = re.compile(r"\bBearer\s+[A-Za-z0-9\-._~+/]{16,}")
 KB_CRED_PLACEHOLDER_RE = re.compile(
@@ -1255,7 +1255,7 @@ def kb_credential_findings(path):
 def _kb_mask_userinfo(text):
     """A password inside a URL never reaches the validator's output -- also once
     a candidate path has turned its `//` into `\\` (Windows join)."""
-    return re.sub(r"([/\\][^/\\\s:@]+:)[^@\s/\\]+@", r"\1***@", text)
+    return re.sub(r"([/\\][^/\\\s:@]*:)\S*@", r"\1***@", text)
 
 
 def _kb_reviewed(meta):

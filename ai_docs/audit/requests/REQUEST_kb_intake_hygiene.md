@@ -73,3 +73,12 @@ change; afterwards trivial changes pay nothing).
 Context (agent): `adopt` near r2; distinction line: the dry-run plan of one change the
 owner decided to make, like `migrate`'s and `import --dry-run`'s plans.
 > ADMIT (distinction holds)
+
+### R10 — 2026-10-23 — measured read cost accepted
+Context (agent): the read cost measured at closure was first quoted as +7,500 bytes
+(before the closure-review fixes), then corrected to the final +7,780 (distillation.md
++3,717, portability.md +1,947, templates.md +1,177, kb SKILL.md +453, guides.md +486)
+against ~6,600 accepted in R8.
+> Accept 7,500 bytes
+
+> Accept 7,780 bytes

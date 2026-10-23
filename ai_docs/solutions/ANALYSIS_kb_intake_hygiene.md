@@ -2,11 +2,12 @@
 id: F-077
 feature: kb intake hygiene — secrets redacted at intake, adoption on an existing ai_docs, one home per source text
 description: Why a credential handed over in a team's documents could become an immutable, hash-checked corpus artifact or guide snapshot, why a project that ingested its documents as guide snapshots had no path into kb-agentic, and the redaction rule, credential check, withdrawal, adoption dry run and one-home rule that close both.
-status: IN_PROGRESS
+status: COMPLETED
 level: L3
 domain: code
 topics: [corpus, intake, redaction, credentials, guides, adoption]
 start_date: 2026-10-23
+end_date: 2026-10-23
 branch: claude/f077-kb-intake-hygiene-cf9cd8
 ---
 # kb intake hygiene — redaction, adoption, one home per source text
@@ -184,7 +185,7 @@ A line is credential-shaped when one of these holds:
   optionally followed by `-`/`+`), is a `[REDACTED…` marker, a placeholder (`<…>`,
   `${…}`, `{{…}}`, `%(…)s`, `ENC(…)`), or only `*`/`x`;
 - **private key**: `-----BEGIN … PRIVATE KEY-----`;
-- **URL password**: `scheme://user:password@` with a real password, or a query
+- **URL password**: `scheme://user:password@` (the user may be empty) with a real password, or a query
   parameter `password=`/`pwd=`/`passwd=` with a real value (kind `connection-string`);
 - **bearer**: `Bearer ` followed by at least 16 token characters.
 
@@ -444,10 +445,10 @@ into logs and CI; paths from guide frontmatter; what intake stores.
   was replaced; `corpus` run in the step (FS9).
 - Adoption: one-off, L3, opt-in.
 - Read cost, measured (UTF-8 LF bytes; estimate accepted in R8 in brackets): kb
-  `distillation.md` +3,473 [2.8 KB], `portability.md` +1,947 [2.2 KB] (read on
-  adoption/export), kb `templates.md` +1,155 [0.8 KB], kb `SKILL.md` +439 [0.4 KB],
+  `distillation.md` +3,717 [2.8 KB], `portability.md` +1,947 [2.2 KB] (read on
+  adoption/export), kb `templates.md` +1,177 [0.8 KB], kb `SKILL.md` +453 [0.4 KB],
   shared `guides.md` +486 [0.4 KB] (every lens, read when creating a guide). Total
-  +7,500 against an estimated 6,600.
+  +7,780 against an estimated 6,600, accepted by the owner (R10).
 - L1/L2 add no step, field or check of their own; the only L1 exposure is the at-rest
   failure above.
 
@@ -460,7 +461,7 @@ into logs and CI; paths from guide frontmatter; what intake stores.
 - [x] Doctrine: `distillation.md`, `portability.md`, kb `templates.md`, kb `SKILL.md`; eval.
 - [x] Copy `knowledge.py` ×4; `shared_files.py --update` ×4.
 - [x] Component Map, workflows doc, README, CHANGELOG ×4, rulings r34.
-- [ ] GREEN: four batteries, probe; E2E_TEST, closure review, MERGE_REVIEW; `check` CLEAN.
+- [x] GREEN: four batteries, probe; E2E_TEST, closure review, MERGE_REVIEW; `check` CLEAN.
 
 ## Test Strategy
 
@@ -483,3 +484,8 @@ withdrawal, snapshot scanning and personal data. Next: owner cost acceptance and
 all twelve lines, including P6 (snapshot flagged once by the code, kb and marketing
 `check` on a tree with no corpus). Read cost measured at +7,500 bytes against 6,600
 estimated (Ceremony disclosure). Next: closure review.
+
+**2026-10-23 — closed.** Closure review FAIL → PASS in two rounds (REVIEW_LOG); the
+post-PASS URL-masking fold is covered by a test. Owner R10 accepted the measured read
+cost (+7,780). Batteries code 420, kb 642, mkt 422, course 415 OK; probe 12/12 GREEN.
+Release follows the family's release guide; the CHANGELOG sections stay `[Unreleased]`.

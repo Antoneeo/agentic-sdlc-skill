@@ -490,6 +490,17 @@ class OriginalRef(unittest.TestCase):
             self.assertIn("does not resolve", out)
             self.assertNotIn("Sup3rS3cret", out)
 
+    def test_masking_covers_empty_user_and_raw_at(self):
+        for url, secret in (("redis://:Pw0rdXyz@host/0", "Pw0rdXyz"),
+                            ("https://alice:p@ssWd9@wiki/x", "ssWd9")):
+            with self.subTest(url=url):
+                self.assertNotIn(secret, knowledge._kb_mask_userinfo(url))
+        with tempfile.TemporaryDirectory() as t:
+            p = Path(t) / "f.txt"
+            p.write_text("cache=redis://:Pw0rdXyz@host/0\n", encoding="utf-8")
+            self.assertEqual(knowledge.kb_credential_findings(p),
+                             [(1, "connection-string")])
+
     def test_drive_path_does_not_name_original_ref(self):
         with tempfile.TemporaryDirectory() as t:
             tree(t, REDACTED, sidecar=["original_path: C:/nowhere/x.pdf"])
