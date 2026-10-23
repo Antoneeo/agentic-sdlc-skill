@@ -10,13 +10,14 @@ Date: 2026-10-22 (UTC)
 | F-055 Apache-2.0 with NOTICE (four packages, two repositories) | L3 | feat/apache-license | DONE, AWAITING PUBLISH | 2026-09-13 | publish_all.bat from the repo root (owner's act, 2FA opens a browser per package; all three changed), then npm publish in distill-skill (2FA); then npm view returns code 1.34.0, kb 1.17.0, mkt 0.12.0, distill 0.9.0 | HANDOFF_apache_license.md · ANALYSIS_apache_license.md · harness_apache_license/probe.py |
 | F-070 "What's new" for users on the npm pages | L3 | main | PLANNED | 2026-10-13 | Elicitation round, then ANALYSIS_npm_whats_new.md (no devPNT). | HANDOFF_npm_whats_new.md · audit/requests/REQUEST_npm_whats_new.md |
 | F-077 kb intake: secrets, adoption on an existing ai_docs, document guides on corpus/given | L3 | main | PLANNED | 2026-10-22 | Starts after the F-075/F-076 release; elicitation, then ANALYSIS_kb_intake_hygiene.md in kb-agentic. | HANDOFF_kb_intake_hygiene.md · audit/requests/REQUEST_kb_intake_hygiene.md |
-| F-078 Guide check section in the L3 analysis | L2 | main | PLANNED | 2026-10-22 | Mini-analysis in the reply, then a `## Guide check` section in templates.md and a validate warning when it is missing. | HANDOFF_guide_check_section.md · audit/requests/REQUEST_session_orientation_reach.md |
 | F-079 Docs site named in the user's words | L2 | main | PLANNED | 2026-10-22 | Mini-analysis, then name the docs site ("docs site", "minisito") in each SKILL.md and add .docs-site/ to .gitignore on first run. | HANDOFF_docs_site_naming.md · audit/requests/REQUEST_session_orientation_reach.md |
 
 ## Project-wide notes
 
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
+
+**2026-10-23 — F-078 closed: Guide check section and validate advisory.**
 
 **2026-10-19 — the docs root is not an audit area: stale ignores it, mark refuses it (it was re-marked 15 times in two days).**
 

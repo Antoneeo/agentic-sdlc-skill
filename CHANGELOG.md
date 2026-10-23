@@ -15,6 +15,7 @@ Tutte le modifiche significative a questa skill saranno documentate in questo fi
 - `orient` adds a note when one client runs it from two settings entries, which means each session gets the orientation twice. Claude Code and Codex are counted separately, an identical command counts once, and an entry whose validator is gone is not counted.
 - `orient` adds a line naming the sibling lenses installed beside the skill or in the user's Claude skills directory, and says to choose the lens with `routing.md`. The family list is read from `routing.md` §0, as the installer does.
 - `routing.md` §2 gains worked verdicts for four mixed requests: an interface spec written for another team, the requirements another team must build, a guide whose source spec changed, and code that diverges from a supplied spec.
+- The L3 ANALYSIS template gains a `## Guide check` section: two lines answering the Phase-3 question, whether a CURRENT guide covers what the change touches, and whether understanding it forced a model of a complex component that no guide covers. `validate` adds an advisory when an L3 analysis started on or after 2026-10-24 lacks the section or leaves it unfilled; older analyses are not checked.
 
 ### Fixed
 - Uninstalling now also removes the per-turn `remind` hook entry. Left behind, it pointed at a deleted file and Python exited 2, which blocks the prompt.
