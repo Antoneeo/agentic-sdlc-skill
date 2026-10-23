@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
 const fs = require('fs');
-const { CLIENTS, skillTarget, removeGlobalOrientHooks } = require('./lib');
+const {
+  CLIENTS, skillTarget, removeGlobalOrientHooks, removeGlobalCommandHooks,
+} = require('./lib');
 
 function removeSkill(client) {
   const target = skillTarget(client);
@@ -24,6 +26,20 @@ try {
   const removedFrom = removeGlobalOrientHooks(CLIENTS.map(skillTarget));
   for (const target of removedFrom) {
     console.log(`🧹 Removed the session-orientation hook entry (${target}).`);
+  }
+} catch (e) { /* never abort an uninstall for a convenience */ }
+
+// F-076: the per-turn reminder and the guide-verdict check name the same skill
+// dirs; left behind they exit 2 (Python cannot open the file), which blocks the
+// prompt or the edit. The verdict entry is also wired `; exit 0`, because npm 7+
+// may not run this script at all.
+const COMMAND_HOOK_NAMES = {
+  UserPromptSubmit: 'per-turn reminder',
+  PreToolUse: 'guide-verdict check',
+};
+try {
+  for (const { target, event } of removeGlobalCommandHooks(CLIENTS.map(skillTarget))) {
+    console.log(`🧹 Removed the ${COMMAND_HOOK_NAMES[event] || event} hook entry (${target}).`);
   }
 } catch (e) { /* never abort an uninstall for a convenience */ }
 

@@ -3,7 +3,7 @@
 const fs = require('fs');
 const {
   SKILL_SOURCE, CLIENTS, clientDetected, skillTarget, copyRecursive,
-  wireGlobalOrientHook, wireGlobalRemindHook, detectPython,
+  wireGlobalOrientHook, wireGlobalRemindHook, wireGlobalVerdictHook, detectPython,
 } = require('./lib');
 
 function installSkill(client) {
@@ -50,6 +50,16 @@ for (const client of CLIENTS) {
           console.log('🔗 Per-turn protocol reminder wired for every project on this machine');
           console.log(`   (${rr.target}). One constant line per prompt; remove that hook`);
           console.log('   entry to opt out — it will not be re-added.');
+        }
+        // F-076: the guide-verdict check -- refuses an edit when the session
+        // declared no guide-router verdict, or never read a guide it names.
+        // Silent on projects without guides; owner-accepted per-edit cost:
+        // ai_docs/vision/rulings.md r34.
+        const rv = wireGlobalVerdictHook({ client, python: detectPython() });
+        if (rv.code === 'wired') {
+          console.log('🔗 Guide-verdict check wired for every project on this machine');
+          console.log(`   (${rv.target}). Edits wait for the Rule-Zero router verdict in projects`);
+          console.log('   with guides; remove that hook entry to opt out — it will not be re-added.');
         }
         const r = wireGlobalOrientHook({ client, python: detectPython() });
         if (r.code === 'wired') {
