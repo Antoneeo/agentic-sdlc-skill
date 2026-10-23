@@ -104,6 +104,18 @@ Semantics: exit code 2 + message on stderr ⇒ the write is blocked and the mess
 - The hook assumes the working directory is the project root (standard behavior of Claude Code hooks).
 - **Hybrid/devPNT projects**: add `--hybrid` to the gate command. Governed designs live in the devPNT DB, so the gate also unlocks when an approved E-TDD shadow (`ai_docs/solutions/SHADOW_*tdd*.md`, exported before implementation — in this package that clause is the whole statement of the duty; the sibling lenses keep it in their `hybrid.md`, which kb does not have) is present. Without the flag the gate would block legitimate governed work. The flag is deliberately explicit: never auto-detected.
 
+### Verdict check: `verdict` (PreToolUse -- manual for this lens)
+
+`sdlc_check.py verdict --hook` refuses an Edit, Write, MultiEdit or NotebookEdit when the
+session transcript shows no guide-router verdict (`router: …`, or a level-1 declaration)
+or a guide the verdict names was never read; it is silent in projects without guides and
+whenever it cannot tell. The code package (`agentic-sdlc`) wires it machine-wide on
+Claude Code; this package does not. To wire it by hand, add a `PreToolUse` entry with
+matcher `Edit|Write|MultiEdit|NotebookEdit` and command
+`python "<skills dir>/course-creator/scripts/sdlc_check.py" verdict --hook; exit 0` — the `; exit 0`
+keeps a missing or older validator from exiting 2, which would block every edit. Cost
+and residuals: `ai_docs/vision/rulings.md` r34.
+
 ## 4. SessionStart hook (orientation, recommended default)
 
 Emits the `ai_docs/` orientation to stdout at session start, in the order an arriving agent needs it: the Rule-Zero triage line, the lens choice when sibling lenses are installed, the guide router (`reference/INDEX.md`, one line per guide), the workstream registry (`audit/handoff.md`, one line per workstream, then the project-wide notes), the reading guide (`README.md`), then pointers to the manifest (`INDEX.md`) and to the full files — so the agent begins already oriented instead of reading them only if it remembers to. The whole output stays under 9,500 characters: Claude Code injects a hook's output up to 10,000 and, above that, only a 2,000-character preview, which is how the router once never reached a session (F-075). A section that does not fit is cut at a line with a pointer to its file, and a note says when one client runs the hook from two settings entries. It is **fail-open**: a missing or unreadable doc is skipped, and it always exits 0 — a broken or empty `ai_docs/` never blocks the session. It is **zero-execution** (it reads and prints, never runs anything).
