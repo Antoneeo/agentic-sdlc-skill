@@ -8,6 +8,6 @@ States: PENDING (to analyze) | ANALYZED (analyzed, with reference) | SKIPPED (wi
 | sdlc-test-project/ | SKIPPED | - | manual test fixture, not product code |
 | skills/agentic-sdlc-skill/ | ANALYZED | c7ec671b223e | re-analysis here is not complete until the two DERIVED documents say the same thing: `strategic/skill_family_agent_workflows.md` (what an agent does differently under each lens) and the distribution's `README.md` (the npm front page — support-files bullet, Runtime Shape tree, validator commands). `mark` is the last step, not the first |
 | scripts/ | ANALYZED | 23c1747e0d45 |  |
-| distributions/ | ANALYZED | c7ec671b223e | same duty as the row above, per distribution: doctrine changed here means `strategic/skill_family_agent_workflows.md` and that distribution's `README.md` are stale until refreshed. `stale` fires on this row at the first doctrine edit — that is the prompt |
+| distributions/ | ANALYZED | 3dbb9af0b552 | same duty as the row above, per distribution: doctrine changed here means `strategic/skill_family_agent_workflows.md` and that distribution's `README.md` are stale until refreshed. `stale` fires on this row at the first doctrine edit — that is the prompt |
 | ai_docs/ | SKIPPED | - | the docs root is governance, not an analyzable area: `validate` checks it, and since 2026-10-19 `stale` ignores it and `mark` refuses it. |
-| skills/ | ANALYZED | c7ec671b223e |  |
+| skills/ | ANALYZED | 3dbb9af0b552 |  |
