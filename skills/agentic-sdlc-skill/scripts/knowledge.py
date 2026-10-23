@@ -644,7 +644,8 @@ def kb_check_marks(root, marked, per_file_rows, errors):
                               "marker if it did not come from this project -- it "
                               "describes its origin's code" % (where, KB_NOT_HONORED,
                                                               target, rel))
-            elif ids and not any(cid in text for cid in ids):
+            elif ids and not any(re.search(r"(?<![0-9a-f])%s(?![0-9a-f])" % cid, text)
+                                 for cid in ids):
                 errors.append("%s: %s does not cite claim %s -- the analysis that "
                               "records a deferred fix cites the id it defers"
                               % (where, rel, row["id"]))
@@ -663,8 +664,11 @@ def kb_drop_marks(text):
         keep = [p for p in parts if not KB_NOT_HONORED_RE.match(p)]
         if len(keep) == len(parts):
             continue
+        # The parser strips the pipes at both ends, so a row with no trailing
+        # pipe is legal: counted from the left, the about cell sits at `col`
+        # either way.
         segs = lines[row["_line"] - 1].split("|")
-        if len(segs) != len(CLAIM_COLUMNS) + 2:
+        if len(segs) not in (len(CLAIM_COLUMNS) + 1, len(CLAIM_COLUMNS) + 2):
             continue
         segs[col] = " %s " % ("; ".join(keep) or "-")
         lines[row["_line"] - 1] = "|".join(segs)
@@ -1931,8 +1935,8 @@ def kb_cmd_export(args):
     print("[ok] bundle written: %s" % out)
     print("     topics: %d, artifacts: %d" % (len(selected), len(artifacts)))
     if dropped:
-        print("     %s markers dropped: they describe this project's code"
-              % KB_NOT_HONORED)
+        print("     not-yet-honored markers dropped: they describe this "
+              "project's code")
     if added:
         # never silent: a set that grew is a fact about the export, and the
         # alternative -- dropping the partner rows -- ships a broken tree.

@@ -6,8 +6,7 @@ shared claim checks (`knowledge.kb_check_claims`, identical in all four packages
 plus the code lens's `check`.
 
   --baseline  asserts the as-is facts the design rests on (GREEN before F-080,
-              A1/A4 turn RED once F-080 ships; A2 stays GREEN because the
-              reserved predicate with a slug target is still refused -- that flip is the evidence):
+              A1/A2/A4 turn RED once F-080 ships -- that flip is the evidence):
     A1  `about: not-yet-honored-by -> <slug>` passes with nothing behind the target
     A2  two relations in one `about` cell are refused
     A3  the code lens's `check` reaches the claim checks (a bad `about` is reported)
@@ -81,7 +80,7 @@ def baseline():
     return [
         ("A1 marker passes, target unresolved", findings("not-yet-honored-by -> f-080") == []),
         ("A2 two relations refused", any("about" in f for f in findings(
-            "depends-on -> phase-1; not-yet-honored-by -> f-080"))),
+            "depends-on -> phase-1; depends-on -> phase-2"))),
         ("A3 code check reaches claims", "about must be" in out.stdout + out.stderr),
         ("A4 doctrine silent", not any("not-yet-honored-by" in p.read_text(encoding="utf-8")
                                        for p in DOCTRINE)),

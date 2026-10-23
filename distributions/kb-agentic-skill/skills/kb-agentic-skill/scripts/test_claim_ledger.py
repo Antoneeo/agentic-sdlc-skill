@@ -1359,6 +1359,24 @@ class TL_F080_NotYetHonored(unittest.TestCase):
             self.assertEqual(before.replace("; " + self.MARK, ""), after)
             self.assertEqual(kc.kb_check_claims(out)[0], [])
 
+    def test_export_drops_the_marker_from_a_row_without_a_trailing_pipe(self):
+        # Closure-review B1: the parser accepts such a row, so export must too.
+        with tempfile.TemporaryDirectory() as tmp:
+            text = claims_md([(self.CID, "A", "-", "-", self.MARK, SRC1, "GIVEN", "OK")])
+            text = text.replace("| GIVEN | OK |\n", "| GIVEN | OK\n")
+            docs = make_tree(tmp, {"t.md": text}, given=GIVEN_TXT)
+            selected, artifacts, _a, _e = kc.kb_export_closure(docs, ["t"])
+            out = Path(tmp) / "bundle"
+            self.assertTrue(kc.kb_bundle_write(docs, out, selected, artifacts, "p"))
+            self.assertNotIn("not-yet-honored-by",
+                             (out / "topics" / "t.md").read_text(encoding="utf-8"))
+
+    def test_a_claim_id_inside_a_longer_hex_token_is_not_a_citation(self):
+        # Closure-review W5: a sha that contains the id does not cite it.
+        errors = self._run(self.MARK, "# A\n\ncommit 0a%sff\n" % self.CID)
+        self.assertTrue(any(self.CID in e and "does not cite" in e for e in errors),
+                        errors)
+
     def test_export_without_markers_reports_no_drop(self):
         with tempfile.TemporaryDirectory() as tmp:
             docs = make_tree(tmp, {"t.md": claims_md(

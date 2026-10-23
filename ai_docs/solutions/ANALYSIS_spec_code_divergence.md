@@ -86,7 +86,8 @@ separator in `about`. No METAPHOR names.
   claim id and the analysis.
 - **FS5 Coexistence.** A claim may carry relations and the marker together, in one
   cell, separated by `; `. A malformed part is an error, as a malformed `about` is
-  today. The reserved predicate with a non-analysis target is an error, and an
+  today. The canonical separator is `; `; a bare `;` is tolerated, as in the source
+  column. The reserved predicate with a non-analysis target is an error, and an
   ordinary relation pointing at an analysis is an error.
 - **FS6 Removal.** The L2/L3 change that makes the code honor a marked claim removes
   the marker in the same commit. An L1 fix is exempt, so a marker may outlive an L1
@@ -260,10 +261,10 @@ No authentication, cryptography, network or personal data is involved.
 - [x] Scoped re-review, round 2: FAIL (1 BLOCK, 4 WARN), answered.
 - [x] Scoped re-review, round 3: PASS.
 - [x] Owner confirms the ceremony figures above: R8 «Accept 1,820 B».
-- [ ] RED: `test_claim_ledger.py` FS3–FS5/FS8/FS9 cases; doctrine invariants.
-- [ ] GREEN: `knowledge.py` check and export drop; copy ×3; manifest update.
-- [ ] Doctrine deltas D1–D8 as costed; READMEs and `skill_family_agent_workflows.md`.
-- [ ] Probe B1–B6 green, baseline A1/A4 red (the flip).
+- [x] RED: `test_claim_ledger.py` FS3–FS5/FS8/FS9 cases; doctrine invariants.
+- [x] GREEN: `knowledge.py` check and export drop; copy ×3; manifest update.
+- [x] Doctrine deltas D1–D8 as costed; READMEs and `skill_family_agent_workflows.md`.
+- [x] Probe B1–B6 green, baseline A1/A2/A4 red (the flip).
 - [ ] rulings r33 amendment; Component Map row; CHANGELOG entries; E2E_TEST; closure review; MERGE_REVIEW; `index`; `check` CLEAN; four batteries.
 
 ## Test Strategy
@@ -289,7 +290,7 @@ No authentication, cryptography, network or personal data is involved.
   - code `test_skill_invariants.py` asserts the Write Triggers row names
     "(Standalone)" and "L1 is exempt" (FS2/FS6).
 - **Probe:** `harness_spec_code_divergence/probe.py`, B1–B6 green; `--baseline`
-  A1/A4 go red once shipped (A2 and A3 stay green: the reserved predicate with a slug target is still refused).
+  A1/A2/A4 go red once shipped (A3 stays green).
 - **Batteries:** code, kb, mkt, course `unittest discover`, all green; drift guard green.
 
 ## Diary / Current State
@@ -342,3 +343,15 @@ Next: round 3, the last before the cap.
 
 **2026-10-23 — design PASS, cost confirmed, implementation started.** Round 3 PASS
 (REVIEW_LOG). Owner accepted 1,820 B (R8). Status IN_PROGRESS.
+
+**2026-10-23 — implemented; closure review round 1: FAIL, fixed.** RED then GREEN in
+`knowledge.py` (copied ×3, manifest updated), D1–D8 applied verbatim from
+`deltas.py`, READMEs, workflows doc, Component Map, r33 amendment, CHANGELOG ×4, E2E.
+Batteries ×4 green, probe B1–B6 green. Closure review (fresh subagent, deep): 1 BLOCK,
+6 WARN. B1: export kept the marker on a row with no trailing pipe (legal for the
+parser); fixed by locating the cell from the left, with a test. W1: probe A2 now tests
+two ordinary relations, so it flips red as designed. W2: r33's deciding line names the
+amended ceremony. W3: the export line reads as the Interface Contract. W4: FS5 and the
+CHANGELOGs name `; ` as canonical, with a bare `;` tolerated. W5: the back-citation
+matches the id as a whole hex token, with a test. W6: these records. Next: scoped
+re-review, then MERGE_REVIEW, `index`, `mark`.
