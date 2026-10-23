@@ -2,12 +2,12 @@
 id: F-075
 feature: What reaches the session — orient under the hook cap, lens choice
 description: Why the guide router never reached a session that started with orient wired (16 KB output, router past Claude Code's 2,000-character preview, wired twice), and the reordered, bounded orientation, the wired-twice note and the lens-choice line that fix it.
-status: IN_PROGRESS
+status: COMPLETED
 level: L3
 domain: code
 topics: [orientation, session-start, guide-router, domain-routing, hooks]
 start_date: 2026-10-23
-end_date:
+end_date: 2026-10-23
 branch: feat/f075-orientation-reach
 ---
 # What reaches the session — orient under the hook cap, lens choice
@@ -388,3 +388,9 @@ course 413 OK; probe green on both wired entry points (5,751 characters; router 
 522, registry heading at 1,055); review-log parsing identical before and after the
 escaped-pipe split (216 rows). Golden: only the orient section re-captured in code and kb;
 mkt's baseline unchanged. Next: closure review.
+
+**2026-10-23 — closed.** Closure review FAIL → PASS in two rounds (REVIEW_LOG); owner R9
+accepted the 89-character suffix. Batteries code 420, kb 601, mkt 422, course 415 OK;
+probe green on both entries. Release follows F-076 (`GUIDE_release.md`); the CHANGELOG
+sections are `[Unreleased]` with provisional versions. Follow-up candidate, not acted on:
+the kb per-turn line names no guide-router duty.
