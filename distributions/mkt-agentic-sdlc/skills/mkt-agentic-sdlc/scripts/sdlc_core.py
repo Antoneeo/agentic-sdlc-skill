@@ -2468,9 +2468,11 @@ def cmd_gate(args):
 VERDICT_EDIT_TOOLS = ("Edit", "Write", "MultiEdit", "NotebookEdit")
 VERDICT_MAX_BYTES = 256 * 1024 * 1024  # a larger transcript: cannot afford to tell
 VERDICT_LINE_MAX = 1024 * 1024         # assistant lines are small; skip the rest unparsed
-_VERDICT_ROUTER_RE = re.compile(r"router\s*:(.*)", re.IGNORECASE)
+# Markdown emphasis between the word and the colon ("**router**: no match") and
+# "Router verdict:" are the same declaration: format drift resolves to silence.
+_VERDICT_ROUTER_RE = re.compile(r"router(?:[\s*_`]+verdict)?[\s*_`]*:(.*)", re.IGNORECASE)
 _VERDICT_NONE_RE = re.compile(r"[\s`*_\"'(]*(no match|absent)", re.IGNORECASE)
-_VERDICT_TRIVIAL_RE = re.compile(r"\blevel\s*:[\s`*_]*[A-Z]1\b", re.IGNORECASE)
+_VERDICT_TRIVIAL_RE = re.compile(r"\blevel[\s*_`]*:[\s`*_]*[A-Z]1\b", re.IGNORECASE)
 _GUIDE_NAME_RE = re.compile(r"GUIDE_[A-Za-z0-9_-]+\.md")
 
 
@@ -2478,10 +2480,11 @@ def transcript_facts(path):
     """What the session transcript shows about the verdict duty, or None when it
     cannot be read within the bounds.
 
-    Returns {"assistant": entries parsed, "declared": a router verdict seen,
+    Returns {"assistant": entries parsed, "sidechain": a subagent's own transcript
+    (Claude Code marks every entry of one `isSidechain`), "declared": a router verdict seen,
     "trivial": a `Level: X1` seen, "named": guides the verdicts name,
     "read": guide names that appeared in a non-edit tool's input}."""
-    facts = {"assistant": 0, "declared": False, "trivial": False,
+    facts = {"assistant": 0, "sidechain": False, "declared": False, "trivial": False,
              "named": set(), "read": set()}
     try:
         p = Path(path)
@@ -2501,6 +2504,8 @@ def transcript_facts(path):
                 if not isinstance(content, list):
                     continue
                 facts["assistant"] += 1
+                if entry.get("isSidechain") is True:
+                    facts["sidechain"] = True
                 for block in content:
                     if not isinstance(block, dict):
                         continue
@@ -2544,6 +2549,8 @@ def verdict_reason(payload, root):
     facts = transcript_facts(transcript)
     if not facts or not facts["assistant"]:
         return None  # unreadable, oversized or an unknown format: cannot tell
+    if facts["sidechain"]:
+        return None  # a subagent works under its orchestrator's verdict
     if not (facts["declared"] or facts["trivial"]):
         return ("[sdlc verdict] No guide-router verdict in this session; this project has "
                 f"guides ({docs_dir()}/reference/INDEX.md). Declare it with the level, e.g. "
