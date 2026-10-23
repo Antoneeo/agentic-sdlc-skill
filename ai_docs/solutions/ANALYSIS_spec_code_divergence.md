@@ -1,10 +1,10 @@
 ---
 id: F-080
 feature: Spec/code divergence state shared by the two skills
-status: IN_PROGRESS
+status: COMPLETED
 level: L3
 start_date: 2026-10-23
-end_date:
+end_date: 2026-10-23
 domain: code
 ---
 # Feature Analysis: Spec/code divergence state shared by the two skills
@@ -265,7 +265,7 @@ No authentication, cryptography, network or personal data is involved.
 - [x] GREEN: `knowledge.py` check and export drop; copy ×3; manifest update.
 - [x] Doctrine deltas D1–D8 as costed; READMEs and `skill_family_agent_workflows.md`.
 - [x] Probe B1–B6 green, baseline A1/A2/A4 red (the flip).
-- [ ] rulings r33 amendment; Component Map row; CHANGELOG entries; E2E_TEST; closure review; MERGE_REVIEW; `index`; `check` CLEAN; four batteries.
+- [x] rulings r33 amendment; Component Map row; CHANGELOG entries; E2E_TEST; closure review; MERGE_REVIEW; `index`; `check` CLEAN; four batteries.
 
 ## Test Strategy
 
@@ -355,3 +355,8 @@ amended ceremony. W3: the export line reads as the Interface Contract. W4: FS5 a
 CHANGELOGs name `; ` as canonical, with a bare `;` tolerated. W5: the back-citation
 matches the id as a whole hex token, with a test. W6: these records. Next: scoped
 re-review, then MERGE_REVIEW, `index`, `mark`.
+
+**2026-10-23 — closed.** Scoped closure re-review PASS (REVIEW_LOG). Batteries ×4 green
+(code 421, kb 618, mkt 423, course 416), probe B1–B6 green. MERGE_REVIEW written,
+handoff removed, areas marked. Hybrid follow-up stays open (R7). Awaiting the owner's
+merge decision; nothing pushed, tagged or released.
