@@ -12,7 +12,6 @@ Date: 2026-10-22 (UTC)
 | F-076 Guide verdict check before edits | L3 | main | PLANNED | 2026-10-22 | Starts after F-075; elicitation first, with two owner decisions (warn or block; per-edit ceremony cost). | HANDOFF_guide_verdict_check.md · audit/requests/REQUEST_guide_verdict_check.md |
 | F-077 kb intake: secrets, adoption on an existing ai_docs, document guides on corpus/given | L3 | main | PLANNED | 2026-10-22 | Starts after the F-075/F-076 release; elicitation, then ANALYSIS_kb_intake_hygiene.md in kb-agentic. | HANDOFF_kb_intake_hygiene.md · audit/requests/REQUEST_kb_intake_hygiene.md |
 | F-078 Guide check section in the L3 analysis | L2 | main | PLANNED | 2026-10-22 | Mini-analysis in the reply, then a `## Guide check` section in templates.md and a validate warning when it is missing. | HANDOFF_guide_check_section.md · audit/requests/REQUEST_session_orientation_reach.md |
-| F-079 Docs site named in the user's words | L2 | main | PLANNED | 2026-10-22 | Mini-analysis, then name the docs site ("docs site", "minisito") in each SKILL.md and add .docs-site/ to .gitignore on first run. | HANDOFF_docs_site_naming.md · audit/requests/REQUEST_session_orientation_reach.md |
 | F-080 Spec/code divergence state shared by the two skills | L3 | main | PLANNED | 2026-10-22 | Vision Gate first: an admission ruling in vision/rulings.md before any design. | HANDOFF_spec_code_divergence.md · audit/requests/REQUEST_spec_code_divergence.md |
 
 ## Project-wide notes
