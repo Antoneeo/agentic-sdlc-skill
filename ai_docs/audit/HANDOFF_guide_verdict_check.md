@@ -1,22 +1,22 @@
 ---
 workstream: F-076 Guide verdict check before edits
 level: L3
-branch: main
-status: PLANNED
+branch: claude/f076-guide-verdict-check-eaaba8
+status: IN_PROGRESS
 since: 2026-10-22
-next: Starts after F-075; elicitation first, with two owner decisions (warn or block; per-edit ceremony cost).
-details: audit/requests/REQUEST_guide_verdict_check.md
-updated: 2026-10-22
+next: Implement `verdict --hook` and the installer wiring against the approved ANALYSIS (design review PASS round 2), then closure.
+details: solutions/ANALYSIS_guide_verdict_check.md
+updated: 2026-10-23
 ---
 
 ## Resume state
 
-A `PreToolUse` hook on Edit/Write that reads `transcript_path` and checks a router
-verdict was declared and the guides it names were read. Known risk: the transcript is
-written asynchronously and may lag the current turn. Owner decisions pending: warn or
-block; acceptance of the per-edit cost under the "no ceremony ratchet" Non-Goal (as r19).
-Probe: replay the other session's case, unflagged today, flagged after.
+Design approved (REVIEW_LOG, 2026-10-23, round 2 PASS). Owner: block (R3), wired by
+default (R4). RED batteries written: `skills/agentic-sdlc-skill/scripts/test_verdict.py`,
+F-076 cases at the end of `scripts/test_clients.js`. Probe:
+`ai_docs/solutions/harness_guide_verdict_check/probe.py` (P1, P3 red until implemented).
+Open: R1's quotation source pending the owner (R5).
 
 ## Next command
 
-After F-075 closes: elicitation round, then ANALYSIS_guide_verdict_check.md.
+`python -X utf8 skills/agentic-sdlc-skill/scripts/test_verdict.py` after implementing.
