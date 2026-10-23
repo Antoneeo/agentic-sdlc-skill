@@ -14,7 +14,7 @@
     "routing.md": "5116e8dbd3b215919b897506f28917ac8f1c44cd91f8b64ec901048320e6c1f6",
     "scripts/docs_site.py": "7196a7431c6607b7d534dbeccd4b032fb93e4c285544ffd86520a14d0e9e48ec",
     "scripts/entry_point.py": "4a560d4d41db989d3426182f1b24270cbb934b3db0f3246c700578a4ed93089b",
-    "scripts/knowledge.py": "9bb9e31465bb762081a5ad6142605d1fa2cf8d5d358c23db9a08f99c58977aa4",
+    "scripts/knowledge.py": "505102b2ea40f3360b10a299be7e310d1782ad06bf306b68981edbca4747e2a4",
     "scripts/sdlc_core.py": "639596a541e46c5ee1e42596724f846d02d2936f6cc53564d119b48347b03acd",
     "scripts/shared_files.py": "bc3b311ca5c736070e9970428429226ca0a9186e010c265b556512b6df191e73",
     "scripts/test_audit_refs.py": "5c207be46da566db47069b08373195e748fca19c047418f09cc2f78841dfd9a5",
