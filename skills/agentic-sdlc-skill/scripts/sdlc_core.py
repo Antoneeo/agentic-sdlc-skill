@@ -547,15 +547,31 @@ def newest_shadow(solutions_dir, doc_key):
     F-081: the Hybrid target of a claim marker; reusable by any consumer."""
     if not Path(solutions_dir).is_dir():
         return None
-    rx = re.compile(r"^SHADOW_%s_v(\d+(?:\.\d+)*)\.md$" % re.escape(doc_key))
     best = None
     for p in Path(solutions_dir).iterdir():
-        m = rx.match(p.name)
-        if m and p.is_file():
-            v = tuple(int(x) for x in m.group(1).split("."))
+        v = _shadow_version(p.name, doc_key)
+        if v is not None and p.is_file():
             if best is None or v > best[0]:
                 best = (v, p)
     return best[1] if best else None
+
+
+def _shadow_version(name, doc_key):
+    """The version tuple of `SHADOW_<doc_key>_v<N>[.<N>...].md`, else None."""
+    m = re.match(r"^SHADOW_%s_v(\d+(?:\.\d+)*)\.md$" % re.escape(doc_key), name)
+    return tuple(int(x) for x in m.group(1).split(".")) if m else None
+
+
+def stray_shadow(solutions_dir, doc_key):
+    """A file of the same exact key that `newest_shadow` does not read
+    (`SHADOW_<doc_key>.md`, `..._v1.2a.md`), or None -- the name a user needs
+    to see when no shadow resolves. A longer key is never a stray."""
+    if not Path(solutions_dir).is_dir():
+        return None
+    rx = re.compile(r"^SHADOW_%s(?:_v[^_]*)?\.md$" % re.escape(doc_key))
+    return next((p.name for p in sorted(Path(solutions_dir).iterdir())
+                 if rx.match(p.name) and _shadow_version(p.name, doc_key) is None),
+                None)
 
 
 def iter_files(target):

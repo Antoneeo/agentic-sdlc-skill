@@ -159,7 +159,7 @@ symbol-graph tool being devPNT's and devPNT off):
 | File | Change | Why |
 |---|---|---|
 | `skills/agentic-sdlc-skill/scripts/knowledge.py` (shared ×4) | `KB_NOT_HONORED_RE` accepts `(ANALYSIS\|SHADOW)_[A-Za-z0-9_-]+`; the grammar error names both forms; `kb_check_marks` resolves a `SHADOW_` target through `sdlc_core.newest_shadow` and words FS3 per form, naming a stray file of the key | FS1–FS5 |
-| `skills/agentic-sdlc-skill/scripts/sdlc_core.py` (shared ×4) | new `newest_shadow(solutions_dir, doc_key)` | FS2, Ledger |
+| `skills/agentic-sdlc-skill/scripts/sdlc_core.py` (shared ×4) | new `newest_shadow(solutions_dir, doc_key)` and `stray_shadow(solutions_dir, doc_key)`, one name rule (`_shadow_version`) | FS2, FS3, Ledger |
 | `distributions/*/scripts/knowledge.py`, `sdlc_core.py` (×3 each) | verbatim copy | drift guard |
 | `scripts/shared_manifest.json` (×4) | `shared_files.py --update` | drift guard |
 | `skills/agentic-sdlc-skill/SKILL.md` | D1: Write Triggers row | UC1 |
@@ -304,3 +304,16 @@ private `_kb_mark_target` that reads no predicate), copied ×3, manifest updated
 applied verbatim from `deltas.py`; kb README, workflows doc, Component Map, CHANGELOG ×4.
 Probe B1–B7 green; baseline A1/A3 red, A2 green (the flip). Batteries after `index`:
 code 458, kb 669, mkt 460, course 453, all OK. Next: E2E (written), closure review.
+
+**2026-10-23 — closure review round 1: PASS with 5 WARN, answered.** Fresh subagent
+(rung 1, deep) re-ran probe, batteries ×4, drift guard and the delta comparison.
+- W1: `check` was also NOT CLEAN on `memory/INDEX.md`; closure runs `index` before
+  `mark` and `check`.
+- W2: the r35 row records R6 and the confirmed figures.
+- W3: the handoff is removed at closure.
+- W4: any part whose predicate is `not-yet-honored-by` now gets the marker message, which
+  names `SHADOW_<doc_key>, unversioned`; the FS4 message says "analysis or design". Tests.
+- W5: stray detection moves to `sdlc_core.stray_shadow`, sharing the one name rule with
+  `newest_shadow`, so a correctly versioned file is never reported as a stray. Test.
+- CV1: the E2E Result fields are the tester's, after merge (S6 needs a live agent).
+  CV2: symlink escape untestable on this host; `confine_under` still guards it.

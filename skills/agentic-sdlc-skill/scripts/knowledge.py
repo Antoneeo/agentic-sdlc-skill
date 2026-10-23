@@ -470,9 +470,9 @@ def kb_check_claims(root):
                 rel_m = KB_ABOUT_RE.match(part)
                 if mark:
                     marks.append(mark.group(1))
-                elif rel_m and rel_m.group(1) == KB_NOT_HONORED:
+                elif part.split(" -> ")[0].strip() == KB_NOT_HONORED:
                     errors.append("%s: about %r: '%s' needs an ANALYSIS_<name> "
-                                  "target (Hybrid: SHADOW_<doc_key>) -- the "
+                                  "target (Hybrid: SHADOW_<doc_key>, unversioned) -- the "
                                   "analysis or design that records the deferred "
                                   "fix" % (where, part, KB_NOT_HONORED))
                 elif not rel_m:
@@ -653,8 +653,9 @@ def kb_check_marks(root, marked, per_file_rows, errors):
                                                               target, rel))
             elif ids and not any(re.search(r"(?<![0-9a-f])%s(?![0-9a-f])" % cid, text)
                                  for cid in ids):
-                errors.append("%s: %s does not cite claim %s -- the analysis that "
-                              "records a deferred fix cites the id it defers"
+                errors.append("%s: %s does not cite claim %s -- the analysis or "
+                              "design that records a deferred fix cites the id it "
+                              "defers"
                               % (where, rel, row["id"]))
 
 
@@ -673,10 +674,7 @@ def _kb_mark_target(root, target):
     path = sdlc_core.newest_shadow(sol, key) if sol is not None else None
     if path is not None and sdlc_core.confine_under(root, "solutions/" + path.name):
         return "solutions/" + path.name, sdlc_core.read_text(path), None
-    stray = None
-    if sol is not None and sol.is_dir():
-        rx = re.compile(r"^SHADOW_%s(?:\.md|_v[^_]*\.md)$" % re.escape(key))
-        stray = next((p.name for p in sorted(sol.iterdir()) if rx.match(p.name)), None)
+    stray = sdlc_core.stray_shadow(sol, key) if sol is not None else None
     return "solutions/SHADOW_%s_v<X.Y>.md" % key, None, stray
 
 
