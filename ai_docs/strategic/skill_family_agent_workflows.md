@@ -209,7 +209,9 @@ argomenti — negli archi del grafo) e la **certezza** (quanto il corpus sostien
 un'affermazione — nelle righe di claim). L'algoritmo di ingestione:
 
 **1. Intake — la fonte diventa intoccabile.** Ogni documento entra verbatim in
-`corpus/given/`, content-addressed con **hash raw dei byte** (non quello
+`corpus/given/` — salvo credenziali e dati personali non necessari, sostituiti da
+`[REDACTED: <kind>]` prima di salvarlo e dichiarati in `redacted_at_intake:`
+(F-077; `check` rifiuta una riga a forma di credenziale) — content-addressed con **hash raw dei byte** (non quello
 LF-normalizzato delle guide: una coppia 0D0A/0A ostile collideerebbe); versione
 nuova = append con `supersedes:` nel sidecar, mai sovrascrittura. I non-testuali
 ricevono l'**estrazione canonica conservata** (`.txt`, pagine separate da

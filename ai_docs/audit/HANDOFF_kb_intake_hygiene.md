@@ -1,12 +1,12 @@
 ---
 workstream: F-077 kb intake: secrets, adoption on an existing ai_docs, document guides on corpus/given
 level: L3
-branch: main
-status: PLANNED
+branch: claude/f077-kb-intake-hygiene-cf9cd8
+status: IN_PROGRESS
 since: 2026-10-22
-next: Starts after the F-075/F-076 release; elicitation, then ANALYSIS_kb_intake_hygiene.md in kb-agentic.
+next: Implement F-077 (TDD) per the approved ANALYSIS, then closure.
 details: audit/requests/REQUEST_kb_intake_hygiene.md
-updated: 2026-10-22
+updated: 2026-10-23
 ---
 
 ## Resume state

@@ -36,6 +36,34 @@ Every sidecar (`<artifact>.meta.md`) carries: the digest, the date, provenance,
 `supersedes:` when it replaces an earlier version, and `extracted_through:` once anything
 has been extracted from it (§3). `corpus/INDEX.md` is generated.
 
+**Redact before storing — the one exception to verbatim.** `given/` is committed and
+never edited, so what enters it must be safe to keep. Replace every credential value
+and the personal or confidential third-party data the KB does not need (a role may
+replace a name) with `[REDACTED: <kind>]`, the request record's marker. What the source
+asserts about the value survives; the value does not — the north star's declared
+exception, written in the sidecar's `redacted_at_intake: [<kind>, …]`. The digest is
+the redacted bytes'. When something was redacted, keep **no `original_sha256:`** (beside
+the redacted text it tests password guesses offline) and **never copy a non-text
+original beside its extraction**. Notes follow the same rule and are fixed by editing.
+
+`check` and `corpus` refuse a `given/` file — or a document guide's snapshot — holding a
+credential-shaped line (a `key=value`/`key: value` whose key ends in a credential word,
+with a real value; a private-key header; a password in a URL; a bearer token), naming
+lines and kinds, **never the value**. Like `original_sha256`, say its limits: it flags
+manual field descriptors (`Password: required`) and misses passphrases with spaces,
+table rows, prose and vendor formats. Only a human clears a false positive, in the
+sidecar: `credential_scan: reviewed — <reason>`; `redacted_at_intake:` never does. The
+ingestion step runs `corpus` beside `graph`, so nothing is saved unscanned.
+
+**Withdrawing an artifact that holds a secret** — the one removal `given/` allows. Store
+the redacted successor; delete the old bytes; rename the old sidecar
+`<stem>-withdrawn-<YYYYMMDD>.<ext>.meta.md` (`-2` for a second that day), drop its
+`sha256:` and add `withdrawn: <reason>`; the successor says `supersedes:` that name.
+Re-place the claims and re-point the `derived_from:` that named the old artifact.
+`check` refuses a tombstone with a digest and warns on any `given/` file without a
+sidecar; `export` never ships a tombstone. The bytes stay in git history: tell the user;
+purging it is theirs.
+
 **Extraction-as-artifact — the variant for a large binary corpus.** Copying gigabytes
 of PDFs into the docs root buys nothing: what the digest protects is *the bytes a
 locator addresses*, and those are the extraction's. So the extraction may be the
@@ -76,6 +104,20 @@ position:
   absolute and got silently joined onto the docs root's drive.
 
 The digest that bites is `sha256:`, on the bytes the locators actually address.
+
+**Where the original is, when no path should be written.** `original_path:` is
+optional. A non-local identifier (a wiki page, a document-system id) goes in
+`original_ref:`, recorded and never resolved; a personal location (a home directory) is
+not recorded. A URI in `original_path:` warns and names `original_ref:`.
+
+**A document guide with a corpus — one home per source text.** Here a
+`source_kind: document` guide's source is a `given/` artifact, not a `.sources/`
+snapshot (this overrides `guides.md` §2 step 3): `distilled_from:` and the markers name
+it, `source_hash` is the line-ending-normalized digest `stale` computes (not the
+sidecar's raw `sha256:`, which differs on CRLF), and sections cite the claim ids
+extracted from their span, so a superseded claim reaches the guide. `.sources/` stays
+for code guides; `check` warns when a snapshot and a `given/` artifact hold the same
+text. Moving existing guides: `portability.md` §6.
 
 ## 2. The claim — one falsifiable assertion
 
@@ -228,6 +270,12 @@ them, never stored.
 ## 4. Signal discipline (what "distillation" still means)
 
 - Contract-first for any prose you write around the rows (reader, action, payload).
+- Language: `given/` artifacts and snapshots keep the source's language, never
+  translated. Claim text and guide synthesis are written in the language of the
+  document that holds them (the topic, the guide); the span still points at the
+  original bytes, and the row's `prov` is the source's — a claim is the extractor's
+  rendering, never a quote. A stored translation is a `corpus/notes/` note with
+  `derived_from:` the artifact, never a `given/` artifact.
 - Zero speculation: unverified information is marked `[unverified]` or omitted — never
   written as a claim.
 - No noise: no filler, no restated boilerplate; the claim table IS the signal.
