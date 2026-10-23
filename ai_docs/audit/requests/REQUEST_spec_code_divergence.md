@@ -19,3 +19,22 @@ precedes any design.
 
 ### R2 — 2026-10-22 — plan approved
 > approvo il piano. Genera il minisito
+
+### R3 — 2026-10-23 — admission ruling
+Context (agent): candidate r33 — a per-claim `not yet honored by` pointer to an
+existing ANALYSIS; Topic Recall cites it; the ANALYSIS cites the claim id; no listing
+or selection by that state (distinctions from r2/r9/r3/r14/r24 put with the question).
+> ADMIT as drafted
+
+### R4 — 2026-10-23 — marker mandatory on deferral
+Context (agent): when a code-lens L3 defers fixing code that contradicts a spec claim,
+is writing the marker mandatory (one claim edit + one ANALYSIS line per deferring L3)
+or optional (zero ceremony, the field case can recur)?
+> Mandatory on deferral
+
+### R5 — 2026-10-23 — ceremony cost in principle
+Context (agent): accept the estimated cost now (L1/L2 zero; per deferral one claim
+cell + one ANALYSIS line; per answer one extra citation; doctrine ≈ +250 B kb Topic
+Recall, +300 B distillation, +300 B code templates; one validator check), with exact
+byte figures re-confirmed after the ANALYSIS?
+> Accept, confirm later
