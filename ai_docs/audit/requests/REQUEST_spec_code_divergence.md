@@ -38,3 +38,22 @@ cell + one ANALYSIS line; per answer one extra citation; doctrine ≈ +250 B kb 
 Recall, +300 B distillation, +300 B code templates; one validator check), with exact
 byte figures re-confirmed after the ANALYSIS?
 > Accept, confirm later
+
+### R6 — 2026-10-23 — who removes the marker
+Context (agent): when a later change makes the code honor a marked claim, who removes
+the marker — L2/L3 only (L1 exempt, a stale marker possible after an L1 fix), any
+level (L1 pays one cell edit, ratchet Non-Goal), or nobody?
+> L2/L3 only, L1 exempt
+
+### R7 — 2026-10-23 — Hybrid scope
+Context (agent): the design review found R4 unsatisfiable in Hybrid (the deferral lives
+in a devPNT E-ISP, no `ANALYSIS_*` target). Standalone now and Hybrid in a later unit
+(R4 narrowed), or include Hybrid now (target also resolves a `SHADOW_<doc_key>_v*.md`)?
+> Standalone now, Hybrid later
+
+### R8 — 2026-10-23 — final ceremony cost
+Context (agent): after the design review PASS (three rounds), accept 1,820 B of
+doctrine (535 B read every session, L1 included; D1–D8 in
+`solutions/harness_spec_code_divergence/deltas.py`), L1 zero steps, L2 a step only
+when it fixes a marked claim, so implementation can start?
+> Accept 1,820 B

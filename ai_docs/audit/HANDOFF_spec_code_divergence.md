@@ -1,20 +1,19 @@
 ---
 workstream: F-080 Spec/code divergence state shared by the two skills
 level: L3
-branch: main
-status: PLANNED
+branch: claude/f080-spec-code-divergence-a37c3e
+status: IN_PROGRESS
 since: 2026-10-22
-next: Vision Gate first: an admission ruling in vision/rulings.md before any design.
-details: audit/requests/REQUEST_spec_code_divergence.md
-updated: 2026-10-22
+next: GREEN in knowledge.py (marker check + export drop), then doctrine D1-D8 and closure.
+details: solutions/ANALYSIS_spec_code_divergence.md
+updated: 2026-10-23
 ---
 
 ## Resume state
 
-Field-report finding 6: a claim the code does not yet honor lives only in an analysis
-and the roadmap, so Topic Recall can present it as current behavior. A new capability
-linking kb-agentic and agentic-sdlc: the owner rules on admission before design.
+r33 ADMIT (REQUEST R3); marker mandatory on deferral (R4); removal on L2/L3, L1
+exempt (R6). Design in the ANALYSIS; probe in `solutions/harness_spec_code_divergence/`.
 
 ## Next command
 
-Draft the ruling row and ask the owner.
+`python ai_docs/solutions/harness_spec_code_divergence/probe.py` (B1-B5 red until implemented).
