@@ -94,8 +94,8 @@ Run the steps in order. Stop at the first one that decides.
 | "write sales copy and an onboarding course" | split: persuasion and teaching | never reached | never reached | **marketing** for copy; **course** for training |
 | "write the interface spec of our service for another team" (kept and versioned with the repo) | code | repo's own doc set → code | not build-consumed → no flip | **code** |
 | "write the requirements another team must build, from their documents and our notes" | supplied docs → knowledge | never reached | never reached | **knowledge** |
-| "the vendor spec changed: update the guide distilled from it" | split (step 4): guide = supplied docs; any code change the new spec requires = this repo | — | — | **knowledge** for re-distilling the guide; **code** for the code change, citing the guide |
-| "the code and the supplied spec diverge" | split (step 4): changing the code = this repo; correcting the distillation = supplied docs | — | — | **code** if the code is wrong; **knowledge** if the distillation is — which one is wrong is the owner's call, not the router's |
+| "the vendor spec changed: update the guide distilled from it" | split (step 4): guide = supplied docs; any code change the new spec requires = this repo | never reached | never reached | **knowledge** for re-distilling the guide; **code** for the code change, citing the guide |
+| "the code and the supplied spec diverge" | split (step 4): changing the code = this repo; correcting the distillation = supplied docs | never reached | never reached | **code** if the code is wrong; **knowledge** if the distillation is — which one is wrong is the owner's call, not the router's |
 
 ## 3. Acting on the verdict
 

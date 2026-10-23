@@ -56,3 +56,10 @@ survive verbatim; the router-first order under the cap cannot keep it. Options o
 exempt orient from the additions-only guard (frozen file untouched, current baseline
 re-captured), rewrite the frozen section, or keep the old text after the new sections.
 > Exempt orient (Recommended)
+
+### R9 — 2026-10-23 — the 89-character suffix accepted
+Context (agent): R7 was asked with a 74-character suffix; the design review added the
+L1 exemption ("Above L1, ..."), bringing it to 89 characters on every prompt (code 566,
+kb 531, mkt 525, course 393), inside the 600 bound. Options offered: accept 89, or go
+back to 74 without the L1 wording.
+> Accept 89 chars

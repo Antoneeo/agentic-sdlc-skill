@@ -58,8 +58,8 @@ npx mkt-sdlc-init        # creates mkt_docs/ + protocol pointers
 ```
 
 It also **wires the SessionStart orientation hook** into `.claude/`, so an agent opening
-the project is handed the reading guide, the generated manifest, the guide router and the
-last handoff before it does anything — instead of only when it remembers to look. That
+the project is handed the triage line, the guide router, the workstream registry and the
+reading guide (with pointers to the manifest) before it does anything — instead of only when it remembers to look. That
 wiring used to be a manual step documented in `ENFORCEMENT.md`; being manual, it was
 skipped, and a project could run fully governed with an agent that never met the process.
 
