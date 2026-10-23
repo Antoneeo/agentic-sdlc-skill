@@ -61,7 +61,7 @@ Semantics: exit code 2 + message on stderr ⇒ the write is blocked and the mess
 
 ## 4. SessionStart hook (orientation, recommended default)
 
-Emits the `ai_docs/` orientation — reading guide (`README.md`), manifest (`INDEX.md`), guide router (`reference/INDEX.md`) and last `handoff.md` — plus the Rule-Zero triage reminder to stdout at session start, so the agent begins already oriented instead of reading them only if it remembers to. It is **fail-open**: a missing, unreadable or oversized doc is skipped, the output is size-capped, and it always exits 0 — a broken or empty `ai_docs/` never blocks the session. It is **zero-execution** (it reads and prints, never runs anything).
+Emits the `ai_docs/` orientation to stdout at session start, in the order an arriving agent needs it: the Rule-Zero triage line, the lens choice when sibling lenses are installed, the guide router (`reference/INDEX.md`, one line per guide), the workstream registry (`audit/handoff.md`, one line per workstream, then the project-wide notes), the reading guide (`README.md`), then pointers to the manifest (`INDEX.md`) and to the full files — so the agent begins already oriented instead of reading them only if it remembers to. The whole output stays under 9,500 characters: Claude Code injects a hook's output up to 10,000 and, above that, only a 2,000-character preview, which is how the router once never reached a session (F-075). A section that does not fit is cut at a line with a pointer to its file, and a note says when one client runs the hook from two settings entries. It is **fail-open**: a missing or unreadable doc is skipped, and it always exits 0 — a broken or empty `ai_docs/` never blocks the session. It is **zero-execution** (it reads and prints, never runs anything).
 
 **Wire it on every project that has `ai_docs/` and a Python interpreter.** It was opt-in until v1.16.0 and the field result was the defect this level exists to prevent: the guide router stayed unread unless the user asked for it by hand, so guides were written and never consulted. Prompt-level placement (Rule Zero declares the router verdict; Phase 1 reads the router) carries the process on its own — this hook is the backstop that survives long contexts, compaction and a session that never enters Phase 1 explicitly. Skip it only where Python is unavailable, and know what you are trading.
 
@@ -166,13 +166,13 @@ a release ran against a `GUIDE_release.md` the session never consulted, because
 ONE constant line at every prompt, and its first duty is that one: decide whether the
 skill governs the work in front of you and, if it does, load it once.
 
-Cost: 437 characters, ~74 tokens per prompt, paid on every turn including
+Cost: 525 characters, ~88 tokens per prompt, paid on every turn including
 trivial ones. That is admissible only because the owner accepted it explicitly
 (`ai_docs/vision/rulings.md` r19, the "no ceremony ratchet" Non-Goal's second door) --
 and the acceptance was for a FLAT cost. Hence the contract, guarded by
 `scripts/test_remind.py`: the line is **constant and reads nothing** (so nothing repo-
 or session-controlled rides into the agent's context through it, and the cost cannot
-grow with the session), it is **one line under 500 characters**, and it **can never
+grow with the session), it is **one line under 600 characters** (r32 raised r19's 500 to carry the lens choice), and it **can never
 break a prompt** (argv ignored whole, always exit 0). A trivial turn pays a yes/no
 judgement, never a load.
 

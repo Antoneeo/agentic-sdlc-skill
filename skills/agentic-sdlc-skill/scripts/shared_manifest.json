@@ -11,11 +11,11 @@
     "guides.md": "651c150ad3014edbbbc1908dfdca2404db2a877e3d0cbf5cc7921d9be31c187f",
     "memory.md": "5907be5f99b18eb66ffda2c25815f4fa266fff4b3767f4c142d601b146271167",
     "review.md": "c94618c02e34823ef29cb8d90d7288764dc3c72dc136905c8516e226385aa463",
-    "routing.md": "2f90556cb8516599b9fd6ebf0b5f61dffc107ff186a4c14aed0e483b82cf91d2",
+    "routing.md": "b1832401b138e707335cdc733c6e946619effe841c71f81a80a756eec5f3b309",
     "scripts/docs_site.py": "2bd63c67aa91b4ef7481ef6b5cb09021d72fcb0fa36b9cfdc53938461d02e560",
     "scripts/entry_point.py": "4a560d4d41db989d3426182f1b24270cbb934b3db0f3246c700578a4ed93089b",
-    "scripts/knowledge.py": "ac50bffcbfd9c7d7c098e4a40995f66f18884202a5511d602961c9dcd9afa498",
-    "scripts/sdlc_core.py": "54df1156a7c92769792a1170f9cfdc0b01a8689d9cf5624fb1d306742ac69821",
+    "scripts/knowledge.py": "69c94d2dc8ed6bed4004e77797c4856f21739701ebfe63ca9963b460593846ed",
+    "scripts/sdlc_core.py": "639596a541e46c5ee1e42596724f846d02d2936f6cc53564d119b48347b03acd",
     "scripts/shared_files.py": "bc3b311ca5c736070e9970428429226ca0a9186e010c265b556512b6df191e73",
     "scripts/test_audit_refs.py": "5c207be46da566db47069b08373195e748fca19c047418f09cc2f78841dfd9a5",
     "scripts/test_chronology.py": "ef482ed2261822778c69ade5dae6c875eca97ae8ef4f47b60bc262ac857eb95c",
@@ -27,8 +27,8 @@
     "scripts/test_migrate.py": "c129823bf4feb0614acd975351632a6ae62d7896a0ef32724419a8e9335e3110",
     "scripts/test_plan.py": "4c011a63aa834b55e9c5d13fb4ea76b131b742356001364b0a508435ba013e27",
     "scripts/test_project_memory.py": "2cb85cef01161d881a11d84cfe9ebb72915104e8d1822e4de739f7d00ae6cd59",
-    "scripts/test_session_start.py": "203fa72b87fb263663ce7fcd737460530b75fd5e76e883f25cd849e6cca98275",
-    "scripts/test_skill_invariants.py": "17dbccaac688b75e04c44eaaf0ee5b78e85ce2aa4697fc7a52041f3175fe0735",
+    "scripts/test_session_start.py": "aaf408de667f9adab9f49b7dbf33f45fe99bed135208e9c8bd0270bb2e2969ab",
+    "scripts/test_skill_invariants.py": "bc4274ae3b5427d9c0f3d34dd90688bf50a7efb05affe35a882597a6d64b11ae",
     "vision.md": "a19a7d7d5044215b726b66f74e422c9cdedcc856c0a53151f20a6d9840b8f6c4"
   }
 }

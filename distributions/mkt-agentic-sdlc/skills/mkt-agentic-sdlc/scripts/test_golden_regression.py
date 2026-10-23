@@ -68,7 +68,10 @@ def run_corpus():
         # settings; without the seam the baseline would differ on any dev
         # machine that has a real global hook -- nondeterminism by construction.
         env = {**os.environ,
-               "AGENTIC_SDLC_USER_SETTINGS": str(root / "no-user-settings.json")}
+               "AGENTIC_SDLC_USER_SETTINGS": str(root / "no-user-settings.json"),
+               # F-075: orient also names installed sibling lenses -- same
+               # nondeterminism, same cure: no skills directory at all.
+               "AGENTIC_SDLC_SKILLS_DIRS": ""}
         env.pop("CLAUDE_CONFIG_DIR", None)
         for label, argv in COMMANDS:
             proc = subprocess.run(

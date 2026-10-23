@@ -97,8 +97,8 @@ every project with a docs root greets its agent already oriented, and removing
 the entry is a standing opt-out that no update ever overrides. `init` still
 wires per-project where that is the better shape (a vendored validator, a
 shared team file), so an agent opening
-the project is handed the reading guide, the generated manifest, the guide router and the
-last handoff before it does anything — instead of only when it remembers to look. That
+the project is handed the triage line, the guide router, the workstream registry and the
+reading guide (with pointers to the manifest) before it does anything — instead of only when it remembers to look. That
 wiring used to be a manual step documented in `ENFORCEMENT.md`; being manual, it was
 skipped, and a project could run fully governed with an agent that never met the process.
 

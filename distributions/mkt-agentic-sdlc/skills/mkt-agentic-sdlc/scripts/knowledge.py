@@ -5,6 +5,8 @@ Extracted from the KB overlay; the kb_* API and stored formats remain compatible
 Every distribution ships this module alongside its entry point and sdlc_core.py.
 """
 import argparse
+import contextlib
+import io
 import os
 import hashlib
 import ntpath
@@ -1886,11 +1888,50 @@ def kb_cmd_orient(argv):
     needs to locate topics/, and ignores everything else.
 
     The append fails open: a broken graph read must never break orient itself.
+    It is also bounded (F-075): the spine leaves ORIENT_APPEND_RESERVE of the
+    client's hook cap free, and the append is cut to it -- the topic router
+    first, since it is the part that grows -- so the whole output stays under
+    the cap.
     """
     try:
         rc = sdlc_core.main(argv)
     except SystemExit as e:
         rc = e.code if isinstance(e.code, int) else 1
+    buf = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(buf):
+            _kb_orient_append(argv)
+    except (Exception, SystemExit):
+        pass
+    text = buf.getvalue()
+    if text:
+        print(_fit_orient_append(text, sdlc_core.ORIENT_APPEND_RESERVE), end="")
+    return rc
+
+
+def _fit_orient_append(text, budget):
+    """`text` within `budget` characters: shrink the topic-router block first,
+    then, if the rest alone is too wide, cut the whole append. Never raises."""
+    if len(text) <= budget:
+        return text
+    lines = text.rstrip("\n").split("\n")
+    try:
+        i = lines.index("## Topic router")
+        j = next((k for k in range(i + 1, len(lines)) if not lines[k].strip()), len(lines))
+        block, others = lines[i + 1:j], lines[:i + 1] + lines[j:]
+        room = budget - len("\n".join(others)) - 2
+        if room > 0:
+            fitted = sdlc_core.orient_fit(block, room, "topics/INDEX.md")
+            out = "\n".join(lines[:i + 1] + fitted + lines[j:]) + "\n"
+            if len(out) <= budget:
+                return out
+    except ValueError:
+        pass
+    return "\n".join(sdlc_core.orient_fit(lines, budget - 1, "the knowledge layer's files")) + "\n"
+
+
+def _kb_orient_append(argv):
+    """The lines kb_cmd_orient appends after the spine's orientation."""
     # Pre-bind so a throw INSIDE the router print (after root was validly
     # bound) does not erase it -- the recency block below must survive a
     # router failure with the bound root intact (closure R2 finding).
@@ -1944,7 +1985,7 @@ def kb_cmd_orient(argv):
         # skill's own worktree hygiene makes that routine), which is why the
         # frontmatter date is primary.
         if root is None:
-            return rc
+            return
         notes_dir = root / name / "corpus" / "notes"
         if notes_dir.is_dir():
             import datetime as _dt
@@ -2017,7 +2058,6 @@ def kb_cmd_orient(argv):
                           % (n_docs, m_exp, k_chain))
     except (Exception, SystemExit):
         pass
-    return rc
 
 
 def kb_cmd_help():

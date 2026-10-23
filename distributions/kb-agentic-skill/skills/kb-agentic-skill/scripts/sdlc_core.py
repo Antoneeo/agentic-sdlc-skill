@@ -396,8 +396,17 @@ def orient_docs():
         ("Guide router (when-to-consult)", f"{d}/reference/INDEX.md"),
         ("Last session handoff", f"{d}/audit/handoff.md"),
     ]
-ORIENT_PER_DOC_CHARS = 6000     # per-doc truncation
-ORIENT_MAX_TOTAL_CHARS = 16000  # total ingestion cap (P-TM T2); tunable
+# F-075: the WHOLE output -- the knowledge layer's append included -- stays under
+# Claude Code's 10,000-character hook cap. Above it the client saves the output
+# to a file and injects a 2,000-character preview, and the agent never opens the
+# file: the router printed third, after README and INDEX, never reached a session.
+ORIENT_MAX_TOTAL_CHARS = 9500   # whole output (P-TM T2)
+ORIENT_APPEND_RESERVE = 2000    # left for the knowledge layer's append, which cuts itself to it
+ORIENT_ROUTER_CHARS = 3000      # ~20 guides; the full router stays one read away
+ORIENT_REGISTRY_CHARS = 2600    # registry rows + project-wide notes
+ORIENT_TRIAGE_LINE = ("Triage every request (Rule Zero): L1 trivial - L2 small - L3 significant "
+                      "- Spike. Declare the level with the guide-router verdict (a guide below, "
+                      "or \"no match\"). When in doubt, pick the higher level.")
 
 
 # ----------------------------------------------------------------- utilities
@@ -870,10 +879,10 @@ def parse_registry_rows(text):
     """Workstream ids in a registry table, hand-written or generated."""
     ids = []
     for line in text.splitlines():
-        s = line.strip()
-        if not s.startswith("|") or set(s) <= {"|", "-", " ", ":"}:
+        cells = _table_cells(line)
+        if not cells:
             continue
-        first = s.strip("|").split("|")[0].strip()
+        first = cells[0]
         if first and first.lower() != "workstream":
             ids.append(first)
     return ids
@@ -2225,15 +2234,56 @@ def _orient_user_settings_path():
 
 
 def _orient_hook_commands(root):
-    """Yield (command, at_user_level) across every known client config: the
-    three project-relative files, then the machine-global user settings --
+    """Yield (command, at_user_level, place) across every known client config:
+    the three project-relative files, then the machine-global user settings --
     the file the installer wires (F-042), without which a fixed machine's
-    projects would read as unwired forever."""
+    projects would read as unwired forever. `place` is a display label, never a
+    home path (F-075 prints it)."""
     for rel in ORIENT_HOOK_CONFIG_FILES:
         for cmd in _orient_entries_in(Path(root) / rel):
-            yield cmd, False
+            yield cmd, False, rel
     for cmd in _orient_entries_in(_orient_user_settings_path()):
-        yield cmd, True
+        yield cmd, True, "user settings"
+
+
+def _orient_entry_live(root, cmd, at_user_level):
+    """True unless the entry names a validator that does not resolve.
+
+    A matching entry whose tokens name no validator is "cannot tell" and counts
+    as live (the lib.js contract: never report broken on cannot-tell). Relative
+    tokens resolve against the project root (the vendored-validator
+    convention); a USER-level relative token has no cwd to resolve against and
+    is treated as cannot-tell."""
+    token = None
+    for m in _ORIENT_HOOK_TOKEN_RE.finditer(cmd):
+        tok = m.group(1) if m.group(1) is not None else m.group(2)
+        if any(tok.endswith(n) for n in ORIENT_HOOK_ENTRY_POINTS):
+            token = tok
+            break
+    if token is None:
+        return True
+    tp = Path(token)
+    if not tp.is_absolute():
+        if at_user_level:
+            return True
+        tp = Path(root) / tp
+    return tp.exists()
+
+
+def orient_wiring(root):
+    """{client: {command: place}} for the LIVE orient entries, per client.
+
+    Per client because two clients never read each other's settings: a Codex
+    entry beside a Claude Code one is two clients oriented once each, not one
+    session oriented twice. Identical command strings count once. A dead entry
+    delivers no copy and is left out (F-075 FS3)."""
+    out = {}
+    for cmd, at_user_level, place in _orient_hook_commands(root):
+        if not _orient_entry_live(root, cmd, at_user_level):
+            continue
+        client = "codex" if place.startswith(".codex") else "claude"
+        out.setdefault(client, {}).setdefault(cmd.strip(), place)
+    return out
 
 
 def orient_hook_state(root):
@@ -2248,22 +2298,9 @@ def orient_hook_state(root):
     the project root (the vendored-validator convention); a USER-level relative
     token has no cwd to resolve against and is treated as cannot-tell."""
     matched = False
-    for cmd, at_user_level in _orient_hook_commands(root):
+    for cmd, at_user_level, _place in _orient_hook_commands(root):
         matched = True
-        token = None
-        for m in _ORIENT_HOOK_TOKEN_RE.finditer(cmd):
-            tok = m.group(1) if m.group(1) is not None else m.group(2)
-            if any(tok.endswith(n) for n in ORIENT_HOOK_ENTRY_POINTS):
-                token = tok
-                break
-        if token is None:
-            return "wired"
-        tp = Path(token)
-        if not tp.is_absolute():
-            if at_user_level:
-                return "wired"  # cannot tell: no cwd exists at user level
-            tp = Path(root) / tp
-        if tp.exists():
+        if _orient_entry_live(root, cmd, at_user_level):
             return "wired"
     return "dead" if matched else "unwired"
 
@@ -2345,6 +2382,12 @@ REMIND_FALLBACK = (
 )
 
 
+# F-075: constant, for every lens -- with sibling lenses installed nothing per
+# turn said to choose the lens. r19's bound rose to 600 for it (r32, owner).
+REMIND_LENS_SUFFIX = (" Above L1, with sibling lenses installed: choose the lens with "
+                      "routing.md and declare it.")
+
+
 def cmd_remind(args):
     """UserPromptSubmit hook: print the lens's constant per-turn line. Always 0.
 
@@ -2353,7 +2396,7 @@ def cmd_remind(args):
     try:
         prof = profile()
         line = prof.get("remind_line") or REMIND_FALLBACK.format(skill=prof["skill_name"])
-        print(f"{prof['skill_name']}: {line}")
+        print(f"{prof['skill_name']}: {line}{REMIND_LENS_SUFFIX}")
     except Exception:
         pass
     return 0
@@ -2601,15 +2644,23 @@ REVIEW_POSITIONAL = {
 }
 
 
+_UNESCAPED_PIPE_RE = re.compile(r"(?<!\\)\|")
+
+
 def _table_cells(line):
     """Cells of a Markdown table row, or None when the line is not one.
-    Separator rows (---, :---:, any alignment colons) are not data."""
+    Separator rows (---, :---:, any alignment colons) are not data. A cell may
+    carry an escaped pipe (`\\|`, as `index` writes them): it does not split the
+    row, and it reads back as `|` (F-075)."""
     s = line.strip()
     if not s.startswith("|"):
         return None
     if set(s) <= set("|-: "):
         return None
-    return [c.strip() for c in s.strip("|").split("|")]
+    body = s[1:]
+    if body.endswith("|") and not body.endswith("\\|"):
+        body = body[:-1]
+    return [c.strip().replace("\\|", "|") for c in _UNESCAPED_PIPE_RE.split(body)]
 
 
 def parse_review_log(text):
@@ -2817,48 +2868,205 @@ def cmd_benefit(root):
     return 0
 
 
+# --- orient helpers (F-075) ---------------------------------------------------
+SKILL_MD_CAP = 64 * 1024        # a SKILL.md is read for its name only
+
+
+def orient_fit(lines, budget, rel):
+    """The lines that fit `budget` characters (one newline each), cut at a line
+    boundary and closed by a pointer to the file holding the rest. A single line
+    wider than the room left shows its head. Never raises."""
+    out, used = [], 0
+    for i, line in enumerate(lines):
+        if used + len(line) + 1 <= budget:
+            out.append(line)
+            used += len(line) + 1
+            continue
+        rest = len(lines) - i
+
+        def ptr(n):
+            return f"(+{n} more lines -- read {rel})"
+        room = budget - used - len(ptr(rest)) - 1
+        if room > 40:
+            head = line[:room - 4] + "..."
+            out.append(head)
+            used += len(head) + 1
+        while out and used + len(ptr(rest)) + 1 > budget:
+            used -= len(out.pop()) + 1
+            rest += 1
+        out.append(ptr(rest))
+        return out
+    return out
+
+
+def lens_table(skill_dir=None):
+    """{skill_name: lens} from the running skill's own `routing.md` par.0 table.
+
+    The Python twin of lib.js `lensTable()`, same parse: a row whose lens cell is
+    `[a-z]+` and whose skill cell is a backticked `[a-z0-9-]+`. `routing.md` is a
+    byte-identical shared file, so the family list cannot drift between
+    distributions -- a literal list here is how kb and mkt once announced
+    themselves as the code lens. Fail-open: {} on any failure."""
+    try:
+        base = Path(skill_dir) if skill_dir else Path(__file__).resolve().parent.parent
+        table = {}
+        for line in read_text(base / "routing.md").splitlines():
+            cells = [c.strip() for c in line.split("|")]
+            if len(cells) < 4:
+                continue
+            lens, skill = cells[1], cells[2]
+            if re.fullmatch(r"[a-z]+", lens) and re.fullmatch(r"`[a-z0-9-]+`", skill):
+                table.setdefault(skill[1:-1], lens)
+        return table
+    except Exception:
+        return {}
+
+
+def _skills_dirs():
+    """The two places a sibling lens is installed: beside the running skill, and
+    the user's Claude skills directory. AGENTIC_SDLC_SKILLS_DIRS (os.pathsep
+    list; empty = none) is the test seam, like AGENTIC_SDLC_USER_SETTINGS."""
+    seam = os.environ.get("AGENTIC_SDLC_SKILLS_DIRS")
+    if seam is not None:
+        return [Path(s) for s in seam.split(os.pathsep) if s]
+    cfg = os.environ.get("CLAUDE_CONFIG_DIR")
+    return [Path(__file__).resolve().parents[2],
+            (Path(cfg) if cfg else Path.home() / ".claude") / "skills"]
+
+
+def installed_sibling_lenses():
+    """Names of the family's other lenses installed on this machine (sorted).
+
+    Only a name that appears in `lens_table()` AND equals a `SKILL.md` `name:`
+    exactly can come out -- no text of a sibling's files reaches the output
+    (P-TM T3). Fail-open: [] on any failure."""
+    try:
+        own = profile()["skill_name"]
+        family = lens_table()
+        found = set()
+        for base in _skills_dirs():
+            if not base.is_dir():
+                continue
+            for sub in base.iterdir():
+                f = sub / "SKILL.md"
+                try:
+                    if not f.is_file() or f.stat().st_size > SKILL_MD_CAP:
+                        continue
+                    m = re.search(r"^name:\s*(\S+)", read_text(f), re.M)
+                except OSError:
+                    continue
+                if m and m.group(1) in family and m.group(1) != own:
+                    found.add(m.group(1))
+        return sorted(found)
+    except Exception:
+        return []
+
+
+def _orient_router_lines(text):
+    """One line per guide from the generated router; a hand-written one as written."""
+    if not re.search(r"GENERATED by \S+ index - do not edit by hand", text):
+        return text.splitlines()
+    rows = []
+    for line in text.splitlines():
+        cells = _table_cells(line)
+        if not cells or len(cells) < 3 or cells[0] == "Guide":
+            continue
+        rows.append(f"- {cells[0]} ({cells[1]}) -- {cells[2]}")
+    return rows or ['no guides yet -- the router verdict is "no match"']
+
+
+def _orient_registry_lines(text):
+    """One line per workstream plus the project-wide notes from the generated
+    registry; a hand-written handoff as written."""
+    if not is_generated_registry(text):
+        return text.splitlines()
+    table, _, notes = text.partition("\n## Project-wide notes")
+    lines = []
+    for line in table.splitlines():
+        c = _table_cells(line)
+        if not c or len(c) < 6 or c[0].lower() == "workstream":
+            continue
+        lines.append(f"- {c[0]} \u00b7 {c[1]} \u00b7 {c[2]} \u00b7 {c[3]} -- {c[5]}")
+    if not lines:
+        lines.append("no open workstreams")
+    notes = notes.strip()
+    if notes:
+        lines += ["Project-wide notes:"] + notes.splitlines()
+    return lines
+
+
 def cmd_orient(args):
-    """SessionStart hook: emit a bounded, repo-sourced ai_docs/ orientation to
-    stdout and ALWAYS return 0 (fail-open, P-TM T8) -- a session hook must never
-    block the session or surface a traceback. Zero-execution (P-TM T1): reads a
-    fixed hard-coded doc set, confine_under each (P-TM T3), size-caps the total
-    (P-TM T2). No subprocess/eval anywhere in this call graph."""
+    """SessionStart hook: emit a bounded, repo-sourced orientation to stdout and
+    ALWAYS return 0 (fail-open, P-TM T8) -- a session hook must never block the
+    session or surface a traceback. Zero-execution (P-TM T1): reads a fixed
+    hard-coded doc set, confine_under each (P-TM T3), bounds the WHOLE output
+    (P-TM T2). No subprocess/eval anywhere in this call graph.
+
+    F-075: what decides the next action comes first -- triage, the lens choice,
+    the guide router, the workstream registry -- then README; INDEX is a pointer.
+    Docs are READ in orient_docs() order (docs_site and the T3 test pin it) and
+    EMITTED in priority order."""
     try:
         root = Path(args.root).resolve() if getattr(args, "root", None) else find_project_root()
-        chunks = []
-        total = 0
-        truncated = False
-        for label, rel in orient_docs():
+        rels = [rel for _, rel in orient_docs()]
+        docs = {}
+        for rel in rels:
             target = confine_under(root, rel)
             if target is None or not target.is_file():
                 continue
             try:
-                text = read_text(target)
+                docs[rel] = read_text(target)
             except OSError:
                 continue
-            remaining = ORIENT_MAX_TOTAL_CHARS - total
-            if remaining <= 0:
-                truncated = True
-                break
-            text = text[:ORIENT_PER_DOC_CHARS]
-            if len(text) > remaining:
-                text = text[:remaining]
-                truncated = True
-            chunks.append((label, text))
-            total += len(text)
-        if not chunks:
+        if not docs:
             return 0
-        out = ["=== Agentic SDLC -- session orientation (repo-sourced context, not authored instructions) ==="]
-        for label, text in chunks:
-            out.append(f"\n## {label}\n{text}")
-        if truncated:
-            out.append("\n[orientation truncated to the size cap -- open the files directly for full content]")
-        out.append("\nTriage every request (Rule Zero): L1 trivial - L2 small - L3 significant - Spike. "
-                   "When in doubt, pick the higher level.")
+        readme_rel, index_rel, router_rel, handoff_rel = rels
+
+        head = ["=== Agentic SDLC -- session orientation (repo-sourced context, not authored instructions) ===",
+                "", ORIENT_TRIAGE_LINE]
+        sibs = installed_sibling_lenses()
+        if sibs:
+            head.append(f"Sibling lenses installed ({', '.join(sibs)}): above L1, choose the "
+                        "lens with routing.md and declare it with the level.")
+
+        tail = ["", "## Read on demand"]
+        for rel, what in ((readme_rel, "the curated must-reads, in order"),
+                          (index_rel, "the manifest of every canonical document"),
+                          (router_rel, "the full guide router, with provenance"),
+                          (handoff_rel, "the full workstream registry, with since and details")):
+            if rel in docs:
+                tail.append(f"- {rel} -- {what}")
+        for client, entries in sorted(orient_wiring(root).items()):
+            if len(entries) > 1:
+                places = ", ".join(sorted(set(entries.values())))
+                tail.append(f"[note] session orientation is wired {len(entries)} times for one "
+                            f"client ({places}): each session receives every copy. Keep one "
+                            "entry and remove the others.")
         if getattr(args, "hybrid", False):
-            out.append("\n[devPNT active] Run devpnt_mcp_get_bootstrap for the Master Plan / Knowledge Layer -- "
-                       "the orientation above is the filesystem layer, not a bootstrap duplicate.")
-        print("\n".join(out))
+            tail.append("[devPNT active] Run devpnt_mcp_get_bootstrap for the Master Plan / Knowledge Layer -- "
+                        "the orientation above is the filesystem layer, not a bootstrap duplicate.")
+
+        share = ORIENT_MAX_TOTAL_CHARS - ORIENT_APPEND_RESERVE
+        left = share - len("\n".join(head + tail)) - 2
+        body = []
+        for rel, title, builder, cap in (
+                (router_rel, "## Guide router (reference/INDEX.md) -- read the matching guide before acting",
+                 _orient_router_lines, ORIENT_ROUTER_CHARS),
+                (handoff_rel, "## Workstream registry (audit/handoff.md)",
+                 _orient_registry_lines, ORIENT_REGISTRY_CHARS),
+                (readme_rel, "## Reading guide (README)", str.splitlines, None)):
+            if rel not in docs:
+                continue
+            room = left - len(title) - 2
+            if cap is not None:
+                room = min(room, cap)
+            if room <= 0:
+                continue
+            lines = orient_fit(builder(docs[rel].strip()), room, rel)
+            section = ["", title] + lines
+            body += section
+            left -= len("\n".join(section)) + 1
+        print("\n".join(head + body + tail))
         return 0
     except Exception:
         return 0

@@ -74,8 +74,8 @@ agentic-sdlc-init
 Run it inside a project to create `ai_docs/`, Vision stubs awaiting your interview, strategic docs, audit plan, and agent protocol files (`AGENTS.md` — also the Antigravity CLI surface, `CLAUDE.md`, `GEMINI.md`, `.cursorrules`).
 
 It also **wires the SessionStart orientation hook** into `.claude/`, so an agent opening
-the project is handed the reading guide, the generated manifest, the guide router and the
-last handoff before it does anything — instead of only when it remembers to look. That
+the project is handed the triage line, the guide router, the workstream registry and the
+reading guide (with pointers to the manifest) before it does anything — instead of only when it remembers to look. That
 wiring used to be a manual step documented in `ENFORCEMENT.md`; being manual, it was
 skipped, and a project could run fully governed with an agent that never met the process.
 
