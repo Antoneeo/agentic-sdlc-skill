@@ -15,7 +15,9 @@ Date: 2026-10-17 (UTC)
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**2026-10-23 — release 1.48.0: field-report units F-075..F-081 (orientation reach, guide verdict check, kb intake hygiene, guide check, docs site naming, spec/code divergence incl. Hybrid); includes the unpublished 1.46.0 and 1.47.0.**
+**2026-10-23 — release 1.48.0: field-report units F-075..F-081 (orientation reach, guide verdict check, kb intake hygiene, guide check, docs site naming, spec/code divergence incl. Hybrid); includes the unpublished 1.46.0 and 1.47.0.** Published and verified on the registry, each on
+latest: code 1.48.0, KB 1.31.0, marketing 0.26.0, Course 0.1.0-beta.13. Tags v1.48.0 /
+kb-v1.31.0 / mkt-v0.26.0 / course-v0.1.0-beta.13 on a8ce48e.
 
 **2026-10-23 — F-078 closed: Guide check section and validate advisory.**
 
