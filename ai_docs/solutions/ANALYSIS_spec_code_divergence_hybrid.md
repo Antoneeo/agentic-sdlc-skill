@@ -1,9 +1,10 @@
 ---
 id: F-081
 feature: Spec/code divergence marker in Hybrid projects
-status: IN_PROGRESS
+status: COMPLETED
 level: L3
 start_date: 2026-10-23
+end_date: 2026-10-23
 domain: code
 ---
 # Feature Analysis: Spec/code divergence marker in Hybrid projects
@@ -240,7 +241,7 @@ cell) and external input (an imported or hand-copied topic).
 - [x] RED: kb `test_claim_ledger.py` class; invariant anchors.
 - [x] GREEN: `sdlc_core.newest_shadow`; `knowledge.py` regex and `kb_check_marks`; both copied ×3; manifest.
 - [x] D1–D6; kb README; workflows doc; Component Map; rulings r36; CHANGELOG ×4.
-- [ ] Probe B1–B7 green, baseline A1/A3 red; four batteries; E2E_TEST; closure
+- [x] Probe B1–B7 green, baseline A1/A3 red; four batteries; E2E_TEST; closure
       review; MERGE_REVIEW; `index`; `check` CLEAN; `mark`.
 
 ## Test Strategy
@@ -319,3 +320,10 @@ code 458, kb 669, mkt 460, course 453, all OK. Next: E2E (written), closure revi
   `newest_shadow`, so a correctly versioned file is never reported as a stray. Test.
 - CV1: the E2E Result fields are the tester's, after merge (S6 needs a live agent).
   CV2: symlink escape untestable on this host; `confine_under` still guards it.
+
+**2026-10-23 — closed.** Scoped closure re-review PASS (N1: Component Map names
+`stray_shadow`, fixed). Main merged into the branch (F-077, F-078, F-079): F-077 had
+taken r35a–c, so this unit's ruling is numbered r36; the owner's R2 words stay verbatim.
+Batteries on the merged tree: code 464, kb 719, mkt 466, course 459, all OK; probe B1–B7
+green. MERGE_REVIEW written, handoff removed, areas marked. Awaiting the owner's merge
+decision; nothing pushed, tagged or released.
