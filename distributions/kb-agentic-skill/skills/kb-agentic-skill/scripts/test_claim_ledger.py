@@ -4,6 +4,8 @@
 
     python scripts/test_claim_ledger.py
 """
+import contextlib
+import io
 import os
 import sys
 import tempfile
@@ -1327,6 +1329,60 @@ class TL_F080_NotYetHonored(unittest.TestCase):
         for target in ("ANALYSIS_../x", "ANALYSIS_a/b", "ANALYSIS_a.b"):
             errors = self._run("not-yet-honored-by -> " + target)
             self.assertTrue(any("about" in e for e in errors), (target, errors))
+
+    def test_a_successor_is_satisfied_by_the_predecessors_citation(self):
+        # FS8: supersession copies the marker; no analysis is edited.
+        new = kc.kb_claim_id("corpus/given/c.txt", "p=2@0-10", "")
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md([
+                (self.CID, "A", "-", "-", self.MARK, SRC1, "GIVEN", "SUPERSEDED " + new),
+                (new, "A, refined", "-", "-", self.MARK, SRC2, "GIVEN", "OK")])},
+                given=GIVEN_TXT)
+            (docs / "solutions").mkdir()
+            (docs / "solutions" / "ANALYSIS_export.md").write_text(
+                self.cites(), encoding="utf-8")
+            self.assertEqual(kc.kb_check_claims(docs)[0], [])
+
+    def test_export_drops_the_marker_and_nothing_else(self):
+        # FS9 + T4: the bundle describes no code; every other byte travels.
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(
+                [(self.CID, "A", "-", "-", "depends-on -> phase-1; " + self.MARK,
+                  SRC1, "GIVEN", "OK")])}, given=GIVEN_TXT)
+            selected, artifacts, _a, errors = kc.kb_export_closure(docs, ["t"])
+            self.assertEqual(errors, [])
+            out = Path(tmp) / "bundle"
+            self.assertTrue(kc.kb_bundle_write(docs, out, selected, artifacts, "p"))
+            before = (docs / "topics" / "t.md").read_text(encoding="utf-8")
+            after = (out / "topics" / "t.md").read_text(encoding="utf-8")
+            self.assertNotIn("not-yet-honored-by", after)
+            self.assertEqual(before.replace("; " + self.MARK, ""), after)
+            self.assertEqual(kc.kb_check_claims(out)[0], [])
+
+    def test_export_without_markers_reports_no_drop(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(
+                [(self.CID, "A", "-", "-", "-", SRC1, "GIVEN", "OK")])},
+                given=GIVEN_TXT)
+            selected, artifacts, _a, _e = kc.kb_export_closure(docs, ["t"])
+            out = Path(tmp) / "bundle"
+            self.assertFalse(kc.kb_bundle_write(docs, out, selected, artifacts, "p"))
+            self.assertEqual((docs / "topics" / "t.md").read_bytes(),
+                             (out / "topics" / "t.md").read_bytes())
+
+    def test_the_export_line_carries_no_number(self):
+        # FS7/FS9: a count of dropped markers is a count of claims by the mark.
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(
+                [(self.CID, "A", "-", "-", self.MARK, SRC1, "GIVEN", "OK")])},
+                given=GIVEN_TXT)
+            out = Path(tmp) / "bundle"
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                kc.main(["export", "--root", str(docs.parent), "--out", str(out)])
+            lines = [l for l in buf.getvalue().splitlines() if "not-yet-honored" in l]
+            self.assertEqual(len(lines), 1, buf.getvalue())
+            self.assertFalse(any(ch.isdigit() for ch in lines[0]), lines[0])
 
 
 if __name__ == "__main__":

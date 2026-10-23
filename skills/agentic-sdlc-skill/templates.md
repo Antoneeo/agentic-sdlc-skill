@@ -416,7 +416,8 @@ checks: [marketing.funnel]      # optional — extra portable checks to run on t
      dated the day it was written. An undated paragraph is read as part of the
      dated entry above it, so a new event never starts undated; `####`
      sub-headings inside an entry are fine. It is the handoff source for this
-     feature. -->
+     feature.
+     A deferred fix of code contradicting a `topics/` claim cites the claim id here (SKILL.md Write Triggers). -->
 ```
 
 Allowed frontmatter states: `PLANNED` | `IN_PROGRESS` | `COMPLETED` | `CANCELLED`. `COMPLETED` requires `end_date`. (The validator also accepts the deprecated Italian keys `stato`/`livello`/`data_inizio`/`data_fine` in existing projects.)

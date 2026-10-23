@@ -197,6 +197,11 @@ Ciò che solo qui l'agente fa:
   regressione sempre, scenari nuovi quando il comportamento cambia; nessun nome,
   nessuna assegnazione. Ordine: E2E prima della closure review, brief dopo, poi
   `index`, mappa, `index`.
+- **Divergenza spec/codice dichiarata** (F-080, solo Standalone): una L3 che
+  rinvia la correzione di codice in contrasto con un claim di `topics/` marca il
+  claim (`not-yet-honored-by -> ANALYSIS_<nome>`) e ne cita l'id nella propria
+  ANALYSIS — `check` verifica entrambe le metà. La L2/L3 che fa rispettare il
+  claim toglie il marker nello stesso commit; L1 è esente.
 - **Component Map viva**: riga nuova anche per un componente semplicemente
   *scoperto* esplorando — e il validator la tiene anti-rot (ogni path/simbolo
   nella colonna Where deve risolversi).
@@ -248,7 +253,11 @@ che non enuncia un gate → nessuna riga, e un gate sospettato ma non trovato è
 `gaps:`. `valid` half-open ("fino al 1/3" e
 "dal 1/3" NON confliggono); `qty` tipizzata (effort in giorni-persona, costo in
 UNA valuta — misto **rifiuta di sommare**, niente cambi offline); `about` per le
-relazioni. L'estrattore **non inventa nulla**: ciò che la fonte non asserisce
+relazioni, più d'una separate da `;`. Un predicato è riservato (F-080):
+`not-yet-honored-by -> ANALYSIS_<nome>` dice che il codice non rispetta ancora
+questa affermazione della specifica, e nomina l'analisi che ha rinviato la
+correzione; rispondendo, il claim si cita come "richiesto, non ancora fatto".
+Nessuna vista lo elenca o lo conta, e l'export lo toglie. L'estrattore **non inventa nulla**: ciò che la fonte non asserisce
 diventa `gaps:`, mai una riga.
 **La fonte si esaurisce, non si campiona** (F-031). "Non inventa nulla" è un
 pavimento, e un estrattore che si ferma quando niente di ciò che ha scritto è
@@ -451,6 +460,10 @@ il PASS dell'agente precede la proposta a devPNT, dove rivedi e approvi tu.
   Con la deroga market-facing: scopo persuasivo verso il mercato → mkt,
   qualunque sia la fonte. Due fedeltà = due unità di lavoro (regola dello split).
   In dubbio, fail-open sulla lente caricata. `vision/` sta sopra lo split.
+- **Il codice non ancora conforme alla specifica** (F-080): il claim della
+  lente kb punta all'ANALYSIS della lente del codice che ha rinviato la
+  correzione, e l'ANALYSIS cita l'id del claim. Il marker descrive il codice,
+  non la fonte: lo scrive e lo toglie l'unità del codice, mai un'unità kb.
 - **DRY fra lenti**: un fatto ha una casa sola; le altre lo **citano, mai lo
   copiano** — un fatto ricopiato è un finding di review. I nomi ambigui per lente
   ("threat model", "vision", `handoff.md`) si qualificano sempre.

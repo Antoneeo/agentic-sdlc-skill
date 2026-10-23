@@ -114,6 +114,21 @@ def kb_claim_id(source_path, locator, qty_key=""):
 # reviewer-comment shape ("states X, that Y, and that Z").
 KB_BUNDLE_HINTS = (", and that ", "; ", ", while ", " and also ")
 
+# F-080: `about` holds relations joined by ';', and one reserved predicate whose
+# target is the Standalone ANALYSIS recording a deferred fix of code that does
+# not yet honor the claim. The mark has no reverse direction: nothing lists,
+# counts or selects claims by it -- only the claim checks and export read it.
+KB_NOT_HONORED = "not-yet-honored-by"
+KB_ABOUT_RE = re.compile(r"^([a-z0-9-]+) -> ([a-z0-9-]+)$")
+KB_NOT_HONORED_RE = re.compile(r"^%s -> (ANALYSIS_[A-Za-z0-9_-]+)$" % KB_NOT_HONORED)
+
+
+def kb_about_parts(cell):
+    """The ';'-joined parts of an `about` cell; [] for '-' or empty."""
+    if cell.strip() in ("", "-"):
+        return []
+    return [part.strip() for part in cell.split(";")]
+
 
 def kb_unquote(value):
     """Strip ONE pair of wrapping YAML quotes (then re-strip whitespace).
@@ -365,6 +380,7 @@ def kb_check_claims(root):
             src_cache[path_s] = (t, t is not None and t.is_file())
         return src_cache[path_s]
     per_file_rows = []
+    marked = []      # (where, row, [ANALYSIS_ targets]) -- F-080
     for p in sorted(topics.glob("*.md")):
         rel = "topics/" + p.name
         text = sdlc_core.read_text(p)
@@ -447,11 +463,21 @@ def kb_check_claims(root):
             except ValueError as e:
                 errors.append("%s: %s" % (where, e))
                 qk = None
-            if row["about"] not in ("", "-"):
-                m = re.match(r"^([a-z0-9-]+) -> ([a-z0-9-]+)$", row["about"])
-                if not m:
-                    errors.append("%s: about must be '<predicate> -> <slug>' or '-'"
-                                  % where)
+            marks = []
+            for part in kb_about_parts(row["about"]):
+                mark = KB_NOT_HONORED_RE.match(part)
+                rel_m = KB_ABOUT_RE.match(part)
+                if mark:
+                    marks.append(mark.group(1))
+                elif rel_m and rel_m.group(1) == KB_NOT_HONORED:
+                    errors.append("%s: about %r: '%s' needs an ANALYSIS_<name> "
+                                  "target -- the analysis that records the "
+                                  "deferred fix" % (where, part, KB_NOT_HONORED))
+                elif not rel_m:
+                    errors.append("%s: about must be '<predicate> -> <slug>' "
+                                  "parts joined by ';', or '-': %r" % (where, part))
+            if marks:
+                marked.append((where, row, marks))
             # --- atomicity hint (F-047): a row atomic as provenance can be
             # plural as meaning. Text cannot PROVE plurality, so this is a
             # note — never a warning or an error, never the exit code.
@@ -581,7 +607,69 @@ def kb_check_claims(root):
                                       "name %s back; one flipped cell must never "
                                       "silently end a disagreement"
                                       % (where, t, row["id"]))
+    kb_check_marks(root, marked, per_file_rows, errors)
     return errors, warnings, notes
+
+
+def kb_check_marks(root, marked, per_file_rows, errors):
+    """F-080: each not-yet-honored mark names an ANALYSIS that exists in this
+    project and cites the claim id -- or the id of a row this claim succeeds,
+    since supersession copies the mark and edits no analysis."""
+    if not marked:
+        return
+    preds = {}       # successor id -> ids it supersedes
+    for _, rows in per_file_rows:
+        for row in rows:
+            m = re.match(r"^SUPERSEDED ([0-9a-f, ]+)$", row["state"])
+            if row["id"] and m:
+                for t in [x.strip() for x in m.group(1).split(",") if x.strip()]:
+                    preds.setdefault(t, set()).add(row["id"])
+    texts = {}
+    for where, row, targets in marked:
+        ids, todo = set(), [row["id"]] if row["id"] else []
+        while todo:
+            cid = todo.pop()
+            if cid not in ids:
+                ids.add(cid)
+                todo.extend(preds.get(cid, ()))
+        for target in targets:
+            rel = "solutions/%s.md" % target
+            if rel not in texts:
+                path = sdlc_core.confine_under(root, rel)
+                texts[rel] = (sdlc_core.read_text(path)
+                              if path is not None and path.is_file() else None)
+            text = texts[rel]
+            if text is None:
+                errors.append("%s: %s -> %s: no %s in this project. Remove the "
+                              "marker if it did not come from this project -- it "
+                              "describes its origin's code" % (where, KB_NOT_HONORED,
+                                                              target, rel))
+            elif ids and not any(cid in text for cid in ids):
+                errors.append("%s: %s does not cite claim %s -- the analysis that "
+                              "records a deferred fix cites the id it defers"
+                              % (where, rel, row["id"]))
+
+
+def kb_drop_marks(text):
+    """(text, dropped): the topic text with every not-yet-honored part removed
+    from claim rows' `about` cells. Every other byte is kept -- other cells keep
+    their spacing, other lines are untouched (F-080: a bundle describes no code)."""
+    rows, _ = kb_parse_claims(text)
+    lines = text.split("\n")
+    col = 1 + CLAIM_COLUMNS.index("about")
+    dropped = False
+    for row in rows:
+        parts = kb_about_parts(row["about"])
+        keep = [p for p in parts if not KB_NOT_HONORED_RE.match(p)]
+        if len(keep) == len(parts):
+            continue
+        segs = lines[row["_line"] - 1].split("|")
+        if len(segs) != len(CLAIM_COLUMNS) + 2:
+            continue
+        segs[col] = " %s " % ("; ".join(keep) or "-")
+        lines[row["_line"] - 1] = "|".join(segs)
+        dropped = True
+    return "\n".join(lines), dropped
 
 
 def kb_check_locator(target, loc, where, errors, cache=None):
@@ -1434,10 +1522,15 @@ def kb_export_closure(docs, slugs):
 
 
 def kb_bundle_write(docs, out, selected, artifacts, project):
-    """Write the bundle. Mirrors the docs-root layout; no path is rewritten."""
+    """Write the bundle. Mirrors the docs-root layout; no path is rewritten.
+    Returns whether a not-yet-honored mark was dropped (F-080) -- a yes/no,
+    never a count: a count of dropped marks is a count of claims by the mark."""
     out.mkdir(parents=True, exist_ok=True)
     (out / "topics").mkdir(exist_ok=True)
+    dropped = False
     for slug, (p, text, _rows) in sorted(selected.items()):
+        text, d = kb_drop_marks(text)
+        dropped = dropped or d
         (out / "topics" / p.name).write_text(text, encoding="utf-8")
     for rel in artifacts:
         dst = out / rel
@@ -1452,6 +1545,7 @@ def kb_bundle_write(docs, out, selected, artifacts, project):
     for rel in artifacts:
         lines.append("- `%s` sha256:%s" % (rel, kb_sha256_bytes(docs / rel)))
     (out / BUNDLE_MANIFEST).write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return dropped
 
 
 def kb_import_plan(bundle, docs):
@@ -1833,9 +1927,12 @@ def kb_cmd_export(args):
     if errors:
         return 1
     out = Path(args.out)
-    kb_bundle_write(docs, out, selected, artifacts, root.name)
+    dropped = kb_bundle_write(docs, out, selected, artifacts, root.name)
     print("[ok] bundle written: %s" % out)
     print("     topics: %d, artifacts: %d" % (len(selected), len(artifacts)))
+    if dropped:
+        print("     %s markers dropped: they describe this project's code"
+              % KB_NOT_HONORED)
     if added:
         # never silent: a set that grew is a fact about the export, and the
         # alternative -- dropping the partner rows -- ships a broken tree.
