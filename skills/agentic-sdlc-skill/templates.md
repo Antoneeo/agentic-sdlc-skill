@@ -393,6 +393,14 @@ checks: [marketing.funnel]      # optional — extra portable checks to run on t
 | persist an order | EXISTS | `path/to/store.py#OrderStore` | re-read `save()`: durable, returns the id |
 | notify the customer | MISSING | — | grep notify/alert/dispatch + send, over src/ and legacy/; no owner |
 
+## Guide check
+<!-- the Phase-3 question (SKILL.md "Would a guide be worth writing here?"),
+     answered while the model is being paid for. Two lines, both always filled:
+     a "yes" on the second makes writing the `source_kind: code` guide a duty
+     (`guides.md` §1). `validate` notes an L3 that leaves this unanswered. -->
+- CURRENT guide covering what this touches: `GUIDE_x.md` / none
+- High-complexity component understood here that no guide covers: no / yes — `component` (guide written: `GUIDE_y.md`)
+
 ## Impact
 <!-- existing files touched, APIs/contracts, performance, new dependencies.
      Derived from the ledger above: every INADEQUATE/MISSING row appears here. -->
@@ -416,7 +424,8 @@ checks: [marketing.funnel]      # optional — extra portable checks to run on t
      dated the day it was written. An undated paragraph is read as part of the
      dated entry above it, so a new event never starts undated; `####`
      sub-headings inside an entry are fine. It is the handoff source for this
-     feature. -->
+     feature.
+     A deferred fix of code contradicting a `topics/` claim cites the claim id here (SKILL.md Write Triggers). -->
 ```
 
 Allowed frontmatter states: `PLANNED` | `IN_PROGRESS` | `COMPLETED` | `CANCELLED`. `COMPLETED` requires `end_date`. (The validator also accepts the deprecated Italian keys `stato`/`livello`/`data_inizio`/`data_fine` in existing projects.)

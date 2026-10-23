@@ -1659,5 +1659,21 @@ class ChronologyDoctrine(unittest.TestCase):
         self.assertIn("after fetching", skill)
 
 
+class NotYetHonoredTrigger(unittest.TestCase):
+    """F-080: the code lens owes the not-yet-honored marker on a deferring
+    Standalone L3, and its removal on L2/L3 only (owner R4, R6, R7)."""
+
+    def test_the_write_triggers_row_scopes_the_duty(self):
+        if SKILL_DIR.name != "agentic-sdlc-skill":
+            self.skipTest("the marker duty is the code lens's (SKILL.md is per-lens)")
+        row = [ln for ln in read("SKILL.md").splitlines()
+               if ln.startswith("| `topics/` claim marked `not-yet-honored-by")]
+        self.assertEqual(len(row), 1, "Write Triggers lost the marker row")
+        for anchor in ("(Standalone)", "cite its id in the ANALYSIS",
+                       "removes the marker in the same commit", "L1 is exempt",
+                       "Nothing lists marked claims"):
+            self.assertIn(anchor, row[0])
+
+
 if __name__ == "__main__":
     unittest.main()

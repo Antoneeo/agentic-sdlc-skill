@@ -27,7 +27,7 @@ class TestIngestionStep(unittest.TestCase):
             "**An open unit absorbs.**",
             "ingestion step of <unit>",
             "the `scope:` field of that HANDOFF's frontmatter",
-            "a save commit once `graph` is clean, its message marked `ingestion step`",
+            "a save commit once `graph` and `corpus` are clean, its message marked `ingestion step`",
             "Without isolation the residual risk is higher",
             "A step does not rewrite dependent documents",
             "an escalation trigger the approved ANALYSIS did not plan",

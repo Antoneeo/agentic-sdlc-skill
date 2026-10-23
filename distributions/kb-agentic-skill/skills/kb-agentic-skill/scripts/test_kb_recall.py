@@ -92,6 +92,42 @@ class TestRecallDoctrine(unittest.TestCase):
             self.assertIn(anchor, text,
                           "SKILL.md lost a recall clause: %r" % anchor)
 
+    def test_a_marked_claim_is_never_cited_as_current_behavior(self):
+        """F-080 FS1: the code does not yet honor a marked claim."""
+        text = normalized(SKILL_DIR / "SKILL.md")
+        self.assertIn("A claim marked `not-yet-honored-by -> ANALYSIS_<name>` is "
+                      "cited as what the specification requires and the code does "
+                      "not yet do, naming that analysis — never as current "
+                      "behavior.", text)
+        self.assertIn("cite a claim marked `not-yet-honored-by` as not yet true of "
+                      "the code", normalized(SKILL_DIR / "memory.md"))
+
+    def test_nothing_selects_or_counts_claims_by_the_mark(self):
+        """F-080 FS7 / r33: only the claim checks and the export drop read the
+        mark -- no site view, report or orientation line may."""
+        scripts = SKILL_DIR / "scripts"
+        for name in ("docs_site.py", "sdlc_core.py"):
+            self.assertNotIn("not-yet-honored", (scripts / name).read_text(
+                encoding="utf-8"), name)
+        src = (scripts / "knowledge.py").read_text(encoding="utf-8")
+        users = sorted({ln.split("(")[0].split()[-1]
+                        for ln in src.splitlines() if ln.startswith("def ")
+                        and any(w in self._body(src, ln) for w in
+                                ("KB_NOT_HONORED", "not-yet-honored"))})
+        self.assertEqual(users, ["kb_bundle_write", "kb_check_claims", "kb_check_marks",
+                                 "kb_cmd_export", "kb_drop_marks"])
+
+    @staticmethod
+    def _body(src, header):
+        """The function's own lines: up to the next top-level statement."""
+        lines = src[src.index(header):].split("\n")
+        body = [lines[0]]
+        for ln in lines[1:]:
+            if ln and not ln[0].isspace():
+                break
+            body.append(ln)
+        return "\n".join(body)
+
     def test_the_verdict_form_admits_every_branch_the_descent_opened(self):
         """F-054: the descent is multi-branch by mandate (`taxonomy.md` §1), so
         both node-naming verdicts must be expressible with more than one slug.

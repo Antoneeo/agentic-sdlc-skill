@@ -114,6 +114,21 @@ def kb_claim_id(source_path, locator, qty_key=""):
 # reviewer-comment shape ("states X, that Y, and that Z").
 KB_BUNDLE_HINTS = (", and that ", "; ", ", while ", " and also ")
 
+# F-080: `about` holds relations joined by ';', and one reserved predicate whose
+# target is the Standalone ANALYSIS recording a deferred fix of code that does
+# not yet honor the claim. The mark has no reverse direction: nothing lists,
+# counts or selects claims by it -- only the claim checks and export read it.
+KB_NOT_HONORED = "not-yet-honored-by"
+KB_ABOUT_RE = re.compile(r"^([a-z0-9-]+) -> ([a-z0-9-]+)$")
+KB_NOT_HONORED_RE = re.compile(r"^%s -> (ANALYSIS_[A-Za-z0-9_-]+)$" % KB_NOT_HONORED)
+
+
+def kb_about_parts(cell):
+    """The ';'-joined parts of an `about` cell; [] for '-' or empty."""
+    if cell.strip() in ("", "-"):
+        return []
+    return [part.strip() for part in cell.split(";")]
+
 
 def kb_unquote(value):
     """Strip ONE pair of wrapping YAML quotes (then re-strip whitespace).
@@ -365,6 +380,7 @@ def kb_check_claims(root):
             src_cache[path_s] = (t, t is not None and t.is_file())
         return src_cache[path_s]
     per_file_rows = []
+    marked = []      # (where, row, [ANALYSIS_ targets]) -- F-080
     for p in sorted(topics.glob("*.md")):
         rel = "topics/" + p.name
         text = sdlc_core.read_text(p)
@@ -447,11 +463,21 @@ def kb_check_claims(root):
             except ValueError as e:
                 errors.append("%s: %s" % (where, e))
                 qk = None
-            if row["about"] not in ("", "-"):
-                m = re.match(r"^([a-z0-9-]+) -> ([a-z0-9-]+)$", row["about"])
-                if not m:
-                    errors.append("%s: about must be '<predicate> -> <slug>' or '-'"
-                                  % where)
+            marks = []
+            for part in kb_about_parts(row["about"]):
+                mark = KB_NOT_HONORED_RE.match(part)
+                rel_m = KB_ABOUT_RE.match(part)
+                if mark:
+                    marks.append(mark.group(1))
+                elif rel_m and rel_m.group(1) == KB_NOT_HONORED:
+                    errors.append("%s: about %r: '%s' needs an ANALYSIS_<name> "
+                                  "target -- the analysis that records the "
+                                  "deferred fix" % (where, part, KB_NOT_HONORED))
+                elif not rel_m:
+                    errors.append("%s: about must be '<predicate> -> <slug>' "
+                                  "parts joined by ';', or '-': %r" % (where, part))
+            if marks:
+                marked.append((where, row, marks))
             # --- atomicity hint (F-047): a row atomic as provenance can be
             # plural as meaning. Text cannot PROVE plurality, so this is a
             # note — never a warning or an error, never the exit code.
@@ -581,7 +607,73 @@ def kb_check_claims(root):
                                       "name %s back; one flipped cell must never "
                                       "silently end a disagreement"
                                       % (where, t, row["id"]))
+    kb_check_marks(root, marked, per_file_rows, errors)
     return errors, warnings, notes
+
+
+def kb_check_marks(root, marked, per_file_rows, errors):
+    """F-080: each not-yet-honored mark names an ANALYSIS that exists in this
+    project and cites the claim id -- or the id of a row this claim succeeds,
+    since supersession copies the mark and edits no analysis."""
+    if not marked:
+        return
+    preds = {}       # successor id -> ids it supersedes
+    for _, rows in per_file_rows:
+        for row in rows:
+            m = re.match(r"^SUPERSEDED ([0-9a-f, ]+)$", row["state"])
+            if row["id"] and m:
+                for t in [x.strip() for x in m.group(1).split(",") if x.strip()]:
+                    preds.setdefault(t, set()).add(row["id"])
+    texts = {}
+    for where, row, targets in marked:
+        ids, todo = set(), [row["id"]] if row["id"] else []
+        while todo:
+            cid = todo.pop()
+            if cid not in ids:
+                ids.add(cid)
+                todo.extend(preds.get(cid, ()))
+        for target in targets:
+            rel = "solutions/%s.md" % target
+            if rel not in texts:
+                path = sdlc_core.confine_under(root, rel)
+                texts[rel] = (sdlc_core.read_text(path)
+                              if path is not None and path.is_file() else None)
+            text = texts[rel]
+            if text is None:
+                errors.append("%s: %s -> %s: no %s in this project. Remove the "
+                              "marker if it did not come from this project -- it "
+                              "describes its origin's code" % (where, KB_NOT_HONORED,
+                                                              target, rel))
+            elif ids and not any(re.search(r"(?<![0-9a-f])%s(?![0-9a-f])" % cid, text)
+                                 for cid in ids):
+                errors.append("%s: %s does not cite claim %s -- the analysis that "
+                              "records a deferred fix cites the id it defers"
+                              % (where, rel, row["id"]))
+
+
+def kb_drop_marks(text):
+    """(text, dropped): the topic text with every not-yet-honored part removed
+    from claim rows' `about` cells. Every other byte is kept -- other cells keep
+    their spacing, other lines are untouched (F-080: a bundle describes no code)."""
+    rows, _ = kb_parse_claims(text)
+    lines = text.split("\n")
+    col = 1 + CLAIM_COLUMNS.index("about")
+    dropped = False
+    for row in rows:
+        parts = kb_about_parts(row["about"])
+        keep = [p for p in parts if not KB_NOT_HONORED_RE.match(p)]
+        if len(keep) == len(parts):
+            continue
+        # The parser strips the pipes at both ends, so a row with no trailing
+        # pipe is legal: counted from the left, the about cell sits at `col`
+        # either way.
+        segs = lines[row["_line"] - 1].split("|")
+        if len(segs) not in (len(CLAIM_COLUMNS) + 1, len(CLAIM_COLUMNS) + 2):
+            continue
+        segs[col] = " %s " % ("; ".join(keep) or "-")
+        lines[row["_line"] - 1] = "|".join(segs)
+        dropped = True
+    return "\n".join(lines), dropped
 
 
 def kb_check_locator(target, loc, where, errors, cache=None):
@@ -914,6 +1006,10 @@ def kb_build_corpus_index(root):
         for meta_p in sorted(given.glob("*.meta.md")):
             meta = sdlc_core.load_frontmatter(sdlc_core.read_text(meta_p).splitlines()) or {}
             orig = meta_p.name[:-len(".meta.md")]
+            if kb_is_tombstone(meta):
+                lines.append("- `%s` — %s — withdrawn" % (
+                    orig, (meta.get("date") or "undated")))
+                continue
             sup = kb_unquote(meta.get("supersedes"))
             lines.append("- `%s` — %s%s — %s" % (
                 orig, (meta.get("date") or "undated"),
@@ -1058,6 +1154,21 @@ def kb_corpus_check(root):
             meta = sdlc_core.load_frontmatter(sdlc_core.read_text(meta_p).splitlines()) or {}
             orig = given / meta_p.name[:-len(".meta.md")]
             rel = "corpus/given/" + orig.name
+            if kb_is_tombstone(meta):
+                # F-077: a withdrawn artifact keeps its record, never its bytes
+                # nor a digest of them -- a digest of the secret-bearing bytes
+                # beside a redacted successor tests password guesses offline.
+                kept = [k for k in ("sha256", "original_sha256")
+                        if (meta.get(k) or "").strip()]
+                if kept:
+                    errors.append("%s: withdrawn, yet its sidecar keeps %s -- "
+                                  "a tombstone keeps no digest of the withdrawn "
+                                  "bytes (distillation.md par.1)"
+                                  % (rel, ", ".join(k + ":" for k in kept)))
+                if orig.is_file():
+                    errors.append("%s: withdrawn, yet its bytes are still here -- "
+                                  "delete them" % rel)
+                continue
             if not orig.is_file():
                 errors.append("%s: sidecar exists but the original is gone" % rel)
                 continue
@@ -1084,17 +1195,36 @@ def kb_corpus_check(root):
                         "extraction is intact, the pointer to the original is "
                         "not. A warning and not an error: a bundle carries "
                         "artifacts and sidecars, never the originals, so after "
-                        "an import this dangles legitimately"
-                        % (rel, op, ", ".join(tried)))
+                        "an import this dangles legitimately%s"
+                        % (rel, _kb_mask_userinfo(op),
+                           _kb_mask_userinfo(", ".join(tried)),
+                           " -- a non-local identifier belongs in original_ref:, "
+                           "which is recorded and never resolved"
+                           if re.match(r"^[A-Za-z][A-Za-z0-9+.\-]+://", op) else ""))
             sup = kb_unquote(meta.get("supersedes"))
             if sup:
                 superseded.add(sup)
-                if not (given / sup).is_file():
+                sup_side = given / (sup + ".meta.md")
+                tomb = sup_side.is_file() and kb_is_tombstone(
+                    sdlc_core.load_frontmatter(sdlc_core.read_text(sup_side).splitlines()))
+                if not (given / sup).is_file() and not tomb:
                     warnings.append("%s: supersedes %r which is not in given/"
                                     % (rel, sup))
             kb_check_coverage(rel, orig,
                               (meta.get("extracted_through") or "").strip(),
                               _kb_cited_for(cited, orig.name), errors, warnings)
+        # F-077: a file nobody declared -- or bytes a withdrawal left behind. A
+        # stored extraction `<stem>.txt` beside a declared `<stem>.<ext>` is the
+        # declared artifact's own (distillation.md par.1), not a stray.
+        declared_stems = set(Path(m.name[:-len(".meta.md")]).stem
+                             for m in given.glob("*.meta.md"))
+        for p in sorted(given.iterdir()):
+            if (p.is_file() and not p.name.endswith(".meta.md")
+                    and not (given / (p.name + ".meta.md")).is_file()
+                    and not (p.suffix == ".txt" and p.stem in declared_stems)):
+                warnings.append("corpus/given/%s: no sidecar -- an artifact nobody "
+                                "declared, or bytes a withdrawal left behind" % p.name)
+        warnings.extend(_kb_same_text_warnings(root))
     notes = corpus / "notes"
     if notes.is_dir():
         for p in sorted(notes.glob("*.md")):
@@ -1110,6 +1240,226 @@ def kb_corpus_check(root):
             warnings.append("%s: claim rests on %s, which a newer version "
                             "supersedes — re-verify or re-place" % (where, name))
     return errors, warnings
+
+
+# ------------------------------------------------- credentials (F-077)
+# A credential stored in given/ cannot be fixed in place: the digest check
+# refuses the edit and git keeps the bytes. These shapes are written from the
+# formats' own syntax (key=value lines, PEM headers, URL userinfo, bearer
+# headers); no vendor key format is matched (distillation.md par.1 lists the
+# declared false positives and false negatives). Findings carry line numbers
+# and kinds, NEVER the value: the validator's output lands in logs and CI.
+
+KB_CRED_PAIRS = {("api", "key"): "api-key", ("access", "key"): "access-key",
+                 ("private", "key"): "private-key",
+                 ("client", "secret"): "client-secret", ("secret", "key"): "secret"}
+KB_CRED_LAST = {"password": "password", "passwd": "password",
+                "passphrase": "password", "secret": "secret", "token": "token",
+                "credential": "credentials", "credentials": "credentials",
+                "apikey": "api-key", "accesskey": "access-key"}
+KB_CRED_ASSIGN_RE = re.compile(
+    r"""^\s*(?:export\s+)?(["']?)([A-Za-z0-9_.\-]+)\1\s*[=:]\s*(.*)$""")
+KB_CRED_SEGMENT_RE = re.compile(r"[A-Z]?[a-z0-9]+|[A-Z]+(?![a-z])")
+KB_CRED_PEM_RE = re.compile(r"-----BEGIN [A-Z0-9 ]*PRIVATE KEY-----")
+KB_CRED_URL_RE = re.compile(r"[A-Za-z][A-Za-z0-9+.\-]*://[^/\s:@]*:([^@\s/]+)@")
+KB_CRED_QUERY_RE = re.compile(r"[?&;](?:password|pwd|passwd)=([^&\s;#]+)", re.I)
+KB_CRED_BEARER_RE = re.compile(r"\bBearer\s+[A-Za-z0-9\-._~+/]{16,}")
+KB_CRED_PLACEHOLDER_RE = re.compile(
+    r"<.*>|\$\{.*\}|\{\{.*\}\}|%\(.*\)s|ENC\(.*\)|[*xX]+|[|>][-+]?\d*")
+KB_CRED_LINE_MAX = 4096
+KB_REVIEWED_RE = re.compile(r"^reviewed\s*[-—–:]\s*\S")
+
+
+def _kb_cred_real(value):
+    """True when a value looks like an actual secret, not a placeholder."""
+    v = re.split(r"\s+(?:#|//)", value.strip(), maxsplit=1)[0].strip()
+    if v.endswith(","):
+        v = v[:-1].rstrip()
+    if len(v) >= 2 and v[0] in "\"'" and v[-1] == v[0]:
+        v = v[1:-1]
+    if not v or re.search(r"\s", v):
+        return False
+    if v.lower() in ("true", "false", "null", "none", "yes", "no"):
+        return False
+    if v.startswith("[REDACTED") or KB_CRED_PLACEHOLDER_RE.fullmatch(v):
+        return False
+    return True
+
+
+def _kb_cred_key_kind(key):
+    segs = [s.lower() for part in re.split(r"[_.\-]", key)
+            for s in KB_CRED_SEGMENT_RE.findall(part)]
+    if len(segs) >= 2 and tuple(segs[-2:]) in KB_CRED_PAIRS:
+        return KB_CRED_PAIRS[tuple(segs[-2:])]
+    return KB_CRED_LAST.get(segs[-1]) if segs else None
+
+
+def kb_credential_line_kind(line):
+    """The credential kind one line carries, or None. Never returns the value."""
+    line = line[:KB_CRED_LINE_MAX]
+    if KB_CRED_PEM_RE.search(line):
+        return "private-key"
+    m = KB_CRED_ASSIGN_RE.match(line)
+    if m:
+        kind = _kb_cred_key_kind(m.group(2))
+        if kind and _kb_cred_real(m.group(3)):
+            return kind
+    m = KB_CRED_URL_RE.search(line)
+    if m and _kb_cred_real(m.group(1)):
+        return "connection-string"
+    m = KB_CRED_QUERY_RE.search(line)
+    if m and _kb_cred_real(m.group(1)):
+        return "connection-string"
+    if KB_CRED_BEARER_RE.search(line):
+        return "bearer-token"
+    return None
+
+
+def kb_credential_findings(path):
+    """[(line_no, kind)] for one file; [] for a binary or unreadable one.
+
+    A NUL in the first 8 KB means binary, unless the file opens with a UTF-16
+    byte-order mark (then it is decoded whole). Text is streamed line by line,
+    each inspected on its first KB_CRED_LINE_MAX characters."""
+    out = []
+    try:
+        with open(path, "rb") as f:
+            head = f.read(8192)
+        if head[:2] in (b"\xff\xfe", b"\xfe\xff"):
+            lines = Path(path).read_bytes().decode("utf-16", errors="replace").splitlines()
+            for n, line in enumerate(lines, 1):
+                kind = kb_credential_line_kind(line)
+                if kind:
+                    out.append((n, kind))
+            return out
+        if b"\x00" in head:
+            return []
+        with open(path, encoding="utf-8-sig", errors="replace") as f:
+            for n, line in enumerate(f, 1):
+                kind = kb_credential_line_kind(line.rstrip("\r\n"))
+                if kind:
+                    out.append((n, kind))
+    except OSError:
+        return []
+    return out
+
+
+def _kb_mask_userinfo(text):
+    """A password inside a URL never reaches the validator's output -- also once
+    a candidate path has turned its `//` into `\\` (Windows join)."""
+    return re.sub(r"([/\\][^/\\\s:@]*:)\S*@", r"\1***@", text)
+
+
+def _kb_reviewed(meta):
+    return bool(KB_REVIEWED_RE.match(kb_unquote((meta or {}).get("credential_scan"))))
+
+
+def _kb_cred_message(rel, found, fix):
+    nums = [str(n) for n, _ in found[:10]] + (["..."] if len(found) > 10 else [])
+    kinds = sorted(set(k for _, k in found))
+    return "%s: %s %s look like a credential (%s) -- %s" % (
+        rel, "line" if len(found) == 1 else "lines", ", ".join(nums),
+        ", ".join(kinds), fix)
+
+
+def kb_is_tombstone(meta):
+    return bool(kb_unquote((meta or {}).get("withdrawn")))
+
+
+def kb_credential_errors(root, docs):
+    """FS2 errors over given/ artifacts and document-guide snapshots, escapes
+    applied. One carrier per command calls this (check, corpus); validate never."""
+    errors = []
+    given = docs / "corpus" / "given"
+    if given.is_dir():
+        # A stored extraction `<stem>.txt` has no sidecar of its own: it is the
+        # declared `<stem>.<ext>`'s (distillation.md par.1), so its escape lives there.
+        by_stem = {}
+        for m in sorted(given.glob("*.meta.md")):
+            by_stem.setdefault(Path(m.name[:-len(".meta.md")]).stem, m)
+        for p in sorted(given.iterdir()):
+            if not p.is_file() or p.name.endswith(".meta.md"):
+                continue
+            side = given / (p.name + ".meta.md")
+            if not side.is_file() and p.suffix == ".txt" and p.stem in by_stem:
+                side = by_stem[p.stem]
+            meta = (sdlc_core.load_frontmatter(sdlc_core.read_text(side).splitlines())
+                    or {}) if side.is_file() else {}
+            if _kb_reviewed(meta):
+                continue
+            found = kb_credential_findings(p)
+            if found:
+                errors.append(_kb_cred_message(
+                    "corpus/given/" + p.name, found,
+                    "given/ is never edited: redact into a successor and withdraw "
+                    "this one (distillation.md par.1), or declare "
+                    "`credential_scan: reviewed -- <reason>` in its sidecar"))
+    for rel, _p, meta, _t in sdlc_core.list_guides(root):
+        if (meta.get("source_kind") or "document").strip() != "document":
+            continue
+        df = (meta.get("distilled_from") or "").strip()
+        src = sdlc_core.confine_under(root, df) if df else None
+        if src is None or not src.is_file() or _kb_reviewed(meta):
+            continue
+        try:
+            src.resolve().relative_to(given.resolve())
+            continue  # scanned above, once
+        except (OSError, ValueError):
+            pass
+        found = kb_credential_findings(src)
+        if found:
+            errors.append(_kb_cred_message(
+                df, found,
+                "redact into a new snapshot (its name changes) and update %s's "
+                "distilled_from, source_hash and markers, or declare "
+                "`credential_scan: reviewed -- <reason>` in the guide" % rel))
+    return errors
+
+
+def _kb_print_credentials(root, docs):
+    errs = kb_credential_errors(root, docs)
+    for e in errs:
+        print("[ERROR] %s" % e)
+    return 1 if errs else 0
+
+
+def _kb_same_text_warnings(docs):
+    """FS6: a .sources/ file and a given/ artifact holding the same text after
+    line-ending normalization. Snapshots are hashed once; a given/ artifact is
+    hashed only when its size is within a factor of two of some snapshot's (CRLF
+    at most doubles a text), so a large extraction corpus is not read for this."""
+    src = docs / "reference" / ".sources"
+    given = docs / "corpus" / "given"
+    if not (src.is_dir() and given.is_dir()):
+        return []
+    snaps = {}
+    sizes = []
+    for p in sorted(src.rglob("*")):
+        if p.is_file():
+            try:
+                snaps.setdefault(sdlc_core.sha256_file(p), []).append(p)
+                sizes.append(p.stat().st_size)
+            except OSError:
+                continue
+    if not snaps:
+        return []
+    lo, hi = min(sizes) // 2, max(sizes) * 2
+    out = []
+    for g in sorted(given.iterdir()):
+        if not g.is_file() or g.name.endswith(".meta.md"):
+            continue
+        try:
+            if not lo <= g.stat().st_size <= hi:
+                continue
+            h = sdlc_core.sha256_file(g)
+        except OSError:
+            continue
+        for s in snaps.get(h, []):
+            out.append("reference/.sources/%s and corpus/given/%s hold the same text "
+                       "-- one home per source text: re-point the guide to "
+                       "corpus/given/ (portability.md par.6, kb-agentic)"
+                       % (s.relative_to(src).as_posix(), g.name))
+    return out
 
 
 def kb_sha256_bytes(path):
@@ -1427,6 +1777,10 @@ def kb_export_closure(docs, slugs):
                              rel[:-len(Path(rel).suffix)] + ".txt" if Path(rel).suffix else rel):
                     if cand in seen:
                         continue
+                    if cand.endswith(".meta.md") and (docs / cand).is_file() and \
+                            kb_is_tombstone(sdlc_core.load_frontmatter(
+                                sdlc_core.read_text(docs / cand).splitlines())):
+                        continue  # F-077: a tombstone never travels
                     if (docs / cand).is_file():
                         seen.add(cand)
                         artifacts.append(cand)
@@ -1434,10 +1788,15 @@ def kb_export_closure(docs, slugs):
 
 
 def kb_bundle_write(docs, out, selected, artifacts, project):
-    """Write the bundle. Mirrors the docs-root layout; no path is rewritten."""
+    """Write the bundle. Mirrors the docs-root layout; no path is rewritten.
+    Returns whether a not-yet-honored mark was dropped (F-080) -- a yes/no,
+    never a count: a count of dropped marks is a count of claims by the mark."""
     out.mkdir(parents=True, exist_ok=True)
     (out / "topics").mkdir(exist_ok=True)
+    dropped = False
     for slug, (p, text, _rows) in sorted(selected.items()):
+        text, d = kb_drop_marks(text)
+        dropped = dropped or d
         (out / "topics" / p.name).write_text(text, encoding="utf-8")
     for rel in artifacts:
         dst = out / rel
@@ -1452,6 +1811,7 @@ def kb_bundle_write(docs, out, selected, artifacts, project):
     for rel in artifacts:
         lines.append("- `%s` sha256:%s" % (rel, kb_sha256_bytes(docs / rel)))
     (out / BUNDLE_MANIFEST).write_text("\n".join(lines) + "\n", encoding="utf-8")
+    return dropped
 
 
 def kb_import_plan(bundle, docs):
@@ -1624,15 +1984,19 @@ def kb_refresh_indexes(docs):
 
 
 def kb_validate_surface(docs, full=False):
-    """Additive seam for marketing: preserve its own validator and report."""
+    """Additive seam for marketing: preserve its own validator and report.
+    `full` is marketing's check: the credential scan (F-077) runs there outside
+    the topics/corpus guard, since document-guide snapshots need no corpus."""
     rc = max(memory_validate(docs), _kb_extra_validate(docs))
+    if full:
+        rc = max(rc, _kb_print_credentials(docs.parent, docs))
     if full and ((docs / "topics").is_dir() or (docs / "corpus").is_dir()):
         cycle = kb_time_cycle(docs)
         rc = max(rc, kb_cmd_graph(docs, cycle), kb_cmd_corpus(docs, cycle))
     return rc
 
 INTERCEPTED = {"index", "validate", "check", "graph", "corpus", "claim-id",
-               "anchor", "export", "import", "stale", "recall"}
+               "anchor", "export", "import", "stale", "recall", "adopt"}
 
 
 def _kb_root(args):
@@ -1672,8 +2036,9 @@ def kb_cmd_graph(docs, cycle=None):
     return 0
 
 
-def kb_cmd_corpus(docs, cycle=None):
+def kb_cmd_corpus(docs, cycle=None, extra_errors=()):
     errors, warnings = kb_corpus_check(docs)
+    errors = list(extra_errors) + errors
     if cycle is None:
         cycle = kb_time_cycle(docs)
     _tc_cited, tc_chain, tc_dang = kb_time_cycle_warns(cycle)
@@ -1730,8 +2095,67 @@ def kb_cmd_check(root, docs, strict=False, hybrid=False):
                     ("corpus", lambda: kb_cmd_corpus(docs, cycle)))
     return sdlc_core.cmd_check(
         root, strict=strict, hybrid=hybrid,
-        extra_validate=lambda: max(_kb_extra_validate(docs), memory_validate(docs)),
+        extra_validate=lambda: max(_kb_extra_validate(docs), memory_validate(docs),
+                                   _kb_print_credentials(root, docs)),
         extra_sections=sections)
+
+
+def kb_cmd_adopt(root, docs):
+    """F-077: the dry-run plan of adopting kb-agentic on an existing docs root --
+    which document guides rest on a snapshot, and what moving each into
+    corpus/given/ involves. Reads only; there is no --apply (portability.md
+    par.6: the choice of source and the redaction are judgements)."""
+    if not docs.is_dir():
+        print("[ERROR] no docs root at %s" % docs)
+        return 1
+    given = docs / "corpus" / "given"
+    twins = {}
+    if given.is_dir():
+        for g in sorted(given.iterdir()):
+            if g.is_file() and not g.name.endswith(".meta.md"):
+                try:
+                    twins.setdefault(sdlc_core.sha256_file(g), g.name)
+                except OSError:
+                    pass
+    print("=== adopt: document guides -> corpus/given/ (dry run) ===")
+    code_n = 0
+    for rel, _p, meta, _t in sdlc_core.list_guides(root):
+        if (meta.get("source_kind") or "document").strip() != "document":
+            code_n += 1
+            continue
+        df = (meta.get("distilled_from") or "").strip()
+        print("%s" % rel)
+        print("  distilled_from: %s" % (df or "(none)"))
+        src = sdlc_core.confine_under(root, df) if df else None
+        if df and src is None:
+            print("  source: outside the project root -- not read")
+            continue
+        if src is None or not src.is_file():
+            print("  source: missing")
+            continue
+        try:
+            where = "/" + src.relative_to(root.resolve()).as_posix()
+        except ValueError:
+            where = ""
+        if "/corpus/given/" in where:
+            print("  source: already in corpus/given/")
+            continue
+        print("  source: %s" % (".sources/ snapshot" if "/reference/.sources/" in where
+                                 else "elsewhere"))
+        try:
+            twin = twins.get(sdlc_core.sha256_file(src))
+        except OSError:
+            twin = None
+        if twin:
+            print("  same text already in corpus/given/%s" % twin)
+        found = kb_credential_findings(src)
+        if found:
+            print("  " + _kb_cred_message("credential-shaped", found,
+                                         "redact before storing (distillation.md par.1)")
+                  .split(": ", 1)[1])
+    print("%d code guide(s) stay on .sources/." % code_n)
+    print("Nothing was written. Procedure: portability.md par.6 (kb-agentic).")
+    return 0
 
 
 def kb_cmd_stale(root, docs, hybrid=False):
@@ -1833,9 +2257,12 @@ def kb_cmd_export(args):
     if errors:
         return 1
     out = Path(args.out)
-    kb_bundle_write(docs, out, selected, artifacts, root.name)
+    dropped = kb_bundle_write(docs, out, selected, artifacts, root.name)
     print("[ok] bundle written: %s" % out)
     print("     topics: %d, artifacts: %d" % (len(selected), len(artifacts)))
+    if dropped:
+        print("     not-yet-honored markers dropped: they describe this "
+              "project's code")
     if added:
         # never silent: a set that grew is a fact about the export, and the
         # alternative -- dropping the partner rows -- ships a broken tree.
@@ -2084,6 +2511,9 @@ shared project memory -- also available:
   anchor <path> <phrase>      resolve a phrase to a verified locator span
   export --out <dir>          bundle a subgraph WITH the bytes its claims cite
   import <dir>                merge a bundle in additively (never overwrites)
+  adopt                       dry run: document guides resting on .sources/
+                              snapshots, and what moving them into corpus/given/
+                              involves (writes nothing; portability.md par.6)
   remind                      one-line per-turn reminder (UserPromptSubmit hook,
                               opt-in -- ENFORCEMENT par.4; constant, zero-read)
 
@@ -2151,6 +2581,9 @@ def main(argv=None):
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--root")
     p.add_argument("--docs-dir")
+    p = sub.add_parser("adopt")
+    p.add_argument("--root")
+    p.add_argument("--docs-dir")
     args = ap.parse_args(argv)
     if args.cmd == "claim-id":
         return kb_cmd_claim_id(args)
@@ -2175,7 +2608,9 @@ def main(argv=None):
     if args.cmd == "graph":
         return kb_cmd_graph(docs)
     if args.cmd == "corpus":
-        return kb_cmd_corpus(docs)
+        return kb_cmd_corpus(docs, extra_errors=kb_credential_errors(root, docs))
+    if args.cmd == "adopt":
+        return kb_cmd_adopt(root, docs)
     if args.cmd == "validate":
         return kb_cmd_validate(root, docs, strict=args.strict, hybrid=args.hybrid)
     return kb_cmd_check(root, docs, strict=args.strict, hybrid=args.hybrid)
