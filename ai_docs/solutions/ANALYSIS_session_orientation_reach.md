@@ -133,9 +133,11 @@ lines that follow the orientation.
    `- <workstream> · <level> · <branch> · <status> -- <next step>`, then
    `Project-wide notes:` and the notes text;
 6. `## Reading guide (README)` and the README body;
-7. `## Read on demand`: the manifest (`INDEX.md`), the full router with provenance, the
-   full registry with since/details — one line each, paths under the docs root;
-8. the notes: truncation (FS6), wired twice (FS3);
+7. `## Read on demand`: README, the manifest (`INDEX.md`), the full router with
+   provenance, the full registry with since/details — one line each for the files that
+   exist, paths under the docs root;
+8. the wired-twice notes (FS3) — a cut section says so inline (FS6), with no separate
+   note;
 9. the devPNT line (`--hybrid`, unchanged text).
 In this repo the first router line and the registry heading land inside the first 2,000
 characters.
@@ -242,8 +244,8 @@ New components, each with its own contract:
   running lens, found as `name:` in `SKILL.md` (≤ 64 KB) of a subdirectory of two fixed
   directories: the running skill's parent and `<CLAUDE_CONFIG_DIR or ~/.claude>/skills`.
   Test seam `AGENTIC_SDLC_SKILLS_DIRS` (os.pathsep list), like `AGENTIC_SDLC_USER_SETTINGS`.
-- `orient_wiring(root) -> {client: [place]}` — distinct orient commands per client, with
-  the place each was found.
+- `orient_wiring(root) -> {client: {command: place}}` — distinct live orient commands per
+  client, with the place each was first found.
 - `ORIENT_APPEND_RESERVE` — the share the spine leaves for the knowledge layer's append,
   which cuts itself to it.
 
@@ -267,15 +269,16 @@ into the three distributions — counted once (GUIDE_skill_family_changes.md).
 | `skills/agentic-sdlc-skill/scripts/test_skill_invariants.py` (+3) | AC7 (three §2 rows) |
 | `skills/agentic-sdlc-skill/scripts/test_remind.py`, kb and mkt copies | `REMIND_CAP` 600; suffix asserted; the code copy also runs the course entry point |
 | `test_golden_regression.py` code, kb, mkt | runners set `AGENTIC_SDLC_SKILLS_DIRS` to an empty dir (machine-independent); kb's `test_baseline_is_additions_only_over_the_frozen_snapshot` exempts the frozen `orient` section (R8), the frozen file untouched |
-| `fixtures/golden_baseline.txt` code, kb, mkt | re-captured: only the `orient` section changes (declared here) |
+| `fixtures/golden_baseline.txt` code, kb | re-captured: only the `orient` section changes (declared here); mkt's corpus runs no orient, its baseline is unchanged |
 | `skills/agentic-sdlc-skill/routing.md` (+3) | three rows in §2 (FS7) |
 | `shared_manifest.json` (×4) | regenerated |
 | `evals/scenarios/hook_orients_session.md` code, kb | pass criteria: router, registry, README sections and the triage line first; INDEX as a pointer |
 | `skills/agentic-sdlc-skill/SKILL.md` | Phase-1 bullet: what the hook emits, in its new order |
 | `ENFORCEMENT.md` ×4 | §4 first paragraph (order, pointers, cap); remind cost paragraph (characters, 600) |
-| `README.md`, `distributions/kb-agentic-skill/README.md` | the sentence listing what the hook hands over |
+| `README.md`, `distributions/kb-agentic-skill/README.md`, `distributions/mkt-agentic-sdlc/README.md` | the sentence listing what the hook hands over |
 | `ai_docs/strategic/skill_family_agent_workflows.md` | "sotto i 500 caratteri" → 600, plus the lens choice (derived document, `audit_plan.md` refresh duty) |
 | `ai_docs/vision/rulings.md` | new row r32; r19 (ADMIT) bound marked superseded |
+| `ai_docs/strategic/architecture.md` | Component Map, Validator core row: session-time lens detection and the bounded orient append |
 | `CHANGELOG.md` ×4 | `[Unreleased - X.Y.Z]` section (versions provisional; the release sets them, `GUIDE_release.md`) |
 | `ai_docs/solutions/harness_session_orientation_reach/probe.py` | the probe |
 
@@ -341,8 +344,7 @@ text injected into an agent's context every session.
 
 - Per turn (r19 → r32, owner R7): +89 characters (≈ 18 tokens) on every prompt, every
   lens; bound 600. R7 was asked with a 74-character suffix; the L1 exemption the review
-  asked for brings it to 89 (566/531/525/393), inside the bound the owner chose —
-  disclosed again at closure.
+  asked for brings it to 89 (566/531/525/393), accepted by the owner at closure (R9).
 - Per session: one copy of the orientation drops from 16,435 to ≤ 9,500 characters here.
 - Read cost: `routing.md` +3 rows (read only on multi-lens installs); `SKILL.md`,
   `ENFORCEMENT.md`, READMEs: sentences replaced, net near zero.

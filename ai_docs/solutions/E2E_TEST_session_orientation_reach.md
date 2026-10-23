@@ -32,9 +32,9 @@ Result:
 
 ### S2 — AC3: wired twice is said once per copy
 Steps: 1. With the hook wired in both user and project settings, start a session.
-Expected: each orientation copy ends with a `[note]` saying it is wired 2 times for
-one client, naming `.claude/settings.json` and `user settings`, and telling to keep
-one. 2. Remove one entry and start a new session: one copy, no note.
+Expected: each orientation copy carries, after `## Read on demand`, a `[note]` saying
+it is wired 2 times for one client, naming `.claude/settings.json` and `user settings`,
+and telling to keep one. 2. Remove one entry and start a new session: one copy, no note.
 Result:
 
 ### S3 — AC4: lens line
@@ -73,7 +73,8 @@ Result:
 
 ### R3 — `--hybrid`
 Steps: 1. Run `sdlc_check.py orient --hybrid` in a project.
-Expected: the last line points at `devpnt_mcp_get_bootstrap`.
+Expected: a `[devPNT active]` line after `## Read on demand` points at
+`devpnt_mcp_get_bootstrap` (the project-memory line may follow it).
 Result:
 
 ### R4 — a knowledge project

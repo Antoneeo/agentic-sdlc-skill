@@ -322,6 +322,9 @@ class OrientReachTests(unittest.TestCase):
             seed(d, "ai_docs/topics/INDEX.md", ("| topic | " + "t" * 200 + " |\n") * 40)
             seed(d, ".claude/settings.json", json.dumps(grouped_hook(live_cmd(d, "p"))))
             us = seed(d, "userworld/settings.json", json.dumps(grouped_hook(live_cmd(d, "u"))))
+            seed(d, ".codex/hooks.json", json.dumps({"SessionStart": [
+                {"type": "command", "command": live_cmd(d, "c1")},
+                {"type": "command", "command": live_cmd(d, "c2")}]}))
             rc, out = run_entry_orient(d, extra=("--hybrid",), user_settings=us,
                                        skills_dirs=[skills_dir_with(d, sibling_name())])
             self.assertEqual(rc, 0)
@@ -330,6 +333,7 @@ class OrientReachTests(unittest.TestCase):
             for must in ("more lines -- read", "## read on demand", "devpnt active",
                          "routing.md", "keep one", "## topic router"):
                 self.assertIn(must, out.lower())
+            self.assertEqual(out.lower().count("keep one"), 2, "one note per client (AC2)")
 
     def test_router_stub_says_no_match(self):
         with tempfile.TemporaryDirectory() as d:
@@ -369,6 +373,34 @@ class OrientReachTests(unittest.TestCase):
             for label, out in (("once", once), ("identical", identical),
                                ("clients", clients), ("dead", dead)):
                 self.assertNotIn("keep one", out.lower(), label)
+
+    def test_cannot_tell_entry_counts_as_a_copy(self):
+        # FS3: an entry whose tokens name no validator cannot be judged dead,
+        # so it is a copy the session may receive.
+        with tempfile.TemporaryDirectory() as d:
+            self._full(d)
+            seed(d, ".claude/settings.json", json.dumps(grouped_hook(live_cmd(d, "p"))))
+            seed(d, ".claude/settings.local.json",
+                 json.dumps(grouped_hook("run --mode=sdlc_check.py:legacy orient")))
+            _, out = run_orient(root=d)
+            self.assertIn("keep one", out.lower())
+
+    def test_lens_table_reads_routing_and_fails_open(self):
+        # FS4: the family list comes from routing.md par.0 (as lib.js reads it);
+        # an unreadable or absent routing.md yields no table, hence no line.
+        with tempfile.TemporaryDirectory() as d:
+            self.assertEqual(sc.lens_table(d), {})
+            seed(d, "routing.md", "| Lens | Skill name | Faithful to |\n|---|---|---|\n"
+                                  "| code | `agentic-sdlc` | code |\n| knowledge | `kb-agentic` | docs |\n")
+            self.assertEqual(sc.lens_table(d), {"agentic-sdlc": "code", "kb-agentic": "knowledge"})
+            real = sdlc_core.lens_table
+            sdlc_core.lens_table = lambda skill_dir=None: {}
+            try:
+                self._full(d)
+                _, out = run_orient(root=d, skills_dirs=[skills_dir_with(d, sibling_name())])
+            finally:
+                sdlc_core.lens_table = real
+            self.assertNotIn("routing.md", out)
 
     def test_lens_line_when_a_sibling_is_installed(self):
         with tempfile.TemporaryDirectory() as d:
