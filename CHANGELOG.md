@@ -11,9 +11,13 @@ Tutte le modifiche significative a questa skill saranno documentate in questo fi
 ### Added
 - Shared claim checks (`check`): a claim's `about` cell may hold several relations separated by `; `, and one reserved predicate, `not-yet-honored-by -> ANALYSIS_<name>`, marks a specification claim the code does not yet honor. `check` refuses the marker when that analysis is missing from `solutions/` or cites neither the claim id nor the id of a row the claim succeeds. `export` drops the markers and says so in one line. Nothing lists or counts claims by the marker (`vision/rulings.md` r33). `memory.md`: a marked claim is cited as not yet true of the code, naming its analysis.
 - Write Triggers: a Standalone L3 that defers fixing code which contradicts a `topics/` claim marks the claim and cites its id in its ANALYSIS. The L2/L3 change that makes the code honor the claim removes the marker; L1 is exempt.
+- `verdict --hook`, wired by default on Claude Code: an Edit, Write, MultiEdit or NotebookEdit is refused, with one line saying how to unblock, when the session declared no guide-router verdict (or `Level: L1`), or never read a guide its verdict names. Silent in projects without guides, for subagents and whenever it cannot tell. Remove the hook entry to opt out (`ENFORCEMENT.md` §3, `vision/rulings.md` r34).
 - `orient` adds a note when one client runs it from two settings entries, which means each session gets the orientation twice. Claude Code and Codex are counted separately, an identical command counts once, and an entry whose validator is gone is not counted.
 - `orient` adds a line naming the sibling lenses installed beside the skill or in the user's Claude skills directory, and says to choose the lens with `routing.md`. The family list is read from `routing.md` §0, as the installer does.
 - `routing.md` §2 gains worked verdicts for four mixed requests: an interface spec written for another team, the requirements another team must build, a guide whose source spec changed, and code that diverges from a supplied spec.
+
+### Fixed
+- Uninstalling now also removes the per-turn `remind` hook entry. Left behind, it pointed at a deleted file and Python exited 2, which blocks the prompt.
 
 ## [1.47.0] - 2026-10-19
 

@@ -587,10 +587,23 @@ function wireGlobalOrientHook(options) {
 // already removed the hook, the line stays and the opt-out survives uninstall,
 // reinstall, and sibling-lens uninstalls.
 function removeGlobalOrientHooks(removedRoots) {
+  return removeGlobalHookEntries(removedRoots, {
+    event: 'SessionStart',
+    re: / orient(\s|$)/,
+    markerTargets: orientMarkerTargets,
+    markerRemove: orientMarkerRemove,
+  });
+}
+
+// The pruning loop shared by every hook this installer wires (F-076): only the
+// `spec.event` entries whose command matches `spec.re` AND whose validator
+// token resolves INTO a removed root are ours; the marker line is cleared only
+// when an entry was actually removed. Returns the targets touched.
+function removeGlobalHookEntries(removedRoots, spec) {
   const targets = [];
   const claude = CLIENTS.find((c) => c.key === 'claude');
   if (claude) targets.push(path.join(claude.home, 'settings.json'));
-  for (const t of orientMarkerTargets()) {
+  for (const t of spec.markerTargets()) {
     if (!targets.some((x) => pathsEqual(x, t))) targets.push(t);
   }
   const removedFrom = [];
@@ -599,17 +612,17 @@ function removeGlobalOrientHooks(removedRoots) {
       const state = orientSettingsState(target);
       if (!state.ok || !fs.existsSync(target)) continue;
       const hooks = state.settings.hooks;
-      if (!hooks || !Array.isArray(hooks.SessionStart)) continue;
+      if (!hooks || !Array.isArray(hooks[spec.event])) continue;
       let removedHere = false;
       const ours = (h) => {
         const cmd = h && typeof h.command === 'string' ? h.command : '';
-        if (!(ORIENT_ENTRY_POINTS.some((n) => cmd.includes(n)) && / orient(\s|$)/.test(cmd))) return false;
+        if (!(ORIENT_ENTRY_POINTS.some((n) => cmd.includes(n)) && spec.re.test(cmd))) return false;
         const tok = orientHookValidator(cmd);
         if (tok === null || !path.isAbsolute(tok)) return false;   // cannot attribute: keep
         return removedRoots.some((root) => pathInside(tok, root));
       };
       const kept = [];
-      for (const group of hooks.SessionStart) {
+      for (const group of hooks[spec.event]) {
         if (!group || typeof group !== 'object') { kept.push(group); continue; }
         if (Array.isArray(group.hooks)) {
           const inner = group.hooks.filter((h) => {
@@ -626,13 +639,13 @@ function removeGlobalOrientHooks(removedRoots) {
         }
       }
       if (!removedHere) continue;
-      state.settings.hooks.SessionStart = kept;
-      if (!kept.length) delete state.settings.hooks.SessionStart;
+      state.settings.hooks[spec.event] = kept;
+      if (!kept.length) delete state.settings.hooks[spec.event];
       if (state.settings.hooks && !Object.keys(state.settings.hooks).length) {
         delete state.settings.hooks;
       }
       fs.writeFileSync(target, JSON.stringify(state.settings, null, 2) + String.fromCharCode(10), 'utf8');
-      orientMarkerRemove(target);
+      spec.markerRemove(target);
       removedFrom.push(target);
     } catch (e) { /* fail-open per target: never abort an uninstall */ }
   }
@@ -647,94 +660,142 @@ function removeGlobalOrientHooks(removedRoots) {
 // already there -- which is the state of every existing installation.
 // Owner-accepted per-turn cost: `ai_docs/vision/rulings.md` r19.
 
-const REMIND_HOOK_TIMEOUT = 5;
+// F-076 generalized the pair below to every constant-command hook this
+// installer wires: one spec per hook, the remind names kept as wrappers.
+const REMIND_HOOK = {
+  event: 'UserPromptSubmit', sub: 'remind', re: / remind(\s|$)/,
+  marker: 'remind-hook-wired', timeout: 5,
+};
+// F-076: the guide-verdict check. `; exit 0` because a validator that cannot
+// run `verdict` -- missing (npm 7+ may never run the uninstaller) or older than
+// it (a downgrade) -- exits 2, and exit 2 on PreToolUse blocks every edit.
+// Probed in Git Bash and PowerShell 5.1. Owner-accepted: rulings.md r34.
+const VERDICT_HOOK = {
+  event: 'PreToolUse', sub: 'verdict --hook', suffix: '; exit 0', re: / verdict(\s|$)/,
+  marker: 'verdict-hook-wired', timeout: 10, matcher: 'Edit|Write|MultiEdit|NotebookEdit',
+};
 
+function commandHookCommand(spec, python, validator) {
+  return python + ' "' + validator + '" ' + spec.sub + (spec.suffix || '');
+}
 function remindHookCommand(python, validator) {
-  return python + ' "' + validator + '" remind';
+  return commandHookCommand(REMIND_HOOK, python, validator);
 }
 
-function findRemindHook(settings) {
-  const groups = settings && settings.hooks && settings.hooks.UserPromptSubmit;
+function findCommandHook(settings, spec) {
+  const groups = settings && settings.hooks && settings.hooks[spec.event];
   if (!Array.isArray(groups)) return null;
   for (const group of groups) {
     if (!group || typeof group !== 'object') continue;
     const inner = Array.isArray(group.hooks) ? group.hooks : [group];
     for (const h of inner) {
       const cmd = h && typeof h.command === 'string' ? h.command : '';
-      if (ORIENT_ENTRY_POINTS.some((n) => cmd.includes(n)) && / remind(\s|$)/.test(cmd)) {
+      if (ORIENT_ENTRY_POINTS.some((n) => cmd.includes(n)) && spec.re.test(cmd)) {
         return cmd;
       }
     }
   }
   return null;
 }
+function findRemindHook(settings) {
+  return findCommandHook(settings, REMIND_HOOK);
+}
 
-// Writes the hook into `target` (an already-chosen settings file) unless it is
-// there or the user opted out. Returns a code, never throws: an installer must
-// not die on someone's settings file.
-function remindMarkerPath() {
+// One marker file per hook: removal is a standing opt-out for THAT hook only.
+function markerPathOf(spec) {
   const root = process.env.AGENTIC_SDLC_KB_ROOT
     || path.join(os.homedir(), '.agentic-sdlc');
-  return path.join(root, 'remind-hook-wired');
+  return path.join(root, spec.marker);
 }
-function remindMarkerTargets() {
+function markerTargetsOf(spec) {
   try {
-    return fs.readFileSync(remindMarkerPath(), 'utf8')
+    return fs.readFileSync(markerPathOf(spec), 'utf8')
       .split(/\r?\n/).map((x) => x.trim()).filter(Boolean);
   } catch (e) {
     return [];
   }
 }
-function remindMarkerHas(target) {
-  return remindMarkerTargets().some((t) => pathsEqual(t, target));
+function markerHasOf(spec, target) {
+  return markerTargetsOf(spec).some((t) => pathsEqual(t, target));
 }
-function remindMarkerAdd(target) {
+function markerAddOf(spec, target) {
   try {
-    if (remindMarkerHas(target)) return;
-    fs.mkdirSync(path.dirname(remindMarkerPath()), { recursive: true });
-    fs.appendFileSync(remindMarkerPath(), target + String.fromCharCode(10), 'utf8');
+    if (markerHasOf(spec, target)) return;
+    fs.mkdirSync(path.dirname(markerPathOf(spec)), { recursive: true });
+    fs.appendFileSync(markerPathOf(spec), target + String.fromCharCode(10), 'utf8');
   } catch (e) { /* fail-open */ }
 }
+function markerRemoveOf(spec, target) {
+  try {
+    const rest = markerTargetsOf(spec).filter((t) => !pathsEqual(t, target));
+    if (rest.length) {
+      fs.writeFileSync(markerPathOf(spec), rest.join(String.fromCharCode(10)) + String.fromCharCode(10), 'utf8');
+    } else {
+      fs.rmSync(markerPathOf(spec), { force: true });
+    }
+  } catch (e) { /* fail-open */ }
+}
+function remindMarkerHas(target) { return markerHasOf(REMIND_HOOK, target); }
+function remindMarkerAdd(target) { markerAddOf(REMIND_HOOK, target); }
 
-function wireRemindHookInto(target, python, validator) {
+// Writes the hook into `target` (an already-chosen settings file) unless it is
+// there or the user opted out. Returns a code, never throws: an installer must
+// not die on someone's settings file. Order matters: the hook being PRESENT is
+// `already`, and only its ABSENCE plus our marker means the user removed it --
+// a standing opt-out. Marker-first would refuse to re-check a hook someone
+// still has.
+function wireCommandHookInto(spec, target, python, validator) {
   if (!python) return { code: 'no-python' };
   if (!validator || ORIENT_UNSAFE_IN_PATH.test(validator)) return { code: 'unsafe-path', validator };
   const state = orientSettingsState(target);
   if (!state.ok) return { code: 'malformed', target, why: state.why };
-  const settings0 = state.settings;
-  // Order matters, and the first version had it wrong too: the hook being
-  // PRESENT is `already`, and only its ABSENCE plus our marker means the user
-  // removed it -- a standing opt-out. Marker-first would refuse to re-check a
-  // hook someone still has.
-  const present = findRemindHook(settings0);
+  const settings = state.settings;
+  const present = findCommandHook(settings, spec);
   if (present) return { code: 'already', target, command: present };
-  if (remindMarkerHas(target)) return { code: 'opted-out', target };
-  const settings = settings0;
-  const existing = null;
-  if (existing) return { code: 'already', target, command: existing };
-  const command = remindHookCommand(python, validator);
+  if (markerHasOf(spec, target)) return { code: 'opted-out', target };
+  const command = commandHookCommand(spec, python, validator);
   if (!settings.hooks) settings.hooks = {};
-  if (!Array.isArray(settings.hooks.UserPromptSubmit)) settings.hooks.UserPromptSubmit = [];
-  settings.hooks.UserPromptSubmit.push({
-    hooks: [{ type: 'command', command, timeout: REMIND_HOOK_TIMEOUT }],
-  });
+  if (!Array.isArray(settings.hooks[spec.event])) settings.hooks[spec.event] = [];
+  const group = { hooks: [{ type: 'command', command, timeout: spec.timeout }] };
+  if (spec.matcher) group.matcher = spec.matcher;
+  settings.hooks[spec.event].push(group);
   try {
     fs.mkdirSync(path.dirname(target), { recursive: true });
     fs.writeFileSync(target, JSON.stringify(settings, null, 2) + String.fromCharCode(10), 'utf8');
   } catch (e) {
     return { code: 'write-failed', target, command, error: e.message };
   }
-  remindMarkerAdd(target);
+  markerAddOf(spec, target);
   return { code: 'wired', target, command };
 }
+function wireRemindHookInto(target, python, validator) {
+  return wireCommandHookInto(REMIND_HOOK, target, python, validator);
+}
 
-
-// The machine-global twin of wireGlobalOrientHook, same target and validator.
-function wireGlobalRemindHook(options) {
+// The machine-global twins of wireGlobalOrientHook, same target and validator.
+function wireGlobalCommandHook(spec, options) {
   const client = options.client;
   const validator = path.join(skillTarget(client), 'scripts', ORIENT_ENTRY_POINT);
   if (!fs.existsSync(validator)) return { code: 'no-validator', validator };
-  return wireRemindHookInto(path.join(client.home, 'settings.json'), options.python, validator);
+  return wireCommandHookInto(spec, path.join(client.home, 'settings.json'), options.python, validator);
+}
+function wireGlobalRemindHook(options) { return wireGlobalCommandHook(REMIND_HOOK, options); }
+function wireGlobalVerdictHook(options) { return wireGlobalCommandHook(VERDICT_HOOK, options); }
+
+// Uninstall twin for the constant-command hooks: one {target, event} per
+// removal, so the uninstaller can say what it removed.
+function removeGlobalCommandHooks(removedRoots) {
+  const removed = [];
+  for (const spec of [REMIND_HOOK, VERDICT_HOOK]) {
+    const targets = removeGlobalHookEntries(removedRoots, {
+      event: spec.event,
+      re: spec.re,
+      markerTargets: () => markerTargetsOf(spec),
+      markerRemove: (target) => markerRemoveOf(spec, target),
+    });
+    for (const target of targets) removed.push({ target, event: spec.event });
+  }
+  return removed;
 }
 
 
@@ -750,6 +811,8 @@ module.exports = {
   wireOrientHook,
   wireRemindHookInto,
   wireGlobalRemindHook,
+  wireGlobalVerdictHook,
+  removeGlobalCommandHooks,
   remindMarkerHas,
   remindMarkerAdd,
   remindHookCommand,
