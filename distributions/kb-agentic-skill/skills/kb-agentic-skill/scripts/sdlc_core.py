@@ -94,6 +94,10 @@ DESIGN_REVIEW_EPOCH = "2026-07-28"
 # like the two gates above: a fixed epoch cannot protect a late upgrader, so a
 # warning here would redden --strict CI on work written before the upgrade.
 CHRONOLOGY_EPOCH = "2026-10-18"
+# Guide check (F-078): an L3 code ANALYSIS started on/after this date owes a
+# filled '## Guide check'. The day AFTER the rule was written, so the analyses
+# opened that day by parallel units (which never saw the template) stay quiet.
+GUIDE_CHECK_EPOCH = "2026-10-24"
 NEXT_MAX_CHARS = 240        # this repository's longest `next:` was 214 at the epoch
 ID_SCAN_MAX_REFS = 300      # A3 is skipped above it (one advisory says so, T9)
 ID_SCAN_REFS_PER_CALL = 50  # keeps one git command line far below 32k chars
@@ -1482,10 +1486,30 @@ def has_ledger_heading(text):
     opens a comment at the start of a line -- nuking to EOF on an inline
     mention (or an unclosed example inside a fence) made a document that
     HAS its ledger get told it has none."""
+    return bool(re.search(r"^##[ \t]+Capability Ledger[ \t]*$", strip_non_prose(text), re.M))
+
+
+def strip_non_prose(text):
+    """Text without fenced code blocks and HTML comments (see has_ledger_heading)."""
     stripped = re.sub(r"^(```|~~~).*?^\1", "", text, flags=re.M | re.S)
     stripped = re.sub(r"<!--.*?-->", "", stripped, flags=re.S)
-    stripped = re.sub(r"^[ \t]*<!--(?!.*?-->).*\Z", "", stripped, flags=re.M | re.S)
-    return bool(re.search(r"^##[ \t]+Capability Ledger[ \t]*$", stripped, re.M))
+    return re.sub(r"^[ \t]*<!--(?!.*?-->).*\Z", "", stripped, flags=re.M | re.S)
+
+
+def has_guide_check(text):
+    """True when a real '## Guide check' heading carries an answer: the template's
+    comment alone answers nothing, so a copied-but-unfilled section still owes it."""
+    m = re.search(r"^##[ \t]+Guide check[ \t]*$(.*?)(?=^#{1,2}[ \t]|\Z)",
+                  strip_non_prose(text), re.M | re.S)
+    return bool(m and m.group(1).strip())
+
+
+def guide_check_due(meta, domain):
+    """True when an ANALYSIS owes the Phase-3 guide question (SKILL.md): a code-lens
+    L3 started on/after GUIDE_CHECK_EPOCH. Same grandfathering as ledger_due."""
+    return domain == "code" and ledger_due(meta) and (
+        parse_iso((meta.get("start_date") or "").strip().strip("'\""))
+        >= parse_iso(GUIDE_CHECK_EPOCH))
 
 
 def ledger_due(meta):
@@ -1734,6 +1758,10 @@ def cmd_validate(root, strict=False, hybrid=False):
         if ledger_due(meta) and not has_ledger_heading(text):
             advisories.append(f"{rel}: L3 without '## Capability Ledger' -- the architect pass "
                               "left no record (architect.md); run it before the Impact")
+        if guide_check_due(meta, domain) and not has_guide_check(text):
+            advisories.append(f"{rel}: L3 without a filled '## Guide check' -- does a CURRENT "
+                              "guide cover what this touches, and did understanding it force "
+                              "a model of a complex component no guide covers (guides.md, section 1)?")
 
     # Generated index aligned
     hist = ai / "strategic" / "features_history.md"
