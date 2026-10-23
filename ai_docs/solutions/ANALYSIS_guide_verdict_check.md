@@ -184,7 +184,12 @@ Code refuses the edit and shows the reason, or runs the normal permission flow.
 Mechanism bounds: the transcript is read line by line; only lines under 1 MiB containing
 `"type":"assistant"` are parsed; the guide list is a directory listing of `reference/`,
 no guide is opened. The edited path is `tool_input.file_path`, or `notebook_path` for
-NotebookEdit. A subagent call carries `agent_id` in the event JSON. Installer:
+NotebookEdit. A subagent's call is recognised two ways, either sufficient: `agent_id`
+in the event JSON (the client's documented common field, not probed), or a transcript
+whose entries carry `isSidechain: true` (probed: all 61 assistant entries of this
+session's subagent transcripts, none of the main one's 207). If the client hands a
+subagent's hook the main transcript without `agent_id`, the edit is judged on the
+orchestrator's verdict. Installer:
 user settings `settings.json`, marker `verdict-hook-wired` under the family's
 agent-global root (as `remind-hook-wired`).
 
@@ -276,8 +281,9 @@ listing, the user settings file (installer).
 - **T7 the wrapper hides a broken check**: a check that never runs is silent, so a broken
   install degrades to today's prose-only duty, never to a blocked machine. `check`'s
   wiring note does not cover this hook (residual).
-- Residuals, declared: edits through a subagent are not checked (delegation passes on
-  the orchestrator's duty, not its proof); after a resume or `/clear` that drops earlier
+- Residuals, declared: edits through a subagent are not checked when the client marks
+  them (delegation passes on the orchestrator's duty, not its proof), and judged on the
+  orchestrator's verdict when it does not; after a resume or `/clear` that drops earlier
   entries, a declared verdict may be gone — one refusal, then re-declare; Bash-made
   writes are not checked; session-wide matching; whether a refusal applies in the
   client's bypass-permissions mode is the client's (not verified).
@@ -297,13 +303,13 @@ Accepted by the owner (R4, asked at "~250 characters").
 ## Action Plan
 
 - [x] Probe red (P1, P3).
-- [ ] RED: `test_verdict.py`, `test_clients.js` cases.
-- [ ] `sdlc_core` functions, subparser, fail-open branch; `cmd_gate` reuse.
-- [ ] `lib.js` generic wiring and removal, verdict spec; `postinstall.js`, `preuninstall.js`.
-- [ ] SKILL.md, ENFORCEMENT ×4, rulings r34, architecture, CHANGELOG ×4.
-- [ ] Copy shared files; `shared_files.py --update` ×4.
-- [ ] GREEN: four batteries, `node scripts/test_clients.js`, probe P1–P7.
-- [ ] E2E_TEST, closure review, MERGE_REVIEW, index, handoff removed.
+- [x] RED: `test_verdict.py`, `test_clients.js` cases.
+- [x] `sdlc_core` functions, subparser, fail-open branch; `cmd_gate` reuse.
+- [x] `lib.js` generic wiring and removal, verdict spec; `postinstall.js`, `preuninstall.js`.
+- [x] SKILL.md, ENFORCEMENT ×4, rulings r34, architecture, CHANGELOG ×4.
+- [x] Copy shared files; `shared_files.py --update` ×4.
+- [x] GREEN: four batteries, `node scripts/test_clients.js`, probe P1–P7.
+- [x] E2E_TEST, closure review, MERGE_REVIEW, index, handoff removed.
 
 ## Test Strategy
 
@@ -328,3 +334,12 @@ wired by default (R4). r33 is taken on the F-080 branch; this unit uses r34.
 
 **2026-10-23 — design review.** Round 1 FAIL (1 BLOCK, 11 WARN), round 2 PASS with two
 WARNs folded (P7 red control, npm claim hedged); REVIEW_LOG. Implementation started.
+
+**2026-10-23 — implemented.** RED first (22 of 23 in `test_verdict.py`; the F-076 case
+in `test_clients.js`), then GREEN: batteries code 447, course 442, kb 628, mkt 449 OK;
+`test_clients.js` 58 pass; probe P1–P7 green, P6 green on this session's transcript.
+
+**2026-10-23 — closure review.** PASS with 4 WARN and 2 CANNOT VERIFY (REVIEW_LOG). Fixed:
+Markdown-emphasis and `Router verdict:` forms now count (W1); the uninstall lines are
+asserted (W2); subagent edits are also recognised by a sidechain transcript, probed on
+this session's subagents (CV1). Open for the owner: R1's quotation source (R5).

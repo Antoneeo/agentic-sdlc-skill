@@ -147,6 +147,14 @@ class VerdictHook(unittest.TestCase):
         self.assertIsNone(self.run_hook(
             [say("Level: L2 · router: no match (GUIDE_release.md does not apply)")]))
 
+    def test_markdown_emphasis_forms_pass(self):
+        # format drift resolves toward silence, never toward refusal
+        self.assertIsNone(self.run_hook([say("**Level**: L1")]))
+        self.assertIsNone(self.run_hook([say("**router**: no match")]))
+        self.assertIsNone(self.run_hook([say("Router verdict: no match")]))
+        reason = self.run_hook([say("**Router verdict**: `GUIDE_release.md` -> read")])
+        self.assertIn(GUIDE, reason, "the bold form still names its guide")
+
     def test_trivial_declaration_passes(self):
         self.assertIsNone(self.run_hook([say("Level: L1 — typo.")]))
         self.assertIsNone(self.run_hook([say("Level: **E1**, a one-word fix.")]))
@@ -169,6 +177,13 @@ class VerdictHook(unittest.TestCase):
 
     def test_subagent_is_silent(self):
         self.assertIsNone(self.run_hook([say("x")], agent_id="a1"))
+
+    def test_subagent_transcript_is_silent_without_agent_id(self):
+        # probed: every assistant entry of a Claude Code subagent transcript carries
+        # isSidechain: true, the main transcript none -- whichever path the hook gets
+        line = json.loads(say("x"))
+        line["isSidechain"] = True
+        self.assertIsNone(self.run_hook([json.dumps(line)]))
 
     def test_non_edit_tool_is_silent(self):
         self.assertIsNone(self.run_hook([say("x")], tool="Bash"))

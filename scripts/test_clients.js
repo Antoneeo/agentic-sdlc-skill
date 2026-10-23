@@ -1067,8 +1067,10 @@ test('F-076: postinstall wires and preuninstall removes the verdict check (child
     execFileSync(process.execPath, [POSTINSTALL], { env: childEnv, stdio: 'ignore' });
     const settingsPath = path.join(tmpHome, '.claude', 'settings.json');
     assert.strictEqual(verdictEntries(settingsPath).length, 1, 'postinstall wired it');
-    execFileSync(process.execPath, [PREUNINSTALL], { env: childEnv, stdio: 'ignore' });
+    const out = execFileSync(process.execPath, [PREUNINSTALL], { env: childEnv, encoding: 'utf8' });
     assert.strictEqual(verdictEntries(settingsPath).length, 0, 'preuninstall removed it');
+    assert.ok(/Removed the guide-verdict check hook entry/.test(out), out);
+    assert.ok(/Removed the per-turn reminder hook entry/.test(out), out);
     assert.strictEqual(remindCount(settingsPath), 0, 'and the per-turn entry');
   } finally {
     fs.rmSync(tmpHome, { recursive: true, force: true });

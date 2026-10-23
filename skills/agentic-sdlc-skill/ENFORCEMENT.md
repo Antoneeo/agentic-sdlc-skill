@@ -74,7 +74,8 @@ Claude Code hands every hook and refuses an Edit, Write, MultiEdit or NotebookEd
 A verdict whose text after `router:` begins with `no match` or `absent` names no guide.
 The refusal is one line, shown to the agent, saying how to unblock. It is silent — the
 edit proceeds — in a project without guides, for a file outside the project, for a
-subagent's edit, and whenever it cannot tell (no or oversized transcript, unknown format,
+subagent's edit (one the client marks with `agent_id`, or one whose transcript is the
+subagent's own), and whenever it cannot tell (no or oversized transcript, unknown format,
 ambiguous docs root, any error). It never approves an edit: compliance leaves the user's
 normal permission flow in place.
 
@@ -82,7 +83,8 @@ Cost (owner-accepted, `ai_docs/vision/rulings.md` r34, the "no ceremony ratchet"
 Non-Goal on r19's precedent): ~0.2–0.5 s per edit and zero tokens when compliant; one
 refusal of at most 250 characters and one retry when not. L1 pays nothing beyond writing
 `Level: L1`, which Rule Zero already asks for. Residuals: edits through a subagent and
-writes made with Bash are not checked; a verdict anywhere earlier in the session counts.
+writes made with Bash are not checked (a subagent's edit the client does not mark is judged
+on the orchestrator's verdict); a verdict anywhere earlier in the session counts.
 
 Installing the package wires it machine-wide on Claude Code; **removing that hook entry
 is a standing opt-out.** The command ends in `; exit 0`: a validator that cannot run
