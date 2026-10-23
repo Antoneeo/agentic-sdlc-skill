@@ -316,7 +316,7 @@ user's `config.toml` carries a value the CLI rejects) lists each installed skill
 ## Diary / Current State
 
 - **2026-10-23 — first draft** (this PC). Branch `fix/codex-agents-skills` off
-  `origin/main@ee73649`, worktree `C:\Users\pntntnud\source\wt-codex-skills`.
+  `origin/main@ee73649`, in a separate git worktree on that PC.
 - **2026-10-23 — revised after design review rounds 1 and 2** (findings and answers in
   `audit/reviews/REVIEW_LOG.md`). Evidence now S0–S6 plus the npm probe. Open: POSIX run
   of S4 (FS-7), owner Q1–Q5, design review round 3. The real profile was left as found;
