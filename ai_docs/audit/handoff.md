@@ -19,6 +19,8 @@ Date: 2026-10-22 (UTC)
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
+**2026-10-23 — F-078 closed: Guide check section and validate advisory.**
+
 **2026-10-19 — the docs root is not an audit area: stale ignores it, mark refuses it (it was re-marked 15 times in two days).**
 
 **2026-10-19 — release 1.47.0: mark --note, project-notes opener check, unit ids in the chronology; includes the unpublished 1.46.0 (--zip). Tags v1.47.0 / kb-v1.30.0 / mkt-v0.25.0 / course-v0.1.0-beta.12, publish pending.** The tags were moved, before any publish, to the commit that also makes the docs root not an audit area.
