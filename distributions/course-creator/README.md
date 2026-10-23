@@ -15,7 +15,7 @@ course-creator-init
 
 The installer detects Claude Code, Gemini CLI, Codex and Google Antigravity. Initialization creates absent `ai_docs/` files and a project protocol pointer; it does not overwrite existing project documents. Use `python <skill_dir>/scripts/sdlc_check.py check --root .` to validate the shared SDLC and course structures.
 
-**Docs site** (`scripts/docs_site.py --root <project> [--open] [--zip <file>]`): a static, offline, read-only website of what the agent reads in the project — reading guide, Vision, rules, documents, open work with each next step, courses and, with a knowledge base, the topic map, each fact with its exact source passage, and the source documents. Written outside `ai_docs/`; nothing is ranked or recommended.
+**Docs site** (`scripts/docs_site.py --root <project> [--open] [--zip <file>]`): a static, offline, read-only website of what the agent reads in the project — reading guide, Vision, rules, documents, open work with each next step, courses and, with a knowledge base, the topic map, each fact with its exact source passage, and the source documents. Written to `.docs-site/` (added to `.gitignore` on the first run), outside `ai_docs/`; nothing is ranked or recommended.
 
 Using the skill in your own project carries no obligation to publish your course or its sources. See [LICENSE](LICENSE) for the software terms and [NOTICE](NOTICE) for attribution.
 

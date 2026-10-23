@@ -18,7 +18,7 @@ out ("Standalone now, Hybrid later", `REQUEST_spec_code_divergence.md` R7). This
 closes that gap. The marker may name `SHADOW_<doc_key>`, and `check` resolves the
 newest `solutions/SHADOW_<doc_key>_vX.Y.md` and requires the claim id in it. Request:
 `audit/requests/REQUEST_spec_code_divergence_hybrid.md` R1. Admission: `vision/rulings.md`
-r35 (R2).
+r36 (R2).
 
 ## Feature Vision
 
@@ -29,7 +29,7 @@ r35 (R2).
   devPNT no longer drops the marker duty F-080 owed them), *Team lead needing
   governance* and *Solo developer using an AI agent*.
 - **Non-goals** — the r33 conditions bind unchanged and are not restated (rulings r33,
-  carried by r35). This unit adds three of its own:
+  carried by r36). This unit adds three of its own:
   - No call to devPNT: `check` reads files only, and devPNT's own doctrine (generated
     outside this repository) is not edited here.
   - No mode flag. `check` accepts both target kinds with or without `--hybrid`, because
@@ -177,13 +177,13 @@ symbol-graph tool being devPNT's and devPNT off):
 | (same kb `test_claim_ledger.py`) | `newest_shadow` cases: `sdlc_core` is byte-identical ×4 under the drift guard, so one battery covers it, as for the F-080 claim checks | RED |
 | `kb .../test_kb_recall.py` | FS1 anchor follows D4 | invariant |
 | `skills/.../test_skill_invariants.py` (shared ×4) | row anchors: `SHADOW_<doc_key>` replaces "(Standalone)" | invariant |
-| `ai_docs/vision/rulings.md` | r35 row; r33 basis gains "widened to Hybrid by r35" | ledger |
+| `ai_docs/vision/rulings.md` | r36 row; r33 basis gains "widened to Hybrid by r36" | ledger |
 | `CHANGELOG.md` + three distribution CHANGELOGs | `[Unreleased]` entry | release notes |
 | `hybrid.md` | none (R5 estimated one line; dropped — the Write Triggers row is read in every mode, and `hybrid.md` carries a moved-block digest a one-line edit would re-stamp) | lower cost than accepted |
 | `portability.md`, code `templates.md` | none: `portability.md` names the marker only; code `templates.md` speaks of the ANALYSIS Diary, which Hybrid does not have | checked |
 | request record, this ANALYSIS, harness, E2E, MERGE_REVIEW, HANDOFF, indexes | records | closure |
 
-**Ceremony cost (r35, R5; confirmed by the owner, R6).** The deltas are
+**Ceremony cost (r36, R5; confirmed by the owner, R6).** The deltas are
 written verbatim as (old, new) pairs in `harness_spec_code_divergence_hybrid/deltas.py`,
 which prints the UTF-8 byte change of each:
 
@@ -239,7 +239,7 @@ cell) and external input (an imported or hand-copied topic).
 - [x] Owner confirms the ceremony figures: R6 «Accept 201 B».
 - [x] RED: kb `test_claim_ledger.py` class; invariant anchors.
 - [x] GREEN: `sdlc_core.newest_shadow`; `knowledge.py` regex and `kb_check_marks`; both copied ×3; manifest.
-- [x] D1–D6; kb README; workflows doc; Component Map; rulings r35; CHANGELOG ×4.
+- [x] D1–D6; kb README; workflows doc; Component Map; rulings r36; CHANGELOG ×4.
 - [ ] Probe B1–B7 green, baseline A1/A3 red; four batteries; E2E_TEST; closure
       review; MERGE_REVIEW; `index`; `check` CLEAN; `mark`.
 
@@ -311,7 +311,7 @@ code 458, kb 669, mkt 460, course 453, all OK. Next: E2E (written), closure revi
 (rung 1, deep) re-ran probe, batteries ×4, drift guard and the delta comparison.
 - W1: `check` was also NOT CLEAN on `memory/INDEX.md`; closure runs `index` before
   `mark` and `check`.
-- W2: the r35 row records R6 and the confirmed figures.
+- W2: the r36 row records R6 and the confirmed figures.
 - W3: the handoff is removed at closure.
 - W4: any part whose predicate is `not-yet-honored-by` now gets the marker message, which
   names `SHADOW_<doc_key>, unversioned`; the FS4 message says "analysis or design". Tests.

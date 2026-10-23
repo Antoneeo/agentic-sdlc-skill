@@ -768,6 +768,8 @@ def build_sources(docs, rows_of):
         name = mp.name[:-len(".meta.md")]
         t = _text(mp) or ""
         meta = sdlc_core.load_frontmatter(t.splitlines()) or {}
+        if knowledge.kb_is_tombstone(meta):
+            continue  # withdrawn: no bytes to show; corpus/INDEX.md keeps the row
         through = _v(meta, "extracted_through")
         parsed = knowledge.kb_parse_extracted_through(through) if through else None
         if not through:
@@ -1259,9 +1261,11 @@ def chronology(docs, pages):
             text = _text(p)
             if text is None:
                 continue
-            date = knowledge.frontmatter_date(
-                sdlc_core.load_frontmatter(text.splitlines()))
+            fm = sdlc_core.load_frontmatter(text.splitlines())
+            date = knowledge.frontmatter_date(fm)
             if not date:
+                continue
+            if kind == "source" and knowledge.kb_is_tombstone(fm):
                 continue
             if kind == "source":
                 name = p.name[:-len(suffix)]
@@ -1355,6 +1359,30 @@ def git_ignored(project, out):
         return None
 
 
+def ensure_ignored(project, out):
+    """Add the site folder to the project's .gitignore when git does not ignore it, so the
+    site's copy of the documents is not committed. An entry already in the file is never
+    rewritten (git may ignore it elsewhere, or the user negated it on purpose). Returns the
+    line added, or None; False when the folder stays not ignored."""
+    if git_ignored(project, out) is not False:
+        return None
+    rel = out.resolve().relative_to(project.resolve()).as_posix()
+    entry = rel + "/"
+    gi = project / ".gitignore"
+    try:
+        raw = gi.read_bytes() if gi.is_file() else b""
+        text = raw.decode("utf-8")
+        if {rel, entry, "/" + rel, "/" + entry} & {l.strip() for l in text.splitlines()}:
+            return False
+        nl = "\r\n" if "\r\n" in text else "\n"
+        sep = nl if text and not text.endswith(("\n", "\r")) else ""
+        with open(str(gi), "ab") as f:
+            f.write((sep + entry + nl).encode("utf-8"))
+    except (OSError, UnicodeDecodeError):
+        return False
+    return entry
+
+
 def _shown(path, docs):
     try:
         return Path(path).relative_to(docs).as_posix()
@@ -1400,7 +1428,11 @@ def main(argv=None):
         ", %d topics, %d facts" % (len(kb["order"]), len(kb["facts"])) if kb else "", docs))
     for path, exc in _UNREADABLE:
         print("[ERROR] unreadable: %s (%s)" % (_shown(path, docs), exc))
-    if git_ignored(project, out) is False:
+    added = ensure_ignored(project, out)
+    if added:
+        print("[ok] added %s to %s so the site's copy of your documents is not committed."
+              % (added, project / ".gitignore"))
+    elif added is False:
         print("[note] %s is not git-ignored: add it to .gitignore so the site's copy of "
               "your documents is not committed." % out)
     if target:
