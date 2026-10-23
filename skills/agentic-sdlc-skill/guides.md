@@ -201,7 +201,13 @@ the component from partial understanding.
      rewrites snapshot bytes at all (keeps snapshots byte-verbatim; the
      normalized hash stays stable either way).
    - The snapshot is verbatim: no paraphrasing, no reformatting beyond what is
-     needed to save it as markdown.
+     needed to save it as markdown — with one exception, made before the file is
+     written and hashed: credentials, and personal or confidential third-party data
+     the guide does not need, become `[REDACTED: <kind>]`, and the guide's
+     frontmatter lists the kinds in `redacted_at_intake:`. A snapshot is committed
+     and hash-pinned, and `check` refuses a credential-shaped line in a document
+     guide's snapshot (a false positive is declared in the guide as
+     `credential_scan: reviewed — <reason>`).
    - **For `source_kind: code`** the snapshot is the verbatim CODE EXCERPTS the guide
      explains — the specific functions / classes / regions of the real files, each
      labelled with its `path:symbol` (or `path:startLine-endLine`) — assembled into

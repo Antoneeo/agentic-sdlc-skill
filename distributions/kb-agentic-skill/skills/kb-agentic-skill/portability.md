@@ -77,6 +77,9 @@ You choose topics; the export decides what must travel with them.
 If a conflict partner resolves to no row at all, the export **refuses**: exporting a
 broken set is worse than exporting nothing.
 
+A withdrawn artifact (`distillation.md` §1) never travels: it has no bytes, and its
+tombstone sidecar stays home.
+
 ## 3. Import is additive, and decides nothing
 
 `import` writes files. It does not place concepts, merge bodies, or settle disagreements.
@@ -123,3 +126,33 @@ settles anything here.
 Exporting is L1 — it writes nothing into the corpus and changes no knowledge. Importing
 is **L3**: a source enters the corpus and nodes are created, which is the L3 definition
 in Rule Zero, and the bundle is external input, which is never L1 whatever its size.
+Adoption (§6) is **L3** for the same reason.
+
+## 6. Adopting kb-agentic on an existing `ai_docs/`
+
+A project that used agentic-sdlc first has distilled its documents into
+`source_kind: document` guides whose sources are snapshots in `reference/.sources/`.
+With a corpus, a document's text has one home, `corpus/given/` (`distillation.md` §1).
+Moving it is one L3 unit:
+
+1. **Inventory.** `sdlc_check.py adopt` lists each document guide, where its source is
+   (`.sources/` snapshot, already in `given/`, elsewhere, missing), a `given/` artifact
+   holding the same text, and credential-shaped lines. It writes nothing; there is no
+   `--apply`, because steps 2 and 3 are judgements.
+2. **Choose the source, per guide.** The original, when it is reachable and is the
+   version the guide was distilled from — it is complete. Otherwise the snapshot, which
+   is a verbatim excerpt: its sidecar says so in its prose line ("verbatim excerpt of
+   <original>, selected for <guide> on <date>"), with `original_ref:` or
+   `original_path:` when known, and what the excerpt left out is a `gaps:` entry on the
+   topic, never assumed read.
+3. **Redact** (`distillation.md` §1), then store the artifact under its content-addressed
+   name, with its sidecar.
+4. **Re-point the guide**: `distilled_from:`, `source_hash` (the line-ending-normalized
+   digest), and its markers now name the artifact. The guide keeps its name.
+5. **Delete the snapshot**, then run `check` and `stale`.
+
+Past decisions are not rewritten: analyses, ADRs and diaries that cite the guide keep
+citing it, and a citation of the old snapshot path resolves in git history. A secret
+already committed in a snapshot stays in that history — say so to the user; purging it
+is theirs. Extracting claims from the adopted artifacts is an ordinary ingestion,
+afterwards.
