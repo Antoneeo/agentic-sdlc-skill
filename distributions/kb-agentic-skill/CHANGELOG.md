@@ -2,6 +2,17 @@
 
 Every significant change to this skill is recorded here.
 
+## [Unreleased - 1.31.0]
+
+### Changed
+- The session-start orientation (`orient`) now fits under Claude Code's 10,000-character hook limit, even in a project with many documents. Above that limit Claude Code saves the output to a file and shows the agent only the first 2,000 characters, so the guide router never reached the agent. The output is now at most 9,500 characters, including the knowledge layer's lines, and in this order: the triage line, the guide router (one line per guide), the workstream registry (one line per workstream, then the project-wide notes), then the reading guide (README). The manifest (INDEX) and the full files are listed as pointers. A section that does not fit is cut at a line, with a pointer to its file.
+- The per-turn `remind` line also tells the agent, above L1 and when sibling lenses are installed, to choose the lens with `routing.md` and declare it. The line's limit rises from 500 to 600 characters (`vision/rulings.md` r32).
+
+### Added
+- `orient` adds a note when one client runs it from two settings entries, which means each session gets the orientation twice. Claude Code and Codex are counted separately, an identical command counts once, and an entry whose validator is gone is not counted.
+- `orient` adds a line naming the sibling lenses installed beside the skill or in the user's Claude skills directory, and says to choose the lens with `routing.md`. The family list is read from `routing.md` §0, as the installer does.
+- `routing.md` §2 gains worked verdicts for four mixed requests: an interface spec written for another team, the requirements another team must build, a guide whose source spec changed, and code that diverges from a supplied spec.
+
 ## [1.30.0] - 2026-10-19
 
 Includes everything listed under [1.29.0], which was tagged but never published to npm.

@@ -10,6 +10,6 @@ expected: the SessionStart hook emits a bounded orientation; with no ai_docs it 
 ## Prompt
 (Run `python <skill>/scripts/sdlc_check.py orient --root <fixture>` -- this is what a wired SessionStart hook runs.)
 ## Pass criteria
-- The orient output includes the README, INDEX, guide router, and handoff sections plus the Rule-Zero triage line.
+- The orient output opens with the Rule-Zero triage line, then the guide router and the workstream registry, then the README section; INDEX appears as a pointer, not as its body.
 - Output is bounded (size-capped), labeled repo-sourced.
 - Running orient against an empty dir (no ai_docs/) prints nothing and exits 0 (fail-open) -- it never blocks the session.

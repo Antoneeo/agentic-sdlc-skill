@@ -13,6 +13,11 @@ Covers the P-TM consolidation Unit-1 [MILESTONE] requirements:
   T3 confinement     -> test_path_confinement_applied
   T8 fail-open       -> test_missing_ai_docs_silent_exit0 / test_unreadable_doc_skipped
   no-dup (M-VISION)  -> test_hybrid_pointer_no_dup
+
+F-075 (what reaches the session): the whole output fits under the client's hook
+cap with the triage line, the guide router and the workstream registry first --
+OrientReachTests. Every run is hermetic: the user-settings and skills-directory
+seams point at fixtures, so the developer's own machine never decides a verdict.
 """
 import json
 import os
@@ -35,12 +40,68 @@ def orient_args(root=None, hybrid=False):
     return SimpleNamespace(root=str(root) if root else None, hybrid=hybrid)
 
 
-def run_orient(root=None, hybrid=False):
+def _hermetic(root, user_settings=None, skills_dirs=()):
+    """The two machine-level reads orient makes, pointed at fixtures."""
+    return {"AGENTIC_SDLC_USER_SETTINGS": str(
+                user_settings if user_settings is not None
+                else Path(root) / "no-user-settings.json"),
+            "AGENTIC_SDLC_SKILLS_DIRS": os.pathsep.join(str(s) for s in skills_dirs)}
+
+
+def _with_env(env, fn):
+    saved = {k: os.environ.get(k) for k in env}
+    os.environ.update(env)
+    try:
+        return fn()
+    finally:
+        for k, v in saved.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+
+
+def run_orient(root=None, hybrid=False, user_settings=None, skills_dirs=()):
     """Run cmd_orient capturing stdout. Returns (rc, stdout)."""
     buf = StringIO()
-    with redirect_stdout(buf):
-        rc = sc.cmd_orient(orient_args(root=root, hybrid=hybrid))
+
+    def go():
+        with redirect_stdout(buf):
+            return sc.cmd_orient(orient_args(root=root, hybrid=hybrid))
+    rc = _with_env(_hermetic(root or ".", user_settings, skills_dirs), go)
     return rc, buf.getvalue()
+
+
+def run_entry_orient(root, extra=(), user_settings=None, skills_dirs=()):
+    """Run orient through the knowledge layer (what every lens's hook runs), so
+    the overlay's append is inside what is measured."""
+    import knowledge
+    buf = StringIO()
+
+    def go():
+        with redirect_stdout(buf):
+            return knowledge.main(["orient", "--root", str(root), *extra])
+    rc = _with_env(_hermetic(root, user_settings, skills_dirs), go)
+    return rc, buf.getvalue()
+
+
+def router_file(rows):
+    """A generated guide router (the `index` format) for (name, status, when) rows."""
+    lines = [sc.guide_index_header(), "# Operative guides (generated router)", "",
+             "| Guide | Status | When to consult | Source | Source version |",
+             "|---|---|---|---|---|"]
+    lines += ["| `%s` | %s | %s | some source | - |" % r for r in rows]
+    return "\n".join(lines) + "\n"
+
+
+def seed_registry(d, rows):
+    """Write HANDOFF_*.md sources for (id, level, branch, status, next) rows and
+    generate the registry with the real generator."""
+    for wid, level, branch, status, nxt in rows:
+        seed(d, "ai_docs/audit/HANDOFF_%s.md" % wid.split()[0].lower().replace("-", "_"),
+             "---\nworkstream: %s\nlevel: %s\nbranch: %s\nstatus: %s\nsince: 2026-10-01\n"
+             "next: %s\nupdated: 2026-10-02\n---\n" % (wid, level, branch, status, nxt))
+    seed(d, "ai_docs/audit/handoff.md", sc.build_registry(Path(d)))
 
 
 def seed(root, rel, text):
@@ -82,11 +143,14 @@ class OrientTests(unittest.TestCase):
             seed(d, "ai_docs/audit/handoff.md", "HANDOFF-BODY")
             rc, out = run_orient(root=d)
             self.assertEqual(rc, 0)
-            for label in ("Reading guide (README)", "Canonical manifest (INDEX)",
-                          "Guide router (when-to-consult)", "Last session handoff"):
+            for label in ("## Reading guide (README)", "## Guide router",
+                          "## Workstream registry", "## Read on demand"):
                 self.assertIn(label, out)
-            for body in ("README-BODY", "INDEX-BODY", "ROUTER-BODY", "HANDOFF-BODY"):
+            # hand-written router and registry are shown as written (FS6)
+            for body in ("README-BODY", "ROUTER-BODY", "HANDOFF-BODY"):
                 self.assertIn(body, out)
+            self.assertNotIn("INDEX-BODY", out)   # the manifest is a pointer (FS2)
+            self.assertIn("ai_docs/INDEX.md", out)
             self.assertIn("Rule Zero", out)
 
     def test_partial_present_skips_missing(self):
@@ -96,24 +160,23 @@ class OrientTests(unittest.TestCase):
             self.assertEqual(rc, 0)
             self.assertIn("ONLY-HANDOFF", out)
             self.assertNotIn("README-BODY", out)
-            self.assertIn("Last session handoff", out)
+            self.assertIn("## Workstream registry", out)
             self.assertNotIn("Reading guide (README)", out)
 
     def test_total_size_cap(self):
+        # T2, now on the WHOLE output (F-075): four oversized docs -- including
+        # one 20,000-character line, which no line boundary can cut -- leave the
+        # spine inside its share, and say where the rest is.
         with tempfile.TemporaryDirectory() as d:
-            # Four docs each at the per-doc cap -> total (24000) exceeds
-            # ORIENT_MAX_TOTAL_CHARS. Fill with digits 4-7, which never appear
-            # in the header/labels/notes/triage line (those use 1/2/3 only), so
-            # counting them isolates the emitted DOC-BODY chars exactly.
-            seed(d, "ai_docs/README.md", "4" * sc.ORIENT_PER_DOC_CHARS)
-            seed(d, "ai_docs/INDEX.md", "5" * sc.ORIENT_PER_DOC_CHARS)
-            seed(d, "ai_docs/reference/INDEX.md", "6" * sc.ORIENT_PER_DOC_CHARS)
-            seed(d, "ai_docs/audit/handoff.md", "7" * sc.ORIENT_PER_DOC_CHARS)
+            seed(d, "ai_docs/README.md", "4" * 20000)
+            seed(d, "ai_docs/INDEX.md", "5\n" * 10000)
+            seed(d, "ai_docs/reference/INDEX.md", "6\n" * 10000)
+            seed(d, "ai_docs/audit/handoff.md", "7\n" * 10000)
             rc, out = run_orient(root=d)
             self.assertEqual(rc, 0)
-            body_chars = sum(out.count(c) for c in "4567")
-            self.assertLessEqual(body_chars, sc.ORIENT_MAX_TOTAL_CHARS)
-            self.assertIn("truncated", out)
+            self.assertLessEqual(len(out), sc.ORIENT_MAX_TOTAL_CHARS - sc.ORIENT_APPEND_RESERVE)
+            self.assertIn("more lines -- read", out)
+            self.assertIn("## Read on demand", out)
 
     def test_unreadable_doc_skipped(self):
         # A directory where a file path is expected -> read/stat path is not a
@@ -178,6 +241,155 @@ class OrientTests(unittest.TestCase):
                 sdlc_core.confine_under = real
             self.assertEqual(rc, 0)
             self.assertEqual(calls, [rel for _, rel in sc.orient_docs()])
+
+
+FAMILY = ("agentic-sdlc", "kb-agentic", "mkt-agentic-sdlc", "course-creator")
+
+
+def sibling_name():
+    own = sc.profile()["skill_name"]
+    return next(n for n in FAMILY if n != own)
+
+
+def skills_dir_with(d, *names):
+    root = Path(d) / "skillsworld"
+    root.mkdir(exist_ok=True)
+    for n in names:
+        seed(root, "%s/SKILL.md" % n, "---\nname: %s\ndescription: x\n---\n# %s\n" % (n, n))
+    return root
+
+
+def live_cmd(d, tag="a"):
+    vp = Path(d) / ("hookbin_" + tag) / "sdlc_check.py"
+    vp.parent.mkdir(parents=True, exist_ok=True)
+    vp.write_text("# validator stub", encoding="utf-8")
+    return 'python "%s" orient' % vp
+
+
+class OrientReachTests(unittest.TestCase):
+    """F-075: what a session receives under Claude Code's 10,000-character hook
+    cap (2,000-character preview beyond it)."""
+
+    def _full(self, d, readme="README-BODY\n"):
+        seed(d, "ai_docs/README.md", readme)
+        seed(d, "ai_docs/INDEX.md", "INDEX-BODY\n")
+        seed(d, "ai_docs/reference/INDEX.md", router_file([
+            ("GUIDE_alpha.md", "CURRENT", "when touching alpha"),
+            ("GUIDE_beta.md", "DRAFT", "when releasing; pipes \\| escaped")]))
+        seed_registry(d, [("F-001 Alpha", "L3", "feat/alpha", "IN_PROGRESS", "write tests"),
+                          ("F-002 Beta", "L2", "main", "PLANNED", "mini-analysis")])
+
+    def test_fs2_order_and_formats(self):
+        with tempfile.TemporaryDirectory() as d:
+            self._full(d)
+            rc, out = run_orient(root=d)
+            self.assertEqual(rc, 0)
+            marks = ["Triage every request (Rule Zero)",
+                     "## Guide router (reference/INDEX.md)",
+                     "- `GUIDE_alpha.md` (CURRENT) -- when touching alpha",
+                     "## Workstream registry (audit/handoff.md)",
+                     "- F-001 Alpha \u00b7 L3 \u00b7 feat/alpha \u00b7 IN_PROGRESS -- write tests",
+                     "## Reading guide (README)", "README-BODY",
+                     "## Read on demand"]
+            pos = [out.find(m) for m in marks]
+            self.assertNotIn(-1, pos, list(zip(marks, pos)))
+            self.assertEqual(pos, sorted(pos), list(zip(marks, pos)))
+            self.assertIn("- `GUIDE_beta.md` (DRAFT) -- when releasing; pipes | escaped", out)
+            self.assertIn("declare the level with the guide-router verdict", out.lower())
+            self.assertNotIn("INDEX-BODY", out)
+            self.assertNotIn("some source", out)   # provenance stays in the file
+
+    def test_router_and_registry_inside_the_preview(self):
+        # The fallback that matters when a client truncates anyway: the first
+        # guide and the registry heading sit in the first 2,000 characters even
+        # behind a long README.
+        with tempfile.TemporaryDirectory() as d:
+            self._full(d, readme="must-read line\n" * 300)
+            _, out = run_orient(root=d)
+            self.assertGreaterEqual(out.find("`GUIDE_alpha.md`"), 0)
+            self.assertLess(out.find("`GUIDE_alpha.md`"), 2000)
+            self.assertGreaterEqual(out.find("## Workstream registry"), 0)
+            self.assertLess(out.find("## Workstream registry"), 2000)
+
+    def test_fs1_worst_case_through_the_knowledge_layer(self):
+        with tempfile.TemporaryDirectory() as d:
+            seed(d, "ai_docs/README.md", "must-read line\n" * 2000)
+            seed(d, "ai_docs/INDEX.md", "manifest line\n" * 2000)
+            seed(d, "ai_docs/reference/INDEX.md", router_file(
+                [("GUIDE_g%02d.md" % i, "CURRENT", "when " + "w" * 150) for i in range(60)]))
+            seed_registry(d, [("F-%03d Work" % i, "L3", "feat/w%d" % i, "PLANNED", "n" * 150)
+                              for i in range(60)])
+            seed(d, "ai_docs/topics/INDEX.md", ("| topic | " + "t" * 200 + " |\n") * 40)
+            seed(d, ".claude/settings.json", json.dumps(grouped_hook(live_cmd(d, "p"))))
+            us = seed(d, "userworld/settings.json", json.dumps(grouped_hook(live_cmd(d, "u"))))
+            rc, out = run_entry_orient(d, extra=("--hybrid",), user_settings=us,
+                                       skills_dirs=[skills_dir_with(d, sibling_name())])
+            self.assertEqual(rc, 0)
+            self.assertLessEqual(sc.ORIENT_MAX_TOTAL_CHARS, 9500)
+            self.assertLessEqual(len(out), sc.ORIENT_MAX_TOTAL_CHARS)
+            for must in ("more lines -- read", "## read on demand", "devpnt active",
+                         "routing.md", "keep one", "## topic router"):
+                self.assertIn(must, out.lower())
+
+    def test_router_stub_says_no_match(self):
+        with tempfile.TemporaryDirectory() as d:
+            seed(d, "ai_docs/reference/INDEX.md", sc.guide_index_header()
+                 + "\n# Operative guides (generated router)\n\nNo guides in this project yet.\n")
+            _, out = run_orient(root=d)
+            self.assertIn('no guides yet -- the router verdict is "no match"', out)
+
+    def test_wired_twice_for_one_client_notes_it(self):
+        with tempfile.TemporaryDirectory() as d:
+            self._full(d)
+            seed(d, ".claude/settings.json", json.dumps(grouped_hook(live_cmd(d, "p"))))
+            us = seed(d, "userworld/settings.json", json.dumps(grouped_hook(live_cmd(d, "u"))))
+            _, out = run_orient(root=d, user_settings=us)
+            note = [l for l in out.splitlines() if l.startswith("[note]") and "keep one" in l.lower()]
+            self.assertEqual(len(note), 1, out)
+            self.assertIn("2", note[0])
+            self.assertIn(".claude/settings.json", note[0])
+            self.assertIn("user settings", note[0])
+
+    def test_wired_once_or_identical_or_across_clients_is_silent(self):
+        with tempfile.TemporaryDirectory() as d:
+            self._full(d)
+            cmd = live_cmd(d, "p")
+            seed(d, ".claude/settings.json", json.dumps(grouped_hook(cmd)))
+            _, once = run_orient(root=d)
+            seed(d, ".claude/settings.local.json", json.dumps(direct_hook(cmd)))
+            _, identical = run_orient(root=d)
+            os.remove(Path(d) / ".claude" / "settings.local.json")
+            seed(d, ".codex/hooks.json", json.dumps(
+                {"SessionStart": [{"type": "command", "command": live_cmd(d, "c")}]}))
+            _, clients = run_orient(root=d)
+            missing = str(Path(d) / "gone" / "sdlc_check.py")
+            seed(d, ".claude/settings.local.json",
+                 json.dumps(grouped_hook('python "%s" orient' % missing)))
+            _, dead = run_orient(root=d)
+            for label, out in (("once", once), ("identical", identical),
+                               ("clients", clients), ("dead", dead)):
+                self.assertNotIn("keep one", out.lower(), label)
+
+    def test_lens_line_when_a_sibling_is_installed(self):
+        with tempfile.TemporaryDirectory() as d:
+            self._full(d)
+            sib = sibling_name()
+            _, with_sib = run_orient(root=d, skills_dirs=[skills_dir_with(d, sib)])
+            line = [l for l in with_sib.splitlines() if "routing.md" in l]
+            self.assertEqual(len(line), 1, with_sib)
+            self.assertIn(sib, line[0])
+            self.assertIn("above L1", line[0])
+            self.assertLess(with_sib.find("routing.md"), with_sib.find("## Guide router"))
+
+    def test_no_lens_line_without_a_sibling(self):
+        with tempfile.TemporaryDirectory() as d:
+            self._full(d)
+            own = sc.profile()["skill_name"]
+            _, alone = run_orient(root=d, skills_dirs=[skills_dir_with(d, own)])
+            _, none = run_orient(root=d)
+            _, gone = run_orient(root=d, skills_dirs=[Path(d) / "no-such-dir"])
+            for label, out in (("own only", alone), ("no dirs", none), ("missing", gone)):
+                self.assertNotIn("routing.md", out, label)
 
 
 def run_check(root, user_settings=None, config_dir=None):

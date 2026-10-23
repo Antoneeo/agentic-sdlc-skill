@@ -98,7 +98,10 @@ def run_corpus():
         # settings; without the seam the baseline would differ on any dev
         # machine that has a real global hook -- nondeterminism by construction.
         env = {**os.environ,
-               "AGENTIC_SDLC_USER_SETTINGS": str(root / "no-user-settings.json")}
+               "AGENTIC_SDLC_USER_SETTINGS": str(root / "no-user-settings.json"),
+               # F-075: orient also names installed sibling lenses -- same
+               # nondeterminism, same cure: no skills directory at all.
+               "AGENTIC_SDLC_SKILLS_DIRS": ""}
         env.pop("CLAUDE_CONFIG_DIR", None)
         for label, argv in COMMANDS:
             cmd = [sys.executable, str(VALIDATOR), *argv]
@@ -116,6 +119,17 @@ def run_corpus():
             produced = (root / rel).read_text(encoding="utf-8")
             out.append(f"===== generated {rel} =====\n{normalize(produced, root).rstrip()}\n")
     return "\n".join(out)
+
+
+def _without_section(lines, label):
+    """`lines` minus the `===== <label> (rc=N) =====` section of a transcript."""
+    out, skip = [], False
+    for line in lines:
+        if line.startswith("===== ") and line.endswith(" ====="):
+            skip = line.startswith("===== %s (rc=" % label)
+        if not skip:
+            out.append(line)
+    return out
 
 
 class GoldenRegression(unittest.TestCase):
@@ -150,8 +164,14 @@ class GoldenRegression(unittest.TestCase):
         it survives verbatim — new commands may only append."""
         frozen = HERE / "fixtures" / "golden_baseline_frozen_1_0.txt"
         self.assertTrue(frozen.is_file(), "the frozen 1.0 snapshot is a fixture")
-        old = frozen.read_text(encoding="utf-8").splitlines()
-        new = BASELINE.read_text(encoding="utf-8").splitlines()
+        # F-075 (owner ruling, REQUEST_session_orientation_reach.md R8): the
+        # orient section is exempt. The 1.0 transcript printed README and INDEX
+        # whole, router third; that order is what kept the router out of every
+        # session under the client's hook cap, so it cannot survive verbatim.
+        # The frozen file is untouched and still guards every other command;
+        # the current baseline still byte-compares orient.
+        old = _without_section(frozen.read_text(encoding="utf-8").splitlines(), "orient")
+        new = _without_section(BASELINE.read_text(encoding="utf-8").splitlines(), "orient")
         it = iter(new)
         missing = [l for l in old if l not in it]
         self.assertEqual(missing, [],

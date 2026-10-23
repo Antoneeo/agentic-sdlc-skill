@@ -1590,6 +1590,12 @@ class SkillInvariants(unittest.TestCase):
         self.assertIn("fail open", routing.lower(),
                       "detection that cannot answer must not block the work")
 
+    def test_worked_hybrid_examples_present(self):
+        """F-075 FS7: the three recurring mixed cases each carry a worked row."""
+        reqs = " ".join(r[0].lower() for r in self._router_rows())
+        for case in ("another team", "spec changed", "diverge"):
+            self.assertIn(case, reqs, "routing.md par.2 lacks the worked row for: " + case)
+
     def test_every_code_branch_row_evaluates_every_step(self):
         for row in self._router_rows():
             request, s1, s2, s3, lens = row

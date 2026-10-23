@@ -151,8 +151,9 @@ Ciò che solo qui l'agente fa:
   inietta UNA riga costante a ogni prompt, e il suo primo dovere è decidere se
   la skill governa il lavoro davanti a te e, in quel caso, CARICARLA una volta —
   un protocollo non letto non può essere applicato. `orient` parte una volta
-  sola e decade; questa riga no. Testo costante e zero letture per contratto,
-  sotto i 500 caratteri, cablata di default all'installazione e disattivabile
+  sola e decade; questa riga no. Con lenti sorelle installate nomina anche la
+  scelta della lente (`routing.md`, sopra L1). Testo costante e zero letture per
+  contratto, sotto i 600 caratteri (r32), cablata di default all'installazione e disattivabile
   togliendo la voce di hook. Costo per turno accettato dal proprietario
   (`vision/rulings.md` r19).
 - **Execute-Before-Specify**: ogni claim "il codice oggi fa X" in un artefatto di

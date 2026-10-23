@@ -32,7 +32,8 @@ import sdlc_core  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 ENTRY = HERE / sdlc_core.entry_script()
-REMIND_CAP = 500
+REMIND_CAP = 600   # r19's bound, raised by r32 (owner, 2026-10-23) for the lens choice
+LENS_DUTY = "routing.md"
 
 
 def run(argv):
@@ -71,6 +72,31 @@ class RemindContract(unittest.TestCase):
         low = out.strip().lower()
         self.assertIn("load", low)
         self.assertIn("skill", low + sdlc_core.profile()["skill_name"])
+
+    def test_it_names_the_lens_choice_above_l1(self):
+        # F-075: with sibling lenses installed, nothing per turn said to choose
+        # the lens; the line must still exempt L1 (routing.md par.0).
+        _, out = run(["remind"])
+        self.assertIn(LENS_DUTY, out)
+        self.assertIn("Above L1", out)
+
+    def test_every_lens_in_this_checkout_stays_under_the_cap(self):
+        # Course ships no copy of this battery: in the repository, the code
+        # battery runs every lens entry point it can find. A packaged install
+        # has no siblings beside it and skips.
+        repo = next((p for p in HERE.parents if (p / "distributions").is_dir()), None)
+        if repo is None:
+            self.skipTest("not in the repository checkout")
+        entries = list((repo / "distributions").glob("*/skills/*/scripts/sdlc_check.py"))
+        entries += list((repo / "distributions").glob("*/skills/*/scripts/mkt_check.py"))
+        entries.append(repo / "skills" / "agentic-sdlc-skill" / "scripts" / "sdlc_check.py")
+        self.assertGreaterEqual(len(entries), 4)
+        for e in entries:
+            r = subprocess.run([sys.executable, str(e), "remind"],
+                               capture_output=True, text=True, encoding="utf-8")
+            line = r.stdout.strip()
+            self.assertLessEqual(len(line), REMIND_CAP, e)
+            self.assertIn(LENS_DUTY, line, e)
 
     def test_it_carries_the_lens_name(self):
         _, out = run(["remind"])
