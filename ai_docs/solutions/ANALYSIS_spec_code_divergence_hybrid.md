@@ -139,7 +139,9 @@ no tie to claims. It goes where shadow recognition already lives, `sdlc_core`
 None`. Its contract: exact key, highest numeric version, names outside `hybrid.md`'s
 rule ignored (FS2). It never names the mark, so the F-080 invariant that `sdlc_core`
 never mentions it holds, and a later consumer (the Hybrid gate choosing the newest
-E-TDD, a merge brief citing it) reuses it. `kb_check_marks` is its first caller.
+E-TDD, a merge brief citing it) reuses it. `kb_check_marks` is its first caller. Its
+sibling `stray_shadow` shares the one name rule and names a same-key file that rule
+rejects (FS3; added at closure review W5).
 
 ## Impact
 
