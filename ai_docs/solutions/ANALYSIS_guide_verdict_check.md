@@ -2,11 +2,12 @@
 id: F-076
 feature: Guide verdict check before edits
 description: A Claude Code PreToolUse hook that refuses an Edit/Write when the session never declared a guide-router verdict, or never read a guide its verdict names — the check the field agent said was missing ("nothing stops me").
-status: IN_PROGRESS
+status: COMPLETED
 level: L3
 domain: code
 topics: [guide-router, hooks, enforcement, triage]
 start_date: 2026-10-23
+end_date: 2026-10-23
 branch: claude/f076-guide-verdict-check-eaaba8
 ---
 # Guide verdict check before edits
@@ -342,4 +343,11 @@ in `test_clients.js`), then GREEN: batteries code 447, course 442, kb 628, mkt 4
 **2026-10-23 — closure review.** PASS with 4 WARN and 2 CANNOT VERIFY (REVIEW_LOG). Fixed:
 Markdown-emphasis and `Router verdict:` forms now count (W1); the uninstall lines are
 asserted (W2); subagent edits are also recognised by a sidechain transcript, probed on
-this session's subagents (CV1). Open for the owner: R1's quotation source (R5).
+this session's subagents (CV1). Scoped re-review PASS. Open for the owner: R1's
+quotation source (R5).
+
+**2026-10-23 — closed.** Batteries code 449, course 444, kb 630, mkt 451 OK;
+`test_clients.js` 58 pass; probe 10/10 green. Not acted on: a transcript mixing one
+sidechain entry into a main one would silence the check (fails silent; none among 355
+local transcripts). Release with F-075 per `GUIDE_release.md`; CHANGELOG sections stay
+`[Unreleased]`.
