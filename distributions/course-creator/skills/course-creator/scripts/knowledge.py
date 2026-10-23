@@ -1066,10 +1066,13 @@ def kb_corpus_check(root):
                 # F-077: a withdrawn artifact keeps its record, never its bytes
                 # nor a digest of them -- a digest of the secret-bearing bytes
                 # beside a redacted successor tests password guesses offline.
-                if (meta.get("sha256") or "").strip():
-                    errors.append("%s: withdrawn, yet its sidecar keeps sha256: -- "
+                kept = [k for k in ("sha256", "original_sha256")
+                        if (meta.get(k) or "").strip()]
+                if kept:
+                    errors.append("%s: withdrawn, yet its sidecar keeps %s -- "
                                   "a tombstone keeps no digest of the withdrawn "
-                                  "bytes (distillation.md par.1)" % rel)
+                                  "bytes (distillation.md par.1)"
+                                  % (rel, ", ".join(k + ":" for k in kept)))
                 if orig.is_file():
                     errors.append("%s: withdrawn, yet its bytes are still here -- "
                                   "delete them" % rel)
@@ -1101,7 +1104,8 @@ def kb_corpus_check(root):
                         "not. A warning and not an error: a bundle carries "
                         "artifacts and sidecars, never the originals, so after "
                         "an import this dangles legitimately%s"
-                        % (rel, op, ", ".join(tried),
+                        % (rel, _kb_mask_userinfo(op),
+                           _kb_mask_userinfo(", ".join(tried)),
                            " -- a non-local identifier belongs in original_ref:, "
                            "which is recorded and never resolved"
                            if re.match(r"^[A-Za-z][A-Za-z0-9+.\-]+://", op) else ""))
@@ -1248,6 +1252,12 @@ def kb_credential_findings(path):
     return out
 
 
+def _kb_mask_userinfo(text):
+    """A password inside a URL never reaches the validator's output -- also once
+    a candidate path has turned its `//` into `\\` (Windows join)."""
+    return re.sub(r"([/\\][^/\\\s:@]+:)[^@\s/\\]+@", r"\1***@", text)
+
+
 def _kb_reviewed(meta):
     return bool(KB_REVIEWED_RE.match(kb_unquote((meta or {}).get("credential_scan"))))
 
@@ -1270,10 +1280,17 @@ def kb_credential_errors(root, docs):
     errors = []
     given = docs / "corpus" / "given"
     if given.is_dir():
+        # A stored extraction `<stem>.txt` has no sidecar of its own: it is the
+        # declared `<stem>.<ext>`'s (distillation.md par.1), so its escape lives there.
+        by_stem = {}
+        for m in sorted(given.glob("*.meta.md")):
+            by_stem.setdefault(Path(m.name[:-len(".meta.md")]).stem, m)
         for p in sorted(given.iterdir()):
             if not p.is_file() or p.name.endswith(".meta.md"):
                 continue
             side = given / (p.name + ".meta.md")
+            if not side.is_file() and p.suffix == ".txt" and p.stem in by_stem:
+                side = by_stem[p.stem]
             meta = (sdlc_core.load_frontmatter(sdlc_core.read_text(side).splitlines())
                     or {}) if side.is_file() else {}
             if _kb_reviewed(meta):

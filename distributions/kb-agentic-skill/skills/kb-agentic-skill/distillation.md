@@ -51,17 +51,19 @@ credential-shaped line (a `key=value`/`key: value` whose key ends in a credentia
 with a real value; a private-key header; a password in a URL; a bearer token), naming
 lines and kinds, **never the value**. Like `original_sha256`, say its limits: it flags
 manual field descriptors (`Password: required`) and misses passphrases with spaces,
-table rows, prose and vendor formats. Only a human clears a false positive, in the
-sidecar: `credential_scan: reviewed — <reason>`; `redacted_at_intake:` never does. The
+table rows, list items (`- password=…`), Markdown emphasis, `-Dpassword=…`, prose and
+vendor formats. Only a human clears a false positive, with
+`credential_scan: reviewed — <reason>` in the sidecar (for a stored `.txt` extraction,
+its artifact's sidecar; for a snapshot, the guide); `redacted_at_intake:` never does. The
 ingestion step runs `corpus` beside `graph`, so nothing is saved unscanned.
 
 **Withdrawing an artifact that holds a secret** — the one removal `given/` allows. Store
 the redacted successor; delete the old bytes; rename the old sidecar
 `<stem>-withdrawn-<YYYYMMDD>.<ext>.meta.md` (`-2` for a second that day), drop its
-`sha256:` and add `withdrawn: <reason>`; the successor says `supersedes:` that name.
+`sha256:` and any `original_sha256:`, and add `withdrawn: <reason>`; the successor says `supersedes:` that name.
 Re-place the claims and re-point the `derived_from:` that named the old artifact.
 `check` refuses a tombstone with a digest and warns on any `given/` file without a
-sidecar; `export` never ships a tombstone. The bytes stay in git history: tell the user;
+sidecar (a `.txt` extraction beside its declared artifact excepted); `export` never ships a tombstone. The bytes stay in git history: tell the user;
 purging it is theirs.
 
 **Extraction-as-artifact — the variant for a large binary corpus.** Copying gigabytes

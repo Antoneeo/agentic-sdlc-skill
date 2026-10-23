@@ -6,6 +6,7 @@ text, the adoption inventory, original_ref. Stdlib, no LLM, no net.
     python scripts/test_kb_intake.py
 """
 import hashlib
+import re
 import os
 import subprocess
 import sys
@@ -199,6 +200,36 @@ class CredentialCheck(unittest.TestCase):
             rc, out = run("check", "--root", t)
             self.assertEqual(rc, 0, out)
 
+    def test_reviewed_without_a_reason_does_not_clear(self):
+        for value in ("reviewed", "reviewed -", "reviewed —"):
+            with self.subTest(value=value), tempfile.TemporaryDirectory() as t:
+                tree(t, DOC, sidecar=["credential_scan: %s" % value])
+                rc, out = run("corpus", "--root", t)
+                self.assertEqual(rc, 1, out)
+
+    def test_escape_of_an_extraction_lives_in_its_artifacts_sidecar(self):
+        """X.pdf + X.pdf.meta.md + X.txt: the stored extraction has no sidecar."""
+        with tempfile.TemporaryDirectory() as t:
+            docs = Path(t) / "ai_docs"
+            g = docs / "corpus/given"
+            g.mkdir(parents=True)
+            (docs / "README.md").write_text("# r\n", encoding="utf-8")
+            pdf = b"%PDF-1.4\x00binary"
+            (g / "manual-abcd1234.pdf").write_bytes(pdf)
+            (g / "manual-abcd1234.txt").write_text("Password: required\n", encoding="utf-8")
+            side = ["---", "sha256: %s" % sha(pdf), "date: 2026-10-23"]
+            (g / "manual-abcd1234.pdf.meta.md").write_text(
+                "\n".join(side + ["---", ""]), encoding="utf-8")
+            rc, out = run("corpus", "--root", t)
+            self.assertEqual(rc, 1, out)
+            self.assertIn("corpus/given/manual-abcd1234.txt", out)
+            (g / "manual-abcd1234.pdf.meta.md").write_text("\n".join(
+                side + ["credential_scan: reviewed - field descriptors", "---", ""]),
+                encoding="utf-8")
+            rc, out = run("corpus", "--root", t)
+            self.assertEqual(rc, 0, out)
+            self.assertNotIn("no sidecar", out)
+
     def test_review_needs_a_reason_word(self):
         with tempfile.TemporaryDirectory() as t:
             tree(t, DOC, sidecar=["credential_scan: skip"])
@@ -313,11 +344,46 @@ class Withdrawal(unittest.TestCase):
             self.assertEqual(rc, 1, out)
             self.assertIn("withdrawn", out)
 
-    def test_export_and_site_skip_tombstone(self):
+    def test_tombstone_with_original_sha256_errors(self):
+        with tempfile.TemporaryDirectory() as t:
+            docs, tomb = self._withdrawn(t)
+            side = docs / "corpus/given" / (tomb + ".meta.md")
+            side.write_text(side.read_text(encoding="utf-8").replace(
+                "---\n", "---\noriginal_sha256: %s\n" % ("1" * 64), 1), encoding="utf-8")
+            rc, out = run("corpus", "--root", t)
+            self.assertEqual(rc, 1, out)
+            self.assertIn("original_sha256:", out)
+
+    def test_tombstone_with_bytes_errors(self):
+        with tempfile.TemporaryDirectory() as t:
+            docs, tomb = self._withdrawn(t)
+            (docs / "corpus/given" / tomb).write_text(DOC, encoding="utf-8")
+            rc, out = run("corpus", "--root", t)
+            self.assertEqual(rc, 1, out)
+            self.assertIn("bytes are still here", out)
+
+    def test_site_skips_tombstone(self):
         with tempfile.TemporaryDirectory() as t:
             docs, tomb = self._withdrawn(t)
             import docs_site
             self.assertNotIn(tomb, docs_site.build_sources(docs, {}))
+            labels = [e.get("label") for e in docs_site.chronology(docs, {})]
+            self.assertNotIn(tomb, labels)
+            self.assertTrue(any(lb and lb.startswith("app-") for lb in labels), labels)
+
+    def test_export_skips_tombstone_sidecar(self):
+        with tempfile.TemporaryDirectory() as t:
+            docs, tomb = self._withdrawn(t)
+            (docs / "topics").mkdir()
+            (docs / "topics/t.md").write_text(
+                "---\ntopic: t\ndescription: d\nparents: []\nstatus: CURRENT\n---\n\n"
+                "## Claims\n\n| id | claim | valid | qty | about | source | prov | state |\n"
+                "|---|---|---|---|---|---|---|---|\n"
+                "| | A | - | - | - | corpus/given/%s#L1-1 | GIVEN | OK |\n" % tomb,
+                encoding="utf-8")
+            _sel, artifacts, _added, errors = knowledge.kb_export_closure(docs, ["t"])
+            self.assertEqual(errors, [])
+            self.assertNotIn("corpus/given/%s.meta.md" % tomb, artifacts)
 
     def test_sidecar_less_file_warns(self):
         with tempfile.TemporaryDirectory() as t:
@@ -329,7 +395,7 @@ class Withdrawal(unittest.TestCase):
 
 class OneHome(unittest.TestCase):
 
-    def test_ac5_same_text_in_two_homes_warns_once(self):
+    def test_ac7_same_text_in_two_homes_warns_once(self):
         with tempfile.TemporaryDirectory() as t:
             _, name = tree(t, REDACTED, snapshot=True,
                            sidecar=["redacted_at_intake: [password]"])
@@ -356,7 +422,7 @@ class OneHome(unittest.TestCase):
 
 class Adopt(unittest.TestCase):
 
-    def test_ac6_lists_and_writes_nothing(self):
+    def test_ac8_lists_and_writes_nothing(self):
         with tempfile.TemporaryDirectory() as t:
             tree(t, DOC, snapshot=True, sidecar=[
                 "credential_scan: reviewed - fixture"])
@@ -409,12 +475,27 @@ class Adopt(unittest.TestCase):
 
 class OriginalRef(unittest.TestCase):
 
-    def test_ac7_original_ref_is_silent(self):
+    def test_ac9_original_ref_is_silent(self):
         with tempfile.TemporaryDirectory() as t:
             tree(t, REDACTED, sidecar=["original_ref: wiki://team-space/app-config"])
             rc, out = run("check", "--root", t)
             self.assertEqual(rc, 0, out)
             self.assertNotIn("does not resolve", out)
+
+    def test_password_in_original_path_is_masked(self):
+        with tempfile.TemporaryDirectory() as t:
+            tree(t, REDACTED, sidecar=[
+                "original_path: https://alice:Sup3rS3cret@wiki.example.test/x"])
+            rc, out = run("corpus", "--root", t)
+            self.assertIn("does not resolve", out)
+            self.assertNotIn("Sup3rS3cret", out)
+
+    def test_drive_path_does_not_name_original_ref(self):
+        with tempfile.TemporaryDirectory() as t:
+            tree(t, REDACTED, sidecar=["original_path: C:/nowhere/x.pdf"])
+            rc, out = run("corpus", "--root", t)
+            self.assertIn("does not resolve", out)
+            self.assertNotIn("original_ref:", out)
 
     def test_uri_in_original_path_names_original_ref(self):
         with tempfile.TemporaryDirectory() as t:
@@ -425,7 +506,7 @@ class OriginalRef(unittest.TestCase):
 
 
 class GuideOnCorpus(unittest.TestCase):
-    """AC8: unchanged behaviour, guarded."""
+    """AC10: unchanged behaviour, guarded."""
 
     def test_check_and_stale_follow_the_artifact(self):
         with tempfile.TemporaryDirectory() as t:
@@ -438,6 +519,22 @@ class GuideOnCorpus(unittest.TestCase):
             p.write_bytes(p.read_bytes() + b"x")
             rc, out = run("stale", "--root", t)
             self.assertIn("[stale] reference/GUIDE_app_config.md", out)
+
+    def test_crlf_artifact_with_lf_normalized_source_hash(self):
+        with tempfile.TemporaryDirectory() as t:
+            docs, name = tree(t, REDACTED.replace("\n", "\r\n"))
+            guide = docs / "reference/GUIDE_app_config.md"
+            raw = (docs / "corpus/given" / name).read_bytes()
+            text = guide.read_text(encoding="utf-8")
+            guide.write_text(re.sub(r"source_hash: \w+", "source_hash: "
+                                    + sha(raw.replace(b"\r\n", b"\n")), text),
+                             encoding="utf-8")
+            rc, out = run("stale", "--root", t)
+            self.assertNotIn("[stale]", out)
+            guide.write_text(re.sub(r"source_hash: \w+", "source_hash: " + sha(raw),
+                                    text), encoding="utf-8")
+            rc, out = run("stale", "--root", t)
+            self.assertIn("[stale]", out)
 
 
 if __name__ == "__main__":
