@@ -187,7 +187,7 @@ twin of the guide consult above.
   placement descent already run this session counts. A compaction starts a new session.
 - **The act.** Descend per `taxonomy.md` §6 (same doctrine, answer mode). On claims,
   answer FROM them citing claim ids; a claim whose `state` is `SUPERSEDED <id>` is never
-  cited without naming its successor. A claim marked `not-yet-honored-by -> ANALYSIS_<name>` is cited as what the specification requires and the code does not yet do, naming that analysis — never as current behavior.
+  cited without naming its successor. A claim marked `not-yet-honored-by` is cited as what the specification requires and the code does not yet do, naming its target — never as current behavior.
 - **The declared verdict — only when the recall ran**, never a per-turn ritual. Four
   legal values:
   - `kb: <slug>[, <slug> …] → N claims cited` — **every** slug the descent opened, not

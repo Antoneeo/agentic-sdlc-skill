@@ -1661,7 +1661,8 @@ class ChronologyDoctrine(unittest.TestCase):
 
 class NotYetHonoredTrigger(unittest.TestCase):
     """F-080: the code lens owes the not-yet-honored marker on a deferring
-    Standalone L3, and its removal on L2/L3 only (owner R4, R6, R7)."""
+    L3, and its removal on L2/L3 only (owner R4, R6); F-081 widens it to
+    Hybrid, where the target is the shadow (REQUEST_..._hybrid R2-R4)."""
 
     def test_the_write_triggers_row_scopes_the_duty(self):
         if SKILL_DIR.name != "agentic-sdlc-skill":
@@ -1669,7 +1670,9 @@ class NotYetHonoredTrigger(unittest.TestCase):
         row = [ln for ln in read("SKILL.md").splitlines()
                if ln.startswith("| `topics/` claim marked `not-yet-honored-by")]
         self.assertEqual(len(row), 1, "Write Triggers lost the marker row")
-        for anchor in ("(Standalone)", "cite its id in the ANALYSIS",
+        self.assertNotIn("(Standalone)", row[0])
+        for anchor in ("(Hybrid: `SHADOW_<doc_key>`)", "cite its id in the ANALYSIS",
+                       "in Hybrid in the E-ISP/E-TDD and its exported shadow",
                        "removes the marker in the same commit", "L1 is exempt",
                        "Nothing lists marked claims"):
             self.assertIn(anchor, row[0])

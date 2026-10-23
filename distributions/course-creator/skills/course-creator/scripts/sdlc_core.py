@@ -539,6 +539,25 @@ def has_etdd_shadow(root):
     return any("tdd" in p.name.lower() for p in sol.glob("SHADOW_*.md"))
 
 
+def newest_shadow(solutions_dir, doc_key):
+    """The newest devPNT shadow of `doc_key` in `solutions_dir`, or None.
+    Only `SHADOW_<doc_key>_v<N>[.<N>...].md` counts -- the exact key, so
+    `<doc_key>_extra` is another key -- and versions compare number by number
+    (v1.10 above v1.9, v1.0 above v1). Names outside that rule are ignored.
+    F-081: the Hybrid target of a claim marker; reusable by any consumer."""
+    if not Path(solutions_dir).is_dir():
+        return None
+    rx = re.compile(r"^SHADOW_%s_v(\d+(?:\.\d+)*)\.md$" % re.escape(doc_key))
+    best = None
+    for p in Path(solutions_dir).iterdir():
+        m = rx.match(p.name)
+        if m and p.is_file():
+            v = tuple(int(x) for x in m.group(1).split("."))
+            if best is None or v > best[0]:
+                best = (v, p)
+    return best[1] if best else None
+
+
 def iter_files(target):
     if target.is_file():
         yield target

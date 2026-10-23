@@ -67,3 +67,4 @@
 | F-075 | What reaches the session — orient under the hook cap, lens choice | code | L3 | COMPLETED | 2026-10-23 | 2026-10-23 | solutions/ANALYSIS_session_orientation_reach.md |
 | F-076 | Guide verdict check before edits | code | L3 | COMPLETED | 2026-10-23 | 2026-10-23 | solutions/ANALYSIS_guide_verdict_check.md |
 | F-080 | Spec/code divergence state shared by the two skills | code | L3 | COMPLETED | 2026-10-23 | 2026-10-23 | solutions/ANALYSIS_spec_code_divergence.md |
+| F-081 | Spec/code divergence marker in Hybrid projects | code | L3 | IN_PROGRESS | 2026-10-23 |  | solutions/ANALYSIS_spec_code_divergence_hybrid.md |

@@ -75,7 +75,7 @@ premise: signed amendments arrive later.
 | corroboration of a contested member | source appended; the set untouched — more evidence is not new information, and the escalation form shows source counts |
 | bundled row split (`distillation.md` §3) | N atomic rows `OK`, each on its narrowed span; the bundle → `SUPERSEDED <id1>[, <id2> ..]`, text intact; contested relations re-judged per successor |
 
-A superseded row keeps its `not-yet-honored-by` marker with its text. Copy the marker to each successor that still states behavior the code does not have; the analysis citing the predecessor's id satisfies the successor.
+A superseded row keeps its `not-yet-honored-by` marker with its text. Copy the marker to each successor that still states behavior the code does not have; the analysis or shadow citing the predecessor's id satisfies the successor.
 
 ## 3-bis. Splitting a bundled row
 

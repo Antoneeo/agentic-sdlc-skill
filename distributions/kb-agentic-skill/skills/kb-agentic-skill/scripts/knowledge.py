@@ -120,7 +120,8 @@ KB_BUNDLE_HINTS = (", and that ", "; ", ", while ", " and also ")
 # counts or selects claims by it -- only the claim checks and export read it.
 KB_NOT_HONORED = "not-yet-honored-by"
 KB_ABOUT_RE = re.compile(r"^([a-z0-9-]+) -> ([a-z0-9-]+)$")
-KB_NOT_HONORED_RE = re.compile(r"^%s -> (ANALYSIS_[A-Za-z0-9_-]+)$" % KB_NOT_HONORED)
+KB_NOT_HONORED_RE = re.compile(r"^%s -> ((?:ANALYSIS|SHADOW)_[A-Za-z0-9_-]+)$"
+                               % KB_NOT_HONORED)
 
 
 def kb_about_parts(cell):
@@ -471,8 +472,9 @@ def kb_check_claims(root):
                     marks.append(mark.group(1))
                 elif rel_m and rel_m.group(1) == KB_NOT_HONORED:
                     errors.append("%s: about %r: '%s' needs an ANALYSIS_<name> "
-                                  "target -- the analysis that records the "
-                                  "deferred fix" % (where, part, KB_NOT_HONORED))
+                                  "target (Hybrid: SHADOW_<doc_key>) -- the "
+                                  "analysis or design that records the deferred "
+                                  "fix" % (where, part, KB_NOT_HONORED))
                 elif not rel_m:
                     errors.append("%s: about must be '<predicate> -> <slug>' "
                                   "parts joined by ';', or '-': %r" % (where, part))
@@ -614,7 +616,8 @@ def kb_check_claims(root):
 def kb_check_marks(root, marked, per_file_rows, errors):
     """F-080: each not-yet-honored mark names an ANALYSIS that exists in this
     project and cites the claim id -- or the id of a row this claim succeeds,
-    since supersession copies the mark and edits no analysis."""
+    since supersession copies the mark and edits no analysis. F-081: a Hybrid
+    mark names SHADOW_<doc_key>, and the newest shadow of that key is read."""
     if not marked:
         return
     preds = {}       # successor id -> ids it supersedes
@@ -633,13 +636,17 @@ def kb_check_marks(root, marked, per_file_rows, errors):
                 ids.add(cid)
                 todo.extend(preds.get(cid, ()))
         for target in targets:
-            rel = "solutions/%s.md" % target
-            if rel not in texts:
-                path = sdlc_core.confine_under(root, rel)
-                texts[rel] = (sdlc_core.read_text(path)
-                              if path is not None and path.is_file() else None)
-            text = texts[rel]
-            if text is None:
+            if target not in texts:
+                texts[target] = _kb_mark_target(root, target)
+            rel, text, stray = texts[target]
+            if text is None and target.startswith("SHADOW_"):
+                errors.append("%s: %s -> %s: no %s in this project%s. Export the "
+                              "shadow from the accepted devPNT version, or remove "
+                              "the marker if it did not come from this project -- "
+                              "it describes its origin's code"
+                              % (where, KB_NOT_HONORED, target, rel,
+                                 " (%s is not named _vX.Y)" % stray if stray else ""))
+            elif text is None:
                 errors.append("%s: %s -> %s: no %s in this project. Remove the "
                               "marker if it did not come from this project -- it "
                               "describes its origin's code" % (where, KB_NOT_HONORED,
@@ -649,6 +656,28 @@ def kb_check_marks(root, marked, per_file_rows, errors):
                 errors.append("%s: %s does not cite claim %s -- the analysis that "
                               "records a deferred fix cites the id it defers"
                               % (where, rel, row["id"]))
+
+
+def _kb_mark_target(root, target):
+    """(rel, text or None, stray name or None) for a marker target. ANALYSIS_x
+    is solutions/x.md; SHADOW_k is the newest solutions/SHADOW_k_vX.Y.md, and
+    when none exists a file of the same exact key with another suffix is
+    reported as the stray that was not read (F-081)."""
+    if not target.startswith("SHADOW_"):
+        rel = "solutions/%s.md" % target
+        path = sdlc_core.confine_under(root, rel)
+        return rel, (sdlc_core.read_text(path)
+                     if path is not None and path.is_file() else None), None
+    key = target[len("SHADOW_"):]
+    sol = sdlc_core.confine_under(root, "solutions")
+    path = sdlc_core.newest_shadow(sol, key) if sol is not None else None
+    if path is not None and sdlc_core.confine_under(root, "solutions/" + path.name):
+        return "solutions/" + path.name, sdlc_core.read_text(path), None
+    stray = None
+    if sol is not None and sol.is_dir():
+        rx = re.compile(r"^SHADOW_%s(?:\.md|_v[^_]*\.md)$" % re.escape(key))
+        stray = next((p.name for p in sorted(sol.iterdir()) if rx.match(p.name)), None)
+    return "solutions/SHADOW_%s_v<X.Y>.md" % key, None, stray
 
 
 def kb_drop_marks(text):
