@@ -1403,5 +1403,139 @@ class TL_F080_NotYetHonored(unittest.TestCase):
             self.assertFalse(any(ch.isdigit() for ch in lines[0]), lines[0])
 
 
+class TL_F081_NotYetHonoredHybrid(unittest.TestCase):
+    """F-081: in a Hybrid project the marker names SHADOW_<doc_key>, resolved
+    to the newest devPNT shadow of that key, which must cite the claim id."""
+
+    CID = kc.kb_claim_id("corpus/given/c.txt", "p=1@0-8", "")
+    KEY = "e_isp_export"
+    MARK = "not-yet-honored-by -> SHADOW_e_isp_export"
+
+    def cites(self):
+        return ("<!-- SHADOW generated from devPNT (e_isp_export v1.0) - do not edit "
+                "by hand -->\n# E-ISP\n\nDeferred: %s.\n" % self.CID)
+
+    def _run(self, about, shadows=None, extra_rows=()):
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(
+                [(self.CID, "A", "-", "-", about, SRC1, "GIVEN", "OK")]
+                + list(extra_rows))}, given=GIVEN_TXT)
+            if shadows:
+                (docs / "solutions").mkdir()
+                for name, text in shadows.items():
+                    (docs / "solutions" / name).write_text(text, encoding="utf-8")
+            return kc.kb_check_claims(docs)[0]
+
+    def test_a_marker_whose_newest_shadow_cites_the_claim_is_clean(self):
+        self.assertEqual(self._run(self.MARK, {
+            "SHADOW_e_isp_export_v1.0.md": self.cites()}), [])
+
+    def test_no_shadow_is_an_error_naming_the_pattern_and_the_export(self):
+        errors = self._run(self.MARK)
+        self.assertTrue(any("solutions/SHADOW_e_isp_export_v" in e and "export" in e
+                            for e in errors), errors)
+
+    def test_a_stray_file_of_the_key_is_named(self):
+        errors = self._run(self.MARK, {"SHADOW_e_isp_export.md": self.cites()})
+        self.assertTrue(any("SHADOW_e_isp_export.md" in e for e in errors), errors)
+
+    def test_the_newest_version_decides_numerically(self):
+        silent = "<!-- SHADOW -->\n# E-ISP\n\nnothing\n"
+        errors = self._run(self.MARK, {"SHADOW_e_isp_export_v1.9.md": self.cites(),
+                                       "SHADOW_e_isp_export_v1.10.md": silent})
+        self.assertTrue(any("SHADOW_e_isp_export_v1.10.md" in e and self.CID in e
+                            for e in errors), errors)
+        self.assertEqual(self._run(self.MARK, {
+            "SHADOW_e_isp_export_v1.9.md": silent,
+            "SHADOW_e_isp_export_v1.10.md": self.cites()}), [])
+
+    def test_a_longer_key_is_another_key(self):
+        errors = self._run(self.MARK, {"SHADOW_e_isp_export_extra_v1.0.md": self.cites()})
+        self.assertTrue(errors, errors)
+
+    def test_a_versioned_or_traversal_shaped_target_is_refused_by_grammar(self):
+        for target in ("SHADOW_e_isp_export_v1.2", "SHADOW_../x", "SHADOW_a/b"):
+            errors = self._run("not-yet-honored-by -> " + target)
+            self.assertTrue(any("about" in e for e in errors), (target, errors))
+
+    def test_a_relation_cannot_point_at_a_shadow(self):
+        errors = self._run("depends-on -> SHADOW_e_isp_export",
+                           {"SHADOW_e_isp_export_v1.0.md": self.cites()})
+        self.assertTrue(any("about" in e for e in errors), errors)
+
+    def test_a_relation_and_a_shadow_marker_share_one_cell(self):
+        self.assertEqual(self._run("depends-on -> phase-1; " + self.MARK,
+                                   {"SHADOW_e_isp_export_v1.0.md": self.cites()}), [])
+
+    def test_a_successor_is_satisfied_by_the_predecessors_citation(self):
+        new = kc.kb_claim_id("corpus/given/c.txt", "p=2@0-10", "")
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md([
+                (self.CID, "A", "-", "-", self.MARK, SRC1, "GIVEN", "SUPERSEDED " + new),
+                (new, "A, refined", "-", "-", self.MARK, SRC2, "GIVEN", "OK")])},
+                given=GIVEN_TXT)
+            (docs / "solutions").mkdir()
+            (docs / "solutions" / "SHADOW_e_isp_export_v1.0.md").write_text(
+                self.cites(), encoding="utf-8")
+            self.assertEqual(kc.kb_check_claims(docs)[0], [])
+
+    def test_check_reports_the_same_with_and_without_hybrid(self):
+        # FS5: the mode belongs to the unit of change, not to the flag.
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(
+                [(self.CID, "A", "-", "-", self.MARK, SRC1, "GIVEN", "OK")])},
+                given=GIVEN_TXT)
+            outs = []
+            for extra in ([], ["--hybrid"]):
+                buf = io.StringIO()
+                with contextlib.redirect_stdout(buf):
+                    kc.main(["check", "--root", str(docs.parent)] + extra)
+                outs.append([l for l in buf.getvalue().splitlines()
+                             if "SHADOW_e_isp_export" in l])
+            self.assertTrue(outs[0], outs)
+            self.assertEqual(outs[0], outs[1])
+
+    def test_export_drops_a_shadow_marker(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            docs = make_tree(tmp, {"t.md": claims_md(
+                [(self.CID, "A", "-", "-", "depends-on -> phase-1; " + self.MARK,
+                  SRC1, "GIVEN", "OK")])}, given=GIVEN_TXT)
+            selected, artifacts, _a, _e = kc.kb_export_closure(docs, ["t"])
+            out = Path(tmp) / "bundle"
+            self.assertTrue(kc.kb_bundle_write(docs, out, selected, artifacts, "p"))
+            after = (out / "topics" / "t.md").read_text(encoding="utf-8")
+            self.assertNotIn("not-yet-honored-by", after)
+            self.assertIn("depends-on -> phase-1", after)
+
+
+class TL_F081_NewestShadow(unittest.TestCase):
+    """F-081: sdlc_core.newest_shadow, the mark-free Hybrid resolver."""
+
+    def _newest(self, names, key="k"):
+        with tempfile.TemporaryDirectory() as tmp:
+            sol = Path(tmp) / "solutions"
+            sol.mkdir()
+            for n in names:
+                (sol / n).write_text("x", encoding="utf-8")
+            p = kc.sdlc_core.newest_shadow(sol, key)
+            return p.name if p else None
+
+    def test_numeric_order(self):
+        self.assertEqual(self._newest(["SHADOW_k_v1.9.md", "SHADOW_k_v1.10.md"]),
+                         "SHADOW_k_v1.10.md")
+        self.assertEqual(self._newest(["SHADOW_k_v1.md", "SHADOW_k_v1.0.md"]),
+                         "SHADOW_k_v1.0.md")
+        self.assertEqual(self._newest(["SHADOW_k_v2.0.md", "SHADOW_k_v10.0.md"]),
+                         "SHADOW_k_v10.0.md")
+
+    def test_exact_key_and_version_names_only(self):
+        self.assertIsNone(self._newest(["SHADOW_k_extra_v1.0.md", "SHADOW_k.md",
+                                        "SHADOW_k_v1.2a.md", "SHADOW_kk_v1.0.md"]))
+
+    def test_a_missing_directory_has_no_shadow(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertIsNone(kc.sdlc_core.newest_shadow(Path(tmp) / "nope", "k"))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)
