@@ -2,6 +2,15 @@
 
 Every significant change to this skill is recorded here.
 
+## [Unreleased]
+
+### Fixed
+- `import` now does what `portability.md` §4 promised: a ruling from another project arrives as `prov: IMPORTED` and settles nothing until you ratify it. It used to arrive unchanged as `RULING`, so another project's decision was in force here with `check` clean. Its note arrives as a renamed copy, `corpus/notes/imported_<project>_<name>`, carrying `imported_from:` and `origin: imported`; the note is never edited under its own name, because an inserted line would move the line every locator cites. The rows the ruling superseded and the ruling itself arrive as one `CONTESTED` set. Ratifying is an ordinary ruling: your own note with your own `basis:`, a `RULING` row on it, and the contested rows `SUPERSEDED` by it. `--dry-run` reports the conversions too.
+- `import` refuses, writing nothing and naming the row, a bundle whose conflict sets would arrive incomplete (a pointer resolving to no row, or to a row of this project that does not name it back), a row settled by a ruling the import does not write or by a row held as `IMPORTED`, and a ruling it cannot carry foreign (not on a note cited by line; on a note with no frontmatter or one already naming a foreign origin; superseded both by a ruling and by another row). `portability.md` §3 already listed an incomplete conflict set as a refusal; it is now enforced. §3 no longer lists a dangling `supersedes:` as a refusal: the import never checked it, and `check` reports it after the import.
+- Any bundle note that declares a `basis:` lands as the renamed foreign copy, even when no ruling row travels with it, so a later import of its ruling cannot find it under its own name. A note in UTF-8 with a BOM (Windows editors) converts and keeps its BOM.
+- `check` refuses a `RULING` row on a note that names a foreign origin (`imported_from:`): relabelling an imported row is not ratifying it.
+- A project imported with kb 1.31.0 or earlier holds a foreign ruling as `RULING`: delete the imported topic and its files and import again, or convert it by hand (`portability.md` §4).
+
 ## [1.31.0] - 2026-10-23
 
 ### Changed

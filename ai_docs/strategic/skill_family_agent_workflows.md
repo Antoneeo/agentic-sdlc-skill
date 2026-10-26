@@ -348,10 +348,13 @@ imposta, mezzo set è un albero che non passa i suoi controlli) e **lo dichiara*
 calcola tutto prima di scrivere un byte. Le claim già presenti si riconoscono
 **per id**, non confrontando testi, perché `kb_claim_id` esclude il testo: stesso
 artefatto content-addressed allo stesso span = stesso id in qualunque progetto.
-La conoscenza attraversa il confine di progetto, **l'autorità no**: un ruling
-importato arriva come `prov: IMPORTED`, conserva il suo `basis:` originale, deve
-dichiarare `imported_from:`, e **non può superare una riga locale** finché non lo
-ratifichi tu con una nota e un basis tuoi (ruling del proprietario, 2026-08-03).
+La conoscenza attraversa il confine di progetto, **l'autorità no**: `import` fa
+arrivare un ruling come `prov: IMPORTED`, su una copia rinominata della sua nota
+(`imported_<progetto>_<nome>`) che dichiara `imported_from:` e conserva il `basis:`
+originale; le righe che quel ruling aveva superato tornano `CONTESTED` insieme a lui,
+e **nulla è deciso** finché non lo ratifichi tu con una nota e un basis tuoi e una
+riga `RULING` che supera l'intero set (ruling del proprietario, 2026-08-03 e
+2026-10-23, F-083).
 
 ## mkt-agentic-sdlc — la lente del mercato
 

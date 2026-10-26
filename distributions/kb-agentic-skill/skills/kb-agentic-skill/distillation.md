@@ -167,7 +167,7 @@ Claims live in the owning topic's `## Claims` table (`templates.md` has the temp
   `p=<n>@<start>-<end>` (character offsets into page n of the stored extraction),
   `L<a>-<b>` (line files), `Sheet<s>!<cell>`. The span must exist — the validator opens
   the file and checks.
-- **prov** — `GIVEN | ELICITED | DERIVED | RULING | IMPORTED`. `IMPORTED` is a ruling that came from another project (`portability.md`): it keeps its text and original `basis:`, its note must say `imported_from:`, and it may not supersede a local row until you re-ratify it. Information for whoever resolves a
+- **prov** — `GIVEN | ELICITED | DERIVED | RULING | IMPORTED`. `IMPORTED` is a ruling that came from another project (`portability.md`): it keeps its text and original `basis:`, it rests on a renamed copy of its note that says `imported_from:`, `import` reopens the set it had settled, and nothing is settled by it until you ratify it with a ruling of your own. Information for whoever resolves a
   conflict; never a rank.
 - **state** — `OK`, `CONTESTED <id>[,..]`, `SUPERSEDED <id>[,..]` (`reconciliation.md`
   owns the transitions; a split bundle names ALL its successors).

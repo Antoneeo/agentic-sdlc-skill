@@ -39,7 +39,8 @@ sdlc_check.py check                             # always, right after
    and, if a topic was skipped, *"a topic with the same name already exists; I have not
    merged them, because they may not be the same subject. Do you want me to look?"*
 4. If an imported ruling arrived: *"one decision came from the other project. I have kept
-   it, marked as theirs, and it cannot settle anything here until you confirm it."*
+   it, marked as theirs, and it cannot settle anything here until you confirm it. The
+   question it had closed is open again here, with their decision beside the sources."*
 
 Do not explain the closure, the id hashing or the provenance model unless asked. The
 user asked to move their knowledge, not to learn how it is stored.
@@ -83,7 +84,8 @@ tombstone sidecar stays home.
 
 ## 3. Import is additive, and decides nothing
 
-`import` writes files. It does not place concepts, merge bodies, or settle disagreements.
+`import` writes files. It does not place concepts, merge bodies, or settle disagreements —
+and it refuses to let the bundle settle them either: a ruling arrives foreign (§4).
 
 - **Never overwrites a topic.** A slug that already exists is reported and skipped: two
   projects using the word `pricing` may mean two different things, and that judgement is
@@ -96,7 +98,11 @@ tombstone sidecar stays home.
 It refuses on: a missing or unmarked `MANIFEST.md`; a path that escapes the docs root; an
 artifact whose name matches an existing one **with different bytes** (content-addressed
 names must mean equal content — a mismatch means one of the two is lying about its
-origin); an incomplete conflict set; a dangling `supersedes:`.
+origin); an incomplete conflict set — a `CONTESTED` or `SUPERSEDED` pointer that would
+resolve to no row, or to a row of this project that does not name it back (an import
+never edits an existing topic); a row settled by a ruling the import does not write, or
+by a row this project holds as `IMPORTED`; a ruling it cannot carry foreign (§4). Each
+refusal names the row and writes nothing.
 
 After importing, run `check`. The import is deliberately not a validator.
 
@@ -108,19 +114,43 @@ another owner's decision, and importing it unchanged would make that decision bi
 here without anyone here granting it — the machine deciding, which reconciliation
 refuses everywhere else.
 
-So an imported ruling arrives as **`prov: IMPORTED`** (owner ruling, 2026-08-03):
+So `import` makes every `RULING` row of a topic it writes arrive as **`prov: IMPORTED`**
+(owner rulings 2026-08-03 and 2026-10-23):
 
-- its text, span and original `basis:` travel **verbatim** — the knowledge is not lost,
-  and pretending it is a `DERIVED` synthesis would make the row lie about where it came
-  from;
-- its note carries `imported_from:`, and the validator refuses an `IMPORTED` row without
-  it: unnamed, the class says nothing and the row is a `RULING` with the label filed off;
-- **it cannot supersede a local row.** The validator errors on `SUPERSEDED <id>` when
-  that id is `IMPORTED`.
+- **its note arrives as a renamed copy**, `corpus/notes/imported_<source project>_<name>`,
+  whose frontmatter adds `imported_from: <source project> — <original path>` and reads
+  `origin: imported`. Its text and original `basis:` travel **verbatim** — the knowledge
+  is not lost, and pretending it is a `DERIVED` synthesis would make the row lie about
+  where it came from. The note is never edited under its own name: a line inserted into
+  it would move the line every locator cites. The row cites the copy at the same text
+  (its locator and id move with it), and a bundle note `derived_from:` the ruling names
+  the copy. The original name is never written, so a row copied by hand out of a skipped
+  topic cannot cite a foreign note as local;
+- **the question it had closed reopens.** The rows it superseded and the ruling itself
+  arrive as one `CONTESTED` set; a ruling already contested with a newer source keeps
+  that partner, one that superseded nothing arrives `OK`;
+- the validator refuses an `IMPORTED` row whose note lacks `imported_from:` (unnamed,
+  the class says nothing), a `SUPERSEDED <id>` pointing at an `IMPORTED` row, and a
+  `RULING` row on a note that names a foreign origin.
 
-**Re-ratification** is one act: read it, write your own note with your own `basis:`, and
-set the row's `prov` to `RULING`. That is you deciding, which is the only thing that ever
-settles anything here.
+**Ratification** is the ordinary ruling of `reconciliation.md`, and it is you deciding,
+which is the only thing that ever settles anything here: write your own note with your
+own `basis:`, add a `RULING` row on it, and mark every row `CONTESTED` with the imported
+one — following the sets transitively — `SUPERSEDED <your id>`, the `IMPORTED` row
+included. Relabelling the `IMPORTED` row `RULING` is refused: another project's note
+cannot carry your decision.
+
+Any bundle note that declares a `basis:` lands this way, renamed, even when its ruling row
+does not travel with it — otherwise it would land first under its own name and a later
+import of its ruling would find it there. A ruling `import` cannot carry this way is
+refused, never copied: one not resting on a note cited by line, on a note with no
+frontmatter, or on a note that already names a foreign origin (the source relabelled an
+imported row); a row superseded both by a ruling and by a row that is not one; a ruling
+another row superseded while rows still depend on it. A tree imported before this
+conversion existed (≤ kb 1.31.0) holds the foreign ruling as `RULING` on its original
+note: delete the imported topic and its files and import again, or convert it by hand as
+above. The origin is named after the exporting folder (`source_project`), so two clones
+of one project in differently named folders name it differently.
 
 ## 5. Triage
 

@@ -122,10 +122,15 @@ An `IMPORTED` row is a ruling made by the owner of a different project
 
 - It keeps its text, its span and its original `basis:` verbatim — the knowledge is not
   lost, and relabelling it `DERIVED` would make the row lie about its origin.
-- Its note must carry `imported_from:`. Unnamed, the class says nothing and the row is a
-  `RULING` with the label filed off; the validator refuses it.
-- **It cannot settle anything here.** `SUPERSEDED <id>` pointing at an `IMPORTED` row is
-  an error: nobody in this project granted that decision its authority.
+- It rests on a renamed copy of its note (`imported_<project>_<name>`) that carries
+  `imported_from:`. Unnamed, the class says nothing and the row is a `RULING` with the
+  label filed off; the validator refuses it.
+- **It cannot settle anything here.** `import` reopens the set it had settled: its former
+  members and the ruling arrive `CONTESTED` with each other. `SUPERSEDED <id>` pointing at
+  an `IMPORTED` row is an error: nobody in this project granted that decision its
+  authority.
 
-Re-ratification is one act, and it is you deciding: read it, write your own note with
-your own `basis:`, set `prov` to `RULING`.
+Ratification is the ruling procedure above, and it is you deciding: your own note with
+your own `basis:`, a `RULING` row on it, and every row `CONTESTED` with the imported one —
+transitively, when it sits in more than one set — `SUPERSEDED <your id>`, the imported row
+included. A `RULING` on a note that names a foreign origin is refused.
