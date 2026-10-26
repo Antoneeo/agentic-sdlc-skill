@@ -1,9 +1,10 @@
 ---
 id: F-083
 feature: kb import keeps a foreign ruling foreign — prov IMPORTED, origin named in its note, its set reopened until ratified
-status: IN_PROGRESS
+status: COMPLETED
 level: L3
 start_date: 2026-10-23
+end_date: 2026-10-26
 domain: code
 ---
 # Feature Analysis: an imported ruling decides nothing until ratified
@@ -359,7 +360,7 @@ Weighing for the mixed-supersession refusal:
 5. [x] Docs: portability, reconciliation, distillation, eval scenario, kb README, workflows,
    Component Map, CHANGELOG.
 6. [x] Harness replay on TH-01 into an empty project; batteries ×4; drift guard; `check`.
-7. Closure: E2E script, closure review, merge brief, index, handoff.
+7. [x] Closure: E2E script, closure review, merge brief, index, handoff.
 
 ## Test Strategy
 
@@ -460,3 +461,10 @@ on a clean `origin/main` checkout, so it predates this unit.
   already foreign, derived note held; the self-check is argued above.
 - W2: Component Map path. W5: review log as one row per review. W6/W7: CHANGELOGs ×4,
   §3/§4 refusal lists. W8: handoff. W1: index and check re-run at closure.
+
+**2026-10-26 — closed.** Committed e7bd163 on `fix/kb-import-ruling` and pushed it to
+origin; `main` (b64b329, the release-1.48.0 registry note) was merged into the branch,
+and the branch was fast-forwarded onto `main` at the owner's request (no PR: `gh` is not
+installed here, the release guide's merge step). After the merge: batteries ×4, harness,
+`check`, `mark` on the changed areas. Still owed: the tester's E2E run, the release
+(version numbers stay at `[Unreleased]`), and the course demo TH-02 re-import.
