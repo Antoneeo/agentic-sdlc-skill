@@ -10,6 +10,7 @@
 
 ### Fixed
 - Shared claim checks (`check`): a `RULING` row on a note that names a foreign origin (`imported_from:`) is refused — relabelling an imported row is not ratifying it; the message for a row superseded by an `IMPORTED` one names the ratification act (F-083).
+- Guide-verdict check (`verdict --hook`, shared core): a level quoted inside a sentence (`Level: L1` in prose) no longer counts as a declaration: only a line that opens with the level word does, the rule the constraint recall already uses (level 1 alone, `L1` or `E1`; levels 2 and 3 with `router` on the same line). The check now judges the project, and its docs-root name, that holds the edited file, not the one around the session's working directory; after a `cd` out of the project it let every edit through.
 
 ## [0.26.0] - 2026-10-23
 

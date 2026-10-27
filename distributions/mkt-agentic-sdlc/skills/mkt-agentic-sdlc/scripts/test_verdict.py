@@ -64,7 +64,7 @@ class VerdictHook(unittest.TestCase):
     def tearDown(self):
         self._tmp.cleanup()
 
-    def run_hook(self, lines=None, tool="Edit", target=None, raw=None, **extra):
+    def run_hook(self, lines=None, tool="Edit", target=None, raw=None, cwd=None, **extra):
         if lines is not None:
             self.transcript.write_text("\n".join(lines) + "\n", encoding="utf-8")
         payload = {"session_id": "s", "transcript_path": str(self.transcript),
@@ -75,11 +75,18 @@ class VerdictHook(unittest.TestCase):
         data = raw if raw is not None else json.dumps(payload)
         stdin = io.TextIOWrapper(io.BytesIO(data.encode("utf-8")), encoding="utf-8")
         out = io.StringIO()
+        # cwd given: no --root, the hook runs where the session's `cd` left it
+        argv = ["verdict", "--hook"] + ([] if cwd else ["--root", str(self.root)])
+        here = os.getcwd()
         with mock.patch.object(sys, "stdin", stdin), contextlib.redirect_stdout(out):
             try:
-                code = sdlc_core.main(["verdict", "--hook", "--root", str(self.root)])
+                if cwd:
+                    os.chdir(cwd)
+                code = sdlc_core.main(argv)
             except SystemExit as e:  # pragma: no cover - argparse must never fire
                 code = e.code
+            finally:
+                os.chdir(here)
         self.assertEqual(code, 0, "the hook always exits 0: exit 2 would block blind")
         text = out.getvalue()
         if not text.strip():
@@ -122,6 +129,31 @@ class VerdictHook(unittest.TestCase):
         data = json.dumps({"transcript_path": str(self.transcript), "tool_name": "NotebookEdit",
                            "tool_input": {"notebook_path": str(payload_target)}})
         self.assertIsNotNone(self.run_hook(raw=data))
+
+    def test_level_quoted_in_prose_is_refused(self):
+        # a declaration is a line that opens with the level word, never a quote in a
+        # sentence (the F-085 rule): prose about Rule Zero declares nothing
+        for text in ("Rule Zero says to write Level: L1 for a typo; this is bigger.",
+                     "The hook accepts `Level: L1` as a declaration.",
+                     "Triage level: L1 would be wrong here."):
+            self.assertIsNotNone(self.run_hook([say(text)]), text)
+
+    def test_edited_file_project_is_judged_from_another_cwd(self):
+        # live probe 2026-10-27: the hook runs in the session's current directory,
+        # which a `cd` moves -- the project judged is the one holding the file
+        with tempfile.TemporaryDirectory() as other:
+            (Path(other) / "ai_docs").mkdir()
+            self.assertIsNotNone(self.run_hook([say("x")], cwd=other))
+            self.assertIsNone(self.run_hook([VERDICT, READ], cwd=other))
+
+    def test_edited_file_docs_root_name_is_its_own(self):
+        # the docs root NAME is the edited project's too, not the working directory's
+        (self.root / "ai_docs").rename(self.root / "mkt_docs")
+        with tempfile.TemporaryDirectory() as other:
+            (Path(other) / "ai_docs").mkdir()
+            reason = self.run_hook([say("x")], cwd=other)
+        self.assertIsNotNone(reason)
+        self.assertIn("mkt_docs/reference/INDEX.md", reason)
 
     def test_reason_echoes_no_transcript_text(self):
         secret = "SECRET-TRANSCRIPT-TEXT-42"

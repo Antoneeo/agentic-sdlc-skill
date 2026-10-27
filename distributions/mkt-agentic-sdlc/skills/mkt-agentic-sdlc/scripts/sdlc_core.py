@@ -2500,6 +2500,23 @@ def read_hook_payload():
     return payload if isinstance(payload, dict) else None
 
 
+def hook_project(target, root=None, docs_name=None):
+    """The project root an edit hook judges, with its docs root name set, or None
+    when two docs roots sit side by side. The hook runs in the session's current
+    directory, which a `cd` moves (live probe 2026-10-27): the project AND its docs
+    root name are the ones holding the edited file, never the ones around the
+    working directory. An explicit root (--root) is kept as given."""
+    start = Path(root) if root is not None else Path(target).resolve().parent
+    try:
+        found_root, name = resolve_docs_dir(argparse.Namespace(docs_dir=docs_name), start)
+    except AmbiguousDocsRoot:
+        return None
+    set_docs_dir(name)
+    if root is not None:
+        return Path(root)
+    return found_root if found_root is not None else find_project_root(start)
+
+
 def cmd_gate(args):
     file_path = args.file or ""
     if args.hook:
@@ -2556,7 +2573,13 @@ VERDICT_LINE_MAX = 1024 * 1024         # assistant lines are small; skip the res
 # "Router verdict:" are the same declaration: format drift resolves to silence.
 _VERDICT_ROUTER_RE = re.compile(r"router(?:[\s*_`]+verdict)?[\s*_`]*:(.*)", re.IGNORECASE)
 _VERDICT_NONE_RE = re.compile(r"[\s`*_\"'(]*(no match|absent)", re.IGNORECASE)
-_VERDICT_TRIVIAL_RE = re.compile(r"\blevel[\s*_`]*:[\s`*_]*[A-Z]1\b", re.IGNORECASE)
+# A level is DECLARED by a line that opens with the level word, in the form Rule
+# Zero prescribes -- level 1 alone, 2/3 with `router` on the same line -- so a level
+# quoted inside a sentence is not one. The letter is the lens's own (`L1`, `E1`):
+# groups are (letter, "1" or "", "2"/"3" or "").
+_DECLARATION_RE = re.compile(
+    r"^[ \t>*_`-]*(?:level|livello|niveau|nivel|stufe)\b[ \t*_`:·—–-]*(?:è[ \t]+)?"
+    r"([A-Z])(?:(1)\b|([23])\b(?=[^\n]*\brouter\b))", re.IGNORECASE | re.MULTILINE)
 _GUIDE_NAME_RE = re.compile(r"GUIDE_[A-Za-z0-9_-]+\.md")
 
 
@@ -2566,7 +2589,7 @@ def transcript_facts(path):
 
     Returns {"assistant": entries parsed, "sidechain": a subagent's own transcript
     (Claude Code marks every entry of one `isSidechain`), "declared": a router verdict seen,
-    "trivial": a `Level: X1` seen, "named": guides the verdicts name,
+    "trivial": a level-1 declaration seen (`Level: L1`, `E1`), "named": guides the verdicts name,
     "read": guide names that appeared in a non-edit tool's input}."""
     facts = {"assistant": 0, "sidechain": False, "declared": False, "trivial": False,
              "named": set(), "read": set()}
@@ -2595,7 +2618,8 @@ def transcript_facts(path):
                         continue
                     if block.get("type") == "text":
                         for line in str(block.get("text") or "").splitlines():
-                            if _VERDICT_TRIVIAL_RE.search(line):
+                            d = _DECLARATION_RE.match(line)
+                            if d and d.group(2):
                                 facts["trivial"] = True
                             m = _VERDICT_ROUTER_RE.search(line)
                             if m:
@@ -2611,15 +2635,19 @@ def transcript_facts(path):
     return facts
 
 
-def verdict_reason(payload, root):
-    """The refusal line for this edit event, or None when the edit may proceed."""
+def verdict_reason(payload, root=None, docs_name=None):
+    """The refusal line for this edit event, or None when the edit may proceed.
+    Without a root, the project is the one holding the edited file (hook_project)."""
     if payload.get("tool_name") not in VERDICT_EDIT_TOOLS or payload.get("agent_id"):
         return None
     tool_input = payload.get("tool_input") or {}
     target = tool_input.get("file_path") or tool_input.get("notebook_path")
     transcript = payload.get("transcript_path")
-    if not target or not transcript:
+    if not isinstance(target, str) or not target or not transcript:
         return None
+    root = hook_project(target, root, docs_name)
+    if root is None:
+        return None  # two docs roots side by side: cannot tell which governs
     try:
         Path(target).resolve().relative_to(root)
     except (ValueError, OSError):
@@ -2657,8 +2685,8 @@ def cmd_verdict(args):
         payload = read_hook_payload()
         if payload is None:
             return 0
-        root = Path(args.root).resolve() if args.root else find_project_root()
-        reason = verdict_reason(payload, root)
+        root = Path(args.root).resolve() if args.root else None
+        reason = verdict_reason(payload, root, getattr(args, "docs_dir", None))
         if reason:
             print(json.dumps({"hookSpecificOutput": {
                 "hookEventName": "PreToolUse",
@@ -2951,14 +2979,9 @@ def file_constraints(root, path):
 
 # The recall hook (FS6). It informs, never decides: its JSON carries no
 # `permissionDecision`, so the user's permission flow is the one without it
-# (P6). A level is DECLARED by a line that opens with the level word, in the
-# form Rule Zero prescribes -- `L1` alone, `L2`/`L3` with `router` on the same
-# line -- so a level quoted inside a sentence is not one. `transcript_facts`
-# keeps the verdict hook's own reading, unchanged (P2).
+# (P6). A level is read with the verdict hook's `_DECLARATION_RE`; only the code
+# lens's `L` levels count here.
 CONSTRAINTS_HOOK_LINES = 15
-_DECLARATION_RE = re.compile(
-    r"^[ \t>*_`-]*(?:level|livello|niveau|nivel|stufe)\b[ \t*_`:·—–-]*(?:è[ \t]+)?L"
-    r"(?:(1)\b|([23])\b(?=[^\n]*\brouter\b))", re.IGNORECASE | re.MULTILINE)
 _WORK_TOOLS = VERDICT_EDIT_TOOLS + ("Read",)
 
 
@@ -2993,8 +3016,10 @@ def transcript_work(path):
                     if not isinstance(block, dict):
                         continue
                     if block.get("type") == "text":
-                        for one, other in _DECLARATION_RE.findall(str(block.get("text") or "")):
-                            work["level"] = one or other
+                        for letter, one, other in _DECLARATION_RE.findall(
+                                str(block.get("text") or "")):
+                            if letter.upper() == "L":
+                                work["level"] = one or other
                     elif block.get("type") == "tool_use" and block.get("name") in _WORK_TOOLS:
                         inp = block.get("input") or {}
                         target = inp.get("file_path") or inp.get("notebook_path")
@@ -3044,18 +3069,8 @@ def constraints_hook_context(payload, root=None, docs_name=None):
     transcript = payload.get("transcript_path")
     if not isinstance(target, str) or not target or not transcript:
         return None
-    # The hook runs in the session's current directory, which a `cd` moves (live
-    # probe 2026-10-27): the project AND its docs root name are the ones holding
-    # the file, never the ones around the working directory.
-    start = Path(root) if root is not None else Path(target).resolve().parent
-    try:
-        found_root, name = resolve_docs_dir(argparse.Namespace(docs_dir=docs_name), start)
-    except AmbiguousDocsRoot:
-        return None
-    set_docs_dir(name)
-    if root is None:
-        root = found_root if found_root is not None else find_project_root(start)
-    if not ai_path(root, "solutions").is_dir():
+    root = hook_project(target, root, docs_name)
+    if root is None or not ai_path(root, "solutions").is_dir():
         return None
     found = file_constraints(root, target)
     rel = project_relative(root, target)
@@ -4026,11 +4041,13 @@ def main(argv=None):
 
     args = ap.parse_args(argv)
 
-    # F-085: the recall hook resolves its root and docs root from the edited file
-    # (the hook runs in whatever directory the session moved to), so it is
+    # F-085: the edit hooks resolve their root and docs root from the edited file
+    # (the hook runs in whatever directory the session moved to), so they are
     # dispatched before the working-directory resolution below.
     if args.cmd == "constraints" and args.hook:
         return cmd_constraints_hook(args)
+    if args.cmd == "verdict":
+        return cmd_verdict(args)
 
     # Resolve the documentation root ONCE, before any command runs, so every
     # surface -- paths, messages, generated headers, the gate's exempt prefix --
@@ -4050,10 +4067,6 @@ def main(argv=None):
             # and says so rather than exiting non-zero.
             print(f"[note] {exc}")
             discovered, name = None, DEFAULT_DOCS_DIR
-        elif args.cmd == "verdict":
-            # F-076: a PreToolUse check that cannot tell which root governs refuses
-            # nothing and says nothing -- its stdout is read as the hook's decision.
-            return 0
         else:
             print(f"[ERROR] {exc}")
             return 1
@@ -4061,8 +4074,6 @@ def main(argv=None):
 
     if args.cmd == "gate":
         return cmd_gate(args)
-    if args.cmd == "verdict":
-        return cmd_verdict(args)
     if args.cmd == "orient":
         return cmd_orient(args)
     if args.cmd == "remind":

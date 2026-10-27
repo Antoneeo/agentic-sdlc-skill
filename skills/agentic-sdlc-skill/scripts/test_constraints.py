@@ -511,6 +511,12 @@ class Hook(Tree):
     def test_silent_when_the_last_declaration_is_l1(self):
         self.assertIsNone(self.run_hook([self.L3, self.read_unit(), say("Level: L1")]))
 
+    def test_another_lens_level_is_not_a_code_declaration(self):
+        # the declaration rule is shared with the verdict hook, which accepts any
+        # lens's letter (`E1`); recall counts the code lens's `L` levels only
+        self.assertIsNone(self.run_hook([say("Level: E3 · router: no match"), self.read_unit()]))
+        self.assertIsNotNone(self.run_hook([self.L3, self.read_unit(), say("Level: E1")]))
+
     def test_silent_on_l2(self):
         self.assertIsNone(self.run_hook([say("Level: L2 · router: no match"), self.read_unit()]))
 
