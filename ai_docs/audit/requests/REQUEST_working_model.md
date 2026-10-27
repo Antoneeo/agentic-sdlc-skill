@@ -104,3 +104,8 @@ Context (agent): F-085 committed on `feat/f085-working-model` (df494ceb), mark a
 ### R19 — 2026-10-27 — push
 Context (agent): "Faccio push di main su origin?" (F-085 merged into local main, 33b35061).
 > Fai push di main su origin.
+
+### R20 — 2026-10-27 — second amendment of the APPROVED Vision
+Context (agent): the five WARNs the R16 blind check left on the approved text, drafted and blind-checked (rounds FAIL, FAIL, PASS, scoped PASS; `audit/reviews/REVIEW_LOG.md`); asked "Do you approve the second amendment of the F-085 Vision? It answers the five WARNs from the last check. (1) Reach: the Vision also governs later changes to what F-085 shipped, and any proposal that extracts ANALYSIS constraints to show them apart; a maintenance class lets defect fixes, speed fixes and tests through without admission. (2) Imported facts rank with Definitions. The North star and the procedure sections rank nowhere and free no proposal from the rules. (3) A new Invariant: a signal is changed only by you, in the request record, every real counting fix included. (4) Impact ids are optional by rule. (5) The view's only order is the documents' own." — options: approve as proposed; approve without the wider Reach; do not amend.
+> Approve as proposed (Recommended)
+
