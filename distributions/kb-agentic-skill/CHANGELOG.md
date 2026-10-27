@@ -2,7 +2,7 @@
 
 Every significant change to this skill is recorded here.
 
-## [Unreleased]
+## [1.32.0] - 2026-10-27
 
 ### Added
 - `inventory <path>`: every project file under a path (`.` for all), each with its state against the corpus, compared by content — `INGESTED` (its bytes are a sidecar's digest, wherever it lives, or its `original_path:` with no digest kept), `INGESTED_EARLIER` (the original changed since ingest), `EXCLUDED` (a row of the approved registry `audit/INVENTORY_exclusions.md`; never read), `NOT_EXAMINED` (the default; links, junctions and cloud-only files are never read), and once per built-in skipped directory `SKIPPED`. No totals, no filter by state; it writes nothing (`vision/rulings.md` r37).

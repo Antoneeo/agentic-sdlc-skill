@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [0.1.0-beta.14] - 2026-10-27
 
 ### Added
 - Shared knowledge layer (F-084, kb CHANGELOG): `inventory <path>` and orient's upper bound of never-examined project files reach this lens; `validate`/`check` refuse a malformed `audit/INVENTORY_exclusions.md` row and the new `DECLARED`/`DIVERGES` claim rules; the docs site renders them. `sdlc_core.skip_dir` is extracted from `iter_files`, behaviour unchanged.

@@ -1,6 +1,10 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
+**2026-10-27 — release 1.49.0: working model (F-085 constraint view and recall hook, post-merge tier), shared knowledge layer (F-084), imported-ruling refusal (F-083), verdict and gate hook fixes.** Code 1.49.0, KB 1.32.0,
+marketing 0.27.0, Course 0.1.0-beta.14; tags v1.49.0 / kb-v1.32.0 / mkt-v0.27.0 /
+course-v0.1.0-beta.14 on the release commit. Publish pending (owner's 2FA).
+
 **2026-10-27 — Verdict hook (L2, follow-up of F-085): a level quoted in prose no longer counts as a declaration; the project judged is the edited file's own, not the working directory's.** A router verdict follows the
 same rule (34d3361f), and the protected-path gate resolves from the edited file too. The
 closure review (REVIEW_LOG 2026-10-27, verdict/gate hook fix) found two regressions, both fixed before release:
