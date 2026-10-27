@@ -136,3 +136,7 @@ SKILL.md toward +1.5 KB.
 ### R12 — 2026-10-27 — commit and mark, no push
 Context (agent): "Should I commit F-084 on its branch and mark the changed areas?"
 > Committa F-084 sul branch claude/f084-kb-corpus-reach, poi marca le aree e porta check a CLEAN. Niente push.
+
+### R13 — 2026-10-27 — push and merge into main
+Context (agent): "Push the branch and open the PR to main?"
+> fai push e merge
