@@ -307,7 +307,13 @@ checks: [marketing.funnel]      # optional — extra portable checks to run on t
      without replacing, the owner's own review. They keep the top of the funnel
      from proposing what the vision does not want or the project does not have;
      drafting is grounded in BOTH anchors first — the Vision (benefit + actors)
-     and the real system (summaries / existing features / source). -->
+     and the real system (summaries / existing features / source).
+     IDS: at L3 every use-case here opens with `UC<n>`, every item of
+     ## Functional Spec with `FS<n>`, every threat of ## Security with `T<n>` — at
+     the start of a bullet, `###`/`####` heading or table row — so
+     `sdlc_check.py constraints --unit <id>` can show them. -->
+
+- **UC1 (Actor)** — what they need and why. *Benefit: …*
 
 ## Functional Spec
 <!-- [conditional] Fires when the change ADDS or ALTERS observable behavior —
@@ -403,7 +409,20 @@ checks: [marketing.funnel]      # optional — extra portable checks to run on t
 
 ## Impact
 <!-- existing files touched, APIs/contracts, performance, new dependencies.
-     Derived from the ledger above: every INADEQUATE/MISSING row appears here. -->
+     Derived from the ledger above: every INADEQUATE/MISSING row appears here.
+     The blast radius (SKILL.md Phase 3) is the table below: one row per existing
+     symbol whose behaviour must survive the change. A unit that changes no
+     existing symbol writes the single line `No existing symbol changed.` instead.
+     Bound to: backticked repository-relative paths, optionally `path::symbol`
+     (an elided path binds nothing). Callers: the enumerated set, or "none outside
+     the file". Must stay true: one statement a test or probe could check.
+     Evidence: the enumeration instrument or the probe — never "to be done". -->
+
+### Preservation constraints
+
+| id | bound to | callers | must stay true | evidence |
+|---|---|---|---|---|
+| P1 | `path/to/store.py::OrderStore.save` | `api/orders.py`, `jobs/sync.py` | a saved order is readable by id before `save` returns | find-usages on `save`; `test_store.py` |
 
 ## Security and Threat Model
 <!-- ALWAYS mandatory, also in Standalone.
@@ -705,7 +724,9 @@ columns: Standalone adds `reviewer`, a Hybrid row adds `instrument` and
 
 `tier` is the moment plus, in Hybrid, the reviewer weight: `design`, `design (late)`
 and `closure` (Standalone); `deep`, `light`, `code`, `guide`, `vision` (devPNT gates
-and the Vision blind check). `model` is a different question about the same review: `tier` says WHICH GATE ran,
+and the Vision blind check). `post-merge` is not a review: the owner's report of a
+wrong behaviour in a merged L3 change, with `model` `none (owner report)`, `reviewer`
+`owner` and the owner's words in the notes (`review.md`). `model` is a different question about the same review: `tier` says WHICH GATE ran,
 `model` says WHAT CAPABILITY ran it (`deep`, `light`, `economy`,
 `single (client exposes no choice)`, `below floor: <reason>`, `none (not due)` on a
 NOT DUE row — the floor and its

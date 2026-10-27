@@ -262,6 +262,12 @@ in the snapshot, never to your assumption about what the code does.
   (source-anchored), not an elaborated version of it.
 - When in doubt about whether something is "supported" by the source, treat it
   as not covered rather than stretching the marker to fit.
+- **Declared exception: `## Preservation constraints`.** A code guide may carry
+  this section, copied at an L3 closure from the ANALYSIS's table (code lens,
+  `SKILL.md` Phase 5). The section's marker cites each row it holds as
+  `[source: solutions/ANALYSIS_<name>.md#P<n>]` instead of a snapshot anchor: each
+  row records what the code must keep doing, as that unit enumerated and probed it,
+  not an excerpt of the code.
 
 ## 4. Ingestion bound (T9)
 
@@ -293,5 +299,7 @@ state it explicitly when handing off a newly created guide.
   closure (docs travel with the code); when you merely READ one, check it against
   the code before trusting it. Too large to absorb → mark it `SUPERSEDED` rather
   than leave a confident-wrong map badged CURRENT, which is worse than none.
+- **A regenerated guide keeps `## Preservation constraints` unchanged**: the
+  section does not come from the snapshot (§3), so regeneration carries it over.
 - **Agent-global KB guides** use the same pipeline and validator via
   `--root ~/.agentic-sdlc`; freshness via the same `stale` engine.

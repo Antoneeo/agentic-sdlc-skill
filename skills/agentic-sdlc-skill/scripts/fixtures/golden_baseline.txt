@@ -1,24 +1,27 @@
 ===== validate (rc=0) =====
+[note]  solutions/ANALYSIS_pick_list.md: open L3 whose '## Impact' has neither the '### Preservation constraints' table nor the line 'No existing symbol changed.' -- what existing code must keep doing is not extractable (templates.md)
 [note]  strategic/architecture.md: Component Map row 'Pick list builder': 'src/picking/builder.py' no longer exists -- the map is rotting, update the row or drop it
 [warn]  functional/architecture_overview.md: missing 'status:' in the header (CURRENT/SUPERSEDED/DRAFT/DEPRECATED)
 
-Validation: 0 errors, 1 warnings, 1 advisories.
+Validation: 0 errors, 1 warnings, 2 advisories.
 [note] advisories are freshness signals: never fail a build, not even --strict.
 
 ===== validate --strict (rc=1) =====
+[note]  solutions/ANALYSIS_pick_list.md: open L3 whose '## Impact' has neither the '### Preservation constraints' table nor the line 'No existing symbol changed.' -- what existing code must keep doing is not extractable (templates.md)
 [note]  strategic/architecture.md: Component Map row 'Pick list builder': 'src/picking/builder.py' no longer exists -- the map is rotting, update the row or drop it
 [warn]  functional/architecture_overview.md: missing 'status:' in the header (CURRENT/SUPERSEDED/DRAFT/DEPRECATED)
 
-Validation: 0 errors, 1 warnings, 1 advisories.
+Validation: 0 errors, 1 warnings, 2 advisories.
 [note] advisories are freshness signals: never fail a build, not even --strict.
 [strict] warnings are failures in --strict mode.
 
 ===== check (rc=1) =====
 ===== validate =====
+[note]  solutions/ANALYSIS_pick_list.md: open L3 whose '## Impact' has neither the '### Preservation constraints' table nor the line 'No existing symbol changed.' -- what existing code must keep doing is not extractable (templates.md)
 [note]  strategic/architecture.md: Component Map row 'Pick list builder': 'src/picking/builder.py' no longer exists -- the map is rotting, update the row or drop it
 [warn]  functional/architecture_overview.md: missing 'status:' in the header (CURRENT/SUPERSEDED/DRAFT/DEPRECATED)
 
-Validation: 0 errors, 1 warnings, 1 advisories.
+Validation: 0 errors, 1 warnings, 2 advisories.
 [note] advisories are freshness signals: never fail a build, not even --strict.
 
 ===== stale =====
@@ -33,10 +36,11 @@ check: NOT CLEAN (validate rc=0, stale rc=1)
 
 ===== check --hybrid (rc=0) =====
 ===== validate =====
+[note]  solutions/ANALYSIS_pick_list.md: open L3 whose '## Impact' has neither the '### Preservation constraints' table nor the line 'No existing symbol changed.' -- what existing code must keep doing is not extractable (templates.md)
 [note]  strategic/architecture.md: Component Map row 'Pick list builder': 'src/picking/builder.py' no longer exists -- the map is rotting, update the row or drop it
 [warn]  functional/architecture_overview.md: missing 'status:' in the header (CURRENT/SUPERSEDED/DRAFT/DEPRECATED)
 
-Validation: 0 errors, 1 warnings, 1 advisories.
+Validation: 0 errors, 1 warnings, 2 advisories.
 [note] advisories are freshness signals: never fail a build, not even --strict.
 
 ===== stale =====

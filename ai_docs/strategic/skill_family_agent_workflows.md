@@ -208,6 +208,16 @@ Ciò che solo qui l'agente fa:
   esporta lo shadow (`check` legge la versione più recente) — `check` verifica
   entrambe le metà. La L2/L3 che fa rispettare il
   claim toglie il marker nello stesso commit; L1 è esente.
+- **Vincoli al momento dell'azione** (F-085): in una L3 i casi d'uso, le voci di
+  spec e le minacce portano un id (`UC`/`FS`/`T`) e la blast radius diventa la
+  tabella `### Preservation constraints` (simbolo, chiamanti, cosa deve restare
+  vero, evidenza) o la riga `No existing symbol changed.`. `sdlc_check.py
+  constraints --unit <id>` mostra i vincoli dell'unità, `--file <path>` quelli di un
+  file; su Claude Code un hook di solo contesto li richiama prima di una modifica a
+  un file vincolato, se la sessione ha dichiarato L3 e ha lavorato sull'unità — mai
+  una decisione sui permessi. Il revisore deriva prima, poi confronta con la vista.
+  In chiusura le righe P non rilasciate vanno nella guida di codice del componente;
+  un difetto segnalato dal proprietario dopo il merge è una riga `post-merge`.
 - **Component Map viva**: riga nuova anche per un componente semplicemente
   *scoperto* esplorando — e il validator la tiene anti-rot (ogni path/simbolo
   nella colonna Where deve risolversi).

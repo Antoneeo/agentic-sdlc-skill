@@ -6,6 +6,14 @@ Tutte le modifiche significative a questa skill saranno documentate in questo fi
 
 ### Added
 - Shared knowledge layer (F-084, kb CHANGELOG): `inventory <path>` and orient's upper bound of never-examined project files reach this lens; `validate`/`check` refuse a malformed `audit/INVENTORY_exclusions.md` row and the new `DECLARED`/`DIVERGES` claim rules; the docs site renders them. `sdlc_core.skip_dir` is extracted from `iter_files`, behaviour unchanged.
+- `sdlc_check.py constraints --unit <id>` shows the constraints an ANALYSIS states in extractable form — its `UC`/`FS`/`T` items and the rows of the new `### Preservation constraints` table — each with its line, and ends with the sections it could not extract. `constraints --file <path>` shows those of the open L3 units that bind that file.
+- Constraint recall on Claude Code: before an edit of a file the open L3 unit binds, the agent receives those constraints in its context (at most 15 lines). It informs and never decides: no permission decision, silent at every other level, always exit 0. Installing wires it beside the guide-verdict check; removing that hook entry is a standing opt-out.
+- ANALYSIS template: `UC<n>`/`FS<n>`/`T<n>` ids, and under `## Impact` the `### Preservation constraints` table (symbol, callers, what must stay true, evidence), which replaces the prose blast radius; a unit that changes no existing symbol writes `No existing symbol changed.` `validate` notes an open L3 that has neither — a note, never an error.
+- At closure, unreleased preservation constraints are copied into the component's code guide under `## Preservation constraints`; a constraint stops binding only on the owner's own words.
+- REVIEW_LOG tier `post-merge`: the owner's report of a wrong behaviour in a merged L3 change. `benefit` keeps it out of every review figure; the docs site shows it as "defect reported after merge".
+
+### Changed
+- The uninstaller names each hook entry it removes by its own name; two hooks now share PreToolUse.
 
 ### Fixed
 - Shared claim checks (`check`, every lens): a `RULING` row on a note that names a foreign origin (`imported_from:`) is refused — relabelling an imported row is not ratifying it; the message for a row superseded by an `IMPORTED` one names the ratification act. The kb lens's `import` now makes an imported ruling arrive as `IMPORTED` on a renamed copy of its note and reopens the set it had settled (kb CHANGELOG, F-083).

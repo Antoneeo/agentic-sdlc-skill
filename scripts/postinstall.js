@@ -3,7 +3,8 @@
 const fs = require('fs');
 const {
   SKILL_SOURCE, CLIENTS, clientDetected, skillTarget, copyRecursive,
-  wireGlobalOrientHook, wireGlobalRemindHook, wireGlobalVerdictHook, detectPython,
+  wireGlobalOrientHook, wireGlobalRemindHook, wireGlobalVerdictHook, wireGlobalRecallHook,
+  detectPython,
 } = require('./lib');
 
 function installSkill(client) {
@@ -60,6 +61,17 @@ for (const client of CLIENTS) {
           console.log('🔗 Guide-verdict check wired for every project on this machine');
           console.log(`   (${rv.target}). Edits wait for the Rule-Zero router verdict in projects`);
           console.log('   with guides; remove that hook entry to opt out — it will not be re-added.');
+        }
+        // F-085: the constraint recall -- before an edit of a file bound by a
+        // constraint of the open L3 unit the session works on, the agent gets
+        // those constraints in its context. Context only, never a decision;
+        // silent everywhere else. Per-edit cost: the lines, owner-accepted in
+        // REQUEST_working_model.md R12 (b); ~0.25 s per edit, R15.
+        const rc = wireGlobalRecallHook({ client, python: detectPython() });
+        if (rc.code === 'wired') {
+          console.log('🔗 Constraint recall wired for every project on this machine');
+          console.log(`   (${rc.target}). In an L3 unit, an edit of a file its constraints bind`);
+          console.log('   shows them first; remove that hook entry to opt out — it will not be re-added.');
         }
         const r = wireGlobalOrientHook({ client, python: detectPython() });
         if (r.code === 'wired') {

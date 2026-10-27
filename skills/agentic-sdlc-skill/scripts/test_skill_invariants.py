@@ -1678,5 +1678,96 @@ class NotYetHonoredTrigger(unittest.TestCase):
             self.assertIn(anchor, row[0])
 
 
+def _section(text, start, stop):
+    """The text from the heading line `start` up to the next line opening `stop`."""
+    lines = text.splitlines()
+    i = next(n for n, ln in enumerate(lines) if ln.startswith(start))
+    body = []
+    for ln in lines[i + 1:]:
+        if ln.startswith(stop):
+            break
+        body.append(ln)
+    return "\n".join(body)
+
+
+class WorkingModelDoctrine(unittest.TestCase):
+    """F-085: the doctrine that makes constraints extractable (FS1, FS2), gives the
+    preservation ones back to the guide at closure (FS8), releases them only on the
+    owner's words (FS9), records post-merge defects (FS10) and tells clients without
+    hooks to run the recall by hand (FS11)."""
+
+    def code_lens(self):
+        if SKILL_DIR.name != "agentic-sdlc-skill":
+            self.skipTest("the working-model doctrine is the code lens's (per-lens file)")
+
+    def test_template_carries_ids_and_the_preservation_table(self):
+        self.code_lens()
+        t = read("templates.md")
+        tpl = t[t.index("## ai_docs/solutions/ANALYSIS_[feature_name].md"):]
+        tpl = tpl[:tpl.index("\n## ai_docs/", 10)]
+        for anchor in ("`UC<n>`", "`FS<n>`", "`T<n>`",
+                       "### Preservation constraints",
+                       "| id | bound to | callers | must stay true | evidence |",
+                       "No existing symbol changed.", "constraints --unit"):
+            self.assertIn(anchor, tpl, anchor)
+
+    def test_review_log_template_knows_post_merge(self):
+        self.code_lens()
+        t = read("templates.md")
+        sec = t[t.index("## ai_docs/audit/reviews/REVIEW_LOG.md"):]
+        # the next template heading, not the `## Notes` inside its code block
+        nxt = sec.find("\n## ai_docs/", 5)
+        sec = sec if nxt < 0 else sec[:nxt]
+        for anchor in ("`post-merge`", "`none (owner report)`"):
+            self.assertIn(anchor, sec, anchor)
+
+    def test_skill_blast_radius_writes_the_table(self):
+        self.code_lens()
+        para = next(ln for ln in read("SKILL.md").splitlines()
+                    if ln.startswith("**Blast-radius enumeration is an authoring duty"))
+        self.assertIn("`### Preservation constraints`", para)
+        self.assertIn("must stay true", para)
+
+    def test_skill_closure_gives_back_and_releases_only_on_owner_words(self):
+        self.code_lens()
+        closure = _section(read("SKILL.md"), "### 5. Closure", "## ")
+        for anchor in ("`## Preservation constraints`",
+                       "[source: solutions/ANALYSIS_<name>.md#P<n>]",
+                       "Component Map",
+                       "RELEASED (REQUEST_<name>.md#R<n>)"):
+            self.assertIn(anchor, closure, anchor)
+
+    def test_skill_tells_hookless_clients_to_run_the_recall(self):
+        self.code_lens()
+        dev = _section(read("SKILL.md"), "### 4. Development and Testing", "### 5.")
+        self.assertIn("constraints --file <path>", dev)
+        self.assertIn("before its first edit", dev)
+
+    def test_guides_declare_the_exception_and_keep_it_on_regeneration(self):
+        g = read("guides.md")
+        s3 = _section(g, "## 3.", "## 4.")
+        self.assertIn("`## Preservation constraints`", s3)
+        self.assertIn("[source: solutions/ANALYSIS_", s3)
+        s6 = _section(g, "## 6.", "## 7.") if "\n## 7." in g else g[g.index("## 6."):]
+        self.assertIn("`## Preservation constraints`", s6)
+        self.assertIn("unchanged", s6)
+
+    def test_review_knows_post_merge_and_derives_before_the_view(self):
+        r = read("review.md")
+        for anchor in ("`post-merge`", "`none (owner report)`",
+                       "constraints --unit", "derive"):
+            self.assertIn(anchor, r, anchor)
+        start = r.index("**The constraint view comes last.**")
+        self.assertRegex(r[start:start + 400], r"(?s)derive.*then compares.*constraints --unit")
+
+    def test_enforcement_documents_the_recall_hook(self):
+        self.code_lens()
+        e = read("ENFORCEMENT.md")
+        sec = _section(e, "### Constraint recall", "## ")
+        for anchor in ("constraints --hook; exit 0", "permissionDecision",
+                       "opt-out", "R12"):
+            self.assertIn(anchor, sec, anchor)
+
+
 if __name__ == "__main__":
     unittest.main()

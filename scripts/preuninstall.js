@@ -32,14 +32,11 @@ try {
 // F-076: the per-turn reminder and the guide-verdict check name the same skill
 // dirs; left behind they exit 2 (Python cannot open the file), which blocks the
 // prompt or the edit. The verdict entry is also wired `; exit 0`, because npm 7+
-// may not run this script at all.
-const COMMAND_HOOK_NAMES = {
-  UserPromptSubmit: 'per-turn reminder',
-  PreToolUse: 'guide-verdict check',
-};
+// may not run this script at all. F-085: the constraint recall shares
+// PreToolUse with the verdict check, so each entry is named by its spec.
 try {
-  for (const { target, event } of removeGlobalCommandHooks(CLIENTS.map(skillTarget))) {
-    console.log(`🧹 Removed the ${COMMAND_HOOK_NAMES[event] || event} hook entry (${target}).`);
+  for (const { target, event, name } of removeGlobalCommandHooks(CLIENTS.map(skillTarget))) {
+    console.log(`🧹 Removed the ${name || event} hook entry (${target}).`);
   }
 } catch (e) { /* never abort an uninstall for a convenience */ }
 

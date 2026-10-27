@@ -110,6 +110,38 @@ is a standing opt-out.** The command ends in `; exit 0`: a validator that cannot
 }
 ```
 
+### Constraint recall: `constraints --hook` (PreToolUse -- wired by default)
+
+Before an Edit, Write, MultiEdit or NotebookEdit, `sdlc_check.py constraints --hook`
+adds to the agent's context the constraints that bind the file: the UC/FS/T items and
+the `### Preservation constraints` rows of an open L3 unit of the code domain, at most
+15 lines, then the command for the rest and the sentence naming what the view could not
+extract. It fires only when the session read or wrote that unit's ANALYSIS, request
+record or handoff and the last level it declared (a line opening with the level word)
+is L3; editing the unit's own ANALYSIS with a path a P row binds counts too. The project
+is the one holding the edited file, never the hook's working directory.
+
+It informs and never decides: its JSON carries `additionalContext` only, never a
+`permissionDecision`, so the user's permission flow is the one without it. It is silent
+everywhere else and whenever it cannot tell (subagent, oversized or unreadable
+transcript, any error), and always exits 0.
+
+Cost: up to 15 lines of context on a bound edit at L3 (owner-accepted,
+`REQUEST_working_model.md` R12 (b)), zero tokens at any other level; and about 0.25 s
+per edit in every project, the hook's own process (owner-accepted, R15). Installing the package wires it machine-wide on
+Claude Code beside the verdict check; **removing that hook entry is a standing
+opt-out.** The command ends in `; exit 0` for the verdict check's reason. To wire it by
+hand, add this entry under `PreToolUse`, in its own group with the verdict check's
+matcher (the installer writes a separate group):
+
+```json
+{
+  "type": "command",
+  "command": "python \"C:\\Users\\<user>\\.claude\\skills\\agentic-sdlc\\scripts\\sdlc_check.py\" constraints --hook; exit 0",
+  "timeout": 10
+}
+```
+
 ## 4. SessionStart hook (orientation, recommended default)
 
 Emits the `ai_docs/` orientation to stdout at session start, in the order an arriving agent needs it: the Rule-Zero triage line, the lens choice when sibling lenses are installed, the guide router (`reference/INDEX.md`, one line per guide), the workstream registry (`audit/handoff.md`, one line per workstream, then the project-wide notes), the reading guide (`README.md`), then pointers to the manifest (`INDEX.md`) and to the full files — so the agent begins already oriented instead of reading them only if it remembers to. The whole output stays under 9,500 characters: Claude Code injects a hook's output up to 10,000 and, above that, only a 2,000-character preview, which is how the router once never reached a session (F-075). A section that does not fit is cut at a line with a pointer to its file, and a note says when one client runs the hook from two settings entries. It is **fail-open**: a missing or unreadable doc is skipped, and it always exits 0 — a broken or empty `ai_docs/` never blocks the session. It is **zero-execution** (it reads and prints, never runs anything).

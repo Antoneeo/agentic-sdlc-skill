@@ -56,6 +56,7 @@ SHARED_FILES = (
     "scripts/test_guide_check.py",
     "scripts/test_merge_safety.py",
     "scripts/test_audit_refs.py",
+    "scripts/test_constraints.py",
     # the docs site (F-072): generator, its battery and its page
     "scripts/docs_site.py",
     "scripts/test_docs_site.py",

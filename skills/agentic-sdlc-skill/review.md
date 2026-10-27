@@ -187,7 +187,10 @@ can block forever gets removed. **Log one row per completed review, PASS or FAIL
 logging only passes would erase exactly that evidence. The row goes in
 `ai_docs/audit/reviews/REVIEW_LOG.md` (create it if absent — `templates.md`):
 `| date | doc_key | tier | model | reviewer | findings_raised | findings_real | verdict | revise_rounds |`,
-with `tier` = `design` or `closure` in Standalone. **`model` records the capability
+with `tier` = `design` or `closure` in Standalone. In the code lens, a wrong behaviour
+the owner reports in a merged L3 change is one row too, tier `post-merge`, `model`
+`none (owner report)`, reviewer `owner`, the owner quoted in the notes: a defect
+record, not a review, so `benefit` keeps it out of every review figure. **`model` records the capability
 tier that actually ran** — `deep`, `light`, `economy`, `single (client exposes no
 choice)`, `below floor: <reason>`, or `none (not due)` on a NOT DUE row — never a provider name in doctrine (a project
 may of course write its own model names in its own log). Without it the floor above
@@ -285,6 +288,11 @@ The binding inputs, by review type:
   clause reads both), and the **probe harness** (`ai_docs/solutions/harness_[feature]/`).
   Hand these *in addition to* the design artifact — the reviewer checks the artifact
   **against** them, not only for internal consistency.
+- **The constraint view comes last.** Where the ANALYSIS carries ids, the reviewer
+  derives the callers and behaviours first, then compares with
+  `sdlc_check.py constraints --unit <id>`: a constraint the design states and the
+  diff breaks is a finding. The view never replaces the ANALYSIS or the diff in the
+  request.
 - **For a closure review, the diff and the test evidence**: the run output that
   backs every completion claim, dated after the final relevant change.
 - **For a design or closure review of an L3/E3 unit, the request record**

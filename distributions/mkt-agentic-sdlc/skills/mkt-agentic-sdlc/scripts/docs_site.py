@@ -1256,7 +1256,9 @@ def chronology(docs, pages):
     text = _text(docs / rel) if (docs / rel).is_file() else None
     if text is not None:
         for row in sdlc_core.parse_review_log(text)[0]:
-            add(row["date"], "review", "%s — %s: %s" % (
+            # F-085: a `post-merge` row is the owner's defect report, not a review
+            kind = "defect" if row["tier"].lower().startswith("post-merge") else "review"
+            add(row["date"], kind, "%s — %s: %s" % (
                 row["doc_key"], row["tier"], row["verdict"]), rel)
     for p in sorted(docs.glob("architecture/ADR_*.md")):
         rel = "architecture/" + p.name

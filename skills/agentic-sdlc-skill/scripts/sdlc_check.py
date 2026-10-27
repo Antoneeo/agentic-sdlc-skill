@@ -49,6 +49,7 @@ sdlc_core.set_profile(
         # code overlay
         "architect_pass", "interaction_contract", "comprehension_guides", "tdd",
         "subagent_dispatch", "legacy_narrative_handoff", "question_discipline",
+        "preservation_constraints",
     ),
     design_gate_between=("### 3. Request Analysis", "### 4. Development and Testing"),
     remind_line=(
