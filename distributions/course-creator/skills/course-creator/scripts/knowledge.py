@@ -5,6 +5,7 @@ Extracted from the KB overlay; the kb_* API and stored formats remain compatible
 Every distribution ships this module alongside its entry point and sdlc_core.py.
 """
 import argparse
+import codecs
 import contextlib
 import io
 import os
@@ -429,6 +430,16 @@ def kb_check_claims(root):
                     errors.append("%s: DERIVED claim's source (%s) carries no "
                                   "'derived_from:' — model knowledge disguised as "
                                   "a source" % (where, meta_where))
+                elif prov == "RULING" and meta.get("imported_from"):
+                    # F-083: relabelling an imported row RULING would make another
+                    # owner's note carry a decision here. Ratifying is deciding:
+                    # a note of your own, with your own basis.
+                    errors.append("%s: RULING source (%s) names a foreign origin "
+                                  "(imported_from: %s) — another project's note "
+                                  "cannot carry your ruling. Write your own note "
+                                  "with your own 'basis:' and put the RULING on it "
+                                  "(portability.md §4)"
+                                  % (where, meta_where, meta.get("imported_from")))
                 elif prov == "RULING" and not meta.get("basis"):
                     errors.append("%s: RULING source (%s) carries no 'basis:' — a "
                                   "preference is not a fact; no basis, no ruling"
@@ -591,13 +602,15 @@ def kb_check_claims(root):
                     # boundary, authority does not. An IMPORTED row carries another
                     # owner's decision; letting it supersede a local row would make
                     # that decision binding here without anyone here granting it.
-                    # Re-ratify first: write your own ruling note with your own
-                    # basis and flip the row to RULING.
+                    # Ratify first (F-083): a note of your own with your own basis,
+                    # a RULING row on it, and every row contested with the imported
+                    # one SUPERSEDED by that row.
                     errors.append("%s: SUPERSEDED by %s, which is IMPORTED — a "
                                   "foreign decision cannot settle a local row. "
-                                  "Re-ratify it (own note, own 'basis:', prov "
-                                  "RULING) or resolve this some other way"
-                                  % (where, t))
+                                  "Ratify it: your own note with your own "
+                                  "'basis:', a RULING row on it, and every row "
+                                  "CONTESTED with %s SUPERSEDED by that row"
+                                  % (where, t, t))
                 if kind == "CONTESTED":
                     if orow["state"].startswith("SUPERSEDED"):
                         errors.append("%s: CONTESTED points at SUPERSEDED row %s — "
@@ -1841,10 +1854,337 @@ def kb_bundle_write(docs, out, selected, artifacts, project):
     return dropped
 
 
-def kb_import_plan(bundle, docs):
+def _kb_replace_cells(line, updates):
+    """One claim-table row with the cells at the given column indexes replaced;
+    everything else -- indentation, outer pipes, a CRLF tail -- verbatim."""
+    end = "\r" if line.endswith("\r") else ""
+    body = line[:-1] if end else line
+    lead = body[:len(body) - len(body.lstrip())]
+    s = body.strip()
+    opens, closes = s.startswith("|"), len(s) > 1 and s.endswith("|")
+    cells = s[1 if opens else 0:len(s) - 1 if closes else len(s)].split("|")
+    for i, v in updates.items():
+        cells[i] = " %s " % v
+    return "%s%s%s%s%s" % (lead, "|" if opens else "", "|".join(cells),
+                           "|" if closes else "", end)
+
+
+def _kb_states(state):
+    """'CONTESTED a, b' / 'SUPERSEDED a' -> (kind, [ids]); OK/other -> (None, [])."""
+    m = re.match(r"^(CONTESTED|SUPERSEDED) ([0-9a-f, ]+)$", (state or "").strip())
+    if not m:
+        return None, []
+    return m.group(1), [t.strip() for t in m.group(2).split(",") if t.strip()]
+
+
+def _kb_bom_text(data):
+    """(bom, text): a UTF-8 BOM (Windows authoring) is kept apart and given back
+    on write, as sdlc_core.read_text reads past it."""
+    bom = codecs.BOM_UTF8 if data.startswith(codecs.BOM_UTF8) else b""
+    return bom, data[len(bom):].decode("utf-8")
+
+
+def _kb_foreign_note(data, project, rel):
+    """F-083: the bytes of a ruling note as it lands in another project, and the
+    number of lines inserted. Lines go right after the opening '---' with the
+    note's own line ending; an existing origin line is rewritten in place, so it
+    moves nothing. None when the note opens no frontmatter."""
+    bom, text = _kb_bom_text(data)
+    nl = "\r\n" if "\r\n" in text else "\n"
+    lines = text.split(nl)
+    if not lines or lines[0].strip() != "---":
+        return None
+    end = next((i for i in range(1, min(len(lines), 60)) if lines[i].strip() == "---"),
+               None)
+    if end is None:
+        return None
+    inserted = ["imported_from: %s — %s" % (project, rel)]
+    origin = [i for i in range(1, end) if re.match(r"^origin:", lines[i], re.I)]
+    for i in origin:
+        lines[i] = "origin: imported"
+    if not origin:
+        inserted.append("origin: imported")
+    lines[1:1] = inserted
+    return bom + nl.join(lines).encode("utf-8"), len(inserted)
+
+
+def _kb_shift_loc(loc, k):
+    a, b = (int(x) for x in LOC_LINE_RE.match(loc).groups())
+    if a >= 2:
+        return "L%d-%d" % (a + k, b + k)
+    return "L1-%d" % (b + k if b >= 2 else 1)
+
+
+def _kb_span(data, loc):
+    """The lines a line locator addresses, minus the two lines an import may
+    insert or rewrite -- what a moved locator must still cite."""
+    a, b = (int(x) for x in LOC_LINE_RE.match(loc).groups())
+    return [x for x in _kb_bom_text(data)[1].splitlines()[a - 1:b]
+            if not re.match(r"^(imported_from|origin):", x, re.I)]
+
+
+def _kb_rewrite_derived_from(data, renames):
+    """A note whose derived_from names a renamed ruling note names the copy. The
+    edit stays on the derived_from line, so no line moves."""
+    bom, text = _kb_bom_text(data)
+    nl = "\r\n" if "\r\n" in text else "\n"
+    lines = text.split(nl)
+    if not lines or lines[0].strip() != "---":
+        return data
+    for i in range(1, min(len(lines), 60)):
+        if lines[i].strip() == "---":
+            break
+        m = re.match(r"^(derived_from:\s*)(.*)$", lines[i], re.I)
+        if not m:
+            continue
+        val = m.group(2).strip()
+        listed = val.startswith("[") and val.endswith("]")
+        toks = val[1:-1].split(",") if listed else [val]
+        out = []
+        for tok in toks:
+            e = kb_unquote(tok)
+            hit = next((new for old, new in renames.items()
+                        if e in (old, old[len("corpus/notes/"):])), None)
+            out.append((" " if listed and out else "") + hit if hit else tok)
+        new = ("[%s]" % ",".join(out)) if listed else out[0]
+        lines[i] = m.group(1) + new
+    return bom + nl.join(lines).encode("utf-8")
+
+
+def kb_import_foreign_rulings(bundle, docs, topic_rels, written, project):
+    """F-083 -- knowledge crosses a project boundary, authority does not
+    (portability.md §4, owner rulings 2026-08-03 and R3 of F-083).
+
+    -> (content, drop, report, errors). content: {rel: bytes} to write instead of
+    the bundle's bytes; drop: rels never to write (a ruling note under its own
+    name); report: {"converted": n, "notes": [renamed notes of skipped topics]}.
+
+    A RULING row arrives IMPORTED, resting on a renamed copy of its note that
+    names the origin; the rows it superseded and the ruling form one CONTESTED
+    set again. The note is never edited in place: a line inserted into it moves
+    the line every locator cites, and check verifies line bounds, not text."""
+    errors, content, drop = [], {}, set()
+    report = {"converted": 0, "notes": []}
+    slug = re.sub(r"[^a-z0-9]", "-", (project or "unknown").lower())
+    parsed = {}
+    for rel in topic_rels:
+        text = (bundle / rel).read_bytes().decode("utf-8")
+        parsed[rel] = (text, kb_parse_claims(text)[0])
+    rulings = [(rel, r) for rel in topic_rels for r in parsed[rel][1]
+               if r["prov"].strip().upper() == "RULING"]
+    # Which notes land foreign. A note cited by a RULING row is a ruling note;
+    # so is any bundle note declaring a basis: (reconciliation.md) -- one can
+    # travel without its row, cited by another row, and land first under its
+    # own name, ready to carry a local-looking RULING later (closure review B1).
+    users = {}                        # note -> [(topic rel, row)] RULING rows on it
+    for rel, r in rulings:
+        src = r["source"].split(";")[0].strip()
+        path, _, loc = src.rpartition("#")
+        if not (re.match(r"^corpus/notes/[^/]+\.md$", path) and LOC_LINE_RE.match(loc)
+                and (bundle / path).is_file()):
+            if rel in written:
+                errors.append("claim %s in %s is a RULING resting on %r, not on a "
+                              "note in corpus/notes/ cited by line (a ruling is a "
+                              "note, reconciliation.md) -- carry it by hand"
+                              % (r["id"] or "(no id)", rel, src))
+            continue
+        users.setdefault(path, []).append((rel, r))
+    ndir = bundle / "corpus" / "notes"
+    for p in (sorted(ndir.glob("*.md")) if ndir.is_dir() else []):
+        meta = sdlc_core.load_frontmatter(_kb_bom_text(p.read_bytes())[1].splitlines()) or {}
+        if meta.get("basis") and not meta.get("imported_from"):
+            users.setdefault("corpus/notes/" + p.name, [])
+    renames = {}                      # original note -> (copy, bytes, k)
+    for path in sorted(users):
+        data = (bundle / path).read_bytes()
+        meta = sdlc_core.load_frontmatter(_kb_bom_text(data)[1].splitlines()) or {}
+        ruled = [(rel, r) for rel, r in users[path] if rel in written]
+        where = ("claim %s in %s" % (ruled[0][1]["id"] or "(no id)", ruled[0][0])
+                 if ruled else path)
+        if meta.get("imported_from"):
+            if ruled:
+                errors.append("%s is a RULING on %s, which already names a foreign "
+                              "origin -- the source project relabelled an imported "
+                              "decision; fix it there" % (where, path))
+            continue                  # already foreign: it travels as it is
+        home = docs / path
+        if not ruled and home.is_file() and                 kb_sha256_bytes(home) == hashlib.sha256(data).hexdigest():
+            continue                  # this project holds the note, no topic here rules on it
+        foreign = _kb_foreign_note(data, project, path)
+        if foreign is None:
+            if ruled:
+                errors.append("%s rests on %s, which opens no frontmatter"
+                              % (where, path))
+            continue
+        copy = "corpus/notes/imported_%s_%s" % (slug, path[len("corpus/notes/"):])
+        if sdlc_core.confine_under(docs, copy) is None:
+            errors.append("renamed note %r escapes the docs root" % copy)
+            continue
+        renames[path] = (copy, foreign[0], foreign[1])
+    if errors:
+        return content, drop, report, errors
+    for old, (copy, data, _k) in renames.items():
+        drop.add(old)
+        content[copy] = data
+    for p in sorted((bundle / "corpus" / "notes").glob("*.md")) \
+            if (bundle / "corpus" / "notes").is_dir() else []:
+        rel = "corpus/notes/" + p.name
+        if rel in drop:
+            continue
+        new = _kb_rewrite_derived_from(p.read_bytes(),
+                                       dict((o, c) for o, (c, _d, _k) in renames.items()))
+        if new != p.read_bytes():
+            content[rel] = new
+    for copy in [c for c in list(content) if c in [v[0] for v in renames.values()]]:
+        content[copy] = _kb_rewrite_derived_from(
+            content[copy], dict((o, c) for o, (c, _d, _k) in renames.items()))
+
+    # rows of the topics this import writes: move sources, re-mint ids
+    ren, rows_w, prov_of = {}, [], {}
+    for rel in topic_rels:
+        if rel not in written:
+            continue
+        for r in parsed[rel][1]:
+            rows_w.append((rel, r))
+    for rel, r in rows_w:
+        cells = [s.strip() for s in r["source"].split(";") if s.strip()]
+        moved = []
+        for n, s in enumerate(cells):
+            path, _, loc = s.rpartition("#")
+            if path in renames and LOC_LINE_RE.match(loc):
+                copy, data, k = renames[path]
+                nloc = _kb_shift_loc(loc, k)
+                if _kb_span((bundle / path).read_bytes(), loc) != _kb_span(data, nloc):
+                    errors.append("claim %s in %s: %s#%s would not cite the same text "
+                                  "in %s#%s -- nothing was converted"
+                                  % (r["id"], rel, path, loc, copy, nloc))
+                cells[n] = "%s#%s" % (copy, nloc)
+                moved.append(n)
+            elif path in renames:
+                errors.append("claim %s in %s cites %s by %r, not by line: the "
+                              "renamed copy would move it" % (r["id"], rel, path, loc))
+        r["_source"] = "; ".join(cells) if moved else r["source"]
+        r["_id"] = r["id"]
+        if 0 in moved and r["id"]:
+            path, _, loc = cells[0].rpartition("#")
+            try:
+                r["_id"] = kb_claim_id(path, loc, kb_qty_key(r["qty"]))
+            except ValueError:
+                pass
+            ren[r["id"]] = r["_id"]
+        conv = r["prov"].strip().upper() == "RULING" and \
+            r["source"].split(";")[0].strip().rpartition("#")[0] in renames
+        r["_prov"] = "IMPORTED" if conv else r["prov"]
+        r["_conv"] = conv
+    if errors:
+        return content, drop, report, errors
+    converted = set(r["id"] for _rel, r in rows_w if r["_conv"])
+    report["converted"] = len(converted)
+    members = {}
+    for rel, r in rows_w:
+        kind, targets = _kb_states(r["state"])
+        hit = [t for t in targets if t in converted]
+        if kind != "SUPERSEDED" or not hit:
+            continue
+        if len(hit) != len(targets):
+            errors.append("claim %s in %s is SUPERSEDED by the ruling %s and by %s, "
+                          "which is not a ruling: its set cannot reopen without "
+                          "deciding which successor stands -- re-rule it in the "
+                          "source project" % (r["id"], rel, ", ".join(hit),
+                                              ", ".join(t for t in targets if t not in hit)))
+            continue
+        for t in hit:
+            members.setdefault(t, set()).add(r["id"])
+    partners = {}
+    for rel, r in rows_w:
+        if r["_conv"] and members.get(r["id"]):
+            kind, targets = _kb_states(r["state"])
+            if kind == "SUPERSEDED" and any(t not in converted for t in targets):
+                errors.append("ruling %s in %s settled rows but was itself superseded "
+                              "by %s, which is not a ruling: its set cannot reopen "
+                              "cleanly -- re-rule it in the source project"
+                              % (r["id"], rel, ", ".join(targets)))
+            group = members[r["id"]] | {r["id"]}
+            for x in group:
+                partners.setdefault(x, set()).update(group - {x})
+    if errors:
+        return content, drop, report, errors
+    for rel, r in rows_w:
+        kind, targets = _kb_states(r["state"])
+        if r["id"] in partners:
+            own = set(targets) if kind == "CONTESTED" else set()
+            r["_state"] = "CONTESTED " + ", ".join(
+                sorted(ren.get(t, t) for t in own | partners[r["id"]]))
+        elif kind:
+            r["_state"] = "%s %s" % (kind, ", ".join(ren.get(t, t) for t in targets))
+        else:
+            r["_state"] = r["state"]
+        prov_of[r["_id"]] = r["_prov"].strip().upper()
+
+    # boundary: every pointer must resolve after the import, never onto a foreign row
+    held = {}
+    for _slug, (_p, _t, trows) in kb_collect_topics(docs).items():
+        for t in trows:
+            if t["id"]:
+                held[t["id"]] = (t["prov"].strip().upper(), t["state"])
+    for rel, r in rows_w:
+        kind, targets = _kb_states(r["_state"])
+        for t in targets:
+            prov = prov_of.get(t) or (held.get(t) or (None,))[0]
+            if t not in prov_of and t in held and kind == "CONTESTED":
+                hkind, hts = _kb_states(held[t][1])
+                if hkind != "CONTESTED" or r["_id"] not in hts:
+                    errors.append("claim %s in %s is CONTESTED with %s, which this "
+                                  "project holds without naming it back: the import "
+                                  "never edits an existing topic -- add the pointer "
+                                  "there first, or carry the row by hand"
+                                  % (r["_id"], rel, t))
+                    continue
+            if prov is None:
+                errors.append("claim %s in %s points at %s, which this import does not "
+                              "write and this project does not hold: its set would "
+                              "arrive incomplete -- import the topics together"
+                              % (r["_id"], rel, t))
+            elif kind == "SUPERSEDED" and prov == "IMPORTED":
+                errors.append("claim %s in %s is SUPERSEDED by %s, which is IMPORTED "
+                              "here: a foreign decision cannot settle it -- import the "
+                              "topics together, or reopen the set by hand"
+                              % (r["_id"], rel, t))
+    if errors:
+        return content, drop, report, errors
+
+    for rel in topic_rels:
+        if rel not in written:
+            continue
+        text, rows = parsed[rel]
+        lines = text.split("\n")
+        for r in rows:
+            up = {}
+            for col, key in (("id", "_id"), ("source", "_source"), ("prov", "_prov"),
+                             ("state", "_state")):
+                if r[key] != r[col]:
+                    up[CLAIM_COLUMNS.index(col)] = r[key]
+            if up:
+                lines[r["_line"] - 1] = _kb_replace_cells(lines[r["_line"] - 1], up)
+        new = "\n".join(lines).encode("utf-8")
+        if new != (bundle / rel).read_bytes():
+            content[rel] = new
+    for rel, r in rulings:
+        path = r["source"].split(";")[0].strip().rpartition("#")[0]
+        if rel not in written and path in renames:
+            note = renames[path][0]
+            if note not in report["notes"]:
+                report["notes"].append(note)
+    return content, drop, report, errors
+
+
+def kb_import_plan(bundle, docs, report=None):
     """(writes, skipped_topics, dedup, errors) -- computed BEFORE anything is
     written, because an import that half-applies leaves a tree whose checks fail
-    and whose owner cannot tell what landed."""
+    and whose owner cannot tell what landed. Each write is (rel, bytes, dst):
+    the bytes are the bundle's, except where F-083 makes a foreign ruling land
+    foreign (kb_import_foreign_rulings). `report`, when a dict, receives what
+    that conversion did."""
     errors, writes, skipped, dedup = [], [], [], []
     man = bundle / BUNDLE_MANIFEST
     if not man.is_file():
@@ -1860,6 +2200,7 @@ def kb_import_plan(bundle, docs):
             if r["id"]:
                 known_ids.add(r["id"])
 
+    entries, topic_rels, written = [], [], set()
     for p in sorted(bundle.rglob("*")):
         if not p.is_file() or p.name == BUNDLE_MANIFEST:
             continue
@@ -1869,22 +2210,40 @@ def kb_import_plan(bundle, docs):
             errors.append("bundle entry %r escapes the docs root — refusing the "
                           "whole import, not just this file" % rel)
             continue
+        if rel.startswith("topics/"):
+            topic_rels.append(rel)
+            if dst.is_file():
+                skipped.append(rel)
+                continue
+            written.add(rel)
+        entries.append((rel, p, dst))
+    if errors:
+        return [], skipped, [], errors
+
+    content, drop, rep, errors = kb_import_foreign_rulings(
+        bundle, docs, topic_rels, written, str(meta.get("source_project", "")).strip())
+    if report is not None:
+        report.update(rep)
+    if errors:
+        return [], skipped, [], errors
+    planned = [(rel, p, dst) for rel, p, dst in entries if rel not in drop]
+    for rel in sorted(set(content) - set(rel for rel, _p, _d in entries)):
+        planned.append((rel, None, sdlc_core.confine_under(docs, rel)))
+    for rel, p, dst in planned:
+        data = content[rel] if rel in content else p.read_bytes()
         if dst.is_file() and not rel.startswith("topics/"):
-            if kb_sha256_bytes(dst) != kb_sha256_bytes(p):
+            if kb_sha256_bytes(dst) != hashlib.sha256(data).hexdigest():
                 errors.append("%s exists with different bytes (target %s… vs "
                               "bundle %s…): content-addressed names must mean "
                               "equal content" % (rel, kb_sha256_bytes(dst)[:8],
-                                                 kb_sha256_bytes(p)[:8]))
+                                                 hashlib.sha256(data).hexdigest()[:8]))
             continue
-        if rel.startswith("topics/") and dst.is_file():
-            skipped.append(rel)
-            continue
-        writes.append((rel, p, dst))
+        writes.append((rel, data, dst))
 
-    for rel, p, _dst in writes:
+    for rel, data, _dst in writes:
         if not rel.startswith("topics/"):
             continue
-        rows, _ = kb_parse_claims(sdlc_core.read_text(p))
+        rows, _ = kb_parse_claims(data.decode("utf-8"))
         for r in rows:
             if r["id"] and r["id"] in known_ids:
                 dedup.append(r["id"])
@@ -2304,7 +2663,8 @@ def kb_cmd_import(args):
     if not bundle.is_dir():
         print("[ERROR] no such bundle directory: %s" % bundle)
         return 2
-    writes, skipped, dedup, errors = kb_import_plan(bundle, docs)
+    report = {}
+    writes, skipped, dedup, errors = kb_import_plan(bundle, docs, report)
     for e in errors:
         print("[ERROR] %s" % e)
     if errors:
@@ -2314,10 +2674,18 @@ def kb_cmd_import(args):
     if args.dry_run:
         print("[ok] dry run: %d file(s) would be written" % len(writes))
     else:
-        for _rel, src, dst in writes:
+        for _rel, data, dst in writes:
             dst.parent.mkdir(parents=True, exist_ok=True)
-            dst.write_bytes(src.read_bytes())
+            dst.write_bytes(data)
         print("[ok] imported %d file(s) into %s" % (len(writes), docs))
+    if report.get("converted"):
+        # portability.md §0 point 4: the agent must be able to tell the user
+        print("     %d ruling(s) arrive as IMPORTED: each rests on a renamed copy of "
+              "its note (imported_<project>_...) and settles nothing until you "
+              "ratify it (portability.md §4)" % report["converted"])
+    for note in report.get("notes", []):
+        print("[note] %s: a ruling of a skipped topic lands only as this foreign "
+              "copy -- a row merged by hand cites it as IMPORTED" % note)
     if dedup:
         print("     %d claim(s) already present, by id — the same artifact cited "
               "at the same span mints the same id in any project" % len(dedup))
@@ -2326,7 +2694,8 @@ def kb_cmd_import(args):
               "(taxonomy.md) and merge by hand — an import never decides that."
               % rel)
     print("[note] re-run 'sdlc_check.py check' now: the import is additive, and "
-          "an imported RULING stays IMPORTED until you re-ratify it.")
+          "an imported ruling stays IMPORTED until you ratify it with a note of "
+          "your own.")
     return 0
 
 

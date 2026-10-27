@@ -2,6 +2,11 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [Unreleased]
+
+### Fixed
+- Shared claim checks (`check`, every lens): a `RULING` row on a note that names a foreign origin (`imported_from:`) is refused — relabelling an imported row is not ratifying it; the message for a row superseded by an `IMPORTED` one names the ratification act. The kb lens's `import` now makes an imported ruling arrive as `IMPORTED` on a renamed copy of its note and reopens the set it had settled (kb CHANGELOG, F-083).
+
 ## [1.48.0] - 2026-10-23
 
 ### Changed

@@ -7,6 +7,7 @@
 import contextlib
 import io
 import os
+import re
 import sys
 import tempfile
 import unittest
@@ -436,9 +437,9 @@ class TL_F030_Portability(unittest.TestCase):
             docsB.mkdir(parents=True)
             writes, skipped, dedup, errors = kc.kb_import_plan(bundle, docsB)
             self.assertEqual(errors, [], errors)
-            for _rel, src, dst in writes:
+            for _rel, data, dst in writes:
                 dst.parent.mkdir(parents=True, exist_ok=True)
-                dst.write_bytes(src.read_bytes())
+                dst.write_bytes(data)
             ida = {r["id"] for r in kc.kb_collect_topics(docsA)["t"][2]}
             idb = {r["id"] for r in kc.kb_collect_topics(docsB)["t"][2]}
         self.assertEqual(ida, idb, "claim ids must survive the project boundary")
@@ -599,8 +600,8 @@ class TL_F030_ImportedAuthority(unittest.TestCase):
         self.assertTrue(any("imported_from" in e for e in errors), errors)
 
     def test_a_reratified_row_settles_normally(self):
-        """The escape is one honest act, not a workaround: own note, own basis,
-        prov RULING."""
+        """The escape is one honest act, not a workaround: a ruling on a note of
+        your own, with your own basis (F-083: never a relabelled foreign row)."""
         src = "corpus/notes/n.md"
         i_rul = kc.kb_claim_id(src, "L1-1", "")
         i_loc = kc.kb_claim_id(src, "L2-2", "")
@@ -1554,6 +1555,603 @@ class TL_F081_NewestShadow(unittest.TestCase):
     def test_a_missing_directory_has_no_shadow(self):
         with tempfile.TemporaryDirectory() as tmp:
             self.assertIsNone(kc.sdlc_core.newest_shadow(Path(tmp) / "nope", "k"))
+
+
+RULING_NOTE = "corpus/notes/RULING_interval.md"
+RULING_TEXT = ("---\norigin: ruling\nbasis: their owner measured it on the bench\n"
+               "date: 2026-09-20\n---\nThe interval is 60 s.\n")
+GIVEN_SRC = "corpus/given/m-ab12cd34.txt"
+
+
+def _foreign(note=RULING_NOTE, line=6, project="a"):
+    """F-083: the renamed copy an import writes for a ruling note, and the id
+    its row carries there (one frontmatter line inserted: the locator moves by 1)."""
+    path = "corpus/notes/imported_%s_%s" % (project, Path(note).name)
+    return path, kc.kb_claim_id(path, "L%d-%d" % (line + 1, line + 1), "")
+
+
+def _ruling_tree(tmp, name="A", members=2):
+    """F-083: a project whose ruling settled a set. Two GIVEN rows (or one) are
+    SUPERSEDED by a RULING row resting on a note."""
+    root, docs = _portable_tree(tmp, name)
+    (docs / "corpus" / "notes").mkdir(parents=True, exist_ok=True)
+    (docs / RULING_NOTE).write_text(RULING_TEXT, encoding="utf-8")
+    rid = kc.kb_claim_id(RULING_NOTE, "L6-6", "")
+    a = kc.kb_claim_id(GIVEN_SRC, "p=1@42-61", "")
+    b = kc.kb_claim_id(GIVEN_SRC, "p=2@9-51", "")
+    rows = [(a, "every 30 s", "-", "-", "-", GIVEN_SRC + "#p=1@42-61", "GIVEN",
+             "SUPERSEDED " + rid)]
+    if members == 2:
+        rows.append((b, "every 60 s", "-", "-", "-", GIVEN_SRC + "#p=2@9-51", "GIVEN",
+                     "SUPERSEDED " + rid))
+    rows.append((rid, "the interval is 60 s", "-", "-", "-", RULING_NOTE + "#L6-6",
+                 "RULING", "OK"))
+    (docs / "topics" / "t.md").write_text(claims_md(rows), encoding="utf-8")
+    return root, docs, a, b, rid
+
+
+def _append_rows(docs, *rows, slug="t"):
+    p = docs / "topics" / ("%s.md" % slug)
+    p.write_text(p.read_text(encoding="utf-8").rstrip("\n") + "\n" + "\n".join(
+        "| %s |" % " | ".join(r) for r in rows) + "\n", encoding="utf-8")
+
+
+def _set_state(docs, rid, state, slug="t"):
+    p = docs / "topics" / ("%s.md" % slug)
+    out = []
+    for ln in p.read_text(encoding="utf-8").splitlines():
+        if ln.startswith("| %s " % rid):
+            cells = ln.split("|")
+            cells[-2] = " %s " % state
+            ln = "|".join(cells)
+        out.append(ln)
+    p.write_text("\n".join(out) + "\n", encoding="utf-8")
+
+
+def _bundle_of(tmp, docs, name="A", topics=None, folder=None):
+    selected, artifacts, _added, errors = kc.kb_export_closure(
+        docs, topics or sorted(kc.kb_collect_topics(docs)))
+    assert errors == [], errors
+    bundle = Path(tmp) / ("bundle-" + (folder or name))
+    kc.kb_bundle_write(docs, bundle, selected, artifacts, name)
+    return bundle
+
+
+def _empty(tmp, name="B"):
+    docs = Path(tmp) / name / "ai_docs"
+    (docs / "topics").mkdir(parents=True)
+    return docs
+
+
+def _apply(writes):
+    for _rel, data, dst in writes:
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        dst.write_bytes(data)
+
+
+def _rows(docs, slug="t"):
+    return {r["id"]: r for r in kc.kb_collect_topics(docs)[slug][2]}
+
+
+def _contested_with(state):
+    m = re.match(r"^CONTESTED ([0-9a-f, ]+)$", state)
+    return set(x.strip() for x in m.group(1).split(",")) if m else None
+
+
+class TL_F083_ImportedRuling(unittest.TestCase):
+    """F-083. portability.md §4 promised that an imported ruling arrives as
+    IMPORTED, names its origin and settles nothing until ratified; import copied
+    it as RULING. Owner ruling R3: the set it settled reopens, the ruling inside,
+    until the receiving owner rules. The origin lives in a renamed copy of the
+    note: editing the note in place moves the line its locator cites."""
+
+    def _import(self, tmp, members=2):
+        _root, docsA, a, b, rid = _ruling_tree(tmp, "A", members)
+        docsB = _empty(tmp)
+        writes, _s, _d, errors = kc.kb_import_plan(_bundle_of(tmp, docsA), docsB)
+        self.assertEqual(errors, [], errors)
+        _apply(writes)
+        return docsA, docsB, a, b, _foreign()[1]
+
+    # --- AC1
+    def test_the_ruling_arrives_imported(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _A, docsB, _a, _b, fid = self._import(tmp)
+            row = _rows(docsB)[fid]
+        self.assertEqual(row["prov"], "IMPORTED")
+        self.assertEqual(row["claim"], "the interval is 60 s")
+
+    def test_its_note_is_a_renamed_copy_naming_the_origin(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            docsA, docsB, _a, _b, _f = self._import(tmp)
+            path, _ = _foreign()
+            meta, _w = kc.knowledge._note_frontmatter(docsB, path)
+            copy = (docsB / path).read_text(encoding="utf-8").splitlines()
+            orig = (docsA / RULING_NOTE).read_text(encoding="utf-8").splitlines()
+            original_written = (docsB / RULING_NOTE).exists()
+        self.assertIn("A", meta.get("imported_from", ""))
+        self.assertIn(RULING_NOTE, meta.get("imported_from", ""))
+        self.assertEqual(meta.get("origin"), "imported")
+        self.assertEqual(meta.get("basis"), "their owner measured it on the bench")
+        self.assertEqual(copy[6], orig[5], "the cited line keeps its text, one lower")
+        self.assertFalse(original_written,
+                         "the note under its own name would let a hand merge cite a "
+                         "foreign decision as local")
+
+    def test_the_set_it_settled_reopens_with_the_ruling_inside(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _A, docsB, a, b, fid = self._import(tmp)
+            rows = _rows(docsB)
+        self.assertEqual(_contested_with(rows[a]["state"]), {b, fid})
+        self.assertEqual(_contested_with(rows[b]["state"]), {a, fid})
+        self.assertEqual(_contested_with(rows[fid]["state"]), {a, b})
+
+    def test_check_is_clean_right_after_the_import(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _A, docsB, _a, _b, _f = self._import(tmp)
+            errors, _w, _n = kc.kb_check_claims(docsB)
+        self.assertEqual(errors, [])
+
+    # --- AC3
+    def test_a_single_superseded_row_reopens_as_a_pair(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _A, docsB, a, _b, fid = self._import(tmp, members=1)
+            rows = _rows(docsB)
+            errors, _w, _n = kc.kb_check_claims(docsB)
+        self.assertEqual(_contested_with(rows[a]["state"]), {fid})
+        self.assertEqual(_contested_with(rows[fid]["state"]), {a})
+        self.assertEqual(errors, [])
+
+    def test_a_ruling_that_settled_nothing_arrives_ok(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docsA, a, b, rid = _ruling_tree(tmp, "A")
+            _set_state(docsA, a, "OK")
+            _set_state(docsA, b, "OK")
+            docsB = _empty(tmp)
+            writes, _s, _d, errors = kc.kb_import_plan(_bundle_of(tmp, docsA), docsB)
+            _apply(writes)
+            row = _rows(docsB)[_foreign()[1]]
+        self.assertEqual(errors, [])
+        self.assertEqual((row["prov"], row["state"]), ("IMPORTED", "OK"))
+
+    # --- AC2
+    def test_relabelling_the_imported_row_is_refused(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _A, docsB, _a, _b, fid = self._import(tmp)
+            t = docsB / "topics" / "t.md"
+            text = t.read_text(encoding="utf-8")
+            line = next(ln for ln in text.splitlines() if ln.startswith("| " + fid))
+            t.write_text(text.replace(line, line.replace("| IMPORTED |", "| RULING |")),
+                         encoding="utf-8")
+            errors, _w, _n = kc.kb_check_claims(docsB)
+        self.assertTrue(any("imported_from" in e and "RULING" in e for e in errors),
+                        errors)
+
+    def test_ratification_settles_the_reopened_set(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _A, docsB, a, b, fid = self._import(tmp)
+            own = "corpus/notes/RULING_ours.md"
+            (docsB / own).write_text("---\norigin: ruling\nbasis: we measured it "
+                                     "too\n---\nAgreed: 60 s.\n", encoding="utf-8")
+            new = kc.kb_claim_id(own, "L5-5", "")
+            for x in (a, b, fid):
+                _set_state(docsB, x, "SUPERSEDED " + new)
+            _append_rows(docsB, (new, "the interval is 60 s", "-", "-", "-",
+                                 own + "#L5-5", "RULING", "OK"))
+            errors, _w, _n = kc.kb_check_claims(docsB)
+        self.assertEqual(errors, [])
+
+    # --- AC4
+    def _chain(self, tmp):
+        note2 = "corpus/notes/RULING_later.md"
+        _root, docsA, a, b, rid = _ruling_tree(tmp, "A")
+        (docsA / note2).write_text("---\norigin: ruling\nbasis: a later "
+                                   "measurement\n---\nNow 45 s.\n", encoding="utf-8")
+        r2 = kc.kb_claim_id(note2, "L5-5", "")
+        _set_state(docsA, rid, "SUPERSEDED " + r2)
+        _append_rows(docsA, (r2, "now 45 s", "-", "-", "-", note2 + "#L5-5",
+                             "RULING", "OK"))
+        self.assertEqual(kc.kb_check_claims(docsA)[0], [], "source must be clean")
+        docsB = _empty(tmp)
+        writes, _s, _d, errors = kc.kb_import_plan(_bundle_of(tmp, docsA), docsB)
+        self.assertEqual(errors, [], errors)
+        _apply(writes)
+        return docsB, a, b, _foreign()[1], _foreign(note2, 5)[1]
+
+    def test_a_chain_of_rulings_reopens_into_valid_sets(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            docsB, a, b, f1, f2 = self._chain(tmp)
+            rows = _rows(docsB)
+            errors, _w, _n = kc.kb_check_claims(docsB)
+        self.assertEqual(errors, [])
+        self.assertEqual(_contested_with(rows[f1]["state"]), {a, b, f2})
+        self.assertEqual(_contested_with(rows[f2]["state"]), {f1})
+
+    def test_ratifying_a_chain_covers_the_connected_sets(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            docsB, a, b, f1, f2 = self._chain(tmp)
+            own = "corpus/notes/RULING_ours.md"
+            (docsB / own).write_text("---\nbasis: ours\n---\n45 s.\n", encoding="utf-8")
+            new = kc.kb_claim_id(own, "L4-4", "")
+            for x in (a, b, f1, f2):
+                _set_state(docsB, x, "SUPERSEDED " + new)
+            _append_rows(docsB, (new, "45 s", "-", "-", "-", own + "#L4-4",
+                                 "RULING", "OK"))
+            errors, _w, _n = kc.kb_check_claims(docsB)
+        self.assertEqual(errors, [])
+
+    def test_a_ruling_already_contested_keeps_its_partner(self):
+        """reconciliation.md: a newer source against a ruling opens a set."""
+        n = kc.kb_claim_id(GIVEN_SRC, "p=1@0-10", "")
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docsA, a, b, rid = _ruling_tree(tmp, "A")
+            _set_state(docsA, rid, "CONTESTED " + n)
+            _append_rows(docsA, (n, "newer says 45 s", "-", "-", "-",
+                                 GIVEN_SRC + "#p=1@0-10", "GIVEN", "CONTESTED " + rid))
+            self.assertEqual(kc.kb_check_claims(docsA)[0], [], "source must be clean")
+            docsB = _empty(tmp)
+            writes, _s, _d, errors = kc.kb_import_plan(_bundle_of(tmp, docsA), docsB)
+            self.assertEqual(errors, [], errors)
+            _apply(writes)
+            rows = _rows(docsB)
+            errors, _w, _n = kc.kb_check_claims(docsB)
+        fid = _foreign()[1]
+        self.assertEqual(errors, [])
+        self.assertEqual(_contested_with(rows[fid]["state"]), {a, b, n})
+        self.assertEqual(_contested_with(rows[n]["state"]), {fid})
+
+    # --- AC5
+    def test_a_bundle_without_rulings_is_copied_byte_for_byte(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _rootA, docsA = _portable_tree(tmp, "A")
+            bundle = _bundle_of(tmp, docsA)
+            writes, _s, _d, errors = kc.kb_import_plan(bundle, _empty(tmp))
+            self.assertEqual(errors, [], errors)
+            for rel, data, _dst in writes:
+                self.assertEqual(data, (bundle / rel).read_bytes(), rel)
+
+    def test_a_second_import_of_a_ruling_is_a_no_op(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docsA, _a, _b, _r = _ruling_tree(tmp, "A")
+            bundle = _bundle_of(tmp, docsA)
+            docsB = _empty(tmp)
+            _apply(kc.kb_import_plan(bundle, docsB)[0])
+            writes, _s, _d, errors = kc.kb_import_plan(bundle, docsB)
+        self.assertEqual((writes, errors), ([], []))
+
+    # --- AC7
+    def test_a_skipped_topics_ruling_note_lands_only_renamed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docsA, _a, _b, _r = _ruling_tree(tmp, "A")
+            bundle = _bundle_of(tmp, docsA)
+            docsB = _empty(tmp)
+            (docsB / "topics" / "t.md").write_text(claims_md([]), encoding="utf-8")
+            writes, skipped, _d, errors = kc.kb_import_plan(bundle, docsB)
+            rels = [r for r, _x, _y in writes]
+        self.assertEqual(errors, [])
+        self.assertIn("topics/t.md", skipped)
+        self.assertIn(_foreign()[0], rels)
+        self.assertNotIn(RULING_NOTE, rels)
+
+    def test_reimporting_into_the_source_project_writes_nothing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docsA, _a, _b, _r = _ruling_tree(tmp, "A")
+            writes, _s, _d, errors = kc.kb_import_plan(_bundle_of(tmp, docsA), docsA)
+        self.assertEqual((writes, errors), ([], []))
+
+    # --- AC6, one refusal per test
+    def test_refused_when_a_row_is_superseded_by_a_ruling_and_a_successor(self):
+        s = kc.kb_claim_id(GIVEN_SRC, "p=1@0-10", "")
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docsA, a, _b, rid = _ruling_tree(tmp, "A")
+            _set_state(docsA, a, "SUPERSEDED %s, %s" % (rid, s))
+            _append_rows(docsA, (s, "narrower", "-", "-", "-",
+                                 GIVEN_SRC + "#p=1@0-10", "GIVEN", "OK"))
+            self.assertEqual(kc.kb_check_claims(docsA)[0], [], "source must be clean")
+            writes, _s, _d, errors = kc.kb_import_plan(_bundle_of(tmp, docsA),
+                                                       _empty(tmp))
+        self.assertTrue(any(a in e for e in errors), errors)
+
+    def test_refused_when_a_depended_on_ruling_was_superseded_by_a_non_ruling(self):
+        s = kc.kb_claim_id(GIVEN_SRC, "p=1@0-10", "")
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docsA, _a, _b, rid = _ruling_tree(tmp, "A")
+            _set_state(docsA, rid, "SUPERSEDED " + s)
+            _append_rows(docsA, (s, "refined", "-", "-", "-",
+                                 GIVEN_SRC + "#p=1@0-10", "GIVEN", "OK"))
+            self.assertEqual(kc.kb_check_claims(docsA)[0], [], "source must be clean")
+            writes, _s, _d, errors = kc.kb_import_plan(_bundle_of(tmp, docsA),
+                                                       _empty(tmp))
+        self.assertTrue(any(rid in e for e in errors), errors)
+
+    def test_refused_when_a_ruling_does_not_rest_on_a_note(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docsA, a, b, rid = _ruling_tree(tmp, "A")
+            side = docsA / "corpus" / "given" / "m-ab12cd34.txt.meta.md"
+            side.write_text(side.read_text(encoding="utf-8").replace(
+                "---\n", "---\nbasis: x\n", 1), encoding="utf-8")
+            g = kc.kb_claim_id(GIVEN_SRC, "p=1@0-10", "")
+            _append_rows(docsA, (g, "ruled on a document", "-", "-", "-",
+                                 GIVEN_SRC + "#p=1@0-10", "RULING", "OK"))
+            writes, _s, _d, errors = kc.kb_import_plan(_bundle_of(tmp, docsA),
+                                                       _empty(tmp))
+        self.assertTrue(any(g in e and "note" in e for e in errors), errors)
+
+    def test_refused_when_a_row_is_settled_by_a_ruling_this_import_skips(self):
+        """W1: the ruling's topic landed earlier; the rows it settled come now."""
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docsA, a, b, rid = _ruling_tree(tmp, "A")
+            # move the ruling row to its own topic u
+            t = docsA / "topics" / "t.md"
+            lines = t.read_text(encoding="utf-8").splitlines()
+            rline = next(ln for ln in lines if ln.startswith("| " + rid))
+            t.write_text("\n".join(ln for ln in lines if ln != rline) + "\n",
+                         encoding="utf-8")
+            (docsA / "topics" / "u.md").write_text(
+                claims_md([]).replace("topic: t", "topic: u").rstrip("\n") + "\n"
+                + rline + "\n", encoding="utf-8")
+            self.assertEqual(kc.kb_check_claims(docsA)[0], [], "source must be clean")
+            bundle = _bundle_of(tmp, docsA)
+            docsB = _empty(tmp)
+            (docsB / "topics" / "u.md").write_text(
+                claims_md([]).replace("topic: t", "topic: u"), encoding="utf-8")
+            writes, _s, _d, errors = kc.kb_import_plan(bundle, docsB)
+        self.assertTrue(any(a in e for e in errors), errors)
+
+    def test_refused_when_the_renamed_path_holds_other_bytes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docsA, _a, _b, _r = _ruling_tree(tmp, "A")
+            docsB = _empty(tmp)
+            p = docsB / _foreign()[0]
+            p.parent.mkdir(parents=True)
+            p.write_text("---\nbasis: something else\n---\nx\n", encoding="utf-8")
+            writes, _s, _d, errors = kc.kb_import_plan(_bundle_of(tmp, docsA), docsB)
+        self.assertTrue(any("different bytes" in e for e in errors), errors)
+
+    # --- Interface Contract
+    def test_the_documented_sequence_reports_the_foreign_ruling(self):
+        """portability.md §0 point 4: the agent must be able to say it."""
+        with tempfile.TemporaryDirectory() as tmp:
+            rootA, _docsA, _a, _b, _r = _ruling_tree(tmp, "A")
+            rootB = Path(tmp) / "B"
+            (rootB / "ai_docs" / "topics").mkdir(parents=True)
+            out = Path(tmp) / "kb-bundle"
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                self.assertEqual(kc.main(["export", "--root", str(rootA),
+                                          "--out", str(out)]), 0)
+                self.assertEqual(kc.main(["import", str(out), "--root", str(rootB),
+                                          "--dry-run"]), 0)
+                dry = buf.getvalue()
+                self.assertEqual(kc.main(["import", str(out), "--root",
+                                          str(rootB)]), 0)
+                kc.main(["index", "--root", str(rootB)])
+                rc = kc.main(["check", "--root", str(rootB)])
+            o = buf.getvalue()
+        self.assertIn("1 ruling(s) arrive as IMPORTED", dry)
+        self.assertEqual(rc, 0, o)
+
+    # --- AC7b: the shift keeps citing the same text
+    def _same_text(self, note_text, loc, project="a", nl="\n", raw=None):
+        with tempfile.TemporaryDirectory() as tmp:
+            root, docs = _portable_tree(tmp, "A")
+            (docs / "corpus" / "notes").mkdir(parents=True, exist_ok=True)
+            (docs / RULING_NOTE).write_bytes(raw if raw is not None
+                                             else note_text.replace("\n", nl).encode())
+            rid = kc.kb_claim_id(RULING_NOTE, loc, "")
+            (docs / "topics" / "t.md").write_text(claims_md([
+                (rid, "ruled", "-", "-", "-", RULING_NOTE + "#" + loc, "RULING",
+                 "OK")]), encoding="utf-8")
+            self.assertEqual(kc.kb_check_claims(docs)[0], [], "source must be clean")
+            docsB = _empty(tmp)
+            writes, _s, _d, errors = kc.kb_import_plan(_bundle_of(tmp, docs), docsB)
+            self.assertEqual(errors, [], errors)
+            _apply(writes)
+            row = next(iter(_rows(docsB).values()))
+            path, newloc = row["source"].rsplit("#", 1)
+            data = (docsB / path).read_bytes()
+            errors, _w, _n = kc.kb_check_claims(docsB)
+        self.assertEqual(errors, [])
+
+        def span(text, l):
+            a, b = (int(x) for x in l[1:].split("-"))
+            return [x for x in text.splitlines()[a - 1:b]
+                    if not x.startswith(("imported_from:", "origin:"))]
+        orig = (raw if raw is not None else note_text.replace("\n", nl).encode())
+        self.assertEqual(span(data.decode(), newloc), span(orig.decode(), loc))
+        return data, newloc
+
+    def test_a_note_without_origin_shifts_by_two_and_keeps_its_text(self):
+        data, loc = self._same_text("---\nbasis: b\n---\nThe decision.\n", "L4-4")
+        self.assertEqual(loc, "L6-6")
+        self.assertIn(b"origin: imported", data)
+
+    def test_a_crlf_note_keeps_crlf_and_its_text(self):
+        data, _loc = self._same_text(RULING_TEXT, "L6-6", nl="\r\n")
+        self.assertNotIn(b"\n", data.replace(b"\r\n", b""), "every line stays CRLF")
+
+    def test_a_range_from_line_one_keeps_its_text(self):
+        _data, loc = self._same_text(RULING_TEXT, "L1-6")
+        self.assertEqual(loc, "L1-7")
+
+    # --- boundary: every pointer must resolve
+    def test_refused_when_a_contested_partner_sits_in_a_skipped_topic(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root, docsA = _portable_tree(tmp, "A")
+            i1 = kc.kb_claim_id(GIVEN_SRC, "p=1@42-61", "")
+            i2 = kc.kb_claim_id(GIVEN_SRC, "p=2@9-51", "")
+            _set_state(docsA, i1, "CONTESTED " + i2)
+            t = docsA / "topics" / "t.md"
+            lines = t.read_text(encoding="utf-8").splitlines()
+            l2 = next(ln for ln in lines if ln.startswith("| " + i2))
+            t.write_text("\n".join(ln for ln in lines if ln != l2) + "\n",
+                         encoding="utf-8")
+            (docsA / "topics" / "u.md").write_text(
+                claims_md([]).replace("topic: t", "topic: u").rstrip("\n") + "\n"
+                + l2.replace("| OK |", "| CONTESTED %s |" % i1) + "\n",
+                encoding="utf-8")
+            self.assertEqual(kc.kb_check_claims(docsA)[0], [], "source must be clean")
+            bundle = _bundle_of(tmp, docsA)
+            docsB = _empty(tmp)
+            (docsB / "topics" / "u.md").write_text(
+                claims_md([]).replace("topic: t", "topic: u"), encoding="utf-8")
+            writes, _s, _d, errors = kc.kb_import_plan(bundle, docsB)
+        self.assertTrue(any(i1 in e and i2 in e for e in errors), errors)
+
+    # --- derived_from follows the rename
+    def test_a_derived_note_names_the_renamed_copy(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docsA, a, b, rid = _ruling_tree(tmp, "A")
+            der = "corpus/notes/synthesis.md"
+            (docsA / der).write_text("---\nderived_from: [%s]\n---\nSo 60 s.\n"
+                                     % RULING_NOTE, encoding="utf-8")
+            d = kc.kb_claim_id(der, "L4-4", "")
+            _append_rows(docsA, (d, "so 60 s", "-", "-", "-", der + "#L4-4",
+                                 "DERIVED", "OK"))
+            self.assertEqual(kc.kb_check_claims(docsA)[0], [], "source must be clean")
+            docsB = _empty(tmp)
+            writes, _s, _d, errors = kc.kb_import_plan(_bundle_of(tmp, docsA), docsB)
+            self.assertEqual(errors, [], errors)
+            _apply(writes)
+            meta = kc.sdlc_core.load_frontmatter(
+                (docsB / der).read_text(encoding="utf-8").splitlines())
+            again, _s2, _d2, err2 = kc.kb_import_plan(_bundle_of(tmp, docsA), docsB)
+        self.assertEqual(meta.get("derived_from"), "[%s]" % _foreign()[0])
+        self.assertEqual((again, err2), ([], []), "re-import stays a no-op")
+
+    def test_refused_when_a_held_partner_does_not_name_the_row_back(self):
+        """A CONTESTED pointer may resolve to a row this project holds, but the
+        import never edits that row, so it must already name the written row."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root, docsA = _portable_tree(tmp, "A")
+            i1 = kc.kb_claim_id(GIVEN_SRC, "p=1@42-61", "")
+            i2 = kc.kb_claim_id(GIVEN_SRC, "p=2@9-51", "")
+            t = docsA / "topics" / "t.md"
+            lines = t.read_text(encoding="utf-8").splitlines()
+            l2 = next(ln for ln in lines if ln.startswith("| " + i2))
+            t.write_text("\n".join(ln for ln in lines if ln != l2) + "\n",
+                         encoding="utf-8")
+            _set_state(docsA, i1, "CONTESTED " + i2)
+            (docsA / "topics" / "u.md").write_text(
+                claims_md([]).replace("topic: t", "topic: u").rstrip("\n") + "\n"
+                + l2.replace("| OK |", "| CONTESTED %s |" % i1) + "\n",
+                encoding="utf-8")
+            bundle = _bundle_of(tmp, docsA)
+            docsB = _empty(tmp)
+            (docsB / "topics" / "u.md").write_text(
+                claims_md([]).replace("topic: t", "topic: u").rstrip("\n") + "\n"
+                + l2 + "\n", encoding="utf-8")   # held, state OK: no pointer back
+            writes, _s, _d, errors = kc.kb_import_plan(bundle, docsB)
+        self.assertTrue(any("naming it back" in e for e in errors), errors)
+
+    # --- closure review B1: a ruling note never lands local-looking
+    def test_a_ruling_note_travelling_without_its_ruling_lands_renamed(self):
+        """Two incremental imports: first a topic citing the ruling note by
+        another row, then the ruling's own topic. The note never lands under its
+        own name, and the ruling arrives IMPORTED."""
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docsA, _a, _b, rid = _ruling_tree(tmp, "A")
+            g = kc.kb_claim_id(RULING_NOTE, "L4-4", "")
+            (docsA / "topics" / "u.md").write_text(
+                claims_md([(g, "decided on 20 Sep", "-", "-", "-",
+                            RULING_NOTE + "#L4-4", "GIVEN", "OK")]).replace(
+                    "topic: t", "topic: u"), encoding="utf-8")
+            self.assertEqual(kc.kb_check_claims(docsA)[0], [], "source must be clean")
+            docsB = _empty(tmp)
+            w1, _s, _d, e1 = kc.kb_import_plan(_bundle_of(tmp, docsA, "A", ["u"], "u"), docsB)
+            self.assertEqual(e1, [], e1)
+            _apply(w1)
+            self.assertFalse((docsB / RULING_NOTE).exists())
+            self.assertTrue((docsB / _foreign()[0]).exists())
+            w2, _s, _d, e2 = kc.kb_import_plan(_bundle_of(tmp, docsA, "A", ["t"], "t"), docsB)
+            self.assertEqual(e2, [], e2)
+            _apply(w2)
+            row = _rows(docsB)[_foreign()[1]]
+            errors, _w, _n = kc.kb_check_claims(docsB)
+        self.assertEqual(row["prov"], "IMPORTED")
+        self.assertEqual(errors, [])
+
+    def test_a_held_ruling_note_does_not_stop_a_written_ruling_converting(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docsA, _a, _b, _r = _ruling_tree(tmp, "A")
+            docsB = _empty(tmp)
+            (docsB / "corpus" / "notes").mkdir(parents=True)
+            (docsB / RULING_NOTE).write_bytes((docsA / RULING_NOTE).read_bytes())
+            writes, _s, _d, errors = kc.kb_import_plan(_bundle_of(tmp, docsA), docsB)
+            self.assertEqual(errors, [], errors)
+            _apply(writes)
+            row = _rows(docsB)[_foreign()[1]]
+        self.assertEqual(row["prov"], "IMPORTED")
+
+    # --- closure review W3: a BOM (Windows authoring) is read past and kept
+    def test_a_ruling_note_with_a_bom_converts_and_keeps_it(self):
+        bom = b"\xef\xbb\xbf"
+        data, _loc = self._same_text(None, "L6-6", raw=bom + RULING_TEXT.encode())
+        self.assertTrue(data.startswith(bom))
+
+    # --- closure review W4: one test per remaining refusal
+    def test_refused_when_a_row_is_settled_by_a_row_held_as_imported(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docsA, a, _b, rid = _ruling_tree(tmp, "A")
+            t = docsA / "topics" / "t.md"
+            lines = t.read_text(encoding="utf-8").splitlines()
+            rline = next(ln for ln in lines if ln.startswith("| " + rid))
+            t.write_text("\n".join(ln for ln in lines if ln != rline) + "\n",
+                         encoding="utf-8")
+            (docsA / "topics" / "u.md").write_text(
+                claims_md([]).replace("topic: t", "topic: u").rstrip("\n") + "\n"
+                + rline + "\n", encoding="utf-8")
+            bundle = _bundle_of(tmp, docsA)
+            docsB = _empty(tmp)
+            (docsB / "topics" / "u.md").write_text(
+                claims_md([]).replace("topic: t", "topic: u").rstrip("\n") + "\n"
+                + rline.replace("| RULING |", "| IMPORTED |") + "\n", encoding="utf-8")
+            writes, _s, _d, errors = kc.kb_import_plan(bundle, docsB)
+        self.assertTrue(any(a in e and "IMPORTED here" in e for e in errors), errors)
+
+    def test_refused_when_a_ruling_cites_its_note_not_by_line(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docsA, _a, _b, _r = _ruling_tree(tmp, "A")
+            x = kc.kb_claim_id(RULING_NOTE, "p=1@0-3", "")
+            _append_rows(docsA, (x, "by offset", "-", "-", "-",
+                                 RULING_NOTE + "#p=1@0-3", "RULING", "OK"))
+            writes, _s, _d, errors = kc.kb_import_plan(_bundle_of(tmp, docsA),
+                                                       _empty(tmp))
+        self.assertTrue(any(x in e and "cited by line" in e for e in errors), errors)
+
+    def test_refused_when_a_ruling_note_opens_no_frontmatter(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docsA, _a, _b, rid = _ruling_tree(tmp, "A")
+            (docsA / RULING_NOTE).write_text("no\nfront\nmatter\nhere\nat\nall\n",
+                                             encoding="utf-8")
+            writes, _s, _d, errors = kc.kb_import_plan(_bundle_of(tmp, docsA),
+                                                       _empty(tmp))
+        self.assertTrue(any("opens no frontmatter" in e for e in errors), errors)
+
+    def test_refused_when_a_ruling_note_already_names_a_foreign_origin(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docsA, _a, _b, rid = _ruling_tree(tmp, "A")
+            (docsA / RULING_NOTE).write_text(RULING_TEXT.replace(
+                "---\norigin", "---\nimported_from: Z\norigin", 1)[:-1] + "\n",
+                encoding="utf-8")
+            writes, _s, _d, errors = kc.kb_import_plan(_bundle_of(tmp, docsA),
+                                                       _empty(tmp))
+        self.assertTrue(any("already names a foreign origin" in e for e in errors),
+                        errors)
+
+    def test_refused_when_a_derived_note_is_held_with_its_original_bytes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            _root, docsA, _a, _b, _r = _ruling_tree(tmp, "A")
+            der = "corpus/notes/synthesis.md"
+            body = "---\nderived_from: [%s]\n---\nSo 60 s.\n" % RULING_NOTE
+            (docsA / der).write_text(body, encoding="utf-8")
+            _append_rows(docsA, (kc.kb_claim_id(der, "L4-4", ""), "so 60 s", "-", "-",
+                                 "-", der + "#L4-4", "DERIVED", "OK"))
+            docsB = _empty(tmp)
+            (docsB / "corpus" / "notes").mkdir(parents=True)
+            (docsB / der).write_text(body, encoding="utf-8")
+            writes, _s, _d, errors = kc.kb_import_plan(_bundle_of(tmp, docsA), docsB)
+        self.assertTrue(any(der in e and "different bytes" in e for e in errors), errors)
 
 
 if __name__ == "__main__":
