@@ -24,6 +24,15 @@ Subject-sameness is semantic judgement; no query performs it. Classify:
 | **coexistence** | contradictory only if scopes overlapped — and by the half-open rule they do not | both rows stay `OK`. "12k until March" and "15k from March" are two truths, not a conflict |
 | **conflict** | contradictory, scopes overlap | **every** row in the set becomes `CONTESTED` listing all counterparts. Nothing is picked |
 
+**A declaration is not a source.** A `DECLARED` row (`distillation.md` §1: what this
+project sent) never joins the five outcomes with a fact: it never corroborates a row,
+never refines or supersedes one, never contests one. Against the ledger it is either
+consistent (`OK`) or it **diverges**: its assertion contradicts a non-superseded,
+non-DECLARED row, scopes overlapping → the DECLARED row alone becomes
+`DIVERGES <id>[, ..]`; the ledger row is not touched, because our own wrong statement
+puts nothing about the product in doubt. Two declarations that contradict each other
+are `CONTESTED` — both are still held by their recipients.
+
 The machine then verifies (the `graph` check): ids recompute, sources resolve and their
 spans exist, `CONTESTED` is **symmetric** (editing one cell to `OK` fails the check —
 the cheapest laundering), a `CONTESTED` pointer at a `SUPERSEDED` row is an error,
@@ -73,6 +82,9 @@ premise: signed amendments arrive later.
 | newer source vs a ruling | new set {new row, ruling row}; escalation shows the `basis:` |
 | member refined | the refining row inherits the member's contested relations (re-judged); counterparts rewritten to the new id |
 | corroboration of a contested member | source appended; the set untouched — more evidence is not new information, and the escalation form shows source counts |
+| a declaration contradicts the ledger | the DECLARED row → `DIVERGES <ledger ids>`; the ledger rows stay as they are; escalation names it |
+| a new send corrects it | the new DECLARED row; the divergent one → `SUPERSEDED <new-id>` (a declaration is superseded only by a later declaration) |
+| a ruling changes the decision | the ledger row → `SUPERSEDED <ruling-id>`; `check` then refuses the stale `DIVERGES` until the declaration is re-judged against the ruling: `OK` if it now agrees, `DIVERGES <ruling-id>` if not |
 | bundled row split (`distillation.md` §3) | N atomic rows `OK`, each on its narrowed span; the bundle → `SUPERSEDED <id1>[, <id2> ..]`, text intact; contested relations re-judged per successor |
 
 A superseded row keeps its `not-yet-honored-by` marker with its text. Copy the marker to each successor that still states behavior the code does not have; the analysis or shadow citing the predecessor's id satisfies the successor.
@@ -103,7 +115,11 @@ record like any claim-table edit.
 Escalations are presented **once, at the end of a run** — the pipeline never stops
 mid-ingest to ask. Each escalation names: the claims in the set, each one's source
 (reopenable), date and provenance, and one line on why the machine cannot decide
-("same subject, overlapping validity, GIVEN vs GIVEN, no newer source"). **A question
+("same subject, overlapping validity, GIVEN vs GIVEN, no newer source"). A divergence
+is escalated the same way, naming the recipient and the day it was sent: the
+practitioner corrects it with a new send or changes the decision. One limit stated
+out loud: `DIVERGES` is one-way, so unlike `CONTESTED` a hand edit back to `OK` has
+no counterpart to fail on — the diff review is what catches it. **A question
 that cannot fill this form is not askable** — it is the symptom that the answer is in
 the corpus and was not searched. Generic confirmations are not questions.
 

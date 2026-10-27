@@ -12,7 +12,7 @@
   var D = null;   // documents, loaded on first use
   var K = null;   // knowledge base, loaded on first use
   var app = document.getElementById("app");
-  var ORIGINS = ["given", "elicited", "derived", "ruling", "imported"];
+  var ORIGINS = ["given", "elicited", "derived", "ruling", "imported", "declared"];
 
   // ------------------------------------------------------------- helpers
 
@@ -483,6 +483,7 @@
     if (f.statement) marks.push(el("span", { "class": "tag statement", title: t("statement_notice"), text: t("statement_mark") }));
     if (f.state === "superseded") marks.push(el("span", { "class": "tag replaced", title: t("state_superseded_why"), text: t("state_superseded") }));
     if (f.state === "contested") marks.push(el("span", { "class": "tag conflict", title: t("state_contested_why"), text: t("state_contested") }));
+    if (f.state === "diverges") marks.push(el("span", { "class": "tag conflict", title: t("state_diverges_why"), text: t("state_diverges") }));
     if (opts && opts.topic) marks.push(link("#/topic/" + encodeURIComponent(f.topic), f.topic, "chip"));
     return el("li", { "class": "fact" + (f.state === "superseded" ? " replaced" : ""), onclick: function () { location.hash = "#/fact/" + encodeURIComponent(id); } },
       el("span", { "class": "dot bg-" + oc }),
@@ -596,6 +597,11 @@
         parts.push(el("h3", null, el("span", { "class": "tag conflict", text: t("state_contested") }), " ", t("fact_in_conflict_with")),
           el("p", { "class": "why-line", text: t("state_contested_why") }),
           el("ul", { "class": "facts" }, (f.with || []).map(function (s) { return factLine(s, { topic: true }); })));
+      }
+      if (f.state === "diverges") {
+        parts.push(el("h3", null, el("span", { "class": "tag conflict", text: t("state_diverges") }), " ", t("fact_diverges_from")),
+          el("p", { "class": "why-line", text: t("state_diverges_why") }),
+          el("ul", { "class": "facts" }, (f.diverges_from || []).map(function (s) { return factLine(s, { topic: true }); })));
       }
       if (f.grounds) {
         parts.push(el("h3", { text: t("fact_rests_on") }),

@@ -29,6 +29,7 @@ from the corpus, so everything is re-derivable when the rules improve.
 | a file from the practitioner | `corpus/given/<name>-<hash8>.<ext>` — verbatim, **content-addressed with a raw-byte sha256**; a newer version is a new file whose sidecar says `supersedes: <old>` — never an overwrite |
 | a non-text original (PDF, docx, xlsx) | its **canonical extraction**: `corpus/given/<name>-<hash8>.txt`, pages separated by form-feed; extractor id, version and normalization recorded in the sidecar. Offsets address THIS file — stored bytes, not a runtime step. The original is copied beside it when it is small enough to be worth keeping; **on a large or binary-heavy corpus the extraction is the artifact and the original stays where it is** (below) |
 | something the practitioner says | a transcription in `corpus/notes/`, frontmatter `origin: elicited`, dated |
+| a document the project sends out | the version sent, in `corpus/given/` like any source (redacted at intake), sidecar `provenance: DECLARED`, `recipient:` (an organization or role, never a private person's name) and `date:` = the day sent; when the file also lives in the project, `original_path:` names it. Its claims are `DECLARED`: what we said, to whom, when — not facts about the product. A resend `supersedes:` the earlier send; drafts and the files a document is generated from never enter |
 | an agent synthesis | a note in `corpus/notes/` with `derived_from:` listing its sources — a note with neither `origin:` nor `derived_from:` nor `basis:` is **model knowledge disguised as a source**, and the validator refuses it |
 | a practitioner ruling | a note with `basis:` (`reconciliation.md`) |
 
@@ -88,8 +89,13 @@ Say the limit out loud, because a field that looks like a guarantee and is not i
 than an absent one — and say it **per field**, because the two are not in the same
 position:
 
-- **`original_sha256` is never checked.** We do not hold the bytes, so nothing can. It
-  lets a human re-verify by hand and it dates the ingest; it detects nothing on its own.
+- **`original_sha256` is checked only where the original is local.** `stale` and
+  `inventory` hash the file `original_path:` resolves to, when it is a local regular
+  file, and report an original that changed since ingest (`stale`'s `## claims`, until
+  a successor sidecar `supersedes:` this one). `check` never does: it runs on every
+  change, and re-reading gigabytes there is not proportional. Elsewhere — a remote, a
+  cloud-only file, no path — it detects nothing; it lets a human re-verify by hand and
+  it dates the ingest.
   Same honesty as a guide's `source_hash`, which proves the source is unchanged and
   never that the guide described it correctly.
 - **`original_path` IS checked — for resolution only.** "We do not hold it" was never a
@@ -167,10 +173,14 @@ Claims live in the owning topic's `## Claims` table (`templates.md` has the temp
   `p=<n>@<start>-<end>` (character offsets into page n of the stored extraction),
   `L<a>-<b>` (line files), `Sheet<s>!<cell>`. The span must exist — the validator opens
   the file and checks.
-- **prov** — `GIVEN | ELICITED | DERIVED | RULING | IMPORTED`. `IMPORTED` is a ruling that came from another project (`portability.md`): it keeps its text and original `basis:`, it rests on a renamed copy of its note that says `imported_from:`, `import` reopens the set it had settled, and nothing is settled by it until you ratify it with a ruling of your own. Information for whoever resolves a
+- **prov** — `GIVEN | ELICITED | DERIVED | RULING | IMPORTED | DECLARED`. `DECLARED`
+  rests only on a document this project sent (its sidecar says so and names the
+  `recipient:`), and no other provenance may cite one, in any source position — a
+  declaration is never corroboration (`reconciliation.md` §1). `IMPORTED` is a ruling that came from another project (`portability.md`): it keeps its text and original `basis:`, it rests on a renamed copy of its note that says `imported_from:`, `import` reopens the set it had settled, and nothing is settled by it until you ratify it with a ruling of your own. Information for whoever resolves a
   conflict; never a rank.
-- **state** — `OK`, `CONTESTED <id>[,..]`, `SUPERSEDED <id>[,..]` (`reconciliation.md`
-  owns the transitions; a split bundle names ALL its successors).
+- **state** — `OK`, `CONTESTED <id>[,..]`, `SUPERSEDED <id>[,..]`, and on a DECLARED row
+  only `DIVERGES <id>[,..]` (`reconciliation.md` owns the transitions; a split bundle
+  names ALL its successors).
 
 ## 3. Extraction discipline
 

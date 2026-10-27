@@ -235,11 +235,25 @@ Su corpus binari grandi vale la variante **estrazione-come-artefatto** (F-029): 
 imposta sui byte che i locator indirizzano — e l'originale resta dov'è, registrato
 come `original_path:` + `original_sha256:`. I due campi **non hanno lo stesso
 statuto**, e scriverli come se lo avessero e' il modo in cui un puntatore rotto
-sopravvive a un run verde (F-035): `original_sha256` non e' verificato — i byte non
-li teniamo, quindi nulla puo' verificarlo — mentre `original_path` **e' verificato
-che risolva**, con un warning (mai un errore: un bundle importato non porta gli
-originali). Il limite va scritto dove stanno, per campo: 233 MB di PDF non entrano
+sopravvive a un run verde (F-035): `original_sha256` e' verificato solo dove
+l'originale e' locale — `stale` e `inventory` lo rileggono e segnalano un originale
+cambiato dopo l'ingest; `check` mai, per costo (F-084) — mentre `original_path` **e'
+verificato che risolva**, con un warning (mai un errore: un bundle importato non porta
+gli originali). Il limite va scritto dove stanno, per campo: 233 MB di PDF non entrano
 nel docs root per proteggere byte che nessun locator tocca.
+
+**Cosa il corpus non ha mai guardato, e cosa abbiamo dichiarato (F-084).** Il corpus
+e' un sottoinsieme del progetto: `inventory <path>` dice, per ogni file sotto un
+percorso che nomini, se e' nel corpus (per contenuto, ovunque stia), in una versione
+precedente, escluso da una riga approvata di `audit/INVENTORY_exclusions.md`, o mai
+esaminato — senza totali ne' filtri per stato (r37). All'avvio di sessione l'agente
+vede un limite superiore dei mai esaminati, e prima di rispondere `kb: no coverage`
+guarda nel percorso plausibile e lo dice nel verdetto. Un documento che il progetto
+**invia** entra nel corpus nella versione inviata con `provenance: DECLARED`,
+destinatario e data: le sue claim sono `DECLARED` ("dichiarato a X il giorno D"), mai
+fatti sul prodotto e mai fondamento di una decisione; se contraddicono il ledger
+diventano `DIVERGES <id>` (solo la dichiarazione, il ledger resta com'e'), e non
+escono mai dal progetto in un bundle (r38).
 
 **2. Estrazione — l'unità è il claim.** Righe
 `id | claim | valid | qty | about | source | prov | state`. L'**id** =

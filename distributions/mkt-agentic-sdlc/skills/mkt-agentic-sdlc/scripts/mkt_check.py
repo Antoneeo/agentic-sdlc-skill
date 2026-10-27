@@ -686,7 +686,8 @@ def main(argv=None):
 
     parser = argparse.ArgumentParser(prog="mkt_check.py", description=__doc__,
         epilog="Shared memory commands: recall QUERY, graph, corpus, claim-id, anchor, "
-               "export, import, adopt, stale, orient. Use COMMAND --help for options.")
+               "export, import, adopt, inventory, stale, orient. Use COMMAND --help "
+               "for options.")
     parser.add_argument("command", choices=list(OVERLAY_COMMANDS))
     parser.add_argument("file", nargs="?", default=None,
                         help="optional target file for budget/funnel")

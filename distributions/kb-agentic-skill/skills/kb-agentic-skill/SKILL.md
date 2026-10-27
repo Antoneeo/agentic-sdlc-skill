@@ -24,7 +24,7 @@ Support files in the skill directory:
 - `review.md`: the review discipline — when a review is due, how to request one, how to receive findings, how to review.
 - `dispatch.md`: opt-in subagent execution of an approved plan, plus the family-wide delegation boundary (what may be delegated at all) — that part applies at any level.
 - `routing.md`: which lens owns this unit of work. Read ONLY when a sibling lens skill is installed alongside this one; a single-lens install never reads it.
-- `scripts/sdlc_check.py` + `scripts/sdlc_core.py`: the mechanical validator for the docs root (`check`, `validate`, `index`, `mark`, `benefit`, `gate`, `plan`, `orient`, `migrate`, and the knowledge overlay: `graph`, `corpus`, `claim-id`, `anchor`, `export`, `import`, `adopt` (dry run of an adoption), `stale` (spine staleness plus `## claims` -- the time cycle's consolidated view), plus `remind` — the opt-in per-turn one-line reminder, ENFORCEMENT §4).  Keep the entry point, `scripts/sdlc_core.py` and `scripts/knowledge.py` together; the last supplies common memory and KB integrity.
+- `scripts/sdlc_check.py` + `scripts/sdlc_core.py`: the mechanical validator for the docs root (`check`, `validate`, `index`, `mark`, `benefit`, `gate`, `plan`, `orient`, `migrate`, and the knowledge overlay: `graph`, `corpus`, `claim-id`, `anchor`, `export`, `import`, `adopt` (dry run of an adoption), `inventory <path>` (the project files under a path, each with its state against the corpus), `stale` (spine staleness plus `## claims` -- the time cycle's consolidated view), plus `remind` — the opt-in per-turn one-line reminder, ENFORCEMENT §4).  Keep the entry point, `scripts/sdlc_core.py` and `scripts/knowledge.py` together; the last supplies common memory and KB integrity.
 - `scripts/docs_site.py --root <project> --open` (`--zip <file>` to share): opens in the user's browser a read-only site of what the agent reads; use it to show the project state.
   It is what users mean by "docs site", "minisito", "documentation site" or "project site": run it, never build a page by hand.
 - `ENFORCEMENT.md`: optional setup for CI and hooks.
@@ -102,7 +102,9 @@ Triage decides IF documentation is due; this table decides WHICH document each e
 | `topics/<slug>.md` | A placement verdict creates it (MISSING/INADEQUATE-child, `taxonomy.md`); reconciliation updates its claim rows. One node per topic — a similar-but-distinct concept is a sibling with `related:` + a written distinction, never a merge and never a duplicate. Merged/renamed nodes become tombstones (`status: SUPERSEDED` + `redirect_to:`), never deleted. | 4 |
 | a KB bundle (`export`) | Knowledge must leave this project. Export is L1 — it writes nothing into the corpus. **Importing one is L3**: a source enters the corpus and nodes are created, and a bundle is external input, so never L1 whatever its size (`portability.md`). | — |
 | `corpus/given/*` + sidecar | A source arrives: it becomes a content-addressed artifact with a sidecar carrying digest/date/`supersedes:`. A text source is copied verbatim, except that credentials and unneeded personal or confidential data are redacted first (`redacted_at_intake:`). A non-text source yields its stored canonical extraction — copied **beside** the original when that is small enough to keep, or **instead of it** on a large binary corpus, where the original stays where it lives and is recorded as `original_path:`/`original_sha256:` (`distillation.md` §1, which owns this rule) — never copied beside, and no `original_sha256:`, when it was redacted. Never edited after ingest — the digest check on whatever `given/` holds is what enforces it; the one removal is withdrawing an artifact that holds a secret (`distillation.md` §1). | 4 |
+| `corpus/given/*` + sidecar `provenance: DECLARED` | A document leaves the project — to a client, a supplier, another function: the version sent is ingested like any source (redaction included), its sidecar carrying `provenance: DECLARED`, `recipient:` (an organization or role) and `date:` = the day it was sent; its claims are `DECLARED`. A resend is a new artifact that `supersedes:` the earlier one. Drafts, internal working documents and the files a sent document is generated from do not enter (`distillation.md` §1). | 4 |
 | `corpus/notes/*` | Something is said (`origin: elicited`), synthesised (`derived_from:`), or ruled (`basis:`). A note with none of the three is refused by the validator. | 4 / 5 |
+| `audit/INVENTORY_exclusions.md` | The practitioner approves that some project files never enter the corpus (code, copies, generated files): one row `pattern \| reason \| approved`, written only after the approval, dated that day. `validate`/`check` refuse a malformed row. Read by `inventory`; never a list of what to ingest next (`vision/rulings.md` r37). | 4 |
 | the day's decisions, at a user-signed closing (the Capture Moment sweep) | Verification that the phase-4 notes/claims exist; NEW `corpus/notes/*` + claim rows only for what the sweep surfaces un-captured. The event is the CLOSING, disjoint from the row above (which fires when something is SAID). | 5 / session end |
 | `solutions/PLAN_[topic].md` + its ledger | A source too long for one context is ingested: **one task per reading window** (30 pages by default; the plan states the window used), each ending at a declared `extracted_through:`. That ledger is the register the ingestion resumes from across sessions — ingestion never builds a second one (`distillation.md` §3, `templates.md`). | 4 |
 | `corpus/given/*.meta.md` — `extracted_through:` | Every reading window closes by advancing it (`p=<n>`, `L<n>`, `complete`). Required once any claim cites the artifact: unstated, "I am finished" cannot be falsified, which is how a sampled 200-page manual passes for an ingested one. | 4 |
@@ -201,6 +203,14 @@ twin of the guide consult above.
   - `kb: <slug>[, <slug> …] → node matched, no claims` — surface the node's `gaps:` when
     it answers the question: "the KB knows it doesn't know" is a first-class answer.
   - `kb: no coverage` — index read, nothing fits.
+  Before declaring `no coverage` or `node matched, no claims`, look where the KB has
+  not: run `inventory <path>` on the project paths whose names plausibly hold the
+  subject, count its `NOT_EXAMINED` lines, and say it in the verdict —
+  `kb: no coverage; not examined under <path>: N` (N = 0 stated), naming the file when
+  one plainly holds the subject. When no path plausibly holds it, never run
+  `inventory .`: cite orient's bound (`not examined in the project: <= N`). When
+  `inventory` fails, the clause says so. A corpus is a subset of the project; a
+  verdict that hides the residue certifies a lookup over what was never read.
   - `kb: index absent — regenerate (sdlc_check.py index)` — the INDEX is missing, not
     necessarily the graph (nodes routinely exist while the index lags); regenerate and
     rescan.
@@ -216,7 +226,11 @@ twin of the guide consult above.
   decision-grounding** — surfaced, never silently cited. Per-provenance stance: GIVEN's
   source column is already the direct citation; ELICITED/RULING carry the practitioner's
   own authority; an IMPORTED claim grounding a decision is named as un-re-ratified
-  foreign authority.
+  foreign authority. A **DECLARED** claim is what this project told a recipient: cite it
+  as "declared to <recipient> on <date>", never as a fact about the product, and a
+  `DIVERGES` row together with the ledger row it diverges from. A DECLARED artifact is
+  **not ground** for a product decision — a chain that ends on one rests on our own
+  statement: say so and treat the claim as unverified for decision-grounding.
 - **Citation scope — the row's test is scope, not fidelity.** Before citing a claim in
   an answer or a document, verify every part of the row belongs to the question: a row
   can be atomic as provenance and plural as meaning (`distillation.md` §3), and a
