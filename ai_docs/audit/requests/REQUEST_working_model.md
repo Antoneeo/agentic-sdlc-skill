@@ -100,3 +100,7 @@ Context (agent): "Committo F-085 sul branch e poi registro il mark?" (closure do
 ### R18 — 2026-10-27 — merge into main
 Context (agent): F-085 committed on `feat/f085-working-model` (df494ceb), mark and `check` CLEAN in progress.
 > fai merge su main
+
+### R19 — 2026-10-27 — push
+Context (agent): "Faccio push di main su origin?" (F-085 merged into local main, 33b35061).
+> Fai push di main su origin.
