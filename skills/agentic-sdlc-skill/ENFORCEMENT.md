@@ -67,12 +67,14 @@ had stopped it (F-076). `sdlc_check.py verdict --hook` reads the session transcr
 Claude Code hands every hook and refuses an Edit, Write, MultiEdit or NotebookEdit when:
 
 - the session shows no line of the agent's own text with `router:` (the verdict) and no
-  `Level: L1` (or another lens's level 1), or
+  line that opens with a level-1 declaration (`Level: L1`, or another lens's level 1 such
+  as `E1`; a level quoted inside a sentence declares nothing), or
 - a guide the verdict names, present in `reference/`, never appeared in the input of a
   tool call other than an edit (Read, Bash `cat`, Grep, a subagent brief all count).
 
 A verdict whose text after `router:` begins with `no match` or `absent` names no guide.
-The refusal is one line, shown to the agent, saying how to unblock. It is silent — the
+The project judged, and its docs root, are the ones holding the edited file, wherever the
+session's working directory has moved. The refusal is one line, shown to the agent, saying how to unblock. It is silent — the
 edit proceeds — in a project without guides, for a file outside the project, for a
 subagent's edit (one the client marks with `agent_id`, or one whose transcript is the
 subagent's own), and whenever it cannot tell (no or oversized transcript, unknown format,
