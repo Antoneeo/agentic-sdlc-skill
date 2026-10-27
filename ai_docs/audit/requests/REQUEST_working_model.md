@@ -96,3 +96,7 @@ Context (agent): blind check of the amendment PASS (0 BLOCK, 7 WARN); asked "Do 
 ### R17 — 2026-10-27 — commit and mark
 Context (agent): "Committo F-085 sul branch e poi registro il mark?" (closure done, nothing committed).
 > Committa F-085 sul branch feat/f085-working-model, poi esegui mark delle aree cambiate in un commit separato e verifica che check sia CLEAN.
+
+### R18 — 2026-10-27 — merge into main
+Context (agent): F-085 committed on `feat/f085-working-model` (df494ceb), mark and `check` CLEAN in progress.
+> fai merge su main
