@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- Shared knowledge layer (F-084, kb CHANGELOG): `inventory <path>` and orient's upper bound of never-examined project files reach this lens; `validate`/`check` refuse a malformed `audit/INVENTORY_exclusions.md` row and the new `DECLARED`/`DIVERGES` claim rules; the docs site renders them. `sdlc_core.skip_dir` is extracted from `iter_files`, behaviour unchanged.
+
 ### Fixed
 - Shared claim checks (`check`): a `RULING` row on a note that names a foreign origin (`imported_from:`) is refused — relabelling an imported row is not ratifying it; the message for a row superseded by an `IMPORTED` one names the ratification act (F-083).
 

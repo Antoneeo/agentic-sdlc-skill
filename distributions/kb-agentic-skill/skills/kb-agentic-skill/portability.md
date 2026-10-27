@@ -75,6 +75,11 @@ You choose topics; the export decides what must travel with them.
   When a partner row lives in an unselected topic, that topic is **added and reported** —
   never dropped, never silently.
 - **Not the `not-yet-honored-by` markers.** They describe this project's code, so the export drops them and says so, without a number.
+- **Not the declarations.** A `DECLARED` row is this project's commitment to its own
+  recipient; carried elsewhere it would read as the importer's. The export leaves the
+  rows and the artifacts only they cite behind and says so in one line, without a
+  number. Nothing else is lost: no other row may point at a declaration, and the export
+  refuses one that does (run `check`).
 
 If a conflict partner resolves to no row at all, the export **refuses**: exporting a
 broken set is worse than exporting nothing.
@@ -101,7 +106,8 @@ names must mean equal content — a mismatch means one of the two is lying about
 origin); an incomplete conflict set — a `CONTESTED` or `SUPERSEDED` pointer that would
 resolve to no row, or to a row of this project that does not name it back (an import
 never edits an existing topic); a row settled by a ruling the import does not write, or
-by a row this project holds as `IMPORTED`; a ruling it cannot carry foreign (§4). Each
+by a row this project holds as `IMPORTED`; a ruling it cannot carry foreign (§4); a
+`DECLARED` row (an export never ships one, so the bundle was edited by hand). Each
 refusal names the row and writes nothing.
 
 After importing, run `check`. The import is deliberately not a validator.

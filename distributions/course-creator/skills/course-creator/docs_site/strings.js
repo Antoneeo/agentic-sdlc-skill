@@ -56,6 +56,7 @@ window.DOCS_SITE_STRINGS = {
   event_request: "request record",
   event_note: "note",
   event_source: "source document received",
+  event_sent: "document sent",
   event_review: "review",
   event_decision: "decision record",
   event_project_note: "project note",
@@ -231,6 +232,8 @@ window.DOCS_SITE_STRINGS = {
   origin_ruling_why: "Taken to settle a conflict.",
   origin_imported: "from another knowledge base",
   origin_imported_why: "Brought in from another knowledge base, where its own sources are.",
+  origin_declared: "declared by this project",
+  origin_declared_why: "What this project told a recipient, on the day it was sent: a statement of ours, not a fact about the product.",
   origin_other: "origin as written: {v}",
   origin_other_why: "An origin this site does not know.",
 
@@ -239,6 +242,8 @@ window.DOCS_SITE_STRINGS = {
   state_superseded_why: "A newer fact takes its place.",
   state_contested: "in conflict",
   state_contested_why: "Facts that disagree, not yet settled.",
+  state_diverges: "diverges",
+  state_diverges_why: "What we declared contradicts what the project decided. It is corrected by a new send, or the decision changes.",
 
   statement_mark: "statement",
   statement_prefix: "[statement] {text}",
@@ -254,6 +259,7 @@ window.DOCS_SITE_STRINGS = {
   fact_replaced_by: "Replaced by",
   fact_current_at_end: "Current fact at the end of each chain",
   fact_in_conflict_with: "In conflict with",
+  fact_diverges_from: "Diverges from",
   fact_rests_on: "What it rests on",
   fact_untraced: "This part could not be traced.",
   fact_sources: "Sources",
@@ -266,6 +272,7 @@ window.DOCS_SITE_STRINGS = {
   fact_unknown: "This fact is not in this knowledge base.",
 
   ground_document: "a document",
+  ground_declared: "a document this project sent",
   ground_statement: "a person's statement",
   ground_decision: "a decision",
   ground_kb: "another knowledge base",
@@ -273,6 +280,7 @@ window.DOCS_SITE_STRINGS = {
   ground_class_statement: "Rests, at least in part, on a person's statement.",
   ground_class_untraceable: "Part of what it rests on could not be traced.",
   ground_class_imported: "Rests on another knowledge base.",
+  ground_class_declared: "Rests on our own declaration to a recipient, not on evidence.",
   ground_class_documents: "Rests on documents or decisions only.",
 
   chain_loop: "The chain of replacements loops back to {id}: it stops here.",

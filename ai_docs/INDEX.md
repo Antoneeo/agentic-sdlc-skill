@@ -54,6 +54,7 @@ not manifested here.
 | `architecture/ADR_2026-09-19_shared_project_memory.md` | CURRENT | Why project memory is shared by every lens while document authority and specialist workflows remain separate. |
 | `architecture/ADR_2026-09-27_course_overlay_single_index.md` | CURRENT | Why course creation owns its teaching artifacts while the shared core owns the ai_docs index. |
 | `architecture/ADR_2026-10-07_agent_review_precedes_human.md` | CURRENT | ADR - devPNT performs no review; in both modes the agent review is review.md, carried to the reviewer by a verbatim REVIEW MANDATE block, and in Hybrid its P... |
+| `architecture/ADR_2026-10-27_declarations_and_corpus_reach.md` | CURRENT | Why a document the project sent is its own claim provenance (DECLARED) that never crosses a project boundary, why its contradiction with the ledger is a one-... |
 
 ## functional/
 

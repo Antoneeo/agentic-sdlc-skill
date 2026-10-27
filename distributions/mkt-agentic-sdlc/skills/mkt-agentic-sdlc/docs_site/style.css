@@ -18,6 +18,7 @@
   --o-derived: #a99be0;
   --o-ruling: #7fa7e6;
   --o-imported: #9cc96b;
+  --o-declared: #d98fb0;
   --conflict: #e0605a;
   --display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Charter, Georgia, serif;
   --body: "Segoe UI Variable Text", "Avenir Next", Avenir, "Gill Sans Nova", "Gill Sans", "Trebuchet MS", sans-serif;
@@ -179,6 +180,7 @@ a.factid code { color: var(--link); }
 .o-derived { color: var(--o-derived); } .bg-derived { background: var(--o-derived); }
 .o-ruling { color: var(--o-ruling); } .bg-ruling { background: var(--o-ruling); }
 .o-imported { color: var(--o-imported); } .bg-imported { background: var(--o-imported); }
+.o-declared { color: var(--o-declared); } .bg-declared { background: var(--o-declared); }
 .o-other { color: var(--paper-3); } .bg-other { background: var(--paper-3); }
 
 .panel {

@@ -615,6 +615,11 @@ class Grounds:
             return [{"kind": "untraceable", "path": rel}]
         seen = seen | {rel}
         if rel.startswith("corpus/given/"):
+            # F-084: a document this project SENT is our own declaration, not
+            # ground for a fact about the product.
+            side = self._meta(rel + ".meta.md")
+            if _v(side, "provenance").upper() == "DECLARED":
+                return [{"kind": "declared", "path": rel}]
             return [{"kind": "document", "path": rel}]
         if not _inside(self.docs, rel) or not (self.docs / rel).is_file():
             return [{"kind": "untraceable", "path": rel}]
@@ -643,6 +648,8 @@ def ground_class(leaves):
         return "statement"
     if "untraceable" in kinds:
         return "untraceable"
+    if "declared" in kinds:
+        return "declared"
     if "kb" in kinds:
         return "imported"
     return "documents"
@@ -707,12 +714,15 @@ def build_kb(docs):
             kind, rest = _kind(r)
             f = {"text": r["claim"], "valid": r["valid"], "qty": r["qty"], "about": r["about"],
                  "origin": (r["prov"] or "").strip().lower(), "topic": slug,
-                 "state": {"SUPERSEDED": "superseded", "CONTESTED": "contested"}.get(kind, "ok")}
+                 "state": {"SUPERSEDED": "superseded", "CONTESTED": "contested",
+                           "DIVERGES": "diverges"}.get(kind, "ok")}
             if kind == "SUPERSEDED":
                 f["successors"] = _ids(rest)
                 f["chain_ends"] = chain_ends(r["id"], by_id)
             if kind == "CONTESTED":
                 f["with"] = _ids(rest)
+            if kind == "DIVERGES":
+                f["diverges_from"] = _ids(rest)
             srcs = []
             for src in r["source"].split(";"):
                 src = src.strip()
@@ -1269,7 +1279,9 @@ def chronology(docs, pages):
                 continue
             if kind == "source":
                 name = p.name[:-len(suffix)]
-                add(date, kind, name, rel, source=name)
+                # F-084: a DECLARED sidecar's date is the day it was SENT
+                sent = _v(fm, "provenance").upper() == "DECLARED"
+                add(date, "sent" if sent else kind, name, rel, source=name)
             else:
                 add(date, kind, title_of(rel, text), rel)
     # Most recent first. Within one day a document's later entry is the more recent

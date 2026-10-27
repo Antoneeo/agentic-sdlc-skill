@@ -14,6 +14,7 @@ import ntpath
 import posixpath
 import re
 import sys
+import time
 from pathlib import Path
 import sdlc_core
 from sdlc_core import *  # compatibility with the existing KB implementation
@@ -25,7 +26,7 @@ from sdlc_core import _map_refs
 
 CLAIM_COLUMNS = ("id", "claim", "valid", "qty", "about", "source", "prov", "state")
 CLAIM_HEADING = "## Claims"
-PROVENANCES = ("GIVEN", "ELICITED", "DERIVED", "RULING", "IMPORTED")
+PROVENANCES = ("GIVEN", "ELICITED", "DERIVED", "RULING", "IMPORTED", "DECLARED")
 SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]{0,63}$")
 OWNS_RE = re.compile(r"^[a-z0-9][a-z0-9-]{0,63}/[a-z0-9][a-z0-9-]{0,63}$")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -421,6 +422,40 @@ def kb_check_claims(root):
             meta, meta_where = (None, "")
             if "#" in first:
                 meta, meta_where = _declaring_frontmatter(first.rsplit("#", 1)[0])
+            # F-084: a declaration (a document this project SENT) can never pass
+            # for evidence, nor evidence for a declaration -- checked on EVERY
+            # source position, because corroboration appends sources to a row.
+            declared_srcs = []
+            for src in sources:
+                if "#" not in src:
+                    continue
+                path_s = src.rsplit("#", 1)[0]
+                if _resolved(path_s)[1]:
+                    smeta, swhere = _declaring_frontmatter(path_s)
+                    if ((smeta or {}).get("provenance") or "").strip().upper() == "DECLARED":
+                        declared_srcs.append((path_s, smeta, swhere))
+            if prov == "DECLARED":
+                decl_paths = set(d[0] for d in declared_srcs)
+                for src in sources:
+                    path_s = src.rsplit("#", 1)[0] if "#" in src else src
+                    if not _resolved(path_s)[1]:
+                        continue  # unresolvable source already reported
+                    if not path_s.startswith("corpus/given/") or path_s not in decl_paths:
+                        errors.append("%s: DECLARED row cites %s, which is not a "
+                                      "corpus/given/ artifact whose sidecar says "
+                                      "'provenance: DECLARED' -- a declaration rests "
+                                      "only on the document that was sent" % (where, path_s))
+                for path_s, smeta, swhere in declared_srcs:
+                    if not (smeta.get("recipient") or "").strip():
+                        errors.append("%s: DECLARED source (%s) carries no "
+                                      "'recipient:' -- a declaration names to whom it "
+                                      "was made" % (where, swhere))
+            elif declared_srcs:
+                errors.append("%s: prov %s, but %s declares 'provenance: DECLARED' -- "
+                              "a document this project sent is a declaration, not "
+                              "evidence: file the row as DECLARED on that artifact "
+                              "alone (a declaration never corroborates another row)"
+                              % (where, prov, declared_srcs[0][2]))
             if prov not in PROVENANCES:
                 errors.append("%s: prov %r not in %s" % (where, prov, "/".join(PROVENANCES)))
             elif prov in ("DERIVED", "RULING", "ELICITED", "IMPORTED"):
@@ -459,7 +494,7 @@ def kb_check_claims(root):
                 # prose, and prose is not a check -- which is how three rows
                 # whose evidence was a reading of an image passed as GIVEN.
                 declared = ((meta or {}).get("provenance") or "").strip()
-                if declared and declared.upper() != "GIVEN":
+                if declared and declared.upper() not in ("GIVEN", "DECLARED"):
                     warnings.append(
                         "%s: prov GIVEN, but %s declares 'provenance: %s' — the "
                         "row reads as first-hand evidence and its artifact does "
@@ -582,13 +617,18 @@ def kb_check_claims(root):
             state = row["state"]
             if state == "OK":
                 continue
-            m = re.match(r"^(CONTESTED|SUPERSEDED) ([0-9a-f, ]+)$", state)
-            if not m:
-                errors.append("%s: state must be OK, 'CONTESTED <id>[,..]' or "
-                              "'SUPERSEDED <id>[,..]': %r" % (where, state))
+            kind, targets = _kb_states(state)
+            if not kind:
+                errors.append("%s: state must be OK, 'CONTESTED <id>[,..]', "
+                              "'SUPERSEDED <id>[,..]' or 'DIVERGES <id>[,..]': %r"
+                              % (where, state))
                 continue
-            kind = m.group(1)
-            targets = [t.strip() for t in m.group(2).split(",") if t.strip()]
+            row_decl = _kb_is_declared(row)
+            if kind == "DIVERGES" and not row_decl:
+                errors.append("%s: DIVERGES on a %s row -- only a DECLARED row "
+                              "diverges; two sources that disagree are CONTESTED"
+                              % (where, row["prov"].strip() or "?"))
+                continue
             for t in targets:
                 other = all_rows.get(t)
                 if other is None:
@@ -597,6 +637,24 @@ def kb_check_claims(root):
                                   "the check, it does not clean up" % (where, kind, t))
                     continue
                 orow, _ = other
+                if kind == "DIVERGES":
+                    if _kb_is_declared(orow):
+                        errors.append("%s: DIVERGES points at %s, a DECLARED row -- a "
+                                      "declaration diverges from the ledger, never from "
+                                      "another declaration (two sends that disagree "
+                                      "are CONTESTED)" % (where, t))
+                    elif orow["state"].startswith("SUPERSEDED"):
+                        errors.append("%s: DIVERGES points at SUPERSEDED row %s -- "
+                                      "re-judge the declaration against its successor"
+                                      " (OK if it now agrees)" % (where, t))
+                    continue
+                if kind in ("SUPERSEDED", "CONTESTED") and row_decl != _kb_is_declared(orow):
+                    errors.append("%s: %s %s across a declaration -- a declaration is "
+                                  "superseded only by a later declaration and never "
+                                  "settles or contests a fact; a declaration that "
+                                  "contradicts the ledger is DIVERGES"
+                                  % (where, kind, t))
+                    continue
                 if kind == "SUPERSEDED" and orow["prov"] == "IMPORTED":
                     # F-030, owner ruling 2026-08-03: knowledge crosses a project
                     # boundary, authority does not. An IMPORTED row carries another
@@ -714,6 +772,29 @@ def kb_drop_marks(text):
         lines[row["_line"] - 1] = "|".join(segs)
         dropped = True
     return "\n".join(lines), dropped
+
+
+def _kb_is_declared(row):
+    return (row.get("prov") or "").strip().upper() == "DECLARED"
+
+
+def kb_has_declarations(selected):
+    """Whether any selected topic holds a DECLARED row -- a yes/no for export's
+    line, never a count (the same rule as F-080's dropped-marker line)."""
+    return any(_kb_is_declared(r) for _p, _t, rows in selected.values() for r in rows)
+
+
+def kb_drop_declarations(text):
+    """The topic text without its DECLARED rows (F-084: a declaration is this
+    project's commitment to its recipient and stays here). Every other line is
+    kept byte for byte. Closed by construction: check refuses any pointer from
+    a non-DECLARED row at a DECLARED one, so nothing left behind points at a
+    dropped row."""
+    rows, _ = kb_parse_claims(text)
+    gone = set(r["_line"] for r in rows if _kb_is_declared(r))
+    if not gone:
+        return text
+    return "\n".join(ln for i, ln in enumerate(text.split("\n"), 1) if i not in gone)
 
 
 def kb_check_locator(target, loc, where, errors, cache=None):
@@ -1786,21 +1867,29 @@ def kb_export_closure(docs, slugs):
     selected = dict((s, all_topics[s]) for s in slugs)
     # id -> slug, over the WHOLE graph, so a conflict partner is findable
     owner_of = {}
+    declared_ids = set()
     for slug, (_p, _t, rows) in all_topics.items():
         for r in rows:
             if r["id"]:
                 owner_of[r["id"]] = slug
+                if _kb_is_declared(r):
+                    declared_ids.add(r["id"])
     added = []
     pending = list(selected)
     while pending:
         slug = pending.pop()
         for r in selected[slug][2]:
-            m = re.match(r"^(CONTESTED|SUPERSEDED) ([0-9a-f, ]+)$", r["state"].strip())
-            if not m:
-                continue
-            for ref in [x.strip() for x in m.group(2).split(",") if x.strip()]:
+            if _kb_is_declared(r):
+                continue  # F-084: a declaration stays in this project
+            _kind, refs = _kb_states(r["state"])
+            for ref in refs:
                 other = owner_of.get(ref)
-                if other is None:
+                if ref in declared_ids:
+                    errors.append("claim %s in topic '%s' points at %s, a DECLARED row: "
+                                  "declarations are not exported and a fact never "
+                                  "points at one -- run check" % (r["id"] or "(no id)",
+                                                                   slug, ref))
+                elif other is None:
                     errors.append("claim %s in topic '%s' points at id %s, which "
                                   "no topic owns: export would carry a broken set"
                                   % (r["id"] or "(no id)", slug, ref))
@@ -1812,6 +1901,8 @@ def kb_export_closure(docs, slugs):
     seen = set()
     for slug, (_p, _t, rows) in sorted(selected.items()):
         for r in rows:
+            if _kb_is_declared(r):
+                continue  # its artifact stays with the declaration
             for rel in kb_claim_sources(r):
                 for cand in (rel, rel + ".meta.md",
                              rel[:-len(Path(rel).suffix)] + ".txt" if Path(rel).suffix else rel):
@@ -1837,6 +1928,7 @@ def kb_bundle_write(docs, out, selected, artifacts, project):
     for slug, (p, text, _rows) in sorted(selected.items()):
         text, d = kb_drop_marks(text)
         dropped = dropped or d
+        text = kb_drop_declarations(text)
         (out / "topics" / p.name).write_text(text, encoding="utf-8")
     for rel in artifacts:
         dst = out / rel
@@ -1870,8 +1962,9 @@ def _kb_replace_cells(line, updates):
 
 
 def _kb_states(state):
-    """'CONTESTED a, b' / 'SUPERSEDED a' -> (kind, [ids]); OK/other -> (None, [])."""
-    m = re.match(r"^(CONTESTED|SUPERSEDED) ([0-9a-f, ]+)$", (state or "").strip())
+    """'CONTESTED a, b' / 'SUPERSEDED a' / 'DIVERGES a' -> (kind, [ids]);
+    OK/other -> (None, []). The one parser of the full state grammar."""
+    m = re.match(r"^(CONTESTED|SUPERSEDED|DIVERGES) ([0-9a-f, ]+)$", (state or "").strip())
     if not m:
         return None, []
     return m.group(1), [t.strip() for t in m.group(2).split(",") if t.strip()]
@@ -2217,6 +2310,14 @@ def kb_import_plan(bundle, docs, report=None):
                 continue
             written.add(rel)
         entries.append((rel, p, dst))
+    for rel, p, _dst in entries:
+        if rel.startswith("topics/"):
+            for r in kb_parse_claims(sdlc_core.read_text(p))[0]:
+                if _kb_is_declared(r):
+                    errors.append("%s: claim %s is DECLARED -- a declaration stays in "
+                                  "the project that made it; export never ships one, "
+                                  "so this bundle was edited by hand"
+                                  % (rel, r["id"] or "(no id)"))
     if errors:
         return [], skipped, [], errors
 
@@ -2382,7 +2483,8 @@ def kb_validate_surface(docs, full=False):
     return rc
 
 INTERCEPTED = {"index", "validate", "check", "graph", "corpus", "claim-id",
-               "anchor", "export", "import", "stale", "recall", "adopt"}
+               "anchor", "export", "import", "stale", "recall", "adopt",
+               "inventory"}
 
 
 def _kb_root(args):
@@ -2452,6 +2554,9 @@ def _kb_extra_validate(docs):
     """The kb additions to validate: generated-index freshness for the overlay's
     two indexes. Prints nothing on a tree without them (TS-K7)."""
     rc = 0
+    for e in kb_exclusions(docs)[1]:
+        print("[ERROR] %s" % e)
+        rc = 1
     checks = (("topics", kb_build_topic_index), ("corpus", kb_build_corpus_index))
     for dirname, builder in checks:
         idx = docs / dirname / "INDEX.md"
@@ -2544,6 +2649,391 @@ def kb_cmd_adopt(root, docs):
     return 0
 
 
+# --------------------------------------------------------------------------
+# F-084: the corpus's reach over the project that holds it. A file left out on
+# purpose and a file nobody opened used to look the same; these classify every
+# project file against the sidecars, by content, and name the residue.
+
+KB_REGISTRY = "audit/INVENTORY_exclusions.md"
+KB_REACH_DEADLINE = 1.0          # orient's walk; inventory has none (on demand)
+_kb_clock = time.monotonic       # injectable for the deadline test
+_KB_DATE_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})\b")
+# Windows: FILE_ATTRIBUTE_OFFLINE, RECALL_ON_OPEN, RECALL_ON_DATA_ACCESS;
+# macOS: SF_DATALESS. A file whose bytes are not on the disk is never read --
+# reading it would download it.
+_KB_CLOUD_ATTRS = 0x1000 | 0x40000 | 0x400000
+_KB_SF_DATALESS = 0x40000000
+_KB_REPARSE_POINT = 0x400
+
+
+class _KbDeadline(Exception):
+    pass
+
+
+def _kb_glob_regex(pattern):
+    """FS2's gitignore subset -> (compiled regex, dir_only)."""
+    dir_only = pattern.endswith("/")
+    pat = pattern.rstrip("/")
+    out, i = [], 0
+    while i < len(pat):
+        c = pat[i]
+        if pat.startswith("**/", i):
+            out.append("(?:[^/]+/)*")
+            i += 3
+        elif pat.startswith("**", i):
+            out.append(".*")
+            i += 2
+        elif c == "*":
+            out.append("[^/]*")
+            i += 1
+        elif c == "?":
+            out.append("[^/]")
+            i += 1
+        elif c == "[":
+            j = pat.find("]", i + 1)
+            if j < 0:
+                out.append(re.escape(c))
+                i += 1
+            else:
+                body = pat[i + 1:j]
+                if body.startswith("!"):
+                    body = "^" + body[1:]
+                out.append("[%s]" % body.replace("\\", "\\\\"))
+                i = j + 1
+        else:
+            out.append(re.escape(c))
+            i += 1
+    rx = "".join(out)
+    rx = ("^" + rx + "$") if "/" in pat else ("^(?:.*/)?" + rx + "$")
+    return re.compile(rx, re.IGNORECASE if os.name == "nt" else 0), dir_only
+
+
+def kb_exclusions(docs):
+    """(rows, errors) of the exclusion registry. rows: (pattern, regex,
+    dir_only). An absent registry excludes nothing and is silent."""
+    p = docs / KB_REGISTRY
+    rows, errors = [], []
+    if not p.is_file():
+        return rows, errors
+    import datetime as _dt
+    for n, line in enumerate(sdlc_core.read_text(p).splitlines(), 1):
+        s = line.strip()
+        if not s.startswith("|"):
+            continue
+        cells = [c.strip() for c in s.strip("|").split("|")]
+        joined = "".join(cells)
+        if "-" in joined and set(joined) <= set("-: "):
+            continue  # separator
+        if cells and cells[0].lower() == "pattern":
+            continue  # header
+        where = "%s:%d" % (KB_REGISTRY, n)
+        if len(cells) != 3:
+            errors.append("%s: a row has three cells: pattern | reason | approved" % where)
+            continue
+        pattern, reason, approved = cells
+        bad = []
+        if not pattern:
+            bad.append("empty pattern")
+        elif pattern.startswith("/") or ".." in pattern.split("/"):
+            bad.append("pattern %r leaves the project root" % pattern)
+        if not reason:
+            bad.append("empty reason -- say why it never enters the corpus")
+        m = _KB_DATE_RE.match(approved)
+        ok_date = False
+        if m:
+            try:
+                _dt.date(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+                ok_date = True
+            except ValueError:
+                pass
+        if not ok_date:
+            bad.append("approved %r is not the day of the practitioner's approval "
+                       "(YYYY-MM-DD)" % approved)
+        rx = dir_only = None
+        if not bad:
+            try:
+                rx, dir_only = _kb_glob_regex(pattern)
+            except re.error as e:
+                bad.append("pattern %r is not a valid glob (%s)" % (pattern, e))
+        if bad:
+            errors.append("%s: %s" % (where, "; ".join(bad)))
+            continue
+        rows.append((pattern, rx, dir_only))
+    return rows, errors
+
+
+def kb_excluded(rel, is_dir, rows):
+    """The registry pattern matching project-relative `rel`, or None."""
+    for pattern, rx, dir_only in rows:
+        if dir_only and not is_dir:
+            continue
+        if rx.match(rel):
+            return pattern
+    return None
+
+
+def kb_unreadable(entry):
+    """'link' / 'cloud-only' for a DirEntry whose bytes are never read; None
+    otherwise. Links include Windows junctions (the `_memory_safe` idiom)."""
+    try:
+        if entry.is_symlink():
+            return "link"
+        is_junction = getattr(entry, "is_junction", None)
+        if is_junction is not None and is_junction():
+            return "link"
+        st = entry.stat(follow_symlinks=False)
+    except OSError:
+        return "unreadable"
+    attrs = getattr(st, "st_file_attributes", 0) or 0
+    if attrs & _KB_REPARSE_POINT and entry.is_dir(follow_symlinks=False):
+        return "link"  # a junction on a runtime without is_junction
+    if attrs & _KB_CLOUD_ATTRS or (getattr(st, "st_flags", 0) or 0) & _KB_SF_DATALESS:
+        return "cloud-only"
+    return None
+
+
+def _kb_path_key(p):
+    return os.path.normcase(os.path.abspath(str(p)))
+
+
+def _kb_reach_index(docs):
+    """What the sidecars say about originals: digest -> sidecar, named path ->
+    (sidecar, original_sha256 or None), the artifacts' sizes. Tombstones count
+    for nothing, their `original_path:` included."""
+    by_digest, by_path, sizes = {}, {}, set()
+    given = docs / "corpus" / "given"
+    if not given.is_dir():
+        return by_digest, by_path, sizes
+    for meta_p in sorted(given.glob("*.meta.md")):
+        meta = sdlc_core.load_frontmatter(sdlc_core.read_text(meta_p).splitlines()) or {}
+        if kb_is_tombstone(meta):
+            continue
+        rel = "corpus/given/" + meta_p.name
+        try:
+            sizes.add((given / meta_p.name[:-len(".meta.md")]).stat().st_size)
+        except OSError:
+            pass
+        for k in ("sha256", "original_sha256"):
+            v = (meta.get(k) or "").strip().lower()
+            if v:
+                by_digest.setdefault(v, rel)
+        op = kb_unquote(meta.get("original_path"))
+        if op:
+            osha = (meta.get("original_sha256") or "").strip().lower() or None
+            for c in _kb_original_candidates(op, docs):
+                try:
+                    present = c.is_symlink() or c.exists()
+                except OSError:
+                    present = False
+                if present:
+                    by_path.setdefault(_kb_path_key(c), (rel, osha))
+                    break
+    return by_digest, by_path, sizes
+
+
+def kb_corpus_reach(docs, rel=".", exact=True, deadline=None):
+    """FS1/FS3: classify the project files under `rel` (project-relative).
+
+    exact=True (inventory): every candidate is hashed -- comparison by content,
+    wherever the file now lives. exact=False (orient's bound): only files whose
+    size equals some given/ artifact's are hashed, and every file an
+    original_path names counts as examined, so the NOT_EXAMINED count never
+    undercounts. Returns {"entries": [(rel, STATE, basis)], "not_examined": n}.
+    Raises _KbDeadline when `deadline` seconds of walking pass.
+    """
+    project = docs.parent
+    rows, _errors = kb_exclusions(docs)
+    by_digest, by_path, sizes = _kb_reach_index(docs)
+    docs_key = _kb_path_key(docs)
+    entries, counter = [], [0]
+    start = _kb_clock()
+
+    def add(r, state, basis=""):
+        entries.append((r, state, basis))
+        if state == "NOT_EXAMINED":
+            counter[0] += 1
+
+    def visit(e, erel):
+        if deadline is not None and _kb_clock() - start > deadline:
+            raise _KbDeadline()
+        kind = kb_unreadable(e)
+        try:
+            # A link's target is never looked up (a dead network target would
+            # stall orient): a link is matched by its NAME, as if it were a
+            # directory, for the skip rule and dir-only exclusions.
+            dir_like = kind == "link" or e.is_dir(follow_symlinks=False)
+        except OSError:
+            dir_like = False
+        if dir_like and _kb_path_key(e.path) == docs_key:
+            return
+        if dir_like and sdlc_core.skip_dir(e.name):
+            add(erel + "/", "SKIPPED", "built-in rule")
+            return
+        pat = kb_excluded(erel, dir_like, rows)
+        if pat:
+            add(erel + "/" if dir_like else erel, "EXCLUDED", pat)
+            return
+        if kind is None and dir_like:
+            walk(e.path, erel)
+            return
+        if kind == "link":
+            dir_like = False
+        named = by_path.get(_kb_path_key(e.path))
+        if kind:
+            if named:
+                add(erel, "INGESTED", "%s, by path — not read" % named[0])
+            else:
+                add(erel, "NOT_EXAMINED", {"link": "link — not followed",
+                                           "cloud-only": "cloud-only — not read"}
+                    .get(kind, "unreadable — not read"))
+            return
+        if not e.is_file(follow_symlinks=False):
+            return
+        digest = None
+        try:
+            if exact or e.stat(follow_symlinks=False).st_size in sizes:
+                digest = kb_sha256_bytes(Path(e.path))
+        except OSError:
+            digest = None
+        if digest and digest in by_digest:
+            add(erel, "INGESTED", by_digest[digest])
+        elif named:
+            srel, osha = named
+            if osha is None:
+                add(erel, "INGESTED", "%s, by path — digest not kept" % srel)
+            elif not exact:
+                add(erel, "INGESTED", srel)       # examined; exactness is inventory's
+            else:
+                add(erel, "INGESTED_EARLIER", "%s, original changed since ingest" % srel)
+        else:
+            add(erel, "NOT_EXAMINED")
+
+    def walk(d, drel):
+        try:
+            with os.scandir(d) as it:
+                items = sorted(it, key=lambda x: x.name)
+        except OSError:
+            add((drel + "/") if drel else "./", "NOT_EXAMINED", "unreadable — not read")
+            return
+        for e in items:
+            visit(e, (drel + "/" + e.name) if drel else e.name)
+
+    rel = (rel or ".").replace("\\", "/").strip("/")
+    if rel in ("", "."):
+        walk(str(project), "")
+    else:
+        target = project / rel
+        with os.scandir(str(target.parent)) as it:
+            for e in it:
+                if os.path.normcase(e.name) == os.path.normcase(target.name):
+                    visit(e, rel)
+    entries.sort(key=lambda t: t[0])
+    return {"entries": entries, "not_examined": counter[0]}
+
+
+def kb_cmd_inventory(root, docs, path):
+    """FS3: one line per project file under `path`, in path order, with its
+    state. No totals, no filter, no sort by state (r37). Writes nothing."""
+    if not docs.is_dir():
+        print("[ERROR] no docs root")
+        return 1
+    project = docs.parent
+    rel = (path or "").replace("\\", "/").strip()
+    parts = [x for x in rel.split("/") if x not in ("", ".")]
+    if rel.startswith("/") or ntpath.isabs(rel) or ".." in parts:
+        print("[ERROR] %s is outside the project root" % path)
+        return 2
+    # Lexical, never resolved: a link on the way is not followed (FS1). Each
+    # component is matched to the name on disk, case-insensitively where the
+    # filesystem is, so a differently-cased path is never an empty listing.
+    real = []
+    for name in parts:
+        here = project.joinpath(*real)
+        try:
+            with os.scandir(str(here)) as it:
+                found = [e.name for e in it
+                         if os.path.normcase(e.name) == os.path.normcase(name)]
+        except OSError:
+            found = []
+        if not found:
+            print("[ERROR] %s does not exist" % path)
+            return 2
+        real.append(name if name in found else found[0])
+        if len(real) < len(parts) and (
+                os.path.islink(project.joinpath(*real))
+                or getattr(os.path, "isjunction", lambda _p: False)(project.joinpath(*real))):
+            print("[ERROR] %s lies behind %s, a link the inventory never follows"
+                  % (path, "/".join(real)))
+            return 2
+    parts = real
+    rows, _e = kb_exclusions(docs)
+    for i, name in enumerate(parts):
+        prefix = "/".join(parts[:i + 1])
+        here = project.joinpath(*parts[:i + 1])
+        if _kb_path_key(here) == _kb_path_key(docs):
+            print("[ERROR] %s is the docs root: the corpus is not a project-file area" % path)
+            return 2
+        dir_like = os.path.islink(here) or os.path.isdir(here)
+        if dir_like and sdlc_core.skip_dir(name):
+            print("[ERROR] %s lies in %s/, which the validator never treats as "
+                  "project files (built-in rule)" % (path, prefix))
+            return 2
+        if dir_like and kb_excluded(prefix, True, rows):
+            print("[ERROR] %s lies in %s/, excluded by %s" % (path, prefix, KB_REGISTRY))
+            return 2
+    reach = kb_corpus_reach(docs, "/".join(parts) or ".", exact=True)
+    for r, state, basis in reach["entries"]:
+        print(("%-16s  %s  %s" % (state, r, basis)).rstrip())
+    print("Nothing was written.")
+    return 0
+
+
+def kb_changed_originals(docs):
+    """FS5: [(artifact rel, original_path, n citing claims)] for every live,
+    non-superseded sidecar whose local original's bytes differ from the
+    `original_sha256:` it recorded at ingest."""
+    given = docs / "corpus" / "given"
+    if not given.is_dir():
+        return []
+    metas = []
+    superseded = set()
+    for meta_p in sorted(given.glob("*.meta.md")):
+        meta = sdlc_core.load_frontmatter(sdlc_core.read_text(meta_p).splitlines()) or {}
+        metas.append((meta_p, meta))
+        sup = kb_unquote(meta.get("supersedes"))
+        if sup:
+            superseded.add(sup)
+    cites = {}
+    for _slug, (_p, _t, rows) in kb_collect_topics(docs).items():
+        for r in rows:
+            for src in set(kb_claim_sources(r)):
+                cites[src] = cites.get(src, 0) + 1
+    out = []
+    for meta_p, meta in metas:
+        art = meta_p.name[:-len(".meta.md")]
+        if kb_is_tombstone(meta) or art in superseded:
+            continue
+        op = kb_unquote(meta.get("original_path"))
+        osha = (meta.get("original_sha256") or "").strip().lower()
+        if not (op and osha):
+            continue
+        for c in _kb_original_candidates(op, docs):
+            try:
+                if c.is_symlink() or not c.is_file():
+                    continue
+                st = os.lstat(str(c))  # attributes without opening the file
+                if (getattr(st, "st_file_attributes", 0) or 0) & _KB_CLOUD_ATTRS or \
+                        (getattr(st, "st_flags", 0) or 0) & _KB_SF_DATALESS:
+                    break
+                if kb_sha256_bytes(c) != osha:
+                    rel = "corpus/given/" + art
+                    out.append((rel, op, cites.get(rel, 0)))
+            except OSError:
+                pass
+            break
+    return out
+
+
 def kb_cmd_stale(root, docs, hybrid=False):
     """F-044: the consolidation view. The spine's output and exit semantics
     come first (--hybrid passed through untouched), then the `## claims`
@@ -2559,6 +3049,10 @@ def kb_cmd_stale(root, docs, hybrid=False):
                      % (topic_rel, rid, until,
                         ("cited by: " + ", ".join(by)) if by else "uncited"))
     lines += chain_w
+    for rel, op, n in kb_changed_originals(docs):
+        lines.append("%s: original %s changed since ingest -- %d claim(s) cite it; "
+                     "ingest the new version as a successor (supersedes:)"
+                     % (rel, op, n))
     if lines:
         print("")
         print("## claims")
@@ -2649,6 +3143,8 @@ def kb_cmd_export(args):
     if dropped:
         print("     not-yet-honored markers dropped: they describe this "
               "project's code")
+    if kb_has_declarations(selected):
+        print("     declarations stay in this project: not exported")
     if added:
         # never silent: a set that grew is a fact about the export, and the
         # alternative -- dropping the partner rows -- ships a broken tree.
@@ -2881,6 +3377,23 @@ def _kb_orient_append(argv):
                           % (n_docs, m_exp, k_chain))
     except (Exception, SystemExit):
         pass
+    try:
+        # F-084: the corpus's reach, an upper bound of the project files never
+        # examined (R5). Its own try: a failing walk prints nothing and takes
+        # nothing else with it.
+        if root is not None and (root / name / "corpus").is_dir():
+            try:
+                n = kb_corpus_reach(root / name, ".", exact=False,
+                                    deadline=KB_REACH_DEADLINE)["not_examined"]
+            except _KbDeadline:
+                print("\nCorpus reach: not counted within 1s -- "
+                      "sdlc_check.py inventory <path>")
+            else:
+                if n:
+                    print("\nCorpus reach: <= %d project files not examined -- "
+                          "exact: sdlc_check.py inventory <path>" % n)
+    except (Exception, SystemExit):
+        pass
 
 
 def kb_cmd_help():
@@ -2910,6 +3423,10 @@ shared project memory -- also available:
   adopt                       dry run: document guides resting on .sources/
                               snapshots, and what moving them into corpus/given/
                               involves (writes nothing; portability.md par.6)
+  inventory <path>            the project files under <path> (. = all), each with
+                              its state against the corpus: INGESTED,
+                              INGESTED_EARLIER, EXCLUDED, NOT_EXAMINED (or
+                              SKIPPED); no totals, writes nothing
   remind                      one-line per-turn reminder (UserPromptSubmit hook,
                               opt-in -- ENFORCEMENT par.4; constant, zero-read)
 
@@ -2980,6 +3497,10 @@ def main(argv=None):
     p = sub.add_parser("adopt")
     p.add_argument("--root")
     p.add_argument("--docs-dir")
+    p = sub.add_parser("inventory")
+    p.add_argument("path")
+    p.add_argument("--root")
+    p.add_argument("--docs-dir")
     args = ap.parse_args(argv)
     if args.cmd == "claim-id":
         return kb_cmd_claim_id(args)
@@ -3007,6 +3528,8 @@ def main(argv=None):
         return kb_cmd_corpus(docs, extra_errors=kb_credential_errors(root, docs))
     if args.cmd == "adopt":
         return kb_cmd_adopt(root, docs)
+    if args.cmd == "inventory":
+        return kb_cmd_inventory(root, docs, args.path)
     if args.cmd == "validate":
         return kb_cmd_validate(root, docs, strict=args.strict, hybrid=args.hybrid)
     return kb_cmd_check(root, docs, strict=args.strict, hybrid=args.hybrid)

@@ -574,12 +574,20 @@ def stray_shadow(solutions_dir, doc_key):
                 None)
 
 
+def skip_dir(name):
+    """The one definition of a directory that holds no project files: VCS and
+    dependency/build directories, every dot-directory, and the docs root (by
+    name, at any depth). `iter_files` and the knowledge layer's inventory both
+    walk by it, so the two can never disagree about what the project is."""
+    return name in SKIP_DIRS or name == docs_dir() or name.startswith(".")
+
+
 def iter_files(target):
     if target.is_file():
         yield target
         return
     for dirpath, dirnames, filenames in os.walk(target):
-        dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS and d != docs_dir() and not d.startswith(".")]
+        dirnames[:] = [d for d in dirnames if not skip_dir(d)]
         for name in filenames:
             yield Path(dirpath) / name
 

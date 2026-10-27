@@ -797,16 +797,18 @@ date: 2026-08-02
 provenance: GIVEN
 extractor: pdftotext 24.02, form-feed page breaks, whitespace collapsed
 original_path: /vault/manuals/xyz.pdf
-original_sha256: <digest at ingest — RECORDED, never checked: we do not hold the file>
+original_sha256: <digest at ingest — checked by stale/inventory only when original_path is local>
 ---
 ```
 
 The two fields are **not** in the same position, and writing them as if they were is
 how a dangling pointer survives a green run:
 
-- `original_sha256` detects nothing on its own — we do not hold the bytes. It lets a
-  human re-verify by hand and it dates the ingest. Keep that limit visible wherever the
-  field is written.
+- `original_sha256` is checked only where `original_path:` resolves to a local file:
+  `stale` and `inventory` report an original that changed since ingest. `check` never
+  hashes originals; elsewhere (remote, cloud-only, no path) it detects nothing. It
+  lets a human re-verify by hand and it dates the ingest. Keep that limit visible
+  wherever the field is written.
 - `original_path` **is** checked for resolution, and warns when it does not resolve
   (never errors — an imported bundle carries no originals). **Write it absolute, or
   relative to the project root**; the validator tries the docs root's parent first and
@@ -832,6 +834,24 @@ original_ref: wiki://team-space/app-config
   positive. Only this clears the check; a reason is required.
 - `original_ref:` — a non-local identifier of the original; recorded, never resolved.
 
+**A document the project sent** (`distillation.md` §1) — its claims are `DECLARED`:
+
+```markdown
+---
+sha256: <digest of the version sent>
+date: 2026-10-16
+provenance: DECLARED
+recipient: <organization or role — never a private person's name>
+original_path: deliverables/dpia_v5.1.docx
+supersedes: dpia-v5-0a1b2c3d.txt
+---
+Sent to <recipient> with <the package it belonged to>, in one line.
+```
+
+`date:` here is the day it was **sent** (the docs site's chronology says so).
+`original_path:` names the file in the project, so `inventory` recognizes it even when
+redaction left no digest of it. `supersedes:` only for a resend.
+
 A **tombstone** (a withdrawn artifact) is renamed `<stem>-withdrawn-<YYYYMMDD>.<ext>.meta.md`
 and keeps `date:`, `provenance:`, `supersedes:` and `withdrawn: <reason>` — and **no
 `sha256:` or `original_sha256:`**. Its bytes are gone.
@@ -848,6 +868,28 @@ only read the **field**: a sidecar that says `provenance: GIVEN` while its prose
 warning catches the author who declared the chain honestly and then filed the row too
 strongly, never the author who declared it wrongly. Nothing requires a `given/` sidecar
 to carry `provenance:` at all; adding that requirement is a new gate, not this one.
+
+## ai_docs/audit/INVENTORY_exclusions.md (what never enters the corpus)
+
+```markdown
+# Inventory exclusions
+
+Project files the practitioner decided never enter the corpus. One row per approval,
+written only after it, dated that day. `inventory` never reads what a row excludes.
+
+| pattern | reason | approved |
+|---|---|---|
+| src/ | application code: knowledge lives in the guides | 2026-10-26 (REQUEST_kb_corpus_reach.md R2) |
+| *.pyc | generated | 2026-10-26 |
+```
+
+Patterns are a gitignore subset, relative to the project root: `*`, `?`, `[...]` within
+a segment, `**` across segments, a trailing `/` for directories, no `/` (other than a
+trailing one) to match a name at any depth; case-insensitive on Windows. `validate` and
+`check` refuse an empty pattern or reason, an `approved` that is not a date, and a
+pattern that leaves the project root. The validator's built-in skipped directories
+(`.git`, `node_modules`, dot-directories, …) need no row: `inventory` lists each once
+as `SKIPPED`.
 
 ## ai_docs/corpus/notes/RULING_[topic]_[date].md (practitioner ruling)
 
