@@ -138,6 +138,22 @@ class VerdictHook(unittest.TestCase):
                      "Triage level: L1 would be wrong here."):
             self.assertIsNotNone(self.run_hook([say(text)]), text)
 
+    def test_router_quoted_in_prose_is_refused(self):
+        # a verdict is a line that opens with `router` or a level declaration carrying
+        # it on the same line; prose quoting the form declares nothing
+        for text in ("The guide says to write router: no match before editing.",
+                     "I'll add `router: no match` once I know.",
+                     "Its Router verdict: GUIDE_release.md line is missing."):
+            reason = self.run_hook([say(text), READ])
+            self.assertIsNotNone(reason, text)
+            self.assertIn("No guide-router verdict", reason, text)
+
+    def test_router_line_forms_pass(self):
+        # the two forms the refusal itself suggests stay valid
+        for text in ("router: no match", "- router: `GUIDE_release.md` -> read",
+                     "> **Router verdict**: no match", "Level: L2 and router: no match"):
+            self.assertIsNone(self.run_hook([say(text), READ]), text)
+
     def test_edited_file_project_is_judged_from_another_cwd(self):
         # live probe 2026-10-27: the hook runs in the session's current directory,
         # which a `cd` moves -- the project judged is the one holding the file
@@ -157,7 +173,8 @@ class VerdictHook(unittest.TestCase):
 
     def test_reason_echoes_no_transcript_text(self):
         secret = "SECRET-TRANSCRIPT-TEXT-42"
-        reason = self.run_hook([say(secret + " router: GUIDE_release.md " + secret)])
+        reason = self.run_hook([say("router: GUIDE_release.md " + secret)])
+        self.assertIn(GUIDE, reason, "the unread-guide reason, not the no-verdict one")
         self.assertNotIn(secret, reason)
 
     # --- satisfied ------------------------------------------------------
@@ -264,6 +281,23 @@ class VerdictHook(unittest.TestCase):
         with mock.patch.object(sys, "stdin", stdin), contextlib.redirect_stderr(err):
             code = sdlc_core.main(["gate", "--hook", "--root", str(self.root),
                                    "--protected", "src"])
+        self.assertEqual(code, 2)
+        self.assertIn("[sdlc gate]", err.getvalue())
+
+    def test_gate_hook_judges_the_edited_files_project_from_another_cwd(self):
+        # the gate shares the verdict hook's resolution: the edited file's project
+        payload = json.dumps({"tool_input": {"file_path": str(self.root / "src" / "a.py")}})
+        stdin = io.TextIOWrapper(io.BytesIO(payload.encode("utf-8")), encoding="utf-8")
+        err = io.StringIO()
+        here = os.getcwd()
+        with tempfile.TemporaryDirectory() as other:
+            (Path(other) / "ai_docs").mkdir()
+            with mock.patch.object(sys, "stdin", stdin), contextlib.redirect_stderr(err):
+                try:
+                    os.chdir(other)
+                    code = sdlc_core.main(["gate", "--hook", "--protected", "src"])
+                finally:
+                    os.chdir(here)
         self.assertEqual(code, 2)
         self.assertIn("[sdlc gate]", err.getvalue())
 

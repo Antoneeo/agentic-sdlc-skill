@@ -2525,9 +2525,12 @@ def cmd_gate(args):
             file_path = (payload.get("tool_input") or {}).get("file_path") or ""
         except AttributeError:
             return 0  # unparseable input: do not block
-    if not file_path:
+    if not isinstance(file_path, str) or not file_path:
         return 0
-    root = Path(args.root).resolve() if args.root else find_project_root()
+    root = hook_project(file_path, Path(args.root).resolve() if args.root else None,
+                        getattr(args, "docs_dir", None))
+    if root is None:
+        return 0  # two docs roots side by side: cannot tell which governs
     try:
         rel = str(Path(file_path).resolve().relative_to(root)).replace("\\", "/")
     except ValueError:
@@ -2572,6 +2575,9 @@ VERDICT_LINE_MAX = 1024 * 1024         # assistant lines are small; skip the res
 # Markdown emphasis between the word and the colon ("**router**: no match") and
 # "Router verdict:" are the same declaration: format drift resolves to silence.
 _VERDICT_ROUTER_RE = re.compile(r"router(?:[\s*_`]+verdict)?[\s*_`]*:(.*)", re.IGNORECASE)
+# ...and only on a line that opens with `router` or declares a level (below): a
+# verdict quoted inside a sentence is not one.
+_VERDICT_LINE_RE = re.compile(r"^[ \t>*_`-]*router\b", re.IGNORECASE)
 _VERDICT_NONE_RE = re.compile(r"[\s`*_\"'(]*(no match|absent)", re.IGNORECASE)
 # A level is DECLARED by a line that opens with the level word, in the form Rule
 # Zero prescribes -- level 1 alone, 2/3 with `router` on the same line -- so a level
@@ -2622,7 +2628,7 @@ def transcript_facts(path):
                             if d and d.group(2):
                                 facts["trivial"] = True
                             m = _VERDICT_ROUTER_RE.search(line)
-                            if m:
+                            if m and (d or _VERDICT_LINE_RE.match(line)):
                                 facts["declared"] = True
                                 if not _VERDICT_NONE_RE.match(m.group(1)):
                                     facts["named"].update(_GUIDE_NAME_RE.findall(m.group(1)))
@@ -4048,6 +4054,8 @@ def main(argv=None):
         return cmd_constraints_hook(args)
     if args.cmd == "verdict":
         return cmd_verdict(args)
+    if args.cmd == "gate":
+        return cmd_gate(args)
 
     # Resolve the documentation root ONCE, before any command runs, so every
     # surface -- paths, messages, generated headers, the gate's exempt prefix --
@@ -4072,8 +4080,6 @@ def main(argv=None):
             return 1
     set_docs_dir(name)
 
-    if args.cmd == "gate":
-        return cmd_gate(args)
     if args.cmd == "orient":
         return cmd_orient(args)
     if args.cmd == "remind":

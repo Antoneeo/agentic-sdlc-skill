@@ -15,7 +15,7 @@
     "scripts/docs_site.py": "bfc7a521142251b85b229e1873ccf2e375bb5c7f1990cef574e1a78ef14f0091",
     "scripts/entry_point.py": "4a560d4d41db989d3426182f1b24270cbb934b3db0f3246c700578a4ed93089b",
     "scripts/knowledge.py": "6047deb7a2be4cf9ef2949cbcf8a52a8ea61500f4e12d203f1c58076540d50ab",
-    "scripts/sdlc_core.py": "6191b7b77a73206231f73e9c82e687edce5d4f92e7e0bc60759e8f9553c8421d",
+    "scripts/sdlc_core.py": "0c772579669f71b1ecd84497dda08e946e45884e47dbafff56b2327bd7c6afca",
     "scripts/shared_files.py": "ebc3c6cf207ccd98ec70f7565a12cb7c54da5c8a1a759bae7e62bdb74cb5c6e2",
     "scripts/test_audit_refs.py": "5c207be46da566db47069b08373195e748fca19c047418f09cc2f78841dfd9a5",
     "scripts/test_chronology.py": "ef482ed2261822778c69ade5dae6c875eca97ae8ef4f47b60bc262ac857eb95c",
@@ -31,7 +31,7 @@
     "scripts/test_project_memory.py": "2cb85cef01161d881a11d84cfe9ebb72915104e8d1822e4de739f7d00ae6cd59",
     "scripts/test_session_start.py": "723f748c0aef461d1051191dbd18f4ea5697a1e0467df73bccb0af8024d17f56",
     "scripts/test_skill_invariants.py": "47d116563a37a16b7d25b322020dd730eecac8cf4cfc7916b877df4e729f8373",
-    "scripts/test_verdict.py": "fb9c1c55e4c287963fa64f70b0aa9d21b8b19692cf330e6e0157ba9c6e74cdf8",
+    "scripts/test_verdict.py": "8d51c4e16259bcd9ec79a6ae1d41a91675a5e094e899d30fb6f5ed21e8098d13",
     "vision.md": "a19a7d7d5044215b726b66f74e422c9cdedcc856c0a53151f20a6d9840b8f6c4"
   }
 }
