@@ -109,3 +109,7 @@ Context (agent): "Faccio push di main su origin?" (F-085 merged into local main,
 Context (agent): the five WARNs the R16 blind check left on the approved text, drafted and blind-checked (rounds FAIL, FAIL, PASS, scoped PASS; `audit/reviews/REVIEW_LOG.md`); asked "Do you approve the second amendment of the F-085 Vision? It answers the five WARNs from the last check. (1) Reach: the Vision also governs later changes to what F-085 shipped, and any proposal that extracts ANALYSIS constraints to show them apart; a maintenance class lets defect fixes, speed fixes and tests through without admission. (2) Imported facts rank with Definitions. The North star and the procedure sections rank nowhere and free no proposal from the rules. (3) A new Invariant: a signal is changed only by you, in the request record, every real counting fix included. (4) Impact ids are optional by rule. (5) The view's only order is the documents' own." — options: approve as proposed; approve without the wider Reach; do not amend.
 > Approve as proposed (Recommended)
 
+
+### R21 — 2026-10-27 — merge of the amendment into main
+Context (agent): amendment committed as a0a64b33 on `claude/funny-chebyshev-e43e31`, `check` CLEAN, not merged or pushed; asked "Merge the amendment into main?" — options: merge into main; leave on branch.
+> Merge a0a64b33 into main (no push).
