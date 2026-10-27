@@ -146,7 +146,7 @@ and Course README updated; no publisher runtime change. Independent release
 review PASS, one packed-count WARN corrected, scoped re-review PASS. Fresh suites
 1162 tests/49 skips, publisher 7 pass, Node clients 53 pass plus Course 4 pass/1 skip;
 four pack/init/scratch checks pass twice, final plain and Hybrid gates CLEAN.
-Release commit 61eb56e and tags v1.38.0/kb-v1.21.0/mkt-v0.16.0/
+Release commit 29455e2 and tags v1.38.0/kb-v1.21.0/mkt-v0.16.0/
 course-v0.1.0-beta.2 are on origin/main and all point to that commit. Exact git
 archive exported; expected package hashes recorded. First publish auth expired;
 retry after owner browser confirmation accepted all four packages. Stock verify

@@ -1,7 +1,7 @@
 ---
 feature: F-077
 analysis: ANALYSIS_kb_intake_hygiene.md
-base: 6015848 (tip of feat/f075-orientation-reach, which this branch is cut from)
+base: 85dea0f (tip of feat/f075-orientation-reach, which this branch is cut from)
 ---
 # Merge review: kb intake hygiene
 
@@ -17,10 +17,10 @@ durable is safe to keep) — ANALYSIS §Feature Vision, rulings r35a–c.
 
 ## What to review
 
-The map is computed against 6015848, not main: this branch sits on the unmerged
+The map is computed against 85dea0f, not main: this branch sits on the unmerged
 F-075 branch, so a diff against main would show F-075's files too. Merge F-075 first.
 
-# Review map -- 43 files against 6015848 (merge-base 6015848cb250)
+# Review map -- 43 files against 85dea0f (merge-base 85dea0fdc2ac)
 
 | Path | Status | +/- | Class | What to do |
 |---|---|---|---|---|
@@ -83,8 +83,8 @@ kb `templates.md`, kb `SKILL.md`, shared `guides.md` §2 step 3.
 - Design review: REVIEW_LOG 2026-10-23, `ANALYSIS_kb_intake_hygiene.md (F-077)`,
   design, deep, rung 1. FAIL → FAIL → PASS in 3 rounds; five WARNs folded after the
   PASS were checked by the closure review.
-- Closure review: REVIEW_LOG 2026-10-23, `F-077 diff 6015848..0290d97` then
-  `0290d97..c94f0d6`, closure, deep. FAIL → PASS in 2 rounds (B1 extraction escape,
+- Closure review: REVIEW_LOG 2026-10-23, `F-077 diff 85dea0f..db34769` then
+  `db34769..c4bccfb`, closure, deep. FAIL → PASS in 2 rounds (B1 extraction escape,
   B2 untested export/chronology skips; the new tests killed a mutation). The URL
   masking WARN (N1) was folded after the PASS with a test.
 - Batteries after the final code change (`python -m unittest discover -s . -p
@@ -128,6 +128,6 @@ kb `templates.md`, kb `SKILL.md`, shared `guides.md` §2 step 3.
 - Generated files (`audit/handoff.md`, `memory/INDEX.md`,
   `strategic/features_history.md`, `INDEX.md`) are regenerated with `sdlc_check.py
   index`, never resolved by hand.
-- `mark` recorded the branch commit 4ad5a29; after a squash or rebase merge, re-run
+- `mark` recorded the branch commit bcc41bc; after a squash or rebase merge, re-run
   `mark` on main for `skills/agentic-sdlc-skill/`, `skills/` and `distributions/`.
 - Hand `E2E_TEST_kb_intake_hygiene.md` to the tester after the merge.

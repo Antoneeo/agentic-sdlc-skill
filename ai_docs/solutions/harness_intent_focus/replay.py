@@ -4,7 +4,7 @@ Usage: python replay.py --doctrine DIR   (DIR holds review.md and SKILL.md)
 
 Each rule is (anchor in the doctrine) AND (fact measured on the incident). The
 facts are read from the snapshot in incident/ and from git (archive tag
-archive/software-knowledge, commit 4543157, REVIEW_LOG); the anchors from DIR.
+archive/software-knowledge, commit 4e29e16, REVIEW_LOG); the anchors from DIR.
 Red = the doctrine in DIR does not rule; green = it rules where the drift entered.
 Each rule also runs a CONTROL case built to make it silent: a rule that fires on
 its control proves nothing. Exit 0 only when every rule fires and every control
@@ -73,7 +73,7 @@ SECURITY_PATH = re.compile(r"(auth|crypt|net|http|socket|secret|token)", re.I)
 
 
 def open_fix_files():
-    out = git("show", "--name-only", "--format=", "4543157")
+    out = git("show", "--name-only", "--format=", "4e29e16")
     return [l for l in out.splitlines() if l.strip()]
 
 
@@ -164,7 +164,7 @@ def main():
           "why-named function lines=%d of %d; rubric why-mentions=%d; benefit deferred=%s"
           % (len(rows), sum(bool(WHY.search(r)) for r in rows), rationale[0],
              rationale[1], rubric_why, deferred))
-    print("facts: 4543157 files=%d, security-sensitive=%s; F-074 closure delta kinds=%s"
+    print("facts: 4e29e16 files=%d, security-sensitive=%s; F-074 closure delta kinds=%s"
           % (len(files), open_fix_security_sensitive(files), sorted(kinds)))
     print("anchors:", {k: v for k, v in a.items()})
 

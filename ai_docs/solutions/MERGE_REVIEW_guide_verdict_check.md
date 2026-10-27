@@ -17,7 +17,7 @@ Vision). The installer wires the check machine-wide; uninstall also removes the 
 
 ## What to review
 
-# Review map -- 40 files against main (merge-base 6015848cb250)
+# Review map -- 40 files against main (merge-base 85dea0fdc2ac)
 
 | Path | Status | +/- | Class | What to do |
 |---|---|---|---|---|
@@ -76,11 +76,11 @@ command's `; exit 0`, and r34 in `vision/rulings.md`. The three distribution cop
 - Design review: REVIEW_LOG 2026-10-23, `ANALYSIS_guide_verdict_check.md (F-076)`,
   design, deep. Round 1 FAIL (B1: a missing or older validator exits 2 and would block
   every edit), round 2 PASS (scoped).
-- Closure review: REVIEW_LOG 2026-10-23, `F-076 diff 6015848..010737a (+ fixes a63dbfe)`,
+- Closure review: REVIEW_LOG 2026-10-23, `F-076 diff 85dea0f..43b65df (+ fixes dba8d62)`,
   closure, deep. PASS → PASS in two rounds. It covered the code, tests, shared copies,
   installer, CHANGELOG ×4, ENFORCEMENT ×4, SKILL.md, rulings, architecture, the probe and
   the E2E script. The reviewer re-ran every battery and the probe itself.
-- Batteries after the last code change (a63dbfe), `python -m unittest discover -s . -p
+- Batteries after the last code change (dba8d62), `python -m unittest discover -s . -p
   "test_*.py"` in each scripts folder: code 449 OK, course 444 OK, kb 630 OK, mkt 451 OK;
   `node scripts/test_clients.js` 58 pass, 0 fail.
 - Probe `ai_docs/solutions/harness_guide_verdict_check/probe.py`: 10/10 green — the field

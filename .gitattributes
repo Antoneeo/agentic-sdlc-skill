@@ -13,3 +13,6 @@ skills/agentic-sdlc-skill/scripts/fixtures/** -text
 # so a union merge keeps both sides instead of asking a human to pick one.
 # (init.js writes this for every user; this repository lacked it -- F-073.)
 ai_docs/audit/reviews/REVIEW_LOG.md merge=union
+
+# The identity hooks run under sh: CRLF would break them on a Windows checkout.
+.githooks/** text eol=lf

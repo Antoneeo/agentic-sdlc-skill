@@ -157,7 +157,7 @@ point 2, verified in code); its stale stage is the spine's and does not print th
 - **Unit closure** (the practitioner declares the front done): additionally the
   closure review (`review.md` moment 2) runs before DONE, and the HANDOFF is deleted.
   When it was the last workstream, `index` empties the generated registry (F1, fixed
-  on `main` 28a565d and merged into this branch; harness P7).
+  on `main` ab725f6 and merged into this branch; harness P7).
 - Case: the closure gate is red → no commit; the unit stays open; the reply names the
   failing checks; the agent fixes and re-runs.
 - Case: several supersessions across steps → one `stale` run lists all of them (P1);
@@ -227,7 +227,7 @@ perceives and decides on.
    once-per-session closing; the destructive guards (integration is the
    practitioner's).
 6. Feasibility flags: F1 (registry row of the last workstream), fixed by its own unit
-   (`main` 28a565d) before this one closed.
+   (`main` ab725f6) before this one closed.
 
 ## Capability Ledger
 
@@ -238,12 +238,12 @@ perceives and decides on.
 | fill empty ids in one pass | EXISTS — `claim-id --fill`; `knowledge.py#kb_fill_ids` | P3 |
 | list citers of a fallen id, later | EXISTS — `stale` `## claims`, state-derived | P1, P1-RED |
 | keep the worklist visible meanwhile | EXISTS — `check` citation warn | P1b |
-| registry from HANDOFF sources | EXISTS since `main` 28a565d (was INADEQUATE: gap F1) — `index`; `sdlc_core.py#build_registry`, `#list_workstreams` | P5, P5-RED, P7 |
+| registry from HANDOFF sources | EXISTS since `main` ab725f6 (was INADEQUATE: gap F1) — `index`; `sdlc_core.py#build_registry`, `#list_workstreams` | P5, P5-RED, P7 |
 | closing signal | EXISTS — kb `SKILL.md` §The Capture Moment "When" | text |
 
-**F1** (harness P7, RED before `main` 28a565d): with zero `HANDOFF_*.md` sources
+**F1** (harness P7, RED before `main` ab725f6): with zero `HANDOFF_*.md` sources
 `build_registry` returned "" and `index` wrote nothing, so the last closed workstream's
-row survived, and `validate` checked alignment only when sources existed. Shared spine, all four distributions: fixed by its own unit (`main` 28a565d:
+row survived, and `validate` checked alignment only when sources existed. Shared spine, all four distributions: fixed by its own unit (`main` ab725f6:
 `index` empties a generated registry with zero sources; `validate` errors on a generated
 registry with rows and no sources), merged into this branch, and the interim this unit
 first carried was removed. Nothing new for the Component Map (`strategic/architecture.md`
@@ -325,12 +325,12 @@ Blast radius — grep over the whole repo (all distributions, `skills/`, `ai_doc
    this harness.
 5. Closure review (moment 2), log row; `sdlc_check.py check`; `mark distributions/`;
    HANDOFF deleted; `index`; commit; merge decision to the practitioner. F1 ran as its own
-   unit (done, `main` 28a565d); `graph --only` is the next unit (R5).
+   unit (done, `main` ab725f6); `graph --only` is the next unit (R5).
 
 ## Test Strategy
 
 - Harness `harness_kb_ingestion_rhythm/probe.py`: eleven assertions, three with a
-  RED twin (P1, P2, P5), P6 pinning the `graph` limit, P7 the F1 fix (RED on 282cd39). Re-run at
+  RED twin (P1, P2, P5), P6 pinning the `graph` limit, P7 the F1 fix (RED on d9d7f2f). Re-run at
   closure.
 - Doctrine test AC1–AC6: RED on `main` (the sentences do not exist), GREEN after.
 - kb and course test batteries green; `check` clean on this repo's `ai_docs`.
@@ -373,7 +373,7 @@ Blast radius — grep over the whole repo (all distributions, `skills/`, `ai_doc
   the `stale` step and says only `validate`, `graph` and `corpus` need not precede
   `check`. Also: Phase 4 names a project without isolation as a departure, and the
   save-commit residual says the commit lands on the shared line itself.
-- 2026-10-16 — Closure review round 4: PASS. Then `main` 28a565d (the F1 fix, its own
+- 2026-10-16 — Closure review round 4: PASS. Then `main` ab725f6 (the F1 fix, its own
   unit) was fast-forwarded into this branch; the interim that deleted the generated
   registry was removed from SKILL.md and FS2, and harness P7 (RED before the fix)
   replaced the INFO line: 11/11.

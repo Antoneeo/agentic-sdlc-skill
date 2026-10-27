@@ -1,0 +1,3 @@
+#!/bin/sh
+# Merges without conflicts skip pre-commit; apply the same identity check.
+exec "$(git rev-parse --show-toplevel)/.githooks/pre-commit"

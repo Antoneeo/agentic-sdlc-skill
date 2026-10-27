@@ -1,6 +1,6 @@
 {
   "date": "2026-10-08",
-  "release_commit": "61eb56e17f6006befd022a051a35564aaa45f469",
+  "release_commit": "29455e2450b04a7b443a01a142da53e142b50e4e",
   "targets": [
     {
       "name": "@antoneeo/agentic-sdlc-skill",

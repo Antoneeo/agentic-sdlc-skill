@@ -16,7 +16,7 @@ Vision; admission `vision/rulings.md` r36).
 
 ## What to review
 
-Map computed against main at dc76790 (the merge-base; main is merged into the branch).
+Map computed against main at 807c755 (the merge-base; main is merged into the branch).
 
 | Path | Status | +/- | Class | What to do |
 |---|---|---|---|---|
@@ -72,11 +72,11 @@ Totals: REVIEW 32 files (+512/-96); DESIGN 6 files (+534/-9); EVIDENCE 4 files (
 - Design review: REVIEW_LOG 2026-10-23, `ANALYSIS_spec_code_divergence_hybrid.md
   (F-081)`, design, deep tier, PASS (8 WARN) → PASS in 2 rounds. It covered the
   ANALYSIS and the harness (`probe.py`, `deltas.py`).
-- Closure review: REVIEW_LOG 2026-10-23, `F-081 diff b7c4795..1b65631 (+ fixes
-  b91bd9c)`, closure, deep tier, PASS → PASS in 2 rounds. It covered every REVIEW and
+- Closure review: REVIEW_LOG 2026-10-23, `F-081 diff 19bdaac..ee6cf89 (+ fixes
+  155c1b2)`, closure, deep tier, PASS → PASS in 2 rounds. It covered every REVIEW and
   DESIGN file above, the E2E script and the r36 row, and compared D1–D6 byte for byte
   with `deltas.py` (D5 in all four `memory.md` copies).
-- Batteries on the merged tree (44c95dd): code 464 OK, kb 719 OK, mkt 466 OK, course
+- Batteries on the merged tree (f1889c6): code 464 OK, kb 719 OK, mkt 466 OK, course
   459 OK. Probe B1–B7 GREEN; `--baseline` A1/A3 RED, A2 GREEN (the expected flip).
 - Drift guard: `shared_files.py` reports the 31 shared files identical across the four
   packages.
@@ -84,7 +84,7 @@ Totals: REVIEW 32 files (+512/-96); DESIGN 6 files (+534/-9); EVIDENCE 4 files (
   unversioned `SHADOW_<doc_key>` target, R4 shadow required (error if absent), R5 cost
   in principle, R6 «Accept 201 B».
 - `sdlc_check.py check --root .`: CLEAN after `mark` (run in the closing commit).
-- Not covered by any review: the main merge (44c95dd) beyond the batteries, and the
+- Not covered by any review: the main merge (f1889c6) beyond the batteries, and the
   generated files (`index` rewrites them).
 
 ## Your judgement
@@ -112,7 +112,7 @@ Totals: REVIEW 32 files (+512/-96); DESIGN 6 files (+534/-9); EVIDENCE 4 files (
 
 ## Merge notes
 
-- The branch already contains main up to dc76790 (merge commit 44c95dd). If main
+- The branch already contains main up to 807c755 (merge commit f1889c6). If main
   moves again, resolve the CHANGELOGs, `rulings.md`, `architecture.md` and
   `REVIEW_LOG.md` by keeping both sides; regenerate the four `shared_manifest.json`
   with `shared_files.py --update` and copy them to the three distributions, never by

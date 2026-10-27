@@ -263,7 +263,7 @@ cell) and external input (an imported or hand-copied topic).
 
 ## Diary / Current State
 
-**2026-10-23 — admission and design.** F-080 merged to local main (b7c4795); branch
+**2026-10-23 — admission and design.** F-080 merged to local main (19bdaac); branch
 fast-forwarded. Router: `GUIDE_skill_family_changes.md` (shared copies count once;
 L3). Guide check: no CURRENT guide covers the claim grammar beyond kb `distillation.md`,
 and the change forces no new comprehension model. Elicitation: four questions asked

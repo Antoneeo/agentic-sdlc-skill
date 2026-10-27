@@ -1,0 +1,24 @@
+#!/bin/sh
+# Refuse a push that would publish a commit or tag carrying an email not in
+# .githooks/allowed-identities, whoever made it and on whichever machine.
+allowed="$(git rev-parse --show-toplevel)/.githooks/allowed-identities"
+remote="$1"
+zero=0000000000000000000000000000000000000000
+status=0
+while read -r local_ref local_sha remote_ref remote_sha; do
+  [ "$local_sha" = "$zero" ] && continue
+  new=$(git rev-list "$local_sha" --not --remotes="$remote")
+  bad=$( { [ -n "$new" ] && echo "$new" | git log --stdin --no-walk --format='%h %ae%n%h %ce'
+           [ "$(git cat-file -t "$local_sha")" = tag ] \
+             && git cat-file tag "$local_sha" | sed -n 's/^tagger .*<\(.*\)>.*/\1/p' \
+                | awk -v r="$local_ref" '{ print r, $0 }'; } \
+         | awk -v allowed="$allowed" '
+             BEGIN { while ((getline l < allowed) > 0) if (l !~ /^#/ && l != "") ok[tolower(l)] = 1 }
+             !(tolower($2) in ok) { print $1 " <" $2 ">" }' | sort -u)
+  if [ -n "$bad" ]; then
+    echo "refused push of $local_ref: identities not in .githooks/allowed-identities:" >&2
+    echo "$bad" >&2
+    status=1
+  fi
+done
+exit $status

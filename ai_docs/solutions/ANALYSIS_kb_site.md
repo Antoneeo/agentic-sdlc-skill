@@ -470,7 +470,7 @@ reuses).
   run beyond the cap on the owner's instruction (R27): PASS.
 
 **2026-10-17 — chronology reader built on F-073; criterion 3 met.** F-073 merged into main
-and released in 1.41.0; this branch took main (879ff3b), and F-072's CHANGELOG entries moved
+and released in 1.41.0; this branch took main (8599155), and F-072's CHANGELOG entries moved
 to the next unreleased versions. `chronology(docs, pages)` now reads, with the validator's own
 readers: Diary entries and spike outcomes (`section_lines` + `entry_openers`, so an entry
 under the template comment is an event to both), dated project notes, request-record

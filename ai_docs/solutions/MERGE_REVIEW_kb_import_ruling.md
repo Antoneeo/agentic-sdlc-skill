@@ -21,7 +21,7 @@ This serves the Vision Goal "never hide a conflict … let the user choose" (ANA
 
 ## What to review
 
-Map computed against a8ce48e (origin/main, v1.48.0). The changes are uncommitted in
+Map computed against 1df13df (origin/main, v1.48.0). The changes are uncommitted in
 worktree `wt-kb-import-ruling`, branch `fix/kb-import-ruling`.
 
 | Path | Status | +/- | Class | What to do |
@@ -68,12 +68,12 @@ helpers, `kb_import_plan`, `kb_cmd_import`, and the two `kb_check_claims` messag
 - **Design review.** REVIEW_LOG 2026-10-26, `ANALYSIS_kb_import_ruling.md (F-083)`,
   design, deep tier, FAIL → PASS → PASS in 3 rounds. Round 1 rejected the sidecar design
   and the note is renamed instead. It covered the ANALYSIS and the harness.
-- **Closure review.** REVIEW_LOG 2026-10-26, F-083 working-tree diff against a8ce48e,
+- **Closure review.** REVIEW_LOG 2026-10-26, F-083 working-tree diff against 1df13df,
   closure, deep tier, FAIL → PASS in 2 rounds. Round 1 found B1: a ruling note already
   held under its own name stopped the conversion. It was fixed with two tests that are
   red under the old code. The review covered every REVIEW and DESIGN file above.
 - **Batteries** after the final edit: code 464, course 459, kb 754, mkt 466, all OK.
-  - `TL_F083_ImportedRuling`: the 27 tests of round 1 were 26 red on a8ce48e. The green one, the no-op
+  - `TL_F083_ImportedRuling`: the 27 tests of round 1 were 26 red on 1df13df. The green one, the no-op
     re-import into the source, was already true. The 8 added at closure test the round-1 fixes.
   - Three mutation checks confirm the load-bearing conditions: the relabel refusal,
     the held-partner symmetry, and both halves of B1.
@@ -91,7 +91,7 @@ helpers, `kb_import_plan`, `kb_cmd_import`, and the two `kb_check_claims` messag
 - **Owner decisions.** REQUEST R1 (fix in a separate session), R2 (the brief and its
   acceptance), R3 «Reopen the set».
 - **`sdlc_check.py check --root .`.** validate rc=0. `stale` rc=1, the same as a
-  clean a8ce48e checkout (verified by the author and by the closure reviewer).
+  clean 1df13df checkout (verified by the author and by the closure reviewer).
 - **Not covered by any review:** the generated files (`index` rewrites them).
 
 ## Your judgement
@@ -126,7 +126,7 @@ helpers, `kb_import_plan`, `kb_cmd_import`, and the two `kb_check_claims` messag
 
 ## Merge notes
 
-- Main has moved since a8ce48e only if other units landed. In that case:
+- Main has moved since 1df13df only if other units landed. In that case:
   - resolve the CHANGELOGs ×4, `architecture.md` and `REVIEW_LOG.md` by keeping both
     sides;
   - copy `knowledge.py` to the three distributions and regenerate the four

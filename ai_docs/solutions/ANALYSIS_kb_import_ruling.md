@@ -391,7 +391,7 @@ Weighing for the mixed-supersession refusal:
 
 **2026-10-23 — opened.** `Level: L3 · router: GUIDE_skill_family_changes.md → read`.
 - Worktree `wt-kb-import-ruling`, branch `fix/kb-import-ruling` from `origin/main`
-  (a8ce48e, v1.48.0).
+  (1df13df, v1.48.0).
 - F-083 is the first id free after fetch; F-082 is taken on `fix/codex-agents-skills`.
 - Reproduced on a scratch copy of TH-02 with the earlier import removed: the row stays
   RULING, there is no `imported_from:`, and `check` is CLEAN.
@@ -462,8 +462,8 @@ on a clean `origin/main` checkout, so it predates this unit.
 - W2: Component Map path. W5: review log as one row per review. W6/W7: CHANGELOGs ×4,
   §3/§4 refusal lists. W8: handoff. W1: index and check re-run at closure.
 
-**2026-10-26 — closed.** Committed e7bd163 on `fix/kb-import-ruling` and pushed it to
-origin; `main` (b64b329, the release-1.48.0 registry note) was merged into the branch,
+**2026-10-26 — closed.** Committed d1b1b98 on `fix/kb-import-ruling` and pushed it to
+origin; `main` (9259c3a, the release-1.48.0 registry note) was merged into the branch,
 and the branch was fast-forwarded onto `main` at the owner's request (no PR: `gh` is not
 installed here, the release guide's merge step). After the merge: batteries ×4, harness,
 `check`, `mark` on the changed areas. Still owed: the tester's E2E run, the release

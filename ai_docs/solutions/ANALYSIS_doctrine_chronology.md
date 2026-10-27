@@ -27,7 +27,7 @@ exist (no non-ISO date opens an entry in either corpus) but their place and form
 free: Diary entries come in 15 forms; `next:` has become a state summary in the field
 project (median 500 characters, 24.9k in all); spikes and releases leave no entry where
 a reader looks. F-072's chronology reader returns no event until a rule says which lines
-are events (`docs_site.chronology()`, commit 27fd26a).
+are events (`docs_site.chronology()`, commit 161b254).
 
 Done = one grammar for a dated entry, applied to the hand-written places that lack one,
 read by shared functions that both the validator and F-072 call; `next:` restricted to
@@ -251,7 +251,7 @@ Surfaces an actor perceives: the validator's messages (agent and CI), the templa
 | Read frontmatter | EXISTS | `sdlc_core.load_frontmatter` | read |
 | Read dated review rows | EXISTS | `sdlc_core.parse_review_log` | read |
 | Read a note's / sidecar's date | **INADEQUATE** | two inline uses: `knowledge.kb_cmd_orient`'s recency probe **parses** a note's date (`kb_unquote` + ISO prefix); `knowledge.kb_build_corpus_index` **displays** the raw value in a generated, alignment-checked index. Gap: no callable parser | read ~889–903, ~1927–1955 |
-| Read dated entry openers | **MISSING** | searched `sdlc_core.py`, `knowledge.py`, `docs_site.py` (27fd26a): none; `chronology()` returns `[]` | grep "Diary": only the section alias |
+| Read dated entry openers | **MISSING** | searched `sdlc_core.py`, `knowledge.py`, `docs_site.py` (161b254): none; `chronology()` returns `[]` | grep "Diary": only the section alias |
 | Read request-record headings | **MISSING** | none; `sdlc_check.py` only excludes `audit/requests/` from the catalog | grep "requests/" |
 | Read an ADR's date | **MISSING** | none | grep "ADR_", "**Date" in `sdlc_core.py` |
 | Gate a per-ANALYSIS check on a date the file carries | EXISTS | `design_review_due` + `DESIGN_REVIEW_EPOCH`, `ARCHITECT_PASS_EPOCH` (advisories) | read |
@@ -339,7 +339,7 @@ on named files, 1 (7b0256a) could not be replayed by `merge-tree`, 8 merge clean
 Conflicts fell on generated files (`handoff.md`, `features_history.md`, `memory/INDEX.md`,
 `shared_manifest.json` — resolved by `index`/`--update`, as F-028 designed);
 `audit_plan.md` (two `mark`s of one area, semantic, out of scope since F-028);
-`CHANGELOG.md`; and `REVIEW_LOG.md` once (c18156d, 2026-10-13, no row lost) — because
+`CHANGELOG.md`; and `REVIEW_LOG.md` once (4191785, 2026-10-13, no row lost) — because
 this repository's `.gitattributes` has no union stanza. `project_notes.md` and
 `rulings.md` never conflicted. Edits in place: `project_notes.md` 26 of 32 commits delete
 lines (notes are rewritten, "release pending" → "completed"), `rulings.md` 3 of 15,
@@ -480,8 +480,8 @@ WARN, folded: the reader table names `section_lines`; only refs that resolve to 
 grepped (a tag on a blob no longer disables A3); output split on newline only, with a test across
 the batch boundary. Next: the owner's commit decision, then `mark` and closure.
 
-**2026-10-17 — closed: COMPLETED, merged into main by the owner.** Committed as 3accde9
-(implementation) and c394531 (`mark`), on the owner's approval; `check` CLEAN. No ADR: the
+**2026-10-17 — closed: COMPLETED, merged into main by the owner.** Committed as f9661b5
+(implementation) and 0fb1abe (`mark`), on the owner's approval; `check` CLEAN. No ADR: the
 readers and advisories follow the patterns already in place (shared readers in the spine,
 epoch-gated advisories, `git` shelled with fixed arguments as `mark` does), so no new
 architectural decision was taken. Left for the owner, outside this unit: the duplicate `r19`

@@ -30,7 +30,7 @@ Prompt (identical for RED and GREEN; only the doctrine under the path differs):
 
 Runner: fresh-context subagent, light tier, read-only.
 
-### RED — 2026-10-13, doctrine at `07cf4cc` (before F-067)
+### RED — 2026-10-13, doctrine at `7248c47` (before F-067)
 
 Result line: `RECORD_BEFORE_FIRST_QUESTION: NO`. The agent grepped the skill for
 "verbatim", "request record", `audit/requests`, `REQUEST_` and found no such step;

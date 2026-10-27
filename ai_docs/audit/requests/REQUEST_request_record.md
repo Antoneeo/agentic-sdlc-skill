@@ -59,5 +59,5 @@ Context (agent): "Confermi il nuovo costo?" (after the table: SKILL.md code +553
 > confermo
 
 ### R11 — 2026-10-13 — merge to main
-Context (agent): "Should I fast-forward `main` to `2608eba`, as for F-066?"
+Context (agent): "Should I fast-forward `main` to `f27dd83`, as for F-066?"
 > Yes

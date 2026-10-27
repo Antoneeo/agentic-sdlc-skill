@@ -3,7 +3,7 @@ battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Visi
 
 **2026-10-23 — release 1.48.0: field-report units F-075..F-081 (orientation reach, guide verdict check, kb intake hygiene, guide check, docs site naming, spec/code divergence incl. Hybrid); includes the unpublished 1.46.0 and 1.47.0.** Published and verified on the registry, each on
 latest: code 1.48.0, KB 1.31.0, marketing 0.26.0, Course 0.1.0-beta.13. Tags v1.48.0 /
-kb-v1.31.0 / mkt-v0.26.0 / course-v0.1.0-beta.13 on a8ce48e.
+kb-v1.31.0 / mkt-v0.26.0 / course-v0.1.0-beta.13 on 1df13df.
 
 **2026-10-23 — F-078 closed: Guide check section and validate advisory.**
 
@@ -14,24 +14,24 @@ kb-v1.31.0 / mkt-v0.26.0 / course-v0.1.0-beta.13 on a8ce48e.
 **2026-10-19 — mark --note: a release or work outside an open unit writes its own dated entry (field case: releases 1.44.0-1.46.0 left none).**
 
 **2026-10-19 — release 1.46.0 tagged, never published.** Docs site `--zip`. Tags
-v1.46.0 / kb-v1.29.0 / mkt-v0.24.0 / course-v0.1.0-beta.11 on 494865b; its content ships
+v1.46.0 / kb-v1.29.0 / mkt-v0.24.0 / course-v0.1.0-beta.11 on cec9661; its content ships
 in 1.47.0 instead.
 
 **2026-10-19 — release 1.45.0 completed.** Published and verified on the registry, each on
 latest: code 1.45.0, KB 1.28.0, marketing 0.23.0, Course 0.1.0-beta.10 — F-071 (intent
 focus and efficiency) plus the docs site's merge/E2E links and newest-first Features.
-Tags on 281d723. It includes 1.44.0 (F-071, tags on ed2cdd5), which was never published.
+Tags on b45e132. It includes 1.44.0 (F-071, tags on 3942181), which was never published.
 
 **2026-10-18 — release 1.43.1 completed.** Published and verified on the registry: code
 1.43.1, KB 1.26.1, marketing 0.21.1, Course 0.1.0-beta.8 — the F-072 `--open` field fix,
-closing F-072. Tags on 573496d.
+closing F-072. Tags on 803427a.
 
-**2026-10-18 — release 1.43.0 completed (F-074, the owner interview for every Vision).** Published and verified on the registry: code 1.43.0, KB 1.26.0, marketing 0.21.0, Course 0.1.0-beta.7, each on latest; tags v1.43.0 / kb-v1.26.0 / mkt-v0.21.0 / course-v0.1.0-beta.7 on 5098156. kb and Course appeared on the registry minutes after the publish (propagation, not a failure). The F-072 `--open` fix followed as patch 1.43.1 (entry above).
+**2026-10-18 — release 1.43.0 completed (F-074, the owner interview for every Vision).** Published and verified on the registry: code 1.43.0, KB 1.26.0, marketing 0.21.0, Course 0.1.0-beta.7, each on latest; tags v1.43.0 / kb-v1.26.0 / mkt-v0.21.0 / course-v0.1.0-beta.7 on 9f0003e. kb and Course appeared on the registry minutes after the publish (propagation, not a failure). The F-072 `--open` fix followed as patch 1.43.1 (entry above).
 
 **2026-10-18 — release 1.42.0 completed.** Published and verified on the registry at
 22:29–22:30 UTC (2026-10-17): code 1.42.0, KB 1.25.0, marketing 0.20.0, Course
 0.1.0-beta.6 — the docs site (F-072), its chronology read with F-073's readers. Tags
-v1.42.0 / kb-v1.25.0 / mkt-v0.20.0 / course-v0.1.0-beta.6 on a6e1faa, published by the
+v1.42.0 / kb-v1.25.0 / mkt-v0.20.0 / course-v0.1.0-beta.6 on daad947, published by the
 owner from the clean `wt-release` worktree. `latest` names each new version. An install two
 minutes after publishing failed with ETARGET again (npm metadata cache, not the package);
 `--prefer-online` resolves it, and users installing later are not affected.
@@ -39,14 +39,14 @@ minutes after publishing failed with ETARGET again (npm metadata cache, not the 
 **2026-10-17 — release 1.41.0 completed.** Published and verified on the registry at
 21:43 UTC: code 1.41.0, KB 1.24.0, marketing 0.19.0, Course 0.1.0-beta.5 (F-073; Course
 now publishes on `latest` with no promotion step). Tags v1.41.0 / kb-v1.24.0 /
-mkt-v0.19.0 / course-v0.1.0-beta.5 on 0aa963b, published by the owner from the clean
+mkt-v0.19.0 / course-v0.1.0-beta.5 on 29d492b, published by the owner from the clean
 `wt-release` worktree at that commit. `latest` names each new version; Course `beta` stays
 on beta.4, as the policy says. A global install one minute after publishing failed with
 ETARGET: npm metadata cache, not a failed publish (`--prefer-online` resolves it).
 
 **2026-10-17 — release completed.** Published and verified on the registry: code
 1.40.0, KB 1.23.0, marketing 0.18.0, Course 0.1.0-beta.4 (F1, F-068, F-069), tags
-v1.40.0 / kb-v1.23.0 / mkt-v0.18.0 / course-v0.1.0-beta.4 on 1b6d2c0. Published from
+v1.40.0 / kb-v1.23.0 / mkt-v0.18.0 / course-v0.1.0-beta.4 on b1ed3ac. Published from
 the primary checkout at that commit: the tarballs equal a `git archive` of the tag
 except for CRLF line endings. `latest` names each new version; Course `beta` and
 `latest` both name beta.4 (one-time owner promotion). From the next release Course
@@ -55,7 +55,7 @@ K-02 field to time `graph` and `check`; `--only` opens only if `graph` stays slo
 
 **2026-10-08 — release completed.** Published and publicly verified: code 1.38.0,
 KB 1.21.0, marketing 0.16.0 and Course 0.1.0-beta.2. Exact tagged export of
-61eb56e; all four public tarballs match SHA1 and SHA512. Stable latest aliases
+29455e2; all four public tarballs match SHA1 and SHA512. Stable latest aliases
 name the new releases; Course beta and latest both name beta.2 under Antonio's
 newest-default-install ruling. The publisher polling timeout was resolved by
 direct registry verification without republishing. Fresh tests and package smokes

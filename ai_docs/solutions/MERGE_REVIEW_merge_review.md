@@ -16,7 +16,7 @@ durable — … tests … stay synchronized" (E2E) — `ANALYSIS_merge_review.md
 
 ## What to review
 
-Review map -- 20 files against main (merge-base 9970e6608f6c)
+Review map -- 20 files against main (merge-base 4680ceac601f)
 
 | Path | Status | +/- | Class | What to do |
 |---|---|---|---|---|
@@ -57,7 +57,7 @@ Line counts are as of the run; the file set is final.
   (370 generated lines classed GENERATED).
 - **Tests** — `python -m unittest discover -s scripts -p "test_*.py"` from
   `skills/agentic-sdlc-skill`: 245 tests OK (1 skipped), run after the last code edit
-  of this branch (uncommitted on base `9970e66`). `test_review_map.py` holds AC1–AC6, AC8.
+  of this branch (uncommitted on base `4680cea`). `test_review_map.py` holds AC1–AC6, AC8.
 - **Validator** — `sdlc_check.py check --root .` CLEAN after `mark` (see Merge notes).
 - **Owner decisions** — design approved; doctrine cost confirmed twice (final:
   SKILL.md +1184, templates.md +3258, hybrid.md +370 UTF-8 LF bytes); r25 ADMIT with

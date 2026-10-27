@@ -1,0 +1,10 @@
+#!/bin/sh
+# Refuse a commit whose author or committer email is not in .githooks/allowed-identities.
+# Activate once per clone: git config core.hooksPath .githooks
+allowed="$(git rev-parse --show-toplevel)/.githooks/allowed-identities"
+for var in GIT_AUTHOR_IDENT GIT_COMMITTER_IDENT; do
+  git var "$var" | sed -n 's/.*<\(.*\)>.*/\1 '"$var"'/p'
+done | awk -v allowed="$allowed" '
+  BEGIN { while ((getline l < allowed) > 0) if (l !~ /^#/ && l != "") ok[tolower(l)] = 1 }
+  !(tolower($1) in ok) { print "refused: " $2 " email <" $1 "> is not in .githooks/allowed-identities." > "/dev/stderr"; bad = 1 }
+  END { if (bad) { print "Set the right identity: git config user.email <allowed address>" > "/dev/stderr"; exit 1 } }'

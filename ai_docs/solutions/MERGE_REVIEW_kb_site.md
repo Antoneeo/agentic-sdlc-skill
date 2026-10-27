@@ -14,7 +14,7 @@ packages.
 
 ## What to review
 
-# Review map -- 69 files against origin/main (merge-base c2e9d333e11f)
+# Review map -- 69 files against origin/main (merge-base a1d40f6aa47d)
 
 | Path | Status | +/- | Class | What to do |
 |---|---|---|---|---|
@@ -95,7 +95,7 @@ The 36 REVIEW rows under `distributions/` are byte-identical copies of the six f
 four distributions", so review the six originals plus each distribution's `package.json`,
 `SKILL.md`, `README.md`, `CHANGELOG.md` and `shared_files.py`.
 `PROPOSAL_vision_v9_state_view.md`, `project_vision.md` (v9) and the design-review documents came
-from the specification commits already on this branch (dd46dca and earlier). They are not part of
+from the specification commits already on this branch (ff2c903 and earlier). They are not part of
 this implementation.
 
 ## Already verified
@@ -109,7 +109,7 @@ this implementation.
     each fix in a scratch copy; every mutant went red.
   - One new WARN from round 2 (N1: the side-bar Map kept the Everything view) was fixed after the
     verdict and checked as in the next item.
-- **Tests and checks, run on the final tree (2026-10-17, HEAD dd46dca + working tree) after the last
+- **Tests and checks, run on the final tree (2026-10-17, HEAD ff2c903 + working tree) after the last
   code edit:**
   - all four batteries `OK` (code 334 tests, 1 skipped; kb 525, 15 skipped; mkt 346, 14 skipped;
     course 341, 19 skipped), with `python -m unittest discover -s <skill>/scripts -p "test_*.py"`

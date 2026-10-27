@@ -97,7 +97,7 @@ Context (agent): round 4 FAIL (16 findings) brought back; three structured quest
 Context (agent): message received while the agent was working after R17.
 > bisogna fare attenzione.. su main F-069 esiste ed è una cosa diversa?
 
-Checked: on `origin/main`, F-069 is "kb graph fast enough for the ingestion step" (released in 1.40.0), F-070 and F-071 are taken too, and a DRAFT spike on the same subject, `solutions/SPIKE_kb_viewer.md` (commit c2e9d33, 2026-10-17), exists. This unit is renumbered F-072, the first id free on every remote branch.
+Checked: on `origin/main`, F-069 is "kb graph fast enough for the ingestion step" (released in 1.40.0), F-070 and F-071 are taken too, and a DRAFT spike on the same subject, `solutions/SPIKE_kb_viewer.md` (commit a1d40f6, 2026-10-17), exists. This unit is renumbered F-072, the first id free on every remote branch.
 
 ### R19 — 2026-10-17 — merge main, commit, push
 Context (agent): spec rewritten on round 4 and R17; "Merge main into the branch, commit and push it to GitHub?"

@@ -67,9 +67,9 @@ and "divergence visible before implementation" (`ANALYSIS_intent_focus.md` §Fea
 
 ## Already verified
 - Design: REVIEW_LOG 2026-10-18 `ANALYSIS_intent_focus.md (F-071) + proposed.patch`, design, FAIL -> PASS, 2 rounds; covered the ANALYSIS and the doctrine diff.
-- Implementation: REVIEW_LOG 2026-10-18 `F-071 implementation diff 8ea116b..52723c2`, closure, FAIL -> PASS, 2 rounds (corrections 52723c2..a7f98fa); the applied `review.md`/`SKILL.md` are byte-identical to the reviewed patch (blob ids, reviewer check 1).
+- Implementation: REVIEW_LOG 2026-10-18 `F-071 implementation diff f189aa5..976624a`, closure, FAIL -> PASS, 2 rounds (corrections 976624a..3c0e02a); the applied `review.md`/`SKILL.md` are byte-identical to the reviewed patch (blob ids, reviewer check 1).
 - Release delta: REVIEW_LOG 2026-10-18 NOT DUE row (bump, CHANGELOG ×4, indexes, marks).
-- Tests on the release tree: code 398, kb 579, mkt 400, course 395 OK; `test_clients.js` 53/53 and course 4/4; `test_intent_focus.py` red on 8ea116b, green after; `replay.py` RED -> GREEN; `probe_benefit.py` exit 0.
+- Tests on the release tree: code 398, kb 579, mkt 400, course 395 OK; `test_clients.js` 53/53 and course 4/4; `test_intent_focus.py` red on f189aa5, green after; `replay.py` RED -> GREEN; `probe_benefit.py` exit 0.
 - Owner decisions: design and cost R5, copy count R6, implement and release R7, r31 ADMIT + guide + direct push R8 (`audit/requests/REQUEST_intent_focus.md`).
 - Not covered by any review: `GUIDE_skill_family_changes.md` and its source snapshot, the r31 row in `vision/rulings.md`, this brief, the last Diary entry — records written after the closure PASS from owner entries R6 and R8.
 

@@ -15,7 +15,7 @@ the Team lead's "one source of truth" (ANALYSIS §Feature Vision; admission
 
 ## What to review
 
-Map computed against the branch base 6015848 (main has since moved; see Merge notes).
+Map computed against the branch base 85dea0f (main has since moved; see Merge notes).
 
 | Path | Status | +/- | Class | What to do |
 |---|---|---|---|---|
@@ -70,11 +70,11 @@ Totals: REVIEW 30 files (+694/-50); DESIGN 5 files (+502/-2); EVIDENCE 5 files (
 - Design review: REVIEW_LOG 2026-10-23, `ANALYSIS_spec_code_divergence.md (F-080)`,
   design, deep tier, FAIL → FAIL → PASS in 3 rounds. It covered the ANALYSIS and the
   harness (`probe.py`, `deltas.py`).
-- Closure review: REVIEW_LOG 2026-10-23, `F-080 diff e74a208..be8bf34 (+ fixes
-  f276686)`, closure, deep tier, FAIL → PASS in 2 rounds. It covered every REVIEW
+- Closure review: REVIEW_LOG 2026-10-23, `F-080 diff df648e3..2d0448d (+ fixes
+  90d5710)`, closure, deep tier, FAIL → PASS in 2 rounds. It covered every REVIEW
   and DESIGN file above, the E2E script and the r33 amendment, and checked D1–D8
   byte for byte against `deltas.py`.
-- Batteries on f276686's tree: code 421 OK, kb 618 OK, mkt 423 OK, course 416 OK.
+- Batteries on 90d5710's tree: code 421 OK, kb 618 OK, mkt 423 OK, course 416 OK.
   Probe B1–B6 GREEN; `--baseline` A1/A2/A4 RED (the expected flip).
 - Drift guard: `shared_files.py` reports the 29 shared files identical across the
   four packages.
@@ -102,7 +102,7 @@ Totals: REVIEW 30 files (+694/-50); DESIGN 5 files (+502/-2); EVIDENCE 5 files (
 
 ## Merge notes
 
-- main moved after the branch point (F-076, 5857a57). Both sides touched the four
+- main moved after the branch point (F-076, f0c2f91). Both sides touched the four
   CHANGELOGs, `rulings.md` (F-076 added r34, this branch r33: no id clash, keep both
   rows in id order), `architecture.md`, `REVIEW_LOG.md`, code `SKILL.md` and the four
   `shared_manifest.json`. Resolve the prose files by keeping both sides. Regenerate the

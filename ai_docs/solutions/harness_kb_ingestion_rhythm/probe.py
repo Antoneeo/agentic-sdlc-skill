@@ -145,9 +145,9 @@ with tempfile.TemporaryDirectory() as tmp:
     cli(root, "index")
     reg = (audit / "handoff.md").read_text(encoding="utf-8")
     check("P5-RED deleting the HANDOFF removes the row", "K-02 front" not in reg)
-    # P7 -- F1 (fixed on main 28a565d): deleting the LAST HANDOFF empties the
+    # P7 -- F1 (fixed on main ab725f6): deleting the LAST HANDOFF empties the
     # generated registry. Before the fix the closed row survived (RED observed
-    # 2026-10-16 on 282cd39), which is why SKILL.md once carried an interim.
+    # 2026-10-16 on d9d7f2f), which is why SKILL.md once carried an interim.
     (audit / "HANDOFF_k03.md").unlink()
     cli(root, "index")
     reg = (audit / "handoff.md").read_text(encoding="utf-8")

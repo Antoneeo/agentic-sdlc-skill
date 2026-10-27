@@ -1,0 +1,4 @@
+# Author/committer/tagger emails allowed in this repository's history, one per line.
+# The hooks refuse any other address: the repository is public and personal.
+a_pinto_79@hotmail.com
+noreply@anthropic.com

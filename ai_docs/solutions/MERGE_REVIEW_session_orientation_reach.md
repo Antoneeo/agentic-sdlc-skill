@@ -17,7 +17,7 @@ choice when sibling lenses are installed.
 
 ## What to review
 
-# Review map -- 67 files against main (merge-base ee7364927f8e)
+# Review map -- 67 files against main (merge-base 5eadb2db5a33)
 
 | Path | Status | +/- | Class | What to do |
 |---|---|---|---|---|
@@ -101,12 +101,12 @@ four identical `shared_manifest.json`). Review them once.
 - Design review: REVIEW_LOG 2026-10-23, `ANALYSIS_session_orientation_reach.md
   (F-075)`, design, deep. Round 1 FAIL, round 2 PASS (scoped). It covered the
   ANALYSIS and the probe.
-- Closure review: REVIEW_LOG 2026-10-23, `F-075 diff ee73649..41d5f61 (+ fixes
-  3197264)`, closure, deep. FAIL → PASS in 2 rounds. It covered the code, the
+- Closure review: REVIEW_LOG 2026-10-23, `F-075 diff 5eadb2d..c7c836c (+ fixes
+  ac45744)`, closure, deep. FAIL → PASS in 2 rounds. It covered the code, the
   tests, the shared copies, the CHANGELOG ×4 sections, the READMEs, ENFORCEMENT
   ×4, `routing.md`, the E2E script and the rulings row. The WARN corrections
   folded after the design PASS were re-reviewed in the same closure.
-- Batteries, run on the tree committed at 3197264 (`python -m unittest discover
+- Batteries, run on the tree committed at ac45744 (`python -m unittest discover
   -s . -p "test_*.py"`, in each scripts folder): code 420 OK, kb 601 OK, mkt 422
   OK, course 415 OK.
 - Probe `ai_docs/solutions/harness_session_orientation_reach/probe.py`: exit 0.

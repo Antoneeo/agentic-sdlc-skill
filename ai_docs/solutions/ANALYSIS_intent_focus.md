@@ -14,7 +14,7 @@ branch: main
 
 Design and ceremony cost approved by the owner (REQUEST R5); Open question 1 answered
 (R6). For the implementer: apply `harness_intent_focus/proposed.patch` per §Impact and
-§Action Plan; applied in 52723c2, released in 1.44.0.
+§Action Plan; applied in 976624a, released in 1.44.0.
 
 ## Objective
 
@@ -51,7 +51,7 @@ in functions named for rationale; the behaviour rubric never asks why; the desig
 defers the benefit ("beneficio ancora da misurare"). Every gate stayed green.
 
 **Efficiency — the F-072/F-074 session (2026-10-18).** (a) The `--open` field fix
-(commit 4543157: one `SKILL.md` line per lens and its test, red/green, batteries green)
+(commit 4e29e16: one `SKILL.md` line per lens and its test, red/green, batteries green)
 got an independent review that the owner stopped (REQUEST R2). (b) A closure review ran
 on the post-PASS F-074 delta (bump ×4, CHANGELOG ×4, README, the family workflow
 document, ruling r30, E2E script) and raised three real findings: a kb README line, an
@@ -205,7 +205,7 @@ Net: the remedy is not self-financing; the owner accepts the remainder or it is 
    The convention is an owner indication about how this repository operates, so at
    implementation it is PROPOSED as a guide (`guides.md`), never written silently.
    Original question: **how distribution copies count in Rule Zero (this repository).** The `--open` fix
-   (4543157) touched 17 files: one doctrine line and its test, copied into four lenses,
+   (4e29e16) touched 17 files: one doctrine line and its test, copied into four lenses,
    plus records. Counted per file it is L3 (more than three files), so the patched text
    would still make its review due as a judged delta; counted once per copied change it
    is L2, and FS3 rules the review not due. No guide or doctrine says which, and a guide
@@ -250,12 +250,12 @@ Net: the remedy is not self-financing; the owner accepts the remainder or it is 
   Open question 1 still open; implementation not started.
 - 2026-10-18: owner answered Open question 1 (R6): identical distribution copies count
   once. Design phase complete; implementation not started.
-- 2026-10-18: implemented (52723c2, owner R7): patch applied byte-identical to the
-  reviewed one, FS5, test red on 8ea116b / green, batteries ×4 green. Cold-agent replay
+- 2026-10-18: implemented (976624a, owner R7): patch applied byte-identical to the
+  reviewed one, FS5, test red on f189aa5 / green, batteries ×4 green. Cold-agent replay
   not re-run on the applied text (one clause differs, replay.py GREEN) — departure from
   Action Plan step 4, shown to the owner. Closure review round 1 FAIL (B1 memory index
   misaligned; W1 state lag; W2 template wording and `model` lists; W4 test wording),
-  all fixed in b2fe44d and a7f98fa; round 2 PASS.
+  all fixed in 4f0156c and 3c0e02a; round 2 PASS.
 - 2026-10-18: owner ruled r31 ADMIT, accepted the R6 guide and a direct push to main
   (R8). `GUIDE_skill_family_changes.md` written from R6. Released code 1.44.0, kb 1.27.0,
   mkt 0.22.0, course 0.1.0-beta.9. The release delta (bump, CHANGELOG ×4 checked against

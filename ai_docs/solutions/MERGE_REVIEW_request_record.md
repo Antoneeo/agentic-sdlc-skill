@@ -16,7 +16,7 @@ Vision" — `ANALYSIS_request_record.md` §Feature Vision; ruled ADMIT as r26.
 
 ## What to review
 
-Review map -- 47 files against main (merge-base 9edaf1f7ecad)
+Review map -- 47 files against main (merge-base f2d49e417e84)
 
 | Path | Status | +/- | Class | What to do |
 |---|---|---|---|---|
