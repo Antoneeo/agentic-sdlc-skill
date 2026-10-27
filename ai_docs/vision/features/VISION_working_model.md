@@ -6,23 +6,48 @@ status: CURRENT
 
 Status: APPROVED (by Antonio Pinto, 2026-10-27 — north star `audit/requests/REQUEST_working_model.md#R3`,
 written text `#R10`, after the blind check: round 1 FAIL, round 2 PASS, `audit/reviews/REVIEW_LOG.md`;
-amended `#R16`, two factual sentences on the Impact's ids, after a blind check PASS).
+amended `#R16`, two factual sentences on the Impact's ids, after a blind check PASS;
+amended `#R20`: maintenance class, ranking, the signals Invariant, Impact ids and order,
+after a blind check PASS).
 
 ## Authority, scope and precedence
 
 - **Binding.** While its status is DRAFT this document informs: a conflict with it is
   flagged, never a ground to block. It binds once its status reads APPROVED, which only
   the owner can set.
-- **Reach.** It governs every proposal made under unit F-085, in every skill of the
+- **Reach.** It governs every proposal made under unit F-085, and every later
+  proposal that changes, widens, narrows or removes what F-085 shipped, or that
+  reads, derives from or presents what it produces, or that extracts the constraints
+  an ANALYSIS states and shows them, or anything derived from them, apart from their
+  section (rendering a whole document or a whole section, in its own order and
+  unmodified text, is not extracting), whatever unit of this repository proposes it,
+  and in devPNT wherever it presents this mechanism's output. A proposal reached only
+  by presenting or extracting needs to advance no Goal or Signal: it is admitted when
+  it violates no Prohibition, Invariant or Inherited constraint, and what it shows is
+  bound as the view is by every rule that names the view or the recall. It applies
+  in every skill of the
   family and in both modes (Standalone, and Hybrid with devPNT): the mechanism lives in
   the shared core, so shipping it in one skill or in devPNT does not put it outside
-  these rules.
+  these rules. **What F-085 shipped**, the whole list: the constraints view, the
+  recall hook, the checks on the preservation table, the post-merge review record,
+  the give-back at closure (G4), and the measuring instruments and baselines in
+  `solutions/harness_working_model/`. Its **surface** is what each of them reads,
+  shows or writes, and when.
 - **Precedence**, highest first: (1) the project Vision (`vision/project_vision.md`,
   APPROVED v9) and the Inherited constraints below, which restate it; (2) this
   document's Prohibitions; (3) its Invariants; (4) its Goals and Success signals;
-  (5) Definitions, which fix the meaning of the terms the sections above use;
-  (6) Actors and Problem, which describe and never admit or reject; (7) Pointers. A
-  conflict with (1) goes to the owner.
+  (5) Definitions and Imported facts, which fix the meaning of the terms the sections
+  above use; (6) Actors and Problem, which describe and never admit or reject;
+  (7) Pointers. A conflict between this document's text and (1) goes to the owner.
+- **Outside the ranking.** The **North star** states, in the owner's words, the
+  intent the Goals and Success signals serve: it admits and rejects nothing by itself.
+  A proposal that a Prohibition, an Invariant or an Inherited constraint rules out is
+  out, whatever it says the
+  North star wants; a conflict between the North star and the text of a ranked section
+  goes to the owner as an amendment, never as a ruling on a proposal. The **Authority,
+  scope and precedence** section and the **Admission test** section are the procedure
+  that applies the ranked sections: they outrank none of them, and nothing in them
+  frees a proposal from (1), (2) or (3).
 
 ## North star (owner's words, approved verbatim — R3)
 
@@ -50,7 +75,11 @@ efficiency that worsens effectiveness does not count as success.*
   interface contract, the threat model (`T<n>`), the capability ledger, and the
   **Impact**, whose table lists every file the unit changes and, where its author cites
   them, the ids each serves, followed by the **blast radius**: every caller of each
-  symbol the unit changes.
+  symbol the unit changes. The skill asks the ANALYSIS to state which actor, use
+  case, threat or benefit each part of the Impact serves, but fixes no form for
+  that trace: citing ids in an Impact row is the author's choice and no rule
+  requires it. A gate may FAIL a part of the Impact whose trace is stated in no form;
+  it never FAILs one for carrying no ids. Nothing F-085 shipped reads those ids.
 - **Gates.** The *design gate* is an independent review of the ANALYSIS before code;
   the *implementation gate* is an independent review of the code diff before
   closure. Each writes one row per round in `audit/reviews/REVIEW_LOG.md`.
@@ -189,17 +218,24 @@ is a failure of F-085, whatever S2 shows.
 - **No claim of completeness, stated or implied.** Nothing shown — the view, a footer, a
   count of sources queried — may present the list as complete or let a gate rely on it
   as complete.
-- **Nothing below L3.** No part of F-085 reaches L1 or L2 work: the recall never fires
+- **Nothing below L3.** No part of F-085 acts on L1 or L2 work: the recall never fires
   in a session whose declared level for the work at hand is L1 or L2, including an edit
-  to a file an open unit binds.
+  to a file an open unit binds. This rules where the mechanism acts, not the level at
+  which the mechanism itself is repaired.
 - **Never weaken a gate.** A proposal that removes or narrows what a gate reads, derives
   or checks, or whether, when or for which units a gate runs — for example handing a
   reviewer the view in place of the ANALYSIS or the diff, or skipping a round when the
   view looks complete — is out, whatever it does to S1 or S2.
 - **No computed state in the view.** The view and the recall show each constraint, its
   pointer and its evidence as the home states them, and the fixed closing sentence;
-  never a count, a share, a tally, a per-line marker or badge the home does not state, a
-  rank or an order of what to check next, for one unit or many.
+  never a count, a share, a tally, a per-line marker or badge the home does not state,
+  or a rank, for one unit or many. The only order is the homes' own: each unit's
+  constraints in the order its ANALYSIS states them, units in the byte order of their
+  ANALYSIS file names. Any other order — by risk, by age, by how often a kind of
+  constraint failed a gate, by what to check first — is computed, and out, including
+  when a tool or an author names, renames or rewrites a home to produce it. *In:* the view
+  lists P1, P2, P3 as the preservation table states them. *Out:* the view lists the
+  same three rows with the most often failed first.
 
 ## Invariants
 
@@ -213,6 +249,17 @@ is a failure of F-085, whatever S2 shows.
   binding, or is an added cost accepted?* Only with a request-record entry quoting the
   owner's own words, given in answer to a question that named the constraint or the
   cost; a generator, a test update, an agent's note or a paraphrase is neither.
+- **The signals are the owner's.** *Does this change what S1, S2 or S3 counts, add,
+  remove or rename a signal, change what an instrument returns for one of them
+  (currently `baseline_review_log.py` for S1 and S2, `probe_extractability.py` for S3,
+  or any script that replaces or supplements them) on any input — the review logs and
+  ANALYSIS files as they stood on 2026-10-27, or anything written later — or change a
+  baseline, the comparison windows, a target or the pairing rule?* If yes, it is an
+  amendment of this document, made only by a request-record entry quoting the owner's
+  own words in answer to a question that named the signal and its old and new
+  definition; it is never admitted by citing a signal, least of all the one it
+  changes, and calling it a fix or maintenance does not change the answer. If no, this
+  invariant does not reach it.
 
 ## Inherited constraints (from the project Vision)
 
@@ -228,23 +275,39 @@ is a failure of F-085, whatever S2 shows.
   semantic index when it is present is admissible; the same result must be reachable
   without it.
 
-## Admission test, default and exemption
+## Admission test, default, maintenance and exemption
 
-- A proposal under F-085 is admitted only if it advances at least one of G1–G4 or
+- A proposal this document reaches is admitted only if it advances at least one of G1–G4 or
   S1–S3 **and, when it cites S2, states why S1 does not worsen**, and violates neither a
-  Prohibition, an Invariant nor an Inherited constraint. Anything this document does
-  not reach is out of F-085 and goes to the project Vision's own test.
+  Prohibition, an Invariant nor an Inherited constraint — except that a proposal
+  reached only by presenting or extracting is ruled as the Reach states. Anything
+  this document does not reach is out of F-085 and goes to the project Vision's own test.
+- **Maintenance of the shipped mechanism.** A change that fixes a defect in what F-085
+  shipped, lowers its run time or raises its robustness, or adds or fixes its tests,
+  needs no admission, provided its purpose, actors and surface stay as this document
+  states them and only its correctness, speed or robustness improves. Decided by
+  effect, not by the label: if the mechanism can then do something this document does
+  not state, or can no longer do something it states — showing fewer of the
+  constraints bound to a file is doing less — it is a changed capability, ruled by the
+  admission test. A change that bundles maintenance with anything else is ruled as a
+  whole by the admission test.
 - **Exemption — the measuring instruments.** Fixing the probes in
-  `solutions/harness_working_model/` needs no admission. Every such fix re-runs the
-  baseline and records the old and the new value side by side; it never rewrites a
-  baseline silently. Decided by effect, not by the proposer: a fix that changes any
-  value on the 2026-10-27 sample changes what is counted, and is a change to the signal,
-  ruled by the admission test. Either way, a comparison always counts both of its
-  windows with the same instrument version.
+  `solutions/harness_working_model/` needs no admission when it changes no signal
+  (Invariant *The signals are the owner's*): a fix that can change what an S1–S3
+  instrument returns on some input, a counting fix among them, goes to the owner under
+  that Invariant. Decided by effect, not by the proposer's statement: the proposer
+  states why no returned value can change on any input (a speed or message fix, or one
+  that provably alters no returned value), the change's reviewer checks that
+  statement, and the fix re-runs the baseline and records the old and the new S1–S3
+  values side by side, never rewriting a baseline silently. A comparison always counts both of its windows with
+  the same instrument version.
+- Neither the maintenance class nor the exemption reaches the Prohibitions, the
+  Invariants or the Inherited constraints: each frees a change from the admission
+  test only.
 
 ## Pointers
 
-- Request record and provenance: `audit/requests/REQUEST_working_model.md` (R1–R16);
+- Request record and provenance: `audit/requests/REQUEST_working_model.md` (R1–R20);
   origin interview: devPNT `ai_docs/audit/requests/REQUEST_filesystem_governance.md`.
 - The efficiency lever (documents, plans and delegated approval on the filesystem) is
   devPNT unit F-011, which waits for this one (F-011 R8).
