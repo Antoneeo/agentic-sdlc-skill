@@ -54,15 +54,15 @@ Semantics: exit code 2 + message on stderr ⇒ the write is blocked and the mess
 
 **Usage warnings:**
 - The gate is deliberately coarse: applied to all of `src/` it would also block the legitimate L1/L2 tasks foreseen by the Triage. Use it **only on security-critical directories** (`--protected "src/auth;src/crypto"`), where "never without analysis" is the desired policy.
-- The paths in `--protected` are prefixes relative to the project root, separated by `;`.
+- The paths in `--protected` are prefixes relative to the root of the project the hook judges (below), separated by `;`. With nested docs roots (a monorepo whose package has its own), that is the nearest one above the edited file: write the prefixes relative to it.
 - `ai_docs/`, `tests/` and `test/` are always excluded from blocking.
-- The hook judges the project, and the docs root, holding the edited file: the session's working directory can move with a `cd`, so it is never the reference. `--root <path>` overrides it.
+- The hook judges the project, and the docs root, holding the edited file: the session's working directory can move with a `cd`, so it is never the reference. With no docs root above the file, it is the session's own project, as before. `--root <path>` overrides it; `gate --file` resolves the same way, and two docs roots side by side leave the gate silent.
 - **Hybrid/devPNT projects**: add `--hybrid` to the gate command. Governed designs live in the devPNT DB, so the gate also unlocks when an approved E-TDD shadow (`ai_docs/solutions/SHADOW_*tdd*.md`, exported before implementation — see `hybrid.md` §Ownership matrix) is present. Without the flag the gate would block legitimate governed work. The flag is deliberately explicit: never auto-detected.
 
 ### Verdict check: `verdict` (PreToolUse -- manual for this lens)
 
 `mkt_check.py verdict --hook` refuses an Edit, Write, MultiEdit or NotebookEdit when the
-session transcript shows no guide-router verdict (`router: …`, or a level-1 declaration)
+session transcript shows no guide-router verdict (a line that opens with `router: …` or with the level, `Level: L2 · router: …`, `Level: Spike · router: …`; or one that opens with a level-1 declaration)
 or a guide the verdict names was never read; it is silent in projects without guides and
 whenever it cannot tell. The code package (`agentic-sdlc`) wires it machine-wide on
 Claude Code; this package does not. To wire it by hand, add a `PreToolUse` entry with

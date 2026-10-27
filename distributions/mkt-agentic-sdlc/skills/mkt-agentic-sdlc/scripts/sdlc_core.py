@@ -2514,7 +2514,12 @@ def hook_project(target, root=None, docs_name=None):
     set_docs_dir(name)
     if root is not None:
         return Path(root)
-    return found_root if found_root is not None else find_project_root(start)
+    if found_root is not None:
+        return found_root
+    found_root = find_project_root(start)  # an explicit name: discovery did not run
+    # No docs root above the edited file: the session's own project, as before the
+    # hook resolved from the file -- the file's folder would unprotect a gated path.
+    return found_root if ai_path(found_root).is_dir() else find_project_root()
 
 
 def cmd_gate(args):
@@ -2573,18 +2578,23 @@ VERDICT_EDIT_TOOLS = ("Edit", "Write", "MultiEdit", "NotebookEdit")
 VERDICT_MAX_BYTES = 256 * 1024 * 1024  # a larger transcript: cannot afford to tell
 VERDICT_LINE_MAX = 1024 * 1024         # assistant lines are small; skip the rest unparsed
 # Markdown emphasis between the word and the colon ("**router**: no match") and
-# "Router verdict:" are the same declaration: format drift resolves to silence.
+# "Router verdict:" are the same declaration.
 _VERDICT_ROUTER_RE = re.compile(r"router(?:[\s*_`]+verdict)?[\s*_`]*:(.*)", re.IGNORECASE)
-# ...and only on a line that opens with `router` or declares a level (below): a
+# A declaration line may open with markdown: emphasis, quote, heading, bullet or a
+# numbered item ("## Level: L1", "1. Level: L1", "• router: no match").
+_LINE_OPEN = r"^[ \t>*_`#+•-]*(?:\d+[.)][ \t*_`]*)?"
+_LEVEL_WORD = r"(?:level|livello|niveau|nivel|stufe)\b[ \t*_`:·—–-]*(?:è[ \t]+)?"
+# ...and only on a line that opens with `router` or with a level (`L2`, `Spike`): a
 # verdict quoted inside a sentence is not one.
-_VERDICT_LINE_RE = re.compile(r"^[ \t>*_`-]*router\b", re.IGNORECASE)
+_VERDICT_LINE_RE = re.compile(
+    _LINE_OPEN + r"(?:router\b|" + _LEVEL_WORD + r"(?:(?:research[ \t]+)?spike|[A-Z][123])\b)", re.IGNORECASE)
 _VERDICT_NONE_RE = re.compile(r"[\s`*_\"'(]*(no match|absent)", re.IGNORECASE)
 # A level is DECLARED by a line that opens with the level word, in the form Rule
 # Zero prescribes -- level 1 alone, 2/3 with `router` on the same line -- so a level
 # quoted inside a sentence is not one. The letter is the lens's own (`L1`, `E1`):
 # groups are (letter, "1" or "", "2"/"3" or "").
 _DECLARATION_RE = re.compile(
-    r"^[ \t>*_`-]*(?:level|livello|niveau|nivel|stufe)\b[ \t*_`:·—–-]*(?:è[ \t]+)?"
+    _LINE_OPEN + _LEVEL_WORD +
     r"([A-Z])(?:(1)\b|([23])\b(?=[^\n]*\brouter\b))", re.IGNORECASE | re.MULTILINE)
 _GUIDE_NAME_RE = re.compile(r"GUIDE_[A-Za-z0-9_-]+\.md")
 

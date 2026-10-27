@@ -154,6 +154,19 @@ class VerdictHook(unittest.TestCase):
                      "> **Router verdict**: no match", "Level: L2 and router: no match"):
             self.assertIsNone(self.run_hook([say(text), READ]), text)
 
+    def test_spike_declaration_passes(self):
+        # Rule Zero declares the level with the verdict "for L2, L3 and Spike"
+        for text in ("Level: Spike · router: no match", "Livello: Spike · router: no match",
+                     "Level: Research Spike · router: no match"):
+            self.assertIsNone(self.run_hook([say(text), READ]), text)
+
+    def test_heading_and_list_forms_pass(self):
+        # a heading or a list item carrying the declaration is still one
+        for text in ("## Level: L1", "1. Level: L1", "+ Level: L1", "• Level: L1",
+                     "### Router verdict: no match", "• router: no match",
+                     "2) Level: L2 · router: no match"):
+            self.assertIsNone(self.run_hook([say(text), READ]), text)
+
     def test_edited_file_project_is_judged_from_another_cwd(self):
         # live probe 2026-10-27: the hook runs in the session's current directory,
         # which a `cd` moves -- the project judged is the one holding the file
@@ -197,7 +210,7 @@ class VerdictHook(unittest.TestCase):
             [say("Level: L2 · router: no match (GUIDE_release.md does not apply)")]))
 
     def test_markdown_emphasis_forms_pass(self):
-        # format drift resolves toward silence, never toward refusal
+        # emphasis around the documented forms is still the declaration
         self.assertIsNone(self.run_hook([say("**Level**: L1")]))
         self.assertIsNone(self.run_hook([say("**router**: no match")]))
         self.assertIsNone(self.run_hook([say("Router verdict: no match")]))
@@ -300,6 +313,52 @@ class VerdictHook(unittest.TestCase):
                     os.chdir(here)
         self.assertEqual(code, 2)
         self.assertIn("[sdlc gate]", err.getvalue())
+
+    def run_gate(self, target, cwd, protected):
+        payload = json.dumps({"tool_input": {"file_path": str(target)}})
+        stdin = io.TextIOWrapper(io.BytesIO(payload.encode("utf-8")), encoding="utf-8")
+        here = os.getcwd()
+        with mock.patch.object(sys, "stdin", stdin), \
+                contextlib.redirect_stderr(io.StringIO()):
+            try:
+                os.chdir(cwd)
+                return sdlc_core.main(["gate", "--hook", "--protected", protected])
+            finally:
+                os.chdir(here)
+
+    def test_gate_hook_without_a_docs_root_judges_the_session_project(self):
+        # no docs root above the edited file: the project is the session's own, as
+        # before the hook resolved from the file -- the protected path stays protected
+        import shutil
+        shutil.rmtree(self.root / "ai_docs")
+        (self.root / "src" / "auth").mkdir()
+        target = self.root / "src" / "auth" / "x.py"
+        self.assertEqual(self.run_gate(target, self.root, "src/auth"), 2)
+
+    def test_gate_hook_two_docs_roots_is_silent(self):
+        # half-migrated project: which root governs cannot be told -- silent, not an error
+        (self.root / "mkt_docs").mkdir()
+        with tempfile.TemporaryDirectory() as other:
+            self.assertEqual(self.run_gate(self.root / "src" / "a.py", other, "src"), 0)
+
+    def test_gate_hook_prefixes_are_relative_to_the_nearest_docs_root(self):
+        # ENFORCEMENT.md: with nested docs roots the prefixes are relative to the
+        # nearest one above the edited file (a monorepo package with its own)
+        pkg = self.root / "packages" / "api"
+        (pkg / "ai_docs").mkdir(parents=True)
+        (pkg / "src" / "auth").mkdir(parents=True)
+        target = pkg / "src" / "auth" / "x.py"
+        self.assertEqual(self.run_gate(target, self.root, "src/auth"), 2)
+        self.assertEqual(self.run_gate(target, self.root, "packages/api/src/auth"), 0)
+
+    def test_gate_hook_explicit_docs_name_walks_from_the_edited_file(self):
+        # an explicit docs root name skips discovery: the project is still the one
+        # holding the edited file, not the working directory's
+        (self.root / "src" / "auth").mkdir()
+        target = self.root / "src" / "auth" / "x.py"
+        with tempfile.TemporaryDirectory() as other, \
+                mock.patch.dict(os.environ, {sdlc_core.DOCS_DIR_ENV: "ai_docs"}):
+            self.assertEqual(self.run_gate(target, other, "src/auth"), 2)
 
 
 if __name__ == "__main__":

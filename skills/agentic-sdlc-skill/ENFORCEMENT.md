@@ -54,9 +54,9 @@ Semantics: exit code 2 + message on stderr ⇒ the write is blocked and the mess
 
 **Usage warnings:**
 - The gate is deliberately coarse: applied to all of `src/` it would also block the legitimate L1/L2 tasks foreseen by the Triage. Use it **only on security-critical directories** (`--protected "src/auth;src/crypto"`), where "never without analysis" is the desired policy.
-- The paths in `--protected` are prefixes relative to the project root, separated by `;`.
+- The paths in `--protected` are prefixes relative to the root of the project the hook judges (below), separated by `;`. With nested docs roots (a monorepo whose package has its own), that is the nearest one above the edited file: write the prefixes relative to it.
 - `ai_docs/`, `tests/` and `test/` are always excluded from blocking.
-- The hook judges the project, and the docs root, holding the edited file: the session's working directory can move with a `cd`, so it is never the reference. `--root <path>` overrides it.
+- The hook judges the project, and the docs root, holding the edited file: the session's working directory can move with a `cd`, so it is never the reference. With no docs root above the file, it is the session's own project, as before. `--root <path>` overrides it; `gate --file` resolves the same way, and two docs roots side by side leave the gate silent.
 - **Hybrid/devPNT projects**: add `--hybrid` to the gate command. Governed designs live in the devPNT DB, so the gate also unlocks when an approved E-TDD shadow (`ai_docs/solutions/SHADOW_*tdd*.md`, exported before implementation — see `hybrid.md` §Shadow discipline) is present. Without the flag the gate would block legitimate governed work. The flag is deliberately explicit: never auto-detected.
 
 ### Verdict check: `verdict` (PreToolUse -- wired by default)
@@ -67,7 +67,8 @@ had stopped it (F-076). `sdlc_check.py verdict --hook` reads the session transcr
 Claude Code hands every hook and refuses an Edit, Write, MultiEdit or NotebookEdit when:
 
 - the session shows no line of the agent's own text that opens with `router:` or declares
-  the level with it on the same line (the verdict; quoted in a sentence it is none), and no
+  the level with it on the same line (`Level: L2 · router: …`, `Level: Spike · router: …`;
+  a markdown opener such as `##`, `-`, `•` or `1.` is allowed; inside a sentence it is none), and no
   line that opens with a level-1 declaration (`Level: L1`, or another lens's level 1 such
   as `E1`; a level quoted inside a sentence declares nothing), or
 - a guide the verdict names, present in `reference/`, never appeared in the input of a
@@ -87,7 +88,9 @@ Non-Goal on r19's precedent): ~0.2–0.5 s per edit and zero tokens when complia
 refusal of at most 250 characters and one retry when not. L1 pays nothing beyond writing
 `Level: L1`, which Rule Zero already asks for. Residuals: edits through a subagent and
 writes made with Bash are not checked (a subagent's edit the client does not mark is judged
-on the orchestrator's verdict); a verdict anywhere earlier in the session counts.
+on the orchestrator's verdict); a verdict anywhere earlier in the session counts; a quote
+that itself opens a line (a blockquote, a backticked form, a line in a code fence) still
+counts as a declaration.
 
 Installing the package wires it machine-wide on Claude Code; **removing that hook entry
 is a standing opt-out.** The command ends in `; exit 0`: a validator that cannot run
