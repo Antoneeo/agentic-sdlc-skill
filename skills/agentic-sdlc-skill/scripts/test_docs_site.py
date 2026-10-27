@@ -1161,6 +1161,23 @@ class Criterion03Chronology(unittest.TestCase):
             got = docs_site.chronology(Path(d) / "ai_docs", {})
             self.assertEqual([e["label"] for e in got], ["F-1 — second", "F-1 — first"])
 
+    def test_a_post_merge_row_is_a_defect_not_a_review(self):
+        """F-085 FS10: the owner's report of a defect after merge is shown as one,
+        and every other row keeps kind `review` and its text (P10)."""
+        with tempfile.TemporaryDirectory() as d:
+            write(d, "ai_docs/audit/reviews/REVIEW_LOG.md",
+                  "| date | doc_key | tier | model | reviewer | findings_raised | "
+                  "findings_real | verdict | revise_rounds |\n|---|---|---|---|---|---|---|---|---|\n"
+                  "| 2026-05-01 | ANALYSIS_x.md | design | deep | subagent | 1 | 1 | PASS | 1 |\n"
+                  "| 2026-05-02 | ANALYSIS_x.md | post-merge | none (owner report) | owner "
+                  "| 1 | 1 | DEFECT | 0 |\n")
+            got = docs_site.chronology(Path(d) / "ai_docs", {})
+        self.assertEqual([(e["date"], e["kind"], e["label"]) for e in got], [
+            ("2026-05-02", "defect", "ANALYSIS_x.md — post-merge: DEFECT"),
+            ("2026-05-01", "review", "ANALYSIS_x.md — design: PASS")])
+        strings = (PAGE_DIR / "strings.js").read_text(encoding="utf-8")
+        self.assertIn("event_defect:", strings)
+
     def test_lately_is_the_ten_most_recent(self):
         self.assertEqual(self.core["home"]["lately"], self.core["chronology"][:10])
 

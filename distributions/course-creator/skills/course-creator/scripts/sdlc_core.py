@@ -265,6 +265,7 @@ REQUIRED_CAPABILITIES = frozenset({
 OPTIONAL_CAPABILITIES = frozenset({
     "architect_pass",         # does the component already exist? (code overlay)
     "interaction_contract",   # actor-facing surface spec between use cases and solution (code overlay)
+    "preservation_constraints",  # the Impact's P table, and validate's note on its absence (code overlay)
     "taxonomy_pass",          # do the categories/topics already exist? (knowledge overlay)
     "comprehension_guides",   # source_kind: code maps of complex components
     "tdd",                    # test-first discipline
@@ -1807,6 +1808,18 @@ def cmd_validate(root, strict=False, hybrid=False):
             advisories.append(f"{rel}: L3 without a filled '## Guide check' -- does a CURRENT "
                               "guide cover what this touches, and did understanding it force "
                               "a model of a complex component no guide covers (guides.md, section 1)?")
+        # F-085 FS7: code lens only (R12: the lens, not merely the domain -- a kb
+        # install validating a code-domain unit sees no change), open L3 only, a
+        # note and never an error, so no `--strict` exit changes (P5).
+        impact = section_body(text, IMPACT_SECTION)
+        if (has_capability("preservation_constraints") and domain == "code"
+                and str(level or "").upper() == "L3"
+                and status in ("PLANNED", "IN_PROGRESS")
+                and impact is not None and not has_preservation_record(impact)):
+            advisories.append(f"{rel}: open L3 whose '## Impact' has neither the "
+                              f"'{PRESERVATION_HEADING}' table nor the line "
+                              f"'{NO_SYMBOL_LINE}' -- what existing code must keep "
+                              "doing is not extractable (templates.md)")
 
     # Generated index aligned
     hist = ai / "strategic" / "features_history.md"
@@ -2656,6 +2669,473 @@ def cmd_verdict(args):
     return 0
 
 
+# -------------------------------------------------------------- constraints
+# F-085: the constraint reader. It reads what an ANALYSIS already states in
+# extractable form -- id'd use cases, spec items and threats, and the rows of
+# the `### Preservation constraints` table -- and binds each to the files it
+# names. It names no feature and computes nothing: no count, rank or marker
+# reaches the output, and every view ends with CONSTRAINTS_SENTENCE naming what
+# it could not extract, so a short view never reads as a complete one.
+
+CONSTRAINT_SECTIONS = (("## Use Cases",), ("## Functional Spec",), SECURITY_SECTION)
+INTERFACE_SECTION = ("## Interface Contract",)
+IMPACT_SECTION = ANALYSIS_SECTIONS[2]
+PRESERVATION_HEADING = "### Preservation constraints"
+NO_SYMBOL_LINE = "No existing symbol changed."
+CONSTRAINTS_SENTENCE = ("This view shows only the constraints written in extractable "
+                        "form and never replaces the ANALYSIS")
+CONSTRAINT_LINE_MAX = 300
+
+_ITEM_RE = re.compile(r"^\s*([-*+]\s+|#{3,4}\s+|\|\s*)(?:\*\*|__)?(?:UC|FS|T)\d+\b")
+_P_ROW_RE = re.compile(r"^\|\s*(?:\*\*)?(P\d+)\b")
+_ITEM_ID_RE = re.compile(r"(UC|FS|T)\d+")
+_CITE_RE = re.compile(r"\b(UC|FS|T)(\d+)(?:\s*[–-]\s*(?:UC|FS|T)?(\d+))?\b")
+_BACKTICK_RE = re.compile(r"`([^`\n]+)`")
+_PATH_TOKEN_RE = re.compile(r"^[A-Za-z0-9_.\-/]+(?:::[A-Za-z0-9_.]+)?$")
+_PATH_EXT_RE = re.compile(r"[^./]\.[A-Za-z0-9]+$")
+_SENTENCE_END_RE = re.compile(r"[.!?](?=\s|$)")
+_CELL_SPLIT_RE = re.compile(r"(?<!\\)\|")
+_CONTROL_RE = re.compile(r"[\x00-\x08\x0b-\x1f\x7f]")
+
+
+def _norm_rel(path):
+    """Repository-relative, forward slashes, case-folded where the filesystem is."""
+    p = path.replace("\\", "/")
+    while p.startswith("./"):
+        p = p[2:]
+    return p.casefold() if os.name == "nt" else p
+
+
+def _path_tokens(text, need_slash):
+    """The backticked file paths in `text`; `path::symbol` yields its path. An elided
+    (`...`), globbed, placeholder or parent-relative path binds nothing; in prose
+    (`need_slash`) a bare file name is a mention, not a binding."""
+    out = set()
+    for token in _BACKTICK_RE.findall(text or ""):
+        t = token.strip()
+        if "..." in t or "*" in t or t.startswith("/") or not _PATH_TOKEN_RE.match(t):
+            continue
+        path = t.split("::", 1)[0]
+        while path.startswith("./"):
+            path = path[2:]
+        if ".." in path.split("/") or not _PATH_EXT_RE.search(path):
+            continue
+        if need_slash and "/" not in path:
+            continue
+        out.add(_norm_rel(path))
+    return out
+
+
+def _first_sentence(text):
+    """Up to the first sentence end outside a backticked span (so `a.py` never ends
+    one); a bold title such as `**FS1 Ids.**` ends nothing either."""
+    masked = _BACKTICK_RE.sub(lambda m: "`" + "x" * len(m.group(1)) + "`", text)
+    m = _SENTENCE_END_RE.search(masked)
+    return text[:m.end()] if m else text
+
+
+def _cells(row):
+    return [c.strip() for c in _CELL_SPLIT_RE.split(row.strip().strip("|"))]
+
+
+def _cited_ids(text):
+    """Ids cited in `text`, a range such as `FS3–FS7` expanded."""
+    out = set()
+    for prefix, start, end in _CITE_RE.findall(text or ""):
+        a = int(start)
+        b = int(end) if end else a
+        if b < a or b - a > 50:
+            b = a
+        out.update(f"{prefix}{n}" for n in range(a, b + 1))
+    return out
+
+
+def parse_constraints(text):
+    """Every constraint `text` states in extractable form, in document order: a dict
+    with `id`, `kind` (`item` or `P`), `section` (its `## ` heading), `line`
+    (1-based), `statement`, `bindings` (normalized paths), `evidence` and
+    `released` (a P row's release reference, or None)."""
+    lines = (text or "").splitlines()
+    items, impact_rows = [], []
+    section, extracted, impact, preservation = None, False, False, False
+    for n, line in enumerate(lines):
+        if line.startswith("## "):
+            section = line.strip()
+            extracted = any(line.startswith(a) for s in CONSTRAINT_SECTIONS for a in s)
+            impact = any(line.startswith(a) for a in IMPACT_SECTION)
+            preservation = False
+            continue
+        if impact:
+            if line.startswith("### "):
+                preservation = line.strip().lower() == PRESERVATION_HEADING.lower()
+                continue
+            if not line.lstrip().startswith("|"):
+                continue
+            cells = _cells(line)
+            if preservation:
+                m = _P_ROW_RE.match(line.strip())
+                if m and len(cells) >= 5:
+                    must = cells[3]
+                    released = None
+                    if must.startswith("RELEASED (") and ")" in must:
+                        released = must[len("RELEASED ("):must.index(")")]
+                    items.append({"id": m.group(1), "kind": "P", "section": section,
+                                  "line": n + 1, "statement": must,
+                                  "bindings": _path_tokens(cells[1], False),
+                                  "evidence": cells[4], "released": released})
+            elif cells:
+                paths = _path_tokens(cells[0], False)
+                if paths:
+                    impact_rows.append((paths, _cited_ids(" | ".join(cells[1:]))))
+            continue
+        if not extracted:
+            continue
+        m = _ITEM_RE.match(line)
+        if not m:
+            continue
+        marker = m.group(1).strip()
+        body = []
+        if not marker.startswith("|"):
+            for nxt in lines[n + 1:]:
+                if nxt.startswith("#") or _ITEM_RE.match(nxt):
+                    break
+                if marker.startswith("#"):
+                    if nxt.strip():
+                        body.append(nxt.strip())
+                elif nxt.strip() and nxt[:1].isspace():
+                    body.append(nxt.strip())
+                else:
+                    break
+        if marker.startswith("|"):
+            statement = _first_sentence(" | ".join(_cells(line)))
+            whole = line
+        elif marker.startswith("#"):
+            title = line.lstrip("#").strip()
+            rest = " ".join(body)
+            statement = title + (" — " + _first_sentence(rest) if rest else "")
+            whole = " ".join([line] + body)
+        else:
+            joined = " ".join([line.strip()[len(marker):].strip()] + body)
+            statement = _first_sentence(joined)
+            whole = joined
+        items.append({"id": _ITEM_ID_RE.search(line).group(0), "kind": "item",
+                      "section": section, "line": n + 1, "statement": statement,
+                      "bindings": _path_tokens(whole, True), "evidence": None,
+                      "released": None})
+    for paths, ids in impact_rows:
+        for c in items:
+            if c["kind"] == "item" and c["id"] in ids:
+                c["bindings"] |= paths
+    return items
+
+
+def has_preservation_record(impact_body):
+    """True when an Impact body holds the preservation table or the no-symbol line."""
+    return any(b.strip().lower() == PRESERVATION_HEADING.lower() or b.strip() == NO_SYMBOL_LINE
+               for b in (impact_body or "").splitlines())
+
+
+def unread_sections(text, items=None):
+    """The `## ` headings the view could not extract, in document order: the
+    Interface Contract (its items carry no id), an extracted section holding prose
+    but no id'd item, and an Impact with neither the preservation table nor the
+    no-symbol line."""
+    items = parse_constraints(text) if items is None else items
+    homes = {c["section"] for c in items if c["kind"] == "item"}
+    lines = (text or "").splitlines()
+    names = []
+    for i, line in enumerate(lines):
+        if not line.startswith("## "):
+            continue
+        body = []
+        for nxt in lines[i + 1:]:
+            if nxt.startswith("## "):
+                break
+            body.append(nxt)
+        heading = line.strip()
+        if any(line.startswith(a) for a in INTERFACE_SECTION):
+            names.append(heading)
+        elif any(line.startswith(a) for s in CONSTRAINT_SECTIONS for a in s):
+            if any(b.strip() for b in body) and heading not in homes:
+                names.append(heading)
+        elif any(line.startswith(a) for a in IMPACT_SECTION):
+            if not has_preservation_record("\n".join(body)):
+                names.append(heading)
+    return names
+
+
+def constraints_sentence(names):
+    if not names:
+        return CONSTRAINTS_SENTENCE + "."
+    return CONSTRAINTS_SENTENCE + "; read in full: " + ", ".join(f"`{n}`" for n in names) + "."
+
+
+def _clip(line):
+    line = _CONTROL_RE.sub("", line)
+    return line if len(line) <= CONSTRAINT_LINE_MAX else line[:CONSTRAINT_LINE_MAX - 1] + "…"
+
+
+def constraint_lines(home, items, grouped):
+    """FS4's lines: `ID — statement — home:line`, a P row followed by its evidence;
+    `grouped` puts each home heading before its first item."""
+    out, current = [], None
+    for c in items:
+        if grouped and c["section"] != current:
+            current = c["section"]
+            out.append(_clip(current))
+        out.append(_clip(f"{c['id']} — {c['statement']} — {home}:{c['line']}"))
+        if c["kind"] == "P" and c["evidence"]:
+            out.append(_clip(f"    evidence: {c['evidence']}"))
+    return out
+
+
+def unit_constraints(root, unit):
+    """[(path, meta, items, unread)] for the ANALYSIS files of `unit` -- an id such
+    as F-001, or a file name with or without `.md`; [] when none matches."""
+    key = str(unit or "").strip()
+    name = key if key.endswith(".md") else key + ".md"
+    out = []
+    for p, meta, text in list_analyses(root):
+        m = UNIT_ID_RE.search(str(meta.get("id") or ""))
+        if p.name == name or (m and m.group(1) == key):
+            items = parse_constraints(text)
+            out.append((p, meta, items, unread_sections(text, items)))
+    return out
+
+
+def project_relative(root, path):
+    """`path` relative to `root`, normalized as bindings are, or None outside it."""
+    raw = str(path or "").replace("\\", "/")
+    if not raw:
+        return None
+    p = Path(raw)
+    if not p.is_absolute():
+        p = Path.cwd() / p
+    try:
+        rel = p.resolve().relative_to(Path(root).resolve())
+    except (ValueError, OSError):
+        return None
+    return _norm_rel(rel.as_posix())
+
+
+def open_code_units(root):
+    """[(path, meta, text)] for the tree's open L3 units of the code domain. Open
+    units come from `_open_units`, unchanged (P1)."""
+    if not ai_path(root).is_dir():
+        return []
+    open_names = {n for names in _open_units(root).values() for n in names}
+    if not open_names:
+        return []
+    default = project_default_domain(root)
+    return [(p, meta, text) for p, meta, text in list_analyses(root)
+            if p.name in open_names
+            and str(meta.get("level", "")).upper() == "L3"
+            and meta.get("status") in ("PLANNED", "IN_PROGRESS")
+            and resolve_domain(meta, default)[0] == "code"]
+
+
+def file_constraints(root, path):
+    """[(path, meta, bound items, unread)] for each open L3 unit of the code domain
+    with an unreleased constraint bound to `path`."""
+    rel = project_relative(root, path)
+    if rel is None:
+        return []
+    out = []
+    for p, meta, text in open_code_units(root):
+        items = parse_constraints(text)
+        bound = [c for c in items if not c["released"] and rel in c["bindings"]]
+        if bound:
+            out.append((p, meta, bound, unread_sections(text, items)))
+    return out
+
+
+# The recall hook (FS6). It informs, never decides: its JSON carries no
+# `permissionDecision`, so the user's permission flow is the one without it
+# (P6). A level is DECLARED by a line that opens with the level word, in the
+# form Rule Zero prescribes -- `L1` alone, `L2`/`L3` with `router` on the same
+# line -- so a level quoted inside a sentence is not one. `transcript_facts`
+# keeps the verdict hook's own reading, unchanged (P2).
+CONSTRAINTS_HOOK_LINES = 15
+_DECLARATION_RE = re.compile(
+    r"^[ \t>*_`-]*(?:level|livello|niveau|nivel|stufe)\b[ \t*_`:·—–-]*(?:è[ \t]+)?L"
+    r"(?:(1)\b|([23])\b(?=[^\n]*\brouter\b))", re.IGNORECASE | re.MULTILINE)
+_WORK_TOOLS = VERDICT_EDIT_TOOLS + ("Read",)
+
+
+def transcript_work(path):
+    """What the session transcript shows about the work, or None when it cannot be
+    read within the verdict hook's bounds: {"assistant": entries parsed,
+    "sidechain": a subagent's transcript, "level": the last declared level ("1",
+    "2", "3") or None, "touched": normalized absolute paths this session read or
+    wrote}."""
+    work = {"assistant": 0, "sidechain": False, "level": None, "touched": set()}
+    try:
+        p = Path(path)
+        if not p.is_file() or p.stat().st_size > VERDICT_MAX_BYTES:
+            return None
+        with p.open("rb") as fh:
+            for raw in fh:
+                if len(raw) > VERDICT_LINE_MAX or b'"assistant"' not in raw:
+                    continue
+                try:
+                    entry = json.loads(raw.decode("utf-8", errors="replace"))
+                except ValueError:
+                    continue
+                if not isinstance(entry, dict) or entry.get("type") != "assistant":
+                    continue
+                content = (entry.get("message") or {}).get("content")
+                if not isinstance(content, list):
+                    continue
+                work["assistant"] += 1
+                if entry.get("isSidechain") is True:
+                    work["sidechain"] = True
+                for block in content:
+                    if not isinstance(block, dict):
+                        continue
+                    if block.get("type") == "text":
+                        for one, other in _DECLARATION_RE.findall(str(block.get("text") or "")):
+                            work["level"] = one or other
+                    elif block.get("type") == "tool_use" and block.get("name") in _WORK_TOOLS:
+                        inp = block.get("input") or {}
+                        target = inp.get("file_path") or inp.get("notebook_path")
+                        if isinstance(target, str) and target:
+                            try:
+                                work["touched"].add(_norm_rel(Path(target).resolve().as_posix()))
+                            except (OSError, ValueError):
+                                pass
+    except (OSError, ValueError, TypeError, AttributeError):
+        return None
+    return work
+
+
+def _hook_new_text(tool_input):
+    """The text an edit is about to write: Edit, Write, MultiEdit, NotebookEdit."""
+    parts = [tool_input.get(k) for k in ("new_string", "content", "new_source")]
+    for e in tool_input.get("edits") or []:
+        if isinstance(e, dict):
+            parts.append(e.get("new_string"))
+    return "\n".join(x for x in parts if isinstance(x, str))
+
+
+def _unit_documents(root, p):
+    """Normalized absolute paths of a unit's ANALYSIS, request records and handoff:
+    reading or writing any of them is working on the unit."""
+    slug = p.stem[len("ANALYSIS_"):]
+    docs = {p, ai_path(root, "audit", f"HANDOFF_{slug}.md")}
+    req = ai_path(root, "audit", "requests")
+    if req.is_dir():
+        for r in req.glob("REQUEST_*.md"):
+            meta = load_frontmatter(read_text(r).splitlines())
+            if str(meta.get("analysis") or "").strip().strip("'\"`") == p.name:
+                docs.add(r)
+                docs.add(ai_path(root, "audit", f"HANDOFF_{r.stem[len('REQUEST_'):]}.md"))
+    return {_norm_rel(d.resolve().as_posix()) for d in docs}
+
+
+def constraints_hook_context(payload, root=None, docs_name=None):
+    """The context to recall before this edit, or None (FS6): an edit tool, outside
+    a subagent, on a file of a project whose open L3 code unit binds it (or the
+    unit's own ANALYSIS, about to name a path a P row binds -- UC6), by a session
+    that worked on that unit and last declared L3."""
+    if payload.get("tool_name") not in VERDICT_EDIT_TOOLS or payload.get("agent_id"):
+        return None
+    tool_input = payload.get("tool_input") or {}
+    target = tool_input.get("file_path") or tool_input.get("notebook_path")
+    transcript = payload.get("transcript_path")
+    if not isinstance(target, str) or not target or not transcript:
+        return None
+    # The hook runs in the session's current directory, which a `cd` moves (live
+    # probe 2026-10-27): the project AND its docs root name are the ones holding
+    # the file, never the ones around the working directory.
+    start = Path(root) if root is not None else Path(target).resolve().parent
+    try:
+        found_root, name = resolve_docs_dir(argparse.Namespace(docs_dir=docs_name), start)
+    except AmbiguousDocsRoot:
+        return None
+    set_docs_dir(name)
+    if root is None:
+        root = found_root if found_root is not None else find_project_root(start)
+    if not ai_path(root, "solutions").is_dir():
+        return None
+    found = file_constraints(root, target)
+    rel = project_relative(root, target)
+    named = _path_tokens(_hook_new_text(tool_input), False)
+    if named and rel and rel.startswith(_norm_rel(f"{docs_dir()}/solutions/ANALYSIS_")):
+        for p, meta, text in open_code_units(root):
+            if _norm_rel(f"{docs_dir()}/solutions/{p.name}") != rel:
+                continue
+            items = parse_constraints(text)
+            bound = [c for c in items if c["kind"] == "P"
+                     and not c["released"] and c["bindings"] & named]
+            if bound and not any(f[0] == p for f in found):
+                found.append((p, meta, bound, unread_sections(text, items)))
+    if not found:
+        return None
+    work = transcript_work(transcript)
+    if not work or not work["assistant"] or work["sidechain"] or work["level"] != "3":
+        return None
+    # One budget for the whole recall, whatever the number of units; a P line and
+    # its evidence line are kept together or left out together.
+    out, budget = [], CONSTRAINTS_HOOK_LINES
+    for p, meta, items, unread in found:
+        if not (_unit_documents(root, p) & work["touched"]):
+            continue
+        home = f"solutions/{p.name}"
+        unit = meta.get("id") or p.stem
+        out.append(_clip(f"[sdlc constraints] {unit} — {home}"))
+        shown = 0
+        for c in items:
+            chunk = constraint_lines(home, [c], False)
+            if len(chunk) > budget:
+                break
+            out.extend(chunk)
+            budget -= len(chunk)
+            shown += 1
+        if shown < len(items):
+            out.append(_clip(f"More: sdlc_check.py constraints --unit {unit}"))
+        out.append(_clip(constraints_sentence(unread)))
+    return "\n".join(out) if out else None
+
+
+def cmd_constraints_hook(args):
+    """PreToolUse hook: print a context-only JSON or nothing. Always 0 -- exit 2
+    would block the edit, and the wired command adds `; exit 0` for validators
+    that cannot run this at all (T2)."""
+    try:
+        payload = read_hook_payload()
+        if payload is None:
+            return 0
+        root = Path(args.root).resolve() if args.root else None
+        context = constraints_hook_context(payload, root, getattr(args, "docs_dir", None))
+        if context:
+            print(json.dumps({"hookSpecificOutput": {
+                "hookEventName": "PreToolUse",
+                "additionalContext": context}}, ensure_ascii=False))
+    except Exception:
+        pass
+    return 0
+
+
+def cmd_constraints(root, args):
+    if args.unit:
+        found = unit_constraints(root, args.unit)
+        if not found:
+            print(f"[ERROR] unknown unit '{args.unit}': give an id such as F-001 "
+                  "or an ANALYSIS file name")
+            return 1
+        groups = [(p, meta, items, unread, True) for p, meta, items, unread in found]
+    else:
+        groups = [(p, meta, items, unread, False)
+                  for p, meta, items, unread in file_constraints(root, args.file)]
+    for p, meta, items, unread, grouped in groups:
+        home = f"solutions/{p.name}"
+        print(_clip(f"{meta.get('id') or p.stem} — {home}"))
+        for line in constraint_lines(home, items, grouped):
+            print(line)
+        print(_clip(constraints_sentence(unread)))
+    return 0
+
+
 # --------------------------------------------------------------------- plan
 # Subagent Execution (Feature A). Zero-execution surface: this section and
 # everything it calls MUST NOT spawn a process (no subprocess/os.system/eval/
@@ -2985,6 +3465,10 @@ def cmd_benefit(root):
     rows, unparsed = parse_review_log(read_text(log))
     not_due = [r for r in rows if _is_not_due(r["verdict"])]
     rows = [r for r in rows if not _is_not_due(r["verdict"])]
+    # F-085 FS10: a `post-merge` row is the owner's report of a defect that got
+    # past every review -- not a review, so it stays out of every review figure.
+    post_merge = [r for r in rows if r["tier"].lower().startswith("post-merge")]
+    rows = [r for r in rows if not r["tier"].lower().startswith("post-merge")]
     # `tier` carries the MOMENT in Standalone (design / closure) and the
     # reviewer WEIGHT in Hybrid (deep / light / code / guide / vision). A
     # Hybrid row is a real review whose moment this column does not state, so
@@ -3009,11 +3493,14 @@ def cmd_benefit(root):
                     unstated_code += n
     classified = moments["design"] + moments["closure"]
     print("rows parsed: %d   rows unparsed: %d%s"
-          % (len(rows) + len(not_due), len(unparsed),
+          % (len(rows) + len(not_due) + len(post_merge), len(unparsed),
              ("  -> " + "; ".join("line %d: %s" % u for u in unparsed[:5]))
              if unparsed else ""))
     print("reviews ruled not due (logged, counted in no figure below): %d"
           % len(not_due))
+    if post_merge:
+        print("defects reported after merge (tier post-merge, not reviews, "
+              "counted in no figure below): %d" % len(post_merge))
     print("reviews with a stated moment: %d   moment not stated by `tier`: %d%s"
           % (len(classified), sum(unstated.values()),
              ("  (" + ", ".join("%s x%d" % (t, n) for t, n
@@ -3506,6 +3993,16 @@ def main(argv=None):
                              "or an unread named guide (fail-open, always exit 0)")
     vp.add_argument("--hook", action="store_true", help="read the hook JSON payload from stdin")
 
+    cp = sub.add_parser("constraints", parents=[common],
+                        help="print the constraints an ANALYSIS states in extractable "
+                             "form: a unit's view, or those bound to a file")
+    cg = cp.add_mutually_exclusive_group(required=True)
+    cg.add_argument("--unit", help="unit id (e.g. F-001) or ANALYSIS file name")
+    cg.add_argument("--file", help="file path: constraints of the open L3 code units bound to it")
+    cg.add_argument("--hook", action="store_true",
+                    help="PreToolUse hook: read the payload from stdin, print context only "
+                         "(fail-open, always exit 0)")
+
     sub.add_parser("benefit", parents=[common],
                    help="report what the review gates caught (and what the "
                         "doctrine costs to read) -- a report, never a gate: "
@@ -3528,6 +4025,12 @@ def main(argv=None):
     pb.add_argument("--task", required=True, help="task id to brief")
 
     args = ap.parse_args(argv)
+
+    # F-085: the recall hook resolves its root and docs root from the edited file
+    # (the hook runs in whatever directory the session moved to), so it is
+    # dispatched before the working-directory resolution below.
+    if args.cmd == "constraints" and args.hook:
+        return cmd_constraints_hook(args)
 
     # Resolve the documentation root ONCE, before any command runs, so every
     # surface -- paths, messages, generated headers, the gate's exempt prefix --
@@ -3578,6 +4081,8 @@ def main(argv=None):
         return cmd_mark(root, args.paths, args.note)
     if args.cmd == "benefit":
         return cmd_benefit(root)
+    if args.cmd == "constraints":
+        return cmd_constraints(root, args)
     if args.cmd == "migrate":
         return cmd_migrate(root, args)
     if args.cmd == "plan":

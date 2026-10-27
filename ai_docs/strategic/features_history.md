@@ -72,3 +72,4 @@
 | F-082 | F-082 | code | L3 | PLANNED | 2026-10-23 |  | solutions/ANALYSIS_codex_agents_skills.md |
 | F-083 | kb import keeps a foreign ruling foreign — prov IMPORTED, origin named in its note, its set reopened until ratified | code | L3 | COMPLETED | 2026-10-23 | 2026-10-26 | solutions/ANALYSIS_kb_import_ruling.md |
 | F-084 | kb corpus reach — the project files the corpus never examined, and the documents the project sent out | code | L3 | COMPLETED | 2026-10-26 | 2026-10-27 | solutions/ANALYSIS_kb_corpus_reach.md |
+| F-085 | The agent's working model — constraints extractable, synthesized, recalled | code | L3 | COMPLETED | 2026-10-27 | 2026-10-27 | solutions/ANALYSIS_working_model.md |

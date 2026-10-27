@@ -58,6 +58,7 @@ window.DOCS_SITE_STRINGS = {
   event_source: "source document received",
   event_sent: "document sent",
   event_review: "review",
+  event_defect: "defect reported after merge",
   event_decision: "decision record",
   event_project_note: "project note",
   event_spike: "exploration outcome",

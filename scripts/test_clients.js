@@ -1076,3 +1076,87 @@ test('F-076: postinstall wires and preuninstall removes the verdict check (child
     fs.rmSync(tmpHome, { recursive: true, force: true });
   }
 });
+
+// --- F-085: the constraint recall (PreToolUse, context only) -----------------
+// A second PreToolUse hook beside the verdict check: its own spec, marker and
+// opt-out, the same `; exit 0` (T2), and an uninstall that names each entry as
+// the hook it is (P7) -- two PreToolUse entries must not both read "verdict".
+const { wireGlobalRecallHook } = require('./lib');
+const recallEntries = (p) => {
+  if (!fs.existsSync(p)) return [];
+  const groups = ((readJson(p).hooks || {}).PreToolUse) || [];
+  return groups.flatMap((g) => (Array.isArray(g.hooks) ? g.hooks : [g]).map((h) => ({ g, h })))
+    .filter(({ h }) => h && typeof h.command === 'string' && / constraints(\s|$)/.test(h.command));
+};
+
+test('F-085: fresh machine wires the recall once, wrapped to exit 0, own marker', () => {
+  gsandbox(({ home, kbroot, client, python }) => {
+    const r = wireGlobalRecallHook({ client, python });
+    assert.strictEqual(r.code, 'wired');
+    const found = recallEntries(userSettings(home));
+    assert.strictEqual(found.length, 1);
+    assert.ok(/ constraints --hook; exit 0$/.test(found[0].h.command), found[0].h.command);
+    assert.strictEqual(found[0].g.matcher, 'Edit|Write|MultiEdit|NotebookEdit');
+    assert.ok(fs.existsSync(path.join(kbroot, 'recall-hook-wired')), 'its own marker');
+    assert.ok(!fs.existsSync(path.join(kbroot, 'verdict-hook-wired')), 'the verdict marker is not touched');
+  });
+});
+
+test('F-085: recall wiring twice is already; removing it is a standing opt-out', () => {
+  gsandbox(({ home, client, python }) => {
+    assert.strictEqual(wireGlobalRecallHook({ client, python }).code, 'wired');
+    assert.strictEqual(wireGlobalRecallHook({ client, python }).code, 'already');
+    const s = readJson(userSettings(home));
+    delete s.hooks.PreToolUse;
+    writeSettings(userSettings(home), s);
+    assert.strictEqual(wireGlobalRecallHook({ client, python }).code, 'opted-out');
+    assert.strictEqual(recallEntries(userSettings(home)).length, 0);
+  });
+});
+
+test('F-085: verdict and recall are told apart (P4)', () => {
+  gsandbox(({ home, client, python }) => {
+    assert.strictEqual(wireGlobalVerdictHook({ client, python }).code, 'wired');
+    assert.strictEqual(wireGlobalRecallHook({ client, python }).code, 'wired');
+    assert.strictEqual(verdictEntries(userSettings(home)).length, 1);
+    assert.strictEqual(recallEntries(userSettings(home)).length, 1);
+    assert.strictEqual(wireGlobalVerdictHook({ client, python }).code, 'already');
+    assert.strictEqual(wireGlobalRecallHook({ client, python }).code, 'already');
+  });
+});
+
+test('F-085: uninstall removes both PreToolUse entries and names each (P7)', () => {
+  gsandbox(({ home, kbroot, client, python }) => {
+    wireGlobalVerdictHook({ client, python });
+    wireGlobalRecallHook({ client, python });
+    const removed = removeGlobalCommandHooks([path.join(home, 'skills', INSTALLED_SKILL_NAME)]);
+    assert.deepStrictEqual(removed.map((x) => x.name).sort(),
+      ['constraint recall', 'guide-verdict check']);
+    assert.strictEqual(verdictEntries(userSettings(home)).length, 0);
+    assert.strictEqual(recallEntries(userSettings(home)).length, 0);
+    assert.ok(!fs.existsSync(path.join(kbroot, 'recall-hook-wired')), 'marker cleared: removed');
+  });
+});
+
+test('F-085: postinstall wires and preuninstall removes the recall (child process)', () => {
+  const tmpHome = fs.mkdtempSync(path.join(os.tmpdir(), 'f085-post-'));
+  try {
+    fs.mkdirSync(path.join(tmpHome, '.claude', 'skills'), { recursive: true });
+    const childEnv = { ...process.env, HOME: tmpHome, USERPROFILE: tmpHome,
+      AGENTIC_SDLC_KB_ROOT: path.join(tmpHome, 'kbroot') };
+    delete childEnv.CLAUDE_CONFIG_DIR;
+    delete childEnv.GEMINI_HOME;
+    delete childEnv.CODEX_HOME;
+    delete childEnv.ANTIGRAVITY_HOME;
+    execFileSync(process.execPath, [POSTINSTALL], { env: childEnv, stdio: 'ignore' });
+    const settingsPath = path.join(tmpHome, '.claude', 'settings.json');
+    assert.strictEqual(recallEntries(settingsPath).length, 1, 'postinstall wired it');
+    assert.strictEqual(verdictEntries(settingsPath).length, 1, 'beside the verdict check');
+    const out = execFileSync(process.execPath, [PREUNINSTALL], { env: childEnv, encoding: 'utf8' });
+    assert.strictEqual(recallEntries(settingsPath).length, 0, 'preuninstall removed it');
+    assert.ok(/Removed the constraint recall hook entry/.test(out), out);
+    assert.ok(/Removed the guide-verdict check hook entry/.test(out), out);
+  } finally {
+    fs.rmSync(tmpHome, { recursive: true, force: true });
+  }
+});

@@ -662,9 +662,11 @@ function removeGlobalHookEntries(removedRoots, spec) {
 
 // F-076 generalized the pair below to every constant-command hook this
 // installer wires: one spec per hook, the remind names kept as wrappers.
+// `name` is what the uninstaller says it removed: two hooks share PreToolUse,
+// so the event cannot name them (F-085).
 const REMIND_HOOK = {
   event: 'UserPromptSubmit', sub: 'remind', re: / remind(\s|$)/,
-  marker: 'remind-hook-wired', timeout: 5,
+  marker: 'remind-hook-wired', timeout: 5, name: 'per-turn reminder',
 };
 // F-076: the guide-verdict check. `; exit 0` because a validator that cannot
 // run `verdict` -- missing (npm 7+ may never run the uninstaller) or older than
@@ -673,6 +675,17 @@ const REMIND_HOOK = {
 const VERDICT_HOOK = {
   event: 'PreToolUse', sub: 'verdict --hook', suffix: '; exit 0', re: / verdict(\s|$)/,
   marker: 'verdict-hook-wired', timeout: 10, matcher: 'Edit|Write|MultiEdit|NotebookEdit',
+  name: 'guide-verdict check',
+};
+// F-085: the constraint recall -- before an edit of a file its open L3 unit's
+// constraints bind, it adds them to the agent's context. Context only, never a
+// permission decision; `; exit 0` for the same reason as the verdict check.
+// Per-edit cost: the lines, owner-accepted in REQUEST_working_model.md R12 (b);
+// ~0.25 s per edit in every project, owner-accepted in R15.
+const RECALL_HOOK = {
+  event: 'PreToolUse', sub: 'constraints --hook', suffix: '; exit 0', re: / constraints(\s|$)/,
+  marker: 'recall-hook-wired', timeout: 10, matcher: 'Edit|Write|MultiEdit|NotebookEdit',
+  name: 'constraint recall',
 };
 
 function commandHookCommand(spec, python, validator) {
@@ -781,19 +794,20 @@ function wireGlobalCommandHook(spec, options) {
 }
 function wireGlobalRemindHook(options) { return wireGlobalCommandHook(REMIND_HOOK, options); }
 function wireGlobalVerdictHook(options) { return wireGlobalCommandHook(VERDICT_HOOK, options); }
+function wireGlobalRecallHook(options) { return wireGlobalCommandHook(RECALL_HOOK, options); }
 
-// Uninstall twin for the constant-command hooks: one {target, event} per
+// Uninstall twin for the constant-command hooks: one {target, event, name} per
 // removal, so the uninstaller can say what it removed.
 function removeGlobalCommandHooks(removedRoots) {
   const removed = [];
-  for (const spec of [REMIND_HOOK, VERDICT_HOOK]) {
+  for (const spec of [REMIND_HOOK, VERDICT_HOOK, RECALL_HOOK]) {
     const targets = removeGlobalHookEntries(removedRoots, {
       event: spec.event,
       re: spec.re,
       markerTargets: () => markerTargetsOf(spec),
       markerRemove: (target) => markerRemoveOf(spec, target),
     });
-    for (const target of targets) removed.push({ target, event: spec.event });
+    for (const target of targets) removed.push({ target, event: spec.event, name: spec.name });
   }
   return removed;
 }
@@ -812,6 +826,7 @@ module.exports = {
   wireRemindHookInto,
   wireGlobalRemindHook,
   wireGlobalVerdictHook,
+  wireGlobalRecallHook,
   removeGlobalCommandHooks,
   remindMarkerHas,
   remindMarkerAdd,

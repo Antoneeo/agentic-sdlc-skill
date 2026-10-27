@@ -15,6 +15,7 @@ not manifested here.
 | `vision/features/VISION_course_creator.md` | APPROVED | Vision approvata di course_creator per spiegazioni progressive, anche quando chi richiede il corso parte da zero. |
 | `vision/features/VISION_kb_second_brain.md` | APPROVED | Feature vision for the kb-agentic "second brain" milestone - the recall reflex, the daily gesture, and the time cycle that keep a project KB honest over mont... |
 | `vision/features/VISION_vision_governance.md` | CURRENT | Feature vision for the Vision governance layer (ai_docs/vision/, Vision Gate) delivered in 1.4.0. |
+| `vision/features/VISION_working_model.md` | CURRENT | Feature Vision for F-085, the agent's working model — constraints made extractable, synthesized and recalled at the moment of action. Read before any proposa... |
 | `vision/principles.md` | DRAFT | Vision Principles |
 | `vision/project_vision.md` | APPROVED | (by Antonio Pinto — v6 2026-07-27, v7 amendment 2026-07-31, v8 amendment 2026-08-01, **v9 amendment 2026-10-17**) |
 | `vision/roadmap.md` | DRAFT | Vision Roadmap |
@@ -54,6 +55,7 @@ not manifested here.
 | `architecture/ADR_2026-09-19_shared_project_memory.md` | CURRENT | Why project memory is shared by every lens while document authority and specialist workflows remain separate. |
 | `architecture/ADR_2026-09-27_course_overlay_single_index.md` | CURRENT | Why course creation owns its teaching artifacts while the shared core owns the ai_docs index. |
 | `architecture/ADR_2026-10-07_agent_review_precedes_human.md` | CURRENT | ADR - devPNT performs no review; in both modes the agent review is review.md, carried to the reviewer by a verbatim REVIEW MANDATE block, and in Hybrid its P... |
+| `architecture/ADR_2026-10-27_context_only_recall_hook.md` | CURRENT | ADR - the constraint recall is a PreToolUse hook that adds context and never decides; the project is resolved from the edited file; validate's note on a miss... |
 | `architecture/ADR_2026-10-27_declarations_and_corpus_reach.md` | CURRENT | Why a document the project sent is its own claim provenance (DECLARED) that never crosses a project boundary, why its contradiction with the ledger is a one-... |
 
 ## functional/

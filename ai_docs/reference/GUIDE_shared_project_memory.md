@@ -65,3 +65,14 @@ printed CLEAN line precedes those additions: use the final exit code and all fin
 not that banner alone. `validate` is lighter than `check`; a successful catalog check
 does not certify claims. Topic/corpus indexes are refreshed only when those directories
 exist; cataloguing a guide does not create a topic graph or ingest a corpus.
+
+## Preservation constraints
+[source: solutions/ANALYSIS_working_model.md#P3]
+
+What this composition must keep doing, as F-085 enumerated it, copied at that unit's
+closure (`guides.md` §3; kept unchanged when the guide is regenerated). Each row cites
+its origin in the marker above, one `#P<n>` per row.
+
+| id | bound to | callers | must stay true | evidence |
+|---|---|---|---|---|
+| P3 | `skills/agentic-sdlc-skill/scripts/knowledge.py::main` | `sdlc_check.main` in every lens | a subcommand not in `INTERCEPTED` reaches the spine untouched, so `constraints` needs no overlay change | re-read knowledge.py 2552–2570 |
