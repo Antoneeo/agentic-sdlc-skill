@@ -1,9 +1,9 @@
 ---
 description: How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish.
 status: CURRENT
-source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition; amended 2026-09-25 — plain `check` beside the hybrid one, `mark` inside the release commit, one tag per package, a pending 2FA is pending, not failed; amended 2026-10-08 — Course latest follows the newest published release for default installation; amended 2026-10-17 — Course publishes on latest like the stable packages, so no separate promotion; amended 2026-10-19 — `mark --note` writes each release's dated entry in project_notes.md; tags are set right before the publish; amended 2026-10-27 (F-070) — user-facing "What's new" per package, mirrored into the README, approved by the owner before the tag, required by publish_all.bat).
+source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition; amended 2026-09-25 — plain `check` beside the hybrid one, `mark` inside the release commit, one tag per package, a pending 2FA is pending, not failed; amended 2026-10-08 — Course latest follows the newest published release for default installation; amended 2026-10-17 — Course publishes on latest like the stable packages, so no separate promotion; amended 2026-10-19 — `mark --note` writes each release's dated entry in project_notes.md; tags are set right before the publish; amended 2026-10-27 (F-070) — user-facing "What's new" per package, mirrored into the README, approved by the owner before the tag, required by publish_all.bat; amended 2026-10-28 — the notes lead with the benefit, and what a user must do is explained in full).
 distilled_from: ai_docs/reference/.sources/release-runbook-course-creator.md
-source_hash: 7599f5fe6ad518e030acbfae854f41bcc7b84f00c58bf9342f78b394c19e0895
+source_hash: cb125faed48766e56b2d6271ab32161a3d76ccde7c62153d8f62d0b051a3db4a
 ---
 # Guide: Release
 
@@ -31,9 +31,15 @@ tags → merge → publish.
    **Then the users' notes, for each bumped package, in this order**
    [source: release-runbook-course-creator.md#user-facing-whats-new--2026-10-27]:
    - Open its `## [X.Y.Z]` section with `### What's new`, written for the people who
-     install the package, not for the agent: a **"New files" table first** when the
-     version adds files (file, skill, who reads it), then new commands, then anything
-     a user must do on upgrade. No internals only the agent reads, no personal or
+     install the package, not for the agent. **Lead with the benefit**
+     [source: release-runbook-course-creator.md#notes-lead-with-the-benefit--2026-10-28]:
+     what the version brings them, grouped by benefit, one or two plain sentences
+     each — what it lets them do or spares them. Then the **"New files" table** when
+     the version adds files (file, skill, who reads it). Commands, flags, formats and
+     states appear only where a user must act on them, and **what a user must do is
+     explained in full**: who it concerns and how they can tell, why (what goes wrong
+     otherwise), the exact steps with the commands or files involved, and how to check
+     it worked. No internals only the agent reads, no personal or
      employer references. While `audit/project_notes.md` carries a pending
      first-notes entry naming the package, its notes also cover what that entry says,
      marked as such; remove the package's name there in the same release commit.

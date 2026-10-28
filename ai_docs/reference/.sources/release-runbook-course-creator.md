@@ -342,3 +342,18 @@ disagrees, after the registry skip. The first notes of each package also summari
 
 Correction, same entry: the unreleased CHANGELOG heading has been `## [Unreleased]` since
 the 1.49.0 work, not `## [Unreleased - X.Y.Z] (...)` as the sections above say.
+
+## Notes lead with the benefit — 2026-10-28
+
+Owner decision (REQUEST_npm_whats_new.md R11), on a team summary of the 1.49.0 wave that
+listed commands and states: "deve essere più orientato a descrivere il beneficio e non i
+dettagli tecnici", then "Yes, add it" to putting it in this rule. The `### What's new`
+opens with what the version brings the people who use it, grouped by benefit, one or two
+plain sentences each — what it lets them do or spares them. Commands, flags, formats and
+states appear only where a user must act on them (an upgrade step). The "New files" table
+of R3/R4 stays when a version adds files, after that opening.
+
+Same day, R12: "ma se si dice cosa si deve fare li bisogna spiegarlo meglio". Where the
+notes ask the user to do something, that part is the exception to brevity: it says who it
+concerns (how they can tell), why (what goes wrong otherwise), the exact steps with the
+commands or files involved, and how to check it worked.

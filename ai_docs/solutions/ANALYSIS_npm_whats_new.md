@@ -376,3 +376,9 @@ string holds a backtick) in a `### What's new` carries the rest of the CHANGELOG
 notes, as CommonMark itself would render it; an invalid `package.json` is reported against
 the folder, not the file. What remains is the owner's: commit and branch, then each
 package's next release (FS6 note in `audit/project_notes.md`; E2E S4-S5).
+
+**2026-10-28 — after closure: the notes rule amended (REQUEST R11, R12).** The owner asked
+that the notes lead with the benefit, not technical detail, and that anything a user must do be
+explained in full (who, why, steps, how to check). `GUIDE_release.md` step 1 now says so; the
+"New files" table of FS5 follows the opening benefit instead of coming first. Nothing in the
+code changes.

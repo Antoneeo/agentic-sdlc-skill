@@ -79,3 +79,17 @@ Course README has none. The owner's answers are unaffected.
 Context (agent): design review PASS in three rounds; asked "Start implementing F-070 from
 the RED tests?"
 > Yes, implement
+
+### R11 — 2026-10-28 — notes lead with the benefit, not technical detail
+Context (agent): after the unit closed, the owner asked for a summary of the 1.49.0 wave for the
+team; the agent's first version listed commands, file sections and states.
+> deve essere più orientato a descrivere il beneficio e non i dettagli tecnici
+
+Then, asked "Add \"benefit first\" to the release guide's rule for the notes?":
+> Yes, add it
+
+### R12 — 2026-10-28 — what a user must do is explained in full
+Context (agent): sent while R11 was being written into the release guide; the team summary's
+"Cosa fare" listed two conditional actions in one line each ("reimportatele", "ricontrollate
+i percorsi protetti").
+> ma se si dice cosa si deve fare li bisogna spiegarlo meglio

@@ -4,8 +4,10 @@ battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Visi
 **2026-10-28 — first users' notes still owed (F-070, FS6): code, KB, marketing, Course.** The first release of
 each package after F-070 also summarizes, in its `### What's new`, what its 1.49.0-wave
 version brought (code 1.49.0, KB 1.32.0, marketing 0.27.0, Course 0.1.0-beta.14),
-published without notes. Remove a package's name here in its release commit; remove this
-entry when none is left (`GUIDE_release.md` step 1).
+published without notes. Start from `audit/release_notes/team_2026-10-27.md`, the owner's
+team notes for that wave (Italian, benefit-first, 2026-10-28): translate it and keep only what
+concerns the package. Remove a package's name here in its release commit; remove this entry
+when none is left (`GUIDE_release.md` step 1).
 
 **2026-10-27 — release 1.49.0: working model (F-085 constraint view and recall hook, post-merge tier), shared knowledge layer (F-084), imported-ruling refusal (F-083), verdict and gate hook fixes.** Code 1.49.0, KB 1.32.0,
 marketing 0.27.0, Course 0.1.0-beta.14; tags v1.49.0 / kb-v1.32.0 / mkt-v0.27.0 /
