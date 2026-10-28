@@ -2,6 +2,11 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [Unreleased]
+
+### Changed
+- The package's npm page (its README) gains a "What's new in <version>" section right after the introduction, written for the people who install the package and linking the full CHANGELOG. It appears from the first version that carries one; each version's notes are the `### What's new` at the top of its CHANGELOG section (F-070). The "Shared project memory" section moves from the top of the page to just after the features, unchanged.
+
 ## [1.49.0] - 2026-10-27
 
 ### Added

@@ -78,6 +78,16 @@ if /I "!PUB!"=="!VER!" (
   echo   [ok] !VER! is already on the registry - skipped, nothing to do.
   popd & exit /b 0
 )
+REM F-070: the npm page is the README, and it stays as published until the next
+REM version - so it must carry this version's "What's new", mirrored from the
+REM CHANGELOG. The release guide runs the same check before the tag; this is the
+REM backstop, after the skip above so a re-run never trips on a published package.
+call node "%ROOT%scripts\whats_new.js" --require "%~1"
+if errorlevel 1 (
+  echo [FAIL] %~2 not published: its README must show the "What's new" of !VER!
+  echo        ^(see the line above^). Nothing was sent for this package.
+  popd & exit /b 1
+)
 if defined PUB (
   echo   registry has !PUB!, publishing !VER! ...
 ) else (

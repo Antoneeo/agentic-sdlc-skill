@@ -324,3 +324,21 @@ then work continued and the tags fell behind `main`; two were never published an
 had to be moved. The tag is set only when the owner is about to publish. A commit after
 the tag and before the publish means: move the tag (it was never published) or bump.
 
+## User-facing What's new — 2026-10-27
+
+Owner decisions (F-070, REQUEST_npm_whats_new.md R1-R8): each package's npm page — its
+README — shows what changed in the published version, for the people who install it, not
+for the agent (R1, R2). Each CHANGELOG version opens with a `### What's new` written in
+users' terms: a "New files" table first when the version adds files — file, skill, who
+reads it (R3, R4) — then new commands, then anything a user must do on upgrade.
+`node scripts/whats_new.js --write` copies it into the README between
+`<!-- whats-new:begin -->` and `<!-- whats-new:end -->`, with a link to the full
+CHANGELOG; the page shows the latest version only (R7). The owner approves that text
+before the tag (R7). It gets an agent review only when it adds something the reviewed
+work does not already state; otherwise the review is NOT DUE and logged as such (R8).
+`publish_all.bat` refuses to publish a package whose version has no notes or whose README
+disagrees, after the registry skip. The first notes of each package also summarize its
+1.49.0-wave version, published without notes (R7).
+
+Correction, same entry: the unreleased CHANGELOG heading has been `## [Unreleased]` since
+the 1.49.0 work, not `## [Unreleased - X.Y.Z] (...)` as the sections above say.

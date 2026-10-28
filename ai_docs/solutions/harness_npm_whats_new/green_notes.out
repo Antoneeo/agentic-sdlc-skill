@@ -1,0 +1,17 @@
+============================================================
+  Publish the agentic-sdlc family  (code / kb / mkt / course)
+  Precondition: bump + commit + tag done (git_push_tag.bat).
+  npm opens a browser to authorize EACH package.
+============================================================
+Proceed? [y/N]: 
+--- @antoneeo/agentic-sdlc-skill @ 1.49.0 ---
+[ok] @antoneeo/agentic-sdlc-skill 1.49.0: README agrees
+  not on the registry yet, publishing 1.49.0 ...
+  Authorize in the browser when npm opens it...
+[stub] publish logged, nothing sent
+[ok] published @antoneeo/agentic-sdlc-skill @ 1.49.0.
+
+--- @antoneeo/kb-agentic-skill @ 1.32.0 ---
+[FAIL] @antoneeo/kb-agentic-skill 1.32.0: no "What's new" for 1.32.0 in CHANGELOG.md - write it under "## [1.32.0]", then node scripts/whats_new.js --write
+[FAIL] @antoneeo/kb-agentic-skill not published: its README must show the "What's new" of 1.32.0
+       (see the line above). Nothing was sent for this package.

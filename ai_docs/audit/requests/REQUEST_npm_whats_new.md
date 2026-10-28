@@ -37,3 +37,45 @@ was missing.
 The unit opened as F-068 on its own branch while the kb ingestion rhythm unit, opened
 later on another branch, also took F-068 and shipped under it (release 1.40.0). This
 unit is renumbered F-070 when its records move to `main`; R1-R4 are unchanged.
+
+### R6 — 2026-10-27 — resume the unit with the elicitation round
+Context (agent): after the 1.49.0 publish the owner asked whether the feature had ever
+been implemented; the agent answered no (PLANNED since 2026-10-13) and asked whether to
+start the F-070 elicitation round here.
+> Sì, avvia il giro di elicitazione di F-070 qui.
+
+### R7 — 2026-10-27 — elicitation round: one release, an approval stop, the F-057 block moves
+Context (agent): three questions after deriving the rest from R1-R4 (source = a user-facing
+`### What's new` per CHANGELOG version, copied into the README between markers and pinned by
+a test; English). Q1 "Quante release mostra la sezione \"What's new\" sulla pagina npm?";
+Q2 "Chi approva il testo per gli utenti di ogni release?"; Q3 "[il blocco \"Shared project
+memory\" in cima ai quattro README] Lo sposto quando arriva \"What's new\"?"
+> Q1: "Solo l'ultima + link (Recommended)"
+> Q2: "Stop di approvazione (Recommended)"
+> Q3: "Spostalo tra le feature (Recommended)"
+
+Selected options' texts as shown: Q1 — the first edition also summarizes 1.49.0, published
+without notes, and a link to the full CHANGELOG covers the rest. Q2 — the agent writes the
+text at the bump and stops for approval before the tag.
+
+### R8 — 2026-10-27 — per-release review of the notes: only when they add content
+Context (agent): raised by the design review (W11). Asked "Il testo \"What's new\" si scrive
+al bump, dopo che la review di chiusura del lavoro è già passata. […] Come si fa a ogni
+release?" Options: review NOT DUE when the text only restates reviewed work, a scoped
+review only when it adds something new (an upgrade instruction, say); or a light scoped
+review at every release (estimated 20-40k tokens).
+> "Solo se aggiunge contenuti (Recommended)"
+
+Agent note, completing R7 (no owner words): the option the owner chose for R7 Q3 read
+"Pro: la pagina si apre con la presentazione e le novità vere. Contro: tocca i quattro
+README anche fuori dalla nuova sezione."; R7 transcribed only Q1's and Q2's option texts.
+
+### R9 — 2026-10-27 — correction of agent words in R7 and R8 (agent note, no owner words)
+R7's Q3 context and the R8 option text say the "Shared project memory" block sits at the
+top of "quattro"/four READMEs. It sits at the top of three — code, KB and marketing; the
+Course README has none. The owner's answers are unaffected.
+
+### R10 — 2026-10-28 — go-ahead to implement
+Context (agent): design review PASS in three rounds; asked "Start implementing F-070 from
+the RED tests?"
+> Yes, implement

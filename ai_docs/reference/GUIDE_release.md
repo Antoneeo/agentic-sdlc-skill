@@ -1,9 +1,9 @@
 ---
 description: How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish.
 status: CURRENT
-source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition; amended 2026-09-25 — plain `check` beside the hybrid one, `mark` inside the release commit, one tag per package, a pending 2FA is pending, not failed; amended 2026-10-08 — Course latest follows the newest published release for default installation; amended 2026-10-17 — Course publishes on latest like the stable packages, so no separate promotion; amended 2026-10-19 — `mark --note` writes each release's dated entry in project_notes.md; tags are set right before the publish).
+source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition; amended 2026-09-25 — plain `check` beside the hybrid one, `mark` inside the release commit, one tag per package, a pending 2FA is pending, not failed; amended 2026-10-08 — Course latest follows the newest published release for default installation; amended 2026-10-17 — Course publishes on latest like the stable packages, so no separate promotion; amended 2026-10-19 — `mark --note` writes each release's dated entry in project_notes.md; tags are set right before the publish; amended 2026-10-27 (F-070) — user-facing "What's new" per package, mirrored into the README, approved by the owner before the tag, required by publish_all.bat).
 distilled_from: ai_docs/reference/.sources/release-runbook-course-creator.md
-source_hash: d07b1c4f877b34404fdb755a69dc3c40ed34648cdab0fbfb212fac2170a7f5c0
+source_hash: 7599f5fe6ad518e030acbfae854f41bcc7b84f00c58bf9342f78b394c19e0895
 ---
 # Guide: Release
 
@@ -11,7 +11,7 @@ source_hash: d07b1c4f877b34404fdb755a69dc3c40ed34648cdab0fbfb212fac2170a7f5c0
 [source: release-runbook-course-creator.md#preconditions]
 Shipping a version of one of the four `@antoneeo` skill packages. Enter only when: the unit
 is DONE (review PASS, battery green, ADR accepted), `CHANGELOG.md` carries an
-`## [Unreleased - X.Y.Z]` section, the repo's `check --hybrid` AND plain `check`
+`## [Unreleased]` section, the repo's `check --hybrid` AND plain `check`
 are CLEAN, and
 `npm view @antoneeo/agentic-sdlc-skill version` shows the target version is not
 already published.
@@ -22,12 +22,34 @@ Order: bump → verify → mark → script (commit+tag+push) → package tags �
 tags → merge → publish.
 1. Bump FOUR places in one commit: `package.json` version,
    `gemini-extension.json` version, **`SKILL.md` frontmatter `version:`**,
-   CHANGELOG heading (`[Unreleased - X.Y.Z]` → `[X.Y.Z] - YYYY-MM-DD`).
+   CHANGELOG heading (`## [Unreleased]` → `## [X.Y.Z] - YYYY-MM-DD`).
    (snapshot §Version bump points; the SKILL.md point is the product's own,
    added 2026-08-03 — an installed skill carries no package.json, so its
    frontmatter is the only place a reader can see which build they have.
    Forgetting it fails the battery: `test_the_installed_skill_says_which_
    version_it_is` asserts all bump points agree.)
+   **Then the users' notes, for each bumped package, in this order**
+   [source: release-runbook-course-creator.md#user-facing-whats-new--2026-10-27]:
+   - Open its `## [X.Y.Z]` section with `### What's new`, written for the people who
+     install the package, not for the agent: a **"New files" table first** when the
+     version adds files (file, skill, who reads it), then new commands, then anything
+     a user must do on upgrade. No internals only the agent reads, no personal or
+     employer references. While `audit/project_notes.md` carries a pending
+     first-notes entry naming the package, its notes also cover what that entry says,
+     marked as such; remove the package's name there in the same release commit.
+   - `node scripts/whats_new.js --write`, then
+     `node scripts/whats_new.js --require <each bumped package dir>`: every bumped
+     package must report `[ok]`. This check before the tag is the real gate;
+     `publish_all.bat`'s refusal is only its backstop.
+   - Review ruling: the README region is the same text as the CHANGELOG lines (the
+     check proves it), so they are judged together. Notes that state nothing the
+     units' reviewed work does not already state are NOT DUE — one REVIEW_LOG row,
+     verdict `NOT DUE: release metadata; CHANGELOG What's new and the README region
+     mirrored from it; mirror check agrees`. Notes that add a claim (an upgrade
+     instruction nobody reviewed, say) get a scoped review of that part first.
+   - **Stop for the owner**: show the notes of each bumped package, with the ruling,
+     and wait for approval before tagging. A change to approved notes is approved
+     again. The npm page keeps this text until the next version.
 2. Any NEW support file since the last release MUST be in `package.json`
    `files` — it is an allowlist, and `postinstall.js` can only copy what the
    tarball contains. Update README's support-files bullet and Runtime Shape
@@ -81,7 +103,7 @@ tags → merge → publish.
 
 ## How to verify it is done right
 [source: release-runbook-course-creator.md#verification-battery]
-Before any commit/tag/publish, four checks:
+Before any commit/tag/publish, five checks:
 1. `npm pack --dry-run --json` — expected files in; `__pycache__`, `.sources/`
    snapshots, and the dev-only eval harness (`test_*.py`, `evals/`) NOT listed.
 2. init.js smoke: `node <repo>/scripts/init.js` in an empty scratch dir → all
@@ -94,6 +116,11 @@ Before any commit/tag/publish, four checks:
    `python -m unittest discover -s skills/agentic-sdlc-skill/scripts -p "test_*.py"`
    all green (aggregates plan + orient + skill-invariants). A failing eval blocks
    the release; if `test_indexes_idempotent` fails, run `sdlc_check.py index` and re-run.
+5. Users' notes [source: release-runbook-course-creator.md#user-facing-whats-new--2026-10-27]:
+   `node scripts/whats_new.js --require <each bumped package dir>` reports `[ok]` for
+   every bumped package, and `node scripts/test_md_region.js` and
+   `node scripts/test_whats_new.js` are green (the last one also checks that every
+   package README agrees with its CHANGELOG).
 After publish: verify each version and its `dist-tags.latest`. Course needs no separate
 promotion since 2026-10-17 (see the policy below).
 On the first course publication (2026-10-02), npm also assigned latest despite
@@ -147,6 +174,13 @@ registry check. Do not remove latest or move other package channels.
   did not, and aborted on the first already-published package instead.)
 - **PowerShell 5.1**: no `&&`; `npm pack --dry-run` lists files on stderr —
   use `--json`.
+- **`publish_all.bat` refuses a package without users' notes** — after the registry
+  skip, it runs `whats_new.js --require` on each package it is about to publish and
+  stops on `[FAIL]` before that package's `npm publish`. A package earlier in its
+  order (code, kb, mkt, course) may already have been published in that run, so a
+  refusal here means the pre-tag check of step 1 was skipped or the tree changed after
+  it: fix the notes, move the unpublished packages' tags, re-run.
+  [source: release-runbook-course-creator.md#user-facing-whats-new--2026-10-27]
 
 ## Post-release
 [source: release-runbook-course-creator.md#post-release]

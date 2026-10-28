@@ -1,22 +1,9 @@
 # Agentic SDLC Skill for Claude Code, Gemini CLI, Google Antigravity & Codex
 
-## Shared project memory
-
-All four lenses include project memory by default; install the lens you need,
-not a second skill just for recall. `index` registers guides, decisions and plans
-in the docs root's `memory/INDEX.md`, linking originals without copying them.
-`recall "onboarding"` finds related metadata across domains; optional
-`topics: [onboarding]` links documents by subject. Read the originals for authority,
-status and evidence: discovery is not approval or proof of implementation.
-
-Registration happens at `index`/documentation closure, not through a background
-watcher. Existing projects acquire the catalog on their next `index`; `recall`
-also sees live metadata. The KB lens remains the specialist for ingestion and
-taxonomy. Marketing retains its numerical validators. See the skill's `memory.md`.
-Vendoring requires all three files: the entry point, `sdlc_core.py`, `knowledge.py`.
-
-
 `agentic-sdlc` is a Documentation-First SDLC protocol for AI coding agents. It supports Claude Code, Codex, Gemini CLI, Google Antigravity 2.0, Cursor/Windsurf-style project instructions, and optional devPNT governance.
+
+<!-- whats-new:begin -->
+<!-- whats-new:end -->
 
 ## Key Features
 
@@ -38,6 +25,21 @@ Vendoring requires all three files: the entry point, `sdlc_core.py`, `knowledge.
 - **Installed support files**: Claude, Codex, Gemini, and Google Antigravity receive the full skill folder, including `templates.md`, `architect.md`, `guides.md`, `vision.md`, `tdd.md`, `debugging.md`, `elicitation.md`, `review.md`, `dispatch.md`, `routing.md`, `hybrid.md`, `ENFORCEMENT.md`, `memory.md`, and the validator's three files, `scripts/sdlc_check.py` + `scripts/sdlc_core.py` + `scripts/knowledge.py` — plus the docs site generator `scripts/docs_site.py` and its page `docs_site/`, and the `LICENSE` and `NOTICE` it ships under.
 - **Docs site** (`scripts/docs_site.py --root <project> [--open] [--zip <file>]`): a static, offline, read-only website of what the agent reads in the project — reading guide, Vision, rules, documents, open work with each next step, analyses and, with a knowledge base, the topic map, each fact with its exact source passage, and the source documents. Written to `.docs-site/` (added to `.gitignore` on the first run), outside `ai_docs/`; nothing is ranked or recommended.
 - **Mechanical checks**: optional validator for document structure, generated feature history, stale audit areas, and protected-path gates — `check`, `validate`, `index`, `stale`, `mark`, `benefit`, `gate`, `plan`, `orient`, `migrate`, `review-map` (code lens: classes the files of a change for the merge review brief), `constraints` (code lens: a unit's constraints, or those binding a file). `benefit` reports what the review gates have already caught, beside what the doctrine costs to read — it always exits 0 and carries no verdict, because a measurement that can fail a build becomes a target.
+
+## Shared project memory
+
+All four lenses include project memory by default; install the lens you need,
+not a second skill just for recall. `index` registers guides, decisions and plans
+in the docs root's `memory/INDEX.md`, linking originals without copying them.
+`recall "onboarding"` finds related metadata across domains; optional
+`topics: [onboarding]` links documents by subject. Read the originals for authority,
+status and evidence: discovery is not approval or proof of implementation.
+
+Registration happens at `index`/documentation closure, not through a background
+watcher. Existing projects acquire the catalog on their next `index`; `recall`
+also sees live metadata. The KB lens remains the specialist for ingestion and
+taxonomy. Marketing retains its numerical validators. See the skill's `memory.md`.
+Vendoring requires all three files: the entry point, `sdlc_core.py`, `knowledge.py`.
 
 ## Installation
 

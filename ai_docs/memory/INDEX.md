@@ -32,7 +32,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | functional/entry_points.md | code |  | devPNT-generated entry-point doc. Snapshot 2026-07-02; regenerate via devPNT after structural changes. | b4600b3fcb95eebcd0517d56c720da0d76060878b70b24226fdc0039be577d3d |
 | functional/external_interfaces.md | code |  | external_interfaces | d3c6b851695a1e3ab489c705827ca4350dcc3dadb0d89395a5a1d33150514880 |
 | functional/feature_flows.md | code |  | devPNT-generated feature-flow doc. Snapshot 2026-07-02; regenerate via devPNT after structural changes. | 41d35920d1ab7ee4b3e8b1595c52e3fd359b5372f711dc107a6331a629528dee |
-| reference/GUIDE_release.md | code |  | How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish. | 6d782e5ba7ac72b619f255d53232ed7d5bae2095d163cd0b73150a88e51636e7 |
+| reference/GUIDE_release.md | code |  | How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish. | ad6927ba8ed3c96f25d25f925dedb91da42f6adf15a44773c128cf1c101b087e |
 | reference/GUIDE_shared_project_memory.md | code | shared-memory, validation, domain-routing | Consult before changing shared-memory discovery, docs-root resolution, or validator composition across the four distributions. | 2fe8b10c339b0c294bc19ab88a2ef5f0c3112f009f2c8a56a09bb87de01d995e |
 | reference/GUIDE_skill_family_changes.md | code | triage, rule-zero, distributions | Consult when triaging a change to this repository that is copied into the skill distributions — how the copies count against Rule Zero's file bound. | 33f60be1a0dfbfc362ec5ff943181bb6e334fd5b9e5aff27554a2633562a8bf1 |
 | solutions/ANALYSIS_agentic_sdlc_vnext.md | code |  | Analisi della Feature: Agentic SDLC vNext | 1845926fe4118c38da62c829fff9dae62b3e0673ff1c89de065148939752ca70 |
@@ -84,6 +84,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/ANALYSIS_mergeable_docs.md | code |  | Feature Analysis: Mergeable documentation | bccc3b2ba0612acd67cdc1c4b255ccd75b3669e1016f5b1cffbe919839f241ef |
 | solutions/ANALYSIS_mkt_read_diet.md | code |  | F-052 - the mandatory-read diet applied to the marketing lens, and measured NOT to apply to the knowledge lens. Extracts mkt's Hybrid seam; makes F-051's conservation check derived rather than hardcoded so it works in any lens; fixes a pre-existing dangling citation in mkt. | 54b0e91b5099770562f3537fb748d4a157b2a4ec6e2f3c6c008bda0325dfdd23 |
 | solutions/ANALYSIS_multi_domain_core.md | code |  | Feature Analysis: Multi-Domain Core | c0ee31d1498f7957911357e96b200d9035b5e1ee4112e42c5c926f57622ceb50 |
+| solutions/ANALYSIS_npm_whats_new.md | code |  | Feature Analysis: "What's new" for users on the npm pages | 2d57feee97db290426669e77335aec45e03c0b8a7568856e4f332850bf606ecb |
 | solutions/ANALYSIS_parallel_handoff.md | code |  | Feature Analysis: Parallel Handoff | 35178aa910c865e6976b221b91dfd4d6af246bf130ccecc8a383487b47556129 |
 | solutions/ANALYSIS_per_turn_protocol_reminder.md | code |  | F-046 - the protocol reaches every turn, not only the first. SKILL.md is read on demand, so every duty written there reaches a session only if something loads the skill; this unit adds the one-line per-turn reminder whose first duty is to decide whether the skill governs the work and load it once. | f0b2775ed24fafbd2477d6f2ba5787289c7f673cc42751520e211879e6ccb4e1 |
 | solutions/ANALYSIS_permission_gated_rung.md | code |  | Feature Analysis: the permission-gated rung | 1a76bbd4e0ab51594672907cebb1dfd0437244a775c2cc767bdc8c8dbd9d59b5 |
@@ -112,6 +113,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/E2E_TEST_kb_intake_hygiene.md | code |  | E2E test: kb intake hygiene | bae26c80c3e4ae456e70f28b09500c1662d17b453b433d1f3f3118040d9cd5fe |
 | solutions/E2E_TEST_kb_site.md | code |  | E2E test: docs site | 05ee2b0c09319940a770d351c69adb92e626a4d4ade31e29700867ef55180dae |
 | solutions/E2E_TEST_merge_review.md | code |  | E2E test: Merge review brief and E2E script | aececd283613b0f412235902edcec128e39989a61ee91fcb77ffd30c6f46d3ef |
+| solutions/E2E_TEST_npm_whats_new.md | code |  | E2E test: "What's new" on the npm pages | a30a194eb9b9856981d1f849cbc5e10f6d8f481be3e4afcefe730ef2d84a4e95 |
 | solutions/E2E_TEST_request_record.md | code |  | E2E test: Verbatim request record | 08acacce42a6146dd45c536248205697e67f4f4df77e84f919e9ffc5b3f3c5e0 |
 | solutions/E2E_TEST_session_orientation_reach.md | code |  | E2E test: What reaches the session | a977c7c7f30a5815662d2760ee3328070e9bc09919918a76438393937ab47846 |
 | solutions/E2E_TEST_spec_code_divergence.md | code |  | E2E test: Spec/code divergence state shared by the two skills | c16e515c6fd6d11611a845111eb0dfdbe3f210e44cc22358ad8c33edd5a1cf44 |
@@ -125,6 +127,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/MERGE_REVIEW_kb_intake_hygiene.md | code |  | Merge review: kb intake hygiene | 6cd43f4328ca99aef60ad9fb65e2febaca75ea4f7b3b53bb5337dc8f3a2fc243 |
 | solutions/MERGE_REVIEW_kb_site.md | code |  | Merge review: docs site | cea970366286de12eb6d1d21855573f269d17ceb54e37ac2b73649f631d37375 |
 | solutions/MERGE_REVIEW_merge_review.md | code |  | Merge review: Merge review brief and human E2E test script | 1263fddd76a2ced684c7d2cca295b7e4857cdf4fe5d7f1fb5d7154234ee81fb2 |
+| solutions/MERGE_REVIEW_npm_whats_new.md | code |  | Merge review: "What's new" on the npm pages | 686b2c4c665902fc788b8e81d3824228e198afab8db1f46e7d4d1ea48b17a00d |
 | solutions/MERGE_REVIEW_request_record.md | code |  | Merge review: Verbatim request record | 766fdc4ed65de618e678b0ab4e0e3629f5936b29e2c91621085683b208704ce7 |
 | solutions/MERGE_REVIEW_session_orientation_reach.md | code |  | Merge review: What reaches the session | 44a356edc7c6956d3e5372e352484b3e367d12f35e8f734eb15bcf0fd4716c9d |
 | solutions/MERGE_REVIEW_spec_code_divergence.md | code |  | Merge review: Spec/code divergence state shared by the two skills | 1a6c7906c578213a468a608032a9be5041ce4d4875a02058d79d5488a329e530 |
@@ -321,7 +324,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/courses/agentic-sdlc-kb-agentic/simulation_control_p1_response.md | code |  | simulation_control_p1_response | 86bf58dccd77bd63018ffab67eeb99c9535c81a63be5a0a2437db4a4ac250918 |
 | solutions/courses/agentic-sdlc-kb-agentic/simulation_course_p1_response.md | code |  | simulation_course_p1_response | 2bd2daaebb08755f4492911b2b54f842eefb52d22acb79b25f0767b2e9c91ff2 |
 | solutions/courses/agentic-sdlc-kb-agentic/sources.md | code |  | Fonti del corso | 712b51e3d0cf34b921f638eca63f5c814af7193fdffeda42901bc8fbb7bc8761 |
-| strategic/architecture.md | code |  | Stack, package structure, component map and architectural patterns of the skill repository. | 15f3648b72d3271cafc79a27b1f28a8214e92299965238b8b90216f13124bf18 |
+| strategic/architecture.md | code |  | Stack, package structure, component map and architectural patterns of the skill repository. | 5504f75bc4cdc4cd420e8e3e5ebdf5f8e196f9d17abd2ff55b50d30e2a85ea05 |
 | strategic/capabilities_and_positioning.md | code |  | Dated, evidence-based comparison of agentic-sdlc 1.26.1 and Superpowers 6.2.0: advantages, parity, remaining gaps and deliberate non-adoptions. | 8c7e8acae048545eaf5707db24c242b8701af5a2e32cd10090f9c9d6146ea394 |
 | strategic/existing_features.md | code |  | Concise catalog of the skill's existing features. | 07af878d0be4d94fb25abdaf8267efa1e188a6842dfb10f409b09c9995974fad |
 | strategic/process_agentic_sdlc_devpnt.md | code |  | The joint agentic-sdlc × devPNT governance process — pipeline, documents, human vs agent reviews, mandatory checks, and why it works. Read to understand how a change goes from idea to release. | ec90b59d68bf6da79f395782e63eefb005525ce23f5b575be990e5f5cbec40da |

@@ -1,0 +1,33 @@
+============================================================
+  Publish the agentic-sdlc family  (code / kb / mkt / course)
+  Precondition: bump + commit + tag done (git_push_tag.bat).
+  npm opens a browser to authorize EACH package.
+============================================================
+Proceed? [y/N]: 
+--- @antoneeo/agentic-sdlc-skill @ 1.49.0 ---
+  not on the registry yet, publishing 1.49.0 ...
+  Authorize in the browser when npm opens it...
+[stub] publish logged, nothing sent
+[ok] published @antoneeo/agentic-sdlc-skill @ 1.49.0.
+
+--- @antoneeo/kb-agentic-skill @ 1.32.0 ---
+  not on the registry yet, publishing 1.32.0 ...
+  Authorize in the browser when npm opens it...
+[stub] publish logged, nothing sent
+[ok] published @antoneeo/kb-agentic-skill @ 1.32.0.
+
+--- @antoneeo/mkt-agentic-sdlc-skill @ 0.27.0 ---
+  not on the registry yet, publishing 0.27.0 ...
+  Authorize in the browser when npm opens it...
+[stub] publish logged, nothing sent
+[ok] published @antoneeo/mkt-agentic-sdlc-skill @ 0.27.0.
+
+--- @antoneeo/course-creator @ 0.1.0-beta.14 ---
+  not on the registry yet, publishing 0.1.0-beta.14 ...
+  Authorize in the browser when npm opens it...
+[stub] publish logged, nothing sent
+[ok] published @antoneeo/course-creator @ 0.1.0-beta.14.
+
+=== verify (registry versions) ===
+  [??] @antoneeo/agentic-sdlc-skill : local 1.49.0, registry reports  - the registry may still
+       be propagating. Re-check with: npm view @antoneeo/agentic-sdlc-skill versions --json --prefer-online

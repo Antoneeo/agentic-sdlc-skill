@@ -4,6 +4,9 @@
 
 The package is the fourth lens of the Agentic SDLC family. It uses the shared `ai_docs/` project memory and governance. Version 0.1.0-beta.4 supports Standalone mode. This is an experimental beta: the authoring method and artifact contracts may change; human learning efficacy has not been established. Its course artifacts remain readable without the skill. Each new course keeps a verbatim, append-only record of the requester's own words and decisions in `audit/requests/`, cited by the analysis and checked by its reviews.
 
+<!-- whats-new:begin -->
+<!-- whats-new:end -->
+
 ## Install and initialize
 
 ```sh

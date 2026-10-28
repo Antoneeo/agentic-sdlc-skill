@@ -1,0 +1,28 @@
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill :: pkg get publishConfig.tag
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill :: pkg get version
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill :: view @antoneeo/agentic-sdlc-skill@1.49.0 version --prefer-online
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill :: publish --tag latest
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\distributions\kb-agentic-skill :: pkg get publishConfig.tag
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\distributions\kb-agentic-skill :: pkg get version
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\distributions\kb-agentic-skill :: view @antoneeo/kb-agentic-skill@1.32.0 version --prefer-online
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\distributions\kb-agentic-skill :: publish --tag latest
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\distributions\mkt-agentic-sdlc :: pkg get publishConfig.tag
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\distributions\mkt-agentic-sdlc :: pkg get version
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\distributions\mkt-agentic-sdlc :: view @antoneeo/mkt-agentic-sdlc-skill@0.27.0 version --prefer-online
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\distributions\mkt-agentic-sdlc :: publish --tag latest
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\distributions\course-creator :: pkg get publishConfig.tag
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\distributions\course-creator :: pkg get version
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\distributions\course-creator :: view @antoneeo/course-creator@0.1.0-beta.14 version --prefer-online
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill\distributions\course-creator :: publish --tag latest
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill :: pkg get publishConfig.tag
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill :: pkg get version
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill :: view @antoneeo/agentic-sdlc-skill dist-tags.latest --prefer-online
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill :: view @antoneeo/agentic-sdlc-skill dist-tags.latest --prefer-online
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill :: view @antoneeo/agentic-sdlc-skill dist-tags.latest --prefer-online
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill :: view @antoneeo/agentic-sdlc-skill dist-tags.latest --prefer-online
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill :: view @antoneeo/agentic-sdlc-skill dist-tags.latest --prefer-online
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill :: view @antoneeo/agentic-sdlc-skill dist-tags.latest --prefer-online
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill :: view @antoneeo/agentic-sdlc-skill dist-tags.latest --prefer-online
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill :: view @antoneeo/agentic-sdlc-skill dist-tags.latest --prefer-online
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill :: view @antoneeo/agentic-sdlc-skill dist-tags.latest --prefer-online
+D:\SoftwareDev\skill_sdlc\agentic-sdlc-skill :: view @antoneeo/agentic-sdlc-skill dist-tags.latest --prefer-online

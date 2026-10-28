@@ -1,5 +1,23 @@
 # Marketing Agentic SDLC Skill
 
+Evidence-First marketing planning protocol for AI coding agents (Claude Code, Gemini CLI, Google Antigravity, Codex). The sibling of [`@antoneeo/agentic-sdlc-skill`](https://www.npmjs.com/package/@antoneeo/agentic-sdlc-skill), transplanted from software engineering to marketing strategy.
+
+<!-- whats-new:begin -->
+<!-- whats-new:end -->
+
+## What it does
+
+Turns an AI agent into a disciplined marketing strategist that produces a professional, professionally-recognized marketing plan (SOSTAC structure) with three engineered guarantees:
+
+1. **Evidence ledger** — every market number is classified FACT / BENCHMARK / ASSUMPTION and carries an `[EV-nn]` reference to its source. No invented numbers.
+2. **Mechanical validator** (`mkt_check.py` + `sdlc_core.py` + `knowledge.py` — entry point, shared spine and memory; copy all three) — budget sums (±1%), funnel math recomputed cell by cell (±5%) and the objective→tactic→KPI chain are checked mechanically, not rhetorically: `check`, `validate`, `ledger`, `budget`, `funnel`, `trace`, `index`, plus the spine's `stale`/`mark`/`benefit`/`gate`/`plan`/`orient`/`migrate`. `benefit` reports what the review gates have already caught, beside what the doctrine costs to read; it always exits 0 and carries no verdict.
+3. **Adversarial CMO review** — an independent, fresh-context reviewer attacks the strategy before the user sees it (generic-positioning swap test, untraced claims, orphan tactics).
+4. **Verbatim request record** — every E3 engagement starts `audit/requests/REQUEST_[engagement].md` before Wave 1: the client's own words and every later decision, append-only and redacted for secrets; owner-given FACT rows and the plan cite its entries, and reviews check client statements against it.
+
+The **docs site** (`scripts/docs_site.py --root <project> [--open] [--zip <file>]`) writes a static, offline, read-only website of what the agent reads in the project — reading guide, Vision, rules, documents, open work with each next step, and, with a knowledge base, the topic map, each fact with its exact source passage, and the source documents. It is written to `.docs-site/` (added to `.gitignore` on the first run), outside the docs root (`mkt_docs/` or `ai_docs/`); nothing is ranked or recommended.
+
+The agent asks the user only for facts the user uniquely owns (product, price, budget, capacity); everything else — market sizing, competitor analysis, channel benchmarks — is derived from real web research.
+
 ## Shared project memory
 
 All four lenses include project memory by default; install the lens you need,
@@ -14,22 +32,6 @@ watcher. Existing projects acquire the catalog on their next `index`; `recall`
 also sees live metadata. The KB lens remains the specialist for ingestion and
 taxonomy. Marketing retains its numerical validators. See the skill's `memory.md`.
 Vendoring requires all three files: the entry point, `sdlc_core.py`, `knowledge.py`.
-
-
-Evidence-First marketing planning protocol for AI coding agents (Claude Code, Gemini CLI, Google Antigravity, Codex). The sibling of [`@antoneeo/agentic-sdlc-skill`](https://www.npmjs.com/package/@antoneeo/agentic-sdlc-skill), transplanted from software engineering to marketing strategy.
-
-## What it does
-
-Turns an AI agent into a disciplined marketing strategist that produces a professional, professionally-recognized marketing plan (SOSTAC structure) with three engineered guarantees:
-
-1. **Evidence ledger** — every market number is classified FACT / BENCHMARK / ASSUMPTION and carries an `[EV-nn]` reference to its source. No invented numbers.
-2. **Mechanical validator** (`mkt_check.py` + `sdlc_core.py` + `knowledge.py` — entry point, shared spine and memory; copy all three) — budget sums (±1%), funnel math recomputed cell by cell (±5%) and the objective→tactic→KPI chain are checked mechanically, not rhetorically: `check`, `validate`, `ledger`, `budget`, `funnel`, `trace`, `index`, plus the spine's `stale`/`mark`/`benefit`/`gate`/`plan`/`orient`/`migrate`. `benefit` reports what the review gates have already caught, beside what the doctrine costs to read; it always exits 0 and carries no verdict.
-3. **Adversarial CMO review** — an independent, fresh-context reviewer attacks the strategy before the user sees it (generic-positioning swap test, untraced claims, orphan tactics).
-4. **Verbatim request record** — every E3 engagement starts `audit/requests/REQUEST_[engagement].md` before Wave 1: the client's own words and every later decision, append-only and redacted for secrets; owner-given FACT rows and the plan cite its entries, and reviews check client statements against it.
-
-The **docs site** (`scripts/docs_site.py --root <project> [--open] [--zip <file>]`) writes a static, offline, read-only website of what the agent reads in the project — reading guide, Vision, rules, documents, open work with each next step, and, with a knowledge base, the topic map, each fact with its exact source passage, and the source documents. It is written to `.docs-site/` (added to `.gitignore` on the first run), outside the docs root (`mkt_docs/` or `ai_docs/`); nothing is ranked or recommended.
-
-The agent asks the user only for facts the user uniquely owns (product, price, budget, capacity); everything else — market sizing, competitor analysis, channel benchmarks — is derived from real web research.
 
 ## Install
 
