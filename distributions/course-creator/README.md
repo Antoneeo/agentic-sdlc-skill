@@ -26,5 +26,7 @@ Using the skill in your own project carries no obligation to publish your course
 
 New courses deliver a complete textual source for every slide (`SLIDE_CONTENT.md`), with exact learner copy, full explanations, examples, visual contents, transitions and answers. PPTX and other renderings are optional. Explicit non-slide requests retain a complete textual source for their units. Every course must show distinguishable value for its audience through an explanatory contribution and a transfer task; structure or simulated success does not establish human efficacy. See `skills/course-creator/slide_content.md`.
 
+A course delivered by an instructor (`Delivery mode: instructor-led`) also ships `INSTRUCTOR_GUIDE.md`: what to prepare, the schedule, what to keep out of the learners' view, what to do when a live step fails, what to clean up afterwards, and the list of every material the delivery needs, checked to exist in the course folder. `course_check` refuses an instructor-led course without it, so an existing instructor-led course fails `check` until its guide is written. In any course with a content contract it also refuses a line that names the course with a dotted version other than the declared `Course version`.
+
 Course design now uses outcome-first evidence, teaching/assessment alignment, visible worked reasoning, proportionate support, cognitive-load management and retrieval opportunities. `learning_design.md` records the pedagogical sources and the source-informed semantic review rubric; a locator table or structural PASS is not proof of learning.
 

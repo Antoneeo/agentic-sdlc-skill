@@ -453,7 +453,14 @@ serve un obiettivo e contiene una spiegazione calibrata sul profilo, con
 prerequisiti, fonte, esempio e passaggio al modulo seguente. Verifiche ed
 esercizi mostrano dove la spiegazione va corretta; non la sostituiscono.
 
-Il validator controlla struttura, ID, cicli, ordine e riferimenti. Simulatori
+Un corso con docente esce anche con `INSTRUCTOR_GUIDE.md`: preparazione,
+scaletta, materiale riservato, cosa fare quando un passaggio dal vivo devia,
+cosa ripulire dopo, e l'elenco del materiale da consegnare.
+
+Il validator controlla struttura, ID, cicli, ordine e riferimenti; per un corso
+con docente anche la guida e la presenza di ogni materiale citato nella cartella
+del corso, e in ogni corso con contratto di contenuto la versione scritta accanto
+al nome del corso. Simulatori
 indipendenti provano il materiale con un controllo senza corso; un controllo
 che già risolve il compito rende inconcludente il confronto. Il corso resta
 «efficacia non verificata» finché riscontri osservabili di destinatari reali

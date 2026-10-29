@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+- Instructor-led courses ship `INSTRUCTOR_GUIDE.md` (`templates.md`, F-086): what to prepare, the schedule, the reserved material (every solution unit by ID), what to do when a live step deviates and which fallback to use, what to clean up afterwards, and the list of every material the delivery needs with who may see it. `course_check` refuses a course whose content declares `Delivery mode: instructor-led` without the guide, and checks a guide wherever one exists: header equal to `COURSE_PLAN`, all six sections, every listed or cited path inside the course folder and present, solution units reserved, deviation risks defined in `P-TM.md`, scheduled modules present in `COURSE_PLAN`. **An existing instructor-led course fails `check` until its guide is written.** Courses without a declared content contract are unaffected.
+- `course_check` refuses, in a course that declares a content contract (self-study or instructor-led), a line that names the course (the word course/corso, the folder slug or the full title) and mentions a dotted version other than the declared `Course version`, so feedback that quotes the version reaches the right one. A tool's version on a line that does not name the course, and a bare number such as `versione 2`, are not checked.
+
 ### Changed
 - The package's npm page (its README) gains a "What's new in <version>" section right after the introduction, written for the people who install the package and linking the full CHANGELOG. It appears from the first version that carries one; each version's notes are the `### What's new` at the top of its CHANGELOG section (F-070).
 

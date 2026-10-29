@@ -59,7 +59,7 @@ Value contribution: <why this step is needed for the module objective>
 - ai_docs/.../sources.md#claim-1
 ```
 
-`Delivery mode` is `self-study` or `instructor-led`. `Role` is `orientation`, `explanation`, `check`, `solution` or `closing`. A check may cover several modules/objectives; do not force one separate exercise per module. A check adds `Solution: S04` (or U04); the referenced unit is a subsequent `solution` covering all the check’s module/objective pairs, and contains the actual answer, rationale and correction path in its authored content. Put fictional-case labels in learner-visible copy, not only in production notes. A necessary definition, inference or caveat cannot exist only in notes for a self-study course.
+`Delivery mode` is `self-study` or `instructor-led`. In `instructor-led` the Complete explanation is the text to speak, but it is not enough to deliver the course: preparation, reserved material, what to do when a live step fails, clean-up and the list of delivered materials belong in `INSTRUCTOR_GUIDE.md` (`templates.md`). `Role` is `orientation`, `explanation`, `check`, `solution` or `closing`. A check may cover several modules/objectives; do not force one separate exercise per module. A check adds `Solution: S04` (or U04); the referenced unit is a subsequent `solution` covering all the check’s module/objective pairs, and contains the actual answer, rationale and correction path in its authored content. Put fictional-case labels in learner-visible copy, not only in production notes. A necessary definition, inference or caveat cannot exist only in notes for a self-study course.
 
 For a shared explanation or cumulative check, add optional `Covers: M2/O2; M3/O3` metadata listing the additional module/objective pairs beyond the primary `Module`/`Objective`. Every pair must match the plan. A shared unit may serve separate module rows for different profiles without duplicating content, provided its explanation is suitable for all those profiles. A cumulative solution covers every pair assessed by its check. Review the actual check and answer for every declared objective; a coverage label alone is not proof.
 
@@ -67,7 +67,7 @@ For a shared explanation or cumulative check, add optional `Covers: M2/O2; M3/O3
 
 ## Release review and rendering handoff
 
-Review the actual learner surface: self-study uses Learner content plus visible transitions and captions; guided delivery additionally uses the authored spoken explanation. Separate solutions from the learner test packet. Give a renderer enough detail to construct every unit without writing new teaching material. If splitting a dense slide is necessary, update the canonical units/IDs first. Return semantic changes to this source before regenerating a deck.
+Review the actual learner surface: self-study uses Learner content plus visible transitions and captions; guided delivery additionally uses the authored spoken explanation, and is handed over with `INSTRUCTOR_GUIDE.md` and every material it lists. Separate solutions from the learner test packet. Give a renderer enough detail to construct every unit without writing new teaching material. If splitting a dense slide is necessary, update the canonical units/IDs first. Return semantic changes to this source before regenerating a deck.
 
 Apply the clarity-review handoff in `SKILL.md` §4 to this learner surface, using the course's declared audience rather than the author's familiarity with the subject.
 

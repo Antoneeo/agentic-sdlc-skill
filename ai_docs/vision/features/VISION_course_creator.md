@@ -7,6 +7,8 @@ status: APPROVED
 
 <!-- Approved by Antonio Pinto, 2026-09-27 ("ok approvo" after the complete amendment proposal); blind Vision review PASS after source, security and feedback corrections. Previous approved text archived in ai_docs/audit/vision_history/. -->
 
+<!-- Amended by explicit owner request (F-086, REQUEST_instructor_guide.md#R3-R5): actor Docente, delivery-package signal, delivery-material boundary. Blind check PASS on 2026-10-29 (REVIEW_LOG); approved by Antonio Pinto on 2026-10-29 ("Approvo", REQUEST_instructor_guide.md#R7). Previous approved text archived in ai_docs/audit/vision_history/VISION_course_creator_2026-09-27.md. -->
+
 # Vision Feature: course_creator
 
 ## Problema
@@ -23,11 +25,13 @@ Una persona che prepara formazione, oppure vuole imparare un tema che ancora non
 - **Richiedente che parte da zero** — vuole imparare un argomento senza sapere già quali documenti o concetti servano; una buona esperienza gli permette di indicare tema, motivo e contesto, poi vedere quali fonti l'agente ha reperito, quali moduli propone e quali proprie conoscenze iniziali restano da accertare. Può essere anche il destinatario del corso.
 - **Destinatario della formazione** — vuole capire un tema senza dover indovinare passaggi, termini o prerequisiti; una buona esperienza parte da ciò che sa davvero, procede per moduli comprensibili, gli permette di segnalare ciò che resta oscuro e lo porta a usare la conoscenza promessa.
 - **Responsabile del contenuto** — vuole controllare che le spiegazioni non attribuiscano alle fonti fatti, condizioni o decisioni che non contengono; una buona esperienza rende rintracciabili le affermazioni fattuali e visibili lacune e contraddizioni.
+- **Docente** — eroga un corso progettato per essere tenuto da una persona davanti ai destinatari; può coincidere con l'autore. Un corso è con docente quando il suo progetto prevede che una persona lo eroghi, oppure quando un corso progettato per l'autoapprendimento viene poi tenuto da una persona. Se è già noto che una persona lo terrà, si consegna da subito come corso con docente; se lo si decide dopo, va consegnato di nuovo con ciò che l'erogazione richiede. Vuole tenere il corso senza ricostruire dalla conversazione dell'autore o da file sparsi che cosa preparare, che cosa non mostrare e come procedere quando un passaggio dal vivo non riesce; una buona esperienza gli consegna, insieme al corso, tutto il materiale che l'erogazione richiede e le istruzioni per usarlo.
 
 ## Segnali di successo
 
 - Ogni corso porta valore distinguibile per il destinatario: rende espliciti il punto di partenza, ciò che saprà comprendere, decidere o fare, quale spiegazione produce quel passaggio e una prova osservabile che lo distingue dalla ripetizione di termini o da una scorciatoia già disponibile. Se insegna un metodo o strumento, chiarisce rispetto a un’alternativa plausibile quando aggiunge valore e quando non serve. Questo è un requisito del progetto didattico, non una dichiarazione di efficacia già dimostrata.
 - Una persona incaricata di produrre le slide può ricavare il materiale completo dal documento testuale, senza completare ragionamenti, esempi o risposte nascosti nella conversazione dell’autore.
+- Un corso con docente si consegna con tutto il materiale che l'erogazione richiede e con le istruzioni per usarlo: che cosa preparare prima, che cosa tenere fuori dalla vista dei destinatari, che cosa fare quando un passaggio previsto non riesce, che cosa ripulire dopo e come raccogliere i riscontri sul corso. Il docente non deve ricavarle dalla conversazione dell'autore. Il pacchetto è ciò che si consegna a chi eroga il corso: materiale didattico, materiale per l'erogazione e istruzioni; ciò che le istruzioni citano ne fa parte. Un materiale che le istruzioni citano, o che l'erogazione richiede, ma che manca dal pacchetto resta visibile come lacuna nel pacchetto stesso.
 
 - Un revisore che non ha seguito la preparazione può indicare per ogni modulo il pubblico a cui si rivolge, ciò che deve già sapere, l'obiettivo di comprensione, la spiegazione che lo raggiunge e quali moduli successivi ne dipendono. Un modulo privo di questo collegamento resta visibile come lacuna, anche se contiene esercizi o slide.
 - Chi parte senza documenti o conoscenza del tema può ottenere una proposta di percorso e fonti da esaminare senza dover inventare un programma: l'agente mostra che cosa ha trovato, che cosa resta incerto e perché un concetto entra nel corso.
@@ -46,7 +50,7 @@ Una persona che prepara formazione, oppure vuole imparare un tema che ancora non
 - Il contenuto trovato online o fornito come fonte è materiale da valutare, non un'istruzione operativa per l'agente: comandi incorporati in pagine o documenti non possono cambiare il metodo, autorizzare azioni o far divulgare dati.
 - Una review, una simulazione o una buona prestazione di un agente può individuare difetti o aumentare la fiducia nel progetto, ma non dimostra da sola che persone reali abbiano imparato.
 - Un commento positivo o negativo isolato può guidare una revisione, ma non basta da solo a dichiarare verificata l'efficacia del corso. Una modifica della skill resta soggetta alla review del suo progetto, non nasce automaticamente dal feedback.
-- La skill progetta la formazione; non gestisce iscrizioni, calendari o avanzamento delle persone. Può conservare esiti aggregati di una prova del corso per rivederlo, senza un registro individuale continuativo.
+- La skill progetta la formazione; non gestisce iscrizioni, calendari o avanzamento delle persone. Può conservare esiti aggregati di una prova del corso per rivederlo, senza un registro individuale continuativo. Il materiale per l'erogazione e le istruzioni per il docente riguardano come erogare il corso: non comprendono date o luoghi delle sessioni, iscrizioni, presenze, elenchi di partecipanti o dati su di loro, nemmeno per una sola edizione. Sono ammessi i requisiti dello spazio e delle attrezzature, e le verifiche svolte in aula purché nulla di individuale venga conservato.
 
 ## Definizioni operative
 

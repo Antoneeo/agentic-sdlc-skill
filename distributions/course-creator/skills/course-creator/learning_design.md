@@ -40,7 +40,7 @@ When the procedure is performed by a tool or agent, the worked case shows the to
 
 Introduce necessary terms before using them; keep related data, diagram labels and explanations together. Remove decorative or irrelevant information. Segment a complex explanation into meaningful steps while retaining how they connect. Tailor support to the learner rather than equating more words with better teaching.
 
-The complete source can be detailed without making every slide dense. In self-study, all essential reasoning must remain visible across the learner's units; in guided delivery, author the necessary spoken explanation. If content does not fit, divide the canonical units before rendering instead of shrinking text or hiding meaning in notes. Preserve exact examples and visual relationships through the handoff.
+The complete source can be detailed without making every slide dense. In self-study, all essential reasoning must remain visible across the learner's units; in guided delivery, author the necessary spoken explanation, and give the instructor the operating instructions and materials in `INSTRUCTOR_GUIDE.md` (`templates.md`). If content does not fit, divide the canonical units before rendering instead of shrinking text or hiding meaning in notes. Preserve exact examples and visual relationships through the handoff.
 
 ## 6. Use recall, practice and feedback to improve the explanation
 

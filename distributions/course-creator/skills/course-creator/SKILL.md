@@ -47,6 +47,7 @@ Before authoring a governed artifact, know which tier is authoring and follow `r
 | New production or substantial revision | Deliver the complete textual source in `slide_content.md`; declare its versioned content contract in COURSE_PLAN. |
 | A source or explanation changes | Update source locator, module and affected objective/check trace; keep a single authority for each fact. |
 | A course is tested | `SIMULATION_REPORT.md` names both independent attempts, control, material version and limitations; no simulated PASS changes efficacy status. |
+| Instructor-led course, before delivery | `INSTRUCTOR_GUIDE.md` from `templates.md`: preparation, schedule, reserved material, deviations with their fallback, after the course, and the verified list of the delivered materials. `course_check` refuses an instructor-led course without it. |
 | Real feedback arrives | `FEEDBACK_REPORT.md` identifies course/version/module and evidence; propose a course correction or a method improvement. |
 | L3 design or closure review | Append a `REVIEW_LOG.md` row with findings, tier, reviewer and verdict before claiming the gate passed. |
 | Concurrent work | Write `audit/HANDOFF_[course].md` with resume logistics; `audit/handoff.md` is the generated workstream registry rebuilt by `index`. Its `next:` is the next concrete step in one sentence; what happened, and the state of the work, go to the Diary as a dated entry. |

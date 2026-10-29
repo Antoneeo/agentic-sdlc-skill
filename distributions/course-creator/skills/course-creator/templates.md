@@ -206,7 +206,47 @@ Before drafting units, use `learning_design.md` to define evidence for the promi
 | O1: <observable comprehension/decision and conditions; for a course on a tool or agent, the learner's act and, where one exists, the tool output it acts on or the request it formulates (learning_design.md §1)> | <task + what distinguishes an adequate answer> | <passage explaining the connection, not its topic name> | <case/changed condition and locator> | <appropriate guidance, rationale, likely error and recovery locator> |
 ```
 
-The module material itself names course/version/module, explains the concept for that profile, gives a useful example and transition, and points to IC1 or says feedback is unavailable.
+The module material itself names course/version/module, explains the concept for that profile, gives a useful example and transition, and points to IC1 or says feedback is unavailable. A line that names the course (the word course/corso, the folder slug or the full `# ` title) and mentions a dotted version (`versione 1.0`, `version v1.2-draft`) must carry the declared `Course version` exactly: in a course with a content contract `course_check` flags any other dotted value, so feedback reaches the version it describes. A bare number (`versione 2`) is not checked.
+
+### `INSTRUCTOR_GUIDE.md`
+
+Required before delivery when the content source declares `Delivery mode: instructor-led`; checked whenever present. The spoken text stays in the Complete explanation of each unit; this file gives the person who delivers the course everything else, so they never reconstruct it from the author's conversation or from scattered files. Each fact keeps one authority: cite COURSE_PLAN, D-IC, P-TM and units by ID instead of copying them.
+
+The package is everything handed to the instructor: the teaching material, the delivery material and these instructions. Cite material only as a project-relative `ai_docs/...` path inside the course folder; `course_check` refuses a cited path outside the folder or missing from it. List every file or folder the delivery needs in `## Materials`, with who may see it.
+
+Boundary: delivery material and instructions cover how to deliver the course. They contain no session dates or places, enrolments, attendance, participant lists or data about participants, not even for a single edition. Room and equipment requirements are allowed, and so are in-class checks that keep nothing individual.
+
+```markdown
+# Instructor guide: <course title>
+Course version: 1.0
+Feedback flow: IC1
+
+## Before the course
+<What to prepare and verify: accesses, environments, demo runs, copies to share. The feedback channel is IC1 in D-IC; do not redefine it.>
+
+## Schedule
+| Session | Duration | Modules |
+|---|---|---|
+| 1 | 90 min | M1, M2 |
+
+## Reserved material
+<Every solution unit by ID (e.g. S04) and every file the learners must not see, with when it may be revealed.>
+
+## When something deviates
+| Risk ID | In class it looks like | Instructor action | Fallback material |
+|---|---|---|---|
+| C-1 | <what the instructor observes> | <what to do> | ai_docs/solutions/courses/<slug>/demo/FALLBACK.md |
+
+## After the course
+<What to clean up, which shared copies to remove, how to collect feedback through IC1.>
+
+## Materials
+| Material | Path | Seen by | Used in |
+|---|---|---|---|
+| <demo project> | ai_docs/solutions/courses/<slug>/demo/ | instructor | S12 |
+```
+
+`course_check` verifies structure only: header equal to COURSE_PLAN, each section present once with content, every `Materials` path inside the course folder and existing (ending with `/` exactly when it is a folder; `Seen by` is `instructor` or `learners`), every `ai_docs/...` path cited anywhere in the guide inside the package, every `Role: solution` unit named in `## Reserved material`, at least one deviation row, each deviation `Risk ID` defined in P-TM with `Fallback material` either `-` or comma-separated paths listed in `## Materials`, and at least one session, each with a duration and comma-separated modules present in COURSE_PLAN. Whether the instructions are sufficient, and whether material the delivery needs is missing without being cited, remains a review judgement.
 
 ## Review log and project architecture
 

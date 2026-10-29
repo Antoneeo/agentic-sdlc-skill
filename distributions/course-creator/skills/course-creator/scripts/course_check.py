@@ -95,7 +95,8 @@ def _content_contract(course_dir, plan, plan_rows, read, ref, add):
     intro = text.split("\n## ", 1)[0]
     if field(intro, "Course version", path, "version") != field(plan, "Course version", plan_path, "version"):
         add(path, "version", "content version differs from COURSE_PLAN")
-    if field(intro, "Delivery mode", path, "delivery") not in ("self-study", "instructor-led"):
+    mode = field(intro, "Delivery mode", path, "delivery")
+    if mode not in ("self-study", "instructor-led"):
         add(path, "delivery", "unknown delivery mode")
     for key in ("Efficacy", "Feedback flow"):
         if field(intro, key, path, key) != field(plan, key, plan_path, key):
@@ -189,6 +190,130 @@ def _content_contract(course_dir, plan, plan_rows, read, ref, add):
         covered_profiles = {modules[mid]["profile"] for mid, obj in unit.get("coverage", set()) if mid in modules}
         if target != source_path or unit.get("Role") != "check" or row["profile"] not in covered_profiles:
             add(path, "value", "observable check must locate a canonical check for its profile")
+    title = re.search(r"^# (.+)$", text, re.M)
+    return {"path": path, "text": text, "mode": mode, "title": title.group(1).strip() if title else "",
+            "solutions": [uid for uid in dict.fromkeys(order) if units[uid]["Role"] == "solution"]}
+
+
+GUIDE_SECTIONS = ("Before the course", "Schedule", "Reserved material", "When something deviates",
+                  "After the course", "Materials")
+VERSION_MENTION = re.compile(r"\bversion[e]?\s*:?\s*v?(\d+\.[A-Za-z0-9][A-Za-z0-9.-]*)", re.I)
+COURSE_WORD = re.compile(r"\b(?:corso|course)\b", re.I)
+
+
+def _version_mentions(path, body, version, names, add):
+    """Flag a line that names the course and mentions a version other than Course version."""
+    heading = "text"
+    for line in body.splitlines():
+        if line.startswith("## "):
+            heading = line[3:].strip()
+            continue
+        if not (COURSE_WORD.search(line) or any(
+                re.search(r"(?<!\w)" + re.escape(name) + r"(?!\w)", line, re.I) for name in names if name)):
+            continue
+        for match in VERSION_MENTION.finditer(line):
+            found = match.group(1).rstrip(".")
+            if found != version:
+                add(path, heading, f"mentions course version {found}; Course version is {version}")
+
+
+def _delivery_package(root, course_dir, plan, plan_rows, contract, risks, read, add):
+    """Validate the instructor-led delivery package; structure only, never the quality of the instructions."""
+    version = (re.findall(r"^Course version:[ \t]*(.*)$", plan, re.M) or [""])[0].strip()
+    names = (course_dir.name, contract["title"])
+    if version:
+        _, _, rest = contract["text"].partition("\n## ")
+        _version_mentions(contract["path"], "## " + rest if rest else "", version, names, add)
+    guide_path = course_dir / "INSTRUCTOR_GUIDE.md"
+    if not guide_path.is_file():
+        if contract["mode"] == "instructor-led":
+            add(guide_path, "instructor guide", "instructor-led course needs INSTRUCTOR_GUIDE.md before delivery")
+        return
+    guide = read(guide_path, "instructor guide")
+    if guide is None:
+        return
+    intro, _, rest = guide.partition("\n## ")
+    body = "## " + rest if rest else ""
+    for key in ("Course version", "Feedback flow"):
+        values = re.findall(r"^" + re.escape(key) + r":[ \t]*(.*)$", intro, re.M)
+        expected = re.findall(r"^" + re.escape(key) + r":[ \t]*(.*)$", plan, re.M)
+        if len(values) != 1 or not expected or values[0].strip() != expected[0].strip():
+            add(guide_path, key, f"{key} must occur once and equal COURSE_PLAN")
+    if version:
+        _version_mentions(guide_path, body, version, names, add)
+    parts = re.split(r"(?m)^## (.+)\n", body)
+    sections = {}
+    for heading, block in zip(parts[1::2], parts[2::2]):
+        sections.setdefault(heading.strip(), []).append(block.strip())
+    for name in GUIDE_SECTIONS:
+        blocks = sections.get(name, [])
+        if len(blocks) != 1 or not blocks[0]:
+            add(guide_path, name, f"section '## {name}' must occur once with content")
+
+    def section(name):
+        return (sections.get(name) or [""])[0]
+
+    course_root = course_dir.resolve()
+
+    def packaged(value, item, locator_allowed):
+        path_part, sep, anchor = value.partition("#")
+        path = Path(path_part)
+        if (path.is_absolute() or ".." in path.parts or not path_part.startswith("ai_docs/")
+                or (sep and (not locator_allowed or not anchor))):
+            add(guide_path, item, f"'{value}' must be a project-relative ai_docs/ path without '..'"
+                + ("" if locator_allowed else " and without a locator"))
+            return
+        target = (root / path).resolve()
+        if not target.is_relative_to(course_root):
+            add(guide_path, item, f"'{value}' is outside the course folder, so it is not in the delivered package")
+        elif not target.exists():
+            add(guide_path, item, f"'{value}' is missing from the delivered package")
+        elif not locator_allowed and path_part.endswith("/") != target.is_dir():
+            add(guide_path, item, f"'{value}' must end with '/' exactly when it is a folder")
+        elif anchor and (not target.is_file() or not _anchor_exists(target, anchor)):
+            add(guide_path, item, f"'{value}' has no matching locator")
+
+    rows = _table(section("Materials"), ("material", "path", "seen by", "used in")) or []
+    if not rows:
+        add(guide_path, "Materials", "Materials table must list the delivered package")
+    for row in rows:
+        packaged(row["path"], "Materials", False)
+        if row["seen by"] not in ("instructor", "learners"):
+            add(guide_path, "Materials", f"'{row['path']}' Seen by must be instructor or learners")
+    listed = {row["path"] for row in rows}
+    materials = {value.rstrip("/") for value in listed}
+    cited = {value.rstrip(".,;:") for value in re.findall(r"(?<![\w/.])ai_docs/[^\s|`<>\"'()*]+", guide)}
+    for value in sorted(cited - listed):
+        packaged(value, "citation", True)
+    reserved = section("Reserved material")
+    for uid in contract["solutions"]:
+        if not re.search(r"\b" + re.escape(uid) + r"\b", reserved):
+            add(guide_path, uid, f"solution unit {uid} must be named in '## Reserved material'")
+    rows = _table(section("When something deviates"),
+                  ("risk id", "in class it looks like", "instructor action", "fallback material")) or []
+    if not rows:
+        add(guide_path, "When something deviates", "deviation table must have at least one row")
+    for row in rows:
+        rid = row["risk id"] or "deviation"
+        if row["risk id"] not in risks:
+            add(guide_path, rid, f"risk {rid} is not defined in P-TM.md")
+        fallback = row["fallback material"]
+        if not fallback:
+            add(guide_path, rid, "fallback material must be '-' or paths listed in '## Materials'")
+        elif fallback != "-":
+            for value in (part.strip() for part in fallback.split(",") if part.strip()):
+                if value.rstrip("/") not in materials:
+                    add(guide_path, rid, f"fallback '{value}' is not listed in '## Materials'")
+    modules = {row["module id"] for row in plan_rows}
+    rows = _table(section("Schedule"), ("session", "duration", "modules")) or []
+    if not rows:
+        add(guide_path, "Schedule", "schedule table must have at least one session")
+    for row in rows:
+        if not row["session"] or not row["duration"] or not _items(row["modules"]):
+            add(guide_path, "Schedule", "each session needs a duration and its modules")
+        for mid in _items(row["modules"]):
+            if mid not in modules:
+                add(guide_path, mid, f"schedule module {mid} is not in COURSE_PLAN")
 
 
 def validate_course(root, course_dir):
@@ -448,7 +573,10 @@ def validate_course(root, course_dir):
         else:
             add(course_dir / "COURSE_PLAN.md", "efficacy",
                 "human review of efficacy evidence required", severity="WARN")
-    _content_contract(course_dir, plan, plan_rows, read, ref, add)
+    contract = _content_contract(course_dir, plan, plan_rows, read, ref, add)
+    if contract:
+        risks = {row["risk id"] for row in _table(material["P-TM.md"] or "", ("risk id",)) or []}
+        _delivery_package(root, course_dir, plan, plan_rows, contract, risks, read, add)
     return findings
 
 
