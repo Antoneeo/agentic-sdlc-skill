@@ -103,9 +103,10 @@ class InstructorLed(unittest.TestCase):
         self.build(guide=GUIDE.replace("| 60 min | M1 |", "| 60 min | M7 |"))
         self.assertTrue(self.mentions("M7"), self.errors())
 
-    def test_red_material_outside_course_folder_is_an_error(self):
-        self.build(guide=GUIDE.replace("| ai_docs/solutions/courses/intro/demo/ |", "| ai_docs/vision/ |"))
-        self.assertTrue(self.mentions("ai_docs/vision/"), self.errors())
+    def test_red_material_outside_project_is_an_error(self):
+        # Amended by REQUEST #R10: a material may live anywhere in the project, never outside it.
+        self.build(guide=GUIDE.replace("| ai_docs/solutions/courses/intro/demo/ |", "| ../outside/ |"))
+        self.assertTrue(self.mentions("../outside/"), self.errors())
 
     def test_red_stale_version_next_to_course_name_is_an_error(self):
         # #R8: the course name (title "Intro" or slug "intro") counts like the word corso/course.

@@ -458,8 +458,8 @@ scaletta, materiale riservato, cosa fare quando un passaggio dal vivo devia,
 cosa ripulire dopo, e l'elenco del materiale da consegnare.
 
 Il validator controlla struttura, ID, cicli, ordine e riferimenti; per un corso
-con docente anche la guida e la presenza di ogni materiale citato nella cartella
-del corso, e in ogni corso con contratto di contenuto la versione scritta accanto
+con docente anche la guida e la presenza nel progetto di ogni materiale che
+elenca, e in ogni corso con contratto di contenuto la versione scritta accanto
 al nome del corso. Simulatori
 indipendenti provano il materiale con un controllo senza corso; un controllo
 che già risolve il compito rende inconcludente il confronto. Il corso resta

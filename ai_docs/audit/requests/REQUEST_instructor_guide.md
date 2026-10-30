@@ -98,3 +98,9 @@ Context (agent): "Do you approve the Vision amendment as written?" — the amend
 ### R8 — 2026-10-29 — shape of the version-in-text rule
 Context (agent): "Il controllo sulla versione nel testo deve riconoscere la riga di S38 del corso reale, che da qui non vedo. Quale regola uso? Se hai sotto mano la riga di S38, incollala in «Other»: decide lei." — the chosen option read: "ERROR quando nella stessa riga c'è «versione/version X» diverso da Course version e compare la parola corso/course oppure il nome del corso (slug o titolo)."
 > Corso o nome (Recommended)
+### R9 — 2026-10-30 — side effect seen in the E2E replay (owner, from the other PC)
+Context (agent): reply to the agent's request to report, after S1–S2, "i punti del modello della guida che non erano chiari o che non si adattavano al corso".
+> Un effetto collaterale da segnalare a chi sviluppa la skill. Ora che i progetti stanno dentro ai_docs/, l’indice della memoria del progetto include anche i 52 file interni di TH-01 e TH-02: handoff, request, corpus, tutti fittizi. Il registro dei lavori non li conta e i controlli restano puliti. Però una ricerca nella memoria del corso può restituire, per esempio, «F-001 Allarme sonda guasta» come se fosse un documento di questo progetto. Va aggiunto al punto 1 della lista sul modello: chiedere di tenere i progetti demo dentro la cartella del corso funziona, ma mescola la memoria del corso con quella dei progetti fittizi. La skill dovrebbe escludere demo/ dall’indice, oppure prevedere un’eccezione per i repository annidati.
+### R10 — 2026-10-30 — fix for E2E findings 1–2 (amends R5)
+Context (agent): "Come correggo i punti 1–2?" — the chosen option read: "Opzione A: Materials accetta percorsi in tutto il progetto, più l'avviso sui repository annidati. Correggi anche i punti 3-7." The agent had weighed it against B, "la memoria salta le cartelle con un proprio .git o ai_docs/", and recommended A.
+> Percorsi nel progetto

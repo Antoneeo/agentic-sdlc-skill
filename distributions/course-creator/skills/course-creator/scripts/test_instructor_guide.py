@@ -1,4 +1,5 @@
 """Instructor-led delivery package and course-version mentions (F-086)."""
+import os
 import unittest
 import test_slide_content
 
@@ -54,8 +55,13 @@ class InstructorGuide(unittest.TestCase):
             self.fixture.art("INSTRUCTOR_GUIDE.md", guide.replace("Course version: 1.2", f"Course version: {version}")
                              if version != "1.2" else guide)
 
-    def errors(self):
-        return [f"{f.file} {f.item}: {f.reason}" for f in self.fixture.findings() if f.severity == "ERROR"]
+    def errors(self, severity="ERROR"):
+        return [f"{f.file} {f.item}: {f.reason}" for f in self.fixture.findings() if f.severity == severity]
+
+    def put(self, rel, content="x\n"):
+        path = self.fixture.root / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
 
     def assertFlags(self, needle):
         self.assertTrue([e for e in self.errors() if needle in e], self.errors())
@@ -110,13 +116,60 @@ class InstructorGuide(unittest.TestCase):
     def test_listed_material_missing_from_package_is_an_error(self):
         self.build(guide=GUIDE, demo=False)
         self.assertFlags("FALLBACK.md")
+        self.assertFlags("create it, or correct the path")
 
-    def test_material_must_stay_inside_the_course_folder(self):
-        for path in ("ai_docs/vision/", "ai_docs/solutions/courses/intro/../../../vision/",
-                     "C:/outside/demo/", "/etc/"):
+    def test_material_must_stay_inside_the_project(self):
+        for path in ("ai_docs/solutions/courses/intro/../../../vision/", "../sibling/",
+                     "C:/outside/demo/", "C:outside/demo/", "/etc/", "./"):
             with self.subTest(path=path):
                 self.build(guide=self.guide("| ai_docs/solutions/courses/intro/demo/ |", f"| {path} |"))
                 self.assertFlags(f"'{path}'")
+                self.assertEqual([e for e in self.errors() if f"'{path}'" in e and "ai_docs/ path" in e], [])
+
+    def test_material_anywhere_in_the_project_is_accepted(self):
+        # #R10: demo repositories and generated decks live outside ai_docs/.
+        for path in ("demo/TH-01/", "decks/intro.dc.html", "ai_docs/vision/"):
+            with self.subTest(path=path):
+                self.build(guide=self.guide("| ai_docs/solutions/courses/intro/demo/ |", f"| {path} |"))
+                self.put("demo/TH-01/README.md")
+                self.put("decks/intro.dc.html")
+                self.assertEqual(self.errors(), [])
+
+    def test_nested_repository_inside_ai_docs_is_warned(self):
+        # #R9: project memory indexes ai_docs/, so a nested repository's own docs read as this project's.
+        for marker in ("demo/TH-01/.git/HEAD", "demo/TH-01/ai_docs/audit/handoff.md"):
+            with self.subTest(marker=marker):
+                self.build(guide=GUIDE)
+                self.fixture.art(marker, "x\n")
+                self.assertEqual(self.errors(), [])
+                self.assertTrue([w for w in self.errors("WARN") if "project memory" in w], self.errors("WARN"))
+        self.build(guide=self.guide("| ai_docs/solutions/courses/intro/demo/ |", "| demo/ |"))
+        self.put("demo/TH-01/.git/HEAD")
+        self.assertEqual(self.errors("WARN"), [])
+
+    def test_nested_repository_with_a_git_file_is_warned(self):
+        # Worktrees and submodules keep .git as a file.
+        self.build(guide=GUIDE)
+        self.fixture.art("demo/TH-01/.git", "gitdir: ../../.git/worktrees/th\n")
+        self.assertTrue([w for w in self.errors("WARN") if "project memory" in w], self.errors("WARN"))
+
+    def test_nested_repository_walk_does_not_follow_links(self):
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as outside:
+            (Path(outside) / "ai_docs").mkdir()
+            self.build(guide=GUIDE)
+            link = self.course / "demo/linked"
+            try:
+                import _winapi
+                _winapi.CreateJunction(outside, str(link))
+            except (ImportError, OSError):
+                try:
+                    link.symlink_to(Path(outside), target_is_directory=True)
+                except OSError:
+                    self.skipTest("neither junction nor symlink available")
+            self.addCleanup(lambda: os.rmdir(link) if os.path.isdir(link) else None)
+            self.assertEqual(self.errors("WARN"), [])
 
     def test_material_folder_form_matches_what_it_is(self):
         for path in ("ai_docs/solutions/courses/intro/demo", "ai_docs/solutions/courses/intro/demo/FALLBACK.md/"):
@@ -124,7 +177,7 @@ class InstructorGuide(unittest.TestCase):
                 self.build(guide=self.guide("| ai_docs/solutions/courses/intro/demo/ |", f"| {path} |"))
                 self.assertFlags(f"'{path}'")
 
-    def test_material_symlink_cannot_leave_the_course_folder(self):
+    def test_material_symlink_cannot_leave_the_project(self):
         import tempfile
         from pathlib import Path
         with tempfile.TemporaryDirectory() as outside:
@@ -134,7 +187,7 @@ class InstructorGuide(unittest.TestCase):
             except OSError:
                 self.skipTest("symlink privilege unavailable")
             (Path(outside) / "FALLBACK.md").write_text("# Fallback\n", encoding="utf-8")
-            self.assertFlags("outside the course folder")
+            self.assertFlags("outside the project")
 
     def test_material_path_takes_no_locator_and_a_valid_viewer(self):
         for old, new in (("| ai_docs/solutions/courses/intro/demo/ | instructor |",
@@ -154,6 +207,15 @@ class InstructorGuide(unittest.TestCase):
                 self.build(guide=self.guide(anchor, f"{anchor} Read {cite}."))
                 self.assertFlags(cite.partition("#")[0].rsplit("/", 1)[1])
         self.build(guide=self.guide(anchor, f"{anchor} Read ai_docs/solutions/courses/intro/demo/FALLBACK.md#answer."))
+        self.assertEqual(self.errors(), [])
+        self.build(guide=self.guide(anchor, f"{anchor} Read ai_docs/vision/features/VISION_course_intro.md."))
+        self.assertFlags("list it in '## Materials' or move it into the course folder")
+
+    def test_cited_path_under_a_listed_material_is_in_the_package(self):
+        anchor = "Feedback goes through D-IC IC1."
+        guide = self.guide(anchor, f"{anchor} Read ai_docs/vision/features/VISION_course_intro.md.")
+        row = "| Demo project | ai_docs/solutions/courses/intro/demo/ | instructor | S01 |"
+        self.build(guide=guide.replace(row, row + "\n| Course vision | ai_docs/vision/ | instructor | S01 |"))
         self.assertEqual(self.errors(), [])
 
     def test_citation_in_the_guide_header_is_checked(self):
@@ -192,6 +254,13 @@ class InstructorGuide(unittest.TestCase):
     def test_schedule_module_must_exist_in_plan(self):
         self.build(guide=self.guide("| 60 min | M1 |", "| 60 min | M1, M7 |"))
         self.assertFlags("M7")
+
+    def test_schedule_break_and_closing_rows_take_a_dash(self):
+        self.build(guide=self.guide("| 1 | 60 min | M1 |", "| 1 | 60 min | M1 |\n| Break | 15 min | - |\n"
+                                                           "| Closing | 10 min | - |"))
+        self.assertEqual(self.errors(), [])
+        self.build(guide=self.guide("| 1 | 60 min | M1 |", "| 1 | 60 min | M1 |\n| Break | 15 min |  |"))
+        self.assertFlags("'-' for a break or closing")
 
     # Rule 9: course version mentioned in the text
     def test_stale_course_version_in_text_is_an_error(self):

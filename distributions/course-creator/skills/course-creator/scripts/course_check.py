@@ -2,6 +2,7 @@
 """Structural checks for one course; never certifies teaching quality or learning."""
 from dataclasses import dataclass
 from pathlib import Path
+import os
 import re
 
 
@@ -254,37 +255,63 @@ def _delivery_package(root, course_dir, plan, plan_rows, contract, risks, read, 
         return (sections.get(name) or [""])[0]
 
     course_root = course_dir.resolve()
+    docs_root = (root / "ai_docs").resolve()
 
     def packaged(value, item, locator_allowed):
+        """Resolve a guide path inside the project; report and return None when it is not usable."""
         path_part, sep, anchor = value.partition("#")
         path = Path(path_part)
-        if (path.is_absolute() or ".." in path.parts or not path_part.startswith("ai_docs/")
+        if (not path.parts or path.is_absolute() or path.drive or path.root or ".." in path.parts
                 or (sep and (not locator_allowed or not anchor))):
-            add(guide_path, item, f"'{value}' must be a project-relative ai_docs/ path without '..'"
-                + ("" if locator_allowed else " and without a locator"))
-            return
+            add(guide_path, item, f"'{value}' must be a path relative to the project root, with no drive, "
+                "leading '/' or '..'" + ("" if locator_allowed else ", and no '#locator'"))
+            return None
         target = (root / path).resolve()
-        if not target.is_relative_to(course_root):
-            add(guide_path, item, f"'{value}' is outside the course folder, so it is not in the delivered package")
+        if not target.is_relative_to(root):
+            add(guide_path, item, f"'{value}' resolves outside the project, so it cannot be delivered")
         elif not target.exists():
-            add(guide_path, item, f"'{value}' is missing from the delivered package")
+            add(guide_path, item, f"'{value}' does not exist: create it, or correct the path")
         elif not locator_allowed and path_part.endswith("/") != target.is_dir():
             add(guide_path, item, f"'{value}' must end with '/' exactly when it is a folder")
         elif anchor and (not target.is_file() or not _anchor_exists(target, anchor)):
             add(guide_path, item, f"'{value}' has no matching locator")
+        else:
+            return target
+        return None
+
+    def nested_repository(target):
+        """Read folder names only; never follow a symlink or a Windows junction out of the folder."""
+        for base, dirs, _ in os.walk(target):
+            if ".git" in dirs or "ai_docs" in dirs or Path(base, ".git").is_file():
+                return True
+            dirs[:] = [d for d in dirs if not (os.path.islink(os.path.join(base, d))
+                                               or getattr(os.path, "isjunction", lambda _: False)(
+                                                   os.path.join(base, d)))]
+        return False
 
     rows = _table(section("Materials"), ("material", "path", "seen by", "used in")) or []
     if not rows:
         add(guide_path, "Materials", "Materials table must list the delivered package")
+    targets = []
     for row in rows:
-        packaged(row["path"], "Materials", False)
+        target = packaged(row["path"], "Materials", False)
+        if target is not None:
+            targets.append(target)
+            if target.is_dir() and target.is_relative_to(docs_root) and nested_repository(target):
+                add(guide_path, "Materials", f"'{row['path']}' holds its own repository (.git or ai_docs/) "
+                    "inside ai_docs/, so project memory indexes its files as this project's: "
+                    "keep it outside ai_docs/", "WARN")
         if row["seen by"] not in ("instructor", "learners"):
             add(guide_path, "Materials", f"'{row['path']}' Seen by must be instructor or learners")
     listed = {row["path"] for row in rows}
     materials = {value.rstrip("/") for value in listed}
     cited = {value.rstrip(".,;:") for value in re.findall(r"(?<![\w/.])ai_docs/[^\s|`<>\"'()*]+", guide)}
     for value in sorted(cited - listed):
-        packaged(value, "citation", True)
+        target = packaged(value, "citation", True)
+        if target is not None and not any(target == t or target.is_relative_to(t)
+                                          for t in (course_root, *targets)):
+            add(guide_path, "citation", f"'{value}' is cited but is not in the delivered package: "
+                "list it in '## Materials' or move it into the course folder")
     reserved = section("Reserved material")
     for uid in contract["solutions"]:
         if not re.search(r"\b" + re.escape(uid) + r"\b", reserved):
@@ -309,8 +336,9 @@ def _delivery_package(root, course_dir, plan, plan_rows, contract, risks, read, 
     if not rows:
         add(guide_path, "Schedule", "schedule table must have at least one session")
     for row in rows:
-        if not row["session"] or not row["duration"] or not _items(row["modules"]):
-            add(guide_path, "Schedule", "each session needs a duration and its modules")
+        if not row["session"] or not row["duration"] or not (_items(row["modules"]) or row["modules"] == "-"):
+            add(guide_path, "Schedule", "each schedule row needs a name, a duration and its modules, "
+                "or '-' for a break or closing")
         for mid in _items(row["modules"]):
             if mid not in modules:
                 add(guide_path, mid, f"schedule module {mid} is not in COURSE_PLAN")

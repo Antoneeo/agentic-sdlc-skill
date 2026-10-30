@@ -212,7 +212,9 @@ The module material itself names course/version/module, explains the concept for
 
 Required before delivery when the content source declares `Delivery mode: instructor-led`; checked whenever present. The spoken text stays in the Complete explanation of each unit; this file gives the person who delivers the course everything else, so they never reconstruct it from the author's conversation or from scattered files. Each fact keeps one authority: cite COURSE_PLAN, D-IC, P-TM and units by ID instead of copying them.
 
-The package is everything handed to the instructor: the teaching material, the delivery material and these instructions. Cite material only as a project-relative `ai_docs/...` path inside the course folder; `course_check` refuses a cited path outside the folder or missing from it. List every file or folder the delivery needs in `## Materials`, with who may see it.
+The package is everything handed to the instructor: the teaching material, the delivery material and these instructions. List every file or folder the delivery needs in `## Materials`, with who may see it, as a path relative to the project root. The path may point anywhere in the project: the course folder, demo projects, the generated slide deck. Keep a demo project that has its own `.git` or `ai_docs/` outside `ai_docs/`, because project memory indexes everything under `ai_docs/` and would present the demo's documents as this project's (`course_check` warns). In the text, cite material as an `ai_docs/...` path; that path must be inside the course folder or under a path listed in `## Materials`.
+
+Language: keep the header field names, the `## ` headings and the table headers exactly as in the template, because `course_check` looks for them verbatim. Write the text and the table cells in the learners' language, as in the content source, except the values the check compares exactly: `Seen by` (`instructor` or `learners`), Risk IDs, module IDs, unit IDs, paths and `-`.
 
 Boundary: delivery material and instructions cover how to deliver the course. They contain no session dates or places, enrolments, attendance, participant lists or data about participants, not even for a single edition. Room and equipment requirements are allowed, and so are in-class checks that keep nothing individual.
 
@@ -228,6 +230,10 @@ Feedback flow: IC1
 | Session | Duration | Modules |
 |---|---|---|
 | 1 | 90 min | M1, M2 |
+| Break | 15 min | - |
+| Closing | 10 min | - |
+
+<Instructor cues during the units, one line per unit ID: "S07: give two minutes, then have one answer read aloud". The rows add up to the whole course duration.>
 
 ## Reserved material
 <Every solution unit by ID (e.g. S04) and every file the learners must not see, with when it may be revealed.>
@@ -235,7 +241,9 @@ Feedback flow: IC1
 ## When something deviates
 | Risk ID | In class it looks like | Instructor action | Fallback material |
 |---|---|---|---|
-| C-1 | <what the instructor observes> | <what to do> | ai_docs/solutions/courses/<slug>/demo/FALLBACK.md |
+| C-1 | <what the instructor observes> | <what to do> | demo/FALLBACK.md |
+
+<`course_check` verifies that each Risk ID exists in P-TM, not that it is the risk this deviation belongs to: choose the row's risk by reading P-TM.>
 
 ## After the course
 <What to clean up, which shared copies to remove, how to collect feedback through IC1.>
@@ -243,10 +251,20 @@ Feedback flow: IC1
 ## Materials
 | Material | Path | Seen by | Used in |
 |---|---|---|---|
-| <demo project> | ai_docs/solutions/courses/<slug>/demo/ | instructor | S12 |
+| <demo project> | demo/TH-01/ | instructor | S12 |
+| <fallback transcript> | demo/FALLBACK.md | instructor | S12 |
+| <slide deck> | decks/<slug>.dc.html | learners | S01-S38 |
 ```
 
-`course_check` verifies structure only: header equal to COURSE_PLAN, each section present once with content, every `Materials` path inside the course folder and existing (ending with `/` exactly when it is a folder; `Seen by` is `instructor` or `learners`), every `ai_docs/...` path cited anywhere in the guide inside the package, every `Role: solution` unit named in `## Reserved material`, at least one deviation row, each deviation `Risk ID` defined in P-TM with `Fallback material` either `-` or comma-separated paths listed in `## Materials`, and at least one session, each with a duration and comma-separated modules present in COURSE_PLAN. Whether the instructions are sufficient, and whether material the delivery needs is missing without being cited, remains a review judgement.
+`course_check` verifies structure only:
+- the header equals COURSE_PLAN, and each section is present once with content;
+- every `Materials` path is relative to the project root, stays inside the project and exists. It ends with `/` exactly when it is a folder, and `Seen by` is `instructor` or `learners`. A listed folder inside `ai_docs/` that holds its own `.git` or `ai_docs/` is a warning;
+- every `ai_docs/...` path cited anywhere in the guide exists and is inside the course folder or under a listed material;
+- every `Role: solution` unit is named in `## Reserved material`;
+- there is at least one deviation row. Each `Risk ID` is defined in P-TM, and `Fallback material` is either `-` or comma-separated paths listed in `## Materials`;
+- there is at least one schedule row. Each row has a name, a duration, and either comma-separated modules present in COURSE_PLAN or `-` for a break or closing.
+
+These remain a review judgement: whether the instructions are sufficient, whether each deviation names the right risk, and whether material the delivery needs is missing without being cited.
 
 ## Review log and project architecture
 

@@ -4,9 +4,9 @@ level: L3
 branch: claude/f086-instructor-guide
 status: IN_PROGRESS
 since: 2026-10-29
-next: owner replays E2E S1-S2 on the real course (agente-personale-skills, other PC) and decides the merge
+next: owner replays E2E S2 with demo/ back at the project root (R10 amendment) and decides the merge
 details: REQUEST_instructor_guide.md · ANALYSIS_instructor_guide.md · harness_instructor_guide/probe.py
-updated: 2026-10-29
+updated: 2026-10-30
 ---
 
 ## Resume logistics
