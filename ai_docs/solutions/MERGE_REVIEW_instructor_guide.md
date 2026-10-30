@@ -74,7 +74,7 @@ Totals: REVIEW 8 files (+548/-6); DESIGN 8 files (+366/-4); EVIDENCE 5 files (+3
   - a version mention with no course name on the line.
 - **Could not verify:**
   - a symlink escaping the project, tested live: the test skips here because of the missing symlink privilege. It holds by reading the code; the junction test does run.
-  - the owner's replay of S2 under #R10, with `demo/` back at the project root.
+- **Owner replay of S2 under #R10** (REQUEST_instructor_guide.md#R12), after the merge: PASS, `course: 0 error(s), 0 warning(s)`, `check: CLEAN`, no demo file in project memory.
 - **ERROR, not WARN, for a missing guide or a guide off the template:** the author's decision, recorded in the Diary. Existing instructor-led courses fail `check` until they have a guide that follows the template, and CHANGELOG and README say so.
 - **Decisions still owed:**
   - the merge;
@@ -83,4 +83,4 @@ Totals: REVIEW 8 files (+548/-6); DESIGN 8 files (+366/-4); EVIDENCE 5 files (+3
 ## Merge notes
 - **Generated files** (`handoff.md`, `memory/INDEX.md`, `features_history.md`): on conflict, regenerate them with `sdlc_check.py index`. Never resolve them by hand.
 - **`stale`:** in this worktree, `check` reports areas this branch does not touch (`skills/`, `scripts/`) as stale. The cause is the file dates of the worktree, and the 2026-10-29 closure review confirmed it. After the merge into the main checkout, `check` should come back clean.
-- **Before DONE:** the owner replays E2E S2 with `demo/` at the project root, and the result goes into the ANALYSIS Diary.
+- **Merged** to `main` on 2026-10-30 by fast-forward to 1a5db5d6 (#R11); the S2 replay closed the unit (#R12).

@@ -61,7 +61,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/ANALYSIS_guide_activation.md | code |  | Feature Analysis: Guide Activation | 623921a21dc14291127d92d67b57657e563ae44e9a716fbadd36eb01a50bc2ad |
 | solutions/ANALYSIS_guide_verdict_check.md | code | guide-router, hooks, enforcement, triage | A Claude Code PreToolUse hook that refuses an Edit/Write when the session never declared a guide-router verdict, or never read a guide its verdict names — the check the field agent said was missing ("nothing stops me"). | d57bdcb8f3be1fe506ac54558f301232790d14800474efce180c8f3f6357b972 |
 | solutions/ANALYSIS_init_wires_orient_hook.md | code |  | Feature Analysis: the orientation hook installs itself | 048068c06c825240f94344d3ecc1d7f6b9e1acaad0d0526a24687834bfcd88b6 |
-| solutions/ANALYSIS_instructor_guide.md | code |  | Analisi: guida del docente e pacchetto di erogazione | cd8194dd5c36ca5f0f6e63ab5d3c8da924af761c7ea44d26ad4ef94b397011a6 |
+| solutions/ANALYSIS_instructor_guide.md | code |  | Analisi: guida del docente e pacchetto di erogazione | 164c88c18e89a48ae0f84512261a081ea7053616e6f55b98f3923354b86808e7 |
 | solutions/ANALYSIS_intent_focus.md | code | anti-myopia, vision-gate, review, proportionality, efficiency | Why every gate stayed green while F-063/F-064 lost the owner's core promise, and why reviews ran where they lowered no risk; the doctrine that rules both, replayed red/green on both incidents. | cfb5b589e20cdadee8e1cbd89c67178854d6c4c1800f1712ab8b3c626443ee3d |
 | solutions/ANALYSIS_interaction_contract.md | code |  | Feature Analysis: Interface Contract | c4910b72c40e62d23812b6e1ecd6cb2b0de4c8ccd257b2bfb68798c1e1111979 |
 | solutions/ANALYSIS_kb_capture_moment.md | code |  | F-040 unit 2 of VISION_kb_second_brain - the daily capture moment. The rails exist (claim row is L1, notes take elicited/derived/ruling); this unit adds the sweep MOMENT the vision mandates at user-signed closings, plus a notes-recency line in the kb orient. | ec9a0c71315bb8b238d16b7b01d5b34473e25c2cf17de23863850c07878d31f0 |
@@ -108,7 +108,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/ANALYSIS_vision_shape_rules.md | code |  | Feature Analysis: Vision Shape Rules | b82dff0c390b896ee1c6f0a5f04ded6bf4b152fac8c2c75b12bdc23c0605af7b |
 | solutions/ANALYSIS_working_model.md | code |  | Feature Analysis: the agent's working model | 7f40628c80b9d2f2542d0a5e44b70c084d7ba8730b0e6700ab5cc93de53fa36f |
 | solutions/E2E_TEST_guide_verdict_check.md | code |  | E2E test: Guide verdict check before edits | e2ed73383f5b5c68d59d2be807198dc695402239578fff185ea773944eb2a427 |
-| solutions/E2E_TEST_instructor_guide.md | code |  | E2E test: guida del docente per i corsi con docente | af99f3d331a40c32586b34b9e7416f41300667aa5dd2f68a4aff9b53ad8cfdf7 |
+| solutions/E2E_TEST_instructor_guide.md | code |  | E2E test: guida del docente per i corsi con docente | 0e5778a4ab5129f89534d63bfc61bd220f41e9ad7c0c0dbd6f1545a70e00f8bc |
 | solutions/E2E_TEST_intent_focus.md | code |  | E2E test: Intent focus | 615c70d14e974076bd8abd45a1bee6f8d456dbf66e9cb015ce7c9c7fb76f72aa |
 | solutions/E2E_TEST_kb_corpus_reach.md | code |  | E2E test: the corpus knows what it never examined, and what we declared | b4d86927183633f9d7bf182a6d31581f514419f2bbfb7421dcbf8e5eae43486f |
 | solutions/E2E_TEST_kb_import_ruling.md | code |  | E2E test: an imported ruling decides nothing until ratified | 2b2fd77eb4211ef23359ddbbe82f02582e8892f4bb746d490e93a19b517e29cc |
@@ -123,7 +123,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/E2E_TEST_vision_interview.md | code |  | E2E test: Vision born from an owner interview | e1a17086e3114a5ce183ae660fbe85c82a3e1f566823a02afe3534c074d25f3a |
 | solutions/E2E_TEST_working_model.md | code |  | E2E test: constraints at the moment of action | 4d7c28c0e3a4cac2a805bfdb9649070f4dd41dbf209614073140dcec5041005b |
 | solutions/MERGE_REVIEW_guide_verdict_check.md | code |  | Merge review: Guide verdict check before edits | 62974b0a60ddac8b2fea750958ea65780f2d033ea6a58dc2a6081d7046f56ecb |
-| solutions/MERGE_REVIEW_instructor_guide.md | code |  | Merge review: guida del docente per i corsi con docente | de736590d461137a93245dd31dad4bbb1b751749ab417a49d41b995841283571 |
+| solutions/MERGE_REVIEW_instructor_guide.md | code |  | Merge review: guida del docente per i corsi con docente | 51b7f5cf28dff4f740f37bf6d4742eb671d8e0b6fa6c793f3ef4232f0c03ae6a |
 | solutions/MERGE_REVIEW_intent_focus.md | code |  | Merge review: Intent focus | fb9ddb4db7611ad33c3da2b77ac666d7644cfaf318d99c6eb1920bbe1b53aed6 |
 | solutions/MERGE_REVIEW_kb_corpus_reach.md | code |  | Merge review: the corpus knows what it never examined, and what we declared | 112c4a9f46294570afb116b8c9ea446042f8c70079fc65eadf421652bc08b06e |
 | solutions/MERGE_REVIEW_kb_import_ruling.md | code |  | Merge review: an imported ruling decides nothing until ratified | f4513bcaeb6627fa6b2e12e34f4aa9678be8c65434d649aa0ce4cdcd5a091ccb |
@@ -329,7 +329,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/courses/agentic-sdlc-kb-agentic/sources.md | code |  | Fonti del corso | 712b51e3d0cf34b921f638eca63f5c814af7193fdffeda42901bc8fbb7bc8761 |
 | strategic/architecture.md | code |  | Stack, package structure, component map and architectural patterns of the skill repository. | 86ed93c8bbd060b39e9f3d1effb08c0a70df27814f55f90b4026fc01c6bf9088 |
 | strategic/capabilities_and_positioning.md | code |  | Dated, evidence-based comparison of agentic-sdlc 1.26.1 and Superpowers 6.2.0: advantages, parity, remaining gaps and deliberate non-adoptions. | 8c7e8acae048545eaf5707db24c242b8701af5a2e32cd10090f9c9d6146ea394 |
-| strategic/existing_features.md | code |  | Concise catalog of the skill's existing features. | 07af878d0be4d94fb25abdaf8267efa1e188a6842dfb10f409b09c9995974fad |
+| strategic/existing_features.md | code |  | Concise catalog of the skill's existing features. | 28be32a7a9801862ecc401fae6d7758a6d98e5e978c8eb606e6d7e3201e8ed92 |
 | strategic/process_agentic_sdlc_devpnt.md | code |  | The joint agentic-sdlc × devPNT governance process — pipeline, documents, human vs agent reviews, mandatory checks, and why it works. Read to understand how a change goes from idea to release. | ec90b59d68bf6da79f395782e63eefb005525ce23f5b575be990e5f5cbec40da |
 | strategic/skill_family_agent_workflows.md | code |  | How the four skills differ in the way an agent works under each; the course lens is Standalone in its first release. For the owner; body in Italian. | 291dcc57b85fcbd5208ebf13d82ae2e1055330069c27f69553e6df5f4838293f |
 | strategic/skills_vs_standard_agents_team.md | knowledge |  | Per il team di sviluppo: vantaggi di kb-agentic e agentic-sdlc rispetto all'uso di un agente senza memoria e processo di progetto. | d17c9c35c2d3d4b847418ade83f45a3c6a81999e22a5aa85c1942f752784b934 |
