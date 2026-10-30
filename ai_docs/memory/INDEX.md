@@ -133,7 +133,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/MERGE_REVIEW_kb_site.md | code |  | Merge review: docs site | cea970366286de12eb6d1d21855573f269d17ceb54e37ac2b73649f631d37375 |
 | solutions/MERGE_REVIEW_merge_review.md | code |  | Merge review: Merge review brief and human E2E test script | 1263fddd76a2ced684c7d2cca295b7e4857cdf4fe5d7f1fb5d7154234ee81fb2 |
 | solutions/MERGE_REVIEW_npm_whats_new.md | code |  | Merge review: "What's new" on the npm pages | 686b2c4c665902fc788b8e81d3824228e198afab8db1f46e7d4d1ea48b17a00d |
-| solutions/MERGE_REVIEW_owner_design_approval.md | code |  | Merge review: il proprietario approva il design L3 prima del lavoro | 4e45ba7781823ec9cd0bec79522b74880742b90e1372c729ee80915a6acdb03c |
+| solutions/MERGE_REVIEW_owner_design_approval.md | code |  | Merge review: il proprietario approva il design L3 prima del lavoro | c5c9e377c2c4037c22b4842100dd251e397347489551b8249050a57310f036f1 |
 | solutions/MERGE_REVIEW_request_record.md | code |  | Merge review: Verbatim request record | 766fdc4ed65de618e678b0ab4e0e3629f5936b29e2c91621085683b208704ce7 |
 | solutions/MERGE_REVIEW_session_orientation_reach.md | code |  | Merge review: What reaches the session | 44a356edc7c6956d3e5372e352484b3e367d12f35e8f734eb15bcf0fd4716c9d |
 | solutions/MERGE_REVIEW_spec_code_divergence.md | code |  | Merge review: Spec/code divergence state shared by the two skills | 1a6c7906c578213a468a608032a9be5041ce4d4875a02058d79d5488a329e530 |

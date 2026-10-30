@@ -49,3 +49,7 @@ Context (agent): the agent presented the design summary of `ANALYSIS_owner_desig
 ### R8 — 2026-10-30 — commit and push of the branch
 Context (agent): after closure (check CLEAN, closure review PASS), the agent asked: "Shall I commit and push the F-087 branch?"
 > Commit and push
+
+### R9 — 2026-10-30 — merge into main
+Context (agent): after the commit and push (R8), the agent asked: "Merge F-087 into main?"
+> Merge to main

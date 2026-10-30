@@ -87,3 +87,4 @@ Totals: REVIEW 35 files (+1274/-79); DESIGN 4 files (+242/-3); EVIDENCE 5 files 
 ## Merge notes
 - **File generati** (`handoff.md`, `memory/INDEX.md`): in caso di conflitto rigenerali con `sdlc_check.py index`, mai a mano.
 - **Base:** il branch parte da 337943ab, cioè `origin/main` dopo il rilascio course 0.1.0-beta.15.
+- **Merged** to `main` on 2026-10-30 by fast-forward (#R9).
