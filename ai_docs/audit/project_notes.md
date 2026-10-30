@@ -1,7 +1,11 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**2026-10-28 — first users' notes still owed (F-070, FS6): code, KB, marketing, Course.** The first release of
+**2026-10-30 — release course-creator 0.1.0-beta.15: instructor guide and delivery package (F-086), course version in the text.** Course 0.1.0-beta.15 only; code, KB and
+marketing are unchanged. Tag course-v0.1.0-beta.15 on the release commit. Publish pending:
+the owner runs `publish_all.bat` (browser 2FA), which skips the other three packages.
+
+**2026-10-28 — first users' notes still owed (F-070, FS6): code, KB, marketing.** (Course: done in 0.1.0-beta.15.) The first release of
 each package after F-070 also summarizes, in its `### What's new`, what its 1.49.0-wave
 version brought (code 1.49.0, KB 1.32.0, marketing 0.27.0, Course 0.1.0-beta.14),
 published without notes. Start from `audit/release_notes/team_2026-10-27.md`, the owner's
