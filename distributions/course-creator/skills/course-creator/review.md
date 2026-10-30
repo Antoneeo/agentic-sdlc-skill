@@ -198,6 +198,34 @@ is a belief: the row would say a gate ran and never whether it could do its job,
 the correlation with `revise_rounds` and `findings_real` — the only evidence the
 policy pays — could not be drawn.
 
+**The owner approves the design before the work starts (L3).** The reviewer judges
+whether the design holds and serves the Vision; only the owner can say whether it is
+what they meant beyond what the Vision wrote, and an intent error costs least before
+the work exists. So the final design PASS — final once any scoped re-review it owed
+has passed (§Review-driven corrections) — does not start the work: the agent
+presents the design and asks the owner whether to proceed, in the form
+`elicitation.md` §The form of a question gives a reserved approval. The presentation
+is a short summary — what the change does (the Functional Spec, or the lens's
+equivalent), for whom and through which surfaces (use cases, contract), what it
+touches (Impact), the threats and their mitigations, the review's verdict with any
+open findings — and the path of the full design. At the round cap, the hand-over the
+cap prescribes, followed by this one question, takes the place of the form, and the
+owner's answer settles both. An approval is recorded verbatim in the request record
+under a label that begins `design approved`; a no or a correction takes its own
+label, and the design goes back — where the revision changes what the review judged,
+moment 1 runs again on that part first (the delta rule above). Only after the
+approval does the ANALYSIS go `PLANNED` → `IN_PROGRESS` and the work start: code,
+drafting or production, by lens. An instruction given before the design was shown
+("carry on", "do the whole unit") does not approve it. Where a lens's own phases
+already have the owner approve the design — the marketing lens's strategy USER GATE
+— that gate is this approval, never a second question, and the lens's own unattended
+path applies. Otherwise, unattended, the unit is `BLOCKED on the user`
+(`elicitation.md` Unattended path), never approved by assumption; a late arrival
+(moment 1b) asks before any further work. Hybrid: the owner's approval of the
+`E-ISP`/`E-TDD` proposal in devPNT, under devPNT's own authorization rules, is this
+approval. In Standalone, `validate` notes an L3 ANALYSIS in implementation, started
+on or after 2026-10-31, whose request record holds no `design approved` entry.
+
 **One schema for both modes**, meaning one required CORE plus each mode's own
 **mode-specific** realization columns. The core is what both modes actually share: `date`, `doc_key`,
 `tier`, `model`, `findings_raised`, `findings_real`, `verdict`, `revise_rounds`.

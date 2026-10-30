@@ -377,7 +377,7 @@ checks: [marketing.funnel]      # optional — extra portable checks to run on t
      the responsibility-level flow that deliver them; it NAMES the components in
      the flow, never their mechanism or file-level design (that is the Impact's
      vocabulary). After
-     design approval, changing a contracted surface, flow or feedback is a scope
+     the owner's design approval (`review.md`), changing a contracted surface, flow or feedback is a scope
      change the USER approves: the solution may propose it, never enact it
      silently. Every contracted flow is covered by ## Test Strategy. -->
 
@@ -549,6 +549,9 @@ Context (agent): "the question it answered, quoted"
   entered only as `[NOT VERBATIM — from <source>]`, never as a quote.
 - **Unattended**: R1 quotes the trigger that started the unit, labelled as such.
   Declared assumptions are not owner statements and never enter the record.
+- **Design approval** (L3): the owner's approval of the design is an entry whose
+  label begins `design approved`; a no or a correction takes its own label
+  (`review.md` §When a review is due).
 - **Hybrid**: always on the filesystem; governed artifacts cite entries too; an
   approval given in devPNT is named by its proposal, not quoted.
 

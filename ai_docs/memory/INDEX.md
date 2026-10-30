@@ -86,6 +86,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/ANALYSIS_mkt_read_diet.md | code |  | F-052 - the mandatory-read diet applied to the marketing lens, and measured NOT to apply to the knowledge lens. Extracts mkt's Hybrid seam; makes F-051's conservation check derived rather than hardcoded so it works in any lens; fixes a pre-existing dangling citation in mkt. | 54b0e91b5099770562f3537fb748d4a157b2a4ec6e2f3c6c008bda0325dfdd23 |
 | solutions/ANALYSIS_multi_domain_core.md | code |  | Feature Analysis: Multi-Domain Core | c0ee31d1498f7957911357e96b200d9035b5e1ee4112e42c5c926f57622ceb50 |
 | solutions/ANALYSIS_npm_whats_new.md | code |  | Feature Analysis: "What's new" for users on the npm pages | b165830e86a8fd02f88c450bd87c8fc6a0ee107303229ee5b7664d57c2cc9375 |
+| solutions/ANALYSIS_owner_design_approval.md | code |  | Analisi: approvazione del design da parte del proprietario | 30e40a6d321e32fa5cf537fb9dc02895a1590f360e8b641dfd32fce26fe738f2 |
 | solutions/ANALYSIS_parallel_handoff.md | code |  | Feature Analysis: Parallel Handoff | 35178aa910c865e6976b221b91dfd4d6af246bf130ccecc8a383487b47556129 |
 | solutions/ANALYSIS_per_turn_protocol_reminder.md | code |  | F-046 - the protocol reaches every turn, not only the first. SKILL.md is read on demand, so every duty written there reaches a session only if something loads the skill; this unit adds the one-line per-turn reminder whose first duty is to decide whether the skill governs the work and load it once. | f0b2775ed24fafbd2477d6f2ba5787289c7f673cc42751520e211879e6ccb4e1 |
 | solutions/ANALYSIS_permission_gated_rung.md | code |  | Feature Analysis: the permission-gated rung | 1a76bbd4e0ab51594672907cebb1dfd0437244a775c2cc767bdc8c8dbd9d59b5 |
@@ -116,6 +117,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/E2E_TEST_kb_site.md | code |  | E2E test: docs site | 05ee2b0c09319940a770d351c69adb92e626a4d4ade31e29700867ef55180dae |
 | solutions/E2E_TEST_merge_review.md | code |  | E2E test: Merge review brief and E2E script | aececd283613b0f412235902edcec128e39989a61ee91fcb77ffd30c6f46d3ef |
 | solutions/E2E_TEST_npm_whats_new.md | code |  | E2E test: "What's new" on the npm pages | a30a194eb9b9856981d1f849cbc5e10f6d8f481be3e4afcefe730ef2d84a4e95 |
+| solutions/E2E_TEST_owner_design_approval.md | code |  | E2E test: il proprietario approva il design L3 prima del lavoro | 15168a7d22f251eee8a5b2c451363bba5e05d9906e462aabfa1b577a302f5cc9 |
 | solutions/E2E_TEST_request_record.md | code |  | E2E test: Verbatim request record | 08acacce42a6146dd45c536248205697e67f4f4df77e84f919e9ffc5b3f3c5e0 |
 | solutions/E2E_TEST_session_orientation_reach.md | code |  | E2E test: What reaches the session | a977c7c7f30a5815662d2760ee3328070e9bc09919918a76438393937ab47846 |
 | solutions/E2E_TEST_spec_code_divergence.md | code |  | E2E test: Spec/code divergence state shared by the two skills | c16e515c6fd6d11611a845111eb0dfdbe3f210e44cc22358ad8c33edd5a1cf44 |
@@ -131,6 +133,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/MERGE_REVIEW_kb_site.md | code |  | Merge review: docs site | cea970366286de12eb6d1d21855573f269d17ceb54e37ac2b73649f631d37375 |
 | solutions/MERGE_REVIEW_merge_review.md | code |  | Merge review: Merge review brief and human E2E test script | 1263fddd76a2ced684c7d2cca295b7e4857cdf4fe5d7f1fb5d7154234ee81fb2 |
 | solutions/MERGE_REVIEW_npm_whats_new.md | code |  | Merge review: "What's new" on the npm pages | 686b2c4c665902fc788b8e81d3824228e198afab8db1f46e7d4d1ea48b17a00d |
+| solutions/MERGE_REVIEW_owner_design_approval.md | code |  | Merge review: il proprietario approva il design L3 prima del lavoro | 4e45ba7781823ec9cd0bec79522b74880742b90e1372c729ee80915a6acdb03c |
 | solutions/MERGE_REVIEW_request_record.md | code |  | Merge review: Verbatim request record | 766fdc4ed65de618e678b0ab4e0e3629f5936b29e2c91621085683b208704ce7 |
 | solutions/MERGE_REVIEW_session_orientation_reach.md | code |  | Merge review: What reaches the session | 44a356edc7c6956d3e5372e352484b3e367d12f35e8f734eb15bcf0fd4716c9d |
 | solutions/MERGE_REVIEW_spec_code_divergence.md | code |  | Merge review: Spec/code divergence state shared by the two skills | 1a6c7906c578213a468a608032a9be5041ce4d4875a02058d79d5488a329e530 |
@@ -331,7 +334,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | strategic/capabilities_and_positioning.md | code |  | Dated, evidence-based comparison of agentic-sdlc 1.26.1 and Superpowers 6.2.0: advantages, parity, remaining gaps and deliberate non-adoptions. | 8c7e8acae048545eaf5707db24c242b8701af5a2e32cd10090f9c9d6146ea394 |
 | strategic/existing_features.md | code |  | Concise catalog of the skill's existing features. | 28be32a7a9801862ecc401fae6d7758a6d98e5e978c8eb606e6d7e3201e8ed92 |
 | strategic/process_agentic_sdlc_devpnt.md | code |  | The joint agentic-sdlc × devPNT governance process — pipeline, documents, human vs agent reviews, mandatory checks, and why it works. Read to understand how a change goes from idea to release. | ec90b59d68bf6da79f395782e63eefb005525ce23f5b575be990e5f5cbec40da |
-| strategic/skill_family_agent_workflows.md | code |  | How the four skills differ in the way an agent works under each; the course lens is Standalone in its first release. For the owner; body in Italian. | 291dcc57b85fcbd5208ebf13d82ae2e1055330069c27f69553e6df5f4838293f |
+| strategic/skill_family_agent_workflows.md | code |  | How the four skills differ in the way an agent works under each; the course lens is Standalone in its first release. For the owner; body in Italian. | 070044e2ea433dbe06fb42c84a0bec5c4dd657e871e65ecdfd0ff4767ce25517 |
 | strategic/skills_vs_standard_agents_team.md | knowledge |  | Per il team di sviluppo: vantaggi di kb-agentic e agentic-sdlc rispetto all'uso di un agente senza memoria e processo di progetto. | d17c9c35c2d3d4b847418ade83f45a3c6a81999e22a5aa85c1942f752784b934 |
 | vision/features/VISION_agentic_sdlc_vnext.md | code |  | Feature vision for the vNext evolution (triage, support files, mechanical validation, devPNT symbiosis) delivered in 1.5.0/1.6.0. | 5c7bc38f24bc0d6b78f5cb4f8ffc9edc6f9ae19713897e0311c0ed6903d8d7cd |
 | vision/features/VISION_course_agentic-sdlc-kb-agentic.md | course |  | Vision del corso per sviluppatori su kb-agentic e agentic-sdlc, usato come primo banco di prova di course_creator. | 9f6257995619791689b970daf741cf5b6a47b00870d7a55003aa3e0b259ae5f7 |

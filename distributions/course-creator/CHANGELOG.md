@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+- After the design review's final PASS, an L3 unit stops: the agent presents a short summary of the course design and asks the owner whether to proceed; production starts only after a yes, recorded in the request record under a label that begins `design approved`. Unattended, the unit is `BLOCKED on the user`. The L3 row of the triage table reads "design review, owner approval, production". The rule is in the shared `review.md`; `SKILL.md` and `templates.md` point at it (F-087).
+- The shared validator: `validate` notes an L3 ANALYSIS in implementation, started on or after 2026-10-31, whose request record holds no entry whose label begins `design approved`. It is a `[note]`: `--strict` exits as before. The `gate` refusal message adds that at L3 the ANALYSIS goes `IN_PROGRESS` only after the owner's design approval; its exit codes are unchanged (F-087).
+
 ## [0.1.0-beta.15] - 2026-10-30
 
 ### What's new

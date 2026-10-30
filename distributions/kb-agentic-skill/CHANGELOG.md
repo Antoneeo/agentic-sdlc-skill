@@ -5,6 +5,8 @@ Every significant change to this skill is recorded here.
 ## [Unreleased]
 
 ### Changed
+- After the design review's final PASS, an L3 unit stops: the agent presents a short summary of the design and asks the owner whether to proceed; drafting starts only after a yes, recorded in the request record under a label that begins `design approved`. Unattended, the unit is `BLOCKED on the user`; in Hybrid the approval in devPNT counts. The rule is in the shared `review.md`; `SKILL.md` and `templates.md` point at it (F-087).
+- The shared validator: `validate` notes an L3 ANALYSIS in implementation, started on or after 2026-10-31, whose request record holds no entry whose label begins `design approved`. It is a `[note]`: `--strict` exits as before. The `gate` refusal message adds that at L3 the ANALYSIS goes `IN_PROGRESS` only after the owner's design approval; its exit codes are unchanged (F-087).
 - The package's npm page (its README) gains a "What's new in <version>" section right after the introduction, written for the people who install the package and linking the full CHANGELOG. It appears from the first version that carries one; each version's notes are the `### What's new` at the top of its CHANGELOG section (F-070). The "Shared project memory" section moves from the top of the page to just after the features, unchanged.
 
 ## [1.32.0] - 2026-10-27

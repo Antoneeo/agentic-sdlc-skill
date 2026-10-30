@@ -75,3 +75,4 @@
 | F-084 | kb corpus reach — the project files the corpus never examined, and the documents the project sent out | code | L3 | COMPLETED | 2026-10-26 | 2026-10-27 | solutions/ANALYSIS_kb_corpus_reach.md |
 | F-085 | The agent's working model — constraints extractable, synthesized, recalled | code | L3 | COMPLETED | 2026-10-27 | 2026-10-27 | solutions/ANALYSIS_working_model.md |
 | F-086 | Guida del docente e pacchetto di erogazione per i corsi con docente (course-creator) | code | L3 | COMPLETED | 2026-10-29 | 2026-10-30 | solutions/ANALYSIS_instructor_guide.md |
+| F-087 | Il proprietario approva il design di un L3 prima del lavoro (tutte le lenti) | code | L3 | COMPLETED | 2026-10-30 | 2026-10-30 | solutions/ANALYSIS_owner_design_approval.md |

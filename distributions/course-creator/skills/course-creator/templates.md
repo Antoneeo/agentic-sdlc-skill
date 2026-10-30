@@ -71,6 +71,9 @@ Context (agent): "the question it answered, quoted"
   entered only as `[NOT VERBATIM — from <source>]`, never as a quote.
 - **Unattended**: R1 quotes the trigger that started the unit, labelled as such.
   Declared assumptions are not owner statements and never enter the record.
+- **Design approval** (L3): the owner's approval of the design is an entry whose
+  label begins `design approved`; a no or a correction takes its own label
+  (`review.md` §When a review is due).
 
 ## Canonical analysis — `solutions/ANALYSIS_course_<slug>.md`
 

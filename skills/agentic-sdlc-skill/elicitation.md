@@ -126,8 +126,8 @@ Never legal:
 
 What questions are FOR — what the user uniquely owns: the benefit, priorities
 between conflicting goods, non-goals, acceptance, and the approvals doctrine
-reserves to them (Vision promotion and amendment, scope changes, proposal
-acceptance, merge decisions). Facts about intent come from the user; facts about
+reserves to them (Vision promotion and amendment, design approval at L3, scope
+changes, proposal acceptance, merge decisions). Facts about intent come from the user; facts about
 the system come from search.
 
 **Precedence, because both halves can fire at once:** this paragraph wins over
