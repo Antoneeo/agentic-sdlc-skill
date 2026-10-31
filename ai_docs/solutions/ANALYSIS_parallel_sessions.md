@@ -400,6 +400,7 @@ as bc30816c (implementation), then the closure commit: the merge note no longer 
 uncommitted changes of another session on `main` — they were committed in `788e74ee`, the
 branch's base, and the note was never re-checked; `mark` on `skills/`,
 `skills/agentic-sdlc-skill/`, `distributions/`; HANDOFF deleted. Fast-forward into `main`.
-`check`: validate clean; `stale` only on `scripts/`, left by F-070 (acf43891), outside this unit. No ADR: the decisions are rulings
+`check` CLEAN on `main`. (In the worktree `stale` also named `scripts/`: its reference is a
+timestamp, compared with file mtimes, and a fresh checkout has new mtimes — not a real change.) No ADR: the decisions are rulings
 r40 and r41, and `commit-map` reuses `review-map`'s classifiers. Left for the release:
 CHANGELOG ×4.

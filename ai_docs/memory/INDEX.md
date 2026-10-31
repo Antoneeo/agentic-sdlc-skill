@@ -87,7 +87,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/ANALYSIS_multi_domain_core.md | code |  | Feature Analysis: Multi-Domain Core | c0ee31d1498f7957911357e96b200d9035b5e1ee4112e42c5c926f57622ceb50 |
 | solutions/ANALYSIS_npm_whats_new.md | code |  | Feature Analysis: "What's new" for users on the npm pages | b165830e86a8fd02f88c450bd87c8fc6a0ee107303229ee5b7664d57c2cc9375 |
 | solutions/ANALYSIS_parallel_handoff.md | code |  | Feature Analysis: Parallel Handoff | 35178aa910c865e6976b221b91dfd4d6af246bf130ccecc8a383487b47556129 |
-| solutions/ANALYSIS_parallel_sessions.md | code |  | Feature Analysis: coordinating parallel sessions on one repository | a7f85b1b8f89daf835f6e81002bd541ff5a0b5c3e706c93447387e401db15964 |
+| solutions/ANALYSIS_parallel_sessions.md | code |  | Feature Analysis: coordinating parallel sessions on one repository | be73f49ce224ad36fb77c5cec4d801da1e236670df3152efa1f442771a27e606 |
 | solutions/ANALYSIS_per_turn_protocol_reminder.md | code |  | F-046 - the protocol reaches every turn, not only the first. SKILL.md is read on demand, so every duty written there reaches a session only if something loads the skill; this unit adds the one-line per-turn reminder whose first duty is to decide whether the skill governs the work and load it once. | f0b2775ed24fafbd2477d6f2ba5787289c7f673cc42751520e211879e6ccb4e1 |
 | solutions/ANALYSIS_permission_gated_rung.md | code |  | Feature Analysis: the permission-gated rung | 1a76bbd4e0ab51594672907cebb1dfd0437244a775c2cc767bdc8c8dbd9d59b5 |
 | solutions/ANALYSIS_question_discipline.md | code |  | Feature Analysis: Question Discipline | 5703eba9e5343caac0c5d6c798759b743ad51ab24fc98f9b7700dde691675a55 |
