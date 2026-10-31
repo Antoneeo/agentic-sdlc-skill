@@ -297,6 +297,9 @@ Context (agent): "the question it answered, quoted"
   unit whose record another session writes are
   `### R<n> — YYYY-MM-DD — received for <unit> — <what it settles>`, then sent to that
   record's writer, who enters them verbatim citing this entry.
+- **Design approval** (L3): the owner's approval of the design is an entry whose
+  label begins `design approved`; a no or a correction takes its own label
+  (`review.md` §When a review is due).
 - **Elicited notes**: a domain decision also lands in `corpus/notes/` (`origin: elicited`)
   naming its entry; the note keeps its own transcription because an export carries
   the corpus, not `audit/`.

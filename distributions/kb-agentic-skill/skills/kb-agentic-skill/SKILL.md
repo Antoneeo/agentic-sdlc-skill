@@ -1,6 +1,6 @@
 ---
 name: kb-agentic
-version: 1.32.0
+version: 1.33.0
 description: Knowledge-Base & Document-First protocol with risk-proportional triage, Vision as a guide, Signal Distillation, a complete Standalone mode and optional symbiosis with devPNT. Use for user documentation, knowledge extraction, SOPs, research notes, decision logs, knowledge management — and for answering project questions from the claim ledger and topic graph.
 author: Antonio Pinto (https://github.com/Antoneeo)
 copyright: (c) 2026 Antonio Pinto
@@ -143,7 +143,7 @@ Use this mode when `devpnt_*` tools are available and point at the current proje
 - Run spec elicitation round (`elicitation.md`) before drafting analysis.
 - Run taxonomy pass (`taxonomy.md`): verify whether topics, categories, or SOPs already exist in `ai_docs/`. Avoid duplication.
 - Create or update `ai_docs/solutions/ANALYSIS_[topic].md`.
-- **Design review gate (end of Phase 3, before any drafting):** the analysis is reviewed by somebody other than its author — a subagent with fresh context, or a declared self-pass when no higher rung is usable — a permission-gated rung is asked about, never silently skipped (`review.md`). Follow `review.md`; log the outcome in `audit/reviews/REVIEW_LOG.md`. A knowledge structure reviewed only by the person who chose it is not reviewed.
+- **Design review gate (end of Phase 3, before any drafting):** the analysis is reviewed by somebody other than its author — a subagent with fresh context, or a declared self-pass when no higher rung is usable — a permission-gated rung is asked about, never silently skipped (`review.md`). Follow `review.md`; log the outcome in `audit/reviews/REVIEW_LOG.md`. A knowledge structure reviewed only by the person who chose it is not reviewed. Then the owner approves the design before any drafting (`review.md` §When a review is due).
 
 ### 4. Knowledge Processing & Distillation
 - **Isolate the work (Branch/worktree hygiene).** Distillation rewrites existing notes — full re-read per `## Revision` — and does it on a branch or a worktree, never directly on the shared corpus, so a half-finished reconciliation is never what the next reader finds. Where a project does not isolate (one shared checkout), that is a departure from this rule, not a second mode: Rule Zero's step save commit and its declared residual apply. A session that may run while another session uses the same checkout works in its **own git worktree**, and never switches branch, stashes, resets or runs `index` in a checkout another session may be using. Parallel work also shares ids: choose a new unit's id **after fetching**, as the first id free on every branch and tag the checkout can see (`check` names a collision while the unit is open).

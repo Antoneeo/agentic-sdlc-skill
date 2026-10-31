@@ -1,8 +1,34 @@
 # Changelog
 
-## [Unreleased]
+## [0.28.0] - 2026-10-31
+
+### What's new
+
+**One approval, not two.** The other skills of the family now have the owner approve a design before the work starts. In marketing that approval already exists: you approve the strategy before any tactic. It now counts as that approval, so the agent asks you nothing more.
+
+**The npm page tells you what is new.** This section, at the top of the package page, now summarizes each version for the people who install it.
+
+**From 0.27.0, published without notes:**
+- **The process checks can no longer be bypassed by accident.** Quoting a work level inside a sentence no longer counts as declaring it, and protected parts of the project stay protected when the agent changes folder.
+- **You know what the project memory has not read yet.** The agent can tell how much of the project it has never examined (automatically in projects with a corpus, on request otherwise).
+
+#### What to do
+
+**1. Update (everyone).** The changes arrive only with the update.
+1. Run `npm install -g @antoneeo/mkt-agentic-sdlc-skill@latest`, then `mkt-sdlc-install-skill`.
+2. Close and reopen your agent sessions: the new version loads only at startup.
+
+To check: `npm ls -g @antoneeo/mkt-agentic-sdlc-skill` shows 0.28.0.
+
+**2. Protected folders in a repository with several docs folders (only if you use them; from 0.27.0).**
+- **This concerns you if** your agent settings contain `gate --hook --protected` and the repository has more than one docs folder (`mkt_docs/` or `ai_docs/`), for example a package with its own.
+- **Why:** protected paths are now read from the docs folder nearest to the edited file. A path written from the repository root, such as `packages/api/src/auth`, no longer matches the files inside `packages/api`, so the agent could change them without an analysis.
+- **Steps:** rewrite those paths from the package: `packages/api/src/auth` becomes `src/auth`. Note that `src/auth` then protects the folder with that name in every project that has its own docs folder.
+- **To check:** in a session with no open analysis, ask the agent for a small change to a protected file. It must be refused.
 
 ### Changed
+- The client's approval of the strategy (phase 6 USER GATE) is now named as the owner's design approval of the shared `review.md`: no second question is added, and the lens's own unattended path applies. The shared `review.md` carries the rule the other lenses follow (F-087).
+- The shared validator: `validate` notes an L3 ANALYSIS in implementation, started on or after 2026-10-31, whose request record holds no entry whose label begins `design approved`. It is a `[note]`: `--strict` exits as before. The `gate` refusal message adds that at L3 the ANALYSIS goes `IN_PROGRESS` only after the owner's design approval; its exit codes are unchanged (F-087).
 - The package's npm page (its README) gains a "What's new in <version>" section right after the introduction, written for the people who install the package and linking the full CHANGELOG. It appears from the first version that carries one; each version's notes are the `### What's new` at the top of its CHANGELOG section (F-070). The "Shared project memory" section moves from the top of the page to just after the features, unchanged.
 
 ## [0.27.0] - 2026-10-27

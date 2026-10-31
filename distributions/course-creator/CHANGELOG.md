@@ -1,9 +1,68 @@
 # Changelog
 
-## [Unreleased]
+## [0.1.0-beta.16] - 2026-10-31
+
+### What's new
+
+**You approve the course design before production.** On significant work, such as a new course or a changed audience, once the independent design review passes, the agent stops and shows you a short summary of the design: what the course will teach and to whom, what it touches, the risks and how they are handled, and what the review found. Production starts only after your yes, which the agent records in the unit's request record. A "go ahead" given before you saw the design does not count, and in a session with nobody to answer the unit waits for you.
+
+#### What to do
+
+**1. Update (everyone).** The changes arrive only with the update.
+1. Run `npm install -g @antoneeo/course-creator@latest`, then `course-creator-install-skill`.
+2. Close and reopen your agent sessions: the new version loads only at startup.
+
+To check: `npm ls -g @antoneeo/course-creator` shows 0.1.0-beta.16.
+
+**2. Approving the design (significant units).**
+- **This concerns you if** you use the skill for significant (L3) work. Nothing to configure: after the design review passes, the agent asks whether to proceed. Answer yes to start the production, or say what to change; the design is then revised and, where the change touches what the review judged, reviewed again before you are asked again.
+- **A unit already in progress.** Units started before 2026-10-31 are not affected. If a unit started on or after 2026-10-31 with an earlier version is already in progress or finished, `sdlc_check.py validate` shows a `[note]` saying it has `no design approval in its request record`. Why: the earlier version never asked you. To clear it, tell the agent that you approve the design as it was implemented; it records your words under a label that begins `design approved` (for example `design approved after implementation`). The note never fails a check, so you can also leave it.
+- **To check:** on your next significant unit, the agent stops after the design review and asks you before any production starts.
+
+### Changed
+- After the design review's final PASS, an L3 unit stops: the agent presents a short summary of the course design and asks the owner whether to proceed; production starts only after a yes, recorded in the request record under a label that begins `design approved`. Unattended, the unit is `BLOCKED on the user`. The L3 row of the triage table reads "design review, owner approval, production". The rule is in the shared `review.md`; `SKILL.md` and `templates.md` point at it (F-087).
+- The shared validator: `validate` notes an L3 ANALYSIS in implementation, started on or after 2026-10-31, whose request record holds no entry whose label begins `design approved`. It is a `[note]`: `--strict` exits as before. The `gate` refusal message adds that at L3 the ANALYSIS goes `IN_PROGRESS` only after the owner's design approval; its exit codes are unchanged (F-087).
+
+## [0.1.0-beta.15] - 2026-10-30
+
+### What's new
+
+**An instructor-led course ships with everything its instructor needs.** A course taught by an instructor now comes with `INSTRUCTOR_GUIDE.md`. It tells the instructor what to prepare, the schedule, what not to show the learners, what to do when a live step goes wrong, and what to clean up afterwards. It also lists every material the delivery needs. The course check confirms that each listed material exists, so a missing file shows up before the session instead of during it.
+
+**Feedback is attributed to the right version.** If a slide or unit names the course with a version different from the one the course declares (say "version 1.0" in a course at 1.2), the check names the section and the version it found. Feedback that quotes the version then reaches the version it is about.
+
+**Demo projects stay out of the course's memory.** Materials can be listed anywhere in the project, so demo projects and the generated deck are listed where they are. If a listed demo project with its own repository sits inside `ai_docs/`, the check warns you: its documents would otherwise turn up in project searches as if they were the course's.
+
+**From 0.1.0-beta.14, published without notes:**
+- **The process checks can no longer be bypassed by accident.** Quoting a work level inside a sentence no longer counts as declaring it, and protected parts of the project stay protected when the agent changes folder.
+- **You know what the project memory has not read yet.** The agent can tell how much of the project it has never examined.
+
+#### What to do
+
+**1. Update (everyone).** The changes arrive only with the update.
+1. Run `npm install -g @antoneeo/course-creator@latest`, then `course-creator-install-skill`.
+2. Close and reopen your agent sessions: the new version loads only at startup.
+
+To check: `npm ls -g @antoneeo/course-creator` shows 0.1.0-beta.15.
+
+**2. Write the instructor guide (instructor-led courses, and courses that already have one).**
+- **This concerns you if** a course's content file (`SLIDE_CONTENT.md` or `COURSE_CONTENT.md`) declares `Delivery mode: instructor-led`: after the update, `check` reports `instructor-led course needs INSTRUCTOR_GUIDE.md before delivery`. It also concerns any course with a `Content contract` that already has an `INSTRUCTOR_GUIDE.md`, which is now checked. Courses that declare no `Content contract` are not affected.
+- **Why:** the check refuses an instructor-led course without the guide, and refuses a guide written by hand in another shape, so the course fails `check` until the guide follows the template.
+- **Steps.** The commands below use `<skill_dir>`, the folder where `course-creator-install-skill` placed the skill; you can also ask the agent to run them.
+  1. Ask the agent: "write INSTRUCTOR_GUIDE.md for this course from the template in templates.md".
+  2. Make sure `## Materials` lists every file and folder the delivery needs, with paths from the project root (for example `demo/TH-01/`). A folder path ends with `/`; a file path does not.
+  3. If a listed demo project with its own `.git` or `ai_docs/` is inside `ai_docs/`, the check warns you. Move it outside, for example to `demo/` at the project root. Then update its path in `## Materials`, in any fallback cell and in any `ai_docs/...` path the guide cites. Finally run `python <skill_dir>/scripts/sdlc_check.py index --root .`, which regenerates the project memory without the demo files.
+  4. If `check` reports `mentions course version X; Course version is Y`, find the line in the named section that names the course with version X, and correct it.
+- **To check:** `python <skill_dir>/scripts/sdlc_check.py course <course-folder> --root .` reports `0 error(s)` for that course, and no warning about the guide. `<course-folder>` is the course's folder name under `ai_docs/solutions/courses/`.
+
+**3. Protected folders in a repository with several `ai_docs/` (only if you use them; from 0.1.0-beta.14).**
+- **This concerns you if** your agent settings contain `gate --hook --protected` and the repository has more than one `ai_docs/` folder, for example a package with its own.
+- **Why:** protected paths are now read from the `ai_docs/` nearest to the edited file. A path written from the repository root, such as `packages/api/src/auth`, no longer matches the files inside `packages/api`, so the agent could change them without an analysis.
+- **Steps:** rewrite those paths from the package: `packages/api/src/auth` becomes `src/auth`. Note that `src/auth` then protects the folder with that name in every project that has its own `ai_docs/`.
+- **To check:** in a session with no open analysis, ask the agent for a small change to a protected file. It must be refused.
 
 ### Added
-- Instructor-led courses ship `INSTRUCTOR_GUIDE.md` (`templates.md`, F-086): what to prepare, the schedule, the reserved material (every solution unit by ID), what to do when a live step deviates and which fallback to use, what to clean up afterwards, and the list of every material the delivery needs with who may see it. `course_check` refuses a course whose content declares `Delivery mode: instructor-led` without the guide, and checks a guide wherever one exists: header equal to `COURSE_PLAN`, all six sections, every listed material present in the project, every cited `ai_docs/` path in the course folder or under a listed material, solution units reserved, deviation risks defined in `P-TM.md`, and scheduled modules present in `COURSE_PLAN` (`-` for a break or closing). A material may be anywhere in the project, so demo projects and the generated deck can be listed where they are. A listed folder inside `ai_docs/` that holds its own repository is warned, because project memory would index its documents as the course's. **An existing instructor-led course fails `check` until its guide is written to the template; a guide written by hand in another shape is refused too.** Courses without a declared content contract are unaffected.
+- Instructor-led courses ship `INSTRUCTOR_GUIDE.md` (`templates.md`, F-086): what to prepare, the schedule, the reserved material (every solution unit by ID), what to do when a live step deviates and which fallback to use, what to clean up afterwards, and the list of every material the delivery needs with who may see it. `course_check` refuses a course whose content declares `Delivery mode: instructor-led` without the guide, and checks a guide wherever one exists in a course that declares a content contract: header equal to `COURSE_PLAN`, all six sections, every listed material present in the project, every cited `ai_docs/` path in the course folder or under a listed material, solution units reserved, deviation risks defined in `P-TM.md`, and scheduled modules present in `COURSE_PLAN` (`-` for a break or closing). A material may be anywhere in the project, so demo projects and the generated deck can be listed where they are. A listed folder inside `ai_docs/` that holds its own repository is warned, because project memory would index its documents as the course's. **An existing instructor-led course fails `check` until its guide is written to the template; a guide written by hand in another shape is refused too.** Courses without a declared content contract are unaffected.
 - `course_check` refuses, in a course that declares a content contract (self-study or instructor-led), a line that names the course (the word course/corso, the folder slug or the full title) and mentions a dotted version other than the declared `Course version`, so feedback that quotes the version reaches the right one. A tool's version on a line that does not name the course, and a bare number such as `versione 2`, are not checked.
 
 ### Changed

@@ -1,6 +1,6 @@
 ---
 name: agentic-sdlc
-version: 1.49.0
+version: 1.50.0
 description: Documentation-First SDLC protocol with risk-proportional triage, Vision as a guide, a complete Standalone mode and optional symbiosis with devPNT. Use for features, significant bugs, refactors, audits and documented maintenance.
 author: Antonio Pinto (https://github.com/Antoneeo)
 copyright: (c) 2026 Antonio Pinto
@@ -196,7 +196,7 @@ Standalone L3:
 - Build the Impact/solution **on** the Vision, the use-cases/user-needs and the Security & Threat Model — read and trace to them first, and state the trace (which actor / use-case / threat / benefit each part serves) so the closure review (`review.md`) can verify conformance. Do not draft the Impact in isolation.
 - For a feature known to span multiple milestones, also create `ai_docs/vision/features/VISION_[feature].md`; the retroactive case (extract it when the SECOND `ANALYSIS_*` on a theme appears) is in Write Triggers.
 
-**Design review gate — the design is reviewed BEFORE any code (L3).** Close Phase 3 by handing the finished ANALYSIS to an *independent* reviewer: the procedure, the independence ladder, the round cap and the log row are `review.md` §When a review is due, moment 1 — follow it there, it is not restated here. Why the moment exists: the closure review can prove the code matches the design, never that the design was right, and the author is structurally blind to what their own design omitted. In Hybrid the same review runs on the `E-ISP`/`E-TDD`, by the client's agent, and its PASS precedes the proposal to devPNT, where the human reviews — `review.md` §When a review is due owns the order.
+**Design review gate — the design is reviewed BEFORE any code (L3).** Close Phase 3 by handing the finished ANALYSIS to an *independent* reviewer: the procedure, the independence ladder, the round cap and the log row are `review.md` §When a review is due, moment 1 — follow it there, it is not restated here. Why the moment exists: the closure review can prove the code matches the design, never that the design was right, and the author is structurally blind to what their own design omitted. In Hybrid the same review runs on the `E-ISP`/`E-TDD`, by the client's agent, and its PASS precedes the proposal to devPNT, where the human reviews — `review.md` §When a review is due owns the order. In Standalone the final PASS is followed by the owner's approval of the design, asked and recorded before any code (same section).
 
 Hybrid L3:
 - Restore the Master Plan, Action Plan and linked documents.
@@ -207,7 +207,7 @@ Hybrid L3:
 
 ### 4. Development and Testing
 
-- Implement only after the documentation gate required by the level. **Flip the ANALYSIS frontmatter `PLANNED` → `IN_PROGRESS` when implementation starts** — that flip is what `gate` and the handoff registry key on, and nothing else performs it.
+- Implement only after the documentation gate required by the level; at L3 it ends with the owner's design approval (`review.md` §When a review is due). **Flip the ANALYSIS frontmatter `PLANNED` → `IN_PROGRESS` when implementation starts** — that flip is what `gate` and the handoff registry key on, and nothing else performs it.
 - Isolate the work: run an L3 change on its own branch. In Hybrid, prefer a git worktree from the start — a running devPNT server locks `.devpnt/*.db` and blocks in-place branch switches/merges in the primary worktree. A session that may run while another session uses the same checkout works in its **own git worktree**, and never switches branch, stashes, resets or runs `index` in a checkout another session may be using; under coordination, the code-writer lease is the one exception (`coordination.md` §2). Parallel work also shares ids: choose a new unit's id **after fetching**, as the first id free on every branch and tag the checkout can see (`check` names a collision while the unit is open).
 - Modify surgically, consistently with the plan.
 - Implementation work follows the TDD discipline in `tdd.md` (RED/GREEN/REFACTOR — the L2/L3 default; record the reason when it does not apply).

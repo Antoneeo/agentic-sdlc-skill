@@ -92,7 +92,7 @@ Qualunque lente sia attiva, l'agente:
 3. **Passa i gate**: Vision gate (DRAFT informa, APPROVED vincola — promozione solo
    tua, dopo il blind check; ogni Vision, M-VISION compresa, nasce da un'intervista
    all'owner in sei domande e da una north star approvata nelle tue parole, prima
-   di qualunque testo — `vision.md` §The owner interview); **design review indipendente prima di implementare**
+   di qualunque testo — `vision.md` §The owner interview); **design review indipendente prima di implementare, poi la tua approvazione del design** (l'agente si ferma dopo il PASS, ti presenta il design e aspetta il tuo sì, registrato nel request record come `design approved`)
    e closure review prima di dichiarare DONE (non dovuta su un delta post-PASS che solo
    riformula lavoro già giudicato, né a livello 2 fuori dalle aree security, F-071; la
    design review non è mai saltata) — ogni richiesta apre con il blocco

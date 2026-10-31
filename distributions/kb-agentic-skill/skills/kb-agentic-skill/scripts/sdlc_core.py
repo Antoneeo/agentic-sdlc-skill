@@ -100,6 +100,10 @@ CHRONOLOGY_EPOCH = "2026-10-18"
 # filled '## Guide check'. The day AFTER the rule was written, so the analyses
 # opened that day by parallel units (which never saw the template) stay quiet.
 GUIDE_CHECK_EPOCH = "2026-10-24"
+# Owner design approval (F-087): an L3 started on/after this date owes a request-
+# record entry labelled `design approved` before implementation. The day AFTER the
+# rule was written, like GUIDE_CHECK_EPOCH.
+DESIGN_APPROVAL_EPOCH = "2026-10-31"
 NEXT_MAX_CHARS = 240        # this repository's longest `next:` was 214 at the epoch
 ID_SCAN_MAX_REFS = 300      # A3 is skipped above it (one advisory says so, T9)
 ID_SCAN_REFS_PER_CALL = 50  # keeps one git command line far below 32k chars
@@ -1479,17 +1483,50 @@ def id_advisories(root):
     return out
 
 
-def design_review_due(meta):
-    """True when an L3 ANALYSIS owes a design-review row (review.md moment 1):
-    implementation has started or finished, and it began on/after the gate
-    shipped. PLANNED is exempt -- the review is due at the END of Phase 3, so an
-    analysis still being drafted is not late."""
+def _l3_in_work_since(meta, epoch):
+    """True when an L3 ANALYSIS is in implementation or done and began on/after
+    `epoch` (an ISO date string)."""
     if meta.get("level", "").upper() != "L3":
         return False
     if meta.get("status") not in ("IN_PROGRESS", "COMPLETED"):
         return False
     started = parse_iso((meta.get("start_date") or "").strip().strip("'\""))
-    return started is not None and started >= parse_iso(DESIGN_REVIEW_EPOCH)
+    return started is not None and started >= parse_iso(epoch)
+
+
+def design_review_due(meta):
+    """True when an L3 ANALYSIS owes a design-review row (review.md moment 1):
+    implementation has started or finished, and it began on/after the gate
+    shipped. PLANNED is exempt -- the review is due at the END of Phase 3, so an
+    analysis still being drafted is not late."""
+    return _l3_in_work_since(meta, DESIGN_REVIEW_EPOCH)
+
+
+def design_approval_due(meta):
+    """True when an L3 ANALYSIS owes the owner's design approval (review.md
+    section When a review is due): in implementation or done, begun on/after
+    DESIGN_APPROVAL_EPOCH. PLANNED is exempt -- the question comes after the PASS."""
+    return _l3_in_work_since(meta, DESIGN_APPROVAL_EPOCH)
+
+
+def requests_naming(root, analysis_name):
+    """The request records whose `analysis:` field names this ANALYSIS file."""
+    req = ai_path(root, "audit", "requests")
+    if not req.is_dir():
+        return []
+    return [r for r in sorted(req.glob("REQUEST_*.md"))
+            if str(load_frontmatter(read_text(r).splitlines()).get("analysis") or "")
+            .strip().strip("'\"`") == analysis_name]
+
+
+def design_approval_logged(root, analysis_name):
+    """True when a request record naming this ANALYSIS has an entry whose LABEL
+    begins `design approved` (case-insensitive). Only the label is read, never
+    the quoted words: a quotation is data, and a 'design approved?' inside a
+    refusal approves nothing."""
+    return any(label.lower().startswith("design approved")
+               for r in requests_naming(root, analysis_name)
+               for _, _, label, _ in request_entries(read_text(r))[0])
 
 
 def review_logged(root, analysis_name):
@@ -1801,6 +1838,12 @@ def cmd_validate(root, strict=False, hybrid=False):
             advisories.append(f"{rel}: L3 in implementation with no design-review row in "
                               f"{review_log_rel()} -- the design was reviewed by nobody but its "
                               "author before code was written (review.md moment 1)")
+        if (not hybrid and design_approval_due(meta)
+                and not design_approval_logged(root, p.name)):
+            advisories.append(f"{rel}: L3 in implementation with no design approval in its "
+                              "request record (no entry whose label begins 'design approved') -- the "
+                              "owner never said the design was what they meant before the "
+                              "work started (review.md, When a review is due)")
         if ledger_due(meta) and not has_ledger_heading(text):
             advisories.append(f"{rel}: L3 without '## Capability Ledger' -- the architect pass "
                               "left no record (architect.md); run it before the Impact")
@@ -2562,7 +2605,8 @@ def cmd_gate(args):
     sys.stderr.write(
         f"[sdlc gate] '{rel}' is on a protected path but no ANALYSIS_*.md is IN_PROGRESS. "
         "If your analysis already exists, set its frontmatter to 'status: IN_PROGRESS' "
-        "(that flip is what opens the gate); otherwise write it first (Phase 3).\n")
+        "(that flip is what opens the gate; at L3, only after the owner's design approval, "
+        "review.md); otherwise write it first (Phase 3).\n")
     return 2
 
 
@@ -3063,13 +3107,9 @@ def _unit_documents(root, p):
     reading or writing any of them is working on the unit."""
     slug = p.stem[len("ANALYSIS_"):]
     docs = {p, ai_path(root, "audit", f"HANDOFF_{slug}.md")}
-    req = ai_path(root, "audit", "requests")
-    if req.is_dir():
-        for r in req.glob("REQUEST_*.md"):
-            meta = load_frontmatter(read_text(r).splitlines())
-            if str(meta.get("analysis") or "").strip().strip("'\"`") == p.name:
-                docs.add(r)
-                docs.add(ai_path(root, "audit", f"HANDOFF_{r.stem[len('REQUEST_'):]}.md"))
+    for r in requests_naming(root, p.name):
+        docs.add(r)
+        docs.add(ai_path(root, "audit", f"HANDOFF_{r.stem[len('REQUEST_'):]}.md"))
     return {_norm_rel(d.resolve().as_posix()) for d in docs}
 
 

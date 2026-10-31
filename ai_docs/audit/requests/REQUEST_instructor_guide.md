@@ -104,3 +104,28 @@ Context (agent): reply to the agent's request to report, after S1–S2, "i punti
 ### R10 — 2026-10-30 — fix for E2E findings 1–2 (amends R5)
 Context (agent): "Come correggo i punti 1–2?" — the chosen option read: "Opzione A: Materials accetta percorsi in tutto il progetto, più l'avviso sui repository annidati. Correggi anche i punti 3-7." The agent had weighed it against B, "la memoria salta le cartelle con un proprio .git o ai_docs/", and recommended A.
 > Percorsi nel progetto
+### R11 — 2026-10-30 — merge decision
+Context (agent): after the R10 amendment was committed and pushed, the agent left the merge to the owner, with E2E S2 still to be replayed.
+> io farei merge su main e push
+
+### R12 — 2026-10-30 — E2E S2 replayed under R10 (owner, from the other PC)
+Context (agent): the agent had asked the owner to move `demo/` back to the project root, write the Materials paths from the root, regenerate the index with the installed skill and run `check` from the clone.
+> Ho rifatto S2 con il ramo aggiornato. Il check lanciato dal clone dà course: 0 error(s), 0 warning(s) e check: CLEAN.
+>
+> Esito dei quattro passi, da riferire all’altro PC:
+>
+> git pull nel clone. È fatto: il clone è sul commit 1a5db5d. Prima dello spostamento il suo check dava 2 avvisi, uno per TH-01 e uno per TH-02, perché stavano dentro ai_docs/ con un loro repository. Dopo lo spostamento non ce ne sono più.
+> 1. demo/ è nella radice del progetto.
+> 2. Percorsi in ## Materials dalla radice. Ora sono demo/TH-01/, demo/TH-02/, demo/README.md e demo/TRASCRIZIONI_DI_RISERVA.md, anche come materiale di riserva di C-1. Come nel nuovo modello, ho aggiunto alla scaletta le righe Pausa | 15 min | - e Chiusura | 10 min | -.
+> 3. Indice rigenerato con la skill installata. memory/INDEX.md non elenca più nessun file dei progetti dimostrativi, mentre prima erano 52.
+> 4. Check dal clone. L’esito è quello in cima. Sono puliti anche il check del progetto e quelli di TH-01 e TH-02.
+>
+> Durante lo spostamento c’è stato un incidente, e l’ho sistemato. Il primo tentativo di spostamento era fallito per il blocco di TortoiseGit, ma aveva già spostato una parte dei file di TH-01. Dopo che ho chiuso TGitCache.exe, il resto è finito in demo/demo/. Ho ricomposto i file senza perderne nessuno, e ho verificato TH-01 e TH-02:
+>
+> git non segnala modifiche;
+> git fsck è pulito;
+> il contenuto coincide file per file con le copie del pacchetto.
+>
+> TortoiseGit riavvierà la sua cache da solo alla prossima cartella git che apri.
+>
+> Ho aggiornato anche lo script del pacchetto, che ora prende i progetti dalla radice. Lo stesso vale per il piano, l’ANALYSIS, l’handoff e la fonte claim-l4. Il pacchetto è rigenerato e la guida al suo interno punta a progetti/ e docente/. La richiesta è registrata come R23.

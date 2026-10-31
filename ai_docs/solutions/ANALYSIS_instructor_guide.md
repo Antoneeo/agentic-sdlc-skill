@@ -1,10 +1,10 @@
 ---
 id: F-086
 feature: Guida del docente e pacchetto di erogazione per i corsi con docente (course-creator)
-status: IN_PROGRESS
+status: COMPLETED
 level: L3
 start_date: 2026-10-29
-end_date:
+end_date: 2026-10-30
 ---
 # Analisi: guida del docente e pacchetto di erogazione
 
@@ -130,7 +130,7 @@ Superfici toccate: accesso al filesystem, cioè i percorsi letti dalla guida, e 
 - [x] `README.md` della distribuzione e `skill_family_agent_workflows.md`; CHANGELOG `[Unreleased]`.
 - [x] Batterie, probe, `check` della distribuzione e del repository.
 - [x] Emendamento #R10 dopo la replica: Materiali in tutto il progetto, avviso sul repository annidato, citazioni nel pacchetto, righe `-` nella Scaletta, messaggi e modello (risultati E2E 1–7).
-- [ ] Chiusura: E2E script, review di chiusura, MERGE_REVIEW, Component Map, `mark distributions/`, indice; replica del proprietario sul corso reale (#R6).
+- [x] Chiusura: E2E script, review di chiusura, MERGE_REVIEW, Component Map, `mark distributions/`, indice; replica del proprietario sul corso reale (#R6).
 
 ## Test Strategy
 - Unità AAA in `test_instructor_guide.py`: le regole 1–10, con ogni probe RED e ogni guardia, più le varianti `../`, assoluto, cartella come materiale, locator mancante, `Seen by` non valido, `Fallback material` `-` e fuori elenco, `S030` che non vale per `S03`, `text-content-v1` con `COURSE_CONTENT.md`, versione `4.0-content`, prefisso `v`, punteggiatura finale.
@@ -146,3 +146,5 @@ Superfici toccate: accesso al filesystem, cioè i percorsi letti dalla guida, e 
 **2026-10-29 — implementazione.** `course_check.py` implementa le regole 1–10 in `_delivery_package` e `_version_mentions`; `test_instructor_guide.py` ne copre i casi e i probe passano tutti. La review di chiusura (REVIEW_LOG 2026-10-29, F-086 closure) ha trovato quattro scostamenti dal design, corretti test-first: forma `/` delle cartelle nei Materiali, citazioni cercate in tutta la guida, testo del CHANGELOG limitato ai corsi con contratto, indici rigenerati. Le regole 8 e 9 dell'analisi ora descrivono il comportamento del codice. Resta la replica del proprietario sul corso reale (#R6, E2E S1–S2) e la decisione di merge.
 
 **2026-10-30 — replica sul corso reale e emendamento.** S1 e S2 superati (report in `harness_instructor_guide/e2e_report_2026-10-30.md`). S2 è passato solo spostando `demo/` dentro la cartella del corso: due repository demo con il proprio `ai_docs/` sono entrati nella memoria del progetto (52 file fittizi, #R9), e il deck generato fuori da `ai_docs/` non poteva essere elencato. Causa: la regola 4 confinava i Materiali alla cartella del corso (#R5), mentre la Vision chiede «tutto il materiale che l'erogazione richiede». Il proprietario ha scelto l'opzione A (#R10), preferita a escludere le cartelle annidate dalla memoria condivisa, che avrebbe cambiato le quattro distribuzioni senza risolvere il deck. Corretti test-first anche i punti 3–7: messaggi che dicono cosa fare, righe `-` per pause e chiusura, posto per gli atti del docente, lingua, limite dichiarato sul rischio giusto. Il probe sul materiale fuori dalla cartella è ora sul materiale fuori dal progetto.
+
+**2026-10-30 — chiusura.** Merge su `main` deciso dal proprietario (#R11): fast-forward a 1a5db5d6. Il proprietario ha rifatto S2 sotto #R10 (#R12). Prima dello spostamento il controllo dava un avviso di repository annidato per TH-01 e uno per TH-02. Con `demo/` nella radice, i Materiali scritti dalla radice e l'indice rigenerato, il corso ha 0 errori e 0 avvisi, `check` è CLEAN e la memoria del progetto non elenca più i 52 file dei progetti demo. L'avviso ha quindi segnalato il caso che l'aveva motivato, ed è sparito dopo la correzione. Le righe `-` della Scaletta sono state usate per pausa e chiusura. Lo spostamento sul PC del proprietario ha avuto un incidente dovuto al blocco di TortoiseGit, che il proprietario ha risolto e verificato con `git fsck`: non riguarda la skill. Restano dichiarati i residui della Functional Spec e la verifica dal vivo dell'uscita tramite symlink. Il rilascio della prossima beta di course-creator è una decisione separata.
