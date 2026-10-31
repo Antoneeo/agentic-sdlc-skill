@@ -1742,6 +1742,8 @@ class WorkingModelDoctrine(unittest.TestCase):
         dev = _section(read("SKILL.md"), "### 4. Development and Testing", "### 5.")
         self.assertIn("constraints --file <path>", dev)
         self.assertIn("before its first edit", dev)
+        # a shell write never reaches the PreToolUse hook, so it owes the manual recall
+        self.assertIn("from the shell", dev)
 
     def test_guides_declare_the_exception_and_keep_it_on_regeneration(self):
         g = read("guides.md")

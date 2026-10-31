@@ -130,7 +130,8 @@ is the one holding the edited file, never the hook's working directory.
 It informs and never decides: its JSON carries `additionalContext` only, never a
 `permissionDecision`, so the user's permission flow is the one without it. It is silent
 everywhere else and whenever it cannot tell (subagent, oversized or unreadable
-transcript, any error), and always exits 0.
+transcript, any error), and always exits 0. A file written from the shell never reaches
+it: for that file the agent runs `constraints --file` itself (SKILL.md Phase 4).
 
 Cost: up to 15 lines of context on a bound edit at L3 (owner-accepted,
 `REQUEST_working_model.md` R12 (b)), zero tokens at any other level; and about 0.25 s
