@@ -320,6 +320,18 @@ class RequestEntries(unittest.TestCase):
         self.assertEqual(entries, [("R1", "2026-10-01", "opening request", 3)])
         self.assertEqual(unparsed, [(6, "### R4-nota — 2026-10-01 — x")])
 
+    def test_labelled_entries_parse(self):
+        # F-088 (r41): a delegated or received entry is an entry like any other;
+        # its label sits after the date, so the chronology keeps reading it.
+        text = ("### R5 — 2026-10-31 — decided under delegation R3 — removes the page\n"
+                "> x\n\n"
+                "### R6 — 2026-10-31 — received for F-100 — approval of the board\n> y\n")
+        entries, unparsed = sc.request_entries(text)
+        self.assertEqual(unparsed, [])
+        self.assertEqual([e[0] for e in entries], ["R5", "R6"])
+        self.assertTrue(entries[0][2].startswith("decided under delegation R3"))
+        self.assertTrue(entries[1][2].startswith("received for F-100"))
+
 
 class OtherReaders(unittest.TestCase):
 

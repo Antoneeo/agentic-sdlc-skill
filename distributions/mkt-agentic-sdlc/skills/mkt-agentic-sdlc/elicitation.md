@@ -71,7 +71,9 @@ intent choice with neither a source nor a weighing is a finding (`review.md`
 - **Unattended** — the user is not reachable (the Unattended path above).
 - **Delegated** — their own words handed you this choice; cite their entry in the
   request record, or quote them where the engagement has none (below E3). A general
-  "go ahead" is not a delegation.
+  "go ahead" is not a delegation. A choice you make under it goes, where the
+  engagement has a request record, into it as a delegated entry (`templates.md` §REQUEST) and the artifact
+  cites that entry; it never changes an earlier decision of theirs — ask instead.
 
 Each states **what it is taken from** and **the alternative it excludes** —
 a number goes in the ledger as an ASSUMPTION row, anything else in the artifact it

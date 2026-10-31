@@ -549,8 +549,53 @@ Context (agent): "the question it answered, quoted"
   entered only as `[NOT VERBATIM — from <source>]`, never as a quote.
 - **Unattended**: R1 quotes the trigger that started the unit, labelled as such.
   Declared assumptions are not owner statements and never enter the record.
+- **Labelled entries** (r41): a decision taken under the owner's delegation is
+  `### R<n> — YYYY-MM-DD — decided under delegation R<m> — <what it settles>`, citing
+  the delegation entry (in Hybrid also the devPNT proposal it accepted); it is the
+  deciding session's choice, never an owner statement, and never changes an earlier
+  owner decision — that goes to the owner as a question. Owner words received for a
+  unit whose record another session writes are
+  `### R<n> — YYYY-MM-DD — received for <unit> — <what it settles>`, then sent to that
+  record's writer, who enters them verbatim citing this entry. Several sessions on one
+  repository: `coordination.md` §1.
 - **Hybrid**: always on the filesystem; governed artifacts cite entries too; an
   approval given in devPNT is named by its proposal, not quoted.
+
+## ai_docs/audit/leases.md (several sessions, one coordinating)
+
+Written only by the coordinating session (`coordination.md` §2); append-only.
+
+```markdown
+# Leases
+
+Coordinator named in `REQUEST_[unit].md#R<n>`.
+
+take dev-container — wave-6 session — YYYY-MM-DD
+release dev-container — wave-6 session — YYYY-MM-DD
+```
+
+## Commit map (one commit, several units)
+
+Written by the coordinating session before a commit carrying more than one unit's
+work, checked with `sdlc_check.py commit-map MAP` (`coordination.md` §6); not
+committed. Each item is a list line whose first code span is the path.
+
+```markdown
+# Commit map: [what this commit carries]
+
+## F-001 [unit]
+- `src/app.py`
+- `ai_docs/audit/HANDOFF_[feature].md`
+
+## Shared
+- `ai_docs/audit/reviews/REVIEW_LOG.md` — F-001, F-002
+
+## Regenerated
+- `ai_docs/INDEX.md`
+
+## Left out
+- `scratch/notes.md` — why it is not in this commit
+```
 
 ## ai_docs/solutions/E2E_TEST_[feature].md
 

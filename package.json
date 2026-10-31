@@ -37,6 +37,7 @@
     "skills/agentic-sdlc-skill/dispatch.md",
     "skills/agentic-sdlc-skill/hybrid.md",
     "skills/agentic-sdlc-skill/routing.md",
+    "skills/agentic-sdlc-skill/coordination.md",
     "skills/agentic-sdlc-skill/ENFORCEMENT.md",
     "skills/agentic-sdlc-skill/scripts/sdlc_check.py",
     "skills/agentic-sdlc-skill/scripts/sdlc_core.py",

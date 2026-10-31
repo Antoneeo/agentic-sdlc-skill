@@ -41,7 +41,7 @@ sdlc_core.set_profile(
     unit_noun="feature",
     support_files=("templates.md", "architect.md", "guides.md", "vision.md", "tdd.md",
                    "debugging.md", "elicitation.md", "review.md", "dispatch.md",
-                   "routing.md", "hybrid.md", "ENFORCEMENT.md", "memory.md"),
+                   "routing.md", "coordination.md", "hybrid.md", "ENFORCEMENT.md", "memory.md"),
     capabilities=(
         # spine
         "triage", "write_triggers", "workstream_registry", "vision_gate",
@@ -84,7 +84,11 @@ REVIEW_INSTRUCTIONS = {
 REVIEW_MAP_HELP = ("\nCode lens:\n  review-map [--base REF] [--root DIR] [--docs-dir NAME]\n"
                    "      classify every file changed since the merge-base with REF "
                    "(default main):\n      REVIEW / DESIGN / EVIDENCE / GENERATED, "
-                   "as a markdown table for the merge review brief")
+                   "as a markdown table for the merge review brief\n"
+                   "  commit-map MAP [--root DIR] [--docs-dir NAME]\n"
+                   "      check a commit map (one commit carrying several units' work, "
+                   "templates.md)\n      against the working tree as it stands against "
+                   "HEAD; sees this working tree only,\n      not other worktrees")
 
 
 def table_cell(text):
@@ -268,10 +272,123 @@ def cmd_review_map(argv):
     return 0
 
 
+# ------------------------------------------------------------- commit-map (F-088)
+# The coordinator's map of ONE commit carrying several units' work: a section per
+# unit, Shared, Regenerated, Left out. The grouping is a judgement, so the map is
+# hand-written; this checks only what a tree can contradict. The base is HEAD:
+# the map describes the next commit, not the branch. Paths from the map are
+# compared with git's list as text, never opened.
+
+COMMIT_MAP_SPECIAL = {"shared": "shared", "regenerated": "regenerated",
+                      "left out": "left_out"}
+
+
+def parse_commit_map(text):
+    """{path: [section, ...]} where a section is a unit heading, or one of
+    'shared' / 'regenerated' / 'left_out'. An item is a list line whose first
+    code span is the path; text after it (a reason, the units sharing it) is free."""
+    import re
+    listed, section = {}, None
+    for line in text.splitlines():
+        if line.startswith("## "):
+            head = line[3:].strip()
+            section = COMMIT_MAP_SPECIAL.get(head.lower(), head)
+            continue
+        m = re.match(r"^\s*[-*] +`([^`]+)`", line)
+        if m and section is not None:
+            path = m.group(1).strip().replace("\\", "/")
+            while path.startswith("./"):
+                path = path[2:]
+            listed.setdefault(path, []).append(section)
+    return listed
+
+
+def cmd_commit_map(argv):
+    import argparse
+    ap = argparse.ArgumentParser(prog="sdlc_check.py commit-map")
+    ap.add_argument("map")
+    ap.add_argument("--root")
+    ap.add_argument("--docs-dir", dest="docs_dir")
+    args = ap.parse_args(argv)
+    map_path = Path(args.map).resolve()
+    try:
+        text = map_path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError) as exc:
+        print(f"[ERROR] cannot read the commit map {table_cell(args.map)}: {exc}")
+        return 1
+    try:
+        discovered, name = sdlc_core.resolve_docs_dir(args, args.root)
+    except sdlc_core.AmbiguousDocsRoot as exc:
+        print(f"[ERROR] {exc}")
+        return 1
+    sdlc_core.set_docs_dir(name)
+    root = Path(args.root).resolve() if args.root else (discovered or sdlc_core.find_project_root())
+    if not sdlc_core.require_ai_docs(root, "commit-map"):
+        return 1
+    top = _git(root, "rev-parse", "--show-toplevel")
+    if top.returncode != 0:
+        print(f"[ERROR] {root} is not inside a git repository: commit-map compares the map with HEAD.")
+        return 1
+    top = Path(top.stdout.strip()).resolve()
+    if _git(top, "rev-parse", "--verify", "--quiet", "HEAD^{commit}").returncode != 0:
+        print("[ERROR] the repository has no commit yet: commit-map compares the map with HEAD.")
+        return 1
+    docs = sdlc_core.ai_path(root).resolve()
+    try:
+        docs_prefix = docs.relative_to(top).as_posix()
+    except ValueError:
+        print(f"[ERROR] {docs} is outside the git repository {top}.")
+        return 1
+    try:
+        own = map_path.relative_to(top).as_posix()
+    except ValueError:
+        own = None
+    changed = {p for _c, p, _a, _d in _changes(top, "HEAD") if p != own}
+    generated = set()
+    if any(classify_path(p, docs_prefix, set()) != "REVIEW" for p in changed):
+        generated = _generated_set(docs)
+        if generated is None:
+            return 1
+    listed = parse_commit_map(text)
+    special = set(COMMIT_MAP_SPECIAL.values())
+    errors, warnings = [], []
+    for path in sorted(set(changed) | set(listed)):
+        sections = listed.get(path, [])
+        units = [s for s in sections if s not in special]
+        is_generated = classify_path(path, docs_prefix, generated) == "GENERATED"
+        rel = path[len(docs_prefix) + 1:] if path.startswith(docs_prefix + "/") else ""
+        if units and is_generated:
+            errors.append((path, "regenerated by the validator, listed under a unit: "
+                                 "move it to Regenerated"))
+        if len(set(units)) > 1 and "shared" not in sections:
+            errors.append((path, "under " + ", ".join(sorted(set(units)))
+                                 + " outside Shared: move it to Shared"))
+        if units and "left_out" in sections:
+            errors.append((path, "both under a unit and in Left out"))
+        if "regenerated" in sections and path in changed and not is_generated:
+            errors.append((path, "under Regenerated, but the validator does not write it: "
+                                 "list it under its unit"))
+        if path in changed and not sections:
+            if rel.startswith("audit/HANDOFF_") or rel.startswith("audit/requests/"):
+                errors.append((path, "a changed HANDOFF or request record in no section"))
+            else:
+                warnings.append((path, "changed, in no section"))
+        if path not in changed:
+            warnings.append((path, "listed, but not changed against HEAD"))
+    for level, items in (("ERROR", errors), ("WARN", warnings)):
+        for path, rule in items:
+            print(f"[{level}] `{table_cell(path)}` -- {rule}")
+    print(f"commit-map: {len(changed)} changed files against HEAD; "
+          f"{len(errors)} errors, {len(warnings)} warnings")
+    return 1 if errors else 0
+
+
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
     if argv[:1] == ["review-map"]:
         return cmd_review_map(argv[1:])
+    if argv[:1] == ["commit-map"]:
+        return cmd_commit_map(argv[1:])
     rc = knowledge.main(argv)
     if argv[:1] in (["-h"], ["--help"]):
         print(REVIEW_MAP_HELP)

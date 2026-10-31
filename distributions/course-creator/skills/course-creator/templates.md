@@ -71,6 +71,14 @@ Context (agent): "the question it answered, quoted"
   entered only as `[NOT VERBATIM — from <source>]`, never as a quote.
 - **Unattended**: R1 quotes the trigger that started the unit, labelled as such.
   Declared assumptions are not owner statements and never enter the record.
+- **Labelled entries** (r41): a decision taken under the owner's delegation is
+  `### R<n> — YYYY-MM-DD — decided under delegation R<m> — <what it settles>`, citing
+  the delegation entry (in Hybrid also the devPNT proposal it accepted); it is the
+  deciding session's choice, never an owner statement, and never changes an earlier
+  owner decision — that goes to the owner as a question. Owner words received for a
+  unit whose record another session writes are
+  `### R<n> — YYYY-MM-DD — received for <unit> — <what it settles>`, then sent to that
+  record's writer, who enters them verbatim citing this entry.
 
 ## Canonical analysis — `solutions/ANALYSIS_course_<slug>.md`
 

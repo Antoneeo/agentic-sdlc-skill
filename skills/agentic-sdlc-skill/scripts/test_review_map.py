@@ -247,6 +247,180 @@ class ReviewMapTests(unittest.TestCase):
         self.assertIn("review-map", r.stdout)
 
 
+def commit_map(repo, map_text, name="map.md"):
+    """Write the map outside the repository and run `commit-map` on it."""
+    d = Path(tempfile.mkdtemp(prefix="cmap_"))
+    p = d / name
+    p.write_text(map_text, encoding="utf-8")
+    r = run_entry(repo, "commit-map", str(p))
+    shutil.rmtree(d, True)
+    return r
+
+
+def findings(output):
+    """[(level, path)] from `[ERROR] <path> -- ...` / `[WARN] <path> -- ...` lines."""
+    out = []
+    for line in output.splitlines():
+        for level in ("ERROR", "WARN"):
+            tag = f"[{level}] `"
+            if line.startswith(tag):
+                out.append((level, line[len(tag):].split("`", 1)[0]))
+    return out
+
+
+HANDOFF = ("---\nworkstream: F-001 Demo\nlevel: L3\nbranch: feat\nstatus: PROGRESS\n"
+           "since: 2026-10-12\nnext: go\nupdated: 2026-10-12\n---\n")
+
+
+@unittest.skipUnless(HAS_GIT, "git not available")
+class CommitMapTests(unittest.TestCase):
+    """F-088 FS8/FS9 -- a hand-written map of ONE commit carrying several units,
+    checked against the working tree as it stands against HEAD."""
+
+    def setUp(self):
+        self.repo = new_repo()
+        self.addCleanup(shutil.rmtree, self.repo, True)
+        write(self.repo, "ai_docs/README.md", "# docs\n")
+        write(self.repo, "src/a.py", "a\n")
+        write(self.repo, "src/b.py", "b\n")
+        self.assertEqual(run_entry(self.repo, "index").returncode, 0)
+        commit(self.repo, "base")
+
+    def two_units(self):
+        write(self.repo, "src/a.py", "a2\n")
+        write(self.repo, "src/b.py", "b2\n")
+        write(self.repo, "ai_docs/audit/HANDOFF_demo.md", HANDOFF)
+        write(self.repo, "ai_docs/audit/requests/REQUEST_demo.md", "### R1\n> words\n")
+        write(self.repo, "ai_docs/audit/reviews/REVIEW_LOG.md", "| row |\n")
+        # an ANALYSIS and an ADR make `index` rewrite the indexes too
+        write(self.repo, "ai_docs/solutions/ANALYSIS_demo.md", ANALYSIS)
+        write(self.repo, "ai_docs/architecture/ADR_demo.md", ADR)
+        self.assertEqual(run_entry(self.repo, "index").returncode, 0)
+
+    UNIT1 = ("## F-001 Demo\n- `src/a.py`\n- `ai_docs/audit/HANDOFF_demo.md`\n"
+             "- `ai_docs/audit/requests/REQUEST_demo.md`\n"
+             "- `ai_docs/solutions/ANALYSIS_demo.md`\n- `ai_docs/architecture/ADR_demo.md`\n")
+
+    CLEAN = ("# Commit map: two units\n\n" + UNIT1 + "\n"
+             "## F-002 Other\n- `src/b.py`\n\n"
+             "## Shared\n- `ai_docs/audit/reviews/REVIEW_LOG.md` -- F-001, F-002\n\n"
+             "## Regenerated\n- `ai_docs/INDEX.md`\n- `ai_docs/audit/handoff.md`\n"
+             "- `ai_docs/memory/INDEX.md`\n- `ai_docs/strategic/features_history.md`\n\n"
+             "## Left out\n")
+
+    def test_clean_map_exits_zero(self):
+        self.two_units()
+        r = commit_map(self.repo, self.CLEAN)
+        self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
+        self.assertEqual(findings(r.stdout), [], r.stdout)
+
+    def test_generated_file_under_a_unit_is_an_error(self):
+        self.two_units()
+        m = self.CLEAN.replace("- `src/b.py`\n", "- `src/b.py`\n- `ai_docs/INDEX.md`\n")
+        m = m.replace("## Regenerated\n- `ai_docs/INDEX.md`\n", "## Regenerated\n")
+        r = commit_map(self.repo, m)
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn(("ERROR", "ai_docs/INDEX.md"), findings(r.stdout))
+
+    def test_changed_handoff_or_request_in_no_section_is_an_error(self):
+        self.two_units()
+        m = self.CLEAN.replace("- `ai_docs/audit/HANDOFF_demo.md`\n", "")
+        m = m.replace("- `ai_docs/audit/requests/REQUEST_demo.md`\n", "")
+        r = commit_map(self.repo, m)
+        self.assertEqual(r.returncode, 1, r.stdout)
+        got = findings(r.stdout)
+        self.assertIn(("ERROR", "ai_docs/audit/HANDOFF_demo.md"), got)
+        self.assertIn(("ERROR", "ai_docs/audit/requests/REQUEST_demo.md"), got)
+
+    def test_file_under_two_units_outside_shared_is_an_error(self):
+        self.two_units()
+        m = self.CLEAN.replace("## F-002 Other\n- `src/b.py`\n",
+                               "## F-002 Other\n- `src/b.py`\n- `src/a.py`\n")
+        r = commit_map(self.repo, m)
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn(("ERROR", "src/a.py"), findings(r.stdout))
+
+    def test_file_under_a_unit_and_left_out_is_an_error(self):
+        self.two_units()
+        r = commit_map(self.repo, self.CLEAN + "- `src/b.py` -- not this commit\n")
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn(("ERROR", "src/b.py"), findings(r.stdout))
+
+    def test_authored_file_under_regenerated_is_an_error(self):
+        # closure review W3: a HANDOFF hidden under Regenerated must not pass
+        self.two_units()
+        m = self.CLEAN.replace("- `ai_docs/audit/HANDOFF_demo.md`\n", "")
+        m = m.replace("## Regenerated\n", "## Regenerated\n- `ai_docs/audit/HANDOFF_demo.md`\n")
+        r = commit_map(self.repo, m)
+        self.assertEqual(r.returncode, 1, r.stdout)
+        self.assertIn(("ERROR", "ai_docs/audit/HANDOFF_demo.md"), findings(r.stdout))
+
+    def test_unlisted_change_is_a_warning(self):
+        self.two_units()
+        write(self.repo, "src/c.py", "c\n")
+        r = commit_map(self.repo, self.CLEAN)
+        self.assertEqual(r.returncode, 0, r.stdout)
+        self.assertEqual(findings(r.stdout), [("WARN", "src/c.py")])
+
+    def test_listed_file_with_no_change_is_a_warning(self):
+        self.two_units()
+        write(self.repo, "src/same.py", "same\n")
+        commit(self.repo, "more")
+        self.two_units()
+        r = commit_map(self.repo, self.CLEAN.replace("- `src/b.py`\n",
+                                                    "- `src/b.py`\n- `src/same.py`\n"))
+        self.assertIn(("WARN", "src/same.py"), findings(r.stdout))
+
+    def test_base_is_head(self):
+        # work already committed is not in the next commit: not reported
+        write(self.repo, "src/old.py", "o\n")
+        commit(self.repo, "earlier")
+        self.two_units()
+        r = commit_map(self.repo, self.CLEAN)
+        self.assertEqual(r.returncode, 0, r.stdout)
+        self.assertNotIn("src/old.py", r.stdout)
+
+    def test_c8_reconstruction_names_the_indexes(self):
+        # chatPNT a7f51a08: regenerated indexes listed as one unit's work
+        self.two_units()
+        m = (self.UNIT1 + "- `ai_docs/INDEX.md`\n"
+             "- `ai_docs/audit/handoff.md`\n- `ai_docs/memory/INDEX.md`\n"
+             "- `ai_docs/strategic/features_history.md`\n\n"
+             "## F-002 Other\n- `src/b.py`\n\n## Shared\n"
+             "- `ai_docs/audit/reviews/REVIEW_LOG.md`\n")
+        r = commit_map(self.repo, m)
+        self.assertEqual(r.returncode, 1, r.stdout)
+        errors = {p for lvl, p in findings(r.stdout) if lvl == "ERROR"}
+        self.assertEqual(errors, {"ai_docs/INDEX.md", "ai_docs/audit/handoff.md",
+                                  "ai_docs/memory/INDEX.md",
+                                  "ai_docs/strategic/features_history.md"})
+
+    def test_hostile_path_is_escaped(self):
+        self.two_units()
+        r = commit_map(self.repo, self.CLEAN + "\n## F-003 X\n- `src/a|b\x07.py`\n")
+        bad = [l for l in r.stdout.splitlines() if "a\\|b" in l]
+        self.assertTrue(bad, r.stdout)
+        self.assertNotIn("\x07", r.stdout)
+
+    def test_unreadable_map_is_an_error(self):
+        r = run_entry(self.repo, "commit-map", str(self.repo / "no_such_map.md"))
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("[ERROR]", r.stdout + r.stderr)
+
+    def test_not_a_git_repository(self):
+        d = Path(tempfile.mkdtemp(prefix="cmap_nogit_"))
+        self.addCleanup(shutil.rmtree, d, True)
+        write(d, "ai_docs/README.md", "# docs\n")
+        r = commit_map(d, self.CLEAN)
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("[ERROR]", r.stdout + r.stderr)
+
+    def test_help_lists_commit_map(self):
+        r = subprocess.run([sys.executable, str(ENTRY), "--help"],
+                           capture_output=True, text=True)
+        self.assertIn("commit-map", r.stdout)
+
+
 class EscapeTests(unittest.TestCase):
     # AC6 -- a hostile file name stays one table row.
     def test_pipe_and_control_characters_are_escaped(self):

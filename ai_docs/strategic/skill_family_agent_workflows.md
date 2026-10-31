@@ -128,6 +128,11 @@ Qualunque lente sia attiva, l'agente:
    Solo in aggiunta, mai tradotto né riassunto, segreti e dati riservati oscurati. Gli
    artefatti citano `#R<n>` invece di parafrasare; la review riceve il registro e una
    dichiarazione dell'owner senza voce corrispondente è un finding.
+   Voci etichettate (F-088, r41): una decisione presa per delega dell'owner entra come
+   `decided under delegation R<m>`, cita la delega e non cambia mai una sua decisione
+   precedente; le parole dell'owner ricevute per un'unità di cui un'altra sessione
+   scrive il registro entrano come `received for <unità>` e passano a chi lo scrive:
+   ogni registro ha un solo scrittore.
 5. **Chiude meccanicamente**: `check` CLEAN, documenti nello stesso commit del
    lavoro, decisione esplicita di merge (mai branch orfani), `HANDOFF_[unit].md`
    cancellato e `index` rieseguito — cancellarlo **è** rimuovere la riga, e nessun
@@ -201,6 +206,14 @@ Ciò che solo qui l'agente fa:
   regressione sempre, scenari nuovi quando il comportamento cambia; nessun nome,
   nessuna assegnazione. Ordine: E2E prima della closure review, brief dopo, poi
   `index`, mappa, `index`.
+- **Sessioni parallele con una coordinatrice** (F-088, `coordination.md`, letto solo
+  quando l'owner ha nominato la sessione che coordina): ogni registro ha un solo
+  scrittore; le risorse esclusive (container, DB di test, scrittura del codice nel
+  checkout montato da un runtime) passano per lease in `audit/leases.md`, scritto solo
+  dalla coordinatrice e senza code né ordine (r40); un'autorizzazione vale solo nella
+  sessione che l'ha ricevuta; una parte che si ferma manda un messaggio a campi fissi,
+  verificato sul diff; un commit con più unità ha la sua mappa, controllata da
+  `sdlc_check.py commit-map`. L'ordine dei lavori resta all'owner.
 - **Divergenza spec/codice dichiarata** (F-080, F-081): una L3 che rinvia la
   correzione di codice in contrasto con un claim di `topics/` marca il claim
   (`not-yet-honored-by -> ANALYSIS_<nome>`) e ne cita l'id nella propria ANALYSIS;

@@ -439,7 +439,9 @@ When you are the reviewer:
   the artifact relies on — an answer, an approval, a cost acceptance, a ruling, a
   delegation — that resolves to no entry of the unit's request record, or that the
   record contradicts, is a finding; so is a quotation in the record carrying what
-  its template says to redact. What makes a ground
+  its template says to redact, a delegated entry citing no delegation or changing
+  an earlier owner decision, and an artifact of a shared unit citing a received
+  entry instead of the shared record (`templates.md` §REQUEST, labelled entries). What makes a ground
   or an assumption legal is each lens's `elicitation.md` §The question discipline —
   cite it, never restate it. The fix is the question, not a better justification.
 - **Restated facts (cite, never copy).** Every governance slot has ONE owning document

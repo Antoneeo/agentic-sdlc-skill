@@ -89,7 +89,9 @@ intent choice with neither a source nor a weighing is a finding (`review.md`
 - **Unattended** — the practitioner is not reachable (the Unattended path above).
 - **Delegated** — their own words handed you this choice; cite their entry in the
   request record, or quote them where the unit has none (below L3). A general
-  "go ahead" is not a delegation.
+  "go ahead" is not a delegation. A choice you make under it goes, where the
+  unit has a request record, into it as a delegated entry (`templates.md` §REQUEST) and the artifact
+  cites that entry; it never changes an earlier decision of theirs — ask instead.
 
 Each states **what it is taken from** and **the alternative it excludes**, and is
 listed where the practitioner will read it — an assumption nobody is shown is a
