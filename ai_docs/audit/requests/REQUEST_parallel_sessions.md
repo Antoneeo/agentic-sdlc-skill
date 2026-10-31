@@ -79,3 +79,11 @@ Context (agent): «Approvi il design di F-088 e il suo costo?» — after design
 ### R13 — 2026-10-31 — the replay residuals and W3 enter this unit
 Context (agent): «Integro ora i tre residui del replay e W3, o li lascio a un follow-up?» — C5 a part halting without sending, C6 a standing delegation given before the naming, C7 uncommitted code of a previous code-writer, W3 a changed HANDOFF listed under Regenerated; about 0.5 KB of doctrine, one test, one scoped review.
 > Integra ora
+
+### R14 — 2026-10-31 — commit on the branch
+Context (agent): «Committo F-088 sul branch claude/f088-parallel-sessions?» — after closure review PASS (round 4), nothing open.
+> Sì, committa
+
+### R15 — 2026-10-31 — fix the merge note, then merge into main
+Context (agent): «Vuoi che la tolga con un commit di correzione sul branch?» — the merge note claimed uncommitted changes of another session on `main`; they were committed in `788e74ee`, the branch's base.
+> si e poi fai anche merge su main

@@ -87,7 +87,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/ANALYSIS_multi_domain_core.md | code |  | Feature Analysis: Multi-Domain Core | c0ee31d1498f7957911357e96b200d9035b5e1ee4112e42c5c926f57622ceb50 |
 | solutions/ANALYSIS_npm_whats_new.md | code |  | Feature Analysis: "What's new" for users on the npm pages | b165830e86a8fd02f88c450bd87c8fc6a0ee107303229ee5b7664d57c2cc9375 |
 | solutions/ANALYSIS_parallel_handoff.md | code |  | Feature Analysis: Parallel Handoff | 35178aa910c865e6976b221b91dfd4d6af246bf130ccecc8a383487b47556129 |
-| solutions/ANALYSIS_parallel_sessions.md | code |  | Feature Analysis: coordinating parallel sessions on one repository | 5495e36e40c96ef013a96d3a35689b38d798769cde22c25656f79e03fe3f2c5e |
+| solutions/ANALYSIS_parallel_sessions.md | code |  | Feature Analysis: coordinating parallel sessions on one repository | a7f85b1b8f89daf835f6e81002bd541ff5a0b5c3e706c93447387e401db15964 |
 | solutions/ANALYSIS_per_turn_protocol_reminder.md | code |  | F-046 - the protocol reaches every turn, not only the first. SKILL.md is read on demand, so every duty written there reaches a session only if something loads the skill; this unit adds the one-line per-turn reminder whose first duty is to decide whether the skill governs the work and load it once. | f0b2775ed24fafbd2477d6f2ba5787289c7f673cc42751520e211879e6ccb4e1 |
 | solutions/ANALYSIS_permission_gated_rung.md | code |  | Feature Analysis: the permission-gated rung | 1a76bbd4e0ab51594672907cebb1dfd0437244a775c2cc767bdc8c8dbd9d59b5 |
 | solutions/ANALYSIS_question_discipline.md | code |  | Feature Analysis: Question Discipline | 5703eba9e5343caac0c5d6c798759b743ad51ab24fc98f9b7700dde691675a55 |
@@ -133,7 +133,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/MERGE_REVIEW_kb_site.md | code |  | Merge review: docs site | cea970366286de12eb6d1d21855573f269d17ceb54e37ac2b73649f631d37375 |
 | solutions/MERGE_REVIEW_merge_review.md | code |  | Merge review: Merge review brief and human E2E test script | 1263fddd76a2ced684c7d2cca295b7e4857cdf4fe5d7f1fb5d7154234ee81fb2 |
 | solutions/MERGE_REVIEW_npm_whats_new.md | code |  | Merge review: "What's new" on the npm pages | 686b2c4c665902fc788b8e81d3824228e198afab8db1f46e7d4d1ea48b17a00d |
-| solutions/MERGE_REVIEW_parallel_sessions.md | code |  | Merge review: coordinating parallel sessions on one repository | d0a6e610a9b94e972ebaee6c3b0f89e80c6f6521695ab2294f5ec4f49fdf2c15 |
+| solutions/MERGE_REVIEW_parallel_sessions.md | code |  | Merge review: coordinating parallel sessions on one repository | 126c7407705b9b697188df73dfc3ca454d40a12dd6013e6549952257488e862d |
 | solutions/MERGE_REVIEW_request_record.md | code |  | Merge review: Verbatim request record | 766fdc4ed65de618e678b0ab4e0e3629f5936b29e2c91621085683b208704ce7 |
 | solutions/MERGE_REVIEW_session_orientation_reach.md | code |  | Merge review: What reaches the session | 44a356edc7c6956d3e5372e352484b3e367d12f35e8f734eb15bcf0fd4716c9d |
 | solutions/MERGE_REVIEW_spec_code_divergence.md | code |  | Merge review: Spec/code divergence state shared by the two skills | 1a6c7906c578213a468a608032a9be5041ce4d4875a02058d79d5488a329e530 |

@@ -98,9 +98,7 @@ Totals: REVIEW 26 files (+588/-22); DESIGN 6 files (+622/-0); EVIDENCE 7 files (
 - Generated files (`audit/handoff.md`, `INDEX.md`, `memory/INDEX.md`,
   `strategic/features_history.md`) may conflict with `main`: regenerate with `index`, never
   resolve by hand.
-- `main` carries uncommitted changes of another session (`SKILL.md`, `ENFORCEMENT.md`,
-  `test_skill_invariants.py` ×4); merge only after those are committed or set aside by
-  their owner.
+- `main` is at the branch's base (`788e74ee`): the merge is a fast-forward.
 - After the merge commit: `sdlc_check.py mark skills/` and `mark distributions/` (the
   doctrine changed; README and the family doc are refreshed), committed as a new commit.
 - At closure: delete `audit/HANDOFF_parallel_sessions.md` and run `index`.

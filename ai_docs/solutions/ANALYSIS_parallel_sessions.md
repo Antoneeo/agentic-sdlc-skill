@@ -1,10 +1,10 @@
 ---
 id: F-088
 feature: Coordinating parallel sessions on one repository
-status: IN_PROGRESS
+status: COMPLETED
 level: L3
 start_date: 2026-10-31
-end_date:
+end_date: 2026-10-31
 ---
 # Feature Analysis: coordinating parallel sessions on one repository
 
@@ -310,7 +310,7 @@ it; one map per multi-unit commit.
 - [x] `coordination.md`, `SKILL.md`, `templates.md` ×4, `review.md` ×4, `elicitation.md` ×4,
       `sdlc_check.py`, `package.json`, `README.md`, Component Map; `shared_files.py --update`.
 - [x] Replay on the new text (cold reader) — green; bytes measured.
-- [ ] Batteries ×4, `node scripts/test_clients.js`, `check`; E2E script, closure review, merge
+- [x] Batteries ×4, `node scripts/test_clients.js`, `check`; E2E script, closure review, merge
       brief.
 
 ## Test Strategy
@@ -394,3 +394,12 @@ shows done and which it cannot tell, resuming the part left to the owner. C5–C
 on the final text: FLAGGED (`results_new_text.md` §Amendment). RED → GREEN for the Regenerated
 error (65 OK). Cost of the amendment: `coordination.md` 5,949 → 6,941 LF bytes (+992 against
 ~0.5 KB priced in R13); total doctrine +12,509.
+
+**2026-10-31 — closed: COMPLETED, merged into main on the owner's word (R14, R15).** Committed
+as bc30816c (implementation), then the closure commit: the merge note no longer claims
+uncommitted changes of another session on `main` — they were committed in `788e74ee`, the
+branch's base, and the note was never re-checked; `mark` on `skills/`,
+`skills/agentic-sdlc-skill/`, `distributions/`; HANDOFF deleted. Fast-forward into `main`.
+`check`: validate clean; `stale` only on `scripts/`, left by F-070 (acf43891), outside this unit. No ADR: the decisions are rulings
+r40 and r41, and `commit-map` reuses `review-map`'s classifiers. Left for the release:
+CHANGELOG ×4.
