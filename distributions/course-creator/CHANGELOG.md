@@ -1,6 +1,23 @@
 # Changelog
 
-## [Unreleased]
+## [0.1.0-beta.16] - 2026-10-31
+
+### What's new
+
+**You approve the course design before production.** On significant work, such as a new course or a changed audience, once the independent design review passes, the agent stops and shows you a short summary of the design: what the course will teach and to whom, what it touches, the risks and how they are handled, and what the review found. Production starts only after your yes, which the agent records in the unit's request record. A "go ahead" given before you saw the design does not count, and in a session with nobody to answer the unit waits for you.
+
+#### What to do
+
+**1. Update (everyone).** The changes arrive only with the update.
+1. Run `npm install -g @antoneeo/course-creator@latest`, then `course-creator-install-skill`.
+2. Close and reopen your agent sessions: the new version loads only at startup.
+
+To check: `npm ls -g @antoneeo/course-creator` shows 0.1.0-beta.16.
+
+**2. Approving the design (significant units).**
+- **This concerns you if** you use the skill for significant (L3) work. Nothing to configure: after the design review passes, the agent asks whether to proceed. Answer yes to start the production, or say what to change; the design is then revised and, where the change touches what the review judged, reviewed again before you are asked again.
+- **A unit already in progress.** Units started before 2026-10-31 are not affected. If a unit started on or after 2026-10-31 with an earlier version is already in progress or finished, `sdlc_check.py validate` shows a `[note]` saying it has `no design approval in its request record`. Why: the earlier version never asked you. To clear it, tell the agent that you approve the design as it was implemented; it records your words under a label that begins `design approved` (for example `design approved after implementation`). The note never fails a check, so you can also leave it.
+- **To check:** on your next significant unit, the agent stops after the design review and asks you before any production starts.
 
 ### Changed
 - After the design review's final PASS, an L3 unit stops: the agent presents a short summary of the course design and asks the owner whether to proceed; production starts only after a yes, recorded in the request record under a label that begins `design approved`. Unattended, the unit is `BLOCKED on the user`. The L3 row of the triage table reads "design review, owner approval, production". The rule is in the shared `review.md`; `SKILL.md` and `templates.md` point at it (F-087).

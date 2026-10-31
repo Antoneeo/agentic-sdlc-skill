@@ -2,7 +2,44 @@
 
 Every significant change to this skill is recorded here.
 
-## [Unreleased]
+## [1.33.0] - 2026-10-31
+
+### What's new
+
+**You approve the design before any drafting.** On significant work, once the independent design review passes, the agent stops and shows you a short summary of the design: what it will produce, for whom, what it touches, the risks and how they are handled, and what the review found. Drafting starts only after your yes, which the agent records in the unit's request record. A "go ahead" given before you saw the design does not count, and in a session with nobody to answer the unit waits for you.
+
+**The npm page tells you what is new.** This section, at the top of the package page, now summarizes each version for the people who install it.
+
+**From 1.32.0, published without notes:**
+- **You know what the knowledge base has not read yet.** It tells you how much of the project remains to be examined, and before answering "no information" it checks where the answer could be.
+- **What you told others stays a statement.** What you wrote to a client or a partner does not become a fact about the product. If it contradicts what the knowledge base holds, it is flagged.
+- **Decisions from other projects no longer apply by themselves.** Importing a topic from another project brings the knowledge whole, but the decisions taken there stay pending until one of you approves them.
+- **The process checks can no longer be bypassed by accident.** Quoting a work level inside a sentence no longer counts as declaring it, and protected parts of the project stay protected when the agent changes folder.
+
+#### What to do
+
+**1. Update (everyone).** The changes arrive only with the update.
+1. Run `npm install -g @antoneeo/kb-agentic-skill@latest`, then `kb-agentic-install-skill`.
+2. Close and reopen your agent sessions: the new version loads only at startup.
+
+To check: `npm ls -g @antoneeo/kb-agentic-skill` shows 1.33.0.
+
+**2. Approving the design (significant units).**
+- **This concerns you if** you use the skill for significant (L3) work. Nothing to configure: after the design review passes, the agent asks whether to proceed. Answer yes to start the drafting, or say what to change; the design is then revised and, where the change touches what the review judged, reviewed again before you are asked again.
+- **A unit already in progress.** Units started before 2026-10-31 are not affected. If a unit started on or after 2026-10-31 with an earlier version is already in progress or finished, `sdlc_check.py validate` shows a `[note]` saying it has `no design approval in its request record`. Why: the earlier version never asked you. To clear it, tell the agent that you approve the design as it was implemented; it records your words under a label that begins `design approved` (for example `design approved after implementation`). The note never fails a check, so you can also leave it.
+- **To check:** on your next significant unit, the agent stops after the design review and asks you before any drafting starts.
+
+**3. Decisions imported from another project (only if you used `import` before 1.32.0).**
+- **This concerns you if** you used the knowledge base's `import` command to bring topics from another project with version 1.31.0 or earlier. If you never did, skip this point.
+- **Why:** the knowledge base leaves open the questions on which sources disagree, and only a reasoned decision of yours closes them. The earlier version brought another project's decisions in already in force. For example, if someone in project A had settled "the right price is 49 €", importing into B made that price the truth in B too, without anyone in B deciding it. The update corrects future imports only; past ones stay as they are.
+- **Steps:** the simplest way is to ask the agent: "convert the imported decisions as described in portability.md §4". Or by hand: delete the imported topic together with the files that came with it, then run `import` again on the same bundle with the new version; you can try it first with `--dry-run`.
+- **To check:** `sdlc_check.py check` is clean; the other project's decisions appear as imported, and the questions they closed are open again. To make one yours, write your own decision with your own reasoning.
+
+**4. Protected folders in a repository with several `ai_docs/` (only if you use them; from 1.32.0).**
+- **This concerns you if** your agent settings contain `gate --hook --protected` and the repository has more than one `ai_docs/` folder, for example a package with its own.
+- **Why:** protected paths are now read from the `ai_docs/` nearest to the edited file. A path written from the repository root, such as `packages/api/src/auth`, no longer matches the files inside `packages/api`, so the agent could change them without an analysis.
+- **Steps:** rewrite those paths from the package: `packages/api/src/auth` becomes `src/auth`. Note that `src/auth` then protects the folder with that name in every project that has its own `ai_docs/`.
+- **To check:** in a session with no open analysis, ask the agent for a small change to a protected file. It must be refused.
 
 ### Changed
 - After the design review's final PASS, an L3 unit stops: the agent presents a short summary of the design and asks the owner whether to proceed; drafting starts only after a yes, recorded in the request record under a label that begins `design approved`. Unattended, the unit is `BLOCKED on the user`; in Hybrid the approval in devPNT counts. The rule is in the shared `review.md`; `SKILL.md` and `templates.md` point at it (F-087).

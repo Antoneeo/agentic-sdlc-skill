@@ -15,17 +15,16 @@ Date: 2026-10-23 (UTC)
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
+**2026-10-31 — release 1.50.0: the owner approves an L3 design before the work starts (F-087), users' notes on every npm page.** Code 1.50.0, KB 1.33.0,
+marketing 0.28.0, Course 0.1.0-beta.16; tags v1.50.0 / kb-v1.33.0 / mkt-v0.28.0 /
+course-v0.1.0-beta.16, set right before the publish. Every package carries its first users'
+notes, so the F-070 first-notes entry is removed. Publish order (owner's choice, 2026-10-31):
+Course 0.1.0-beta.15 first, from a clean export of its tag, then this release; publishing
+beta.15 after beta.16 would move Course's `latest` back to beta.15.
+
 **2026-10-30 — release course-creator 0.1.0-beta.15: instructor guide and delivery package (F-086), course version in the text.** Course 0.1.0-beta.15 only; code, KB and
 marketing are unchanged. Tag course-v0.1.0-beta.15 on the release commit. Publish pending:
 the owner runs `publish_all.bat` (browser 2FA), which skips the other three packages.
-
-**2026-10-28 — first users' notes still owed (F-070, FS6): code, KB, marketing.** (Course: done in 0.1.0-beta.15.) The first release of
-each package after F-070 also summarizes, in its `### What's new`, what its 1.49.0-wave
-version brought (code 1.49.0, KB 1.32.0, marketing 0.27.0, Course 0.1.0-beta.14),
-published without notes. Start from `audit/release_notes/team_2026-10-27.md`, the owner's
-team notes for that wave (Italian, benefit-first, 2026-10-28): translate it and keep only what
-concerns the package. Remove a package's name here in its release commit; remove this entry
-when none is left (`GUIDE_release.md` step 1).
 
 **2026-10-27 — release 1.49.0: working model (F-085 constraint view and recall hook, post-merge tier), shared knowledge layer (F-084), imported-ruling refusal (F-083), verdict and gate hook fixes.** Code 1.49.0, KB 1.32.0,
 marketing 0.27.0, Course 0.1.0-beta.14; tags v1.49.0 / kb-v1.32.0 / mkt-v0.27.0 /
