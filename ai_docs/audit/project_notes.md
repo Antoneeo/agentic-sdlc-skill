@@ -6,11 +6,13 @@ marketing 0.28.0, Course 0.1.0-beta.16; tags v1.50.0 / kb-v1.33.0 / mkt-v0.28.0 
 course-v0.1.0-beta.16, set right before the publish. Every package carries its first users'
 notes, so the F-070 first-notes entry is removed. Publish order (owner's choice, 2026-10-31):
 Course 0.1.0-beta.15 first, from a clean export of its tag, then this release; publishing
-beta.15 after beta.16 would move Course's `latest` back to beta.15.
+beta.15 after beta.16 would move Course's `latest` back to beta.15. Published on 2026-10-31
+in that order and verified on the registry, each on latest: code 1.50.0, KB 1.33.0,
+marketing 0.28.0, Course 0.1.0-beta.16.
 
 **2026-10-30 — release course-creator 0.1.0-beta.15: instructor guide and delivery package (F-086), course version in the text.** Course 0.1.0-beta.15 only; code, KB and
-marketing are unchanged. Tag course-v0.1.0-beta.15 on the release commit. Publish pending:
-the owner runs `publish_all.bat` (browser 2FA), which skips the other three packages.
+marketing are unchanged. Tag course-v0.1.0-beta.15 on the release commit. Published on
+2026-10-31 from a clean export of its tag, before 0.1.0-beta.16, and verified on the registry.
 
 **2026-10-27 — release 1.49.0: working model (F-085 constraint view and recall hook, post-merge tier), shared knowledge layer (F-084), imported-ruling refusal (F-083), verdict and gate hook fixes.** Code 1.49.0, KB 1.32.0,
 marketing 0.27.0, Course 0.1.0-beta.14; tags v1.49.0 / kb-v1.32.0 / mkt-v0.27.0 /
