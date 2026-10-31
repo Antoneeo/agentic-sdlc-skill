@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.1.0-beta.17] - 2026-10-31
+
+### What's new
+
+**Decisions taken on your behalf are labelled.** In the request record, a decision a session took under a delegation you gave it, and words you gave one session for work another session records, now carry their own heading. They are never read later as something you said yourself, and a delegated decision never overrides one of yours: a choice that would change it comes back to you as a question.
+
+#### What to do
+
+**1. Update (everyone).** The changes arrive only with the update.
+1. Run `npm install -g @antoneeo/course-creator@latest`, then `course-creator-install-skill`.
+2. Close and reopen your agent sessions: the new version loads only at startup.
+
+To check: `npm ls -g @antoneeo/course-creator` shows 0.1.0-beta.17.
+
+### Changed
+- Request record (`templates.md`, F-088): labelled entries `decided under delegation R<m>` and `received for <unit>`; `review.md` and `elicitation.md` treat them as the deciding session's choice or relayed words, never an owner statement.
+
 ## [0.1.0-beta.16] - 2026-10-31
 
 ### What's new

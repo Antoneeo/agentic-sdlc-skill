@@ -2,6 +2,42 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.51.0] - 2026-10-31
+
+### What's new
+
+**Several sessions can work on one repository, one of them coordinating.** When you run several agent sessions on the same project at once and tell one of them that it coordinates the others, they follow shared rules. Each request record has a single writer, so its entries are never numbered twice. A resource only one session can use at a time, such as the development container or the test database, is taken and released through the coordinator, so one session no longer restarts what another is running against. An authorization you gave one session is not passed to another by message. A session that stops reports what it did, and the coordinator checks it before telling you the work is done. Before a commit that carries several sessions' work, the coordinator checks that every changed file is assigned to the right unit. If you name no coordinator, nothing changes.
+
+**Decisions taken on your behalf are labelled.** In the request record, a decision a session took under a delegation you gave it, and words you gave one session for work another session records, now carry their own heading. They are never read later as something you said yourself, and a delegated decision never overrides one of yours: a choice that would change it comes back to you as a question.
+
+**The reminder of what must not break also covers files written from the shell.** From 1.49.0 the agent is reminded of a unit's constraints before it edits a file; a file it writes through a shell command never triggered that reminder, so the agent now looks the constraints up itself.
+
+#### What to do
+
+**1. Update (everyone).** The changes arrive only with the update.
+1. Run `npm install -g @antoneeo/agentic-sdlc-skill@latest`, then `agentic-sdlc-install-skill`.
+2. Close and reopen your agent sessions: the new version loads only at startup.
+
+To check: `npm ls -g @antoneeo/agentic-sdlc-skill` shows 1.51.0.
+
+**2. Coordinating several sessions (only if you run them in parallel).**
+- **This concerns you if** you run more than one agent session on the same repository at the same time.
+- **Why:** without a coordinator, sessions can write the same record at once, restart a container another session is using, or leave one commit nobody can split by unit.
+- **Steps:** tell the session you want as coordinator, in your own words, that it coordinates the others; it records your words, and the rules apply from then on. Each other session asks it before using a shared resource. Before committing several sessions' work together, it writes the commit map and runs `sdlc_check.py commit-map <map file>`.
+- **To check:** when a session takes a shared resource, `ai_docs/audit/leases.md` gains a `take` line naming it.
+
+| New file | Skill | Who reads it |
+|---|---|---|
+| `coordination.md` | agentic-sdlc | the agent, only while several sessions share a repository |
+
+### Added
+- `coordination.md` (F-088): rules for several peer sessions on one repository once the owner names a coordinating session in a request-record entry — one writer per record (a part's owner words for the shared unit go through its own record and the coordinator), leases on exclusive resources in `audit/leases.md` (`take`/`release` lines, written by the coordinator only; a permission given before the naming exempts no session; the code-writer lease passes only once the holder's code is committed or set aside with the owner's yes), decisions under delegation recorded as labelled entries that never reach an earlier owner decision, authorizations valid only in the session they were given to, a fixed closure message per part (and, for a part that stopped without one, the coordinator reads its HANDOFF and working tree and tells the owner what it can and cannot tell), and the commit map. Rulings r40, r41.
+- `sdlc_check.py commit-map MAP`: checks a commit map against the working tree against HEAD. Errors: a generated file under a unit, a changed authored file under Regenerated, a changed HANDOFF or request record in no section, a file under two units outside Shared, a file both under a unit and in Left out. Warnings: a change in no section, a listed file with no change. Exit 1 on any error.
+
+### Changed
+- Request record (`templates.md`): labelled entries `decided under delegation R<m>` and `received for <unit>`; `review.md` and `elicitation.md` treat them as the deciding session's choice or relayed words, never an owner statement (all four lenses).
+- `SKILL.md` Phase 4: constraint recall asks the agent to run `constraints --file` itself for a file written from the shell, which the recall hook never sees; `ENFORCEMENT.md` §3 names the residual. Phase 4 also names the code-writer lease as the one exception to "own worktree" under coordination.
+
 ## [1.50.0] - 2026-10-31
 
 ### What's new
