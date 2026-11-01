@@ -2,6 +2,34 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+## [1.52.0] - 2026-11-01
+
+### What's new
+
+**A session that writes only documents no longer costs you a branch.** When you run several sessions with a coordinator, a session working only on design documents can work in the folder the others already use, instead of a worktree of its own. It writes only its own unit's files, runs no git command that changes the folder, and leaves index regeneration and its closure steps to the coordinator, so you no longer merge one branch per documents-only unit. A session that writes code still holds the code lease, or works in its own worktree.
+
+**Every file several sessions touch has one writer.** Each session adds only its own rows to the review log. Translation catalogs count as code, so in the shared folder only the session holding the code lease writes them. devPNT's store goes in the Shared section of a commit map.
+
+**The coordinator survives compaction and changes only when you say so.** After its context is compacted, the coordinator rereads the leases and the shared request record before acting, instead of trusting its summary. A session it starts does not become coordinator. To change coordinator, name the new session: it records your words, tells the previous coordinator, which stops, and sends you anything written in between.
+
+**Branches that add review rows merge without a conflict.** When two branches both add rows to the review log and your project has no merge rule for that file, merging them stops on a conflict you resolve by hand. The check the agent runs when it closes a piece of work now notices the missing rule and prints the exact line to add to `.gitattributes`, so the agent sees what to fix while it works, without anyone reading release notes. Nothing changes at session start, and the note never makes a check fail.
+
+#### What to do
+
+**1. Update (everyone).** The changes arrive only with the update.
+1. Run `npm install -g @antoneeo/agentic-sdlc-skill@latest`, then `agentic-sdlc-install-skill`.
+2. Close and reopen your agent sessions: the new version loads only at startup.
+
+To check: `npm ls -g @antoneeo/agentic-sdlc-skill` shows 1.52.0.
+
+### Changed
+- `coordination.md` (F-089): the checkout a runtime mounts is the one exception to «own worktree» under coordination — the code-writer lease holder, a documents-only part (its own unit's files under the docs root and its own review-log rows; no git command that changes the checkout, no `index` or `mark`) and the coordinator, which alone runs `index`, `review-map` and `mark` there; the switch/stash/reset bans hold. «Code» defined (translation catalogs included). §1 retitled «Shared files: one writer each»: review log, translation catalogs, an external tool's store tracked in git. Who coordinates: the named conversation keeps the role across compaction and rereads `leases.md` and the shared record; a session another starts never inherits it; a new owner entry changes it, with a handover window up to the previous coordinator's answer. `leases.md` opens with a `coordinator` line. Ruling r42.
+- `SKILL.md` Phase 4: the shared checkout, not the code-writer lease alone, is the exception to the own worktree; the bans hold there and only its coordinator runs `index`.
+- `templates.md`: `leases.md` opening line; a commit-map Shared example for devPNT's store.
+- The shared validator (F-090): `check` prints a `[note]` when the review log (`<docs>/audit/reviews/REVIEW_LOG.md`) has no `merge` attribute, naming the line to add to `.gitattributes` at the repository root (`git check-attr`, with personal and system attribute files ignored; a per-clone `.git/info/attributes` still counts). A deliberate non-union driver is respected. The exit code is unchanged, and session orientation still runs no git.
+- `ENFORCEMENT.md`: «A review log git would not merge cleanly -- `check` names it» (F-090).
+- `templates.md`: the `.gitattributes` stanza's note says `check` names a missing stanza; `coordination.md` §1: the coordinator adds it (F-090).
+
 ## [1.51.0] - 2026-10-31
 
 ### What's new

@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.1.0-beta.18] - 2026-11-01
+
+### What's new
+
+**Branches that add review rows merge without a conflict.** When two branches both add rows to the review log and your project has no merge rule for that file, merging them stops on a conflict you resolve by hand. The check the agent runs when it closes a piece of work now notices the missing rule and prints the exact line to add to `.gitattributes`, so the agent sees what to fix while it works, without anyone reading release notes. Nothing changes at session start, and the note never makes a check fail.
+
+#### What to do
+
+**1. Update (everyone).** The changes arrive only with the update.
+1. Run `npm install -g @antoneeo/course-creator@latest`, then `course-creator-install-skill`.
+2. Close and reopen your agent sessions: the new version loads only at startup.
+
+To check: `npm ls -g @antoneeo/course-creator` shows 0.1.0-beta.18.
+
+### Changed
+- The shared validator (F-090): `check` prints a `[note]` when the review log (`<docs>/audit/reviews/REVIEW_LOG.md`) has no `merge` attribute, naming the line to add to `.gitattributes` at the repository root (`git check-attr`, with personal and system attribute files ignored; a per-clone `.git/info/attributes` still counts). A deliberate non-union driver is respected. The exit code is unchanged, and session orientation still runs no git.
+- `ENFORCEMENT.md`: «A review log git would not merge cleanly -- `check` names it» (F-090).
+
 ## [0.1.0-beta.17] - 2026-10-31
 
 ### What's new
