@@ -45,3 +45,7 @@ Context (agent): «Approvi il design di F-089, la regola r42 e il costo?» — a
 ### R7 — 2026-11-01 — commit and merge
 Context (agent): «Committo F-089 sul suo ramo e faccio il merge su main?» — after closure review PASS; options «Sì, commit e merge» (recommended) / «Solo commit».
 > Sì, commit e merge
+
+### R8 — 2026-11-01 — push
+Context (agent): «Faccio il push di main su origin?»
+> Sì, push
