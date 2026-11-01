@@ -571,7 +571,7 @@ Written only by the coordinating session (`coordination.md` §2); append-only.
 ```markdown
 # Leases
 
-Coordinator named in `REQUEST_[unit].md#R<n>`.
+coordinator coordinating session — REQUEST_[unit].md#R<n> — YYYY-MM-DD
 
 take dev-container — wave-6 session — YYYY-MM-DD
 release dev-container — wave-6 session — YYYY-MM-DD
@@ -592,6 +592,7 @@ committed. Each item is a list line whose first code span is the path.
 
 ## Shared
 - `ai_docs/audit/reviews/REVIEW_LOG.md` — F-001, F-002
+- `.devpnt/plans/plans.db` — F-001, F-002 (written by devPNT)
 
 ## Regenerated
 - `ai_docs/INDEX.md`

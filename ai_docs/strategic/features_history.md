@@ -77,3 +77,4 @@
 | F-086 | Guida del docente e pacchetto di erogazione per i corsi con docente (course-creator) | code | L3 | COMPLETED | 2026-10-29 | 2026-10-30 | solutions/ANALYSIS_instructor_guide.md |
 | F-087 | Il proprietario approva il design di un L3 prima del lavoro (tutte le lenti) | code | L3 | COMPLETED | 2026-10-30 | 2026-10-30 | solutions/ANALYSIS_owner_design_approval.md |
 | F-088 | Coordinating parallel sessions on one repository | code | L3 | COMPLETED | 2026-10-31 | 2026-10-31 | solutions/ANALYSIS_parallel_sessions.md |
+| F-089 | Gaps in coordinating parallel sessions — the shared checkout, shared files, coordinator handover | code | L3 | COMPLETED | 2026-11-01 | 2026-11-01 | solutions/ANALYSIS_parallel_sessions_gaps.md |

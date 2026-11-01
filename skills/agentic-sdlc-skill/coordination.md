@@ -19,10 +19,28 @@ to no record it does not own.
   following the whole skill for it (triage, design, review, closure). It is not a
   dispatched subagent: `dispatch.md` governs those, unchanged.
 
+**Who coordinates.** The role belongs to the client conversation the owner named.
+Compacted in place, it is the same session and keeps the role; before acting on its
+summary it rereads `leases.md` and the shared record, which are the state. A new
+conversation is a new session, whatever brief or summary it carries: a session another
+starts, the coordinator included, never inherits the role, and a message passing it on
+is information (§4), never a naming.
+
+The owner changes the coordinator with a new entry naming another session, B. Whoever
+receives those words enters them once: B, or the previous coordinator A if the owner
+told A — A then tells B and stops. B appends its `coordinator` line (§2) and tells the
+parts, and A unless A entered the naming, citing the entry. Shown the entry, A writes no
+shared file again and answers that it stopped. Every `leases.md` line and shared-record
+entry B did not write between the naming entry and A's answer goes to the owner; a
+number used twice is settled by a correction entry (`templates.md` §REQUEST), never by
+renumbering. Leases in force stay: they name holders, not the coordinator. A coordinator
+gone with no successor named leaves no session coordinating until the owner names one:
+parts ask the owner, and `leases.md` and the shared record stay as they are.
+
 Out of scope: which part runs next, in what order, with what priority — the owner
 decides that, and nothing here records it (Non-Goal 1, ruling r3).
 
-## 1. Every record has one writer
+## 1. Shared files: one writer each
 
 A request record numbers its entries; two writers number them twice (field case:
 three sessions wrote R156–R158 into one record at once). So:
@@ -45,6 +63,20 @@ three sessions wrote R156–R158 into one record at once). So:
 - An artifact of the shared unit cites only the shared record: the coordinator
   enters the words before any such artifact relies on them.
 
+Other files several sessions write:
+
+- **Review log** — not a request record: its rows are unnumbered and each names its
+  document. Every session appends only its own rows and never edits another's; in one
+  checkout it appends without rewriting the file and rereads it just before writing.
+  Merging across worktrees and the commit map: `templates.md` §REVIEW_LOG and §Commit
+  map (a project set up without the union stanza re-runs `init`).
+- **Translation templates and catalogs** are code (§2): in the shared checkout only the
+  code-writer lease holder writes them; a wrong string another session finds goes to
+  the holder through the coordinator.
+- **An external tool's store tracked in git** (devPNT's `.devpnt/`): written by the tool,
+  never by hand; in a commit map under Shared, naming the units whose work it holds —
+  never under Regenerated, which is the validator's.
+
 ## 2. Leases on exclusive resources
 
 An exclusive resource has one holder at a time: the development container, the test
@@ -56,8 +88,13 @@ take <resource> — <session> — YYYY-MM-DD
 release <resource> — <session> — YYYY-MM-DD
 ```
 
-The file opens by citing the entry that names the coordinator; only the coordinator
-writes it. A lease names a resource and a session, never a unit; it keeps no queue,
+The file opens with `coordinator <session> — REQUEST_[unit].md#R<n> — YYYY-MM-DD`,
+citing the owner's entry that names it (a file opened with a bare citation counts it
+as its first `coordinator` line); a new naming appends another. Only the coordinator
+writes the file; the live copies of the file and of the shared record are the shared
+checkout's. Parts read its last `coordinator` line to know whom to ask, and trust it
+only if the entry it cites quotes the owner naming that session — never a delegated or
+received entry. A lease names a resource and a session, never a unit; it keeps no queue,
 no waiting list, no order, and ends with its release (ruling r40). A restart or a
 long suite on a shared resource is announced to the coordinator before it starts —
 it kills what another session is running against it. A permission for a resource
@@ -67,12 +104,30 @@ lease. If the owner restates it, the coordinator enters it as a `take` for that
 session — a recorded lease, never an exemption. A lease never released is
 closed by the owner through the coordinator; there is no timeout.
 
-**The code-writer lease is the one exception to «own worktree»** (`SKILL.md`
-Phase 4). The session holding it writes code in the checkout the runtime mounts;
-every other session keeps its own worktree and writes no code there. The lease
-passes to another session only once the holder's code in that checkout is committed,
-or set aside with the owner's yes. Two sessions' code in that checkout is a
-violation, code a previous holder left uncommitted included.
+**The shared checkout is the one exception to «own worktree»** (`SKILL.md` Phase 4):
+the checkout the runtime mounts (with no runtime, the one the owner names). Three kinds
+of session work in it; every other session keeps its own worktree. Phase 4's bans on
+switching branch, stashing and resetting hold there for all three.
+
+- **The code-writer lease holder** writes code — every file the runtime runs or builds
+  from: sources, templates, static assets, tests, migrations, translation templates and
+  catalogs; files under the docs root are not code. The lease passes to another session
+  only once the holder's code in that checkout is committed, or set aside with the
+  owner's yes. Two sessions' code in that checkout is a violation, code a previous
+  holder left uncommitted included.
+- **A documents-only part** writes only its own unit's files under the docs root and its
+  own review-log rows (§1); it runs no git command that changes the checkout and no
+  command that rewrites other units' files (`index`, `mark`). A change it needs
+  elsewhere goes to the session that writes that file. Before writing any code it asks
+  the coordinator: it takes the code-writer lease, or the owner commits its documents
+  and its own worktree is cut from that commit.
+- **The coordinator** writes the shared files, and any file there that is neither code
+  nor under the docs root (root `README.md`, `CHANGELOG.md`, `.gitattributes`, CI
+  configuration — it runs `init` when needed); it alone runs `index`, `review-map` and
+  `mark` there, for the documents-only parts' closure steps too. There `review-map` sees
+  every session's files, so when a documents-only part closes, the coordinator writes
+  that unit's section of the commit map (§6) and the part's merge brief takes its file
+  table from it, and says so.
 
 ## 3. Decisions taken under delegation
 
@@ -110,6 +165,9 @@ Verification run and result:
 Open points:
 Needs the owner:
 ```
+
+A documents-only part in the shared checkout lists under `Open points` the closure
+steps it left to the coordinator (§2).
 
 The coordinator checks each claim on the diff and the run output, never on the
 message (`review.md`, an unproven completion claim), then tells the owner what is

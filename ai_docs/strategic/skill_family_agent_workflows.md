@@ -213,7 +213,15 @@ Ciò che solo qui l'agente fa:
   dalla coordinatrice e senza code né ordine (r40); un'autorizzazione vale solo nella
   sessione che l'ha ricevuta; una parte che si ferma manda un messaggio a campi fissi,
   verificato sul diff; un commit con più unità ha la sua mappa, controllata da
-  `sdlc_check.py commit-map`. L'ordine dei lavori resta all'owner.
+  `sdlc_check.py commit-map`. L'ordine dei lavori resta all'owner. Nel checkout
+  condiviso (F-089, r42) lavorano solo chi ha il lease del codice, le parti di soli
+  documenti (solo i file della propria unità e le proprie righe del review log; nessun
+  comando git che cambi il checkout, né `index` o `mark`) e la
+  coordinatrice, che sola vi lancia `index`, `review-map` e `mark`; review log, cataloghi
+  di traduzione e lo store `.devpnt/` hanno ciascuno il proprio scrittore. La
+  coordinatrice resta tale dopo una compattazione, non passa a una sessione che avvia, e
+  cambia solo con una nuova nomina dell'owner, registrata da una riga `coordinator` in
+  `leases.md`.
 - **Divergenza spec/codice dichiarata** (F-080, F-081): una L3 che rinvia la
   correzione di codice in contrasto con un claim di `topics/` marca il claim
   (`not-yet-honored-by -> ANALYSIS_<nome>`) e ne cita l'id nella propria ANALYSIS;
