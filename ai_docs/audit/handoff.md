@@ -19,7 +19,9 @@ battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Visi
 marketing 0.29.0, Course 0.1.0-beta.17; tags v1.51.0 / kb-v1.34.0 / mkt-v0.29.0 /
 course-v0.1.0-beta.17, set right before the publish. Release 1.50.0 had been cut and published
 from `claude/f087-owner-design-approval` without being merged into `main`; it was merged first
-(8e048415), so this release is cut on `main`.
+(8e048415), so this release is cut on `main`. Published on 2026-10-31 from the primary
+checkout and verified on the registry, each on latest: code 1.51.0, KB 1.34.0,
+marketing 0.29.0, Course 0.1.0-beta.17.
 
 **2026-10-31 — release 1.50.0: the owner approves an L3 design before the work starts (F-087), users' notes on every npm page.** Code 1.50.0, KB 1.33.0,
 marketing 0.28.0, Course 0.1.0-beta.16; tags v1.50.0 / kb-v1.33.0 / mkt-v0.28.0 /
