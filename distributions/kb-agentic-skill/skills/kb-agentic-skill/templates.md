@@ -602,7 +602,7 @@ Concurrent reviews: `init` writes a `.gitattributes` stanza giving this file
 Rows are date-stamped and their order carries no meaning, so a union merge keeps
 both sides instead of asking a human to choose. It is defence in depth: without
 git, or without the stanza, the outcome is today's — one conflict you resolve by
-hand, never a lost row.
+hand, never a lost row. `check` names a missing stanza and the line to add (F-090).
 
 
 ## ai_docs/audit/HANDOFF_[topic].md — one open workstream, its own file

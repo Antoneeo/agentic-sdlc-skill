@@ -69,7 +69,8 @@ Other files several sessions write:
   document. Every session appends only its own rows and never edits another's; in one
   checkout it appends without rewriting the file and rereads it just before writing.
   Merging across worktrees and the commit map: `templates.md` §REVIEW_LOG and §Commit
-  map (a project set up without the union stanza re-runs `init`).
+  map. A project without the union stanza is named by `check`, with the line to add;
+  the coordinator adds it (`.gitattributes` is its file, §2).
 - **Translation templates and catalogs** are code (§2): in the shared checkout only the
   code-writer lease holder writes them; a wrong string another session finds goes to
   the holder through the coordinator.

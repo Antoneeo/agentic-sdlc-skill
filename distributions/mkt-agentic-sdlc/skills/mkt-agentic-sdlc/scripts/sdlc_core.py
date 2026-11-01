@@ -1377,9 +1377,12 @@ def _open_units(root):
     return units
 
 
-def _git_out(root, *args, timeout=30):
+def _git_out(root, *args, timeout=30, env=None):
+    # `env` is merged into the inherited environment, never a replacement: a bare
+    # dict would drop PATH and fail silently on Windows.
     r = subprocess.run(["git", *args], cwd=str(root), capture_output=True, text=True,
-                       encoding="utf-8", errors="replace", timeout=timeout)
+                       encoding="utf-8", errors="replace", timeout=timeout,
+                       env={**os.environ, **env} if env else None)
     return r.stdout if r.returncode == 0 else None
 
 
@@ -2481,8 +2484,62 @@ def cmd_check(root, strict=False, hybrid=False, extra_validate=None, extra_secti
     failed = any(rc for _, rc in rcs)
     print(f"\ncheck: {'NOT CLEAN' if failed else 'CLEAN'} "
           f"({', '.join(f'{title} rc={rc}' for title, rc in rcs)})")
-    print_orient_hook_note(root)
+    print_check_notes(root)
     return 1 if failed else 0
+
+
+def _attr_pattern(path):
+    """A .gitattributes pattern matching exactly `path`. Order matters (probed):
+    a backslash, glob characters and a leading `#` or `!` (comment, negation)
+    are escaped first, then the result is C-quoted when it holds whitespace,
+    `"` or a backslash."""
+    p = re.sub(r"([\\\[*?])", r"\\\1", path)
+    if p.startswith(("#", "!")):
+        p = "\\" + p
+    if re.search(r'[\s"\\]', p):
+        p = '"' + p.replace("\\", "\\\\").replace('"', '\\"') + '"'
+    return p
+
+
+def review_log_union_note(root):
+    """F-090: the note for a review log git would not merge with union, or None.
+
+    Git itself is asked (`check-attr`), so patterns and nested files count;
+    personal and system attribute files do not, so the answer is the one a
+    teammate's clone gets. Only `unspecified` is a gap: `union` or any other
+    driver is a choice. Residual: `.git/info/attributes` is still read. Any
+    failure -- no git, not a work tree, timeout -- is no note: `check` never
+    breaks on it."""
+    try:
+        log = ai_path(root, "audit", "reviews", "REVIEW_LOG.md")
+        if not log.is_file():
+            return None
+        prefix = _git_out(root, "rev-parse", "--show-prefix", timeout=3)
+        if prefix is None:
+            return None
+        rel = log.resolve().relative_to(Path(root).resolve()).as_posix()
+        out = _git_out(root, "-c", "core.attributesFile=", "check-attr", "-z", "merge",
+                       "--", rel, timeout=3, env={"GIT_ATTR_NOSYSTEM": "1"})
+        if out is None:
+            return None
+        fields = out.split("\0")
+        if len(fields) < 3 or fields[2] != "unspecified":
+            return None
+        path = prefix.rstrip("\r\n") + rel  # a folder may begin with a space
+        return (f"[note] {path} has no merge attribute: two branches that both add review "
+                "rows conflict when merged. Fix: add this line to .gitattributes at the "
+                f"repository root: {_attr_pattern(path)} merge=union")
+    except Exception:
+        return None
+
+
+def print_check_notes(root):
+    """Every check-layer note, informational and never an exit code. The one
+    place an overlay that replaces `check` calls, so a new note cannot miss it."""
+    print_orient_hook_note(root)
+    note = review_log_union_note(root)
+    if note:
+        print(note)
 
 
 # --------------------------------------------------------------------- gate

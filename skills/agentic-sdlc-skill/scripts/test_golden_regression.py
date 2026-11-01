@@ -93,7 +93,10 @@ def run_corpus():
                "AGENTIC_SDLC_USER_SETTINGS": str(root / "no-user-settings.json"),
                # F-075: orient also names installed sibling lenses -- same
                # nondeterminism, same cure: no skills directory at all.
-               "AGENTIC_SDLC_SKILLS_DIRS": ""}
+               "AGENTIC_SDLC_SKILLS_DIRS": "",
+               # F-090: `check` asks git about the review log; a temp dir
+               # inside a work tree would add a note to the baseline.
+               "GIT_CEILING_DIRECTORIES": str(root.parent)}
         env.pop("CLAUDE_CONFIG_DIR", None)
         for label, argv in COMMANDS:
             proc = subprocess.run(

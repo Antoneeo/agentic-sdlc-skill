@@ -17,7 +17,11 @@ import sys
 import tempfile
 import time
 import unittest
+from contextlib import redirect_stdout
+from io import StringIO
 from pathlib import Path
+from types import SimpleNamespace
+from unittest import mock
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -444,6 +448,146 @@ class MS_Merge(unittest.TestCase):
             self.assertIn("ai_docs/audit/handoff.md", conflicted(root),
                           "the observed defect must still be observable")
             self.assertIn("<<<<<<<", hand.read_text(encoding="utf-8"))
+
+
+try:
+    import mkt_check  # noqa: E402
+except ImportError:  # the marketing overlay ships only with its lens
+    mkt_check = None
+
+
+@unittest.skipUnless(HAS_GIT, "git not installed")
+class MS_UnionNote(unittest.TestCase):
+    """F-090: `check` names a review log git would not merge with union.
+
+    Asking a reader to re-run `init` reached nobody; the note reaches every
+    `check`. Git is pinned (no parent repository, no user config) so the result
+    depends on the fixture alone."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.tmp = Path(self._tmp.name)
+        self._env = {k: os.environ.get(k) for k in
+                     ("GIT_CEILING_DIRECTORIES", "GIT_CONFIG_GLOBAL")}
+        os.environ["GIT_CEILING_DIRECTORIES"] = str(self.tmp)
+        os.environ["GIT_CONFIG_GLOBAL"] = os.devnull
+
+    def tearDown(self):
+        for k, v in self._env.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        sc.set_docs_dir("ai_docs")
+        self._tmp.cleanup()
+
+    def _project(self, sub="", git_repo=True, log=True, name="repo"):
+        repo = self.tmp / name
+        root = repo / sub if sub else repo
+        reviews = root / "ai_docs" / "audit" / "reviews"
+        reviews.mkdir(parents=True)
+        if log:
+            (reviews / "REVIEW_LOG.md").write_text("# Review log\n", encoding="utf-8")
+        if git_repo:
+            git(repo, "init", "-q")
+        return repo, root
+
+    def _attr(self, repo, line):
+        (repo / ".gitattributes").write_text(line + "\n", encoding="utf-8")
+
+    def test_a_review_log_with_no_merge_attribute_gets_the_note(self):
+        _repo, root = self._project()
+        note = sc.review_log_union_note(root)
+        self.assertIsNotNone(note)
+        self.assertIn("ai_docs/audit/reviews/REVIEW_LOG.md merge=union", note)
+
+    def test_merge_union_silences_it(self):
+        repo, root = self._project()
+        self._attr(repo, "ai_docs/audit/reviews/REVIEW_LOG.md merge=union")
+        self.assertIsNone(sc.review_log_union_note(root))
+
+    def test_a_pattern_covering_the_log_silences_it(self):
+        repo, root = self._project()
+        self._attr(repo, "*.md merge=union")
+        self.assertIsNone(sc.review_log_union_note(root))
+
+    def test_a_custom_driver_is_a_choice_not_a_gap(self):
+        repo, root = self._project()
+        self._attr(repo, "ai_docs/audit/reviews/REVIEW_LOG.md merge=ours")
+        self.assertIsNone(sc.review_log_union_note(root))
+
+    def test_no_review_log_no_note(self):
+        _repo, root = self._project(log=False)
+        self.assertIsNone(sc.review_log_union_note(root))
+
+    def test_outside_git_no_note(self):
+        _repo, root = self._project(git_repo=False)
+        self.assertIsNone(sc.review_log_union_note(root))
+
+    def test_the_line_is_relative_to_the_repository_top(self):
+        _repo, root = self._project(sub="pkg")
+        note = sc.review_log_union_note(root)
+        self.assertIn("pkg/ai_docs/audit/reviews/REVIEW_LOG.md merge=union", note)
+
+    def test_the_printed_line_is_one_git_reads_back(self):
+        """Spaces, globs, a leading comment or negation sign, a backslash: the
+        line must be escaped and quoted in the one order git accepts, or adding
+        it changes nothing and the note never clears."""
+        subs = ["My [P]roj", "#hash", "!bang", " lead"]
+        if os.name != "nt":  # names Windows refuses
+            subs += ["a*b?c", "back\\slash"]
+        for i, sub in enumerate(subs):
+            with self.subTest(sub=sub):
+                repo, root = self._project(sub=sub, name=f"repo{i}")
+                note = sc.review_log_union_note(root)
+                self.assertIn(f"{sub}/ai_docs", note)
+                line = note.split(".gitattributes at the repository root: ", 1)[1].rstrip()
+                self._attr(repo, line)
+                self.assertIsNone(sc.review_log_union_note(root), line)
+
+    def test_a_git_failure_never_breaks_check(self):
+        _repo, root = self._project()
+        for exc in (subprocess.TimeoutExpired("git", 3), FileNotFoundError("git")):
+            with mock.patch.object(sc, "_git_out", side_effect=exc):
+                self.assertIsNone(sc.review_log_union_note(root))
+
+    def test_check_prints_it_and_keeps_its_exit_code(self):
+        repo, root = self._project()
+        buf = StringIO()
+        with redirect_stdout(buf):
+            rc_with = sc.cmd_check(root)
+        self.assertIn("merge=union", buf.getvalue())
+        self._attr(repo, "ai_docs/audit/reviews/REVIEW_LOG.md merge=union")
+        buf = StringIO()
+        with redirect_stdout(buf):
+            rc_without = sc.cmd_check(root)
+        self.assertNotIn("has no merge attribute", buf.getvalue())
+        self.assertEqual(rc_with, rc_without)
+
+    @unittest.skipIf(mkt_check is None, "mkt_check.py ships only with the marketing lens")
+    def test_marketing_check_prints_it_too(self):
+        _repo, root = self._project()
+        buf = StringIO()
+        with redirect_stdout(buf):
+            mkt_check.main(["check", "--root", str(root), "--docs-dir", "ai_docs"])
+        self.assertIn("ai_docs/audit/reviews/REVIEW_LOG.md merge=union", buf.getvalue())
+
+    def test_orientation_runs_no_subprocess(self):
+        """Session orientation stays zero-execution (F-036 T1): the note is
+        `check`'s, never the session start's."""
+        _repo, root = self._project()
+        args = SimpleNamespace(root=str(root), hybrid=False)
+        env = {"AGENTIC_SDLC_USER_SETTINGS": str(self.tmp / "none.json"),
+               "AGENTIC_SDLC_SKILLS_DIRS": ""}
+        # Recording mocks, asserted after: a raising mock would be swallowed by
+        # the fail-open handlers and prove nothing.
+        with mock.patch.dict(os.environ, env), \
+                mock.patch.object(subprocess, "run") as run, \
+                mock.patch.object(sc, "review_log_union_note") as note, \
+                redirect_stdout(StringIO()):
+            sc.cmd_orient(args)
+        run.assert_not_called()
+        note.assert_not_called()
 
 
 if __name__ == "__main__":

@@ -751,10 +751,10 @@ def main(argv=None):
     else:
         print(f"[FAIL] {args.command}: {len(rep.errors)} error(s), {len(rep.warnings)} warning(s)")
     if args.command == "check":
-        # This overlay REPLACES the spine's cmd_check, so the F-041 wiring note
-        # must be re-attached here: it is check-layer behaviour, whoever owns
-        # the check (fail-open and informational -- never the exit code).
-        sdlc_core.print_orient_hook_note(root)
+        # This overlay REPLACES the spine's cmd_check, so the check-layer notes
+        # (F-041 wiring, F-090 review-log merge) are re-attached here through
+        # their one entry point -- fail-open and informational, never the exit code.
+        sdlc_core.print_check_notes(root)
     return code
 
 

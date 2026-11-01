@@ -96,6 +96,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/ANALYSIS_release_stable_course_beta.md | code |  | Release preparation, channel separation, verification and publication record. | efbca45ecf880255a7d08c6586af99f93a4ca45475245edcf59939eb71a76ee8 |
 | solutions/ANALYSIS_request_record.md | code |  | Feature Analysis: Verbatim request record | 4c705105b54b7361825a0fe0978396da0032654dbd11e5f531f2dd02fdc4e7bb |
 | solutions/ANALYSIS_review_convergence_doctrine.md | code |  | F-045 - review convergence doctrine (code lens spine). Four field-lesson blocks from the 2026-08 eight-FAIL review session (Execute-Before-Specify, converge-not-accrete, severity contract, author pre-audit) plus the two review-hardening additions (proportionality clause, reviewer-side probe check). Spine ported to all three distributions. | 8798fcc607d904e9d595969ec8a4666cec19affbef2d27b24aed916b0121e9fd |
+| solutions/ANALYSIS_review_log_union_check.md | code |  | Feature Analysis: the review log's merge line, checked instead of announced | 3e5da9d6dda38a6841658953cb7ae97c3b0ac654d01222146c8f4b10598cff8e |
 | solutions/ANALYSIS_review_mandate_contract.md | code |  | Feature Analysis: Review Mandate Contract (F-065) | ecf178af63821a36f3ea2a3f32a945d99896db2cf11b08171702643608d8dc3d |
 | solutions/ANALYSIS_revision_doctrine.md | code |  | F-043 - the revision doctrine (kb lens). Incorporating new knowledge into an existing document = full re-read + body rewritten to current state + history in the Diary, never append a delta. The gesture the L2 triage names without prescribing; born from the 12-document delta-append post-mortem. | 4f4151697666009b4b9dba16e6d5dff4dfa54b7fee4be0d5d4fd6d9f7673a46a |
 | solutions/ANALYSIS_sdlc_kb_integration.md | code |  | Memoria comune, responsabilità distinte | 847e8f04cef26ab59b3be25710d81170d2da02850bc500e818c8522620ccc396 |
@@ -123,6 +124,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/E2E_TEST_parallel_sessions.md | code |  | E2E test: coordinating parallel sessions on one repository | 7d4de89835cfae2b5bc339a231418218a6419957d82f4d98b9114b164fb40478 |
 | solutions/E2E_TEST_parallel_sessions_gaps.md | code |  | E2E test: the shared checkout, shared files and coordinator handover | a3145f793544d7e9580a33bdac119ae630c569b6fc1f58c1d71fa0d469d88990 |
 | solutions/E2E_TEST_request_record.md | code |  | E2E test: Verbatim request record | 08acacce42a6146dd45c536248205697e67f4f4df77e84f919e9ffc5b3f3c5e0 |
+| solutions/E2E_TEST_review_log_union_check.md | code |  | E2E test: the review log's merge line, checked instead of announced | 4a5f2a30104d815c82fb730235118e1ce8668af73a24cdcf616a658348128f54 |
 | solutions/E2E_TEST_session_orientation_reach.md | code |  | E2E test: What reaches the session | a977c7c7f30a5815662d2760ee3328070e9bc09919918a76438393937ab47846 |
 | solutions/E2E_TEST_spec_code_divergence.md | code |  | E2E test: Spec/code divergence state shared by the two skills | c16e515c6fd6d11611a845111eb0dfdbe3f210e44cc22358ad8c33edd5a1cf44 |
 | solutions/E2E_TEST_spec_code_divergence_hybrid.md | code |  | E2E test: Spec/code divergence marker in Hybrid projects | 4085013e82dd16ef0038a88708114a222d11b9e6d2e1c8414a0ce13303c2044a |
@@ -141,6 +143,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/MERGE_REVIEW_parallel_sessions.md | code |  | Merge review: coordinating parallel sessions on one repository | 126c7407705b9b697188df73dfc3ca454d40a12dd6013e6549952257488e862d |
 | solutions/MERGE_REVIEW_parallel_sessions_gaps.md | code |  | Merge review: gaps in coordinating parallel sessions | 7e3b13862b5ac84d2199e7c2fa62f55a5578bd7d413116a5ff60c7390eb605bb |
 | solutions/MERGE_REVIEW_request_record.md | code |  | Merge review: Verbatim request record | 766fdc4ed65de618e678b0ab4e0e3629f5936b29e2c91621085683b208704ce7 |
+| solutions/MERGE_REVIEW_review_log_union_check.md | code |  | Merge review: the review log's merge line, checked instead of announced | b83aba5ad5a6397e7ec13eae18ac501b946526cca20d31a52a111718e7104459 |
 | solutions/MERGE_REVIEW_session_orientation_reach.md | code |  | Merge review: What reaches the session | 44a356edc7c6956d3e5372e352484b3e367d12f35e8f734eb15bcf0fd4716c9d |
 | solutions/MERGE_REVIEW_spec_code_divergence.md | code |  | Merge review: Spec/code divergence state shared by the two skills | 1a6c7906c578213a468a608032a9be5041ce4d4875a02058d79d5488a329e530 |
 | solutions/MERGE_REVIEW_spec_code_divergence_hybrid.md | code |  | Merge review: Spec/code divergence marker in Hybrid projects | 5619277dea5f619ffb54825728535146bbb0c733eb6c69e840bd51553fb222c8 |

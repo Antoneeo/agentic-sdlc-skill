@@ -183,6 +183,16 @@ not see them, because the wired hook legitimately lives in the git-ignored
 mechanism (Gemini today) keeps the note -- read it as the manual-reads reminder; a
 `.codex/hooks.json` wired in a shape other than the documented one keeps it too.
 
+**A review log git would not merge cleanly -- `check` names it (F-090).** When the docs
+root holds `audit/reviews/REVIEW_LOG.md` and git reports no `merge` attribute for it (no
+committed `.gitattributes` line covers it: a project set up before the stanza, a custom
+docs root, a project below the repository root, a course project), `check` prints one
+`[note]` with the exact line to add at the repository root. Same contract as above:
+informational, never the exit code, never a `validate` warning. Personal attribute files
+(except the per-clone `.git/info/attributes`) are ignored, so the note matches what a
+teammate's clone does; a deliberate driver other
+than `union` is respected. Session orientation does not run it: it stays zero-execution.
+
 **Installing the package wires the hook machine-wide (F-042).** On Claude Code
 with Python, `npm i -g` (and every update) wires a SessionStart orient hook into
 the USER-level settings (`$CLAUDE_CONFIG_DIR/settings.json` when set, else
