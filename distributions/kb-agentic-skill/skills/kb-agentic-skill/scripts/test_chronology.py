@@ -18,6 +18,7 @@ import subprocess
 import sys
 import tempfile
 import time
+from datetime import date
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
@@ -36,6 +37,9 @@ HAS_GIT = shutil.which("git") is not None
 HERE = Path(__file__).resolve().parent
 EPOCH = sc.CHRONOLOGY_EPOCH
 BEFORE = "2026-01-01"
+# Post-epoch AND fresh: a fixed date ages past the registry's staleness warning,
+# and --strict turned red on 2026-11-01, 14 days after the epoch.
+RECENT = max(EPOCH, date.today().isoformat())
 
 
 def setUpModule():
@@ -63,7 +67,7 @@ def analysis(root, slug, diary, level="L3", start=EPOCH, status="PLANNED",
     return p
 
 
-def handoff(root, slug, nxt, level="L3", updated=EPOCH, docs="ai_docs"):
+def handoff(root, slug, nxt, level="L3", updated=RECENT, docs="ai_docs"):
     aud = Path(root) / docs / "audit"
     aud.mkdir(parents=True, exist_ok=True)
     p = aud / f"HANDOFF_{slug}.md"
