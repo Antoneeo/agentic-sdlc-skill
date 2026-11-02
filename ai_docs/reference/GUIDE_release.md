@@ -1,9 +1,9 @@
 ---
 description: How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish.
 status: CURRENT
-source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition; amended 2026-09-25 — plain `check` beside the hybrid one, `mark` inside the release commit, one tag per package, a pending 2FA is pending, not failed; amended 2026-10-08 — Course latest follows the newest published release for default installation; amended 2026-10-17 — Course publishes on latest like the stable packages, so no separate promotion; amended 2026-10-19 — `mark --note` writes each release's dated entry in project_notes.md; tags are set right before the publish; amended 2026-10-27 (F-070) — user-facing "What's new" per package, mirrored into the README, approved by the owner before the tag, required by publish_all.bat; amended 2026-10-28 — the notes lead with the benefit, and what a user must do is explained in full; amended 2026-11-02 — origin/main and the tags are verified on the remote before the publish).
+source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition; amended 2026-09-25 — plain `check` beside the hybrid one, `mark` inside the release commit, one tag per package, a pending 2FA is pending, not failed; amended 2026-10-08 — Course latest follows the newest published release for default installation; amended 2026-10-17 — Course publishes on latest like the stable packages, so no separate promotion; amended 2026-10-19 — `mark --note` writes each release's dated entry in project_notes.md; tags are set right before the publish; amended 2026-10-27 (F-070) — user-facing "What's new" per package, mirrored into the README, approved by the owner before the tag, required by publish_all.bat; amended 2026-10-28 — the notes lead with the benefit, and what a user must do is explained in full; amended 2026-11-02 — origin/main and the tags are verified on the remote before the publish, and publish_all.bat refuses otherwise).
 distilled_from: ai_docs/reference/.sources/release-runbook-course-creator.md
-source_hash: 6c7139a9e09c50f22e5adeafbd5e355edf0dd7d518226c2b13c7565991c783a8
+source_hash: 12fa545a46555cc961ee52ed101c16184882f6774c01c3f36bdaccd36b3c476a
 ---
 # Guide: Release
 
@@ -102,6 +102,9 @@ never after: npm versions are immutable, so a publish whose commit is not on
    `git ls-remote --tags origin <each tag>` must list every bumped package's tag
    with the release commit. Either check failing means the publish waits: push or
    merge first (1.50.0 was published from a branch never merged into main).
+   `publish_all.bat` enforces both for each package it is about to publish
+   (`scripts/release_remote.js`, after the registry skip) and refuses that package
+   otherwise; this step catches it before the 2FA round starts.
 10. Publish with `publish_all.bat` from the clean tagged content. Publication is
    authorized in this session; browser 2FA remains the USER's step. It checks all four packages in one run and
    **skips any already on the registry at that version**, so a single-package
@@ -117,7 +120,7 @@ never after: npm versions are immutable, so a publish whose commit is not on
 
 ## How to verify it is done right
 [source: release-runbook-course-creator.md#verification-battery]
-Before any commit/tag/publish, five checks:
+Before any commit/tag/publish, six checks:
 1. `npm pack --dry-run --json` — expected files in; `__pycache__`, `.sources/`
    snapshots, and the dev-only eval harness (`test_*.py`, `evals/`) NOT listed.
 2. init.js smoke: `node <repo>/scripts/init.js` in an empty scratch dir → all
@@ -135,6 +138,7 @@ Before any commit/tag/publish, five checks:
    every bumped package, and `node scripts/test_md_region.js` and
    `node scripts/test_whats_new.js` are green (the last one also checks that every
    package README agrees with its CHANGELOG).
+6. `node scripts/test_release_remote.js` is green.
 After publish: verify each version and its `dist-tags.latest`. Course needs no separate
 promotion since 2026-10-17 (see the policy below).
 On the first course publication (2026-10-02), npm also assigned latest despite
@@ -195,6 +199,11 @@ registry check. Do not remove latest or move other package channels.
   refusal here means the pre-tag check of step 1 was skipped or the tree changed after
   it: fix the notes, move the unpublished packages' tags, re-run.
   [source: release-runbook-course-creator.md#user-facing-whats-new--2026-10-27]
+- **`publish_all.bat` refuses a package whose commit is not on `origin/main`**, or
+  whose tag is missing on origin or names another commit. It checks per package,
+  after the registry skip, so a refusal can come after an earlier package was
+  published: push main and the tag, re-run, and the published ones are skipped.
+  [source: release-runbook-course-creator.md#main-holds-what-is-published--2026-11-02]
 
 ## Post-release
 [source: release-runbook-course-creator.md#post-release]

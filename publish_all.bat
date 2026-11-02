@@ -8,6 +8,8 @@ REM   mkt  : @antoneeo/mkt-agentic-sdlc-skill   (distributions\mkt-agentic-sdlc)
 REM   course: @antoneeo/course-creator          (distributions\course-creator)
 REM
 REM PRECONDITION: versions bumped + committed + tagged (run git_push_tag.bat FIRST).
+REM   Refused per package unless HEAD is on origin/main and the package tag
+REM   (v / kb-v / mkt-v / course-v + version) is on origin naming HEAD.
 REM   npm publish packs the WORKING TREE, so publish from the clean tagged checkout.
 REM 2FA (web-based): npm prints an authentication URL and opens your browser for
 REM   EACH package - authorize each one there to continue. (If your account instead
@@ -33,10 +35,10 @@ echo ============================================================
 set /p "GO=Proceed? [y/N]: "
 if /I not "!GO!"=="y" ( echo Aborted. & exit /b 1 )
 
-call :pub "%ROOT%."                              "@antoneeo/agentic-sdlc-skill"     || exit /b 1
-call :pub "%ROOT%distributions\kb-agentic-skill" "@antoneeo/kb-agentic-skill"       || exit /b 1
-call :pub "%ROOT%distributions\mkt-agentic-sdlc" "@antoneeo/mkt-agentic-sdlc-skill" || exit /b 1
-call :pub "%ROOT%distributions\course-creator" "@antoneeo/course-creator" || exit /b 1
+call :pub "%ROOT%."                              "@antoneeo/agentic-sdlc-skill"     "v"      || exit /b 1
+call :pub "%ROOT%distributions\kb-agentic-skill" "@antoneeo/kb-agentic-skill"       "kb-v"   || exit /b 1
+call :pub "%ROOT%distributions\mkt-agentic-sdlc" "@antoneeo/mkt-agentic-sdlc-skill" "mkt-v"  || exit /b 1
+call :pub "%ROOT%distributions\course-creator" "@antoneeo/course-creator" "course-v" || exit /b 1
 
 echo.
 echo === verify (registry versions) ===
@@ -57,7 +59,7 @@ exit /b 0
 
 REM ---------------------------------------------------------------------------
 :pub
-REM %~1 = package dir, %~2 = package name
+REM %~1 = package dir, %~2 = package name, %~3 = tag prefix
 pushd "%~1" || ( echo [FAIL] cannot enter %~1 & exit /b 1 )
 call :channel
 set "VER="
@@ -86,6 +88,14 @@ call node "%ROOT%scripts\whats_new.js" --require "%~1"
 if errorlevel 1 (
   echo [FAIL] %~2 not published: its README must show the "What's new" of !VER!
   echo        ^(see the line above^). Nothing was sent for this package.
+  popd & exit /b 1
+)
+REM Main holds what is published (release guide, step 9): npm versions are
+REM immutable, so a commit not on origin/main, or a tag not pushed, stops here.
+call node "%ROOT%scripts\release_remote.js" --tag %~3!VER!
+if errorlevel 1 (
+  echo [FAIL] %~2 not published: push main and the tag first ^(see the line
+  echo        above^), then re-run. Nothing was sent for this package.
   popd & exit /b 1
 )
 if defined PUB (

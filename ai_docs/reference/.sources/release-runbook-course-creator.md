@@ -367,3 +367,8 @@ but nothing checked it: 1.50.0 was published from a branch that was never merged
 1.51.0 had to merge it first. Before `publish_all.bat`, the agent verifies on the remote
 that `origin/main` contains the release commit and that every package tag is on the
 remote, naming that commit. If either check fails, the publish waits.
+
+Same day, on enforcing it: "Intendevi modificare il .bat per verificare l'applicazione della
+regola?", then "Sì, aggiungilo". `publish_all.bat` runs `scripts/release_remote.js` for each
+package it is about to publish, after the registry skip, and refuses that package unless
+`HEAD` is on `origin/main` and the package's tag is on origin naming `HEAD`.
