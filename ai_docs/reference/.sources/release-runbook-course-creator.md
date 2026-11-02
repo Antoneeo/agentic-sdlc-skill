@@ -357,3 +357,13 @@ Same day, R12: "ma se si dice cosa si deve fare li bisogna spiegarlo meglio". Wh
 notes ask the user to do something, that part is the exception to brevity: it says who it
 concerns (how they can tell), why (what goes wrong otherwise), the exact steps with the
 commands or files involved, and how to check it worked.
+
+## Main holds what is published — 2026-11-02
+
+Owner decision, after the 1.52.0 release: "dovresti modificare la guida per assicurarti di
+fare il push prima della pubblicazione e non dopo. Per evitare il rischio che su main non
+ci sia quello che è stato pubblicato". The order already put the merge before the publish,
+but nothing checked it: 1.50.0 was published from a branch that was never merged, and
+1.51.0 had to merge it first. Before `publish_all.bat`, the agent verifies on the remote
+that `origin/main` contains the release commit and that every package tag is on the
+remote, naming that commit. If either check fails, the publish waits.

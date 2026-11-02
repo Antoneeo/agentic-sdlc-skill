@@ -1,9 +1,9 @@
 ---
 description: How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish.
 status: CURRENT
-source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition; amended 2026-09-25 — plain `check` beside the hybrid one, `mark` inside the release commit, one tag per package, a pending 2FA is pending, not failed; amended 2026-10-08 — Course latest follows the newest published release for default installation; amended 2026-10-17 — Course publishes on latest like the stable packages, so no separate promotion; amended 2026-10-19 — `mark --note` writes each release's dated entry in project_notes.md; tags are set right before the publish; amended 2026-10-27 (F-070) — user-facing "What's new" per package, mirrored into the README, approved by the owner before the tag, required by publish_all.bat; amended 2026-10-28 — the notes lead with the benefit, and what a user must do is explained in full).
+source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition; amended 2026-09-25 — plain `check` beside the hybrid one, `mark` inside the release commit, one tag per package, a pending 2FA is pending, not failed; amended 2026-10-08 — Course latest follows the newest published release for default installation; amended 2026-10-17 — Course publishes on latest like the stable packages, so no separate promotion; amended 2026-10-19 — `mark --note` writes each release's dated entry in project_notes.md; tags are set right before the publish; amended 2026-10-27 (F-070) — user-facing "What's new" per package, mirrored into the README, approved by the owner before the tag, required by publish_all.bat; amended 2026-10-28 — the notes lead with the benefit, and what a user must do is explained in full; amended 2026-11-02 — origin/main and the tags are verified on the remote before the publish).
 distilled_from: ai_docs/reference/.sources/release-runbook-course-creator.md
-source_hash: cb125faed48766e56b2d6271ab32161a3d76ccde7c62153d8f62d0b051a3db4a
+source_hash: 6c7139a9e09c50f22e5adeafbd5e355edf0dd7d518226c2b13c7565991c783a8
 ---
 # Guide: Release
 
@@ -19,7 +19,9 @@ already published.
 ## How to do a release
 [source: release-runbook-course-creator.md#git-sequence]
 Order: bump → verify → mark → script (commit+tag+push) → package tags → verify
-tags → merge → publish.
+tags → merge → verify the remote → publish. Main is pushed BEFORE the publish,
+never after: npm versions are immutable, so a publish whose commit is not on
+`origin/main` ships code main does not have.
 1. Bump FOUR places in one commit: `package.json` version,
    `gemini-extension.json` version, **`SKILL.md` frontmatter `version:`**,
    CHANGELOG heading (`## [Unreleased]` → `## [X.Y.Z] - YYYY-MM-DD`).
@@ -94,7 +96,13 @@ tags → merge → publish.
    pushed: `git push origin :refs/tags/<tag>`).
 8. Merge to main: `gh` CLI is not installed on this machine — GitHub web PR,
    or user-authorized direct push.
-9. Publish with `publish_all.bat` from the clean tagged content. Publication is
+9. **Verify the remote before publishing** [source: release-runbook-course-creator.md#main-holds-what-is-published--2026-11-02]:
+   `git fetch origin --tags`, then
+   `git merge-base --is-ancestor <code tag> origin/main` must exit 0, and
+   `git ls-remote --tags origin <each tag>` must list every bumped package's tag
+   with the release commit. Either check failing means the publish waits: push or
+   merge first (1.50.0 was published from a branch never merged into main).
+10. Publish with `publish_all.bat` from the clean tagged content. Publication is
    authorized in this session; browser 2FA remains the USER's step. It checks all four packages in one run and
    **skips any already on the registry at that version**, so a single-package
    release is normal: the others that did not change are skipped, not failures,
