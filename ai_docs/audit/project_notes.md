@@ -5,7 +5,8 @@ battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Visi
 marketing 0.30.0, Course 0.1.0-beta.18; tags v1.52.0 / kb-v1.35.0 / mkt-v0.30.0 /
 course-v0.1.0-beta.18, set right before the publish. The siblings change only by F-090 (the shared
 validator). The notes dropped an `agentic-sdlc-init` re-run step at the owner's request: the
-check replaces it.
+check replaces it. Published on 2026-11-01 from the primary checkout and verified on the
+registry, each on latest: code 1.52.0, KB 1.35.0, marketing 0.30.0, Course 0.1.0-beta.18.
 
 **2026-10-31 — release 1.51.0: coordinating parallel sessions on one repository (F-088), labelled request-record entries, constraint recall for files written from the shell.** Code 1.51.0, KB 1.34.0,
 marketing 0.29.0, Course 0.1.0-beta.17; tags v1.51.0 / kb-v1.34.0 / mkt-v0.29.0 /
