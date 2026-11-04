@@ -1,7 +1,10 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
-**2026-11-04 — release 1.53.0: Codex hook parity; KB 1.35.1, marketing 0.30.1, Course 0.1.0-beta.19 prepared.**
+**2026-11-04 — release 1.53.0: Codex hook parity; KB 1.35.1, marketing 0.30.1, Course 0.1.0-beta.19 published.**
+Published on 2026-11-04 from release commit `46544b37`, integrated into origin/main.
+All four exact versions and their `latest` tags verified on npm after propagation.
+Tags: v1.53.0 / kb-v1.35.1 / mkt-v0.30.1 / course-v0.1.0-beta.19.
 
 **2026-11-01 — release 1.52.0: documents-only sessions in the shared checkout (F-089), the review log's merge line checked by check (F-090).** Code 1.52.0, KB 1.35.0,
 marketing 0.30.0, Course 0.1.0-beta.18; tags v1.52.0 / kb-v1.35.0 / mkt-v0.30.0 /
