@@ -1,0 +1,86 @@
+# Review map -- 80 files against main (merge-base 74c1833f1b08)
+
+| Path | Status | +/- | Class | What to do |
+|---|---|---|---|---|
+| `README.md` | M | +9/-2 | REVIEW | review |
+| `distributions/course-creator/skills/course-creator/scripts/sdlc_core.py` | M | +317/-22 | REVIEW | review |
+| `distributions/course-creator/skills/course-creator/scripts/shared_manifest.json` | M | +5/-5 | REVIEW | review |
+| `distributions/course-creator/skills/course-creator/scripts/test_constraints.py` | M | +13/-0 | REVIEW | review |
+| `distributions/course-creator/skills/course-creator/scripts/test_session_start.py` | M | +32/-0 | REVIEW | review |
+| `distributions/course-creator/skills/course-creator/scripts/test_skill_invariants.py` | M | +11/-0 | REVIEW | review |
+| `distributions/course-creator/skills/course-creator/scripts/test_verdict.py` | M | +54/-0 | REVIEW | review |
+| `distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/sdlc_core.py` | M | +317/-22 | REVIEW | review |
+| `distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/shared_manifest.json` | M | +5/-5 | REVIEW | review |
+| `distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_constraints.py` | M | +13/-0 | REVIEW | review |
+| `distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_session_start.py` | M | +32/-0 | REVIEW | review |
+| `distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_skill_invariants.py` | M | +11/-0 | REVIEW | review |
+| `distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_verdict.py` | M | +54/-0 | REVIEW | review |
+| `distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/sdlc_core.py` | M | +317/-22 | REVIEW | review |
+| `distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/shared_manifest.json` | M | +5/-5 | REVIEW | review |
+| `distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_constraints.py` | M | +13/-0 | REVIEW | review |
+| `distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_session_start.py` | M | +32/-0 | REVIEW | review |
+| `distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_skill_invariants.py` | M | +11/-0 | REVIEW | review |
+| `distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_verdict.py` | M | +54/-0 | REVIEW | review |
+| `scripts/init.js` | M | +8/-2 | REVIEW | review |
+| `scripts/lib.js` | M | +146/-7 | REVIEW | review |
+| `scripts/postinstall.js` | M | +15/-4 | REVIEW | review |
+| `scripts/test_clients.js` | M | +148/-0 | REVIEW | review |
+| `skills/agentic-sdlc-skill/ENFORCEMENT.md` | M | +42/-5 | REVIEW | review |
+| `skills/agentic-sdlc-skill/SKILL.md` | M | +1/-1 | REVIEW | review |
+| `skills/agentic-sdlc-skill/scripts/sdlc_core.py` | M | +317/-22 | REVIEW | review |
+| `skills/agentic-sdlc-skill/scripts/shared_manifest.json` | M | +5/-5 | REVIEW | review |
+| `skills/agentic-sdlc-skill/scripts/test_constraints.py` | M | +13/-0 | REVIEW | review |
+| `skills/agentic-sdlc-skill/scripts/test_session_start.py` | M | +32/-0 | REVIEW | review |
+| `skills/agentic-sdlc-skill/scripts/test_skill_invariants.py` | M | +11/-0 | REVIEW | review |
+| `skills/agentic-sdlc-skill/scripts/test_verdict.py` | M | +54/-0 | REVIEW | review |
+| `ai_docs/architecture/ADR_2026-11-04_codex_hook_profile.md` | A | +46/-0 | DESIGN | reference the code is checked against; read the changed parts (the brief states which review covered them) |
+| `ai_docs/audit/audit_plan.md` | M | +4/-4 | DESIGN | reference the code is checked against; read the changed parts (the brief states which review covered them) |
+| `ai_docs/reference/.sources/hooks-74c7ee8d.md` | A | +899/-0 | DESIGN | reference the code is checked against; read the changed parts (the brief states which review covered them) |
+| `ai_docs/reference/.sources/hooks-c44cdcbf.md` | A | +682/-0 | DESIGN | reference the code is checked against; read the changed parts (the brief states which review covered them) |
+| `ai_docs/reference/GUIDE_hooks.md` | A | +98/-0 | DESIGN | reference the code is checked against; read the changed parts (the brief states which review covered them) |
+| `ai_docs/solutions/ANALYSIS_codex_hooks.md` | A | +222/-0 | DESIGN | reference the code is checked against; read the changed parts (the brief states which review covered them) |
+| `ai_docs/solutions/E2E_TEST_codex_hooks.md` | A | +93/-0 | DESIGN | reference the code is checked against; read the changed parts (the brief states which review covered them) |
+| `ai_docs/solutions/MERGE_REVIEW_codex_hooks.md` | A | +40/-0 | DESIGN | reference the code is checked against; read the changed parts (the brief states which review covered them) |
+| `ai_docs/strategic/architecture.md` | M | +3/-3 | DESIGN | reference the code is checked against; read the changed parts (the brief states which review covered them) |
+| `ai_docs/strategic/skill_family_agent_workflows.md` | M | +1/-1 | DESIGN | reference the code is checked against; read the changed parts (the brief states which review covered them) |
+| `ai_docs/vision/rulings.md` | M | +2/-0 | DESIGN | reference the code is checked against; read the changed parts (the brief states which review covered them) |
+| `ai_docs/audit/HANDOFF_codex_hooks.md` | A | +25/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/audit/requests/REQUEST_codex_hooks.md` | A | +59/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/audit/reviews/REVIEW_LOG.md` | M | +2/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/BASELINE.md` | A | +10/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/baseline_results.json` | A | +49/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/consent_labels.json` | A | +17/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/constraints_view.txt` | A | +36/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/consumer_cleanup_results.json` | A | +22/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/consumer_results.json` | A | +21/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/course_shared_tests.log` | A | +8/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/diagnostic_red.log` | A | +41/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/docs_check.log` | A | +50/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/final_cleanup_results.json` | A | +8/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/init_results.json` | A | +45/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/installed_init_red.log` | A | +47/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/kb_shared_tests.log` | A | +8/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/mkt_shared_tests.log` | A | +8/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/native_attempt.json` | A | +9/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/native_results.json` | A | +105/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/node_tests.log` | A | +82/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/probe_cleanup.py` | A | +32/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/probe_events.py` | A | +56/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/probe_init.py` | A | +67/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/probe_install.cjs` | A | +39/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/probe_native.py` | A | +42/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/python_tests.log` | A | +194/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/review_map.txt` | A | +0/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/run_shared_tests.py` | A | +22/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/test_install_upgrade.py` | A | +177/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/text_references.txt` | A | +153/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/ui_label_behavior.json` | A | +9/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/user_profile_install.json` | A | +31/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/solutions/harness_codex_hooks/validation_summary.json` | A | +42/-0 | EVIDENCE | spot-check that what the brief cites exists (verdicts, owner statements); do not re-review |
+| `ai_docs/INDEX.md` | M | +2/-0 | GENERATED | skip; rewritten by `index` (a CLEAN `check` proves it) or, for SHADOW_ mirrors, exported from devPNT |
+| `ai_docs/audit/handoff.md` | M | +2/-1 | GENERATED | skip; rewritten by `index` (a CLEAN `check` proves it) or, for SHADOW_ mirrors, exported from devPNT |
+| `ai_docs/memory/INDEX.md` | M | +7/-3 | GENERATED | skip; rewritten by `index` (a CLEAN `check` proves it) or, for SHADOW_ mirrors, exported from devPNT |
+| `ai_docs/reference/INDEX.md` | M | +1/-0 | GENERATED | skip; rewritten by `index` (a CLEAN `check` proves it) or, for SHADOW_ mirrors, exported from devPNT |
+| `ai_docs/strategic/features_history.md` | M | +1/-0 | GENERATED | skip; rewritten by `index` (a CLEAN `check` proves it) or, for SHADOW_ mirrors, exported from devPNT |
+
+Totals: REVIEW 31 files (+2097/-129); DESIGN 11 files (+2090/-8); EVIDENCE 33 files (+1516/-0); GENERATED 5 files (+13/-4)

@@ -1,0 +1,73 @@
+{
+  "hooks": [
+    {
+      "eventName": "preToolUse",
+      "statusMessage": "SDLC: block edits missing triage or required guide reads",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "preToolUse",
+      "statusMessage": "SDLC: recall applicable constraints before editing",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "sessionStart",
+      "statusMessage": "SDLC: load project context when the session starts",
+      "enabled": true,
+      "trustStatus": "trusted"
+    },
+    {
+      "eventName": "userPromptSubmit",
+      "statusMessage": "SDLC: remind the agent to follow the development protocol",
+      "enabled": true,
+      "trustStatus": "trusted"
+    }
+  ],
+  "discovery_errors": [],
+  "discovery_warnings": [],
+  "ephemeral_thread_started": true,
+  "thread_error": null,
+  "turn_error": null,
+  "notification_methods": [
+    "error",
+    "hook/completed",
+    "hook/started",
+    "item/completed",
+    "item/started",
+    "mcpServer/startupStatus/updated",
+    "remoteControl/status/changed",
+    "thread/started",
+    "thread/status/changed",
+    "turn/started",
+    "warning"
+  ],
+  "orientation_marker_seen": true,
+  "reminder_marker_seen": true,
+  "hook_events": [
+    {
+      "method": "hook/started",
+      "event": "sessionStart",
+      "status": "running"
+    },
+    {
+      "method": "hook/completed",
+      "event": "sessionStart",
+      "status": "completed"
+    },
+    {
+      "method": "hook/started",
+      "event": "userPromptSubmit",
+      "status": "running"
+    },
+    {
+      "method": "hook/completed",
+      "event": "userPromptSubmit",
+      "status": "completed"
+    }
+  ],
+  "offline_turn_requested": true,
+  "external_model_endpoint": false,
+  "trust_store_edited": false
+}

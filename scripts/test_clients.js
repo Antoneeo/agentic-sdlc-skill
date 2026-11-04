@@ -1160,3 +1160,151 @@ test('F-085: postinstall wires and preuninstall removes the recall (child proces
     fs.rmSync(tmpHome, { recursive: true, force: true });
   }
 });
+
+// F-091: Codex uses its own user config; Claude retains its original format.
+test('F-091: Codex configures all four hooks without creating Claude settings', () => {
+  gsandbox(({home, python}) => {
+    const client = {key: 'codex', home};
+    for (const wire of [wireGlobalOrientHook, wireGlobalRemindHook, wireGlobalVerdictHook, wireGlobalRecallHook]) {
+      assert.strictEqual(wire({client, python}).code, 'wired');
+    }
+    const settings = readJson(path.join(home, 'hooks.json'));
+    assert.strictEqual(Object.values(settings.hooks).flatMap(g=>g.flatMap(x=>x.hooks)).length, 4);
+    const labels = Object.values(settings.hooks).flatMap(g=>g.flatMap(x=>x.hooks)).map(h=>h.statusMessage);
+    assert.ok(labels.every(label=>typeof label==='string' && label.length>20), 'consent titles must explain every hook');
+    assert.strictEqual(new Set(labels).size,4,'each hook must have its own purpose label');
+    assert.ok(!fs.existsSync(path.join(home, 'settings.json')));
+  });
+});
+
+test('F-091: Codex handlers use a decodable fail-open command from a nested cwd', () => {
+  gsandbox(({tmp,home,python}) => {
+    const client={key:'codex',home};
+    wireGlobalVerdictHook({client,python});
+    const h=readJson(path.join(home,'hooks.json')).hooks.PreToolUse[0].hooks[0];
+    assert.match(h.command,/agentic-sdlc-hook-v1/);
+    assert.ok(!h.command.endsWith('; exit 0'));
+    const validator=path.join(require('./lib').skillTarget(client),'scripts',ENTRY_POINT_FILE);
+    fs.writeFileSync(validator, 'import sys\nprint(sys.stdin.read())\nraise SystemExit(2)\n');
+    const nested=path.join(tmp,'project','src');fs.mkdirSync(nested,{recursive:true});
+    const out=require('child_process').execSync(h.command,{cwd:nested,input:'{"test":1}',encoding:'utf8'});
+    assert.strictEqual(out.trim(),'{"test":1}');
+  });
+});
+test('F-091: Codex repeats byte-identically and removal preserves foreign hooks', () => {
+  gsandbox(({home,python}) => {
+    const client={key:'codex',home};
+    wireGlobalOrientHook({client,python});
+    const file=path.join(home,'hooks.json'), before=fs.readFileSync(file);
+    assert.strictEqual(wireGlobalOrientHook({client,python}).code,'already');
+    assert.ok(before.equals(fs.readFileSync(file)));
+    const settings=readJson(file);settings.hooks.SessionStart.push({hooks:[{type:'command',command:'echo foreign'}]});
+    fs.writeFileSync(file,JSON.stringify(settings));
+    removeGlobalOrientHooks([require('./lib').skillTarget(client)]);
+    assert.deepStrictEqual(readJson(file).hooks.SessionStart,[{hooks:[{type:'command',command:'echo foreign'}]}]);
+  });
+});
+
+test('F-091: every Codex hook remembers its own opt-out on update', () => {
+  for (const wire of [wireGlobalOrientHook,wireGlobalRemindHook,wireGlobalVerdictHook,wireGlobalRecallHook]) {
+    gsandbox(({home,python}) => {
+      const client={key:'codex',home}; wire({client,python});
+      fs.writeFileSync(path.join(home,'hooks.json'),JSON.stringify({hooks:{}}));
+      assert.strictEqual(wire({client,python}).code,'opted-out');
+    });
+  }
+});
+test('F-091: inline TOML hook is preserved and avoids a JSON duplicate', () => {
+  gsandbox(({home,python}) => {
+    const client={key:'codex',home};
+    const validator=path.join(require('./lib').skillTarget(client),'scripts',ENTRY_POINT_FILE);
+    const toml='[[hooks.SessionStart]]\n[[hooks.SessionStart.hooks]]\ntype="command"\ncommand='+JSON.stringify('python "'+validator.replaceAll('\\','/')+'" orient')+'\n';
+    fs.writeFileSync(path.join(home,'config.toml'),toml);
+    assert.strictEqual(wireGlobalOrientHook({client,python}).code,'already');
+    assert.ok(!fs.existsSync(path.join(home,'hooks.json')));
+  });
+});
+test('F-091: Codex disabled policy and malformed settings are not overwritten', () => {
+  gsandbox(({home,python}) => {
+    const client={key:'codex',home};
+    fs.writeFileSync(path.join(home,'config.toml'),'[features]\nhooks=false\n');
+    assert.strictEqual(wireGlobalOrientHook({client,python}).code,'disabled-by-policy');
+    assert.ok(!fs.existsSync(path.join(home,'hooks.json')));
+    fs.rmSync(path.join(home,'config.toml'));fs.writeFileSync(path.join(home,'hooks.json'),'{broken');
+    assert.strictEqual(wireGlobalOrientHook({client,python}).code,'malformed');
+    assert.strictEqual(fs.readFileSync(path.join(home,'hooks.json'),'utf8'),'{broken');
+  });
+});
+
+test('F-091: malformed nested hook groups are preserved with a diagnostic', () => {
+  for (const hooks of [{SessionStart:[null]}, {PreToolUse:[{hooks:[null]}]}, {SessionStart:[{hooks:'invalid'}]}]) {
+    gsandbox(({home,python}) => {
+      const file=path.join(home,'hooks.json'), text=JSON.stringify({hooks});
+      fs.writeFileSync(file,text);
+      assert.strictEqual(wireGlobalOrientHook({client:{key:'codex',home},python}).code,'malformed');
+      assert.strictEqual(fs.readFileSync(file,'utf8'),text);
+    });
+  }
+});
+
+test('F-091: Unicode installed paths survive the actual command wrapper', () => {
+  gsandbox(({home,python}) => {
+    const client={key:'codex',home:path.join(home,'PC à Ω')};
+    const validator=path.join(require('./lib').skillTarget(client),'scripts',ENTRY_POINT_FILE);
+    fs.mkdirSync(path.dirname(validator),{recursive:true});
+    fs.writeFileSync(validator,'print("F091_UNICODE_OK")\n');
+    assert.strictEqual(wireGlobalOrientHook({client,python}).code,'wired');
+    const command=readJson(path.join(client.home,'hooks.json')).hooks.SessionStart[0].hooks[0].command;
+    assert.strictEqual(require('child_process').execSync(command,{input:'{}',encoding:'utf8'}).trim(),'F091_UNICODE_OK');
+  });
+});
+
+test('F-091: deleting the complete inline TOML source remains an opt-out', () => {
+  gsandbox(({home,python}) => {
+    const client={key:'codex',home};
+    const validator=path.join(require('./lib').skillTarget(client),'scripts',ENTRY_POINT_FILE);
+    const file=path.join(home,'config.toml');
+    fs.writeFileSync(file,'[[hooks.SessionStart]]\n[[hooks.SessionStart.hooks]]\ntype="command"\ncommand='+JSON.stringify('python "'+validator.replaceAll('\\','/')+'" orient')+'\n');
+    assert.strictEqual(wireGlobalOrientHook({client,python}).code,'already');
+    fs.rmSync(file);
+    assert.strictEqual(wireGlobalOrientHook({client,python}).code,'opted-out');
+    assert.ok(!fs.existsSync(path.join(home,'hooks.json')));
+  });
+});
+
+test('F-091: recognized non-equivalent definitions are preserved, never called already', () => {
+  for (const variant of ['matcher','args','type']) {
+    gsandbox(({home,python}) => {
+      const client={key:'codex',home};
+      wireGlobalVerdictHook({client,python});
+      const file=path.join(home,'hooks.json'), settings=readJson(file), group=settings.hooks.PreToolUse[0];
+      if(variant==='matcher') group.matcher='^Edit$';
+      if(variant==='type') group.hooks[0].type='prompt';
+      if(variant==='args') {
+        const command=group.hooks[0].command, at=command.lastIndexOf(' ');
+        const payload=JSON.parse(Buffer.from(command.slice(at+1),'base64').toString('utf8'));
+        payload.argv=['verdict'];
+        group.hooks[0].command=command.slice(0,at+1)+Buffer.from(JSON.stringify(payload)).toString('base64');
+      }
+      fs.writeFileSync(file,JSON.stringify(settings));const before=fs.readFileSync(file);
+      assert.strictEqual(wireGlobalVerdictHook({client,python}).code,'unverifiable',variant);
+      assert.ok(before.equals(fs.readFileSync(file)));
+    });
+  }
+});
+
+test('F-091: Windows override types return a diagnostic through init', () => {
+  for (const field of ['commandWindows','command_windows']) {
+    gsandbox(({tmp,home,python}) => {
+      const file=path.join(home,'hooks.json');
+      const text=JSON.stringify({hooks:{SessionStart:[{hooks:[{type:'command',command:'echo foreign',[field]:123}]}]}});
+      fs.writeFileSync(file,text);
+      const env={...process.env,HOME:home,USERPROFILE:home,CODEX_HOME:home,
+        CLAUDE_CONFIG_DIR:path.join(home,'.claude'),GEMINI_HOME:path.join(home,'.gemini'),ANTIGRAVITY_HOME:path.join(home,'.antigravity')};
+      const project=path.join(tmp,'project');fs.mkdirSync(project);
+      const out=execFileSync(process.execPath,[INIT],{cwd:project,env,encoding:'utf8'});
+      assert.match(out,/Codex user orientation: malformed/);
+      assert.strictEqual(fs.readFileSync(file,'utf8'),text);
+    });
+  }
+});

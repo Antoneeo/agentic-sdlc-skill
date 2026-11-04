@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
-const { SKILL_SOURCE, INSTALLED_SKILL_NAME, SELF_LENS, SIBLING_LENSES, CLIENTS, clientDetected, skillTarget, wireOrientHook, detectPython, loadTemplates, templateFor } = require('./lib');
+const { SKILL_SOURCE, INSTALLED_SKILL_NAME, SELF_LENS, SIBLING_LENSES, CLIENTS, clientDetected, skillTarget, wireOrientHook, wireGlobalOrientHook, detectPython, loadTemplates, templateFor } = require('./lib');
 
 const cwd = process.cwd();
 
@@ -255,7 +255,7 @@ const ignoreLocalSettings = () => {
 };
 
 const claudeClient = detectedClients.find((c) => c.key === 'claude');
-const otherClients = detectedClients.filter((c) => c.key !== 'claude');
+const otherClients = detectedClients.filter((c) => !['claude', 'codex'].includes(c.key));
 if (!claudeClient) {
   console.log('ℹ️  Claude Code not detected: SessionStart orientation hook not wired.');
 } else {
@@ -329,6 +329,12 @@ if (!claudeClient) {
       console.log('   per ENFORCEMENT.md §4.');
       break;
   }
+}
+const codexClient = detectedClients.find(c => c.key === 'codex');
+if (codexClient) {
+  const result = wireGlobalOrientHook({client: codexClient, python: detectedPython, cwd});
+  console.log(`Codex user orientation: ${result.code}. Review configured hooks with /hooks; trust is not changed.`);
+  if (result.code === 'no-validator') console.log('Run agentic-sdlc-install-skill first to configure Codex hooks.');
 }
 for (const c of otherClients) {
   // Said out loud rather than skipped in silence: ENFORCEMENT.md §4's manual

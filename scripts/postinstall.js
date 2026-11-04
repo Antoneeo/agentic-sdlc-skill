@@ -34,10 +34,21 @@ for (const client of CLIENTS) {
     console.log(`✅ Detected: ${client.label}`);
     detected = true;
     const installed = installSkill(client);
-    // F-042: wire the machine-global orientation hook — the install IS the
-    // consent, so no question is ever asked. Claude Code only (the one client
-    // whose hook shape a fixture pins); removal is a standing opt-out the
-    // marker remembers. A convenience must never fail an npm install: wrapped.
+    // F-091 adds definitions for Codex; its separate trust decision stays human.
+    // F-042's legacy Claude wiring remains below. Per-hook markers preserve
+    // removals, and wiring failures must never abort package installation.
+    if (client.key === 'codex' && installed) {
+      const python = detectPython();
+      for (const [name, wire] of [['orientation', wireGlobalOrientHook], ['reminder', wireGlobalRemindHook],
+        ['guide-verdict check', wireGlobalVerdictHook], ['constraint recall', wireGlobalRecallHook]]) {
+        try {
+          const result = wire({client, python});
+          console.log(`Codex ${name}: ${result.code}${result.target ? ' (' + result.target + ')' : ''}.`);
+        } catch (_) { console.log(`Codex ${name}: configuration failed; existing settings preserved.`); }
+      }
+      console.log('Configured Codex hooks require human trust. Check the per-hook results above and review them with /hooks in a local Codex session.');
+      console.log('Client policy, disabled hooks or cloud orchestration may prevent execution; no trust or policy setting was changed.');
+    }
     if (client.key === 'claude' && installed) {
       try {
         // F-046: the per-turn reminder, wired alongside and never instead of

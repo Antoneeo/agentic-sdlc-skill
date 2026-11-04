@@ -1700,6 +1700,17 @@ class WorkingModelDoctrine(unittest.TestCase):
         if SKILL_DIR.name != "agentic-sdlc-skill":
             self.skipTest("the working-model doctrine is the code lens's (per-lens file)")
 
+    def test_codex_promise_is_bounded_by_trust_and_native_patch(self):
+        self.code_lens()
+        skill = read("SKILL.md")
+        rule = skill[skill.index("## Rule Zero:"):skill.index("## Write Triggers")]
+        self.assertIn("after the user trusts the installed hooks", rule)
+        self.assertIn("native `apply_patch`", rule)
+        self.assertIn("cloud orchestration", rule)
+        enforcement = read("ENFORCEMENT.md")
+        self.assertIn("never grants trust", enforcement)
+        self.assertIn("preuninstall.js", enforcement)
+
     def test_template_carries_ids_and_the_preservation_table(self):
         self.code_lens()
         t = read("templates.md")

@@ -1,0 +1,31 @@
+{
+  "home": "C:\\Users\\apint\\.codex",
+  "target": "C:\\Users\\apint\\.codex\\skills\\agentic-sdlc",
+  "backup": "D:\\SoftwareDev\\chatPNT\\.workdir\\f091-profile-backup",
+  "files_installed": 25,
+  "results": [
+    {
+      "code": "wired",
+      "target": "C:\\Users\\apint\\.codex\\hooks.json"
+    },
+    {
+      "code": "wired",
+      "target": "C:\\Users\\apint\\.codex\\hooks.json"
+    },
+    {
+      "code": "wired",
+      "target": "C:\\Users\\apint\\.codex\\hooks.json"
+    },
+    {
+      "code": "wired",
+      "target": "C:\\Users\\apint\\.codex\\hooks.json"
+    }
+  ],
+  "claude_config_unchanged": true,
+  "trust_granted": false,
+  "installed_file_hashes_verified": 25,
+  "configured_handlers": 4,
+  "named_profiles_found": 0,
+  "scope": "user-level Codex home; all profiles using this home",
+  "native_trust": "not granted; CLI requires sign-in; desktop accessibility unavailable"
+}

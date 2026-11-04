@@ -149,11 +149,18 @@ skills/agentic-sdlc-skill/
 The validator is **three files**: `sdlc_check.py` selects the lens, `sdlc_core.py` owns structural checks, and `knowledge.py` adds shared memory and KB integrity. Copy all three; core alone is not equivalent.
 
 Installing or updating the npm package wires the session-orientation hook
-machine-wide (user-level Claude Code settings; removal is a standing opt-out
+machine-wide (user-level Claude Code settings and Codex hooks.json; removal is a standing opt-out
 that no update overrides -- ENFORCEMENT.md par.4).
 It also wires, the same way, the per-turn reminder, the guide-verdict check and
 the constraint recall (ENFORCEMENT.md par.3); the recall costs about 0.25 s per
-edit and adds context only at L3 on a bound file.
+edit on Claude Code and adds context only at L3 on a bound file. Codex adds context on supported native patches; its latency is reported in the test evidence, not inferred from Claude.
+
+For Codex, restart a **local** session and review the four definitions with `/hooks`.
+The installer configures hooks; it does not grant trust, enable disabled features or
+override managed policy. Reinstalling/updating keeps existing definitions byte-identical
+and respects removal as opt-out. Local command hooks do not run under cloud orchestration.
+Use the explicit package `scripts/preuninstall.js` before removing it if hook cleanup
+is needed: npm versions that skip lifecycle uninstall callbacks cannot perform that cleanup.
 
 ## The family: four lenses, one spine
 

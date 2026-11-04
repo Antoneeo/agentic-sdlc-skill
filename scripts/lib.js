@@ -5,7 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { execSync } = require('child_process');
+const { execSync, execFileSync } = require('child_process');
 
 const PACKAGE_ROOT = path.resolve(__dirname, '..');
 const SKILL_SOURCE = path.join(PACKAGE_ROOT, 'skills', 'agentic-sdlc-skill');
@@ -289,6 +289,8 @@ function orientHookCommand(python, validator, hybrid) {
 // reported broken. Returns null when no token names a validator: the caller must
 // then say it cannot tell, never that the hook is broken.
 function orientHookValidator(command) {
+  const invocation = decodeHookInvocation(command);
+  if (invocation) return invocation.validator;
   const cmd = String(command || '');
   const re = /"([^"]*)"|(\S+)/g;
   let m;
@@ -310,7 +312,9 @@ function findOrientHook(settings) {
     const inner = Array.isArray(group.hooks) ? group.hooks : [group];
     for (const h of inner) {
       const cmd = h && typeof h.command === 'string' ? h.command : '';
-      if (ORIENT_ENTRY_POINTS.some((n) => cmd.includes(n)) && / orient(\s|$)/.test(cmd)) {
+      const invocation = decodeHookInvocation(cmd);
+      if ((invocation && invocation.argv[0] === 'orient') ||
+          (ORIENT_ENTRY_POINTS.some((n) => cmd.includes(n)) && / orient(\s|$)/.test(cmd))) {
         return cmd;
       }
     }
@@ -348,6 +352,7 @@ function orientSettingsState(target) {
 //   wired | already | broken | unverifiable | malformed
 //   no-validator | no-python | unsafe-path | write-failed
 function wireOrientHook(options) {
+  if (options.client.key === 'codex') return wireGlobalOrientHook(options);
   const cwd = options.cwd;
   const client = options.client;
   const python = options.python;
@@ -524,6 +529,10 @@ function orientMarkerRemove(target) {
 // file (user level has no local split; the path is machine-local by nature).
 // Codes follow the wireOrientHook contract, plus `opted-out`.
 function wireGlobalOrientHook(options) {
+  if (options.client.key === 'codex') return wireCodexHook({
+    event: 'SessionStart', sub: 'orient', re: / orient(\s|$)/,
+    marker: 'orient-hook-wired', timeout: ORIENT_HOOK_TIMEOUT, name: 'session orientation',
+  }, options);
   const client = options.client;
   const python = options.python;
 
@@ -603,6 +612,8 @@ function removeGlobalHookEntries(removedRoots, spec) {
   const targets = [];
   const claude = CLIENTS.find((c) => c.key === 'claude');
   if (claude) targets.push(path.join(claude.home, 'settings.json'));
+  const codex = CLIENTS.find((c) => c.key === 'codex');
+  if (codex) targets.push(path.join(codex.home, 'hooks.json'));
   for (const t of spec.markerTargets()) {
     if (!targets.some((x) => pathsEqual(x, t))) targets.push(t);
   }
@@ -616,7 +627,9 @@ function removeGlobalHookEntries(removedRoots, spec) {
       let removedHere = false;
       const ours = (h) => {
         const cmd = h && typeof h.command === 'string' ? h.command : '';
-        if (!(ORIENT_ENTRY_POINTS.some((n) => cmd.includes(n)) && spec.re.test(cmd))) return false;
+        const invocation = decodeHookInvocation(cmd);
+        if (!(invocation ? spec.re.test(' ' + invocation.argv.join(' ')) :
+          ORIENT_ENTRY_POINTS.some((n) => cmd.includes(n)) && spec.re.test(cmd))) return false;
         const tok = orientHookValidator(cmd);
         if (tok === null || !path.isAbsolute(tok)) return false;   // cannot attribute: keep
         return removedRoots.some((root) => pathInside(tok, root));
@@ -703,7 +716,9 @@ function findCommandHook(settings, spec) {
     const inner = Array.isArray(group.hooks) ? group.hooks : [group];
     for (const h of inner) {
       const cmd = h && typeof h.command === 'string' ? h.command : '';
-      if (ORIENT_ENTRY_POINTS.some((n) => cmd.includes(n)) && spec.re.test(cmd)) {
+      const invocation = decodeHookInvocation(cmd);
+      if ((invocation && spec.re.test(' ' + invocation.argv.join(' '))) ||
+          (ORIENT_ENTRY_POINTS.some((n) => cmd.includes(n)) && spec.re.test(cmd))) {
         return cmd;
       }
     }
@@ -757,7 +772,7 @@ function remindMarkerAdd(target) { markerAddOf(REMIND_HOOK, target); }
 // `already`, and only its ABSENCE plus our marker means the user removed it --
 // a standing opt-out. Marker-first would refuse to re-check a hook someone
 // still has.
-function wireCommandHookInto(spec, target, python, validator) {
+function wireCommandHookInto(spec, target, python, validator, handler = null) {
   if (!python) return { code: 'no-python' };
   if (!validator || ORIENT_UNSAFE_IN_PATH.test(validator)) return { code: 'unsafe-path', validator };
   const state = orientSettingsState(target);
@@ -766,10 +781,10 @@ function wireCommandHookInto(spec, target, python, validator) {
   const present = findCommandHook(settings, spec);
   if (present) return { code: 'already', target, command: present };
   if (markerHasOf(spec, target)) return { code: 'opted-out', target };
-  const command = commandHookCommand(spec, python, validator);
+  const command = handler ? handler.command : commandHookCommand(spec, python, validator);
   if (!settings.hooks) settings.hooks = {};
   if (!Array.isArray(settings.hooks[spec.event])) settings.hooks[spec.event] = [];
-  const group = { hooks: [{ type: 'command', command, timeout: spec.timeout }] };
+  const group = { hooks: [handler || { type: 'command', command, timeout: spec.timeout }] };
   if (spec.matcher) group.matcher = spec.matcher;
   settings.hooks[spec.event].push(group);
   try {
@@ -787,6 +802,7 @@ function wireRemindHookInto(target, python, validator) {
 
 // The machine-global twins of wireGlobalOrientHook, same target and validator.
 function wireGlobalCommandHook(spec, options) {
+  if (options.client.key === 'codex') return wireCodexHook(spec, options);
   const client = options.client;
   const validator = path.join(skillTarget(client), 'scripts', ORIENT_ENTRY_POINT);
   if (!fs.existsSync(validator)) return { code: 'no-validator', validator };
@@ -795,6 +811,129 @@ function wireGlobalCommandHook(spec, options) {
 function wireGlobalRemindHook(options) { return wireGlobalCommandHook(REMIND_HOOK, options); }
 function wireGlobalVerdictHook(options) { return wireGlobalCommandHook(VERDICT_HOOK, options); }
 function wireGlobalRecallHook(options) { return wireGlobalCommandHook(RECALL_HOOK, options); }
+
+function wireCodexHook(spec, options) {
+  const validator = path.join(skillTarget(options.client), 'scripts', ORIENT_ENTRY_POINT);
+  if (!fs.existsSync(validator)) return { code: 'no-validator', validator };
+  if (!options.python) return { code: 'no-python', validator };
+  if (ORIENT_UNSAFE_IN_PATH.test(validator)) return { code: 'unsafe-path', validator };
+  const sources = hookSources(options);
+  if (sources.error) return { code: sources.error, target: sources.target };
+  for (const source of sources.sources) {
+    const groups = source.settings.hooks && source.settings.hooks[spec.event];
+    if (groups !== undefined && !Array.isArray(groups)) return { code: 'malformed', target: source.target };
+    for (const group of groups || []) {
+      for (const handler of (Array.isArray(group.hooks) ? group.hooks : [group])) {
+        const command = (process.platform === 'win32' && (handler.commandWindows || handler.command_windows)) || handler.command || '';
+        const invocation = decodeHookInvocation(command);
+        const matches = invocation ? invocation.argv[0] === spec.sub.split(' ')[0]
+          : ORIENT_ENTRY_POINTS.some(n => command.includes(n)) && spec.re.test(command);
+        if (!matches) continue;
+        if (group.enabled === false || handler.enabled === false) return { code: 'opted-out', target: source.target };
+        const found = orientHookValidator(command);
+        if (!found || !path.isAbsolute(found)) return { code: 'unverifiable', target: source.target };
+        if (!fs.existsSync(found)) return { code: 'broken', target: source.target };
+        if (!codexHookEquivalent(spec, group, handler, command, invocation))
+          return { code: 'unverifiable', target: source.target };
+        markerAddOf(spec, source.target);
+        return { code: 'already', target: source.target, command };
+      }
+    }
+  }
+  // Absent sources still carry opt-outs (including an entirely deleted TOML file).
+  for (const target of sources.targets) {
+    if (markerHasOf(spec, target)) return { code: 'opted-out', target };
+  }
+  const profile = hookProfile(options.client);
+  return wireCommandHookInto({...spec, matcher: spec.event === 'PreToolUse' ? '^apply_patch$' : undefined},
+    path.join(options.client.home, profile.file), options.python, validator,
+    hookHandler(spec, options.client, options.python, validator));
+}
+
+function codexHookEquivalent(spec, group, handler, command, invocation) {
+  if (handler.type !== 'command') return false;
+  const matcher = group.matcher;
+  if (spec.event === 'PreToolUse' ? matcher !== '^apply_patch$' : matcher != null && matcher !== '') return false;
+  const expected = spec.sub.split(' ');
+  if (invocation) return JSON.stringify(invocation.argv) === JSON.stringify(expected);
+  // Recognizing a validator is ownership evidence, not proof of equivalent dispatch.
+  const tokens = [...command.matchAll(/"([^"]*)"|'([^']*)'|(\S+)/g)].map(m => m[1] ?? m[2] ?? m[3]);
+  const validator = orientHookValidator(command);
+  return tokens.length === expected.length + 2 && tokens[1] === validator &&
+    JSON.stringify(tokens.slice(2)) === JSON.stringify(expected);
+}
+
+// The legacy Claude builder remains unchanged. Codex normalizes child exit codes
+// without shell-specific `exit` syntax; stdin/stdout are passed through verbatim.
+const CODEX_HOOK_WRAPPER = "import base64,json,subprocess,sys;d=json.loads(base64.b64decode(sys.argv[2]));subprocess.run([sys.executable,d['validator'],*d['argv']],input=sys.stdin.buffer.read())";
+function hookProfile(client) {
+  return client.key === 'codex' ? {file: 'hooks.json'} : client.key === 'claude' ? {file: 'settings.json'} : null;
+}
+function hookHandler(spec, client, python, validator) {
+  const data = Buffer.from(JSON.stringify({client: client.key, validator, argv: spec.sub.split(' ')})).toString('base64');
+  const interpreter = /^[\w.-]+$/.test(python) ? python : '"' + python + '"';
+  const handler = {type:'command', command: interpreter + ' -c "' + CODEX_HOOK_WRAPPER + '" agentic-sdlc-hook-v1 ' + data,
+    timeout:spec.timeout,
+    statusMessage: {
+      orient: 'SDLC: load project context when the session starts',
+      remind: 'SDLC: remind the agent to follow the development protocol',
+      verdict: 'SDLC: block edits missing triage or required guide reads',
+      constraints: 'SDLC: recall applicable constraints before editing',
+    }[spec.sub.split(' ')[0]]};
+  if (spec.sub === 'orient') handler.additionalContextLimit = 0; // orient itself caps output at 9,500 chars
+  return handler;
+}
+function decodeHookInvocation(command) {
+  const middle = ' -c "' + CODEX_HOOK_WRAPPER + '" agentic-sdlc-hook-v1 ';
+  const at = String(command || '').indexOf(middle);
+  if (at < 1) return null;
+  if (!/^[\w.-]+$|^"[^"$`\r\n]+"$/.test(command.slice(0, at))) return null;
+  const encoded = command.slice(at + middle.length);
+  if (!/^[A-Za-z0-9+/]+={0,2}$/.test(encoded)) return null;
+  try {
+    const data = JSON.parse(Buffer.from(encoded, 'base64').toString('utf8'));
+    if (data.client !== 'codex' || typeof data.validator !== 'string' ||
+        !Array.isArray(data.argv) || !data.argv.every(x=>typeof x === 'string') ||
+        !['orient','remind','verdict','constraints'].includes(data.argv[0])) return null;
+    return data;
+  } catch (_) { return null; }
+}
+function hookSources(options) {
+  const sources = [], targets = [];
+  const cwd = options.cwd || process.cwd();
+  for (const dir of [options.client.home, path.join(cwd, '.codex')]) {
+    for (const name of ['hooks.json', 'config.toml']) {
+      const target = path.join(dir, name);
+      targets.push(target);
+      if (!fs.existsSync(target)) continue;
+      try {
+        const settings = name.endsWith('.json') ? JSON.parse(fs.readFileSync(target,'utf8').replace(/^\uFEFF/,'')) :
+          JSON.parse(execFileSync(options.python,['-c',
+            "import json,sys,tomllib;print(json.dumps(tomllib.load(open(sys.argv[1],'rb'))))",target],
+            {encoding:'utf8',timeout:5000,stdio:['ignore','pipe','pipe']}));
+        if (!settings || typeof settings !== 'object' || Array.isArray(settings) ||
+            (settings.hooks !== undefined && (!settings.hooks || typeof settings.hooks !== 'object' || Array.isArray(settings.hooks))))
+          return {error:'malformed',target};
+        for (const groups of Object.values(settings.hooks || {})) {
+          if (!Array.isArray(groups)) return {error:'malformed',target};
+          for (const group of groups) {
+            if (!group || typeof group !== 'object' || Array.isArray(group) ||
+                (group.hooks !== undefined && !Array.isArray(group.hooks))) return {error:'malformed',target};
+            for (const handler of group.hooks || [group]) {
+              if (!handler || typeof handler !== 'object' || Array.isArray(handler) ||
+                  ['command','commandWindows','command_windows'].some(key =>
+                    handler[key] !== undefined && typeof handler[key] !== 'string')) return {error:'malformed',target};
+            }
+          }
+        }
+        if ((settings.features && settings.features.hooks === false) || settings.allow_managed_hooks_only === true)
+          return {error:'disabled-by-policy',target};
+        sources.push({target,settings});
+      } catch (_) { return {error:name.endsWith('.toml') ? 'unverifiable' : 'malformed',target}; }
+    }
+  }
+  return {sources,targets};
+}
 
 // Uninstall twin for the constant-command hooks: one {target, event, name} per
 // removal, so the uninstaller can say what it removed.

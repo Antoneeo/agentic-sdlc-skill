@@ -24,6 +24,7 @@ import os
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from io import StringIO
 from contextlib import redirect_stdout
 from pathlib import Path
@@ -117,12 +118,19 @@ def setUpModule():
     The marketing overlay defaults to `mkt_docs`, so a shared battery that builds
     `ai_docs` fixtures must say which root it means instead of inheriting whichever
     distribution happens to be installed."""
-    global _SAVED_DOCS_DIR
+    global _SAVED_DOCS_DIR, _CODEX_TEST_HOME, _CODEX_ENV
     _SAVED_DOCS_DIR = sdlc_core.docs_dir()
     sdlc_core.set_docs_dir("ai_docs")
+    # F-091: machine-level Codex discovery must not make fixture expectations
+    # depend on whether the person running the battery installed the skill.
+    _CODEX_TEST_HOME = tempfile.TemporaryDirectory(prefix="sdlc-orient-client-")
+    _CODEX_ENV = patch.dict(os.environ, {"CODEX_HOME": _CODEX_TEST_HOME.name})
+    _CODEX_ENV.start()
 
 
 def tearDownModule():
+    _CODEX_ENV.stop()
+    _CODEX_TEST_HOME.cleanup()
     sdlc_core.set_docs_dir(_SAVED_DOCS_DIR)
 
 
@@ -686,6 +694,38 @@ class HookDetectionTests(unittest.TestCase):
             out = buf.getvalue()
             self.assertNotIn(UNWIRED_NOTE, out)
             self.assertNotIn(DEAD_NOTE, out)
+
+
+class CodexGlobalOrientation(unittest.TestCase):
+    def test_codex_user_hook_is_attributed_to_codex(self):
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp); home=root/"codex"; home.mkdir()
+            validator=root/"sdlc_check.py";validator.write_text("# stub",encoding="utf-8")
+            (home/"hooks.json").write_text(json.dumps({"hooks":{"SessionStart":[{"hooks":[{"type":"command","command":'python "'+str(validator)+'" orient'}]}]}}),encoding="utf-8")
+            with patch.dict(os.environ,{"CODEX_HOME":str(home),"AGENTIC_SDLC_USER_SETTINGS":str(root/"absent")}):
+                self.assertEqual(sc.orient_hook_state(root),"wired")
+                self.assertIn("codex",sc.orient_wiring(root))
+
+    def test_codex_policy_applies_across_sources_and_disabled_entries_are_omitted(self):
+        from unittest.mock import patch
+        for variant in ("policy", "group", "handler", "malformed"):
+            with self.subTest(variant=variant), tempfile.TemporaryDirectory() as tmp:
+                root=Path(tmp);home=root/"codex";home.mkdir()
+                validator=root/"sdlc_check.py";validator.write_text("# stub",encoding="utf-8")
+                handler={"type":"command","command":'python "'+str(validator)+'" orient'}
+                group={"hooks":[handler]}
+                if variant=="group":group["enabled"]=False
+                if variant=="handler":handler["enabled"]=False
+                (home/"hooks.json").write_text(json.dumps({"hooks":{"SessionStart":[group]}}),encoding="utf-8")
+                if variant in ("policy","malformed"):
+                    (home/"config.toml").write_text('[features]\nhooks=false\n' if variant=="policy" else '[broken',encoding="utf-8")
+                with patch.dict(os.environ,{"CODEX_HOME":str(home),"AGENTIC_SDLC_USER_SETTINGS":str(root/"absent")}):
+                    self.assertNotIn("codex",sc.orient_wiring(root))
+                    out=StringIO()
+                    with redirect_stdout(out):sc.print_orient_hook_note(root)
+                    self.assertIn("Codex",out.getvalue())
+                    self.assertIn("unverified" if variant=="malformed" else "disabled",out.getvalue())
 
 
 if __name__ == "__main__":

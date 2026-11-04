@@ -1,0 +1,153 @@
+Text coverage probe, not a certified semantic call graph. All 11 tracked scripts JS and 30 main-skill Python files; definition/import/test references included.
+scripts/preuninstall.js:5:  CLIENTS, skillTarget, removeGlobalOrientHooks, removeGlobalCommandHooks,
+scripts/preuninstall.js:26:  const removedFrom = removeGlobalOrientHooks(CLIENTS.map(skillTarget));
+scripts/preuninstall.js:38:  for (const { target, event, name } of removeGlobalCommandHooks(CLIENTS.map(skillTarget))) {
+scripts/postinstall.js:6:  wireGlobalOrientHook, wireGlobalRemindHook, wireGlobalVerdictHook, wireGlobalRecallHook,
+scripts/postinstall.js:49:        const rr = wireGlobalRemindHook({ client, python: detectPython() });
+scripts/postinstall.js:59:        const rv = wireGlobalVerdictHook({ client, python: detectPython() });
+scripts/postinstall.js:70:        const rc = wireGlobalRecallHook({ client, python: detectPython() });
+scripts/postinstall.js:76:        const r = wireGlobalOrientHook({ client, python: detectPython() });
+scripts/lib.js:291:function orientHookValidator(command) {
+scripts/lib.js:305:function findOrientHook(settings) {
+scripts/lib.js:350:function wireOrientHook(options) {
+scripts/lib.js:374:    const existing = findOrientHook(state.settings);
+scripts/lib.js:376:    const found = orientHookValidator(existing);
+scripts/lib.js:400:      const uexisting = findOrientHook(ustate.settings);
+scripts/lib.js:402:        const ufound = orientHookValidator(uexisting);
+scripts/lib.js:525:// Codes follow the wireOrientHook contract, plus `opted-out`.
+scripts/lib.js:526:function wireGlobalOrientHook(options) {
+scripts/lib.js:540:  const existing = findOrientHook(state.settings);
+scripts/lib.js:542:    const found = orientHookValidator(existing);
+scripts/lib.js:589:function removeGlobalOrientHooks(removedRoots) {
+scripts/lib.js:590:  return removeGlobalHookEntries(removedRoots, {
+scripts/lib.js:602:function removeGlobalHookEntries(removedRoots, spec) {
+scripts/lib.js:620:        const tok = orientHookValidator(cmd);
+scripts/lib.js:659:// own function because `wireOrientHook` returns early when the session hook is
+scripts/lib.js:698:function findCommandHook(settings, spec) {
+scripts/lib.js:714:  return findCommandHook(settings, REMIND_HOOK);
+scripts/lib.js:766:  const present = findCommandHook(settings, spec);
+scripts/lib.js:788:// The machine-global twins of wireGlobalOrientHook, same target and validator.
+scripts/lib.js:789:function wireGlobalCommandHook(spec, options) {
+scripts/lib.js:795:function wireGlobalRemindHook(options) { return wireGlobalCommandHook(REMIND_HOOK, options); }
+scripts/lib.js:796:function wireGlobalVerdictHook(options) { return wireGlobalCommandHook(VERDICT_HOOK, options); }
+scripts/lib.js:797:function wireGlobalRecallHook(options) { return wireGlobalCommandHook(RECALL_HOOK, options); }
+scripts/lib.js:801:function removeGlobalCommandHooks(removedRoots) {
+scripts/lib.js:804:    const targets = removeGlobalHookEntries(removedRoots, {
+scripts/lib.js:825:  wireOrientHook,
+scripts/lib.js:827:  wireGlobalRemindHook,
+scripts/lib.js:828:  wireGlobalVerdictHook,
+scripts/lib.js:829:  wireGlobalRecallHook,
+scripts/lib.js:830:  removeGlobalCommandHooks,
+scripts/lib.js:835:  wireGlobalOrientHook,
+scripts/lib.js:836:  removeGlobalOrientHooks,
+scripts/init.js:6:const { SKILL_SOURCE, INSTALLED_SKILL_NAME, SELF_LENS, SIBLING_LENSES, CLIENTS, clientDetected, skillTarget, wireOrientHook, detectPython, loadTemplates, templateFor } = require('./lib');
+scripts/init.js:262:  const r = wireOrientHook({
+scripts/test_clients.js:397:const { wireOrientHook, orientHookCommand } = require('./lib');
+scripts/test_clients.js:427:  // Mirrors findOrientHook: a hook object may sit directly in the array.
+scripts/test_clients.js:439:    const r = wireOrientHook({ cwd, client, python });
+scripts/test_clients.js:455:    const r = wireOrientHook({ cwd, client, python });
+scripts/test_clients.js:468:    const r = wireOrientHook({ cwd, client, python });
+scripts/test_clients.js:478:    const r = wireOrientHook({ cwd, client, python });
+scripts/test_clients.js:487:    const r = wireOrientHook({ cwd, client, python });
+scripts/test_clients.js:503:    assert.strictEqual(wireOrientHook({ cwd, client, python }).code, 'wired');
+scripts/test_clients.js:523:      const r = wireOrientHook({ cwd, client, python });
+scripts/test_clients.js:533:    assert.strictEqual(wireOrientHook({ cwd, client, python }).code, 'wired');
+scripts/test_clients.js:534:    assert.strictEqual(wireOrientHook({ cwd, client, python }).code, 'already');
+scripts/test_clients.js:541:    assert.strictEqual(wireOrientHook({ cwd, client, python }).code, 'wired');
+scripts/test_clients.js:543:    const r = wireOrientHook({ cwd, client, python });
+scripts/test_clients.js:556:    assert.strictEqual(wireOrientHook({ cwd, client, python }).code, 'already');
+scripts/test_clients.js:567:    const r = wireOrientHook({ cwd, client, python });
+scripts/test_clients.js:585:    assert.strictEqual(wireOrientHook({ cwd, client, python }).code, 'broken');
+scripts/test_clients.js:596:    assert.strictEqual(wireOrientHook({ cwd, client, python }).code, 'already');
+scripts/test_clients.js:606:    const r = wireOrientHook({ cwd, client, python });
+scripts/test_clients.js:616:    const r = wireOrientHook({ cwd, client, python });
+scripts/test_clients.js:624:    assert.strictEqual(wireOrientHook({ cwd, client, python: null }).code, 'no-python');
+scripts/test_clients.js:629:    assert.strictEqual(wireOrientHook({ cwd, client: empty, python }).code, 'no-validator');
+scripts/test_clients.js:636:    wireOrientHook({ cwd, client, python, docsLabel: 'mkt_docs' });
+scripts/test_clients.js:645:    assert.ok(!wireOrientHook({ cwd, client, python }).command.includes('--hybrid'));
+scripts/test_clients.js:648:    assert.ok(wireOrientHook({ cwd, client, python, hybrid: true }).command.includes('--hybrid'));
+scripts/test_clients.js:662:  wireGlobalOrientHook, removeGlobalOrientHooks, detectPython, pathsEqual,
+scripts/test_clients.js:663:  wireGlobalRemindHook, remindMarkerHas,
+scripts/test_clients.js:706:    const r = wireGlobalRemindHook({ client, python });
+scripts/test_clients.js:720:    const first = wireGlobalOrientHook({ client, python });
+scripts/test_clients.js:724:    const r = wireGlobalRemindHook({ client, python });
+scripts/test_clients.js:735:    assert.strictEqual(wireGlobalRemindHook({ client, python }).code, 'wired');
+scripts/test_clients.js:736:    assert.strictEqual(wireGlobalRemindHook({ client, python }).code, 'already');
+scripts/test_clients.js:743:    assert.strictEqual(wireGlobalRemindHook({ client, python }).code, 'opted-out');
+scripts/test_clients.js:749:    const r = wireGlobalOrientHook({ client, python });
+scripts/test_clients.js:762:    wireGlobalOrientHook({ client, python });
+scripts/test_clients.js:764:    const r = wireGlobalOrientHook({ client, python });
+scripts/test_clients.js:773:    wireGlobalOrientHook({ client, python });
+scripts/test_clients.js:775:    const r = wireGlobalOrientHook({ client, python });
+scripts/test_clients.js:785:    const r = wireGlobalOrientHook({ client, python });
+scripts/test_clients.js:808:    const r = wireGlobalOrientHook({ client, python });
+scripts/test_clients.js:818:    assert.strictEqual(wireGlobalOrientHook({ client, python }).code, 'malformed');
+scripts/test_clients.js:820:    assert.strictEqual(wireGlobalOrientHook({ client, python: null }).code, 'no-python');
+scripts/test_clients.js:831:    const r = wireGlobalOrientHook({ client, python });
+scripts/test_clients.js:839:    wireGlobalOrientHook({ client, python });
+scripts/test_clients.js:842:    const r = wireOrientHook({ cwd, client, python });
+scripts/test_clients.js:850:    wireGlobalOrientHook({ client, python });
+scripts/test_clients.js:855:    const r = wireOrientHook({ cwd, client, python });
+scripts/test_clients.js:867:    const r = wireOrientHook({ cwd, client, python });
+scripts/test_clients.js:875:    wireGlobalOrientHook({ client, python });
+scripts/test_clients.js:882:    removeGlobalOrientHooks([removedRoot]);
+scripts/test_clients.js:894:    wireGlobalOrientHook({ client, python });
+scripts/test_clients.js:896:    removeGlobalOrientHooks([path.join(home, 'skills', INSTALLED_SKILL_NAME)]);
+scripts/test_clients.js:898:    assert.strictEqual(wireGlobalOrientHook({ client, python }).code, 'opted-out',
+scripts/test_clients.js:907:    const r = wireGlobalOrientHook({ client: { key: 'claude', home: otherHome }, python });
+scripts/test_clients.js:917:    removeGlobalOrientHooks([path.join(home, 'skills', INSTALLED_SKILL_NAME)]);
+scripts/test_clients.js:926:    assert.doesNotThrow(() => removeGlobalOrientHooks([path.join(home, 'skills', INSTALLED_SKILL_NAME)]));
+scripts/test_clients.js:969:    const r = wireOrientHook({ cwd, client, python });
+scripts/test_clients.js:978:    wireGlobalOrientHook({ client, python });
+scripts/test_clients.js:983:    removeGlobalOrientHooks([path.join(home, 'skills', INSTALLED_SKILL_NAME)]);
+scripts/test_clients.js:993:const { wireGlobalVerdictHook, removeGlobalCommandHooks } = require('./lib');
+scripts/test_clients.js:1003:    const r = wireGlobalVerdictHook({ client, python });
+scripts/test_clients.js:1016:    assert.strictEqual(wireGlobalVerdictHook({ client, python }).code, 'wired');
+scripts/test_clients.js:1017:    assert.strictEqual(wireGlobalVerdictHook({ client, python }).code, 'already');
+scripts/test_clients.js:1022:    assert.strictEqual(wireGlobalVerdictHook({ client, python }).code, 'opted-out');
+scripts/test_clients.js:1029:    assert.strictEqual(wireGlobalRemindHook({ client, python }).code, 'wired');
+scripts/test_clients.js:1030:    assert.strictEqual(wireGlobalVerdictHook({ client, python }).code, 'wired');
+scripts/test_clients.js:1038:    wireGlobalRemindHook({ client, python });
+scripts/test_clients.js:1039:    wireGlobalVerdictHook({ client, python });
+scripts/test_clients.js:1043:    const removed = removeGlobalCommandHooks([path.join(home, 'skills', INSTALLED_SKILL_NAME)]);
+scripts/test_clients.js:1052:    assert.strictEqual(wireGlobalVerdictHook({ client, python }).code, 'wired',
+scripts/test_clients.js:1084:const { wireGlobalRecallHook } = require('./lib');
+scripts/test_clients.js:1094:    const r = wireGlobalRecallHook({ client, python });
+scripts/test_clients.js:1107:    assert.strictEqual(wireGlobalRecallHook({ client, python }).code, 'wired');
+scripts/test_clients.js:1108:    assert.strictEqual(wireGlobalRecallHook({ client, python }).code, 'already');
+scripts/test_clients.js:1112:    assert.strictEqual(wireGlobalRecallHook({ client, python }).code, 'opted-out');
+scripts/test_clients.js:1119:    assert.strictEqual(wireGlobalVerdictHook({ client, python }).code, 'wired');
+scripts/test_clients.js:1120:    assert.strictEqual(wireGlobalRecallHook({ client, python }).code, 'wired');
+scripts/test_clients.js:1123:    assert.strictEqual(wireGlobalVerdictHook({ client, python }).code, 'already');
+scripts/test_clients.js:1124:    assert.strictEqual(wireGlobalRecallHook({ client, python }).code, 'already');
+scripts/test_clients.js:1130:    wireGlobalVerdictHook({ client, python });
+scripts/test_clients.js:1131:    wireGlobalRecallHook({ client, python });
+scripts/test_clients.js:1132:    const removed = removeGlobalCommandHooks([path.join(home, 'skills', INSTALLED_SKILL_NAME)]);
+skills/agentic-sdlc-skill/scripts/test_constraints.py:560:    def test_transcript_work_reports_level_and_touched_files(self):
+skills/agentic-sdlc-skill/scripts/test_constraints.py:563:        work = sdlc_core.transcript_work(self.transcript)
+skills/agentic-sdlc-skill/scripts/test_constraints.py:568:    def test_transcript_facts_is_unchanged(self):
+skills/agentic-sdlc-skill/scripts/test_constraints.py:571:        self.assertEqual(set(sdlc_core.transcript_facts(self.transcript)),
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:2302:# (findOrientHook + orientHookValidator). The JS owns WRITING hooks, with its
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:2321:def _orient_entries_in(p):
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:2368:def _orient_hook_commands(root):
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:2375:        for cmd in _orient_entries_in(Path(root) / rel):
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:2377:    for cmd in _orient_entries_in(_orient_user_settings_path()):
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:2381:def _orient_entry_live(root, cmd, at_user_level):
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:2405:def orient_wiring(root):
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:2413:    for cmd, at_user_level, place in _orient_hook_commands(root):
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:2414:        if not _orient_entry_live(root, cmd, at_user_level):
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:2421:def orient_hook_state(root):
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:2433:    for cmd, at_user_level, _place in _orient_hook_commands(root):
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:2435:        if _orient_entry_live(root, cmd, at_user_level):
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:2449:        state = orient_hook_state(root)
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:2703:def transcript_facts(path):
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:2755:def verdict_reason(payload, root=None, docs_name=None):
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:2778:    facts = transcript_facts(transcript)
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:2806:        reason = verdict_reason(payload, root, getattr(args, "docs_dir", None))
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:3105:def transcript_work(path):
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:3173:def constraints_hook_context(payload, root=None, docs_name=None):
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:3202:    work = transcript_work(transcript)
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:3237:        context = constraints_hook_context(payload, root, getattr(args, "docs_dir", None))
+skills/agentic-sdlc-skill/scripts/sdlc_core.py:3865:        for client, entries in sorted(orient_wiring(root).items()):
+skills/agentic-sdlc-skill/scripts/test_skill_invariants.py:191:        self.assertTrue(any("wireOrientHook({" in ln for ln in live),
+skills/agentic-sdlc-skill/scripts/test_skill_invariants.py:196:        self.assertTrue(any("function wireOrientHook" in ln for ln in lib_live))

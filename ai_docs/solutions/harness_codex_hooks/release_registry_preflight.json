@@ -1,0 +1,22 @@
+[
+  {
+    "package": "@antoneeo/agentic-sdlc-skill",
+    "target": "1.53.0",
+    "not_published": true
+  },
+  {
+    "package": "@antoneeo/kb-agentic-skill",
+    "target": "1.35.1",
+    "not_published": true
+  },
+  {
+    "package": "@antoneeo/mkt-agentic-sdlc-skill",
+    "target": "0.30.1",
+    "not_published": true
+  },
+  {
+    "package": "@antoneeo/course-creator",
+    "target": "0.1.0-beta.19",
+    "not_published": true
+  }
+]

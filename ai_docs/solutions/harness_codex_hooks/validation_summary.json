@@ -1,0 +1,42 @@
+{
+  "impact_paths_checked": 16,
+  "missing_paths": [],
+  "python_symbols_checked": [
+    "hook_edits",
+    "transcript_events",
+    "shell_read_paths",
+    "transcript_facts",
+    "transcript_work",
+    "verdict_reason",
+    "constraints_hook_context",
+    "_orient_hook_commands",
+    "orient_wiring",
+    "_orient_entries_in",
+    "_orient_entry_live",
+    "_decode_hook_invocation"
+  ],
+  "native_hooks": 4,
+  "native_trust": "untrusted",
+  "node_tests": {
+    "run": 74,
+    "passed": 74,
+    "scope": "full Node battery after consent-label change"
+  },
+  "python_tests": {
+    "run": 611,
+    "skipped": 4,
+    "failures": 0
+  },
+  "docs_check": "CLEAN; 19 pre-existing warnings",
+  "native_trusted_dispatch": "native verdict deny/allowed retry observed; other event acceptance open",
+  "posix": "not run",
+  "shared_sibling_tests": {
+    "per_sibling": 166,
+    "skipped_per_sibling": 5,
+    "failures": 0,
+    "entry_point_smoke": "PASS x3"
+  },
+  "packaged_final_cleanup": "PASS: final_cleanup_results.json",
+  "installed_init_malformed_overrides": "PASS: both spellings",
+  "closure_review": "round 1 findings fixed; independent round 2 interrupted by workspace credits; no final PASS"
+}

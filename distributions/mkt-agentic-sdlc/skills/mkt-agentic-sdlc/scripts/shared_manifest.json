@@ -15,11 +15,11 @@
     "scripts/docs_site.py": "bfc7a521142251b85b229e1873ccf2e375bb5c7f1990cef574e1a78ef14f0091",
     "scripts/entry_point.py": "4a560d4d41db989d3426182f1b24270cbb934b3db0f3246c700578a4ed93089b",
     "scripts/knowledge.py": "6047deb7a2be4cf9ef2949cbcf8a52a8ea61500f4e12d203f1c58076540d50ab",
-    "scripts/sdlc_core.py": "29eeb987310cc2f2191266fb20395ddcc555c9c40c7e1e6cd18f118a4711ac04",
+    "scripts/sdlc_core.py": "189be3dc498341f45b2c4233c916255fefda0ea9d46754d8ed99dc59a01224d8",
     "scripts/shared_files.py": "d360c6018c602788dd96194bcc0f8e8409b140671857ae50ec15acee882eb51e",
     "scripts/test_audit_refs.py": "5c207be46da566db47069b08373195e748fca19c047418f09cc2f78841dfd9a5",
     "scripts/test_chronology.py": "cd595dcfa6d75b44c3b37483dec2c678c87dab9874ad3f6a60a28f9ec361cdc7",
-    "scripts/test_constraints.py": "4be3bbff7032e53b464de2f4e2eb18a824311adb2359c77fb9be065aded09239",
+    "scripts/test_constraints.py": "cf174c4f001bf889428efb19c671b004bf1a85fdea8649acf5d5419d7bafa079",
     "scripts/test_design_approval.py": "191856214cb0b4ab8606b57496cf54742568e3bb4bfa0d8f0c64889f2e2d1e63",
     "scripts/test_docs_root.py": "19753e0316c0df63ed321d24b411a9ff36eea2058421fd69fc57e507d75566d0",
     "scripts/test_docs_site.py": "391ec5c635c67f0fbefe458426e352b5b1ef626ae65c099b1e8e1db491d0a5f9",
@@ -30,9 +30,9 @@
     "scripts/test_migrate.py": "c129823bf4feb0614acd975351632a6ae62d7896a0ef32724419a8e9335e3110",
     "scripts/test_plan.py": "4c011a63aa834b55e9c5d13fb4ea76b131b742356001364b0a508435ba013e27",
     "scripts/test_project_memory.py": "2cb85cef01161d881a11d84cfe9ebb72915104e8d1822e4de739f7d00ae6cd59",
-    "scripts/test_session_start.py": "723f748c0aef461d1051191dbd18f4ea5697a1e0467df73bccb0af8024d17f56",
-    "scripts/test_skill_invariants.py": "4c0f5f2960f177fac58d4b533df878880de800d909ea3f522883da60dad3c3dd",
-    "scripts/test_verdict.py": "8620be2f962f900e9fa0f979f80984671baa373de1ce3f29045104d813e71844",
+    "scripts/test_session_start.py": "d834e66adb3ccc26d8ef664be870e18ca41fd4c10dc4e5870827d24385f40abf",
+    "scripts/test_skill_invariants.py": "3433c45c83bc2a3a56a23a49e8de7aa3c1e14ae2919f29b86f7e3eae1c289e62",
+    "scripts/test_verdict.py": "6d0e56093e7cdfcec65769259fd91287a6bae071418953fb817b02b84d94f592",
     "vision.md": "a19a7d7d5044215b726b66f74e422c9cdedcc856c0a53151f20a6d9840b8f6c4"
   }
 }

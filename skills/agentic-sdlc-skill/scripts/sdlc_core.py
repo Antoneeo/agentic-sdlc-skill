@@ -35,6 +35,7 @@ but are deprecated: new documents should use the English forms.
 Standard library only (Python >= 3.8). Windows and POSIX compatible.
 """
 import argparse
+import base64
 import hashlib
 import json
 import os
@@ -2317,6 +2318,29 @@ ORIENT_HOOK_CONFIG_CAP = 1024 * 1024  # settings are tiny; cap pathological file
 _ORIENT_HOOK_CMD_RE = re.compile(r" orient(\s|$)")
 _ORIENT_HOOK_TOKEN_RE = re.compile(r'"([^"]*)"|(\S+)')
 
+# Same fixed, versioned carrier as scripts/lib.js; only JSON data is decoded.
+_CODEX_HOOK_WRAPPER = "import base64,json,subprocess,sys;d=json.loads(base64.b64decode(sys.argv[2]));subprocess.run([sys.executable,d['validator'],*d['argv']],input=sys.stdin.buffer.read())"
+
+
+def _decode_hook_invocation(command):
+    middle = ' -c "' + _CODEX_HOOK_WRAPPER + '" agentic-sdlc-hook-v1 '
+    if not isinstance(command, str) or middle not in command:
+        return None
+    prefix, encoded = command.split(middle, 1)
+    if not re.fullmatch(r'[\w.-]+|"[^"$`\r\n]+"', prefix):
+        return None
+    try:
+        data = json.loads(base64.b64decode(encoded, validate=True))
+        if (not isinstance(data, dict) or data.get("client") != "codex"
+                or not isinstance(data.get("validator"), str)
+                or not isinstance(data.get("argv"), list) or not data["argv"]
+                or not all(isinstance(a, str) for a in data["argv"])
+                or data["argv"][0] not in ("orient", "remind", "verdict", "constraints")):
+            return None
+        return data
+    except (ValueError, TypeError):
+        return None
+
 
 def _orient_entries_in(p):
     """Yield the SessionStart commands invoking an orient entry point from ONE
@@ -2327,10 +2351,19 @@ def _orient_entries_in(p):
     try:
         if not p.is_file() or p.stat().st_size > ORIENT_HOOK_CONFIG_CAP:
             return
-        data = json.loads(p.read_text(encoding="utf-8-sig"))
+        if p.suffix == ".toml":
+            import tomllib
+            data = tomllib.loads(p.read_text(encoding="utf-8-sig"))
+        else:
+            data = json.loads(p.read_text(encoding="utf-8-sig"))
     except Exception:
         return
     if not isinstance(data, dict):
+        return
+    features = data.get("features")
+    if p.name in ("hooks.json", "config.toml") and (
+            isinstance(features, dict) and features.get("hooks") is False
+            or data.get("allow_managed_hooks_only") is True):
         return
     hooks = data.get("hooks")
     groups = hooks.get("SessionStart") if isinstance(hooks, dict) else None
@@ -2341,12 +2374,20 @@ def _orient_entries_in(p):
     for group in groups:
         if not isinstance(group, dict):
             continue
+        codex = p.name in ("hooks.json", "config.toml")
+        if codex and group.get("enabled") is False:
+            continue
         inner = group.get("hooks")
         for h in inner if isinstance(inner, list) else [group]:
+            if codex and (not isinstance(h, dict) or h.get("enabled") is False or h.get("type") != "command"):
+                continue
             cmd = h.get("command") if isinstance(h, dict) else None
-            if (isinstance(cmd, str)
-                    and any(n in cmd for n in ORIENT_HOOK_ENTRY_POINTS)
-                    and _ORIENT_HOOK_CMD_RE.search(cmd)):
+            if isinstance(h, dict) and p.name in ("hooks.json", "config.toml") and os.name == "nt":
+                cmd = h.get("commandWindows") or h.get("command_windows") or cmd
+            invocation = _decode_hook_invocation(cmd)
+            if ((invocation and invocation["argv"][0] == "orient") or
+                    (isinstance(cmd, str) and any(n in cmd for n in ORIENT_HOOK_ENTRY_POINTS)
+                     and _ORIENT_HOOK_CMD_RE.search(cmd))):
                 yield cmd
 
 
@@ -2365,17 +2406,69 @@ def _orient_user_settings_path():
     return (Path(cfg) if cfg else Path.home() / ".claude") / "settings.json"
 
 
+def _codex_hook_config(root):
+    """Observable Codex policy across sources; no trust or execution assertion."""
+    home = Path(os.environ.get("CODEX_HOME") or Path.home() / ".codex")
+    disabled, unverified, disabled_entries = False, False, False
+    for directory in (home, Path(root) / ".codex"):
+        for name in ("hooks.json", "config.toml"):
+            p = directory / name
+            if not p.exists():
+                continue
+            try:
+                if not p.is_file() or p.stat().st_size > ORIENT_HOOK_CONFIG_CAP:
+                    raise ValueError("unreadable configuration")
+                text = p.read_text(encoding="utf-8-sig")
+                if p.suffix == ".toml":
+                    import tomllib
+                    data = tomllib.loads(text)
+                else:
+                    data = json.loads(text)
+                if not isinstance(data, dict):
+                    raise ValueError("unknown configuration shape")
+                features = data.get("features", {})
+                hooks = data.get("hooks", {})
+                if not isinstance(features, dict) or not isinstance(hooks, dict):
+                    raise ValueError("unknown policy or hooks shape")
+                disabled |= features.get("hooks") is False or data.get("allow_managed_hooks_only") is True
+                groups = hooks.get("SessionStart", data.get("SessionStart", []))
+                if not isinstance(groups, list):
+                    raise ValueError("unknown hook groups")
+                for group in groups:
+                    if not isinstance(group, dict):
+                        raise ValueError("unknown hook group")
+                    inner = group.get("hooks", [group])
+                    if not isinstance(inner, list) or not all(isinstance(h, dict) for h in inner):
+                        raise ValueError("unknown handlers")
+                    disabled_entries |= group.get("enabled") is False or any(h.get("enabled") is False for h in inner)
+            except Exception:
+                unverified = True
+    policy = "disabled-by-policy" if disabled else "unverified" if unverified else "enabled"
+    return {"policy": policy, "disabled_entries": disabled_entries}
+
+
 def _orient_hook_commands(root):
     """Yield (command, at_user_level, place) across every known client config:
     the three project-relative files, then the machine-global user settings --
     the file the installer wires (F-042), without which a fixed machine's
     projects would read as unwired forever. `place` is a display label, never a
     home path (F-075 prints it)."""
+    codex_policy = _codex_hook_config(root)["policy"]
     for rel in ORIENT_HOOK_CONFIG_FILES:
+        if rel.startswith(".codex/") and codex_policy != "enabled":
+            continue
         for cmd in _orient_entries_in(Path(root) / rel):
             yield cmd, False, rel
     for cmd in _orient_entries_in(_orient_user_settings_path()):
         yield cmd, True, "user settings"
+    if codex_policy != "enabled":
+        return
+    home = Path(os.environ.get("CODEX_HOME") or Path.home() / ".codex")
+    for name in ("hooks.json", "config.toml"):
+        for cmd in _orient_entries_in(home / name):
+            yield cmd, True, "codex user " + name
+        for cmd in _orient_entries_in(Path(root) / ".codex" / name) if name == "config.toml" else ():
+            yield cmd, False, ".codex/" + name
 
 
 def _orient_entry_live(root, cmd, at_user_level):
@@ -2386,7 +2479,8 @@ def _orient_entry_live(root, cmd, at_user_level):
     tokens resolve against the project root (the vendored-validator
     convention); a USER-level relative token has no cwd to resolve against and
     is treated as cannot-tell."""
-    token = None
+    invocation = _decode_hook_invocation(cmd)
+    token = invocation["validator"] if invocation else None
     for m in _ORIENT_HOOK_TOKEN_RE.finditer(cmd):
         tok = m.group(1) if m.group(1) is not None else m.group(2)
         if any(tok.endswith(n) for n in ORIENT_HOOK_ENTRY_POINTS):
@@ -2413,7 +2507,7 @@ def orient_wiring(root):
     for cmd, at_user_level, place in _orient_hook_commands(root):
         if not _orient_entry_live(root, cmd, at_user_level):
             continue
-        client = "codex" if place.startswith(".codex") else "claude"
+        client = "codex" if place.startswith((".codex", "codex ")) else "claude"
         out.setdefault(client, {}).setdefault(cmd.strip(), place)
     return out
 
@@ -2447,6 +2541,13 @@ def print_orient_hook_note(root):
     does): the note is check-layer behaviour, whoever owns the check."""
     try:
         state = orient_hook_state(root)
+        codex = _codex_hook_config(root)
+        if codex["policy"] != "enabled" or codex["disabled_entries"]:
+            detail = codex["policy"] if codex["policy"] != "enabled" else "disabled definitions present"
+            print(f"[note] Codex hook configuration: {detail}. Disabled or unverified "
+                  "definitions are excluded from wiring counts; trust and native delivery are not verified.")
+            if state == "unwired":
+                return
         if state == "unwired":
             print("[note] agent sessions start without automatic orientation on this "
                   "machine (no session-orientation hook found at project or user level). "
@@ -2700,6 +2801,192 @@ _DECLARATION_RE = re.compile(
 _GUIDE_NAME_RE = re.compile(r"GUIDE_[A-Za-z0-9_-]+\.md")
 
 
+def _hint_path(value, cwd):
+    if not isinstance(value, str) or not value:
+        return None
+    p = Path(value)
+    if not p.is_absolute():
+        if not cwd or not Path(cwd).is_absolute():
+            return None
+        p = Path(cwd) / p
+    return str(p.resolve())
+
+
+def hook_edits(payload):
+    """Parse the complete native apply_patch syntax without executing it.
+
+    Unknown or incomplete input yields no partial target set. Move checks both
+    the old and new paths; file membership is evaluated by the existing gate.
+    """
+    command = (payload.get("tool_input") or {}).get("command")
+    if not isinstance(command, str) or len(command.encode("utf-8")) > VERDICT_LINE_MAX:
+        return None
+    lines = command.strip().splitlines()
+    if not lines or lines[0] != "*** Begin Patch" or lines[-1] != "*** End Patch":
+        return None
+    edits, current, mode, changed = [], None, None, False
+    for line in lines[1:-1]:
+        match = re.fullmatch(r"\*\*\* (Add|Update|Delete) File: (.+)", line)
+        if match:
+            if current is not None and mode != "Delete" and not changed:
+                return None
+            mode, value = match.groups()
+            target = _hint_path(value, payload.get("cwd"))
+            if not target:
+                return None
+            current = {"path": target, "new_text": ""}
+            edits.append(current)
+            changed = False
+        elif line.startswith("*** Move to: ") and current is not None and mode == "Update" and not changed:
+            target = _hint_path(line[len("*** Move to: "):], payload.get("cwd"))
+            if not target:
+                return None
+            current = {"path": target, "new_text": ""}
+            edits.append(current)
+        elif current is not None and mode != "Delete" and (
+                line.startswith(("+", "-", " ", "@@")) or line == "*** End of File"):
+            if mode == "Add" and not line.startswith("+"):
+                return None
+            if line.startswith(("+", "-")):
+                changed = True
+            if line.startswith("+"):
+                current["new_text"] += line[1:] + "\n"
+        else:
+            return None
+    if current is not None and mode != "Delete" and not changed:
+        return None
+    return edits or None
+
+
+def shell_read_paths(command, cwd, workdir=None):
+    """Literal Get-Content/cat reads only: no shell expansion or execution."""
+    if not isinstance(command, str) or re.search(r"[$`\r\n;|&<>\x00]", command):
+        return None
+    token_re = re.compile(r"\s*(?:'([^']*)'|\"([^\"]*)\"|([^\s'\"]+))")
+    tokens, pos = [], 0
+    while pos < len(command.rstrip()):
+        match = token_re.match(command, pos)
+        if not match:
+            return None
+        token = next(x for x in match.groups() if x is not None)
+        tokens.append(token)
+        pos = match.end()
+    if not tokens or tokens[0].lower() not in ("get-content", "cat"):
+        return None
+    paths, i = [], 1
+    while i < len(tokens):
+        token = tokens[i]
+        if tokens[0].lower() == "get-content" and token.lower() in ("-literalpath", "-path", "-raw"):
+            if token.lower() != "-raw" and i + 1 == len(tokens):
+                return None
+        elif tokens[0].lower() == "get-content" and token.lower() == "-totalcount":
+            i += 1
+            if i == len(tokens) or not tokens[i].isdigit():
+                return None
+        elif tokens[0] == "cat" and token == "--":
+            pass
+        elif token.startswith("-") or re.search(r"[*?\[\],]", token):
+            return None
+        else:
+            base = _hint_path(workdir, cwd) if workdir else cwd
+            resolved = _hint_path(token, base)
+            if not resolved:
+                return None
+            paths.append(resolved)
+        i += 1
+    return paths or None
+
+
+def _codex_literal_calls(code):
+    """Recognize a small non-executable JS carrier grammar, otherwise nothing."""
+    if not isinstance(code, str):
+        return []
+    calls, pos = [], 0
+    pattern = re.compile(r"\s*(?:text\(\s*)?await\s+tools\.exec_command\((\{.*?\})\)\s*\)?\s*;?", re.DOTALL)
+    field = re.compile(r'\s*(?:"(cmd|workdir)"|(cmd|workdir))\s*:\s*("(?:[^"\\]|\\.)*")\s*(,|$)')
+    while pos < len(code.rstrip()):
+        match = pattern.match(code, pos)
+        if not match:
+            return []
+        obj, off, args = match[1][1:-1], 0, {}
+        while off < len(obj.rstrip()):
+            item = field.match(obj, off)
+            if not item or (item[1] or item[2]) in args:
+                return []
+            try:
+                args[item[1] or item[2]] = json.loads(item[3])
+            except ValueError:
+                return []
+            off = item.end()
+        if "cmd" not in args:
+            return []
+        calls.append(args)
+        pos = match.end()
+    return calls
+
+
+def transcript_events(path):
+    """Yield legacy assistant blocks, plus normalized recognized Codex blocks.
+
+    This is read-only and bounded by the existing transcript limits. Historical
+    cwd is taken from host metadata, never guessed from the present process.
+    """
+    cwd = None
+    with Path(path).open("rb") as fh:
+        for raw in fh:
+            if len(raw) > VERDICT_LINE_MAX:
+                continue
+            try:
+                entry = json.loads(raw.decode("utf-8", errors="replace"))
+            except ValueError:
+                continue
+            if not isinstance(entry, dict):
+                continue
+            if entry.get("type") == "assistant":
+                yield entry
+                continue
+            data = entry.get("payload")
+            if not isinstance(data, dict):
+                continue
+            if entry.get("type") in ("session_meta", "turn_context"):
+                if isinstance(data.get("cwd"), str):
+                    cwd = data["cwd"]
+                continue
+            if entry.get("type") != "response_item":
+                continue
+            blocks = []
+            if data.get("type") == "message" and data.get("role") == "assistant":
+                blocks = [{"type": "text", "text": x.get("text", "")}
+                          for x in (data.get("content") if isinstance(data.get("content"), list) else []) if isinstance(x, dict) and x.get("type") == "output_text"]
+            elif data.get("type") in ("function_call", "custom_tool_call"):
+                name = data.get("name")
+                calls = []
+                if name in ("exec_command", "Bash"):
+                    try:
+                        args = json.loads(data.get("arguments", "{}"))
+                    except (ValueError, TypeError):
+                        args = None
+                    if isinstance(args, dict):
+                        calls = [args]
+                elif name == "exec":
+                    calls = _codex_literal_calls(data.get("input"))
+                elif name == "apply_patch":
+                    command = data.get("input")
+                    if command is None:
+                        try:
+                            command = json.loads(data.get("arguments", "{}" )).get("command")
+                        except (ValueError, TypeError, AttributeError):
+                            pass
+                    for edit in hook_edits({"tool_input": {"command": command}, "cwd": cwd}) or []:
+                        blocks.append({"type": "tool_use", "name": "Write", "input": {"file_path": edit["path"]}})
+                for args in calls:
+                    for target in shell_read_paths(args.get("cmd", args.get("command")), cwd, args.get("workdir")) or []:
+                        blocks.append({"type": "tool_use", "name": "Read", "input": {"file_path": target}})
+            if blocks:
+                yield {"type": "assistant", "isSidechain": bool(entry.get("agent_id") or data.get("agent_id")),
+                       "message": {"content": blocks}}
+
+
 def transcript_facts(path):
     """What the session transcript shows about the verdict duty, or None when it
     cannot be read within the bounds.
@@ -2714,14 +3001,7 @@ def transcript_facts(path):
         p = Path(path)
         if not p.is_file() or p.stat().st_size > VERDICT_MAX_BYTES:
             return None
-        with p.open("rb") as fh:
-            for raw in fh:
-                if len(raw) > VERDICT_LINE_MAX or b'"assistant"' not in raw:
-                    continue
-                try:
-                    entry = json.loads(raw.decode("utf-8", errors="replace"))
-                except ValueError:
-                    continue
+        for entry in transcript_events(p):
                 if not isinstance(entry, dict) or entry.get("type") != "assistant":
                     continue
                 content = (entry.get("message") or {}).get("content")
@@ -2755,6 +3035,13 @@ def transcript_facts(path):
 def verdict_reason(payload, root=None, docs_name=None):
     """The refusal line for this edit event, or None when the edit may proceed.
     Without a root, the project is the one holding the edited file (hook_project)."""
+    if payload.get("tool_name") == "apply_patch" and not payload.get("agent_id"):
+        for edit in hook_edits(payload) or []:
+            reason = verdict_reason({**payload, "tool_name": "Edit", "tool_input": {
+                "file_path": edit["path"], "new_string": edit["new_text"]}}, root, docs_name)
+            if reason:
+                return reason
+        return None
     if payload.get("tool_name") not in VERDICT_EDIT_TOOLS or payload.get("agent_id"):
         return None
     tool_input = payload.get("tool_input") or {}
@@ -3113,14 +3400,7 @@ def transcript_work(path):
         p = Path(path)
         if not p.is_file() or p.stat().st_size > VERDICT_MAX_BYTES:
             return None
-        with p.open("rb") as fh:
-            for raw in fh:
-                if len(raw) > VERDICT_LINE_MAX or b'"assistant"' not in raw:
-                    continue
-                try:
-                    entry = json.loads(raw.decode("utf-8", errors="replace"))
-                except ValueError:
-                    continue
+        for entry in transcript_events(p):
                 if not isinstance(entry, dict) or entry.get("type") != "assistant":
                     continue
                 content = (entry.get("message") or {}).get("content")
@@ -3175,6 +3455,17 @@ def constraints_hook_context(payload, root=None, docs_name=None):
     a subagent, on a file of a project whose open L3 code unit binds it (or the
     unit's own ANALYSIS, about to name a path a P row binds -- UC6), by a session
     that worked on that unit and last declared L3."""
+    if payload.get("tool_name") == "apply_patch" and not payload.get("agent_id"):
+        lines = []
+        for edit in hook_edits(payload) or []:
+            context = constraints_hook_context({**payload, "tool_name": "Edit", "tool_input": {
+                "file_path": edit["path"], "new_string": edit["new_text"]}}, root, docs_name)
+            for line in (context or "").splitlines():
+                if line not in lines:
+                    lines.append(line)
+        if len(lines) > CONSTRAINTS_HOOK_LINES:
+            lines = lines[:CONSTRAINTS_HOOK_LINES - 1] + [lines[-1]]
+        return "\n".join(lines) or None
     if payload.get("tool_name") not in VERDICT_EDIT_TOOLS or payload.get("agent_id"):
         return None
     tool_input = payload.get("tool_input") or {}
@@ -3865,6 +4156,10 @@ def cmd_orient(args):
         for client, entries in sorted(orient_wiring(root).items()):
             if len(entries) > 1:
                 places = ", ".join(sorted(set(entries.values())))
+                if client == "codex":
+                    tail.append(f"[note] Codex has {len(entries)} configured orientation definitions "
+                                f"({places}); trust and runtime policy determine delivery. Keep one equivalent definition.")
+                    continue
                 tail.append(f"[note] session orientation is wired {len(entries)} times for one "
                             f"client ({places}): each session receives every copy. Keep one "
                             "entry and remove the others.")

@@ -1,0 +1,36 @@
+F-091 — solutions/ANALYSIS_codex_hooks.md
+## Use Cases / User Needs
+UC1 — **UC1 — Solo developer:** installare/aggiornare il pacchetto, autorizzare gli hook nel client e ottenere orientamento/promemoria senza assemblare JSON a mano. — solutions/ANALYSIS_codex_hooks.md:50
+UC2 — **UC2 — Solo developer:** prima di una patch, essere fermato se manca la dichiarazione/router richiesta, e ricevere i vincoli pertinenti quando opera su un'unità L3. — solutions/ANALYSIS_codex_hooks.md:51
+UC3 — **UC3 — Team lead:** mantenere opt-out, hook propri e controlli Claude durante upgrade/rimozioni, distinguendo configurazione da esecuzione dimostrata. — solutions/ANALYSIS_codex_hooks.md:52
+## Functional Spec
+FS1 — **FS1:** dopo installazione riuscita del pacchetto, Codex rilevato e Python disponibile, creare/integrare `$CODEX_HOME/hooks.json` (default `~/.codex`), preservando le chiavi estranee. — solutions/ANALYSIS_codex_hooks.md:56
+FS2 — **FS2:** la seconda installazione identica non cambia la definizione, non duplica gli handler e non riscrive inutilmente il file. — solutions/ANALYSIS_codex_hooks.md:57
+FS3 — **FS3:** il messaggio d'installazione dice «configurato; verifica/autorizza in /hooks», mai «attivo». — solutions/ANALYSIS_codex_hooks.md:58
+FS4 — **FS4:** il profilo Codex intercetta `apply_patch` sul percorso hook nativo; esamina tutti i path Add/Update/Delete e entrambi i path Move. — solutions/ANALYSIS_codex_hooks.md:59
+FS5 — **FS5:** il transcript Codex riconosciuto alimenta gli stessi criteri Claude (dichiarazione, guide nominate/read-hints, ultimo livello, documenti dell'unità toccati). — solutions/ANALYSIS_codex_hooks.md:60
+FS6 — **FS6:** `init` considera Codex per orient e non aggiunge un secondo handler quando ne vede uno globale/progetto risolvibile. — solutions/ANALYSIS_codex_hooks.md:61
+FS7 — **FS7:** la rimozione esplicita supportata dal pacchetto elimina solo handler attribuibili alle skill rimosse, anche nei target CODEX_HOME storici dei marker. — solutions/ANALYSIS_codex_hooks.md:62
+FS8 — **FS8:** Claude resta funzionalmente equivalente; si preservano le installazioni dei sibling e i loro file personali. — solutions/ANALYSIS_codex_hooks.md:63
+## Impact
+P1 — Un solo resolver dei percorsi; nessuna anticipazione della migrazione F-082. — solutions/ANALYSIS_codex_hooks.md:166
+    evidence: E1; text_references.txt
+P2 — Opt-out per target, preservazione delle configurazioni altrui, firme pubbliche retrocompatibili. — solutions/ANALYSIS_codex_hooks.md:167
+    evidence: E1; text_references.txt
+P3 — Marker distinti; nessun raddoppio o ampliamento del permesso; uninstall attribuito per root. — solutions/ANALYSIS_codex_hooks.md:168
+    evidence: Test clients esistenti; text_references.txt
+P4 — Claude conserva il proprio comportamento; user/tool output non diventano dichiarazioni assistant. — solutions/ANALYSIS_codex_hooks.md:169
+    evidence: E2, E5; text_references.txt
+P5 — La diagnosi distingue client, assenza, morto e non verificabilità; nessuna attestazione di trust. — solutions/ANALYSIS_codex_hooks.md:170
+    evidence: E3; text_references.txt
+P6 — Copie condivise identiche; entry point+core+knowledge sufficienti senza nuovi file runtime obbligatori. — solutions/ANALYSIS_codex_hooks.md:171
+    evidence: Contratti delle entry point; futura prova hash sulle quattro copie
+## Security and Threat Model
+T1 — T1 | autorizzazione implicita o bypass delle policy | FS3: nessuna scrittura trust, allow, feature enable o managed policy; test diff del profilo. — solutions/ANALYSIS_codex_hooks.md:181
+T2 — T2 | cancellazione di hook estranei/opt-out | FS2/7: attribuzione esatta, marker, merge conservativo, prove con target storici e sibling. — solutions/ANALYSIS_codex_hooks.md:182
+T3 — T3 | input patch/transcript eseguito o letto senza limiti | FS4/5: parser non eseguibile, limiti esistenti, fake user/tool non validi, malformed fail-open. — solutions/ANALYSIS_codex_hooks.md:183
+T4 — T4 | hook morto blocca tutti gli edit | D3 wrapper fail-open operativo, stderr non sensibile; deny JSON valido preservato, mai allow. — solutions/ANALYSIS_codex_hooks.md:184
+T5 — T5 | patch multipath aggira un vincolo o moltiplica il contesto | FS4: tutti i target e move; budget cumulativo, niente path parziali accettati. — solutions/ANALYSIS_codex_hooks.md:185
+T6 — T6 | falsa sicurezza per trust/cloud/transcript ignoto | FS3/8, D5: stato configurato distinto dall'esecuzione; limiti espliciti, prova live per runtime che dichiariamo supportati. — solutions/ANALYSIS_codex_hooks.md:186
+T7 — T7 | shell quoting o path controllato dal progetto | D2/3: path assoluta utente, command builder per OS, argv nel wrapper, stessi filtri safe-path; test spazi, apici, $, backtick, newline, BOM. — solutions/ANALYSIS_codex_hooks.md:187
+This view shows only the constraints written in extractable form and never replaces the ANALYSIS; read in full: `## Interface Contract`.

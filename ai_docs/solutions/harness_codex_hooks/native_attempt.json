@@ -1,0 +1,9 @@
+{
+  "authorized_profile": "f091-user-pc-6n5qg_rx",
+  "human_trust_authorization": "REQUEST R3",
+  "tui": "login required before /hooks",
+  "default_cli_authenticated": false,
+  "trust_granted": false,
+  "native_dispatch": "pending authentication",
+  "independent_rereview": "attempted; service out of credits; no verdict"
+}

@@ -27,6 +27,7 @@ not manifested here.
 
 | Document | Status | Description |
 |---|---|---|
+| `reference/GUIDE_hooks.md` | CURRENT | Consult before changing hook installation, ownership, Codex event normalization or client diagnostics. |
 | `reference/GUIDE_release.md` | CURRENT | How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish. |
 | `reference/GUIDE_shared_project_memory.md` | CURRENT | Consult before changing shared-memory discovery, docs-root resolution, or validator composition across the four distributions. |
 | `reference/GUIDE_skill_family_changes.md` | CURRENT | Consult when triaging a change to this repository that is copied into the skill distributions — how the copies count against Rule Zero's file bound. |
@@ -57,6 +58,7 @@ not manifested here.
 | `architecture/ADR_2026-10-07_agent_review_precedes_human.md` | CURRENT | ADR - devPNT performs no review; in both modes the agent review is review.md, carried to the reviewer by a verbatim REVIEW MANDATE block, and in Hybrid its P... |
 | `architecture/ADR_2026-10-27_context_only_recall_hook.md` | CURRENT | ADR - the constraint recall is a PreToolUse hook that adds context and never decides; the project is resolved from the edited file; validate's note on a miss... |
 | `architecture/ADR_2026-10-27_declarations_and_corpus_reach.md` | CURRENT | Why a document the project sent is its own claim provenance (DECLARED) that never crosses a project boundary, why its contradiction with the ledger is a one-... |
+| `architecture/ADR_2026-11-04_codex_hook_profile.md` | CURRENT | Separate Codex hook transport from Claude while reusing the existing validation rules. |
 
 ## functional/
 
