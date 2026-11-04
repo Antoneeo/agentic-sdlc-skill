@@ -1,0 +1,105 @@
+{
+  "initialize": {
+    "id": 1,
+    "result": {
+      "userAgent": "Codex Desktop/0.166.0-alpha.6 (Windows 10.0.26200; x86_64) dumb (f091_probe; 1)",
+      "codexHome": "C:\\Users\\apint\\AppData\\Local\\Temp\\f091-user-pc-arebc6zl\\PC User\\codex profile",
+      "platformFamily": "windows",
+      "platformOs": "windows"
+    }
+  },
+  "hooks_list": {
+    "id": 2,
+    "result": {
+      "data": [
+        {
+          "cwd": "C:\\Users\\apint\\AppData\\Local\\Temp\\f091-user-pc-arebc6zl\\project",
+          "hooks": [
+            {
+              "key": "C:\\Users\\apint\\AppData\\Local\\Temp\\f091-user-pc-arebc6zl\\PC User\\codex profile\\hooks.json:pre_tool_use:0:0",
+              "eventName": "preToolUse",
+              "handlerType": "command",
+              "command": "python -c \"import base64,json,subprocess,sys;d=json.loads(base64.b64decode(sys.argv[2]));subprocess.run([sys.executable,d['validator'],*d['argv']],input=sys.stdin.buffer.read())\" agentic-sdlc-hook-v1 eyJjbGllbnQiOiJjb2RleCIsInZhbGlkYXRvciI6IkM6XFxVc2Vyc1xcYXBpbnRcXEFwcERhdGFcXExvY2FsXFxUZW1wXFxmMDkxLXVzZXItcGMtYXJlYmM2emxcXFBDIFVzZXJcXGNvZGV4IHByb2ZpbGVcXHNraWxsc1xcYWdlbnRpYy1zZGxjXFxzY3JpcHRzXFxzZGxjX2NoZWNrLnB5IiwiYXJndiI6WyJ2ZXJkaWN0IiwiLS1ob29rIl19",
+              "async": false,
+              "matcher": "^apply_patch$",
+              "timeoutSec": 10,
+              "statusMessage": null,
+              "additionalContextLimit": null,
+              "sourcePath": "C:\\Users\\apint\\AppData\\Local\\Temp\\f091-user-pc-arebc6zl\\PC User\\codex profile\\hooks.json",
+              "source": "user",
+              "pluginId": null,
+              "environmentId": null,
+              "displayOrder": 0,
+              "enabled": true,
+              "isManaged": false,
+              "currentHash": "sha256:20d61cf3d071533d3b111be117585dd6d92d6d0d8e8281f9aac94250bfb37384",
+              "trustStatus": "untrusted"
+            },
+            {
+              "key": "C:\\Users\\apint\\AppData\\Local\\Temp\\f091-user-pc-arebc6zl\\PC User\\codex profile\\hooks.json:pre_tool_use:1:0",
+              "eventName": "preToolUse",
+              "handlerType": "command",
+              "command": "python -c \"import base64,json,subprocess,sys;d=json.loads(base64.b64decode(sys.argv[2]));subprocess.run([sys.executable,d['validator'],*d['argv']],input=sys.stdin.buffer.read())\" agentic-sdlc-hook-v1 eyJjbGllbnQiOiJjb2RleCIsInZhbGlkYXRvciI6IkM6XFxVc2Vyc1xcYXBpbnRcXEFwcERhdGFcXExvY2FsXFxUZW1wXFxmMDkxLXVzZXItcGMtYXJlYmM2emxcXFBDIFVzZXJcXGNvZGV4IHByb2ZpbGVcXHNraWxsc1xcYWdlbnRpYy1zZGxjXFxzY3JpcHRzXFxzZGxjX2NoZWNrLnB5IiwiYXJndiI6WyJjb25zdHJhaW50cyIsIi0taG9vayJdfQ==",
+              "async": false,
+              "matcher": "^apply_patch$",
+              "timeoutSec": 10,
+              "statusMessage": null,
+              "additionalContextLimit": null,
+              "sourcePath": "C:\\Users\\apint\\AppData\\Local\\Temp\\f091-user-pc-arebc6zl\\PC User\\codex profile\\hooks.json",
+              "source": "user",
+              "pluginId": null,
+              "environmentId": null,
+              "displayOrder": 1,
+              "enabled": true,
+              "isManaged": false,
+              "currentHash": "sha256:eb301ee07e82f61537ee96285d1ce7b47907de9c8ff5f4434ac0c993ad06436e",
+              "trustStatus": "untrusted"
+            },
+            {
+              "key": "C:\\Users\\apint\\AppData\\Local\\Temp\\f091-user-pc-arebc6zl\\PC User\\codex profile\\hooks.json:session_start:0:0",
+              "eventName": "sessionStart",
+              "handlerType": "command",
+              "command": "python -c \"import base64,json,subprocess,sys;d=json.loads(base64.b64decode(sys.argv[2]));subprocess.run([sys.executable,d['validator'],*d['argv']],input=sys.stdin.buffer.read())\" agentic-sdlc-hook-v1 eyJjbGllbnQiOiJjb2RleCIsInZhbGlkYXRvciI6IkM6XFxVc2Vyc1xcYXBpbnRcXEFwcERhdGFcXExvY2FsXFxUZW1wXFxmMDkxLXVzZXItcGMtYXJlYmM2emxcXFBDIFVzZXJcXGNvZGV4IHByb2ZpbGVcXHNraWxsc1xcYWdlbnRpYy1zZGxjXFxzY3JpcHRzXFxzZGxjX2NoZWNrLnB5IiwiYXJndiI6WyJvcmllbnQiXX0=",
+              "async": false,
+              "matcher": null,
+              "timeoutSec": 10,
+              "statusMessage": null,
+              "additionalContextLimit": 0,
+              "sourcePath": "C:\\Users\\apint\\AppData\\Local\\Temp\\f091-user-pc-arebc6zl\\PC User\\codex profile\\hooks.json",
+              "source": "user",
+              "pluginId": null,
+              "environmentId": null,
+              "displayOrder": 2,
+              "enabled": true,
+              "isManaged": false,
+              "currentHash": "sha256:7e553abeff9ed43251f54c692a20d37033c67eb175875ef4bf336d8a6d90d0d7",
+              "trustStatus": "untrusted"
+            },
+            {
+              "key": "C:\\Users\\apint\\AppData\\Local\\Temp\\f091-user-pc-arebc6zl\\PC User\\codex profile\\hooks.json:user_prompt_submit:0:0",
+              "eventName": "userPromptSubmit",
+              "handlerType": "command",
+              "command": "python -c \"import base64,json,subprocess,sys;d=json.loads(base64.b64decode(sys.argv[2]));subprocess.run([sys.executable,d['validator'],*d['argv']],input=sys.stdin.buffer.read())\" agentic-sdlc-hook-v1 eyJjbGllbnQiOiJjb2RleCIsInZhbGlkYXRvciI6IkM6XFxVc2Vyc1xcYXBpbnRcXEFwcERhdGFcXExvY2FsXFxUZW1wXFxmMDkxLXVzZXItcGMtYXJlYmM2emxcXFBDIFVzZXJcXGNvZGV4IHByb2ZpbGVcXHNraWxsc1xcYWdlbnRpYy1zZGxjXFxzY3JpcHRzXFxzZGxjX2NoZWNrLnB5IiwiYXJndiI6WyJyZW1pbmQiXX0=",
+              "async": false,
+              "matcher": null,
+              "timeoutSec": 5,
+              "statusMessage": null,
+              "additionalContextLimit": null,
+              "sourcePath": "C:\\Users\\apint\\AppData\\Local\\Temp\\f091-user-pc-arebc6zl\\PC User\\codex profile\\hooks.json",
+              "source": "user",
+              "pluginId": null,
+              "environmentId": null,
+              "displayOrder": 3,
+              "enabled": true,
+              "isManaged": false,
+              "currentHash": "sha256:b87feb5eb0a2ade1b7b5f3ce548c51d4b535d5678eb792092ffb7ea792cbded2",
+              "trustStatus": "untrusted"
+            }
+          ],
+          "warnings": [],
+          "errors": []
+        }
+      ]
+    }
+  }
+}

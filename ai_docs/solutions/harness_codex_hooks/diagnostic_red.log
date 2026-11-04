@@ -1,0 +1,41 @@
+FFFF.......................................
+======================================================================
+FAIL: test_codex_policy_applies_across_sources_and_disabled_entries_are_omitted (test_session_start.CodexGlobalOrientation.test_codex_policy_applies_across_sources_and_disabled_entries_are_omitted) (variant='policy')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\chatPNT\.workdir\wt-f091-codex-hooks\skills\agentic-sdlc-skill\scripts\test_session_start.py", line 716, in test_codex_policy_applies_across_sources_and_disabled_entries_are_omitted
+    self.assertNotIn("codex",sc.orient_wiring(root))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'codex' unexpectedly found in {'codex': {'python "C:\\Users\\apint\\AppData\\Local\\Temp\\tmputjnni1m\\sdlc_check.py" orient': 'codex user hooks.json'}}
+
+======================================================================
+FAIL: test_codex_policy_applies_across_sources_and_disabled_entries_are_omitted (test_session_start.CodexGlobalOrientation.test_codex_policy_applies_across_sources_and_disabled_entries_are_omitted) (variant='group')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\chatPNT\.workdir\wt-f091-codex-hooks\skills\agentic-sdlc-skill\scripts\test_session_start.py", line 716, in test_codex_policy_applies_across_sources_and_disabled_entries_are_omitted
+    self.assertNotIn("codex",sc.orient_wiring(root))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'codex' unexpectedly found in {'codex': {'python "C:\\Users\\apint\\AppData\\Local\\Temp\\tmpduzajhnz\\sdlc_check.py" orient': 'codex user hooks.json'}}
+
+======================================================================
+FAIL: test_codex_policy_applies_across_sources_and_disabled_entries_are_omitted (test_session_start.CodexGlobalOrientation.test_codex_policy_applies_across_sources_and_disabled_entries_are_omitted) (variant='handler')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\chatPNT\.workdir\wt-f091-codex-hooks\skills\agentic-sdlc-skill\scripts\test_session_start.py", line 716, in test_codex_policy_applies_across_sources_and_disabled_entries_are_omitted
+    self.assertNotIn("codex",sc.orient_wiring(root))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'codex' unexpectedly found in {'codex': {'python "C:\\Users\\apint\\AppData\\Local\\Temp\\tmpbtp_83uz\\sdlc_check.py" orient': 'codex user hooks.json'}}
+
+======================================================================
+FAIL: test_codex_policy_applies_across_sources_and_disabled_entries_are_omitted (test_session_start.CodexGlobalOrientation.test_codex_policy_applies_across_sources_and_disabled_entries_are_omitted) (variant='malformed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\SoftwareDev\chatPNT\.workdir\wt-f091-codex-hooks\skills\agentic-sdlc-skill\scripts\test_session_start.py", line 716, in test_codex_policy_applies_across_sources_and_disabled_entries_are_omitted
+    self.assertNotIn("codex",sc.orient_wiring(root))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'codex' unexpectedly found in {'codex': {'python "C:\\Users\\apint\\AppData\\Local\\Temp\\tmp_otmbyv7\\sdlc_check.py" orient': 'codex user hooks.json'}}
+
+----------------------------------------------------------------------
+Ran 40 tests in 1.121s
+
+FAILED (failures=4)

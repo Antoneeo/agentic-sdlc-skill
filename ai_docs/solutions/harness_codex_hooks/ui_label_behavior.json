@@ -1,0 +1,9 @@
+{
+  "app_build": "26.1029.7803.0",
+  "asset": "webview/assets/async/154206.0ace5905ae.js",
+  "renderer": "function i(e,s,t){let o=e.statusMessage?.trim();return o?t.formatMessage(a.numberedHookTitle,{index:s+1,statusMessage:o}):t.formatMessage(a.fallbackHookTitle,{index:s+1})}",
+  "finding": "statusMessage is the consent row label; absent/blank falls back to Hook {index}",
+  "new_labels": "consent_labels.json",
+  "native_verdict_observed": "PreToolUse denied a patch until the two named guides had literal read hints; patch succeeded after the reads",
+  "visual_after_change": "not observed"
+}

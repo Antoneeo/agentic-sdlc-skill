@@ -1,0 +1,46 @@
+Traceback (most recent call last):
+  File "D:\SoftwareDev\chatPNT\.workdir\wt-f091-codex-hooks\ai_docs\solutions\harness_codex_hooks\probe_init.py", line 40, in <module>
+    out = run([shutil.which("node"), package / "scripts/init.js"], project, env)
+  File "D:\SoftwareDev\chatPNT\.workdir\wt-f091-codex-hooks\ai_docs\solutions\harness_codex_hooks\test_install_upgrade.py", line 21, in run
+    raise AssertionError(f"{argv[0]} failed ({result.returncode}):\n{result.stdout}\n{result.stderr}")
+AssertionError: C:\Program Files\nodejs\node.EXE failed (1):
+\U0001f680 Initializing Agentic SDLC workflow...
+\u23ed\ufe0f  Skipped: ai_docs/README.md already exists.
+\u23ed\ufe0f  Skipped: ai_docs/vision/project_vision.md already exists.
+\u23ed\ufe0f  Skipped: ai_docs/vision/roadmap.md already exists.
+\u23ed\ufe0f  Skipped: ai_docs/vision/principles.md already exists.
+\u23ed\ufe0f  Skipped: ai_docs/strategic/architecture.md already exists.
+\u23ed\ufe0f  Skipped: ai_docs/strategic/existing_features.md already exists.
+\u23ed\ufe0f  Skipped: ai_docs/audit/audit_plan.md already exists.
+SKIP  .gitattributes already covers the review log.
+
+--- Environment Analysis ---
+\u2705 Claude Code detected.
+\u23ed\ufe0f  Skipped: CLAUDE.md already exists.
+\u2705 Gemini CLI detected.
+\u23ed\ufe0f  Skipped: GEMINI.md already exists.
+\u2705 Codex AI detected.
+\u23ed\ufe0f  Skipped: AGENTS.md already exists.
+\u2705 Google Antigravity detected.
+\u23ed\ufe0f  Skipped: AGENTS.md already exists.
+\u23ed\ufe0f  Skipped: .cursorrules already exists.
+\u23ed\ufe0f  Covered by the machine-global orientation hook � no project-level
+   hook needed (C:\Users\apint\AppData\Local\Temp\f091-user-pc-n8vairlq\PC User\.claude\settings.json).
+
+C:\Users\apint\AppData\Local\Temp\f091-user-pc-n8vairlq\npm-prefix\node_modules\@antoneeo\agentic-sdlc-skill\scripts\lib.js:830
+          : ORIENT_ENTRY_POINTS.some(n => command.includes(n)) && spec.re.test(command);
+                                                  ^
+
+TypeError: command.includes is not a function
+    at C:\Users\apint\AppData\Local\Temp\f091-user-pc-n8vairlq\npm-prefix\node_modules\@antoneeo\agentic-sdlc-skill\scripts\lib.js:830:51
+    at Array.some (<anonymous>)
+    at wireCodexHook (C:\Users\apint\AppData\Local\Temp\f091-user-pc-n8vairlq\npm-prefix\node_modules\@antoneeo\agentic-sdlc-skill\scripts\lib.js:830:33)
+    at wireGlobalOrientHook (C:\Users\apint\AppData\Local\Temp\f091-user-pc-n8vairlq\npm-prefix\node_modules\@antoneeo\agentic-sdlc-skill\scripts\lib.js:532:46)
+    at Object.<anonymous> (C:\Users\apint\AppData\Local\Temp\f091-user-pc-n8vairlq\npm-prefix\node_modules\@antoneeo\agentic-sdlc-skill\scripts\init.js:335:18)
+    at Module._compile (node:internal/modules/cjs/loader:1812:14)
+    at Object..js (node:internal/modules/cjs/loader:1943:10)
+    at Module.load (node:internal/modules/cjs/loader:1533:32)
+    at Module._load (node:internal/modules/cjs/loader:1335:12)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+
+Node.js v24.14.0

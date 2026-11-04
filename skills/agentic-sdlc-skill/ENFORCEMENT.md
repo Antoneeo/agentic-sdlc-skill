@@ -159,10 +159,8 @@ Emits the `ai_docs/` orientation to stdout at session start, in the order an arr
 and a Python interpreter now installs this hook itself — it was a manual step until
 2026-08-25, and the field result was exactly the defect this level exists to prevent: an
 agent worked a governed project without ever meeting the router. The snippet below is
-the fallback for the cases init declines, and the list is exhaustive: **any client
-other than Claude Code** (Codex and Gemini keep the manual snippet — no fixture in the
-repository pins their hook schema, and writing one in an unverified shape is how a
-wired-but-dead hook is born), no Python, the skill not installed yet, a settings file
+the fallback for the cases init declines, and the list is exhaustive: **a client without an implemented hook profile** (Gemini and Antigravity keep manual
+setup; Codex uses user-global wiring as described below), no Python, the skill not installed yet, a settings file
 that is not valid JSON or carries a `hooks`/`SessionStart` shape the writer does not
 recognise (it never rewrites one it cannot read), a validator path holding a character
 that cannot be placed in a command safely, or a settings file it cannot write. `init`
@@ -248,7 +246,7 @@ Claude Code — in the project's `.claude/settings.json`:
 }
 ```
 
-Codex — in `.codex/hooks.json`, the same `SessionStart` → `{"type":"command","command":"… orient"}` shape (this replaces the legacy static-echo protocol some fixtures still carry).
+Codex — use `agentic-sdlc-install-skill` to configure the user-level hooks, then review them with `/hooks`. No new project-relative command is generated; existing manual project sources are inspected before wiring.
 
 Gemini CLI — wire the same command into its startup-hook mechanism if present; otherwise the step simply degrades to the manual Phase-1 reads (no capability lost).
 
@@ -325,3 +323,42 @@ it into CI**. It is the criterion by which future units are judged, and a
 measurement that can fail a build becomes a target -- a targeted measurement
 stops measuring. Run it when deciding whether a proposed rule is worth its
 ceremony, not on every push.
+
+## Codex local hook profile (F-091)
+
+The main software package configures four user-level handlers at installation or
+update: SessionStart/orient, UserPromptSubmit/remind, and native apply_patch
+PreToolUse/verdict plus constraints. `CODEX_HOME` selects the configuration home;
+the validator's absolute path comes from the same skill resolver as installation.
+Project init inspects existing sources and configures user-level orientation only
+when needed. Claude's writers, shell commands, settings paths and opt-out rules
+are unchanged. Sibling installers retain their own existing scope.
+
+Restart a supported local Codex client and open `/hooks` to inspect/trust the
+exact definitions. The installer never grants trust or changes client feature or
+managed-policy settings. A changed definition can require another review. Hook
+scripts require local orchestration; cloud-orchestrated sessions retain the manual
+skill duties even when some tools execute locally. Configuration inspection alone
+cannot certify native execution, trust or a supported client version.
+
+The generated command is a fixed Python stdlib carrier with marker
+`agentic-sdlc-hook-v1` and base64 JSON data (client, absolute validator, argv).
+It forwards stdin/stdout, preserves a JSON denial and normalizes a child's nonzero
+exit code without shell-specific exit syntax. The carrier and legacy commands
+are both recognized for attribution and cleanup. Orientation sets an unlimited
+client context threshold only because the validator itself caps output at 9,500
+characters. Other outputs keep the client's normal limits.
+
+No shell write interception is added. Codex read hints recognize bounded literal
+Get-Content/cat commands and supported literal exec wrappers; dynamic scripts,
+unknown transcript formats and inaccessible/oversized inputs remain fail-open.
+Multiple patch targets and both move paths are checked; recall shares 15 lines.
+No hook grants permission. Existing user hooks, opt-out markers, malformed config
+and inline TOML are preserved. Inline configuration inspection needs stdlib
+`tomllib`; when unavailable the installer reports unverified instead of guessing.
+
+Removing a generated entry opts out that hook for that target; upgrades do not
+re-add it. To clean up while the package still exists, run its explicit
+`scripts/preuninstall.js` with Node, then uninstall the npm package. Some npm
+versions do not invoke preuninstall automatically. Cleanup removes only entries
+attributable to removed skill roots, and does not edit the Codex trust store.

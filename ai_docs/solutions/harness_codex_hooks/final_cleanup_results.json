@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "tarball": "latest retained consumer fresh-install fixture",
+  "explicit_preuninstall": true,
+  "all_owned_codex_handlers_removed": true,
+  "foreign_handler_preserved": true,
+  "real_profile_touched": false
+}

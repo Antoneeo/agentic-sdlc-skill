@@ -1,0 +1,45 @@
+{
+  "init_twice": "PASS",
+  "codex_user_config_byte_identical": true,
+  "malformed_override_diagnostics": [
+    "commandWindows",
+    "command_windows"
+  ],
+  "claude_user_config_byte_identical": true,
+  "project_codex_hook_added": false,
+  "latency_no_transcript": {
+    "SessionStart:0": {
+      "samples_ms": [
+        564.6,
+        369.8,
+        357.3
+      ],
+      "median_ms": 369.8
+    },
+    "UserPromptSubmit:0": {
+      "samples_ms": [
+        320.0,
+        319.0,
+        296.4
+      ],
+      "median_ms": 319.0
+    },
+    "PreToolUse:0": {
+      "samples_ms": [
+        388.7,
+        343.6,
+        352.6
+      ],
+      "median_ms": 352.6
+    },
+    "PreToolUse:1": {
+      "samples_ms": [
+        359.0,
+        346.0,
+        357.3
+      ],
+      "median_ms": 357.3
+    }
+  },
+  "limit": "Direct installed commands on Windows; not native dispatch or a large transcript benchmark"
+}

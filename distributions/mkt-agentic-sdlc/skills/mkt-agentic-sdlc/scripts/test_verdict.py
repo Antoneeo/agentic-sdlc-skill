@@ -360,6 +360,60 @@ class VerdictHook(unittest.TestCase):
                 mock.patch.dict(os.environ, {sdlc_core.DOCS_DIR_ENV: "ai_docs"}):
             self.assertEqual(self.run_gate(target, other, "src/auth"), 2)
 
+    def test_codex_patch_requires_router(self):
+        lines = [json.dumps({"type":"response_item","payload":{"type":"message","role":"assistant","content":[{"type":"output_text","text":"Working."}]}})]
+        patch = "*** Begin Patch\n*** Update File: src/a.py\n@@\n-a\n+b\n*** End Patch"
+
+        result = self.run_hook(lines, tool="apply_patch", tool_input={"command":patch})
+
+        self.assertIsNotNone(result)
+        self.assertIn("No guide-router verdict", result)
+
+    def test_codex_transcript_and_literal_read_satisfy_router(self):
+        def message(text):
+            return json.dumps({"type":"response_item","payload":{"type":"message","role":"assistant","content":[{"type":"output_text","text":text}]}})
+        metadata = json.dumps({"type":"session_meta","payload":{"cwd":str(self.root)}})
+        read = json.dumps({"type":"response_item","payload":{"type":"function_call","name":"exec_command","arguments":json.dumps({"cmd":"Get-Content -LiteralPath 'ai_docs/reference/GUIDE_release.md'"})}})
+        patch = "*** Begin Patch\n*** Update File: src/a.py\n@@\n-a\n+b\n*** End Patch"
+        lines = [metadata, message("Level: L2 · router: GUIDE_release.md -> read")]
+
+        self.assertIsNotNone(self.run_hook(lines,tool="apply_patch",tool_input={"command":patch}))
+        self.assertIsNone(self.run_hook(lines+[read],tool="apply_patch",tool_input={"command":patch}))
+
+    def test_codex_user_text_cannot_declare_router(self):
+        self.transcript.write_text(json.dumps({"type":"response_item","payload":{"type":"message","role":"user","content":[{"type":"input_text","text":"Level: L1"}]}}),encoding="utf-8")
+
+        facts = sdlc_core.transcript_facts(self.transcript)
+
+        self.assertFalse(facts["trivial"])
+
+
+class CodexParsing(unittest.TestCase):
+    def test_complete_multifile_patch_and_move_keep_every_target(self):
+        with tempfile.TemporaryDirectory() as directory:
+            patch = ("*** Begin Patch\n*** Add File: new.py\n+x\n"
+                     "*** Update File: old.py\n*** Move to: moved.py\n@@\n-a\n+b\n"
+                     "*** Delete File: deleted.py\n*** End Patch")
+            edits = sdlc_core.hook_edits({"cwd": directory, "tool_input": {"command": patch}})
+            self.assertEqual([Path(x["path"]).name for x in edits],
+                             ["new.py", "old.py", "moved.py", "deleted.py"])
+
+    def test_unknown_or_incomplete_patch_never_returns_partial_targets(self):
+        for tail in ["*** Unknown File: b.py\n*** End Patch", "", "*** Update File: b.py\n*** End Patch"]:
+            patch = "*** Begin Patch\n*** Add File: a.py\n+x\n" + tail
+            self.assertIsNone(sdlc_core.hook_edits({"cwd": tempfile.gettempdir(), "tool_input": {"command": patch}}))
+
+    def test_read_hint_preserves_unicode_and_historical_workdir(self):
+        with tempfile.TemporaryDirectory() as directory:
+            paths = sdlc_core.shell_read_paths("Get-Content -LiteralPath 'GUIDE_à.md'", directory, "nested")
+            self.assertEqual(paths, [str((Path(directory) / "nested/GUIDE_à.md").resolve())])
+            self.assertIsNone(sdlc_core.shell_read_paths("cat GUIDE_x.md", None))
+
+    def test_dynamic_shell_and_unknown_js_are_never_read_hints(self):
+        for command in ["cat $guide", "Get-Content a.md; whoami", "cat *.md", "cat a.md | more"]:
+            self.assertIsNone(sdlc_core.shell_read_paths(command, tempfile.gettempdir()))
+        self.assertEqual(sdlc_core._codex_literal_calls('const p = "a"; await tools.exec_command({cmd:p});'), [])
+
 
 if __name__ == "__main__":
     unittest.main()

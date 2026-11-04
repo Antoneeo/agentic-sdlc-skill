@@ -234,7 +234,7 @@ Ciò che solo qui l'agente fa:
   tabella `### Preservation constraints` (simbolo, chiamanti, cosa deve restare
   vero, evidenza) o la riga `No existing symbol changed.`. `sdlc_check.py
   constraints --unit <id>` mostra i vincoli dell'unità, `--file <path>` quelli di un
-  file; su Claude Code un hook di solo contesto li richiama prima di una modifica a
+  file; su Claude Code e, per il pacchetto software, su Codex locale dopo trust degli hook, un hook di solo contesto li richiama prima di una modifica a
   un file vincolato, se la sessione ha dichiarato L3 e ha lavorato sull'unità — mai
   una decisione sui permessi. Il revisore deriva prima, poi confronta con la vista.
   In chiusura le righe P non rilasciate vanno nella guida di codice del componente;

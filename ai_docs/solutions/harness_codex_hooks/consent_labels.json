@@ -1,0 +1,17 @@
+{
+  "labels": {
+    "orient": "SDLC: load project context when the session starts",
+    "remind": "SDLC: remind the agent to follow the development protocol",
+    "verdict": "SDLC: block edits missing triage or required guide reads",
+    "constraints": "SDLC: recall applicable constraints before editing"
+  },
+  "updated_hooks": [
+    "orient",
+    "remind",
+    "verdict",
+    "constraints"
+  ],
+  "commands_unchanged": true,
+  "claude_unchanged": true,
+  "backup": "D:\\SoftwareDev\\chatPNT\\.workdir\\f091-profile-backup\\hooks-before-labels.json"
+}

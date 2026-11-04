@@ -571,6 +571,19 @@ class Hook(Tree):
         self.assertEqual(set(sdlc_core.transcript_facts(self.transcript)),
                          {"assistant", "sidechain", "declared", "trivial", "named", "read"})
 
+    def test_codex_wrapper_read_then_native_patch_recalls_constraints(self):
+        metadata = json.dumps({"type":"session_meta","payload":{"cwd":str(self.root)}})
+        declare = json.dumps({"type":"response_item","payload":{"type":"message","role":"assistant","content":[{"type":"output_text","text":"Level: L3 router: no match"}]}})
+        command = "Get-Content -LiteralPath 'ai_docs/solutions/ANALYSIS_fixture.md'"
+        carrier = "text(await tools.exec_command({cmd:" + json.dumps(command) + "}));"
+        read = json.dumps({"type":"response_item","payload":{"type":"custom_tool_call","name":"exec","input":carrier}})
+        patch = "*** Begin Patch\n*** Update File: src/app/core.py\n@@\n-a\n+b\n*** End Patch"
+
+        context = self.run_hook([metadata,declare,read],tool="apply_patch",tool_input={"command":patch})
+
+        self.assertIsNotNone(context)
+        self.assertIn("P1",context)
+
 
 NO_TABLE = DOC.split("### Preservation constraints")[0] + \
     "## Security and Threat Model\n\n- **T1 X.** y.\n"

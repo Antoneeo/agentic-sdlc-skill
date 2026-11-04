@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-04T07:43:36.055254+00:00",
+  "results": [
+    {
+      "command": [
+        "node",
+        "D:\\SoftwareDev\\skill_sdlc\\agentic-sdlc-skill\\ai_docs\\solutions\\harness_codex_hooks\\probe_install.cjs",
+        "D:\\SoftwareDev\\skill_sdlc\\agentic-sdlc-skill"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"probe\":\"npm_postinstall\",\"codex_skill_installed\":true,\"codex_hooks_configured\":false,\"claude_hook_handlers\":4,\"parity_invariant\":\"RED\",\"detected_codex\":true}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "D:\\SoftwareDev\\skill_sdlc\\agentic-sdlc-skill\\ai_docs\\solutions\\harness_codex_hooks\\probe_install.cjs",
+        "D:\\SoftwareDev\\skill_sdlc\\agentic-sdlc-skill",
+        "--assert-parity"
+      ],
+      "exit_code": 1,
+      "stdout": "{\"probe\":\"npm_postinstall\",\"codex_skill_installed\":true,\"codex_hooks_configured\":false,\"claude_hook_handlers\":4,\"parity_invariant\":\"RED\",\"detected_codex\":true}\n",
+      "stderr": "node:internal/assert/utils:77\n    throw err;\n    ^\n\nAssertionError [ERR_ASSERTION]: Codex hooks missing after install\n    at Object.<anonymous> (D:\\SoftwareDev\\skill_sdlc\\agentic-sdlc-skill\\ai_docs\\solutions\\harness_codex_hooks\\probe_install.cjs:34:49)\n    at Module._compile (node:internal/modules/cjs/loader:1812:14)\n    at Object..js (node:internal/modules/cjs/loader:1943:10)\n    at Module.load (node:internal/modules/cjs/loader:1533:32)\n    at Module._load (node:internal/modules/cjs/loader:1335:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\n    at node:internal/main/run_main_module:33:47 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '==',\n  diff: 'simple'\n}\n\nNode.js v24.14.0\n"
+    },
+    {
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "D:\\SoftwareDev\\skill_sdlc\\agentic-sdlc-skill\\ai_docs\\solutions\\harness_codex_hooks\\probe_events.py",
+        "D:\\SoftwareDev\\skill_sdlc\\agentic-sdlc-skill"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"probe\": \"verdict\", \"claude_control\": \"denied\", \"codex_patch\": \"silent\", \"codex_transcript_assistant_entries\": 0, \"parity_invariant\": \"RED\"}\n{\"probe\": \"orient_detection\", \"codex_user_hook_exists\": true, \"detected_state\": \"unwired\", \"parity_invariant\": \"RED\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "C:\\Python314\\python.exe",
+        "-B",
+        "D:\\SoftwareDev\\skill_sdlc\\agentic-sdlc-skill\\ai_docs\\solutions\\harness_codex_hooks\\probe_events.py",
+        "D:\\SoftwareDev\\skill_sdlc\\agentic-sdlc-skill",
+        "--assert-parity"
+      ],
+      "exit_code": 1,
+      "stdout": "{\"probe\": \"verdict\", \"claude_control\": \"denied\", \"codex_patch\": \"silent\", \"codex_transcript_assistant_entries\": 0, \"parity_invariant\": \"RED\"}\n{\"probe\": \"orient_detection\", \"codex_user_hook_exists\": true, \"detected_state\": \"unwired\", \"parity_invariant\": \"RED\"}\n",
+      "stderr": "Traceback (most recent call last):\n  File \"D:\\SoftwareDev\\skill_sdlc\\agentic-sdlc-skill\\ai_docs\\solutions\\harness_codex_hooks\\probe_events.py\", line 56, in <module>\n    assert facts['assistant'] > 0, 'Codex transcript not understood'\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Codex transcript not understood\n"
+    }
+  ]
+}
