@@ -63,3 +63,9 @@ Authorization follows verification of Git identity Antonio Pinto <a_pinto_79@hot
 > ti dovresti occupare con attenzione.. di integrarlo nel main e poi fare la pubblicazione. Puoi farlo?
 
 Authorizes careful main integration and npm publication after the open review and release checks. GUIDE_release.md still requires approval of the concrete user-facing notes before tagging; browser npm 2FA is user-owned. Preserve the dirty primary checkout and unrelated files.
+
+### R10 — 2026-11-04 — release notes approved
+
+> accetto
+
+Approves the exact four prepared release-note texts presented in NOTE_RELEASE_DA_APPROVARE.md, generated verbatim from release_notes.json.

@@ -1,5 +1,22 @@
 # Changelog
 
+
+## [Unreleased]
+
+## [0.1.0-beta.19] - 2026-11-04
+
+### What's new
+
+**Codex hook checks can recognize the work the agent is doing.** The shared validator recognizes supported native Codex patches and transcript records, and gives more accurate orientation-hook diagnostics when definitions are disabled or cannot be verified. Existing hook setup and opt-outs are preserved.
+
+#### What to do
+
+Run `npm install -g @antoneeo/course-creator@latest`, then `course-creator-install-skill`, and restart your agent sessions so they load the updated validator. Check that `npm ls -g @antoneeo/course-creator` shows 0.1.0-beta.19. Any configured Codex hooks still require their normal client trust review.
+
+### Changed
+
+- Update the shared validator for Codex event recognition, attributed hook discovery and disabled/unverified configuration handling.
+
 ## [0.1.0-beta.18] - 2026-11-01
 
 ### What's new

@@ -2,6 +2,29 @@
 
 Tutte le modifiche significative a questa skill saranno documentate in questo file.
 
+
+## [Unreleased]
+
+## [1.53.0] - 2026-11-04
+
+### What's new
+
+**Codex can now apply the SDLC guardrails automatically.** On supported local Codex clients, installing or updating this package configures project orientation, the per-request protocol reminder, the pre-edit guide check and constraint recall. Each hook has a descriptive consent title, so you can see its purpose before trusting it. Existing opt-outs and Claude hook behavior are preserved.
+
+#### What to do
+
+For local Codex users, make Python 3.11 or later available, then:
+1. Run `npm install -g @antoneeo/agentic-sdlc-skill@latest` and `agentic-sdlc-install-skill`.
+2. Restart Codex. Open **Review hooks** or **Settings > Hooks** in the desktop app, or `/hooks` in the CLI, and review/trust the four SDLC definitions you want to run. Installation configures definitions; Codex grants trust through this separate review.
+3. Check that `npm ls -g @antoneeo/agentic-sdlc-skill` shows 1.53.0 and the intended SDLC hooks are enabled and trusted in Codex. Existing disabled or removed hooks stay opted out; see `ENFORCEMENT.md` if you choose to re-enable them.
+
+The pre-edit checks cover native `apply_patch` on supported local orchestration. Other write paths keep the skill's written duties. Windows Codex 0.166.0-alpha.6 is the recorded native test environment; other platforms and client versions need their own verification.
+
+### Added
+
+- Codex-specific user-level hook wiring, descriptive consent labels, native patch/transcript normalization and conservative configuration diagnostics.
+- Packaged install/upgrade, opt-out, cleanup and Claude-preservation regression evidence.
+
 ## [1.52.0] - 2026-11-01
 
 ### What's new
