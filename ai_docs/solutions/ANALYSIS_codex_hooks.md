@@ -1,9 +1,10 @@
 ---
 description: Design della parità degli hook agentic-sdlc su Codex locale, con trust umano, compatibilità e prove di regressione.
-status: IN_PROGRESS
+status: COMPLETED
 feature: Codex hook parity
 id: F-091
 start_date: 2026-11-04
+end_date: 2026-11-04
 level: L3
 domain: code
 branch: codex/f091-codex-hooks
@@ -97,6 +98,7 @@ Il router aveva solo la guida sulle copie della famiglia; nessuna guida CURRENT 
 | `skills/agentic-sdlc-skill/scripts/test_verdict.py` | MODIFY. Fixture Codex con dichiarazione assente/presente, guida letta/non letta, record falsificati user/tool, patch multipath e move, payload ignoti. |
 | `skills/agentic-sdlc-skill/scripts/test_constraints.py` | MODIFY. Stesse popolazioni Codex, unità toccata/estranea, L1/L3, budget cumulativo patch, subagent, wrapper riconosciuto/ignoto. |
 | `skills/agentic-sdlc-skill/scripts/test_session_start.py` | MODIFY. Fonti globali Codex/Claude separate, doppioni, morti, override home, limiti di output e diagnosi che non dichiara trust. |
+| `skills/agentic-sdlc-skill/scripts/test_golden_regression.py`, `distributions/kb-agentic-skill/skills/kb-agentic-skill/scripts/test_golden_regression.py`, `distributions/mkt-agentic-sdlc/skills/mkt-agentic-sdlc/scripts/test_golden_regression.py` | MODIFY. In `run_corpus()`, isolate CODEX_HOME in the subprocess fixture environment alongside existing user-settings and skill-directory seams; preserve the frozen golden baseline. `test_session_start.py::setUpModule()/tearDownModule()` isolate and restore CODEX_HOME for all orientation tests, with explicit Codex-case overrides preserved. No runtime change. |
 | `skills/agentic-sdlc-skill/scripts/test_skill_invariants.py` | MODIFY. Aggiornare solo gli assert sulle promesse di wiring Codex e sulle nuove firme interne, senza alterare le regole di triage. |
 | `skills/agentic-sdlc-skill/ENFORCEMENT.md` | MODIFY. Configurazione automatica Codex locale, trust umano, stato verificabile, limiti cloud/vecchi client, opt-out e rimozione esplicita; togliere la promessa che Codex resta sempre manuale. |
 | `skills/agentic-sdlc-skill/SKILL.md` | MODIFY. Aggiornare il paragrafo Operative Guides/Rule Zero che dichiara enforcement solo Claude: includere Codex locale supportato dopo trust; conservare il percorso manuale negli ambienti non coperti. I sibling non ereditano la nuova promessa di auto-wiring. |
@@ -220,3 +222,9 @@ Popolazioni a riposo: profili senza hook; hook Claude esistenti; hook Codex manu
 2026-11-04, R6: root cause delle etichette generiche verificata nel renderer desktop installato: usa statusMessage, altrimenti Hook {index}. Il builder Codex ora genera quattro messaggi di scopo distinti; le quattro definizioni reali sono aggiornate con backup, comandi e Claude invariati. Test metadati RED prima del fix; 11 test Codex GREEN dopo. Prova nativa parziale osservata nella chat: il verdict ha bloccato una patch per read-hint mancanti, poi ha consentito il tentativo dopo lettura letterale delle guide. Questo revoca l’ipotesi che il login CLI impedisse il trust desktop; restano da verificare gli altri eventi nativi e la review finale.
 
 2026-11-04, consegna branch: R7 accetta le etichette; R8 autorizza commit e push con Antonio Pinto <a_pinto_79@hotmail.com>. Batteria Node completa ripetuta dopo l’ultimo cambiamento: 74 PASS. Il core Python è invariato rispetto ai 611 test / 4 skip registrati. Rimangono aperte review conclusiva ed acceptance degli eventi nativi non osservati; la feature non viene marcata COMPLETED e non si esegue merge o publish.
+
+2026-11-04, integrazione/release autorizzata R9: closure scoped review indipendente completata PASS sui sei finding e sulle etichette. Test nativo app-server: quattro hook trusted/enabled, zero errori/warning; SessionStart e UserPromptSubmit completati, marker orientamento presente; endpoint offline locale, nessuna richiesta a modelli esterni. Recall nativo osservato prima di una patch su fixture eliminabile (P1 consegnato e patch riuscita). Preparazione release: code 1.53.0, KB 1.35.1, marketing 0.30.1, Course 0.1.0-beta.19; registry attuale verificato. Le note concrete richiedono approvazione owner prima del tag secondo GUIDE_release.
+
+2026-11-04, release gate: 9 Python failures reproduce host-state leakage after installing real Codex hooks: eight orientation expectations plus the golden transcript. Existing fixtures isolated Claude settings/skills but inherited CODEX_HOME. Extend only test isolation (session-start shared x4, golden code+KB); do not alter production discovery or refresh the golden baseline. New file-level design row above precedes the correction.
+
+2026-11-04, chiusura unità di codice: review implementazione PASS; review release FAIL → PASS in tre round, con isolamento CODEX_HOME e identificatore run_corpus corretti senza cambiare baseline o runtime. Gate release verde: 121 Node, 611 Python/4 skip, sibling 166 ciascuno, quattro tarball completi e smoke init CLEAN; baseline conservata. Tutti quattro gli hook sono trusted e gli eventi hanno evidenze native, distinguendo callback automatizzati e osservazioni riportate. L’unità di codice è COMPLETED; distribuzione/main/pubblicazione proseguono nel workstream HANDOFF_release_codex_hooks, in attesa delle note e del login npm. Nessun tag o publish anticipato.

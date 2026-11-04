@@ -1,0 +1,11 @@
+{
+  "instrument": "live assistant tool boundary; reported observation",
+  "fixture": "f091-native-recall-fixture",
+  "event": "PreToolUse",
+  "tool": "apply_patch",
+  "unit": "F-991",
+  "constraint_seen": "P1 \u2014 Keep the fixture_value function name",
+  "context_only": true,
+  "patch_completed": true,
+  "fixture_edit": "return 1 -> return 2; function name preserved"
+}

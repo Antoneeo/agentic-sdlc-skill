@@ -91,6 +91,7 @@ def run_corpus():
         # machine that has a real global hook -- nondeterminism by construction.
         env = {**os.environ,
                "AGENTIC_SDLC_USER_SETTINGS": str(root / "no-user-settings.json"),
+               "CODEX_HOME": str(root / "no-codex-home"),
                # F-075: orient also names installed sibling lenses -- same
                # nondeterminism, same cure: no skills directory at all.
                "AGENTIC_SDLC_SKILLS_DIRS": "",

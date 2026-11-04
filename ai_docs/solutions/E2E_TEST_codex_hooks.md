@@ -21,7 +21,7 @@ orchestration mode. POSIX and other client versions require their own run.
 Run `python -B ai_docs/solutions/harness_codex_hooks/test_install_upgrade.py --keep`
 from the repository. It packs actual distributable files, installs baseline 1.52.0,
 updates to the candidate tarball, repeats the update, and installs the candidate in
-a second clean profile. It uses a temporary candidate version; no release is published.
+a second clean profile. It uses a temporary candidate version before the release bump, and the actual version once prepared; no release is published by the harness.
 
 The baseline commit 74c1833f must be available in the clone; it is pinned so post-merge reruns still compare against the old behavior.
 
@@ -42,8 +42,7 @@ their trust through the client only if you choose to. Never edit the trust store
 Restart the session if Codex asks. Confirm SessionStart orientation and prompt reminder.
 
 Result: native loading verified on Windows Codex Desktop binary 0.166.0-alpha.6.
-Trusted native execution remains pending human consent; direct handler execution
-in S1 does not establish native hook dispatch.
+The later native_start_results.json records all four definitions trusted/enabled and completed SessionStart/UserPromptSubmit callbacks; orientation contains the fixture marker. The process uses an offline local endpoint, never an external model.
 
 ### S3 — FS4/5: native verdict and recall
 
@@ -54,7 +53,7 @@ literal `Get-Content -LiteralPath` (or `cat`), and retry. Expect the verdict to 
 silent and the bound P1 context to appear. Observe that normal tool authorization
 still applies. Repeat with a patch moving a file and a patch affecting several files.
 
-Result: installed-command protocol cases pass; native trusted dispatch pending S2.
+Result: installed-command protocol cases pass. Live verdict deny/allowed retry was observed; native_recall_results.json records P1 context delivered before a disposable fixture patch. Reported live observations are distinguished from the automated app-server callbacks.
 
 ### S4 — FS2/6/7: opt-out and conservative configuration
 

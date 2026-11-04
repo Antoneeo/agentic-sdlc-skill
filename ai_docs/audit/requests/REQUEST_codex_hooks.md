@@ -57,3 +57,9 @@ Owner accepts the descriptive hook labels after the statusMessage correction.
 > ok va bene fai commit e push
 
 Authorization follows verification of Git identity Antonio Pinto <a_pinto_79@hotmail.com>. Commit and push the current codex/f091-codex-hooks branch to origin; no merge or npm publication requested. Open review/native acceptance remains recorded.
+
+### R9 — 2026-11-04 — integration into main and publication authorized
+
+> ti dovresti occupare con attenzione.. di integrarlo nel main e poi fare la pubblicazione. Puoi farlo?
+
+Authorizes careful main integration and npm publication after the open review and release checks. GUIDE_release.md still requires approval of the concrete user-facing notes before tagging; browser npm 2FA is user-owned. Preserve the dirty primary checkout and unrelated files.

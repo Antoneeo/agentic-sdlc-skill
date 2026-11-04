@@ -38,7 +38,10 @@ def package_copy(repo, target, baseline=False):
             dest.write_bytes(subprocess.check_output(["git", "show", f"{BASELINE_REF}:{name}"], cwd=repo)
                              if baseline else (repo / name).read_bytes())
     if not baseline:
-        manifest["version"] = "1.52.1-f091-test"  # fixture only; repository version unchanged
+        # Before the release bump, use a distinct fixture version. A prepared
+        # release is tested with its actual version and installed SKILL metadata.
+        if manifest["version"] == "1.52.0":
+            manifest["version"] = "1.52.1-f091-test"
         (target / "package.json").write_text(json.dumps(manifest), encoding="utf-8")
 
 

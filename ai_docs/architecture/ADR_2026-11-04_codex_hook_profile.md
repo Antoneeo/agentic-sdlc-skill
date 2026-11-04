@@ -4,7 +4,7 @@ status: CURRENT
 ---
 # ADR: Codex hook profile and bounded transcript normalization
 
-**Status:** Implemented on branch; native trusted dispatch pending acceptance
+**Status:** Accepted — design R2; integration/publication R9; closure re-review PASS
 **Date:** 2026-11-04
 **Task ref:** F-091
 
@@ -42,5 +42,4 @@ Trust remains a client step; configured does not mean executing. Each patch matc
 two handlers, each spawning a wrapper and validator: four Python processes in total,
 two validator invocations. The design's initial shorthand counted only validators.
 Missing interpreters cannot be repaired by the wrapper. Unknown carriers fail open.
-Windows loading and installed-command tests are recorded in the harness; native
-trusted dispatch, POSIX and other client versions require separate acceptance evidence.
+Windows loading and installed-command tests are recorded in the harness; native SessionStart/UserPromptSubmit and live verdict/recall have recorded acceptance evidence. POSIX, other client versions and native failure/timeout cases remain explicitly unverified.

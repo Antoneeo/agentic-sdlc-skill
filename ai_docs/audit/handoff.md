@@ -6,15 +6,17 @@ Date: 2026-11-04 (UTC)
 | Workstream | Level | Branch | Status | Since | Next step | Details |
 |---|---|---|---|---|---|---|
 | C-001 Corso kb-agentic e agentic-sdlc | L3 | main | IN_PROGRESS | 2026-09-27 | Owner reviews the delivered 4.0 PPTX; 4.0 source is committed on main, incorporate feedback there. No devPNT. | HANDOFF_course_agentic_sdlc_kb_agentic.md · ANALYSIS_course_agentic-sdlc-kb-agentic.md |
-| Codex hook parity | L3 | codex/f091-codex-hooks | IN_PROGRESS | 2026-11-04 | Finish the scoped closure review and remaining native event acceptance before merge. | HANDOFF_codex_hooks.md · ANALYSIS_codex_hooks.md; audit/requests/REQUEST_codex_hooks.md; harness_codex_hooks/ |
 | F-015 Code-Comprehension Guides | L3 | main | PAUSED | 2026-07-19 | dogfood #8: write one real `source_kind: code` guide | HANDOFF_comprehension_guides.md · ANALYSIS_comprehension_guides.md |
 | F-055 Apache-2.0 with NOTICE (four packages, two repositories) | L3 | feat/apache-license | DONE, AWAITING PUBLISH | 2026-09-13 | publish_all.bat from the repo root (owner's act, 2FA opens a browser per package; all three changed), then npm publish in distill-skill (2FA); then npm view returns code 1.34.0, kb 1.17.0, mkt 0.12.0, distill 0.9.0 | HANDOFF_apache_license.md · ANALYSIS_apache_license.md · harness_apache_license/probe.py |
 | F-082 Codex skills in $HOME/.agents/skills | L3 | fix/codex-agents-skills | PLANNED | 2026-10-23 | POSIX run of the probe harness (FS-7); then RED tests in scripts/test_clients.js on the other PC (Q1 = link, Q5 = document, REQUEST R3). | HANDOFF_codex_agents_skills.md · ANALYSIS_codex_agents_skills.md · audit/requests/REQUEST_codex_agents_skills.md · harness_codex_agents_skills/ |
+| Release Codex hook parity | L3 | codex/f091-codex-hooks | IN_PROGRESS | 2026-11-04 | Obtain concrete release-note approval and finish npm web login, then tag, integrate origin/main and publish the verified packages. | HANDOFF_release_codex_hooks.md · ANALYSIS_codex_hooks.md; MERGE_REVIEW_codex_hooks.md; harness_codex_hooks/release_notes.json |
 
 ## Project-wide notes
 
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
+
+**2026-11-04 — release 1.53.0: Codex hook parity; KB 1.35.1, marketing 0.30.1, Course 0.1.0-beta.19 prepared.**
 
 **2026-11-01 — release 1.52.0: documents-only sessions in the shared checkout (F-089), the review log's merge line checked by check (F-090).** Code 1.52.0, KB 1.35.0,
 marketing 0.30.0, Course 0.1.0-beta.18; tags v1.52.0 / kb-v1.35.0 / mkt-v0.30.0 /

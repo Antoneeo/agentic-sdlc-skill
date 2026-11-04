@@ -1,12 +1,12 @@
 ---
 feature: F-091
 analysis: ANALYSIS_codex_hooks.md
-status: DRAFT
+status: CURRENT
 ---
 # Integration brief: Codex hook parity
 
 For the integrator reviewing `codex/f091-codex-hooks`. This branch is pushed for
-review; the unit remains IN_PROGRESS. Commit/push authorization is REQUEST R8.
+review; the code unit is reviewed and complete. Integration/publication authorization is REQUEST R9.
 
 ## Scope
 
@@ -28,13 +28,22 @@ Design: ANALYSIS_codex_hooks.md. Reproduction: E2E_TEST_codex_hooks.md.
 - Source guide, preservation constraints, ADR and raw test/result artifacts are
   under the F-091 paths. Document check must remain CLEAN before integration.
 
-## Open before merge
+## Integration and release boundary
 
-Independent closure round 1 found three BLOCK and three WARN findings. Corrections
-have regression evidence; the scoped independent round 2 stopped when workspace
-credits ran out and returned no verdict. A final PASS is still required.
+The six implementation findings are corrected and the independent scoped closure
+review returned PASS. The release review also returned PASS after test fixtures
+were isolated from real CODEX_HOME configuration; the golden baseline is unchanged.
+Release gates record 121 Node tests passed and 611 Python tests with four skips.
 
-Loading definitions and direct handler tests do not establish every native event.
-Complete remaining native orientation/reminder/recall acceptance, and retain the
-recorded limits for POSIX, minimum supported client version, missing interpreters
-and native timeout handling. No merge or npm publication was authorized by R8.
+Native evidence now covers completed SessionStart/UserPromptSubmit callbacks with
+both output markers, plus reported live verdict denial/retry and constraint recall
+before a disposable patch. All four definitions are trusted/enabled in the local
+client. POSIX, minimum client version and native interpreter/timeout failure cases
+remain unverified; notes state the tested Windows client explicitly.
+
+Prepared versions: code 1.53.0, KB 1.35.1, marketing 0.30.1, Course 0.1.0-beta.19.
+GUIDE_release requires owner approval of their concrete notes before tagging.
+The current npm login returned E401 and web login was started; user authentication
+is still required. Merge from the clean integration worktree, verify main/tags on
+origin, then publish exact tagged content through publish_all.bat. Preserve the
+dirty primary checkout. No release is claimed until registry verification.
