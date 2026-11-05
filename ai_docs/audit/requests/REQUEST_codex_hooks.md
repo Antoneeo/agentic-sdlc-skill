@@ -73,3 +73,6 @@ Approves the exact four prepared release-note texts presented in NOTE_RELEASE_DA
 ## R11 — 2026-11-05: reinstall incident correction
 Owner: «ora sei in grado di fare quello che ti ho chiesto davvero e di sistemare il problema senza consumare altre due sessioni di token?»
 Observed: published 1.53.0 installs skill but leaves hooks.json empty when native retained consent exists under config.toml hooks.state. Authorized targeted correction and recovery, with focused lifecycle verification.
+
+## R12 — 2026-11-05: candidate acceptance and publication
+Owner: «ok funziona.. procedi secondo la guida con la pubblicazione della correzione». After complete hook/consent removal, owner installed the exact local 1.53.1 tarball, restarted Codex and accepted the observed behavior. Owner then explicitly answered «Approvo le note» for the full 1.53.1 users notes. Publish the tested tarball without repacking (SHA256 c7dd3a611bb05ebe9044dcbb149be6566e976d181fdd37badb199b88c7ecc5c7); npm publish on that file replaces the working-tree-packing batch step to honor artifact identity. Other packages unchanged.

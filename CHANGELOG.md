@@ -5,6 +5,22 @@ Tutte le modifiche significative a questa skill saranno documentate in questo fi
 
 ## [Unreleased]
 
+## [1.53.1] - 2026-11-05
+
+### What's new
+
+**Codex hooks can be installed again after you have already trusted them.** The installer now recognizes Codex's saved consent state in `config.toml` instead of treating it as malformed hook configuration. Existing consents and Claude configuration are preserved.
+
+#### What to do
+
+Update with `npm install -g @antoneeo/agentic-sdlc-skill@latest`, then restart Codex and inspect Settings > Hooks (or `/hooks` in the CLI). Previously trusted, unchanged definitions may not require another consent prompt. Installation does not grant trust.
+
+### Fixed
+
+- Accept native TOML `hooks.state` metadata while retaining validation of hook event definitions.
+- Regression coverage for uninstall/reinstall with retained consent, including npm tarball installation.
+
+
 ## [1.53.0] - 2026-11-04
 
 ### What's new
