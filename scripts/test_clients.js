@@ -1308,3 +1308,22 @@ test('F-091: Windows override types return a diagnostic through init', () => {
     });
   }
 });
+
+// Regression: native Codex persists trust under hooks.state, not an event array.
+test('F-091: retained native trust survives uninstall and reinstall', () => {
+  gsandbox(({home,python}) => {
+    const client={key:'codex',home};
+    const wires=[wireGlobalOrientHook,wireGlobalRemindHook,wireGlobalVerdictHook,wireGlobalRecallHook];
+    for(const wire of wires) assert.strictEqual(wire({client,python}).code,'wired');
+    const config=path.join(home,'config.toml');
+    const trust='[hooks.state."test:session_start:0:0"]\ntrusted_hash="sha256:retained"\n';
+    fs.writeFileSync(config,trust);
+    const root=require('./lib').skillTarget(client);
+    removeGlobalOrientHooks([root]); removeGlobalCommandHooks([root]);
+    for(const wire of wires) assert.strictEqual(wire({client,python}).code,'wired');
+    assert.strictEqual(fs.readFileSync(config,'utf8'),trust);
+    const hooks=readJson(path.join(home,'hooks.json')).hooks;
+    assert.strictEqual(Object.values(hooks).flatMap(g=>g.flatMap(x=>x.hooks)).length,4);
+    for(const wire of wires) assert.strictEqual(wire({client,python}).code,'already');
+  });
+});

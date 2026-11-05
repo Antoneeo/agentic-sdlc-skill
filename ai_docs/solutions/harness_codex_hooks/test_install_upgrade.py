@@ -94,6 +94,18 @@ def main():
     run(install_args + [tarballs[1]], root, env)
     assert codex_file.read_bytes() == before_codex, "Repeat install rewrote hook definitions"
     assert claude_file.read_bytes() == before_claude
+    # Native consent remains in config.toml after explicit uninstall.
+    trust_file = Path(env["CODEX_HOME"]) / "config.toml"
+    trust = '[hooks.state."retained:session_start:0:0"]\ntrusted_hash="sha256:retained"\n'
+    trust_file.write_text(trust, encoding="utf-8")
+    package = prefix / ("node_modules" if os.name == "nt" else "lib/node_modules") / "@antoneeo/agentic-sdlc-skill"
+    run([node, package / "scripts/preuninstall.js"], root, env)
+    run(npm_command + ["uninstall", "--global", "--prefix", prefix, "--ignore-scripts", "@antoneeo/agentic-sdlc-skill"], root, env)
+    assert trust_file.read_text(encoding="utf-8") == trust
+    run(install_args + [tarballs[1]], root, env)
+    assert trust_file.read_text(encoding="utf-8") == trust
+    assert codex_file.read_bytes() == before_codex
+    assert claude_file.read_bytes() == before_claude
     project = root / "project"
     (project / "src").mkdir(parents=True)
     (project / "ai_docs/reference").mkdir(parents=True)
@@ -161,7 +173,7 @@ def main():
         codex_file.write_bytes(before_codex)
     result = {"status": "PASS", "profile": str(root), "codex_home": env["CODEX_HOME"], "project": str(project),
               "package": str(package), "claude_upgrade_byte_identical": True,
-              "tarball_fresh_install": True, "tarball_install_upgrade": True, "installed_handler_checks": ["orient root/nested", "remind", "verdict deny/allow", "recall"],
+              "retained_consent_uninstall_reinstall": True, "tarball_fresh_install": True, "tarball_install_upgrade": True, "installed_handler_checks": ["orient root/nested", "remind", "verdict deny/allow", "recall"],
               "repeat_install_byte_identical": True, "opt_out_preserved": True,
               "native_trust_execution": "not tested by this harness"}
     result["profile_retained"] = args.keep

@@ -914,7 +914,9 @@ function hookSources(options) {
         if (!settings || typeof settings !== 'object' || Array.isArray(settings) ||
             (settings.hooks !== undefined && (!settings.hooks || typeof settings.hooks !== 'object' || Array.isArray(settings.hooks))))
           return {error:'malformed',target};
-        for (const groups of Object.values(settings.hooks || {})) {
+        for (const [event, groups] of Object.entries(settings.hooks || {})) {
+          // Codex owns this TOML trust ledger; it is metadata, not an event.
+          if (name === 'config.toml' && event === 'state') continue;
           if (!Array.isArray(groups)) return {error:'malformed',target};
           for (const group of groups) {
             if (!group || typeof group !== 'object' || Array.isArray(group) ||

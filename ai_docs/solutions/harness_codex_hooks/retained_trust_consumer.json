@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "profile": "C:\\Users\\apint\\AppData\\Local\\Temp\\f091-user-pc-u6wi7fhw",
+  "codex_home": "C:\\Users\\apint\\AppData\\Local\\Temp\\f091-user-pc-u6wi7fhw\\PC User\\codex profile",
+  "project": "C:\\Users\\apint\\AppData\\Local\\Temp\\f091-user-pc-u6wi7fhw\\project",
+  "package": "C:\\Users\\apint\\AppData\\Local\\Temp\\f091-user-pc-u6wi7fhw\\npm-prefix\\node_modules\\@antoneeo\\agentic-sdlc-skill",
+  "claude_upgrade_byte_identical": true,
+  "retained_consent_uninstall_reinstall": true,
+  "tarball_fresh_install": true,
+  "tarball_install_upgrade": true,
+  "installed_handler_checks": [
+    "orient root/nested",
+    "remind",
+    "verdict deny/allow",
+    "recall"
+  ],
+  "repeat_install_byte_identical": true,
+  "opt_out_preserved": true,
+  "native_trust_execution": "not tested by this harness",
+  "profile_retained": false,
+  "baseline_ref": "74c1833f1b08b2bff57f3ba5824465e0a4abb767",
+  "explicit_cleanup_foreign_preserved": true
+}

@@ -69,3 +69,7 @@ Authorizes careful main integration and npm publication after the open review an
 > accetto
 
 Approves the exact four prepared release-note texts presented in NOTE_RELEASE_DA_APPROVARE.md, generated verbatim from release_notes.json.
+
+## R11 — 2026-11-05: reinstall incident correction
+Owner: «ora sei in grado di fare quello che ti ho chiesto davvero e di sistemare il problema senza consumare altre due sessioni di token?»
+Observed: published 1.53.0 installs skill but leaves hooks.json empty when native retained consent exists under config.toml hooks.state. Authorized targeted correction and recovery, with focused lifecycle verification.
