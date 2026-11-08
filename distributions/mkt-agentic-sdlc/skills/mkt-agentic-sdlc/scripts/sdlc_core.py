@@ -2653,7 +2653,9 @@ def print_check_notes(root):
 #
 # The carrier is kb's (F-041 item B), lifted here so all three lenses share one
 # machine instead of two that do the same thing. Its contract is kept: the line
-# is CONSTANT and reads NOTHING -- nothing repo- or session-controlled may ride
+# is CONSTANT and reads NOTHING repo- or session-controlled (F-093 / r44: it does
+# read which family lenses the machine has installed, names only) -- nothing
+# repo- or session-controlled may ride
 # text injected every turn, and zero reads is what keeps the per-turn cost flat.
 # What changed is the payload's first duty and the wiring. First duty: decide
 # whether the skill governs this work and, if it does, read it once -- an
@@ -2674,16 +2676,40 @@ REMIND_FALLBACK = (
 REMIND_LENS_SUFFIX = (" Above L1, with sibling lenses installed: choose the lens with "
                       "routing.md and declare it.")
 
+# F-093: the family wires ONE shared reminder, the first installer's, so its
+# own text led a knowledge task to the code lens. With siblings installed the
+# suffix names every installed lens and its domain. The owner accepted the cost
+# (REQUEST_family_hook_wiring.md R3, rulings r19/r32 amended): the skills
+# directories are read each turn, names only, filtered by routing.md's table.
+REMIND_LENS_NAMED = (" Installed lenses: {lenses}. Above L1, choose the one that "
+                     "governs this work with routing.md, load it and declare it.")
+
+
+def remind_lens_suffix():
+    """The lens-choice suffix: the constant one on a single-lens install, the
+    named one when a sibling lens is installed. Never raises."""
+    try:
+        siblings = installed_sibling_lenses()
+        if not siblings:
+            return REMIND_LENS_SUFFIX
+        family = lens_table()
+        names = sorted(set(siblings) | {profile()["skill_name"]})
+        return REMIND_LENS_NAMED.format(lenses=", ".join(
+            f"{n} ({family[n]})" if n in family else n for n in names))
+    except Exception:
+        return REMIND_LENS_SUFFIX
+
 
 def cmd_remind(args):
-    """UserPromptSubmit hook: print the lens's constant per-turn line. Always 0.
+    """UserPromptSubmit hook: print the lens's per-turn line. Always 0.
 
-    argv is ignored whole and nothing is read: a hook surface must not fail, and
-    a flag typo must not cost a turn's context."""
+    argv is ignored whole and nothing repo- or session-controlled is read: a
+    hook surface must not fail, and a flag typo must not cost a turn's context.
+    The one input is which family lenses this machine has installed (F-093)."""
     try:
         prof = profile()
         line = prof.get("remind_line") or REMIND_FALLBACK.format(skill=prof["skill_name"])
-        print(f"{prof['skill_name']}: {line}{REMIND_LENS_SUFFIX}")
+        print(f"{prof['skill_name']}: {line}{remind_lens_suffix()}")
     except Exception:
         pass
     return 0

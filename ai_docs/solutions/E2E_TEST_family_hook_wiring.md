@@ -2,13 +2,14 @@
 feature: F-093
 analysis: ANALYSIS_family_hook_wiring.md
 ---
-# E2E test: per-turn reminder from the kb and marketing packages
+# E2E test: per-turn reminder on single- and multi-lens installs
 
 ## What changed, in user terms
 
 Installing kb-agentic or mkt-agentic-sdlc now wires the one-line reminder at each
 prompt, as their ENFORCEMENT.md says. With several lenses installed there is still one
-reminder line per prompt: the first lens that wired it keeps it.
+reminder line per prompt: the first lens that wired it keeps it, and that line now names
+every installed lens with its domain, so the agent can pick the one that fits the task.
 
 ## Environment and preconditions
 
@@ -35,6 +36,14 @@ Steps: 1. Clean profile: install kb-agentic, then agentic-sdlc.
 Expected: one `UserPromptSubmit` remind entry (kb's). Reversed order: one entry (agentic-sdlc's).
 Result:
 
+### S4 — the line names the installed lenses
+Steps: 1. After S3, open a session in any folder and send a prompt.
+Expected: the reminder ends with "Installed lenses: agentic-sdlc (code), kb-agentic (knowledge).
+Above L1, choose the one that governs this work with routing.md, load it and declare it."
+Install mkt-agentic-sdlc too: the next prompt lists three lenses, in name order. No new
+install step is needed: the line reads the installed skills at each prompt.
+Result:
+
 ## Regression scenarios
 
 ### R1 — removal is never undone
@@ -46,6 +55,12 @@ Result:
 Steps: 1. After S3 (kb's entry), uninstall agentic-sdlc. 2. Then uninstall kb-agentic.
 Expected: step 1 leaves kb's entry; step 2 removes it. Orientation entries follow the
 same rule as before.
+Result:
+
+### R4 — a single lens keeps its old line
+Steps: after S1 (kb alone), send a prompt.
+Expected: the line ends "Above L1, with sibling lenses installed: choose the lens with
+routing.md and declare it." exactly as before; no lens list.
 Result:
 
 ### R3 — the real profile is untouched by a test install

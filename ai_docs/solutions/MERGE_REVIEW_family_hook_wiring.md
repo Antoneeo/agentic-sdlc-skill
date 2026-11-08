@@ -3,7 +3,7 @@ feature: F-093
 analysis: ANALYSIS_family_hook_wiring.md
 base: 7842dfa3
 ---
-# Merge review: per-turn reminder from the kb and marketing packages
+# Merge review: per-turn reminder on single- and multi-lens installs
 
 ## Purpose
 
@@ -11,7 +11,9 @@ Installing kb-agentic or mkt-agentic-sdlc now wires the per-turn reminder their
 ENFORCEMENT.md promised; before, only the code lens's installer did, so a single
 non-code lens never got it. A multi-lens machine keeps one reminder line per prompt.
 Serves r19's benefit (the protocol reaches every turn). Option A, approved by the
-owner (REQUEST R2). Option B (a lens-aware line) is not in this branch.
+owner (REQUEST R2). Option B, approved on its measured costs (REQUEST R3, ruled r44):
+with sibling lenses installed, the one shared line names every installed lens and its
+domain, so a knowledge task on a multi-lens machine is no longer led to the code lens.
 
 ## What to review
 
@@ -52,11 +54,18 @@ closure review checked it is behaviour-identical.
   marketing-only now wired; one entry per kind in every order).
 - Closure review (REVIEW_LOG 2026-11-08): 4 WARN, 0 BLOCK; three fixed, two named as
   residuals in the ANALYSIS.
-- No design-review round: the owner approved the option from the ANALYSIS directly.
+- B behaviour AC6–AC9: `test_remind.py` `LensAwareLine` (code, kb, mkt copies) plus the
+  every-lens test at the four-lens worst case (code 684, kb 649, mkt 643, course 511 chars).
+- B closure review (REVIEW_LOG 2026-11-08, second row): PASS, 4 WARN; two fixed in tests,
+  one in the ANALYSIS wording, two left as named non-blocking items in the ANALYSIS.
+- No design-review round for either option: the owner approved each from the ANALYSIS directly.
 
 ## What only a human can judge
 
 - The two residuals (dead family entry blocks wiring; uninstalling the owning lens leaves
   survivors unwired) are accepted as family-wide behaviour for now.
 - course-creator still does not wire its reminder: its ENFORCEMENT.md does not promise it.
+- r44: the per-turn line now reads the installed skill names at each prompt and may reach
+  700 chars; accepted by the owner (R3). Whether the domain words help in practice is the
+  E2E S4 check.
 - Merge target and release timing: the CHANGELOG entries sit under Unreleased.

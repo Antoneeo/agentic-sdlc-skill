@@ -268,9 +268,11 @@ Cost: 566 characters, ~95 tokens per prompt, paid on every turn including
 trivial ones. That is admissible only because the owner accepted it explicitly
 (`ai_docs/vision/rulings.md` r19, the "no ceremony ratchet" Non-Goal's second door) --
 and the acceptance was for a FLAT cost. Hence the contract, guarded by
-`scripts/test_remind.py`: the line is **constant and reads nothing** (so nothing repo-
+`scripts/test_remind.py`: the line is **constant per machine and reads nothing repo- or session-controlled** (so nothing repo-
 or session-controlled rides into the agent's context through it, and the cost cannot
-grow with the session), it is **one line under 600 characters** (r32 raised r19's 500 to carry the lens choice), and it **can never
+grow with the session), it is **one line under 600 characters** (r32 raised r19's 500 to carry the lens choice; **700** when sibling lenses are installed,
+because it then names each installed lens and its domain, read each turn from the skills
+directories -- names only, matched against `routing.md`'s table, r44), and it **can never
 break a prompt** (argv ignored whole, always exit 0). A trivial turn pays a yes/no
 judgement, never a load.
 

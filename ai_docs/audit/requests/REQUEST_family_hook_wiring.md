@@ -33,3 +33,12 @@ Reply to the three options in ANALYSIS_family_hook_wiring.md. Approves option A 
 marketing installers wire the per-turn reminder, family dedup kept). Option B is not
 approved: the owner asks for its costs, in particular of reading the skills directory every
 turn.
+
+### R3 — 2026-11-08 — option B approved
+
+> Yes, go ahead with B
+
+Reply to the B cost figures in ANALYSIS_family_hook_wiring.md (sibling lookup ~24 ms per
+call against 400–630 ms for the hook; +60–100 chars, over r32's 600 bound; the line reads
+the skills directories each turn). Accepts that cost: amends r19 (zero reads) and r32 (600
+chars) for the named-lens suffix only.

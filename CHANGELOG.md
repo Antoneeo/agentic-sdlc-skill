@@ -5,6 +5,10 @@ Tutte le modifiche significative a questa skill saranno documentate in questo fi
 
 ## [Unreleased]
 
+### What's new
+
+**With several lenses of the family installed, the per-prompt reminder now names them.** A machine gets one reminder for the whole family, wired by whichever lens was installed first, so a knowledge or marketing task used to see the code lens's line. When other lenses are installed, the line now lists each one with its domain, for example `kb-agentic (knowledge)`, and asks the agent to load the one that governs the work. A single-lens install sees no change. To do this the reminder reads the installed skill names at each prompt (names only), and its length bound rises from 600 to 700 characters (F-093).
+
 ## [1.53.1] - 2026-11-05
 
 ### What's new
