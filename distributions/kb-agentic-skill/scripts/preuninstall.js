@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require('fs');
-const { CLIENTS, skillTarget, removeGlobalOrientHooks } = require('./lib');
+const { CLIENTS, skillTarget, removeGlobalOrientHooks, removeGlobalRemindHooks } = require('./lib');
 
 function removeSkill(client) {
   const target = skillTarget(client);
@@ -24,6 +24,12 @@ try {
   const removedFrom = removeGlobalOrientHooks(CLIENTS.map(skillTarget));
   for (const target of removedFrom) {
     console.log(`🧹 Removed the session-orientation hook entry (${target}).`);
+  }
+} catch (e) { /* never abort an uninstall for a convenience */ }
+// F-093: the per-turn reminder this lens may have wired, same attribution rule.
+try {
+  for (const target of removeGlobalRemindHooks(CLIENTS.map(skillTarget))) {
+    console.log(`🧹 Removed the per-turn reminder hook entry (${target}).`);
   }
 } catch (e) { /* never abort an uninstall for a convenience */ }
 

@@ -593,10 +593,23 @@ function wireGlobalOrientHook(options) {
 // already removed the hook, the line stays and the opt-out survives uninstall,
 // reinstall, and sibling-lens uninstalls.
 function removeGlobalOrientHooks(removedRoots) {
+  return removeGlobalHookEntries(removedRoots, {
+    event: 'SessionStart',
+    re: / orient(\s|$)/,
+    markerTargets: orientMarkerTargets,
+    markerRemove: orientMarkerRemove,
+  });
+}
+
+// The pruning loop shared by every hook this installer wires: only the
+// `spec.event` entries whose command matches `spec.re` AND whose validator
+// token resolves INTO a removed root are ours; the marker line is cleared only
+// when an entry was actually removed. Returns the targets touched.
+function removeGlobalHookEntries(removedRoots, spec) {
   const targets = [];
   const claude = CLIENTS.find((c) => c.key === 'claude');
   if (claude) targets.push(path.join(claude.home, 'settings.json'));
-  for (const t of orientMarkerTargets()) {
+  for (const t of spec.markerTargets()) {
     if (!targets.some((x) => pathsEqual(x, t))) targets.push(t);
   }
   const removedFrom = [];
@@ -605,17 +618,17 @@ function removeGlobalOrientHooks(removedRoots) {
       const state = orientSettingsState(target);
       if (!state.ok || !fs.existsSync(target)) continue;
       const hooks = state.settings.hooks;
-      if (!hooks || !Array.isArray(hooks.SessionStart)) continue;
+      if (!hooks || !Array.isArray(hooks[spec.event])) continue;
       let removedHere = false;
       const ours = (h) => {
         const cmd = h && typeof h.command === 'string' ? h.command : '';
-        if (!(ORIENT_ENTRY_POINTS.some((n) => cmd.includes(n)) && / orient(\s|$)/.test(cmd))) return false;
+        if (!(ORIENT_ENTRY_POINTS.some((n) => cmd.includes(n)) && spec.re.test(cmd))) return false;
         const tok = orientHookValidator(cmd);
         if (tok === null || !path.isAbsolute(tok)) return false;   // cannot attribute: keep
         return removedRoots.some((root) => pathInside(tok, root));
       };
       const kept = [];
-      for (const group of hooks.SessionStart) {
+      for (const group of hooks[spec.event]) {
         if (!group || typeof group !== 'object') { kept.push(group); continue; }
         if (Array.isArray(group.hooks)) {
           const inner = group.hooks.filter((h) => {
@@ -632,17 +645,120 @@ function removeGlobalOrientHooks(removedRoots) {
         }
       }
       if (!removedHere) continue;
-      state.settings.hooks.SessionStart = kept;
-      if (!kept.length) delete state.settings.hooks.SessionStart;
+      state.settings.hooks[spec.event] = kept;
+      if (!kept.length) delete state.settings.hooks[spec.event];
       if (state.settings.hooks && !Object.keys(state.settings.hooks).length) {
         delete state.settings.hooks;
       }
       fs.writeFileSync(target, JSON.stringify(state.settings, null, 2) + String.fromCharCode(10), 'utf8');
-      orientMarkerRemove(target);
+      spec.markerRemove(target);
       removedFrom.push(target);
     } catch (e) { /* fail-open per target: never abort an uninstall */ }
   }
   return removedFrom;
+}
+
+// --- Per-turn reminder hook (F-046, wired by this lens since F-093) ----------
+// `orient` fires once and decays; this hook re-arms the lens's constant line
+// every prompt. F-046 wired it from the code lens's installer only, while this
+// lens's ENFORCEMENT.md promised it: a single-lens install got no reminder.
+// Presence is recognized family-wide (any lens's `remind` counts), like the
+// orientation hook, so a multi-lens machine keeps exactly one line per turn
+// (rulings.md r19/r32 price one line). Its own marker: removal is a standing
+// opt-out for this hook only, shared by the family.
+const REMIND_HOOK = {
+  event: 'UserPromptSubmit', sub: 'remind', re: / remind(\s|$)/,
+  marker: 'remind-hook-wired', timeout: 5,
+};
+
+function markerPathOf(spec) {
+  const root = process.env.AGENTIC_SDLC_KB_ROOT
+    || path.join(os.homedir(), '.agentic-sdlc');
+  return path.join(root, spec.marker);
+}
+function markerTargetsOf(spec) {
+  try {
+    return fs.readFileSync(markerPathOf(spec), 'utf8')
+      .split(/\r?\n/).map((x) => x.trim()).filter(Boolean);
+  } catch (e) {
+    return [];
+  }
+}
+function markerHasOf(spec, target) {
+  return markerTargetsOf(spec).some((t) => pathsEqual(t, target));
+}
+function markerAddOf(spec, target) {
+  try {
+    if (markerHasOf(spec, target)) return;
+    fs.mkdirSync(path.dirname(markerPathOf(spec)), { recursive: true });
+    fs.appendFileSync(markerPathOf(spec), target + String.fromCharCode(10), 'utf8');
+  } catch (e) { /* fail-open */ }
+}
+function markerRemoveOf(spec, target) {
+  try {
+    const rest = markerTargetsOf(spec).filter((t) => !pathsEqual(t, target));
+    if (rest.length) {
+      fs.writeFileSync(markerPathOf(spec), rest.join(String.fromCharCode(10)) + String.fromCharCode(10), 'utf8');
+    } else {
+      fs.rmSync(markerPathOf(spec), { force: true });
+    }
+  } catch (e) { /* fail-open */ }
+}
+
+function findCommandHook(settings, spec) {
+  const groups = settings && settings.hooks && settings.hooks[spec.event];
+  if (!Array.isArray(groups)) return null;
+  for (const group of groups) {
+    if (!group || typeof group !== 'object') continue;
+    const inner = Array.isArray(group.hooks) ? group.hooks : [group];
+    for (const h of inner) {
+      const cmd = h && typeof h.command === 'string' ? h.command : '';
+      if (ORIENT_ENTRY_POINTS.some((n) => cmd.includes(n)) && spec.re.test(cmd)) return cmd;
+    }
+  }
+  return null;
+}
+
+// Present is `already`; only ABSENCE plus the marker means the user removed it.
+// Returns a code, never throws: an installer must not die on a settings file.
+function wireGlobalRemindHook(options) {
+  const spec = REMIND_HOOK;
+  const validator = path.join(skillTarget(options.client), 'scripts', ORIENT_ENTRY_POINT);
+  if (!fs.existsSync(validator)) return { code: 'no-validator', validator };
+  if (!options.python) return { code: 'no-python' };
+  if (ORIENT_UNSAFE_IN_PATH.test(validator)) return { code: 'unsafe-path', validator };
+  const target = path.join(options.client.home, 'settings.json');
+  const state = orientSettingsState(target);
+  if (!state.ok) return { code: 'malformed', target, why: state.why };
+  const settings = state.settings;
+  // Unrecognised means write nothing (orientSettingsState checks SessionStart only).
+  if (settings.hooks && settings.hooks[spec.event] !== undefined && !Array.isArray(settings.hooks[spec.event])) {
+    return { code: 'malformed', target, why: 'unexpected-hooks' };
+  }
+  const present = findCommandHook(settings, spec);
+  if (present) return { code: 'already', target, command: present };
+  if (markerHasOf(spec, target)) return { code: 'opted-out', target };
+  const command = options.python + ' "' + validator + '" ' + spec.sub;
+  if (!settings.hooks) settings.hooks = {};
+  if (!Array.isArray(settings.hooks[spec.event])) settings.hooks[spec.event] = [];
+  settings.hooks[spec.event].push({ hooks: [{ type: 'command', command, timeout: spec.timeout }] });
+  try {
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.writeFileSync(target, JSON.stringify(settings, null, 2) + String.fromCharCode(10), 'utf8');
+  } catch (e) {
+    return { code: 'write-failed', target, command, error: e.message };
+  }
+  markerAddOf(spec, target);
+  return { code: 'wired', target, command };
+}
+
+function removeGlobalRemindHooks(removedRoots) {
+  return removeGlobalHookEntries(removedRoots, {
+    event: REMIND_HOOK.event,
+    re: REMIND_HOOK.re,
+    markerTargets: () => markerTargetsOf(REMIND_HOOK),
+    markerRemove: (target) => markerRemoveOf(REMIND_HOOK, target),
+  });
 }
 
 module.exports = {
@@ -657,6 +773,8 @@ module.exports = {
   wireOrientHook,
   wireGlobalOrientHook,
   removeGlobalOrientHooks,
+  wireGlobalRemindHook,
+  removeGlobalRemindHooks,
   detectPython,
   pathsEqual,
   orientHookCommand,

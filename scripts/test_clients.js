@@ -1337,7 +1337,8 @@ test('F-093: postinstall wires every hook its ENFORCEMENT.md declares wired by d
   const doc = fs.readFileSync(path.join(SKILL_SOURCE, 'ENFORCEMENT.md'), 'utf8');
   const declared = [...doc.matchAll(/^### [^\n`]*`([a-z]+)[^`\n]*` \((\w+) -- wired by default\)/gm)]
     .map((m) => ({ sub: m[1], event: m[2] }));
-  assert.ok(declared.length > 0 || !/wired by default/.test(doc), 'the heading pattern must parse');
+  assert.strictEqual(declared.length, (doc.match(/wired by default/g) || []).length,
+    'every "wired by default" in ENFORCEMENT.md must be a parsable hook heading');
   const tmpHome = fs.mkdtempSync(path.join(os.tmpdir(), 'f093-post-'));
   try {
     fs.mkdirSync(path.join(tmpHome, '.claude', 'skills'), { recursive: true });

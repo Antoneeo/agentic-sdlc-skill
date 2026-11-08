@@ -57,7 +57,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/ANALYSIS_doctrine_chronology.md | code |  | F-073 - readable chronology and parallel workstreams. One grammar for a dated entry, read by shared validator readers so F-072's chronology can parse events; `next:` holds only the next step; feature ids checked against every ref; the shared-log and shared-checkout defects answered with the smallest measured remedy. | 6a22530e5cc3492331882b70d2d0fd3d526651cdc080fdff2449cc3d379697ac |
 | solutions/ANALYSIS_evidence_driven_debugging.md | code |  | F-061 — Debugging fondato sulle evidenze | 1a80a756e1cc6dda6e88d5da9b217bcd70ed7ffc30a3d38429910c8ca5209844 |
 | solutions/ANALYSIS_execution_integrity.md | code |  | Feature Analysis: Execution Integrity — Tranche A (F-034) | 1f2c2db81b618ac30c1496bd417cbdcbd099d41bae3ff92f3278c0096db67d5c |
-| solutions/ANALYSIS_family_hook_wiring.md | code |  | F-093 - on a multi-lens install the machine-wide hooks are the first lens's; the sibling installers never wire the per-turn reminder their ENFORCEMENT.md promises. Diagnosis, reproduction, and the design decision it needs. | 41b90ce7586c7f442dd8c531f6e079e50d620bd22066d3db1fa6d78bf975d7f9 |
+| solutions/ANALYSIS_family_hook_wiring.md | code |  | F-093 - on a multi-lens install the machine-wide hooks are the first lens's; the sibling installers never wire the per-turn reminder their ENFORCEMENT.md promises. Diagnosis, reproduction, and the design decision it needs. | 1bbd7fd0e41909df19b8c514d1ccab293c58719fda16419edab5e9897322abd9 |
 | solutions/ANALYSIS_field_test_defects.md | code |  | ANALYSIS — Field-test defects | ef6389df1d92ebc90ce08214faac21840944eff74702f84fb3a1c0ebfc236b02 |
 | solutions/ANALYSIS_functional_spec.md | code |  | Feature Analysis: Functional Spec + strategic-pass loop (F-033) | bb627d81693ba12ad21b9f377c7a1fd3ba5a1ed2637716467db3abd0d76816b1 |
 | solutions/ANALYSIS_gated_rung_vocabulary.md | code |  | Feature Analysis: gated-rung vocabulary and the mandated ask | 14cd035349c3c0ecbac8a9938353432e9fa140870b5f00c76b6678430381ae65 |
@@ -116,6 +116,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/ANALYSIS_vision_shape_rules.md | code |  | Feature Analysis: Vision Shape Rules | b82dff0c390b896ee1c6f0a5f04ded6bf4b152fac8c2c75b12bdc23c0605af7b |
 | solutions/ANALYSIS_working_model.md | code |  | Feature Analysis: the agent's working model | 7f40628c80b9d2f2542d0a5e44b70c084d7ba8730b0e6700ab5cc93de53fa36f |
 | solutions/E2E_TEST_codex_hooks.md | code |  | E2E test: Codex hook installation and upgrade | 4da25ec1974fafd007ae264d8110f71b53bae1c540af218d7b11d1dfc536251c |
+| solutions/E2E_TEST_family_hook_wiring.md | code |  | E2E test: per-turn reminder from the kb and marketing packages | f560f088f3e315ace55d1c21a7ca3bef0a93fb3d517b25d9dab6ea7dd733b342 |
 | solutions/E2E_TEST_guide_verdict_check.md | code |  | E2E test: Guide verdict check before edits | e2ed73383f5b5c68d59d2be807198dc695402239578fff185ea773944eb2a427 |
 | solutions/E2E_TEST_instructor_guide.md | code |  | E2E test: guida del docente per i corsi con docente | 0e5778a4ab5129f89534d63bfc61bd220f41e9ad7c0c0dbd6f1545a70e00f8bc |
 | solutions/E2E_TEST_intent_focus.md | code |  | E2E test: Intent focus | 615c70d14e974076bd8abd45a1bee6f8d456dbf66e9cb015ce7c9c7fb76f72aa |
@@ -136,6 +137,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/E2E_TEST_vision_interview.md | code |  | E2E test: Vision born from an owner interview | e1a17086e3114a5ce183ae660fbe85c82a3e1f566823a02afe3534c074d25f3a |
 | solutions/E2E_TEST_working_model.md | code |  | E2E test: constraints at the moment of action | 4d7c28c0e3a4cac2a805bfdb9649070f4dd41dbf209614073140dcec5041005b |
 | solutions/MERGE_REVIEW_codex_hooks.md | code |  | Integration brief: Codex hook parity | f7df96b9404ceea0148d62e8cb60b5a72a6561c4f9d48b379b747f6cde2154f3 |
+| solutions/MERGE_REVIEW_family_hook_wiring.md | code |  | Merge review: per-turn reminder from the kb and marketing packages | c410e42ee76990c0c25c459ed252f92bb0b89ef8e4b7513d77f781d6f445c260 |
 | solutions/MERGE_REVIEW_guide_verdict_check.md | code |  | Merge review: Guide verdict check before edits | 62974b0a60ddac8b2fea750958ea65780f2d033ea6a58dc2a6081d7046f56ecb |
 | solutions/MERGE_REVIEW_instructor_guide.md | code |  | Merge review: guida del docente per i corsi con docente | 51b7f5cf28dff4f740f37bf6d4742eb671d8e0b6fa6c793f3ef4232f0c03ae6a |
 | solutions/MERGE_REVIEW_intent_focus.md | code |  | Merge review: Intent focus | fb9ddb4db7611ad33c3da2b77ac666d7644cfaf318d99c6eb1920bbe1b53aed6 |

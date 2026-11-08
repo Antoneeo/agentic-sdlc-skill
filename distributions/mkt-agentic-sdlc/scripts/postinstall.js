@@ -3,7 +3,7 @@
 const fs = require('fs');
 const {
   SKILL_SOURCE, CLIENTS, clientDetected, skillTarget, copyRecursive,
-  wireGlobalOrientHook, detectPython,
+  wireGlobalOrientHook, wireGlobalRemindHook, detectPython,
 } = require('./lib');
 
 function installSkill(client) {
@@ -60,6 +60,18 @@ for (const client of CLIENTS) {
         }
         // already / opted-out / unverifiable / no-validator: silent — an
         // install must not nag (the opt-out is the user's standing choice).
+      } catch (e) { /* never fail the install for a convenience */ }
+      // F-046/F-093: the per-turn reminder, wired alongside and never instead of
+      // the session hook (ENFORCEMENT.md promises it). One line per prompt for
+      // the whole family: a sibling lens's reminder already counts. Owner-accepted
+      // per-turn cost: rulings.md r19/r32. Removal is a standing opt-out.
+      try {
+        const rr = wireGlobalRemindHook({ client, python: detectPython() });
+        if (rr.code === 'wired') {
+          console.log('🔗 Per-turn protocol reminder wired for every project on this machine');
+          console.log(`   (${rr.target}). One constant line per prompt; remove that hook`);
+          console.log('   entry to opt out — it will not be re-added.');
+        }
       } catch (e) { /* never fail the install for a convenience */ }
     }
   }

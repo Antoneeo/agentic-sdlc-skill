@@ -24,3 +24,12 @@ skill setup for every installer. Quoted from that brief:
 > npm, do not push or merge. Report in Italian to Antonio.
 
 Scope: diagnosis, reproducing test, fix on the branch if confirmed. No release.
+
+### R2 — 2026-11-08 — design approved (option A); costs of B asked
+
+> A ora. Per B vorrei sapere quali sarebbero i costi, è un grosso problema leggere ad ogni turno la cartella delle skill?
+
+Reply to the three options in ANALYSIS_family_hook_wiring.md. Approves option A (kb and
+marketing installers wire the per-turn reminder, family dedup kept). Option B is not
+approved: the owner asks for its costs, in particular of reading the skills directory every
+turn.

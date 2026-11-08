@@ -3,6 +3,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+**Installing this package now wires the per-turn reminder its ENFORCEMENT.md promised.** Until now only the code lens (agentic-sdlc) installed it, so a machine with this lens alone never received the one-line reminder at each prompt. It is wired on Claude Code alongside the session orientation; if another lens of the family already wired its own reminder, that one stays and nothing is added, so a prompt carries one line. Removing the hook entry is still a standing opt-out, and uninstalling removes only this package's own entry (F-093).
+
 ## [0.30.1] - 2026-11-04
 
 ### What's new

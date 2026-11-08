@@ -1,6 +1,7 @@
 ---
 description: F-093 - on a multi-lens install the machine-wide hooks are the first lens's; the sibling installers never wire the per-turn reminder their ENFORCEMENT.md promises. Diagnosis, reproduction, and the design decision it needs.
-status: PLANNED
+status: COMPLETED
+end_date: 2026-11-08
 feature: F-093
 id: F-093
 start_date: 2026-11-08
@@ -15,7 +16,7 @@ Explain why, on a machine with all four lenses installed, a knowledge project (`
 received only agentic-sdlc's per-turn line and never kb-agentic's, and fix what is a
 defect. Request: `audit/requests/REQUEST_family_hook_wiring.md` R1.
 
-## Vision Alignment
+## Feature Vision
 
 Serves the anti-myopia north star (`vision/project_vision.md`): a lens whose protocol
 never reaches the session cannot be applied — the F-046 premise (`rulings.md` r19).
@@ -85,14 +86,23 @@ governs" that a knowledge task answers "no".
 
 ## Functional Spec
 
-Pending the owner's decision (Options below). Fixed whatever the option: UC3 holds;
-one entry per hook kind per settings file (no doubling, FS3 of session_orientation_reach).
+Option A, approved (REQUEST R2):
+
+- **AC1** — installing kb-agentic or mkt-agentic-sdlc on Claude Code, with no family
+  reminder in the user settings and no remind marker for that file, adds one
+  `UserPromptSubmit` entry running that lens's validator with `remind`.
+- **AC2** — any family `remind` entry already present (any lens) means nothing is added.
+- **AC3** — the entry absent and the marker naming the file means nothing is added (UC3).
+- **AC4** — uninstalling removes only `remind` entries whose validator lives in the
+  removed skill roots, and clears the marker line only when it removed one.
+- **AC5** — the code lens and course-creator behave exactly as before.
 
 ## Interface Contract
 
-The surface is the installer's console output and the per-turn line. Option A reuses the
-existing postinstall messages verbatim (the code lens's `remind` messages); option B changes
-the line's text. Finalized after the decision.
+The surface is the installer's console output. Reused verbatim from the code lens's
+postinstall ("Per-turn protocol reminder wired …") and preuninstall ("Removed the …
+hook entry"); silent on `already` / `opted-out`, like the orientation hook. The per-turn
+line itself is unchanged.
 
 ## Capability Ledger
 
@@ -131,15 +141,20 @@ documentation; B is the cure for the D:\kb symptom and is a scope change (r4).
 
 ## Impact
 
-Option A (draft; finalized after the decision):
+Option A, as built. Identical delta in kb and marketing (counts once,
+`GUIDE_skill_family_changes.md`):
 
 | Path | Change | Why |
 |---|---|---|
-| `distributions/{kb-agentic-skill,mkt-agentic-sdlc}/scripts/lib.js` | MODIFY | add `REMIND_HOOK` + command-hook helpers |
-| `distributions/{kb-agentic-skill,mkt-agentic-sdlc}/scripts/postinstall.js` | MODIFY | wire remind on Claude Code |
+| `distributions/{kb-agentic-skill,mkt-agentic-sdlc}/scripts/lib.js` | MODIFY | add `REMIND_HOOK`, per-spec marker helpers, `findCommandHook`, `wireGlobalRemindHook`, `removeGlobalRemindHooks`; `removeGlobalOrientHooks` now calls the shared `removeGlobalHookEntries` loop (same behaviour) |
+| `distributions/{kb-agentic-skill,mkt-agentic-sdlc}/scripts/postinstall.js` | MODIFY | wire remind on Claude Code after orient |
 | `distributions/{kb-agentic-skill,mkt-agentic-sdlc}/scripts/preuninstall.js` | MODIFY | remove it, attributed by root |
-| course-creator | decide | its ENFORCEMENT.md promises orient only; course has a remind line |
-| `scripts/test_clients.js` + copies | MODIFY | F-093 test (written, RED) |
+| `distributions/{kb-agentic-skill,mkt-agentic-sdlc}/CHANGELOG.md` | MODIFY | Unreleased entry |
+| `scripts/test_clients.js` + kb/mkt copies | MODIFY | F-093 tests |
+| course-creator | none | its ENFORCEMENT.md promises orientation only; whether course should wire its reminder is a separate question |
+
+The sibling copies stay Claude-only, as their orientation hook: Codex wiring is the code
+lens's (F-091) and out of this unit's scope.
 
 ### Preservation constraints
 
@@ -147,6 +162,21 @@ Option A (draft; finalized after the decision):
 |---|---|---|---|
 | P1 | `wireGlobalOrientHook`, `wireCommandHookInto`, marker files under `~/.agentic-sdlc/` | every postinstall, test_clients | A removed hook is never re-added by any lens's install (F-042) |
 | P2 | `findOrientHook`, `findCommandHook` | wire functions | One entry per hook kind per settings file; a lens-aware presence test never ships without per-lens markers |
+
+### Residuals (closure review, accepted as family-wide behaviour)
+
+Both hold identically for the code lens's own reminder today; fixing them here would
+make the siblings diverge from it, so they are named, not fixed:
+
+- **A dead family entry blocks wiring.** A `remind` entry whose validator no longer
+  exists (npm 7+ may skip the uninstaller) counts as present, so no lens wires a live
+  one, silently. The orientation hook reports this as `broken`; the reminder does not.
+- **Uninstalling the lens that owns the one entry leaves the survivors without it.**
+  kb wired it, marketing found it present; uninstalling kb removes it, and marketing gets
+  it back only on its next install.
+
+A follow-up unit would treat a dead entry as absent and re-wire from a surviving lens at
+uninstall, in all three installers at once.
 
 ## Security and Threat Model
 
@@ -158,9 +188,9 @@ Option A (draft; finalized after the decision):
 ## Action Plan
 
 - [x] Reproduce (probe) and pin with a failing test.
-- [ ] Owner decision: A / A+B / C.
-- [ ] Implement, tests green, ENFORCEMENT.md of each lens matches what its installer does.
-- [ ] Design and closure reviews; E2E and merge-review documents.
+- [x] Owner decision: A (R2). B's costs asked, measured below.
+- [x] Implement; probe shows kb-only and marketing-only installs wired.
+- [x] Closure review (4 WARN: 3 fixed, 2 residuals named above); E2E and merge-review documents.
 
 ## Test Strategy
 
@@ -171,5 +201,9 @@ own ENFORCEMENT.md. RED today: kb and marketing miss `remind`. Green for the cod
 ## Diary / Current State
 
 - **2026-11-08** — diagnosis done; hypothesis (shared markers) refuted; real causes 1 and 2
-  above; probe and RED test committed. Waiting for the owner's choice of option. No
-  installer code changed; nothing on the owner's PC touched.
+  above; probe and RED test committed (93952ba3).
+- **2026-11-08** — owner chose A (R2). Implementation was interrupted by drive D: filling
+  up (another repository's Git LFS objects; the owner freed it), which truncated one file;
+  restored from git and re-applied. Closure review PASS after three fixes; batteries green (code 76, kb 52, marketing 52, course 4). Branch not merged: the merge is the owner's. Option B measured on the installed copies: the sibling
+  lookup costs ~24 ms per call, against 400–630 ms for the whole `remind` hook today
+  (Python start-up); +60–100 chars per line, over r32's 600 bound. B stays unruled.

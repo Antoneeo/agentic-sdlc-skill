@@ -942,7 +942,8 @@ test('F-093: postinstall wires every hook its ENFORCEMENT.md declares wired by d
   const doc = fs.readFileSync(path.join(SKILL_SOURCE, 'ENFORCEMENT.md'), 'utf8');
   const declared = [...doc.matchAll(/^### [^\n`]*`([a-z]+)[^`\n]*` \((\w+) -- wired by default\)/gm)]
     .map((m) => ({ sub: m[1], event: m[2] }));
-  assert.ok(declared.length > 0 || !/wired by default/.test(doc), 'the heading pattern must parse');
+  assert.strictEqual(declared.length, (doc.match(/wired by default/g) || []).length,
+    'every "wired by default" in ENFORCEMENT.md must be a parsable hook heading');
   const tmpHome = fs.mkdtempSync(path.join(os.tmpdir(), 'f093-post-'));
   try {
     fs.mkdirSync(path.join(tmpHome, '.claude', 'skills'), { recursive: true });
@@ -956,6 +957,68 @@ test('F-093: postinstall wires every hook its ENFORCEMENT.md declares wired by d
       .flatMap((g) => (Array.isArray(g.hooks) ? g.hooks : [g]))
       .some((h) => h && typeof h.command === 'string' && new RegExp(' ' + sub + '(\\s|$)').test(h.command))));
     assert.deepStrictEqual(missing, [], 'declared wired by default but not wired by postinstall');
+  } finally {
+    fs.rmSync(tmpHome, { recursive: true, force: true });
+  }
+});
+
+// --- F-093: this lens's per-turn reminder keeps the family's guarantees -------
+// One line per prompt for the whole family, a removal never re-added, and an
+// uninstall that removes only this lens's own entry.
+test('F-093: the per-turn reminder: opt-out, family dedup and attributed uninstall', () => {
+  const tmpHome = fs.mkdtempSync(path.join(os.tmpdir(), 'f093-sib-'));
+  const remindCmds = (p) => (fs.existsSync(p) ? ((readJson(p).hooks || {}).UserPromptSubmit || []) : [])
+    .flatMap((g) => (Array.isArray(g.hooks) ? g.hooks : [g]))
+    .map((h) => h && h.command).filter((c) => typeof c === 'string' && / remind(\s|$)/.test(c));
+  try {
+    fs.mkdirSync(path.join(tmpHome, '.claude', 'skills'), { recursive: true });
+    const childEnv = { ...process.env, HOME: tmpHome, USERPROFILE: tmpHome,
+      AGENTIC_SDLC_KB_ROOT: path.join(tmpHome, 'kbroot') };
+    for (const k of ['CLAUDE_CONFIG_DIR', 'GEMINI_HOME', 'CODEX_HOME', 'ANTIGRAVITY_HOME']) delete childEnv[k];
+    const settingsPath = path.join(tmpHome, '.claude', 'settings.json');
+    const install = () => execFileSync(process.execPath, [POSTINSTALL], { env: childEnv, stdio: 'ignore' });
+    const uninstall = () => execFileSync(process.execPath, [PREUNINSTALL], { env: childEnv, stdio: 'ignore' });
+
+    install();
+    assert.strictEqual(remindCmds(settingsPath).length, 1, 'a single-lens install wires the reminder');
+    install();
+    assert.strictEqual(remindCmds(settingsPath).length, 1, 'a reinstall never doubles it');
+
+    // Standing opt-out: the user removes the entry; no reinstall re-adds it.
+    const s = readJson(settingsPath);
+    delete s.hooks.UserPromptSubmit;
+    fs.writeFileSync(settingsPath, JSON.stringify(s, null, 2));
+    install();
+    assert.strictEqual(remindCmds(settingsPath).length, 0, 'a removed reminder is never re-added');
+
+    // Family dedup: a sibling lens's reminder counts as present, and this
+    // lens's uninstall leaves it alone (attribution by validator root).
+    fs.rmSync(path.join(tmpHome, 'kbroot'), { recursive: true, force: true });
+    const sibling = 'python "' + path.join(tmpHome, '.claude', 'skills', 'some-sibling', 'scripts', 'sdlc_check.py') + '" remind';
+    const t = readJson(settingsPath);
+    t.hooks = t.hooks || {};
+    t.hooks.UserPromptSubmit = [{ hooks: [{ type: 'command', command: sibling, timeout: 5 }] }];
+    fs.writeFileSync(settingsPath, JSON.stringify(t, null, 2));
+    install();
+    assert.deepStrictEqual(remindCmds(settingsPath), [sibling], "a sibling's reminder is the family's one line");
+    uninstall();
+    assert.deepStrictEqual(remindCmds(settingsPath), [sibling], "uninstall never removes a sibling's entry");
+
+    // This lens's own entry goes on uninstall.
+    fs.writeFileSync(settingsPath, JSON.stringify({}, null, 2));
+    install();
+    assert.strictEqual(remindCmds(settingsPath).length, 1);
+    const kbroot = path.join(tmpHome, 'kbroot');
+    assert.ok(fs.existsSync(path.join(kbroot, 'remind-hook-wired')));
+    uninstall();
+    assert.strictEqual(remindCmds(settingsPath).length, 0, "uninstall removes this lens's own entry");
+    assert.ok(!fs.existsSync(path.join(kbroot, 'remind-hook-wired')), 'uninstall clears the remind marker');
+
+    // Unrecognised means write nothing: a non-array value is never overwritten.
+    fs.rmSync(kbroot, { recursive: true, force: true });
+    fs.writeFileSync(settingsPath, JSON.stringify({ hooks: { UserPromptSubmit: { keep: 'me' } } }, null, 2));
+    install();
+    assert.deepStrictEqual(readJson(settingsPath).hooks.UserPromptSubmit, { keep: 'me' }, 'a non-array UserPromptSubmit is left alone');
   } finally {
     fs.rmSync(tmpHome, { recursive: true, force: true });
   }
