@@ -372,3 +372,16 @@ Same day, on enforcing it: "Intendevi modificare il .bat per verificare l'applic
 regola?", then "Sì, aggiungilo". `publish_all.bat` runs `scripts/release_remote.js` for each
 package it is about to publish, after the registry skip, and refuses that package unless
 `HEAD` is on `origin/main` and the package's tag is on origin naming `HEAD`.
+
+## Publish from the primary checkout, brought to the release — 2026-11-08
+
+Owner decision, after the first 1.54.0 publish run skipped every package: the release was
+prepared, tagged and pushed from a worktree, but the owner ran `publish_all.bat` from the
+primary checkout, still at 1.52.0, so every package was already on the registry at that
+version and nothing was published. Owner's words: "ma non va bene.. devi prima fare il merge
+sulla cartella principale. Verifica la guida e se serve aggiornala". The owner publishes from
+the primary checkout; before handing the publish over, the agent brings that checkout's
+`main` to the release commit (`git merge --ff-only origin/main`) and verifies `HEAD` equals
+the code tag. Leftover uncommitted changes found there are set aside with a named
+`git stash push -u`, never discarded, and the owner is told. A `git archive` export of the
+tagged commit stays the fallback only when the primary checkout cannot be moved.

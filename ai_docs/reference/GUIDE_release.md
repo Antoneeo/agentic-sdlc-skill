@@ -1,9 +1,9 @@
 ---
 description: How to release a new version of the skill package (npm + git tag + main merge). Consult before any version bump, tag or publish.
 status: CURRENT
-source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition; amended 2026-09-25 — plain `check` beside the hybrid one, `mark` inside the release commit, one tag per package, a pending 2FA is pending, not failed; amended 2026-10-08 — Course latest follows the newest published release for default installation; amended 2026-10-17 — Course publishes on latest like the stable packages, so no separate promotion; amended 2026-10-19 — `mark --note` writes each release's dated entry in project_notes.md; tags are set right before the publish; amended 2026-10-27 (F-070) — user-facing "What's new" per package, mirrored into the README, approved by the owner before the tag, required by publish_all.bat; amended 2026-10-28 — the notes lead with the benefit, and what a user must do is explained in full; amended 2026-11-02 — origin/main and the tags are verified on the remote before the publish, and publish_all.bat refuses otherwise).
+source: Release runbook approved by Antonio Pinto (v1.8.0 release session, 2026-07-02; amended same day — commit+tag+push via git_push_tag.bat, plus the script's observed re-run behavior; amended 2026-07-03 (M4) — eval battery added to the verification battery + dev-only eval-harness packaging note; amended 2026-08-01 — README alignment covers all three distributions plus the family document, and `mark` closes the step instead of opening it; amended 2026-08-25 — publish_all.bat is the publish step, with its skip semantics and its bump-commit-tag-first precondition; amended 2026-09-25 — plain `check` beside the hybrid one, `mark` inside the release commit, one tag per package, a pending 2FA is pending, not failed; amended 2026-10-08 — Course latest follows the newest published release for default installation; amended 2026-10-17 — Course publishes on latest like the stable packages, so no separate promotion; amended 2026-10-19 — `mark --note` writes each release's dated entry in project_notes.md; tags are set right before the publish; amended 2026-10-27 (F-070) — user-facing "What's new" per package, mirrored into the README, approved by the owner before the tag, required by publish_all.bat; amended 2026-10-28 — the notes lead with the benefit, and what a user must do is explained in full; amended 2026-11-02 — origin/main and the tags are verified on the remote before the publish, and publish_all.bat refuses otherwise; amended 2026-11-08 — the owner publishes from the primary checkout, brought to the release commit first).
 distilled_from: ai_docs/reference/.sources/release-runbook-course-creator.md
-source_hash: 12fa545a46555cc961ee52ed101c16184882f6774c01c3f36bdaccd36b3c476a
+source_hash: 366015f8be65405a3a5f70f097ff982bbbb7f6a1293ee22a9620d4fc801d09ba
 ---
 # Guide: Release
 
@@ -71,9 +71,10 @@ never after: npm versions are immutable, so a publish whose commit is not on
    still says something else. (snapshot §Packaging completeness, §README alignment)
 3. Inspect the staging scope: the script stages EVERYTHING (`git add .`).
    If unrelated presentation work remains, stage the release files explicitly and
-   perform the same commit/tag/push sequence with that inspected set. Publish from
-   a clean `git archive` export of the exact tagged commit, preserving the primary
-   checkout. (snapshot §Stable and beta release amendment — 2026-10-02)
+   perform the same commit/tag/push sequence with that inspected set. The publish
+   runs from the primary checkout, brought to the release commit (step 10).
+   (snapshot §Stable and beta release amendment — 2026-10-02, §Publish from the
+   primary checkout — 2026-11-08)
 4. With the bump still uncommitted, `mark skills/agentic-sdlc-skill/
    distributions/ skills/ --note "release X.Y.Z: <short title>"`: the dirty tree
    records a timestamp, so `audit_plan.md` rides in the release commit under the tag,
@@ -111,6 +112,15 @@ never after: npm versions are immutable, so a publish whose commit is not on
    release is normal: the others that did not change are skipped, not failures,
    and an interrupted run is resumed by re-running. It packs the WORKING TREE,
    so run it from the clean tagged checkout — step 5 must have happened first.
+   **The owner runs it from the primary checkout, so bring that checkout to the
+   release first** [source: release-runbook-course-creator.md#publish-from-the-primary-checkout-brought-to-the-release--2026-11-08]:
+   when the release was prepared in a worktree, in the primary checkout set aside any
+   leftover changes with a named `git stash push -u -m "<why>"` (never discard them;
+   tell the owner the stash name), run `git merge --ff-only origin/main`, and verify
+   `git rev-parse HEAD` equals `git rev-parse <code tag>` before handing over. A
+   checkout left on an older release publishes nothing: every package is skipped as
+   already on the registry (the first 1.54.0 run). A `git archive` export of the
+   tagged commit is the fallback only when the primary checkout cannot be moved.
    Every package publishes on `latest`: none declares `publishConfig.tag`, Course
    included (its version keeps the `-beta.N` suffix). The script passes the channel
    explicitly and verifies that dist-tag; a package that declared another channel
