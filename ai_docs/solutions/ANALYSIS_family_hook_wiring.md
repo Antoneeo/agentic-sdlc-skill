@@ -264,3 +264,11 @@ environment, which made the subprocess tests see the real machine. RED before th
   regression tests of kb (1 fail) and mkt (5 errors), which fail identically at HEAD
   daea451a (checked in a throwaway worktree) and are outside this unit. The shared-file
   manifests were regenerated in all four distributions for the new sdlc_core.py.
+- **2026-11-08** — the owner held the release until every test passes. The golden failures
+  were a test regression, not a code one: commit d47ad107 (2026-11-04, "isolate Codex
+  profiles") meant to add one `CODEX_HOME` seam line to each golden test, but replaced the
+  kb and mkt files with the code lens's copy. kb's lost its `graph`/`corpus`/`claim-id`
+  surface and the frozen-1.0 additions-only test; mkt's pointed at `sdlc_check.py` and
+  `golden_ai_docs`, neither of which mkt ships (hence 5 errors). Fixed by restoring each
+  lens's own test from d47ad107^ plus that one line; both baselines pass unchanged, so no
+  expected output was regenerated.
