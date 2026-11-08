@@ -1,11 +1,15 @@
 # Changelog
 
 
-## [Unreleased]
+## [0.1.0-beta.20] - 2026-11-08
 
 ### What's new
 
 **With several lenses of the family installed, the per-prompt reminder now names them.** A machine gets one reminder for the whole family, wired by whichever lens was installed first, so a knowledge or marketing task used to see the code lens's line. When other lenses are installed, the line now lists each one with its domain, for example `kb-agentic (knowledge)`, and asks the agent to load the one that governs the work. A single-lens install sees no change. To do this the reminder reads the installed skill names at each prompt (names only), and its length bound rises from 600 to 700 characters (F-093).
+
+#### What to do
+
+Everyone who has this package installed: run `npm install -g @antoneeo/course-creator@latest`, then `course-creator-install-skill`, and restart your agent sessions. The install step copies the updated validator into your skills directory and wires the reminder if it is missing; sessions already open keep the old one until restarted. To check it worked, run `npm ls -g @antoneeo/course-creator` and look for 0.1.0-beta.20, then start a session: on a machine with more than one lens of the family installed, the one-line reminder shown at each prompt names the installed lenses with their domains.
 
 ## [0.1.0-beta.19] - 2026-11-04
 

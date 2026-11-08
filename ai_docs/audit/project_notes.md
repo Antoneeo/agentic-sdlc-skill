@@ -1,6 +1,8 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
+**2026-11-08 — release 1.54.0 / kb 1.36.0 / mkt 0.31.0 / course 0.1.0-beta.20: per-turn reminder names the installed lenses (F-093).**
+
 **2026-11-05 — release 1.53.1: preserve native Codex consent during hook reinstall.**
 Published and verified on npm on 2026-11-05: @antoneeo/agentic-sdlc-skill 1.53.1 on latest. Tag v1.53.1 and release commit b8694604 are on origin/main. The exact owner-tested tarball was published; registry SHA512 integrity matches. Other packages unchanged.
 
