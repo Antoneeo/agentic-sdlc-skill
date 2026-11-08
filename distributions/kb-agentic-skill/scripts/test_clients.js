@@ -932,3 +932,31 @@ test('F-042 T3b: attribution folds case on win32 (a lowercased hook is still our
       'case variance must never miss the removal (the manufactured-dead-hook false negative)');
   });
 });
+
+// --- F-093: every hook ENFORCEMENT.md declares "wired by default" is wired ---
+// The doc is the contract the user reads; the installer is what runs. F-046
+// added the per-turn hook to the code lens's installer only, while the kb and
+// marketing ENFORCEMENT.md promised it too: a kb-only install got no reminder.
+// Derived from this distribution's own ENFORCEMENT.md, never a literal list.
+test('F-093: postinstall wires every hook its ENFORCEMENT.md declares wired by default', () => {
+  const doc = fs.readFileSync(path.join(SKILL_SOURCE, 'ENFORCEMENT.md'), 'utf8');
+  const declared = [...doc.matchAll(/^### [^\n`]*`([a-z]+)[^`\n]*` \((\w+) -- wired by default\)/gm)]
+    .map((m) => ({ sub: m[1], event: m[2] }));
+  assert.ok(declared.length > 0 || !/wired by default/.test(doc), 'the heading pattern must parse');
+  const tmpHome = fs.mkdtempSync(path.join(os.tmpdir(), 'f093-post-'));
+  try {
+    fs.mkdirSync(path.join(tmpHome, '.claude', 'skills'), { recursive: true });
+    const childEnv = { ...process.env, HOME: tmpHome, USERPROFILE: tmpHome,
+      AGENTIC_SDLC_KB_ROOT: path.join(tmpHome, 'kbroot') };
+    for (const k of ['CLAUDE_CONFIG_DIR', 'GEMINI_HOME', 'CODEX_HOME', 'ANTIGRAVITY_HOME']) delete childEnv[k];
+    execFileSync(process.execPath, [POSTINSTALL], { env: childEnv, stdio: 'ignore' });
+    const settingsPath = path.join(tmpHome, '.claude', 'settings.json');
+    const hooks = fs.existsSync(settingsPath) ? (readJson(settingsPath).hooks || {}) : {};
+    const missing = declared.filter(({ sub, event }) => !((hooks[event] || [])
+      .flatMap((g) => (Array.isArray(g.hooks) ? g.hooks : [g]))
+      .some((h) => h && typeof h.command === 'string' && new RegExp(' ' + sub + '(\\s|$)').test(h.command))));
+    assert.deepStrictEqual(missing, [], 'declared wired by default but not wired by postinstall');
+  } finally {
+    fs.rmSync(tmpHome, { recursive: true, force: true });
+  }
+});

@@ -80,3 +80,4 @@
 | F-089 | Gaps in coordinating parallel sessions — the shared checkout, shared files, coordinator handover | code | L3 | COMPLETED | 2026-11-01 | 2026-11-01 | solutions/ANALYSIS_parallel_sessions_gaps.md |
 | F-090 | The review log's merge line, checked instead of announced | code | L3 | COMPLETED | 2026-11-01 | 2026-11-01 | solutions/ANALYSIS_review_log_union_check.md |
 | F-091 | Codex hook parity | code | L3 | COMPLETED | 2026-11-04 | 2026-11-04 | solutions/ANALYSIS_codex_hooks.md |
+| F-093 | F-093 | code | L3 | PLANNED | 2026-11-08 |  | solutions/ANALYSIS_family_hook_wiring.md |
