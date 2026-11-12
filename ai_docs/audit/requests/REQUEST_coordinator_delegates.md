@@ -28,3 +28,9 @@ The coordinator proposed a separate session for the unit. The owner:
 
 Scope: doctrine in `coordination.md` (the only lens that carries coordination), a probe, an
 eval scenario, tests, commit on the branch. No release; merge and push wait for the owner.
+
+### R3 — 2026-11-12 — integrate and push
+
+After the summary (review FAIL, FAIL, PASS; three WARN fixed after the cap), the owner:
+
+> Sì, integra e push

@@ -4,7 +4,7 @@ level: L3
 branch: claude/f095-coordinator-delegates
 status: IN_PROGRESS
 since: 2026-11-12
-next: Antonio reads the summary and decides whether to integrate the branch; a part integrates it, per the rule it adds.
+next: Integrated into main; release per GUIDE_release.md when Antonio decides.
 details: ANALYSIS_coordinator_delegates.md · audit/requests/REQUEST_coordinator_delegates.md · harness_coordinator_delegates/
 updated: 2026-11-12
 ---
