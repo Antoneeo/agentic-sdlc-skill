@@ -228,6 +228,74 @@ class VerdictHook(unittest.TestCase):
         reason = self.run_hook([VERDICT, call("Edit", file_path="ai_docs/reference/" + GUIDE)])
         self.assertIsNotNone(reason)
 
+    # --- F-094: a named guide is read WHOLE, or it is not read ----------------
+    def long_guide(self, lines):
+        (self.root / "ai_docs" / "reference" / GUIDE).write_text(
+            "".join("line %d\n" % i for i in range(1, lines + 1)), encoding="utf-8")
+        return "ai_docs/reference/" + GUIDE
+
+    def test_field_case_partial_read_is_refused(self):
+        # field: Read offset=1 limit=130 of the 225-line GUIDE_release.md, and the
+        # release then ran on the 130 lines it had seen
+        path = self.long_guide(225)
+        reason = self.run_hook([VERDICT, call("Read", file_path=path, offset=1, limit=130)])
+        self.assertIsNotNone(reason)
+        self.assertIn(GUIDE, reason)
+        self.assertIn("whole", reason)
+
+    def test_an_offset_that_skips_the_start_is_refused(self):
+        path = self.long_guide(225)
+        self.assertIsNotNone(self.run_hook([VERDICT, call("Read", file_path=path, offset=30)]))
+
+    def test_excerpt_and_search_tools_are_not_reads(self):
+        path = self.long_guide(40)
+        for block in (call("Bash", command="head -30 " + path),
+                      call("Bash", command="sed -n 1,40p " + path),
+                      call("Grep", pattern="release", path=path),
+                      call("Agent", prompt="read " + path)):
+            self.assertIsNotNone(self.run_hook([VERDICT, block]), block)
+
+    def test_a_guide_past_the_read_cap_is_read_in_chunks_to_the_end(self):
+        # Claude Code's Read stops at 2000 lines without a limit: a longer guide is
+        # read in consecutive chunks, and stopping before the last line is a refusal
+        path = self.long_guide(2500)
+        self.assertIsNotNone(self.run_hook([VERDICT, call("Read", file_path=path)]))
+        self.assertIsNotNone(self.run_hook([VERDICT, call("Read", file_path=path),
+                                            call("Read", file_path=path, offset=2001, limit=400)]))
+        self.assertIsNotNone(self.run_hook([VERDICT, call("Read", file_path=path),
+                                            call("Read", file_path=path, offset=2101)]),
+                             "a gap at lines 2001-2100 is not a whole read")
+        self.assertIsNone(self.run_hook([VERDICT, call("Read", file_path=path),
+                                         call("Read", file_path=path, offset=2001)]))
+
+    def test_whole_reads_by_every_carrier_pass(self):
+        path = self.long_guide(225)
+        for block in (call("Read", file_path=path), call("Read", file_path=path, limit=225),
+                      call("Bash", command="cat " + path),
+                      call("PowerShell", command="Get-Content -Raw " + path),
+                      call("mcp__devpnt__get_file_content", paths=[path])):
+            self.assertIsNone(self.run_hook([VERDICT, block]), block)
+
+    def test_a_read_span_it_cannot_tell_earns_no_credit(self):
+        # a non-int offset or limit, or a limit of zero, is not a whole read
+        path = self.long_guide(40)
+        for inp in ({"offset": "30"}, {"offset": 30.0}, {"limit": 0}, {"limit": -5},
+                    {"limit": "2000"}):
+            self.assertIsNotNone(self.run_hook([VERDICT, call("Read", file_path=path, **inp)]), inp)
+
+    def test_codex_total_count_short_of_the_end_is_refused(self):
+        path = self.long_guide(225)
+        meta = json.dumps({"type": "session_meta", "payload": {"cwd": str(self.root)}})
+
+        def read(cmd):
+            return json.dumps({"type": "response_item", "payload": {
+                "type": "function_call", "name": "exec_command",
+                "arguments": json.dumps({"cmd": cmd})}})
+        self.assertIsNotNone(self.run_hook(
+            [meta, VERDICT, read("Get-Content -TotalCount 100 '%s'" % path)]))
+        self.assertIsNone(self.run_hook(
+            [meta, VERDICT, read("Get-Content -TotalCount 225 '%s'" % path)]))
+
     # --- out of scope: silent -------------------------------------------
     def test_project_without_guides_is_silent(self):
         (self.root / "ai_docs" / "reference" / GUIDE).unlink()

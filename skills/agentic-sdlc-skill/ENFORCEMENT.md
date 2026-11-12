@@ -71,8 +71,12 @@ Claude Code hands every hook and refuses an Edit, Write, MultiEdit or NotebookEd
   a markdown opener such as `##`, `-`, `•` or `1.` is allowed; inside a sentence it is none), and no
   line that opens with a level-1 declaration (`Level: L1`, or another lens's level 1 such
   as `E1`; a level quoted inside a sentence declares nothing), or
-- a guide the verdict names, present in `reference/`, never appeared in the input of a
-  tool call other than an edit (Read, Bash `cat`, Grep, a subagent brief all count).
+- a guide the verdict names, present in `reference/`, was not read WHOLE: the session's
+  reads of it must cover its first to its last line (F-094). A Read counts for the lines it
+  returns (from `offset`, 1-based, for `limit` lines, 2000 without one), so a guide past
+  2000 lines is read in consecutive chunks to the end; a literal Bash/PowerShell `cat` or
+  `Get-Content` counts whole (`-TotalCount N`: N lines), and so does `get_file_content`.
+  Grep, `head`, `sed`, or a subagent brief naming the guide read nothing.
 
 A verdict whose text after `router:` begins with `no match` or `absent` names no guide.
 The project judged, and its docs root, are the ones holding the edited file, wherever the

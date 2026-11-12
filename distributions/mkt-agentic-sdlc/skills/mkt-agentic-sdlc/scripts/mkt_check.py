@@ -46,7 +46,8 @@ sdlc_core.set_profile(
     remind_line=(
         "first decide if this skill governs the work; if yes, LOAD it once -- an "
         "unread protocol cannot be applied. Declare the engagement level and the "
-        "guide-router verdict before acting. Every claim about the market, the "
+        "guide-router verdict before acting; read a matched guide whole and apply "
+        "it whole. Every claim about the market, the "
         "audience or a competitor carries its evidence -- an unsourced assertion "
         "is a finding, not a premise. Replay governing text -- a brief, a "
         "positioning line, a template -- against the case that motivated it."

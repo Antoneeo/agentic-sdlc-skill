@@ -147,7 +147,7 @@ Use this mode when `devpnt_*` tools are available and point at the current proje
 
 ### 4. Knowledge Processing & Distillation
 - **Isolate the work (Branch/worktree hygiene).** Distillation rewrites existing notes — full re-read per `## Revision` — and does it on a branch or a worktree, never directly on the shared corpus, so a half-finished reconciliation is never what the next reader finds. Where a project does not isolate (one shared checkout), that is a departure from this rule, not a second mode: Rule Zero's step save commit and its declared residual apply. A session that may run while another session uses the same checkout works in its **own git worktree**, and never switches branch, stashes, resets or runs `index` in a checkout another session may be using. Parallel work also shares ids: choose a new unit's id **after fetching**, as the first id free on every branch and tag the checkout can see (`check` names a collision while the unit is open).
-- Before drafting (L2/L3; L1 exempt), **consult the guide router** for a guide covering the task and read it first (the consult trigger, `guides.md` §0). A targeted description match, not a blanket read. Its result is the router verdict already declared with the triage level (Rule Zero).
+- Before drafting (L2/L3; L1 exempt), **consult the guide router** for a guide covering the task and read the match WHOLE first — every line, no offset or limit, no excerpt; past the client's read cap, in chunks to the end — and apply it WHOLE: a rule that does not fit is proposed as an amendment to the guide, never skipped in silence, and the rest still binds. The match is targeted (which guide), never partial (which lines) (the consult trigger, `guides.md` §0), not a blanket read. Its result is the router verdict already declared with the triage level (Rule Zero).
 - Execute knowledge extraction using **Signal Distillation** (`distillation.md`).
 - **Opt-in subagent execution**: for an L3 with an approved analysis, the work MAY be executed via subagents per `dispatch.md`; default stays same-session. `dispatch.md` also carries the family-wide **delegation boundary** (what may be delegated at all, and what never may) — that section is not gated by the opt-in trigger and applies at any level, dispatch or no dispatch.
 - Handle conflicting or outdated information via **Reconciliation** (`reconciliation.md`). Mark obsolete files `status: SUPERSEDED`.
@@ -169,7 +169,7 @@ Use this mode when `devpnt_*` tools are available and point at the current proje
 
 ## Operative Guides & Router
 Guides are consulted, created, and distilled per `guides.md`.
-- **Consult (before acting)**: check `ai_docs/reference/INDEX.md` — the guide router — and declare the verdict with the triage level.
+- **Consult (before acting)**: check `ai_docs/reference/INDEX.md` — the guide router — and declare the verdict with the triage level; a matched guide is read whole and applied whole (`guides.md` §0).
 - **Propose proactively**: when the user hands over indications that will govern future work, propose distilling them into a guide. A proposal, never a silent write, and never from model knowledge — a guide's whole value is that every claim traces to what the user actually provided.
 - Distill from user instructions into `ai_docs/reference/GUIDE_[topic].md`.
 

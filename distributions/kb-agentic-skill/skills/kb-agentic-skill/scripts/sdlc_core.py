@@ -2801,8 +2801,21 @@ def cmd_gate(args):
 # 0) only on certainty; whatever it cannot tell resolves to silence. It never
 # prints `allow` -- that would skip the user's permission prompt. Owner: block
 # (REQUEST_guide_verdict_check.md R3), wired by default (R4, rulings.md r34).
+#
+# F-094: a named guide counts as read only when the session read EVERY line of
+# it. Before, the guide's name anywhere in a non-edit tool's input was a read, so
+# `Read offset=1 limit=130` of a 225-line guide, `head -30` or a Grep on it all
+# passed (field scan: 157 partial Reads of guides against 118 whole ones), and
+# the agent applied the part it had seen. A read is now a line span: a Read call
+# (offset is the 1-based first line, probed 2026-11-12; no limit = the client's
+# READ_DEFAULT_LIMIT), a literal shell `cat`/`Get-Content` (whole, or its
+# -TotalCount), a get_file_content (whole). Grep, head, sed, an Agent prompt
+# naming the guide: no span. The guide is read when the spans cover 1..its last
+# line. Owner: REQUEST_whole_guide_read.md R1.
 
 VERDICT_EDIT_TOOLS = ("Edit", "Write", "MultiEdit", "NotebookEdit")
+READ_DEFAULT_LIMIT = 2000   # Claude Code's Read without `limit` stops at line 2000
+GUIDE_COUNT_MAX = 8 * 1024 * 1024  # a larger guide: cannot afford to count its lines
 VERDICT_MAX_BYTES = 256 * 1024 * 1024  # a larger transcript: cannot afford to tell
 VERDICT_LINE_MAX = 1024 * 1024         # assistant lines are small; skip the rest unparsed
 # Markdown emphasis between the word and the colon ("**router**: no match") and
@@ -2886,6 +2899,13 @@ def hook_edits(payload):
 
 def shell_read_paths(command, cwd, workdir=None):
     """Literal Get-Content/cat reads only: no shell expansion or execution."""
+    found = shell_read(command, cwd, workdir)
+    return found[0] if found else None
+
+
+def shell_read(command, cwd, workdir=None):
+    """(paths, line count or None) of a literal Get-Content/cat read, else None.
+    The count is Get-Content's -TotalCount (F-094): those lines only, not the file."""
     if not isinstance(command, str) or re.search(r"[$`\r\n;|&<>\x00]", command):
         return None
     token_re = re.compile(r"\s*(?:'([^']*)'|\"([^\"]*)\"|([^\s'\"]+))")
@@ -2899,7 +2919,7 @@ def shell_read_paths(command, cwd, workdir=None):
         pos = match.end()
     if not tokens or tokens[0].lower() not in ("get-content", "cat"):
         return None
-    paths, i = [], 1
+    paths, i, count = [], 1, None
     while i < len(tokens):
         token = tokens[i]
         if tokens[0].lower() == "get-content" and token.lower() in ("-literalpath", "-path", "-raw"):
@@ -2909,6 +2929,7 @@ def shell_read_paths(command, cwd, workdir=None):
             i += 1
             if i == len(tokens) or not tokens[i].isdigit():
                 return None
+            count = int(tokens[i])
         elif tokens[0] == "cat" and token == "--":
             pass
         elif token.startswith("-") or re.search(r"[*?\[\],]", token):
@@ -2920,7 +2941,7 @@ def shell_read_paths(command, cwd, workdir=None):
                 return None
             paths.append(resolved)
         i += 1
-    return paths or None
+    return (paths, count) if paths else None
 
 
 def _codex_literal_calls(code):
@@ -3006,8 +3027,12 @@ def transcript_events(path):
                     for edit in hook_edits({"tool_input": {"command": command}, "cwd": cwd}) or []:
                         blocks.append({"type": "tool_use", "name": "Write", "input": {"file_path": edit["path"]}})
                 for args in calls:
-                    for target in shell_read_paths(args.get("cmd", args.get("command")), cwd, args.get("workdir")) or []:
-                        blocks.append({"type": "tool_use", "name": "Read", "input": {"file_path": target}})
+                    found = shell_read(args.get("cmd", args.get("command")), cwd, args.get("workdir"))
+                    for target in (found[0] if found else []):
+                        # F-094: the shell read is whole (no limit) unless -TotalCount
+                        inp = {"file_path": target}
+                        inp.update({"limit": found[1]} if found[1] is not None else {"whole": True})
+                        blocks.append({"type": "tool_use", "name": "Read", "input": inp})
             if blocks:
                 yield {"type": "assistant", "isSidechain": bool(entry.get("agent_id") or data.get("agent_id")),
                        "message": {"content": blocks}}
@@ -3020,9 +3045,9 @@ def transcript_facts(path):
     Returns {"assistant": entries parsed, "sidechain": a subagent's own transcript
     (Claude Code marks every entry of one `isSidechain`), "declared": a router verdict seen,
     "trivial": a level-1 declaration seen (`Level: L1`, `E1`), "named": guides the verdicts name,
-    "read": guide names that appeared in a non-edit tool's input}."""
+    "read": guide name -> the line spans the session read of it (F-094, _read_spans)}."""
     facts = {"assistant": 0, "sidechain": False, "declared": False, "trivial": False,
-             "named": set(), "read": set()}
+             "named": set(), "read": {}}
     try:
         p = Path(path)
         if not p.is_file() or p.stat().st_size > VERDICT_MAX_BYTES:
@@ -3049,13 +3074,73 @@ def transcript_facts(path):
                                 facts["declared"] = True
                                 if not _VERDICT_NONE_RE.match(m.group(1)):
                                     facts["named"].update(_GUIDE_NAME_RE.findall(m.group(1)))
-                    elif (block.get("type") == "tool_use"
-                          and block.get("name") not in VERDICT_EDIT_TOOLS):
-                        facts["read"].update(_GUIDE_NAME_RE.findall(
-                            json.dumps(block.get("input"), ensure_ascii=False)))
+                    elif block.get("type") == "tool_use":
+                        base = entry.get("cwd") if isinstance(entry.get("cwd"), str) else None
+                        for name, span in _read_spans(block, base or str(p.parent)):
+                            facts["read"].setdefault(name, []).append(span)
     except (OSError, ValueError, TypeError, AttributeError):
         return None
     return facts
+
+
+def _read_spans(block, cwd):
+    """(guide name, (first line, last line or None = end of file)) for each guide
+    this tool call read (F-094). Only reads that return the file's lines count; a
+    search, an excerpt command or a prompt naming the guide reads nothing. `cwd`
+    only anchors a relative shell path: the guide is matched by its name."""
+    name, inp = block.get("name"), block.get("input")
+    if not isinstance(inp, dict):
+        return []
+    if name == "Read" and isinstance(inp.get("file_path"), str):
+        if inp.get("whole") is True:
+            span = (1, None)
+        else:
+            offset, limit = inp.get("offset"), inp.get("limit")
+            for v in (offset, limit):  # present but not a plain int: cannot tell, no credit
+                if v is not None and (not isinstance(v, int) or isinstance(v, bool)):
+                    return []
+            if limit is not None and limit <= 0:
+                return []
+            first = offset if offset is not None and offset > 1 else 1
+            count = limit if limit is not None else READ_DEFAULT_LIMIT
+            span = (first, first + count - 1)
+        return [(g, span) for g in _GUIDE_NAME_RE.findall(Path(inp["file_path"]).name)]
+    if name in ("Bash", "PowerShell"):
+        found = shell_read(inp.get("command"), cwd)
+        if not found:
+            return []
+        span = (1, found[1]) if found[1] is not None else (1, None)
+        return [(g, span) for path in found[0] for g in _GUIDE_NAME_RE.findall(Path(path).name)]
+    if isinstance(name, str) and name.endswith("get_file_content"):
+        paths = inp.get("paths") if isinstance(inp.get("paths"), list) else []
+        return [(g, (1, None)) for path in paths if isinstance(path, str)
+                for g in _GUIDE_NAME_RE.findall(Path(path).name)]
+    return []
+
+
+def _guide_lines(path):
+    """The guide's line count, or None when it cannot be counted within the bounds."""
+    try:
+        if path.stat().st_size > GUIDE_COUNT_MAX:
+            return None
+        text = path.read_bytes()
+    except OSError:
+        return None
+    return text.count(b"\n") + (0 if not text or text.endswith(b"\n") else 1)
+
+
+def _read_whole(spans, lines):
+    """True when the spans cover lines 1..lines. Unknown size: any read counts."""
+    if not spans:
+        return False
+    if lines is None:
+        return True
+    reached = 0
+    for first, last in sorted(spans, key=lambda s: s[0]):
+        if first > reached + 1:
+            break
+        reached = max(reached, lines if last is None else last)
+    return reached >= lines
 
 
 def verdict_reason(payload, root=None, docs_name=None):
@@ -3098,10 +3183,12 @@ def verdict_reason(payload, root=None, docs_name=None):
                 f"guides ({docs_dir()}/reference/INDEX.md). Declare it with the level, e.g. "
                 "\"Level: L2 · router: no match\" or \"router: GUIDE_x.md -> read\" "
                 "(L1: \"Level: L1\"), then retry.")
-    unread = sorted((facts["named"] & guides) - facts["read"])
+    unread = sorted(g for g in facts["named"] & guides
+                    if not _read_whole(facts["read"].get(g), _guide_lines(ref / g)))
     if unread:
-        return (f"[sdlc verdict] The router verdict names {', '.join(unread)}, not read in "
-                "this session. Read it, then retry.")
+        return (f"[sdlc verdict] The router verdict names {', '.join(unread)}, not read "
+                "whole in this session. Read every line (no offset or limit; past the read "
+                "cap, in chunks to the end), then retry.")
     return None
 
 
@@ -4197,7 +4284,7 @@ def cmd_orient(args):
         left = share - len("\n".join(head + tail)) - 2
         body = []
         for rel, title, builder, cap in (
-                (router_rel, "## Guide router (reference/INDEX.md) -- read the matching guide before acting",
+                (router_rel, "## Guide router (reference/INDEX.md) -- read a matching guide whole, every line, before acting",
                  _orient_router_lines, ORIENT_ROUTER_CHARS),
                 (handoff_rel, "## Workstream registry (audit/handoff.md)",
                  _orient_registry_lines, ORIENT_REGISTRY_CHARS),

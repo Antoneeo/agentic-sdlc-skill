@@ -55,11 +55,10 @@ sdlc_core.set_profile(
     remind_line=(
         "first decide if this skill governs the work; if yes, LOAD it once -- an "
         "unread protocol cannot be applied. Declare the level (L1/L2/L3/Spike) "
-        "and the guide-router verdict before acting; an imperative is a request "
-        "to triage. Name the mechanism before fixing the first defect you can "
-        "measure -- symptom patches recur and stack. Replay governing text -- "
-        "doctrine, a prompt, a schema -- against the case that motivated it: red "
-        "under the old text, green under the new."
+        "and the guide-router verdict before acting (an imperative is a request "
+        "to triage); read a matched guide whole, apply it whole. Name the "
+        "mechanism before fixing -- symptom patches recur and stack. Replay governing text (doctrine, a prompt, a schema) against the "
+        "case that motivated it: red under the old text, green under the new."
     ),
 )
 

@@ -52,7 +52,7 @@ The validator now ships as three files: entry point, `sdlc_core.py`, `knowledge.
 
 Always classify the request before choosing the process. Declare the chosen level to the user when you start operational work.
 
-**Declare the level WITH the router verdict** (one line, for L2, L3 and Spike — L1 declares the level alone): the result of the guide-router lookup described under `## Operative Guides`, i.e. `Level: L2 · router: no match` or `Level: L3 · router: GUIDE_release.md → read`. The lookup is the consult trigger; making its result a declared output is what keeps it from being skipped — a level declared without a verdict makes "did not look" indistinguishable from "looked, nothing matched". Name the guide you matched, or `no match`; name a second one only when it covers a genuinely distinct concern (typically one operative guide plus the comprehension map of the component you are touching). The verdict is never a listing of the catalogue, and never an excuse to read every guide. On Claude Code, and on supported local Codex sessions after the user trusts the installed hooks, an edit in a project with guides is refused until the session shows a verdict (or `Level: L1`) and has read every guide it names (`ENFORCEMENT.md` §3). Codex covers native `apply_patch`; unsupported clients, cloud orchestration and other write paths keep the written duty.
+**Declare the level WITH the router verdict** (one line, for L2, L3 and Spike — L1 declares the level alone): the result of the guide-router lookup described under `## Operative Guides`, i.e. `Level: L2 · router: no match` or `Level: L3 · router: GUIDE_release.md → read`. The lookup is the consult trigger; making its result a declared output is what keeps it from being skipped — a level declared without a verdict makes "did not look" indistinguishable from "looked, nothing matched". Name the guide you matched, or `no match`; name a second one only when it covers a genuinely distinct concern (typically one operative guide plus the comprehension map of the component you are touching). The verdict is never a listing of the catalogue, and never an excuse to read every guide. On Claude Code, and on supported local Codex sessions after the user trusts the installed hooks, an edit in a project with guides is refused until the session shows a verdict (or `Level: L1`) and has read every guide it names whole, first line to last (`ENFORCEMENT.md` §3). Codex covers native `apply_patch`; unsupported clients, cloud orchestration and other write paths keep the written duty.
 
 | Level | Criteria | Required process |
 |---|---|---|
@@ -272,7 +272,7 @@ Legacy note: the validator also accepts the deprecated Italian frontmatter keys 
 ## Operative Guides
 
 Guides are **consulted, created, proposed, and (for code) authored for comprehension** — four moments; the mechanics live once in `guides.md`. Two source kinds: `document` (user indications, operative) and `code` (a comprehension map of a complex component):
-- **Consult (before acting):** before operative L2/L3 work (L1 exempt), check the guide router for a guide covering the task and read the match first — a targeted description match, never a blanket read. **Declare the verdict** on the same line as the triage level (Rule Zero): the lookup is only reliable when its result is visible. → `guides.md` §0.
+- **Consult (before acting):** before operative L2/L3 work (L1 exempt), check the guide router for a guide covering the task and read the match WHOLE first — every line, no offset or limit, no excerpt; past the client's read cap, in chunks to the end — and apply it WHOLE: a rule that does not fit is proposed as an amendment to the guide, never skipped in silence, and the rest still binds (`guides.md` §0). The match is targeted (which guide), never partial (which lines), never a blanket read. **Declare the verdict** on the same line as the triage level (Rule Zero): the lookup is only reliable when its result is visible. → `guides.md` §0.
 - **Create (from user indications):** the origin+purpose test below (`source_kind: document`).
 - **Propose proactively (after success):** after reusable, user-indication-governed work, PROPOSE distilling a guide — a proposal, never a silent write, never from model knowledge. → `guides.md` §1.
 - **Comprehend (code, autonomous):** when a component/feature/layer is high-complexity and no CURRENT guide covers it, it is your DUTY to WRITE a `source_kind: code` comprehension guide autonomously — no proposal (additive, code-anchored, reversible); every claim traces to a code excerpt. Signals + guard-rails: `guides.md` §1.
@@ -282,7 +282,7 @@ knowledge) meant to govern how the agent operates (purpose = operative), not jus
 inform an answer. Both hold → distill into `ai_docs/reference/GUIDE_[topic].md`.
 
 A guide TRAINS the agent, two levels: the guide is the **synthesis** a trained
-agent carries (compact — read whole before acting); the verbatim snapshot in
+agent carries (compact — read whole, every line, and applied whole before acting); the verbatim snapshot in
 `.sources/` is the **book**, reached on demand via the section markers. Fidelity
 constraint: only what the source supports; gaps marked `[not covered by source]`,
 never filled from general knowledge; selection and compression expected, addition

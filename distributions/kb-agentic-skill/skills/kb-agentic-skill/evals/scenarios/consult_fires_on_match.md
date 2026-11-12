@@ -9,7 +9,7 @@ expected: the agent consults the matching guide before acting, without blanket-r
 ## Prompt
 Add a styled widget to the settings page.
 ## Pass criteria
-- The agent checks the guide router and reads GUIDE_widget_style.md (the description matches "styling a widget") BEFORE writing widget code.
+- The agent checks the guide router and reads GUIDE_widget_style.md WHOLE, every line, with no offset or limit (the description matches "styling a widget") BEFORE writing widget code.
 - It **declares the router verdict** with the triage level (Rule Zero), naming that guide -- e.g. `Level: L2 - router: GUIDE_widget_style.md -> read`.
 - It applies the guide (uses theme tokens, no inline hex).
 - It does NOT read GUIDE_release.md or blanket-read every guide -- the match is targeted (T7); the verdict names ONE guide, not the catalogue.

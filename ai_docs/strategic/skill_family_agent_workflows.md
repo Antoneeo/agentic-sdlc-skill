@@ -75,7 +75,9 @@ Qualunque lente sia attiva, l'agente:
 2. **Si orienta prima di creare**: registro dei workstream (`handoff.md`, una riga
    per lavoro aperto), indici generati (mai scritti a mano — il validator
    fallisce su uno editato), guide operative con fedeltà alla fonte (snapshot
-   verbatim + hash, `stale` rileva il drift).
+   verbatim + hash, `stale` rileva il drift); una guida che corrisponde al lavoro
+   si legge per intero, ogni riga, e si applica per intero — una regola che non
+   calza si propone come modifica della guida, mai saltata in silenzio (F-094).
    Da F-028 il registro **è** uno degli indici generati: la verità sta in un file
    per workstream (`HANDOFF_[unit].md`, la frontmatter È la riga) e `index` lo
    costruisce. Motivo: una riga per workstream non bastava — due lavori aperti
