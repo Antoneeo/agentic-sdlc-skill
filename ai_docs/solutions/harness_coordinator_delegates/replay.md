@@ -6,7 +6,7 @@ quoted verbatim.
 
 - Before-text: `coordination_before.md` (origin/main 3658474d).
 - After-text: `skills/agentic-sdlc-skill/coordination.md` on the branch,
-  sha256 `7301604b4bb1f94b93ea570fd0970047c6874d78a9207fd0a7efa525691c0d66` (the reader
+  sha256 `7301604b4bb1f94b93ea570fd0970047c6874d78a9207fd0a7efa525691c0d66` (of the CRLF working copy, as checked out on Windows; the git blob hashes differently. The reader
   reported the same hash for the file it read). Re-verify with `sha256sum` before trusting
   the table; any later edit of the file means re-running the reader.
 
