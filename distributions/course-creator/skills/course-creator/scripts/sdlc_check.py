@@ -23,7 +23,8 @@ sdlc_core.set_profile(
                   "question_discipline"),
     design_gate_between=("### 3. Course Design", "### 4. Production and Testing"),
     remind_line=("load course-creator when the deliverable teaches; declare triage and "
-                 "guide-router verdict. Define the learner profile and prerequisites before "
+                 "guide-router verdict; read a matched guide whole, apply it whole. Define "
+                 "the learner profile and prerequisites before "
                  "writing explanations. Reopen sources for factual claims. A simulator is "
                  "diagnostic; real learning remains unverified until supported by feedback."),
 )

@@ -61,7 +61,7 @@ After re-analyzing, record it with: sdlc_check.py mark <path>
 
 Triage every request (Rule Zero): L1 trivial - L2 small - L3 significant - Spike. Declare the level with the guide-router verdict (a guide below, or "no match"). When in doubt, pick the higher level.
 
-## Guide router (reference/INDEX.md) -- read the matching guide before acting
+## Guide router (reference/INDEX.md) -- read a matching guide whole, every line, before acting
 - `GUIDE_release.md` (CURRENT) -- How to cut and publish a release of the Widget Service.
 
 ## Workstream registry (audit/handoff.md)

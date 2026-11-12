@@ -20,7 +20,7 @@ It is what users mean by "docs site", "minisito", "documentation site" or "proje
 
 If `agentic-sdlc`, `kb-agentic`, or `mkt-agentic-sdlc` is installed alongside this skill, consult `routing.md` for the owner of the **deliverable**, then declare the lens. L1 never reaches it. A course from supplied documents is course work; ingestion and verification of the corpus is a separate knowledge unit. A commercial campaign is marketing work. If the request contains distinct deliverables, split them before choosing a lens.
 
-Declare the level and the guide-router verdict at the start of operational work: `Level: L3 · router: GUIDE_topic.md → read` or `router: no match`. First consult the guide router at `ai_docs/reference/INDEX.md` before saying no match. Use the question discipline in `elicitation.md` to ask a real doubt when it emerges, before writing its answer into an artifact.
+Declare the level and the guide-router verdict at the start of operational work: `Level: L3 · router: GUIDE_topic.md → read` or `router: no match`. First consult the guide router at `ai_docs/reference/INDEX.md` before saying no match. A matched guide is read whole — every line, no offset or limit, no excerpt — and applied whole: a rule that does not fit is proposed as an amendment to the guide, never skipped in silence (`guides.md` §0). Use the question discipline in `elicitation.md` to ask a real doubt when it emerges, before writing its answer into an artifact.
 
 | Level | Criteria | Process |
 |---|---|---|
@@ -59,7 +59,7 @@ An operative guide is not a dumping ground. Follow `guides.md`: source provenanc
 
 ### 1. Orient and align
 
-Read `ai_docs/README.md`, `ai_docs/INDEX.md`, and `ai_docs/reference/INDEX.md` (the guide router). Consult (before acting) the matched guide and project memory through `memory.md`/`recall`; state the router verdict. Read the project Vision and prior decisions. Inspect course artifacts already present. When the requester knows only the topic, infer an initial learner profile as a proposal and research candidate sources if the client can browse. Do not teach unverified factual claims. Ask only for decisions the available evidence cannot settle; `elicitation.md` owns this discipline.
+Read `ai_docs/README.md`, `ai_docs/INDEX.md`, and `ai_docs/reference/INDEX.md` (the guide router). Consult (before acting) the matched guide, read whole and applied whole, and project memory through `memory.md`/`recall`; state the router verdict. Read the project Vision and prior decisions. Inspect course artifacts already present. When the requester knows only the topic, infer an initial learner profile as a proposal and research candidate sources if the client can browse. Do not teach unverified factual claims. Ask only for decisions the available evidence cannot settle; `elicitation.md` owns this discipline.
 
 ### 2. Vision Gate
 

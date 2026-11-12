@@ -34,12 +34,28 @@ already cover how to do this well?*
 - **Scan the router, not the guides.** Read the when-to-consult descriptions in
   the guide router `ai_docs/reference/INDEX.md` **and** the agent-KB router
   `~/.agentic-sdlc/ai_docs/reference/INDEX.md` (if present). Match by topic.
-- **On a match, read that guide's synthesis whole** before acting (the snapshot
-  stays on demand via the section markers). No match → proceed normally.
-- **Targeted match, never blanket.** Open only the guide whose description fits
-  the task — never load every guide, which would reintroduce the exact token
-  cost the "point to them" model exists to avoid. The two-level model (compact
-  synthesis / verbatim snapshot) already bounds a single guide's cost.
+- **On a match, read the WHOLE guide before acting — every line, first to
+  last.** No offset that skips its start, no limit that stops before its end, no
+  `head`/`sed`/grep excerpt, no "the section that looks relevant". Where the
+  client caps one read (Claude Code's Read stops at 2000 lines), continue in
+  consecutive chunks until the last line. Only the snapshot (the book) is read
+  on demand, through the section markers. No match → proceed normally.
+- **Apply the WHOLE guide.** Every rule it states binds the work it matched, not
+  the subset you recognized. A rule you judge wrong, outdated or inapplicable is
+  never skipped in silence: name it, say why, and propose amending the guide
+  (§6); until the amendment is accepted, the guide as written governs, and any
+  deviation you take is declared to the user with its reason. Even then the
+  guide is considered whole: the other rules still bind. Why: an agent that
+  reads part of a guide applies part of it, and the omitted rule is exactly the
+  one the guide was written to carry (F-094 field scan: 157 partial reads of
+  guides against 118 whole ones; a release ran on 130 of the 225 lines of its
+  runbook).
+- **Targeted match, never blanket.** "Targeted" chooses WHICH guide, never which
+  part of it: open only the guide whose description fits the task — never load
+  every guide, which would reintroduce the exact token cost the "point to them"
+  model exists to avoid. The two-level model (compact synthesis / verbatim
+  snapshot) already bounds a single guide's cost, so a whole read is affordable
+  by construction.
 - **Declare the router verdict.** The lookup result travels with the triage
   level (`SKILL.md` Rule Zero) as one line — `router: no match`, or
   `router: GUIDE_x.md → read`. This is what makes the consult reliable: an
@@ -66,7 +82,8 @@ already cover how to do this well?*
   unit of work.
 - **Under subagent dispatch** the consult happens at plan-authoring time (the
   orchestrator populates each task's `guides` field); a context-free subagent
-  reads the pointers it was handed and does not run its own router lookup. See
+  reads each guide it was handed whole, as above, and does not run its own
+  router lookup. See
   `dispatch.md`.
 
 ## 1. When to trigger
@@ -232,8 +249,9 @@ the component from partial understanding.
    comprehension repertoire — how it works / control & data flow / invariants / where
    it breaks), each with a fidelity marker.
    **Write for the two-level read**: the guide (synthesis) is small enough to
-   be read WHOLE before acting; the snapshot (book) is where size lives and
-   where readers grep/partial-read on demand, following the section markers.
+   be read WHOLE before acting, and every reader reads it whole (§0); the
+   snapshot (book) is where size lives and the only place readers grep or
+   partial-read on demand, following the section markers.
    Use the repertoire's stable, self-describing headings, keep one concern per
    `##` section, and make the frontmatter `description` the "should I open
    this file at all" answer. This is why one synthesis + one book beats
@@ -287,6 +305,12 @@ state it explicitly when handing off a newly created guide.
 
 ## 6. Maintenance
 
+- **A rule that does not fit the work is a proposed amendment, never a silent
+  skip** (§0). Read the whole guide, name the rule and the reason, and propose
+  the change through this pipeline — a `document` guide changes only with the
+  user's confirmation and a new snapshot of the source that changed; a `code`
+  guide is corrected against the code. Until the amendment lands, the guide as
+  written governs, and every other rule in it still binds.
 - **Source changed**: new snapshot, regenerate the guide from it (new
   `source_hash`); a guide REPLACING another is `status: SUPERSEDED` on the old
   one. `sdlc_check.py stale` (also under `--hybrid`) reports `[stale]` when a

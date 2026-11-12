@@ -63,7 +63,7 @@ Semantics: exit code 2 + message on stderr ⇒ the write is blocked and the mess
 
 `mkt_check.py verdict --hook` refuses an Edit, Write, MultiEdit or NotebookEdit when the
 session transcript shows no guide-router verdict (a line that opens with `router: …` or with the level, `Level: L2 · router: …`, `Level: Spike · router: …`; or one that opens with a level-1 declaration)
-or a guide the verdict names was never read; it is silent in projects without guides and
+or a guide the verdict names was not read WHOLE: the session's reads of it (Read spans, a literal `cat`/`Get-Content`, `get_file_content`) must cover its first to its last line; Grep, `head`, `sed` or a brief naming it read nothing (F-094); it is silent in projects without guides and
 whenever it cannot tell. The code package (`agentic-sdlc`) wires it machine-wide on
 Claude Code; this package does not. To wire it by hand, add a `PreToolUse` entry with
 matcher `Edit|Write|MultiEdit|NotebookEdit` and command

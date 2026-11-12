@@ -44,7 +44,8 @@ sdlc_core.set_profile(
     remind_line=(
         "first decide if this skill governs the work; if yes, LOAD it once -- an "
         "unread protocol cannot be applied. Triage: L1 quick fact, L2 propagation, "
-        "L3 new knowledge unit, Spike; declare the level. On this project's "
+        "L3 new knowledge unit, Spike; declare the level. A matched guide is read "
+        "whole and applied whole. On this project's "
         "domain, read topics/INDEX.md first and cite claim ids, or state no "
         "coverage. Decisions today get recorded in the KB at close. Revising a "
         "document? Re-read it whole and rewrite to current state -- never append "

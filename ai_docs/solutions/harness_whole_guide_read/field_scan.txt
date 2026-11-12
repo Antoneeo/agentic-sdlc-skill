@@ -1,0 +1,19 @@
+F-094 field scan, 2026-11-12: every Claude Code transcript on the owner's PC
+(~/.claude/projects/*/*.jsonl, 283 files, all projects), assistant tool_use blocks
+whose input names a GUIDE_*.md file, classified by tool and shape.
+
+Read with offset or limit (partial) ........ 157
+Read with neither (whole, up to 2000 lines)  118
+Bash `cat`/`Get-Content` alone .............. 26
+Bash, other shapes (head, sed, grep, ...) ... 1706 (includes commands that only mention a guide)
+Grep with path = a guide .................... 38
+devpnt get_file_content / project_grep ...... 2 / 1
+
+Field shapes, verbatim inputs (paths shortened):
+  Read GUIDE_release.md offset 1 limit 130   (the guide is 225 lines: lines 131-225 never read)
+  Read GUIDE_deploy.md offset 30; offset 54 limit 20
+  Bash "cat ai_docs/reference/INDEX.md; head -30 ai_docs/reference/GUIDE_deploy.md"
+  Grep pattern "eclosion-deploy|branch|ChatPNT-Online" path GUIDE_accesso_agentico_vps.md
+
+Before F-094 the verdict hook credited every one of these as "read": it matched the
+guide's name anywhere in the input of any non-edit tool (transcript_facts).
