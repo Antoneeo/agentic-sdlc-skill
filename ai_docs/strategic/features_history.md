@@ -8,7 +8,7 @@
 | F-002 | Agentic SDLC vNext | code | L3 | COMPLETED | 2026-06-13 | 2026-06-13 | solutions/ANALYSIS_agentic_sdlc_vnext.md |
 | F-003 | devPNT Seam (coexistence contract) | code | L3 | COMPLETED | 2026-07-02 | 2026-07-02 | solutions/ANALYSIS_devpnt_seam.md |
 | F-014 | Vision Actors | code | L3 | COMPLETED | 2026-07-08 | 2026-07-08 | solutions/ANALYSIS_vision_actors.md |
-| F-015 | Code-Comprehension Guides | code | L3 | IN_PROGRESS | 2026-07-19 |  | solutions/ANALYSIS_comprehension_guides.md |
+| F-015 | Code-Comprehension Guides | code | L3 | COMPLETED | 2026-07-19 | 2026-11-12 | solutions/ANALYSIS_comprehension_guides.md |
 | F-016 | Guide Activation (consult on the mandatory path) | code | L3 | COMPLETED | 2026-07-27 | 2026-07-27 | solutions/ANALYSIS_guide_activation.md |
 | F-017 | Vision Clarity (cold-readable, decidable Vision) | code | L3 | COMPLETED | 2026-07-27 | 2026-07-27 | solutions/ANALYSIS_vision_clarity.md |
 | F-018 | Verifiable Vision (the drafting discipline) | code | L3 | COMPLETED | 2026-07-27 | 2026-07-27 | solutions/ANALYSIS_verifiable_vision.md |

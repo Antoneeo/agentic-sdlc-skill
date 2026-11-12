@@ -1,10 +1,10 @@
 ---
 id: F-015
 feature: Code-Comprehension Guides
-status: IN_PROGRESS
+status: COMPLETED
 level: L3
 start_date: 2026-07-19
-end_date:
+end_date: 2026-11-12
 ---
 
 # ANALYSIS — Code-Comprehension Guides

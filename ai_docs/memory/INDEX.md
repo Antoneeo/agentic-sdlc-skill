@@ -46,7 +46,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/ANALYSIS_claim_ledger.md | code |  | Feature Analysis: Claim Ledger | 5ebd8a20e761710caa11deeaea19058ea75e28bde8a264c877a0b10139f3dc31 |
 | solutions/ANALYSIS_codex_agents_skills.md | code |  | F-082 - on Codex the installer copies each skill into $HOME/.agents/skills/&lt;name>/ (the user location OpenAI documents); the old $CODEX_HOME/skills/&lt;name> path becomes a directory link to it (older Codex keeps loading, current Codex lists it once), a pre-existing legacy folder is moved to a backup, never deleted. Four distributions here plus distill-skill. | 0877aa3d4dc85665388204fe4650244f6b97657ae34ed4289642f522100f5db3 |
 | solutions/ANALYSIS_codex_hooks.md | code |  | Design della parità degli hook agentic-sdlc su Codex locale, con trust umano, compatibilità e prove di regressione. | bba596285cee1e872c23d711e3a6bd5da9041760b45fa6a9c344027b921313d0 |
-| solutions/ANALYSIS_comprehension_guides.md | code |  | ANALYSIS — Code-Comprehension Guides | 226bb3b1864b7abb9c42ee2fffc83dc279d65516797f92a9c2fde202c942695e |
+| solutions/ANALYSIS_comprehension_guides.md | code |  | ANALYSIS — Code-Comprehension Guides | 387235c017a4314eadff0fb53f43f249780db601065c1a1be9cc55bcec742c6c |
 | solutions/ANALYSIS_course_agentic-sdlc-kb-agentic.md | course |  | Course Analysis: kb-agentic e agentic-sdlc | 65f8e13919767be6174cf096ec57265c2a356f96a8c0b7e947d024f0d7304e17 |
 | solutions/ANALYSIS_course_creator.md | code |  | Analisi: course_creator | 87c5495a77d505ccaeecea30740a3d264c4a29d84a548aea83fd9c51fa9fb482 |
 | solutions/ANALYSIS_course_domain_core.md | code |  | Analisi: profilo course nel core | 295c59f824cc9221ada348055b1cf22d734c9451192f79e06aec79f01b6be86b |
