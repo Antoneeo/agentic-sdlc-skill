@@ -47,6 +47,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/ANALYSIS_codex_agents_skills.md | code |  | F-082 - on Codex the installer copies each skill into $HOME/.agents/skills/&lt;name>/ (the user location OpenAI documents); the old $CODEX_HOME/skills/&lt;name> path becomes a directory link to it (older Codex keeps loading, current Codex lists it once), a pre-existing legacy folder is moved to a backup, never deleted. Four distributions here plus distill-skill. | 0877aa3d4dc85665388204fe4650244f6b97657ae34ed4289642f522100f5db3 |
 | solutions/ANALYSIS_codex_hooks.md | code |  | Design della parità degli hook agentic-sdlc su Codex locale, con trust umano, compatibilità e prove di regressione. | bba596285cee1e872c23d711e3a6bd5da9041760b45fa6a9c344027b921313d0 |
 | solutions/ANALYSIS_comprehension_guides.md | code |  | ANALYSIS — Code-Comprehension Guides | 387235c017a4314eadff0fb53f43f249780db601065c1a1be9cc55bcec742c6c |
+| solutions/ANALYSIS_coordinator_delegates.md | code |  | F-095 - under coordination the coordinator executes no unit itself, and a part integrates its own branch. Field case, the doctrine gap in coordination.md, the rule, its replay. | 32bcbdf0a36a14c3abcdcaf462cab17da97f72ce72260bc5c86c735aee804d5f |
 | solutions/ANALYSIS_course_agentic-sdlc-kb-agentic.md | course |  | Course Analysis: kb-agentic e agentic-sdlc | 65f8e13919767be6174cf096ec57265c2a356f96a8c0b7e947d024f0d7304e17 |
 | solutions/ANALYSIS_course_creator.md | code |  | Analisi: course_creator | 87c5495a77d505ccaeecea30740a3d264c4a29d84a548aea83fd9c51fa9fb482 |
 | solutions/ANALYSIS_course_domain_core.md | code |  | Analisi: profilo course nel core | 295c59f824cc9221ada348055b1cf22d734c9451192f79e06aec79f01b6be86b |
@@ -117,6 +118,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/ANALYSIS_whole_guide_read.md | code |  | F-094 - agents read a matching guide only in part and apply it only in part. Mechanism (the verdict hook credited any mention of the guide as a read; the doctrine never said "every line"), the whole-read rule in the four lenses, and the line-span check. | 5c6729a31e4363f0ea56df02b9212cda22caabc3d465461517f504b2791c608a |
 | solutions/ANALYSIS_working_model.md | code |  | Feature Analysis: the agent's working model | 7f40628c80b9d2f2542d0a5e44b70c084d7ba8730b0e6700ab5cc93de53fa36f |
 | solutions/E2E_TEST_codex_hooks.md | code |  | E2E test: Codex hook installation and upgrade | 4da25ec1974fafd007ae264d8110f71b53bae1c540af218d7b11d1dfc536251c |
+| solutions/E2E_TEST_coordinator_delegates.md | code |  | Post-merge script for F-095 - a human checks that a named coordinator sends unit work and integrations to parts. | 1d1dc1064c723ca2dbf9a8133904e3229301845cca4bac93e33e4c13d1cdf8d0 |
 | solutions/E2E_TEST_family_hook_wiring.md | code |  | E2E test: per-turn reminder on single- and multi-lens installs | d81e762c2c3ffa040a4e34f4c176e2f4fb650b121b3f341eaa2f66a4fbb5ecb7 |
 | solutions/E2E_TEST_guide_verdict_check.md | code |  | E2E test: Guide verdict check before edits | e2ed73383f5b5c68d59d2be807198dc695402239578fff185ea773944eb2a427 |
 | solutions/E2E_TEST_instructor_guide.md | code |  | E2E test: guida del docente per i corsi con docente | 0e5778a4ab5129f89534d63bfc61bd220f41e9ad7c0c0dbd6f1545a70e00f8bc |
@@ -139,6 +141,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/E2E_TEST_whole_guide_read.md | code |  | E2E test: a matched guide must be read whole before the first edit | 4570a80f75e966b2b02d5466651c59146207e5a1eb10dc7d905c6545a0731619 |
 | solutions/E2E_TEST_working_model.md | code |  | E2E test: constraints at the moment of action | 4d7c28c0e3a4cac2a805bfdb9649070f4dd41dbf209614073140dcec5041005b |
 | solutions/MERGE_REVIEW_codex_hooks.md | code |  | Integration brief: Codex hook parity | f7df96b9404ceea0148d62e8cb60b5a72a6561c4f9d48b379b747f6cde2154f3 |
+| solutions/MERGE_REVIEW_coordinator_delegates.md | code |  | Merge review: the coordinator does not do a part's work | 60e2264a5b0f6def029d1dd0052bb35ec8f09bdbc8219b524c46cf849f811172 |
 | solutions/MERGE_REVIEW_family_hook_wiring.md | code |  | Merge review: per-turn reminder on single- and multi-lens installs | b241140c4565c25e142c5c26ca2504c91b27716c7232ce6070faae0f538236f9 |
 | solutions/MERGE_REVIEW_guide_verdict_check.md | code |  | Merge review: Guide verdict check before edits | 62974b0a60ddac8b2fea750958ea65780f2d033ea6a58dc2a6081d7046f56ecb |
 | solutions/MERGE_REVIEW_instructor_guide.md | code |  | Merge review: guida del docente per i corsi con docente | 51b7f5cf28dff4f740f37bf6d4742eb671d8e0b6fa6c793f3ef4232f0c03ae6a |

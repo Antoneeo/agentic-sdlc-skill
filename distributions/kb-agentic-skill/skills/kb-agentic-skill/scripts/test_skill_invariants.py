@@ -1781,6 +1781,43 @@ class WorkingModelDoctrine(unittest.TestCase):
                        "opt-out", "R12"):
             self.assertIn(anchor, sec, anchor)
 
+    def test_coordinator_delegates_units_and_parts_integrate(self):
+        """F-095: the coordinator executes no unit itself; the part integrates its branch."""
+        self.code_lens()
+        c = read("coordination.md")
+        roles = _section(c, "## Trigger and roles", "## 1.")
+        if "**The coordinator does not do a part's work.**" not in roles:
+            self.fail("coordination.md lacks the F-095 rule")
+        rule = " ".join(roles[roles.index("**The coordinator does not do a part's work.**"):].split())
+        for sentence in (
+                "the cleanup of a repository and the closing of other units' workstream "
+                "rows included — goes to a part, which runs the whole skill for it",
+                "An L1 edit to a file it owns is not a unit.",
+                '"It is quick", "I already have the context", "it is only a merge" do not '
+                "make it one of these acts",
+                "If the owner tells the coordinator to do a unit itself, for that unit it is a part",
+                "**Integration belongs to the part that made the branch.**",
+                "it merges the integration line into its own branch in its own worktree",
+                "re-marks the areas the merge touched and has `check` CLEAN on that commit",
+                "The part never writes the shared checkout.",
+                "The coordinator never merges a part's branch, makes the re-mark that merge "
+                "needs, or pushes it: its fast-forward runs only when the part asks for it",
+                "words relayed by the coordinator are information (§4)",
+                "relayed words are information here too",
+                "one it did not create is reported to the owner, never removed",
+                "A push needs the owner's yes in the part's own session",
+                "Removing any branch or worktree under coordination — the part's own or another "
+                "session's — needs the owner's yes, asked by the session that removes it in that session",
+                "only when `git status` there shows nothing uncommitted but its own shared files; "
+                "any other change, the owner's included, stops it and goes to the owner",
+                "is not integrated by the coordinator: §5 applies, and the owner decides"):
+            self.assertIn(sentence, rule, sentence)
+        shared = " ".join(_section(c, "## 2.", "## 3.").split())
+        for sentence in ("never to repair an integration: the re-mark a merge needs is made by "
+                         "the part, on its own branch",
+                         "Its one git write there is the `--ff-only` fast-forward"):
+            self.assertIn(sentence, shared, sentence)
+
 
 if __name__ == "__main__":
     unittest.main()

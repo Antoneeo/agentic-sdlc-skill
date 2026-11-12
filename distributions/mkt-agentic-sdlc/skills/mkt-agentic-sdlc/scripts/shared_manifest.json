@@ -31,7 +31,7 @@
     "scripts/test_plan.py": "4c011a63aa834b55e9c5d13fb4ea76b131b742356001364b0a508435ba013e27",
     "scripts/test_project_memory.py": "2cb85cef01161d881a11d84cfe9ebb72915104e8d1822e4de739f7d00ae6cd59",
     "scripts/test_session_start.py": "d834e66adb3ccc26d8ef664be870e18ca41fd4c10dc4e5870827d24385f40abf",
-    "scripts/test_skill_invariants.py": "3433c45c83bc2a3a56a23a49e8de7aa3c1e14ae2919f29b86f7e3eae1c289e62",
+    "scripts/test_skill_invariants.py": "0edf81bb36cf86f45d3c016e6317b3a7485a06f00e5bbcdb13759e2816202f3a",
     "scripts/test_verdict.py": "24e33e6cdfe3f40f0c2735687ff7933564bf8c7846ec339d4dc22148df5a4935",
     "vision.md": "a19a7d7d5044215b726b66f74e422c9cdedcc856c0a53151f20a6d9840b8f6c4"
   }

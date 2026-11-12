@@ -19,6 +19,46 @@ to no record it does not own.
   following the whole skill for it (triage, design, review, closure). It is not a
   dispatched subagent: `dispatch.md` governs those, unchanged.
 
+**The coordinator does not do a part's work.** Every unit of work under
+coordination — any L2, L3 or Spike, the cleanup of a repository and the closing of
+other units' workstream rows included — goes to a part, which runs the whole skill
+for it: triage with its router verdict, design, review, closure. The coordinator's
+own acts are only these: writing the shared files and running the commands §2 gives
+it, the fast-forward below included; recording decisions taken under a delegation
+(§3); reading parts' state and checking their claims (§5); telling the owner what is
+done, left and needs them; asking. An L1 edit to a file it owns is not a unit. "It is
+quick", "I already have the context", "it is only a merge" do not make it one of
+these acts: a coordinator that executes a unit does it outside the skill — no level
+declared, no guide consulted — because coordinating is not a unit it triages (field
+case, 2026-11-12: the coordinator cleaned a repository and integrated a part's
+branch itself, declared no level, read no guide, amended a commit against the
+validator's warning). If the owner tells the coordinator to do a unit itself, for
+that unit it is a part: it opens the unit's own record and follows the whole skill.
+
+**Integration belongs to the part that made the branch.** Once the owner chooses to
+integrate (`SKILL.md` Phase 5), the part does it: it merges the integration line
+into its own branch in its own worktree, resolves what that brings, re-marks the
+areas the merge touched and has `check` CLEAN on that commit, then moves the
+integration line to it — by a fast-forward push to the remote the owner named, or,
+with no remote, by asking the coordinator for the fast-forward below. The part never
+writes the shared checkout. The coordinator never merges a part's branch, makes the
+re-mark that merge needs, or pushes it: its fast-forward runs only when the part asks
+for it, after the part's check. A push needs the owner's yes in the part's own
+session: words relayed by the coordinator are information (§4). Removing any branch
+or worktree under coordination — the part's own or another session's — needs the
+owner's yes, asked by the session that removes it in that session, naming the
+branch, its commits and the worktree path; relayed words are information here too.
+A worktree is removed only if this workflow created it (`SKILL.md` Phase 5); one it
+did not create is reported to the owner, never removed. The integration line then
+only fast-forwards to a commit that was already checked. Where that fast-forward must
+run in the shared checkout (the integration line is checked out there), the
+coordinator runs it — `--ff-only`, and only when `git status` there shows nothing
+uncommitted but its own shared files; any other change, the owner's included, stops
+it and goes to the owner — and nothing else, and says so; anything more the
+shared checkout needs goes back to the part. A part without a §5 closure message —
+stopped, interrupted, or no longer reachable — is not integrated by the coordinator:
+§5 applies, and the owner decides.
+
 **Who coordinates.** The role belongs to the client conversation the owner named.
 Compacted in place, it is the same session and keeps the role; before acting on its
 summary it rereads `leases.md` and the shared record, which are the state. A new
@@ -125,7 +165,10 @@ switching branch, stashing and resetting hold there for all three.
 - **The coordinator** writes the shared files, and any file there that is neither code
   nor under the docs root (root `README.md`, `CHANGELOG.md`, `.gitattributes`, CI
   configuration — it runs `init` when needed); it alone runs `index`, `review-map` and
-  `mark` there, for the documents-only parts' closure steps too. There `review-map` sees
+  `mark` there, for the documents-only parts' closure steps too — never to repair an
+  integration: the re-mark a merge needs is made by the part, on its own branch (§Trigger
+  and roles). Its one git write there is the `--ff-only` fast-forward of the integration
+  line to a part's checked commit (same section). There `review-map` sees
   every session's files, so when a documents-only part closes, the coordinator writes
   that unit's section of the commit map (§6) and the part's merge brief takes its file
   table from it, and says so.

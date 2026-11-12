@@ -82,3 +82,4 @@
 | F-091 | Codex hook parity | code | L3 | COMPLETED | 2026-11-04 | 2026-11-04 | solutions/ANALYSIS_codex_hooks.md |
 | F-093 | F-093 | code | L3 | COMPLETED | 2026-11-08 | 2026-11-08 | solutions/ANALYSIS_family_hook_wiring.md |
 | F-094 | F-094 | code | L3 | IN_PROGRESS | 2026-11-12 |  | solutions/ANALYSIS_whole_guide_read.md |
+| F-095 | F-095 | code | L3 | IN_PROGRESS | 2026-11-12 |  | solutions/ANALYSIS_coordinator_delegates.md |
