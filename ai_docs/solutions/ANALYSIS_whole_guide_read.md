@@ -1,9 +1,10 @@
 ---
 description: F-094 - agents read a matching guide only in part and apply it only in part. Mechanism (the verdict hook credited any mention of the guide as a read; the doctrine never said "every line"), the whole-read rule in the four lenses, and the line-span check.
-status: IN_PROGRESS
+status: COMPLETED
 feature: F-094
 id: F-094
 start_date: 2026-11-12
+end_date: 2026-11-12
 level: L3
 branch: claude/f094-whole-guide-read
 ---
@@ -205,3 +206,4 @@ commit on branch; no publish.
   declared: no separate design-review round before code, and no owner "design approved"
   entry (the rule was prescribed in R1). Committed on the branch; merge and release are the
   owner's.
+- 2026-11-12 — Integrated into main and released in 1.55.0 (KB 1.37.0, marketing 0.32.0, Course 0.1.0-beta.21) per GUIDE_release.md; workstream closed.

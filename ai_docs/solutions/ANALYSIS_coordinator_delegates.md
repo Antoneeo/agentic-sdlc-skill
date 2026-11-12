@@ -1,9 +1,10 @@
 ---
 description: F-095 - under coordination the coordinator executes no unit itself, and a part integrates its own branch. Field case, the doctrine gap in coordination.md, the rule, its replay.
-status: IN_PROGRESS
+status: COMPLETED
 feature: F-095
 id: F-095
 start_date: 2026-11-12
+end_date: 2026-11-12
 level: L3
 branch: claude/f095-coordinator-delegates
 ---
@@ -142,3 +143,4 @@ green on the branch), full unittest battery, `sdlc_check.py check`, the replay r
   the re-mark a merge needs (no clash with §2), removal clause disambiguated, relayed-words
   anchors added. Verified by the test (red on old, green on new) and a cold replay pinned to
   sha256 7301604b…; not re-reviewed.
+- 2026-11-12 — Integrated into main and released in 1.55.0 (KB 1.37.0, marketing 0.32.0, Course 0.1.0-beta.21) per GUIDE_release.md; workstream closed.

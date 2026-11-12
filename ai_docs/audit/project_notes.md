@@ -1,6 +1,8 @@
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
+**2026-11-12 — release 1.55.0 / kb 1.37.0 / mkt 0.32.0 / course 0.1.0-beta.21: a matched guide is read whole (F-094), the coordinator does not do a part's work (F-095).**
+
 **2026-11-12 — cleanup: F-015 and F-055 closed.** F-015 closed because the CURRENT `source_kind: code` guides (`GUIDE_hooks.md`, `GUIDE_shared_project_memory.md`) satisfy dogfood #8. F-055 closed in this repository: the four packages ship Apache-2.0 with NOTICE since 1.34.0. Still open, owner's act: `npm publish` of distill-skill 0.9.0 (committed and pushed in `../distill-skill`; npm still serves 0.8.0 under MIT).
 
 **2026-11-08 — release 1.54.0 / kb 1.36.0 / mkt 0.31.0 / course 0.1.0-beta.20: per-turn reminder names the installed lenses (F-093).**

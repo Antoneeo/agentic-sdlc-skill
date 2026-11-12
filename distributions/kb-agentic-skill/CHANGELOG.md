@@ -3,6 +3,16 @@
 Every significant change to this skill is recorded here.
 
 
+## [1.37.0] - 2026-11-12
+
+### What's new
+
+**A guide that governs the work is now read whole before the agent edits.** Agents often read only the first part of a matching guide (a read with a line limit, `head`, a search inside it) and then applied only that part, missing the steps further down. The doctrine now says a matched guide is read from its first line to its last and applied whole; a rule that does not fit is proposed as a change to the guide, never skipped in silence, and the rest still binds. The per-prompt reminder says the same. On Claude Code, and on local Codex sessions where you trusted the installed hooks, the edit check enforces it: an edit is refused until the session's reads of every guide named in its router verdict cover the whole file. A search, `head`, `sed`, a partial read or a subagent brief that names the guide no longer counts as reading it (F-094).
+
+#### What to do
+
+Everyone who has this package installed: run `npm install -g @antoneeo/kb-agentic-skill@latest`, then `kb-agentic-install-skill`, and restart your agent sessions. The install step copies the updated doctrine and validator into your skills directory; sessions already open keep the old check until restarted. Expect one new refusal: if a session only searched or partly read a guide it named in its router verdict, its first edit is refused and the message names the guide. Read the guide whole, with no offset or limit (a guide longer than your client's read cap in consecutive chunks to the end), then edit again. To check it worked, run `npm ls -g @antoneeo/kb-agentic-skill` and look for 1.37.0.
+
 ## [1.36.0] - 2026-11-08
 
 ### What's new
