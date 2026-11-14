@@ -1819,5 +1819,29 @@ class WorkingModelDoctrine(unittest.TestCase):
             self.assertIn(sentence, shared, sentence)
 
 
+class F096_HonestSignals(unittest.TestCase):
+    """F-096 -- the two doctrine rules and the handoff rule reach EVERY lens.
+    This file is shared, so each distribution runs it against its own text: a
+    rule that reached one lens of four is red in the other three (F-053)."""
+
+    def test_closure_names_what_was_re_read(self):
+        self.assertIn("re-read whole:", read("SKILL.md"))
+
+    def test_resume_from_a_summary_re_reads_the_unit(self):
+        rule = [ln for ln in read("SKILL.md").splitlines()
+                if "working from a summary" in ln.lower()]
+        self.assertEqual(len(rule), 1, "the rule is stated once, in one paragraph")
+        self.assertIn("request record", rule[0])
+        self.assertIn("vision", rule[0].lower())
+
+    def test_a_handoff_template_never_declares_the_work_closed(self):
+        text = read("templates.md")
+        if "HANDOFF_" in text:
+            self.assertIn("closing is deleting", text.lower())
+
+    def test_any_edit_of_a_guide_ends_with_a_whole_re_read(self):
+        self.assertIn("ends with a whole re-read", read("guides.md"))
+
+
 if __name__ == "__main__":
     unittest.main()

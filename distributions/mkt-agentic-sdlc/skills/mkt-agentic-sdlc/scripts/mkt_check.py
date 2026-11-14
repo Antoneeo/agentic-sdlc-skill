@@ -741,7 +741,10 @@ def main(argv=None):
         # any warning, so they print here, outside Report, never in `code`. On an
         # ai_docs root cmd_validate above already printed A1/A2 -- once is the
         # contract. A3 has no other path: this overlay never calls cmd_check.
-        notes = [] if sdlc_core.docs_dir() == "ai_docs" else sdlc_core.chronology_advisories(root)
+        # F-096: the closed-workstream advisory follows the same rule -- the spine
+        # prints it on an ai_docs root, this overlay on its own.
+        notes = [] if sdlc_core.docs_dir() == "ai_docs" else (
+            sdlc_core.chronology_advisories(root) + sdlc_core.closed_workstream_advisories(root))
         if args.command == "check":
             notes += sdlc_core.id_advisories(root)
         for a in notes:

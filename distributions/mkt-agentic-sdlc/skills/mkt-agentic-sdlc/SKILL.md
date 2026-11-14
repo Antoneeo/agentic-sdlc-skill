@@ -133,6 +133,7 @@ Deliverable language: ask for (or infer) the target market's language in Discove
 ### 1. Intake & Triage
 - Read the docs root's `README.md`, `INDEX.md` and `reference/INDEX.md` (the guide router; the docs root is `mkt_docs/` by default, `ai_docs/` on a migrated tree) before touching the plan. The router is a mandatory read, not an optional one: it is the only orientation step that tells you a guide — a brand guideline, a tone-of-voice SOP, an agency playbook — already governs the work you are about to do.
 - Read `audit/handoff.md` under the docs root, the workstream registry: one row per open engagement. Volatile resume state for an unfinished one lives in `audit/HANDOFF_[engagement].md`, which is ephemeral and deleted at closure.
+- **Working from a summary** (a compacted context, a pasted recap, a brief from another session): a summary keeps the topic of the moment, not an engagement's scope. Before answering about an engagement with an open workstream, or acting on it, re-read its request record and its MKT-VISION, and answer citing them. The session orientation repeats this rule in one line at every start.
 - Declare the level. Read `mkt_docs/audit/handoff.md` and `mkt_docs/README.md`/`INDEX.md` if they exist; if handoff dates are inconsistent, treat it as history.
 - Hybrid: bootstrap devPNT, restore Master/Action Plan and any existing marketing artifacts before asking the user anything they already answered.
 
@@ -180,6 +181,7 @@ Deliverable language: ask for (or infer) the target market's language in Discove
 - Assemble `MARKETING_PLAN.md` (the SOSTAC deliverable) and `ONE_PAGER.md` from the approved artifacts — assembly, not rewriting; on divergence the approved artifact wins.
 - Final adversarial review on the assembled plan + `mkt_check.py check` CLEAN.
 - Offer exports: PDF, slide deck, budget spreadsheet (use the client's document skills when available).
+- **Re-read whole every document the engagement impacted** (E2 and E3): impacted means edited by it, or describing something it changed — a guide the router verdict named included. Rewrite each sentence that describes the earlier state; an added row or dated note never corrects the sentences above it. State it in the closing message, in one line: `re-read whole: <documents>` or `re-read whole: none impacted`. A guide is corrected through its own route (`guides.md` §6); a document too large to absorb is marked `SUPERSEDED`, never left `CURRENT` and wrong. A closing message with no `re-read whole:` line is read as "not re-read". `mkt_check.py check` covers the form of the documents, not whether their sentences are still true; its `[scope]` line says so.
 - Update `handoff.md`. Hybrid: mark plan nodes DONE only after the user accepts the final artifacts.
 
 ## E2 Workflow (campaign)

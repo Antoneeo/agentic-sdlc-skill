@@ -590,5 +590,104 @@ class MS_UnionNote(unittest.TestCase):
         note.assert_not_called()
 
 
+
+class MS_ClosedWorkstreams(unittest.TestCase):
+    """F-096 FS4 -- a workstream source whose own `status:` declares the work
+    closed contradicts "deleted at closure": it is named, never counted, never
+    a reason to fail a build."""
+
+    def _out(self, fn, *a, **kw):
+        buf = StringIO()
+        with redirect_stdout(buf):
+            rc = fn(*a, **kw)
+        return rc, buf.getvalue()
+
+    def test_a_source_declaring_a_closed_status_is_named(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source(root, "a", "F-001 alpha", status="DONE")
+            source(root, "b", "F-002 beta", status='"COMPLETED. All nodes done."')
+            source(root, "c", "F-003 gamma", status="PROGRESS")
+            source(root, "d", "F-004 delta", status="cancelled")
+            found = sc.closed_workstream_advisories(root)
+            self.assertEqual(len(found), 3)
+            for name in ("HANDOFF_a.md", "HANDOFF_b.md", "HANDOFF_d.md"):
+                self.assertEqual(sum(name in f for f in found), 1, name)
+            self.assertFalse(any("HANDOFF_c.md" in f for f in found))
+
+    def test_a_free_text_status_is_not_matched(self):
+        """The stated limit: only a status that BEGINS with the lifecycle word."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source(root, "a", "F-001 alpha", status="Implementato & Verificato (**DONE**)")
+            source(root, "b", "F-002 beta", status="COMPLETATO")
+            source(root, "c", "F-003 gamma", status="DONE_PENDING_REVIEW")
+            self.assertEqual(sc.closed_workstream_advisories(root), [])
+
+    def test_a_file_with_no_workstream_is_not_a_source(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            aud = root / "ai_docs" / "audit"
+            aud.mkdir(parents=True)
+            (aud / "HANDOFF_old.md").write_text("---\nstatus: DONE\n---\n# note\n",
+                                                 encoding="utf-8")
+            self.assertEqual(sc.closed_workstream_advisories(root), [])
+
+    def test_the_text_says_to_keep_what_is_worth_reading_before_deleting(self):
+        """T3: the advisory must never read as "just delete it"."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source(root, "a", "F-001 alpha", status="DONE")
+            (text,) = sc.closed_workstream_advisories(root)
+            self.assertIn("before deleting", text)
+
+    def test_validate_names_each_once_as_an_advisory_and_keeps_its_exit(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source(root, "a", "F-001 alpha", status="PROGRESS")
+            regenerate(root)
+            rc_open, _ = self._out(sc.cmd_validate, root, strict=True)
+            source(root, "a", "F-001 alpha", status="DONE")
+            regenerate(root)
+            rc_closed, out = self._out(sc.cmd_validate, root, strict=True)
+            lines = [ln for ln in out.splitlines() if "HANDOFF_a.md" in ln and "DONE" in ln]
+            self.assertEqual(len(lines), 1, out)
+            self.assertTrue(lines[0].startswith("[note]"), lines[0])
+            self.assertEqual(rc_closed, rc_open)
+
+    def test_validate_prints_what_the_reader_returns(self):
+        """Mutation: drop the call from cmd_validate -> red."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source(root, "a", "F-001 alpha")
+            regenerate(root)
+            with mock.patch.object(sc, "closed_workstream_advisories",
+                                   return_value=["SENTINEL-CLOSED"], create=True):
+                _, out = self._out(sc.cmd_validate, root)
+            self.assertIn("SENTINEL-CLOSED", out)
+
+    def test_index_names_them_and_writes_none_of_it_into_the_registry(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source(root, "a", "F-001 alpha", status="DONE")
+            source(root, "b", "F-002 beta", status="PROGRESS")
+            rc, out = self._out(sc.rc_registry, root)
+            self.assertEqual(rc, 0)
+            notes = [ln for ln in out.splitlines() if ln.startswith("[note]")]
+            self.assertEqual(len(notes), 1, out)
+            self.assertIn("HANDOFF_a.md", notes[0])
+            self.assertNotIn("HANDOFF_b.md", notes[0])
+            hand = (root / "ai_docs" / "audit" / "handoff.md").read_text(encoding="utf-8")
+            self.assertEqual(sc.norm_text(hand), sc.norm_text(sc.build_registry(root)))
+            self.assertNotIn("[note]", hand)
+
+    def test_index_says_nothing_when_no_source_is_closed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source(root, "a", "F-001 alpha")
+            _, out = self._out(sc.rc_registry, root)
+            self.assertFalse([ln for ln in out.splitlines() if ln.startswith("[note]")])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

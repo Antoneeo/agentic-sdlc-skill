@@ -305,6 +305,11 @@ state it explicitly when handing off a newly created guide.
 
 ## 6. Maintenance
 
+- **Any edit of a guide ends with a whole re-read.** Regenerated or corrected, read it again
+  from its first line and rewrite every sentence that describes the earlier state: a row
+  added to a change log is history, never a correction of the sentences above it. `stale`
+  and `check` cannot see such a sentence — the hash proves the source is unchanged, not
+  that the guide is true.
 - **A rule that does not fit the work is a proposed amendment, never a silent
   skip** (§0). Read the whole guide, name the rule and the reason, and propose
   the change through this pipeline — a `document` guide changes only with the

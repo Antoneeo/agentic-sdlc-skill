@@ -127,6 +127,7 @@ Use this mode when `devpnt_*` tools are available and point at the current proje
 
 ### 1. Audit and Alignment
 - Read `ai_docs/audit/handoff.md` (workstream registry) to see active topics.
+- **Working from a summary** (a compacted context, a pasted recap, a brief from another session): a summary keeps the topic of the moment, not a unit's scope. Before answering about a unit with an open workstream, or acting on it, re-read its request record and its vision, and answer citing them. The session orientation repeats this rule in one line at every start.
 - Read `ai_docs/README.md`, `ai_docs/INDEX.md` and `ai_docs/reference/INDEX.md` (the guide router) before exploring notes. The router is a mandatory read, not an optional one: it is the only orientation step that tells you a guide already governs the work you are about to do.
 - If `ai_docs/` is missing, create the bootstrap set: `README.md`, `vision/` stubs awaiting the owner interview, `strategic/` docs, and `audit/audit_plan.md`, then run `sdlc_check.py index`.
 
@@ -164,6 +165,7 @@ Use this mode when `devpnt_*` tools are available and point at the current proje
 - **Alignment closure** — the unit stays open: update the HANDOFF frontmatter and body to current state; commit on the unit's branch and propose its integration, so the day's ledger reaches the shared line the same day; the integration choice is the practitioner's.
 - **Unit closure** — the practitioner declares the work done: run the closure review (`review.md`) before DONE, then delete the HANDOFF; deleting it *is* removing the registry row, and the registry is never edited by hand. When it was the last one, `index` empties the generated registry.
 - When the closure gate is red: no commit; the unit stays open; name the failing checks, fix, re-run.
+- **Every document the unit impacted is re-read whole** (L2 and L3): impacted means edited by the unit, or describing something the unit changed — the guides the router verdict named included. The gesture is `## Revision`'s: a rewrite to current state, never a row appended under sentences that stay false. The closure reply carries one line, `re-read whole: <documents>` or `re-read whole: none impacted`; a reply without it is read as "not re-read". The closure gate cannot do this: `check` covers the form of the documents, and says so in its `[scope]` line.
 - The closure reply states the closure-gate result, the documents revised, and the commit — or, when red, that nothing was committed.
 - Mark output clean and complete.
 

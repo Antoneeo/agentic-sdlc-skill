@@ -72,7 +72,10 @@ Qualunque lente sia attiva, l'agente:
 1. **Triaga e dichiara** (Rule Zero): livello + verdetto del guide router in una
    riga (`Level: L3 · router: no match`) — tre soli verdetti legali, così "non ho
    guardato" è indistinguibile da "ho guardato, niente" solo se menti per iscritto.
-2. **Si orienta prima di creare**: registro dei workstream (`handoff.md`, una riga
+2. **Si orienta prima di creare** — e, se lavora da un riassunto (contesto compattato,
+   riepilogo incollato), rilegge registro delle richieste e vision del lavoro aperto
+   prima di rispondere su di esso; `orient` lo ricorda con una riga costante a ogni avvio
+   (F-096): registro dei workstream (`handoff.md`, una riga
    per lavoro aperto), indici generati (mai scritti a mano — il validator
    fallisce su uno editato), guide operative con fedeltà alla fonte (snapshot
    verbatim + hash, `stale` rileva il drift); una guida che corrisponde al lavoro
@@ -138,7 +141,12 @@ Qualunque lente sia attiva, l'agente:
 5. **Chiude meccanicamente**: `check` CLEAN, documenti nello stesso commit del
    lavoro, decisione esplicita di merge (mai branch orfani), `HANDOFF_[unit].md`
    cancellato e `index` rieseguito — cancellarlo **è** rimuovere la riga, e nessun
-   altro workstream viene toccato.
+   altro workstream viene toccato. Ogni documento toccato dal lavoro (o che descrive ciò
+   che il lavoro ha cambiato, guide del router comprese) si rilegge **per intero** e le
+   frasi sullo stato di prima si riscrivono: una riga aggiunta non corregge quelle sopra.
+   Il messaggio di chiusura lo dichiara (`re-read whole: …`). `check` copre solo la forma
+   e lo dice nella riga `[scope]` dopo il verdetto; `validate` e `index` nominano il file
+   di passaggio il cui `status` dichiara il lavoro chiuso (advisory, mai un errore) (F-096).
 6. **Può delegare** (dispatch opt-in): piano validato o niente dispatch
    (`plan validate`, confinamento fail-closed), `verify` stampato mai eseguito,
    escalation di tier solo dopo 2 fail consecutivi.

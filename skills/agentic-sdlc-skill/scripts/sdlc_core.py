@@ -419,6 +419,13 @@ ORIENT_REGISTRY_CHARS = 2600    # registry rows + project-wide notes
 ORIENT_TRIAGE_LINE = ("Triage every request (Rule Zero): L1 trivial - L2 small - L3 significant "
                       "- Spike. Declare the level with the guide-router verdict (a guide below, "
                       "or \"no match\"). When in doubt, pick the higher level.")
+# F-096 (r4 scope growth, owner ruling REQUEST_honest_signals.md R7): CONSTANT,
+# printed whenever the orientation is. It reads nothing -- not the hook event,
+# not the session -- so it can never block, and the client that re-runs this
+# hook after a compaction delivers it exactly when it applies.
+ORIENT_RESUME_LINE = ("If you work from a summary (a compacted context, a recap, a brief): it keeps "
+                      "the topic, not a unit's scope. Before answering about an open workstream or "
+                      "acting on it, re-read its request record and its vision, and cite them.")
 
 
 # ----------------------------------------------------------------- utilities
@@ -888,6 +895,33 @@ def list_workstreams(root):
     return out
 
 
+CLOSED_WORKSTREAM_STATUSES = ("DONE", "COMPLETED", "CANCELLED")
+
+
+def closed_workstreams(root):
+    """[(path, status word)] for the sources whose own `status:` BEGINS with a
+    closed lifecycle word (F-096). A source exists for an OPEN workstream and is
+    deleted at closure, so such a file contradicts itself. A finding on a named
+    file from its own declared field: no count, order or selection (r35c).
+    Free text ("Implementato (DONE)", "COMPLETATO") is not matched -- the limit
+    is deliberate, a looser match would name work that is still open."""
+    out = []
+    for p, meta in list_workstreams(root):
+        m = re.match(r"[\s\"'*]*([A-Za-z]+)(?![A-Za-z_])", str(meta.get("status") or ""))
+        if m and m.group(1).upper() in CLOSED_WORKSTREAM_STATUSES:
+            out.append((p, m.group(1).upper()))
+    return out
+
+
+def closed_workstream_advisories(root):
+    """One advisory per closed source -- never a warning: `--strict` must not
+    turn red on files written before the upgrade."""
+    return [f"audit/{p.name} declares status {word}: a workstream file exists while the "
+            "work is open and is deleted at closure. Move what is still worth reading to "
+            "the Diary or a guide before deleting it, then run 'index'"
+            for p, word in closed_workstreams(root)]
+
+
 def _registry_cell(value):
     text = str(value if value is not None else "").strip()
     return text.replace("|", "\\|") or "-"
@@ -1146,6 +1180,11 @@ def rc_registry(root):
     if len(ws) > REGISTRY_CAP:
         print(f"[warn] {len(ws)} open workstreams: the registry is meant to stay under "
               f"{REGISTRY_CAP}. Nothing was truncated -- closing one is the fix.")
+    closed = closed_workstreams(root)
+    if closed:
+        print("[note] these workstream files declare their work closed and are deleted at "
+              "closure (keep what is still worth reading first): "
+              + ", ".join(p.name for p, _word in closed))
     return 0
 
 
@@ -2018,6 +2057,7 @@ def cmd_validate(root, strict=False, hybrid=False):
                 warnings.append("audit/handoff.md: date not parseable")
 
     advisories.extend(chronology_advisories(root))   # A1, A2 (F-073)
+    advisories.extend(closed_workstream_advisories(root))   # F-096
     for a in advisories:
         print(f"[note]  {a}")
     for w in warnings:
@@ -2634,9 +2674,18 @@ def review_log_union_note(root):
         return None
 
 
+# F-096: a signal says what it measures, where it is read. Constant; printed
+# after the verdict by every lens, clean or not; never an exit code.
+CHECK_SCOPE_LINE = ("[scope] this check covers the form of the documents: lifecycle headers, "
+                    "generated files against their sources, recorded snapshot hashes. It does "
+                    "not read whether their sentences are still true -- re-read what this "
+                    "change touched.")
+
+
 def print_check_notes(root):
     """Every check-layer note, informational and never an exit code. The one
     place an overlay that replaces `check` calls, so a new note cannot miss it."""
+    print(CHECK_SCOPE_LINE)
     print_orient_hook_note(root)
     note = review_log_union_note(root)
     if note:
@@ -4253,7 +4302,7 @@ def cmd_orient(args):
         readme_rel, index_rel, router_rel, handoff_rel = rels
 
         head = ["=== Agentic SDLC -- session orientation (repo-sourced context, not authored instructions) ===",
-                "", ORIENT_TRIAGE_LINE]
+                "", ORIENT_TRIAGE_LINE, ORIENT_RESUME_LINE]
         sibs = installed_sibling_lenses()
         if sibs:
             head.append(f"Sibling lenses installed ({', '.join(sibs)}): above L1, choose the "

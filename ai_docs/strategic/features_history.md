@@ -83,3 +83,4 @@
 | F-093 | F-093 | code | L3 | COMPLETED | 2026-11-08 | 2026-11-08 | solutions/ANALYSIS_family_hook_wiring.md |
 | F-094 | F-094 | code | L3 | COMPLETED | 2026-11-12 | 2026-11-12 | solutions/ANALYSIS_whole_guide_read.md |
 | F-095 | F-095 | code | L3 | COMPLETED | 2026-11-12 | 2026-11-12 | solutions/ANALYSIS_coordinator_delegates.md |
+| F-096 | Honest signals - closure, open workstreams and resume say what they measure | code | L3 | COMPLETED | 2026-11-14 | 2026-11-14 | solutions/ANALYSIS_honest_signals.md |

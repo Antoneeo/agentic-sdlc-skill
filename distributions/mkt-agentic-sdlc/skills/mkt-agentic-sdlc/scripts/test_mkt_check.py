@@ -354,5 +354,64 @@ class CommandSurfaceTests(unittest.TestCase):
                 f"point does not recognize it:\n{proc.stderr}")
 
 
+
+HANDOFF_SOURCE = ("---\nworkstream: M-001 Launch plan\nlevel: E3\nbranch: main\nstatus: %s\n"
+                  "since: 2026-10-01\nnext: go\nupdated: 2026-10-02\n---\n# HANDOFF\n")
+
+
+def _captured(fn, *args):
+    buf = io.StringIO()
+    with redirect_stdout(buf):
+        rc = fn(*args)
+    return rc, buf.getvalue()
+
+
+class ClosedWorkstreamOwnRootTests(MktCheckTests):
+    """F-096 FS4/FS3 on the overlay's own docs root: the spine's validate does
+    not run here, so the overlay prints the advisory itself, outside Report."""
+
+    def test_a_closed_source_is_named_once_and_never_fails_strict(self):
+        self.write("audit/HANDOFF_launch.md", HANDOFF_SOURCE % "PROGRESS")
+        self.run_cmd("index")
+        rc_open, _ = _captured(self.run_cmd, "validate", "--strict")
+        self.write("audit/HANDOFF_launch.md", HANDOFF_SOURCE % "DONE")
+        self.run_cmd("index")
+        rc_closed, out = _captured(self.run_cmd, "validate", "--strict")
+        named = [ln for ln in out.splitlines()
+                 if "HANDOFF_launch.md" in ln and "declares status" in ln]
+        self.assertEqual(len(named), 1, out)
+        self.assertTrue(named[0].startswith("[advisory]"), named[0])
+        self.assertEqual(rc_closed, rc_open)
+
+    def test_index_names_the_closed_source(self):
+        self.write("audit/HANDOFF_launch.md", HANDOFF_SOURCE % "COMPLETED")
+        _, out = _captured(self.run_cmd, "index")
+        notes = [ln for ln in out.splitlines() if ln.startswith("[note]")]
+        self.assertEqual(len(notes), 1, out)
+        self.assertIn("HANDOFF_launch.md", notes[0])
+
+    def test_check_states_its_scope_after_the_overlay_verdict(self):
+        self.run_cmd("index")
+        _, out = _captured(self.run_cmd, "check")
+        lines = out.splitlines()
+        verdict = [i for i, ln in enumerate(lines) if ln.startswith(("[OK] check", "[FAIL] check"))]
+        scope = [i for i, ln in enumerate(lines) if ln.startswith("[scope]")]
+        self.assertEqual(len(scope), 1, out)
+        self.assertGreater(scope[0], verdict[0])
+
+
+class ClosedWorkstreamSharedRootTests(SharedDocsTests):
+    """On a shared `ai_docs` root the spine's validate already names the file:
+    once is the contract."""
+
+    def test_a_closed_source_is_named_once(self):
+        self.write("audit/HANDOFF_launch.md", HANDOFF_SOURCE % "DONE")
+        self.invoke("index")
+        _, out = _captured(self.invoke, "validate")
+        named = [ln for ln in out.splitlines()
+                 if "HANDOFF_launch.md" in ln and "declares status" in ln]
+        self.assertEqual(len(named), 1, out)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

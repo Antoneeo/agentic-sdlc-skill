@@ -728,5 +728,77 @@ class CodexGlobalOrientation(unittest.TestCase):
                     self.assertIn("unverified" if variant=="malformed" else "disabled",out.getvalue())
 
 
+
+class ScopeAndResumeTests(unittest.TestCase):
+    """F-096 -- FS3: the check verdict states what it covers. FS7: every
+    orientation carries the resume rule, as a constant, reading no hook event."""
+
+    def test_check_states_its_scope_after_the_verdict(self):
+        with tempfile.TemporaryDirectory() as d:
+            seed(d, "ai_docs/README.md", "README-BODY")
+            _, out = run_check(d)
+            lines = out.splitlines()
+            verdict = [i for i, ln in enumerate(lines) if ln.startswith("check: ")]
+            scope = [i for i, ln in enumerate(lines) if ln.startswith("[scope]")]
+            self.assertEqual(len(scope), 1, out)
+            self.assertGreater(scope[0], verdict[0])
+            self.assertIn("does not read", lines[scope[0]])
+            self.assertIn("re-read", lines[scope[0]])
+
+    def test_the_scope_line_is_printed_on_either_verdict(self):
+        with tempfile.TemporaryDirectory() as d:
+            seed(d, "ai_docs/README.md", "README-BODY")
+            _, clean = run_check(d)
+            seed(d, "ai_docs/audit/HANDOFF_a.md",
+                 "---\nworkstream: F-001 a\nlevel: L3\nbranch: main\nstatus: PROGRESS\n"
+                 "since: 2026-10-01\nnext: go\nupdated: 2026-10-02\n---\n")
+            rc, dirty = run_check(d)   # sources with no generated registry: an error
+            self.assertNotEqual(rc, 0, dirty)
+            for out in (clean, dirty):
+                self.assertEqual(sum(ln.startswith("[scope]") for ln in out.splitlines()), 1)
+
+    def test_the_scope_line_never_changes_the_exit_code(self):
+        with tempfile.TemporaryDirectory() as d:
+            seed(d, "ai_docs/README.md", "README-BODY")
+            rc_with, _ = run_check(d)
+            with patch.object(sc, "print_check_notes", lambda root: None):
+                rc_without, _ = run_check(d)
+            self.assertEqual(rc_with, rc_without)
+
+    def test_orient_carries_the_resume_rule(self):
+        with tempfile.TemporaryDirectory() as d:
+            seed(d, "ai_docs/README.md", "README-BODY")
+            rc, out = run_orient(root=d)
+            self.assertEqual(rc, 0)
+            self.assertIn(sc.ORIENT_RESUME_LINE, out)
+            self.assertIn("work from a summary", sc.ORIENT_RESUME_LINE.lower())
+            self.assertIn("request record", sc.ORIENT_RESUME_LINE)
+            self.assertIn("vision", sc.ORIENT_RESUME_LINE.lower())
+            self.assertLess(out.index(sc.ORIENT_TRIAGE_LINE), out.index(sc.ORIENT_RESUME_LINE))
+
+    def test_orient_reads_nothing_from_stdin(self):
+        """T1, by construction: no hook event is read, so nothing can block."""
+        with tempfile.TemporaryDirectory() as d:
+            seed(d, "ai_docs/README.md", "README-BODY")
+            with patch.object(sys, "stdin") as fake:
+                rc, _ = run_orient(root=d)
+            self.assertEqual(rc, 0)
+            self.assertEqual(fake.mock_calls, [])
+
+    def test_orient_stays_within_its_bound_with_a_full_registry(self):
+        """T5: the line sits in the fixed head the budget already subtracts."""
+        with tempfile.TemporaryDirectory() as d:
+            seed(d, "ai_docs/README.md", "R" * 6000)
+            seed(d, "ai_docs/INDEX.md", "I" * 6000)
+            seed(d, "ai_docs/reference/INDEX.md",
+                 router_file([("GUIDE_%02d.md" % i, "CURRENT", "when " + "w" * 150)
+                              for i in range(40)]))
+            seed_registry(d, [("F-%03d unit" % i, "L3", "main", "PROGRESS", "n" * 200)
+                              for i in range(40)])
+            _, out = run_orient(root=d)
+            self.assertIn(sc.ORIENT_RESUME_LINE, out)
+            self.assertLessEqual(len(out), sc.ORIENT_MAX_TOTAL_CHARS - sc.ORIENT_APPEND_RESERVE)
+
+
 if __name__ == "__main__":
     unittest.main()

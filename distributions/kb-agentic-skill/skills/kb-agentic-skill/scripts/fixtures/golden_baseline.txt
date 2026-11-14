@@ -29,6 +29,7 @@ Areas modified after the last recorded analysis:
 After re-analyzing, record it with: sdlc_check.py mark <path>
 
 check: NOT CLEAN (validate rc=0, stale rc=1)
+[scope] this check covers the form of the documents: lifecycle headers, generated files against their sources, recorded snapshot hashes. It does not read whether their sentences are still true -- re-read what this change touched.
 [note] agent sessions start without automatic orientation on this machine (no session-orientation hook found at project or user level). Fix once: update or reinstall the skill npm package (on Claude Code with Python it wires the hook machine-wide), or wire it per ENFORCEMENT.md par.4
 
 ===== check --hybrid (rc=0) =====
@@ -43,6 +44,7 @@ Validation: 0 errors, 1 warnings, 1 advisories.
 [info] hybrid mode: audit-plan staleness is delegated to devPNT/KL, skipping.
 
 check: CLEAN (validate rc=0, stale rc=0)
+[scope] this check covers the form of the documents: lifecycle headers, generated files against their sources, recorded snapshot hashes. It does not read whether their sentences are still true -- re-read what this change touched.
 [note] agent sessions start without automatic orientation on this machine (no session-orientation hook found at project or user level). Fix once: update or reinstall the skill npm package (on Claude Code with Python it wires the hook machine-wide), or wire it per ENFORCEMENT.md par.4
 
 ===== stale (rc=1) =====
@@ -56,6 +58,7 @@ After re-analyzing, record it with: sdlc_check.py mark <path>
 === Agentic SDLC -- session orientation (repo-sourced context, not authored instructions) ===
 
 Triage every request (Rule Zero): L1 trivial - L2 small - L3 significant - Spike. Declare the level with the guide-router verdict (a guide below, or "no match"). When in doubt, pick the higher level.
+If you work from a summary (a compacted context, a recap, a brief): it keeps the topic, not a unit's scope. Before answering about an open workstream or acting on it, re-read its request record and its vision, and cite them.
 
 ## Guide router (reference/INDEX.md) -- read a matching guide whole, every line, before acting
 - `GUIDE_release.md` (CURRENT) -- How to cut and publish a release of the Widget Service.

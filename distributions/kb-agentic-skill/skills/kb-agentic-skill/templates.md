@@ -666,6 +666,11 @@ and the state of the work, go to the Diary as a dated entry: the registry is wha
 `orient` shows at every session start, cut at a fixed size, so a paragraph here
 costs the next agent the rows below it.
 
+**`status:` never declares the work closed.** Closing is deleting: a file whose status
+begins with `DONE`, `COMPLETED` or `CANCELLED` contradicts its own existence, and `validate`
+and `index` name it. Work that still waits on the owner — an approval, a commit, a
+publication — is open: it keeps a lifecycle status and names that act as `next:`.
+
 ## ai_docs/audit/project_notes.md — the registry's project-wide notes (source)
 
 Plain lines, no frontmatter, appended verbatim to the generated registry under
