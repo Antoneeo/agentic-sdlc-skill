@@ -116,3 +116,8 @@ Read as: this session coordinates the two units (`coordination.md`); they reach 
 Context (agent): "Quando F-097 è committata e CLEAN, porto main su di lei in fast-forward?" — asked after F-097 reported its closure review PASS and asked the owner, in its own session, for the commit on its branch. The agent had also said it would commit its two coordination files (R13, `leases.md`) with it.
 
 > Sì, fai il merge
+
+### R15 — 2026-11-15 — merge of F-098 into main by the coordinator, once it is committed and CLEAN
+Context (agent): "Quando F-098 è committata e CLEAN, porto main su di lei in fast-forward?" — asked after F-098 reported its implementation and closure review complete and uncommitted, with three questions put to the owner in its own session (measured cost, one divergent replay, the commit).
+
+> Sì, fai il merge
