@@ -24,7 +24,7 @@ sdlc_core.set_profile(
     unit_noun="topic",
     support_files=("templates.md", "taxonomy.md", "guides.md", "vision.md",
                    "distillation.md", "reconciliation.md", "elicitation.md",
-                   "review.md", "dispatch.md", "routing.md", "portability.md",
+                   "review.md", "dispatch.md", "team.md", "routing.md", "portability.md",
                    "ENFORCEMENT.md", "memory.md"),
     capabilities=(
         # spine

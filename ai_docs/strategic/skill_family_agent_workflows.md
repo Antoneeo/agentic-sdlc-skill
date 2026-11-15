@@ -79,7 +79,14 @@ Qualunque lente sia attiva, l'agente:
    che dichiara il livello, le righe del registro così come sono dichiarate (filone,
    stato, prossimo passo: nessun conteggio, giudizio o suggerimento, nessuna riga
    tagliata, nessuna attesa: l'unità si apre nello stesso messaggio); se la richiesta
-   appartiene già a una riga, riprende quel filone (F-097). Legge: registro dei workstream (`handoff.md`, una riga
+   appartiene già a una riga, riprende quel filone (F-097). Se la guida di lettura non ha
+   una sezione `## Team`, alla prima unità di livello 3 che apre o riprende chiede al
+   proprietario, nello stesso gruppo di domande dell'unità e una volta sola per progetto,
+   chi c'è nel team, che cosa resta a lui, che cosa ciascun membro decide da solo e a chi
+   riferisce, come passano lavoro e rapporti; scrive la risposta nella sezione, citando il
+   registro delle richieste, e da lì legge quali scelte decidere e riferire in una riga e
+   quali portare al proprietario. `orient` avvisa con una riga costante finché la sezione
+   manca in un progetto che ha già un registro delle richieste (F-098, `team.md`). Legge: registro dei workstream (`handoff.md`, una riga
    per lavoro aperto), indici generati (mai scritti a mano — il validator
    fallisce su uno editato), guide operative con fedeltà alla fonte (snapshot
    verbatim + hash, `stale` rileva il drift); una guida che corrisponde al lavoro

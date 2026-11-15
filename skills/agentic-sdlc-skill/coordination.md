@@ -12,6 +12,11 @@ never elects a coordinator. Without that naming no session coordinates: each wor
 in its own worktree, asks the owner before using an exclusive resource, and appends
 to no record it does not own.
 
+That a project works with a coordinating session, and what each session may decide
+alone, is stated in the reading guide's `## Team` (`team.md`); which session holds the
+role is still named by the owner's entry, as above. The section is one of the shared
+files: the coordinator alone writes it, and a part sends it the owner's words (§1).
+
 - **Coordinator** — the session the owner named. It keeps the shared files below,
   writes the record of the shared unit, and acts for the owner only within what the
   owner delegated.
@@ -105,6 +110,9 @@ three sessions wrote R156–R158 into one record at once). So:
 
 Other files several sessions write:
 
+- **The reading guide's `## Team`** (`team.md`) — written only by the coordinator. A part
+  that receives the owner's words on who decides what sends them to the coordinator, as
+  for words settling the shared unit above.
 - **Review log** — not a request record: its rows are unnumbered and each names its
   document. Every session appends only its own rows and never edits another's; in one
   checkout it appends without rewriting the file and rereads it just before writing.

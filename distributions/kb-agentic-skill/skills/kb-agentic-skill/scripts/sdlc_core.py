@@ -426,6 +426,47 @@ ORIENT_TRIAGE_LINE = ("Triage every request (Rule Zero): L1 trivial - L2 small -
 ORIENT_RESUME_LINE = ("If you work from a summary (a compacted context, a recap, a brief): it keeps "
                       "the topic, not a unit's scope. Before answering about an open workstream or "
                       "acting on it, re-read its request record and its vision, and cite them.")
+# F-098 (r4 scope growth, owner ruling REQUEST_team_definition.md R5): CONSTANT,
+# printed only while the reading guide has no `## Team` section and the project
+# has opened a top-level unit (a request record exists). The owner ruled on this
+# exact text; a test pins its length.
+ORIENT_TEAM_LINE = ("Team: not defined (README.md has no `## Team` section). Before starting or "
+                    "resuming a top-level unit (L3/E3), ask the owner the four team questions "
+                    "in team.md, once.")
+_TEAM_HEADING_RE = re.compile(r"^## Team[ \t]*$")
+_FENCE_RE = re.compile(r"^ {0,3}(`{3,}|~{3,})")
+
+
+def has_team_section(readme_text):
+    """True when the reading guide carries a real `## Team` heading (F-098 FS1).
+
+    A README that only QUOTES the section has not defined a team, so a heading is
+    not counted inside a fenced block (opened by three or more backticks or
+    tildes, indented at most three spaces; closed by a fence of the same
+    character at least as long; one never closed runs to the end, as Markdown
+    renders it) nor inside an HTML comment that OPENS A LINE. A `<!--` inside
+    prose opens nothing: it could otherwise hide a real section."""
+    fence = None          # (char, length) of the open fence
+    in_comment = False
+    for line in readme_text.splitlines():
+        if in_comment:
+            in_comment = "-->" not in line
+            continue
+        m = _FENCE_RE.match(line)
+        if fence is not None:
+            if (m and m.group(1)[0] == fence[0] and len(m.group(1)) >= fence[1]
+                    and not line[m.end():].strip()):
+                fence = None
+            continue
+        if m:
+            fence = (m.group(1)[0], len(m.group(1)))
+            continue
+        if line.lstrip().startswith("<!--"):
+            in_comment = "-->" not in line
+            continue
+        if _TEAM_HEADING_RE.match(line):
+            return True
+    return False
 
 
 # ----------------------------------------------------------------- utilities
@@ -4321,6 +4362,32 @@ def _orient_registry_lines(text):
     return lines
 
 
+def team_not_defined(root, readme_text):
+    """True when the orientation should say the team is not defined (F-098 FS7):
+    the reading guide just read has no `## Team` section, no `ai_docs/README.md`
+    beside another docs root has one either (one section per project, FS1), and
+    the project has opened a top-level unit -- a `REQUEST_*.md` exists under the
+    docs root's `audit/requests/`. A project that has only done trivial and small
+    work has no request record and pays nothing. Reads stay under `root`
+    (confine_under); any failure answers False -- nothing is claimed."""
+    if has_team_section(readme_text):
+        return False
+    d = docs_dir()
+    if d != "ai_docs":
+        other = confine_under(root, "ai_docs/README.md")
+        try:
+            if other is not None and other.is_file() and has_team_section(read_text(other)):
+                return False
+        except OSError:
+            return False
+    requests = confine_under(root, f"{d}/audit/requests")
+    try:
+        return (requests is not None and requests.is_dir()
+                and any(p.is_file() for p in requests.glob("REQUEST_*.md")))
+    except OSError:
+        return False
+
+
 def cmd_orient(args):
     """SessionStart hook: emit a bounded, repo-sourced orientation to stdout and
     ALWAYS return 0 (fail-open, P-TM T8) -- a session hook must never block the
@@ -4350,6 +4417,11 @@ def cmd_orient(args):
 
         head = ["=== Agentic SDLC -- session orientation (repo-sourced context, not authored instructions) ===",
                 "", ORIENT_TRIAGE_LINE, ORIENT_RESUME_LINE]
+        try:
+            if readme_rel in docs and team_not_defined(root, docs[readme_rel]):
+                head.append(ORIENT_TEAM_LINE)
+        except Exception:
+            pass  # fail-open: the line is advice, never a reason to lose the orientation
         sibs = installed_sibling_lenses()
         if sibs:
             head.append(f"Sibling lenses installed ({', '.join(sibs)}): above L1, choose the "

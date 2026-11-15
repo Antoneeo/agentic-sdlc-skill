@@ -17,7 +17,7 @@ sdlc_core.set_profile(
     support_files=("slide_content.md", "templates.md", "learning_design.md", "source_check.md",
                    "simulation.md", "feedback.md", "elicitation.md", "ENFORCEMENT.md",
                    "memory.md", "review.md", "routing.md", "vision.md", "guides.md",
-                   "dispatch.md"),
+                   "dispatch.md", "team.md"),
     capabilities=("triage", "write_triggers", "workstream_registry", "vision_gate",
                   "design_review_gate", "guide_router", "worktree_hygiene",
                   "question_discipline"),

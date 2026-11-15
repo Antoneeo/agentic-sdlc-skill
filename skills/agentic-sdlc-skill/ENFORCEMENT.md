@@ -159,6 +159,8 @@ Emits the `ai_docs/` orientation to stdout at session start, in the order an arr
 
 The orientation also carries one constant line for a session that works from a summary: re-read the open unit's request record and vision before answering about it (`SKILL.md` Phase 1). It is printed at every start, right after the triage line, and reads nothing from the hook event; on a client that re-runs this hook after a compaction it therefore arrives when it applies. Whether a client re-runs it is the client's behaviour, not this hook's.
 
+While the reading guide has no `## Team` section and a request record exists under `audit/requests/`, the orientation carries one more constant line: the team is not defined, ask the owner the four team questions in `team.md` before starting or resuming a top-level unit. Owner-accepted growth (`ai_docs/vision/rulings.md` r50).
+
 **Wire it on every project that has `ai_docs/` and a Python interpreter.** It was opt-in until v1.16.0 and the field result was the defect this level exists to prevent: the guide router stayed unread unless the user asked for it by hand, so guides were written and never consulted. Prompt-level placement (Rule Zero declares the router verdict; Phase 1 reads the router) carries the process on its own — this hook is the backstop that survives long contexts, compaction and a session that never enters Phase 1 explicitly. Skip it only where Python is unavailable, and know what you are trading.
 
 **`init` wires it for you (F-036).** Running `init` on a project that has a docs root

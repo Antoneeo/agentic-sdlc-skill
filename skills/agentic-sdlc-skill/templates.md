@@ -74,6 +74,8 @@ Section repertoire (pick what the source supports):
 
 Curated must-read index, by hand (it is NOT the generated manifest). Created at init, updated rarely, only for real must-reads.
 
+The reading guide gains a first section, `## Team`, when the first top-level unit asks how the team is made (`team.md`). It is never part of this template: `init` copies the block as it is, and a project born with the section is never asked.
+
 ```markdown
 ---
 default_domain: code

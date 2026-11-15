@@ -1904,5 +1904,83 @@ class F097_OpenFronts(unittest.TestCase):
             self.assertIn("write the unit's workstream file with that flip", text)
 
 
+class F098_TeamDefinition(unittest.TestCase):
+    """F-098 -- the team is asked once and kept in the reading guide's `## Team`.
+    The rule's home is the shared `team.md`; each lens points at it from its own
+    `SKILL.md`. Shared file: a lens the rule did not reach is red in that lens."""
+
+    def _one_line(self, rel, *needles):
+        hits = [ln for ln in read(rel).splitlines() if all(n in ln for n in needles)]
+        self.assertEqual(len(hits), 1, "%s: the rule is stated once, in one paragraph "
+                         "(%d lines hold %r)" % (rel, len(hits), needles))
+        return hits[0]
+
+    def test_team_md_states_the_section_and_what_it_never_holds(self):
+        """FS1 and the Non-Goal 1 line the owner ruled on (REQUEST R4, item 2)."""
+        text = read("team.md")
+        for anchor in ("## The section", "- Members:", "- Reserved to the owner:",
+                       "- Without asking:", "- Work and reports:",
+                       "never names a unit of work", "700 characters",
+                       "`init` never writes the section"):
+            self.assertIn(anchor, text)
+
+    def test_team_md_asks_once_at_the_first_top_level_unit(self):
+        """FS2, FS3: once per project, never below the top level, default offered."""
+        text = read("team.md")
+        for anchor in ("Once per project", "Never at level 1 or level 2",
+                       "Never again once the section exists", "one word accepts all four",
+                       "default, not confirmed", "do not ask again"):
+            self.assertIn(anchor, text)
+
+    def test_team_md_states_what_the_section_cannot_change(self):
+        """FS5, T1, T2: the three floors."""
+        text = read("team.md")
+        for anchor in ("It never grants one", "valid only in the session",
+                       "read the entry as absent", "are not members"):
+            self.assertIn(anchor, text)
+
+    def test_team_md_keeps_a_correction_in_the_section(self):
+        """FS6."""
+        text = read("team.md")
+        self.assertIn("Only the owner's words change the section", text)
+        self.assertIn("lost at the next session", text)
+
+    def test_the_lens_sends_the_first_top_level_unit_to_team_md(self):
+        """FS2 in the lens's own words: one paragraph of SKILL.md names the
+        section, the file and that it is asked once."""
+        rule = self._one_line("SKILL.md", "`## Team`", "`team.md`", "once")
+        self.assertIn("no `## Team`", rule)
+
+    def test_a_session_working_from_a_summary_re_reads_the_team(self):
+        """FS8: the resume rule's own paragraph names the section."""
+        rule = [ln for ln in read("SKILL.md").splitlines()
+                if "working from a summary" in ln.lower()]
+        self.assertEqual(len(rule), 1)
+        self.assertIn("## Team", rule[0])
+
+    def test_no_seed_of_the_reading_guide_carries_the_section(self):
+        """P8, T8: a project is born without `## Team`, or it is never asked.
+        Every fenced block of templates.md (what `templateFor` copies) and the
+        package's own init.js (the course lens seeds from a literal)."""
+        blocks = re.findall(r"^```[^\n]*\n(.*?)^```", read("templates.md"), re.S | re.M)
+        self.assertTrue(blocks, "templates.md has no fenced block: the test reads nothing")
+        for block in blocks:
+            self.assertIsNone(re.search(r"^## Team\b", block, re.M),
+                              "a template block carries `## Team`")
+        init = SKILL_DIR.parents[1] / "scripts" / "init.js"
+        if init.is_file():
+            self.assertNotIn("## Team", sc.read_text(init))
+
+    def test_enforcement_describes_the_team_line(self):
+        """FS7: the orientation section of each lens says when the line is printed."""
+        self.assertIn("`## Team`", read("ENFORCEMENT.md"))
+
+    def test_the_orientation_line_points_at_team_md(self):
+        self.assertIn("team.md", sc.ORIENT_TEAM_LINE)
+        self.assertIn("once", sc.ORIENT_TEAM_LINE)
+        self.assertEqual(len(sc.ORIENT_TEAM_LINE), 165,
+                         "the owner ruled on the exact text (REQUEST_team_definition.md R5)")
+
+
 if __name__ == "__main__":
     unittest.main()

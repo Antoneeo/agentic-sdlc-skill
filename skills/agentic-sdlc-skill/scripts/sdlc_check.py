@@ -40,7 +40,7 @@ sdlc_core.set_profile(
     skill_name="agentic-sdlc",
     unit_noun="feature",
     support_files=("templates.md", "architect.md", "guides.md", "vision.md", "tdd.md",
-                   "debugging.md", "elicitation.md", "review.md", "dispatch.md",
+                   "debugging.md", "elicitation.md", "review.md", "dispatch.md", "team.md",
                    "routing.md", "coordination.md", "hybrid.md", "ENFORCEMENT.md", "memory.md"),
     capabilities=(
         # spine

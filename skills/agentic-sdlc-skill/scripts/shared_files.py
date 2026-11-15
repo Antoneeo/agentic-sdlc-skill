@@ -71,6 +71,7 @@ SHARED_FILES = (
     "vision.md",
     "guides.md",
     "dispatch.md",
+    "team.md",
     # the terms every lens ships under, and its attribution (F-055)
     "LICENSE",
     "NOTICE",

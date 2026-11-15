@@ -86,6 +86,10 @@ independence where independence is the point. Judge a pass on two axes:
   must carry the content pays those tokens twice, once to write it and once to
   read it. `plan brief` is this rule already realized for the PLAN loop (it
   prints `guides` as paths, never pasted content); the condition generalizes it.
+- **Who may delegate, and what a delegated session may decide**, beyond this
+  section's never-list: the project's `## Team` (`team.md`) says it, and a brief
+  names that section by its path. Where the project has none, this section is
+  the whole rule.
 
 **Declared residual**, so the silence is not read as prohibition: this section
 settles the CLASSIFICATION. *When* to reach for a delegated search or

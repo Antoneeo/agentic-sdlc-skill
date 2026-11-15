@@ -248,7 +248,10 @@ class OrientTests(unittest.TestCase):
             finally:
                 sdlc_core.confine_under = real
             self.assertEqual(rc, 0)
-            self.assertEqual(calls, [rel for _, rel in sc.orient_docs()])
+            # F-098: with a README and no `## Team`, the team check looks for a
+            # request record -- one more read, confined like the fixed doc set.
+            self.assertEqual(calls, [rel for _, rel in sc.orient_docs()]
+                             + [f"{sc.docs_dir()}/audit/requests"])
 
 
 FAMILY = ("agentic-sdlc", "kb-agentic", "mkt-agentic-sdlc", "course-creator")
@@ -798,6 +801,174 @@ class ScopeAndResumeTests(unittest.TestCase):
             _, out = run_orient(root=d)
             self.assertIn(sc.ORIENT_RESUME_LINE, out)
             self.assertLessEqual(len(out), sc.ORIENT_MAX_TOTAL_CHARS - sc.ORIENT_APPEND_RESERVE)
+
+
+TEAM_SECTION = ("## Team\n<!-- source: audit/requests/REQUEST_x.md#R2 (2026-11-10) -->\n"
+                "- Members: the owner; one agent.\n- Reserved to the owner: the approvals.\n"
+                "- Without asking: every other choice.\n- Work and reports: the conversation.\n")
+REQUEST_RECORD = "---\nunit: F-001\n---\n# Request record: x (F-001)\n"
+
+
+class TeamLineTests(unittest.TestCase):
+    """F-098 -- FS7: the orientation says the team is not defined when the
+    reading guide has no `## Team` and the project has opened a top-level unit
+    (a request record exists). Constant text; r4 growth ruled by the owner
+    (REQUEST_team_definition.md R5)."""
+
+    def test_no_section_and_a_request_record_prints_the_line(self):
+        with tempfile.TemporaryDirectory() as d:
+            seed(d, "ai_docs/README.md", "# reading guide\n\nMust-reads.\n")
+            seed(d, "ai_docs/audit/requests/REQUEST_x.md", REQUEST_RECORD)
+            rc, out = run_orient(root=d)
+            self.assertEqual(rc, 0)
+            self.assertIn(sc.ORIENT_TEAM_LINE, out)
+            self.assertLess(out.index(sc.ORIENT_RESUME_LINE), out.index(sc.ORIENT_TEAM_LINE))
+            self.assertLess(out.index(sc.ORIENT_TEAM_LINE), out.index("## Reading guide"))
+
+    def test_a_section_silences_the_line_and_is_itself_printed(self):
+        with tempfile.TemporaryDirectory() as d:
+            seed(d, "ai_docs/README.md", "# reading guide\n\n" + TEAM_SECTION + "\nMust-reads.\n")
+            seed(d, "ai_docs/audit/requests/REQUEST_x.md", REQUEST_RECORD)
+            _, out = run_orient(root=d)
+            self.assertNotIn(sc.ORIENT_TEAM_LINE, out)
+            for line in TEAM_SECTION.splitlines():
+                self.assertIn(line, out)
+
+    def test_no_request_record_no_line(self):
+        """A project that has only done trivial and small work pays nothing."""
+        with tempfile.TemporaryDirectory() as d:
+            seed(d, "ai_docs/README.md", "# reading guide\n\nMust-reads.\n")
+            _, bare = run_orient(root=d)
+            os.makedirs(os.path.join(d, "ai_docs", "audit", "requests"))
+            _, empty_dir = run_orient(root=d)
+            seed(d, "ai_docs/audit/requests/notes.md", "not a request record")
+            _, other_file = run_orient(root=d)
+            for out in (bare, empty_dir, other_file):
+                self.assertNotIn(sc.ORIENT_TEAM_LINE, out)
+
+    def test_a_heading_that_only_starts_like_it_is_not_the_section(self):
+        with tempfile.TemporaryDirectory() as d:
+            seed(d, "ai_docs/README.md", "# reading guide\n\n## Teams and tools\n\n### ## Team\n")
+            seed(d, "ai_docs/audit/requests/REQUEST_x.md", REQUEST_RECORD)
+            _, out = run_orient(root=d)
+            self.assertIn(sc.ORIENT_TEAM_LINE, out)
+
+    def test_a_section_only_quoted_is_not_the_section(self):
+        """A README that shows the template in a fenced block or an HTML comment
+        has not defined a team."""
+        for quoted in ("```markdown\n## Team\n- Members: ...\n```\n",
+                       "~~~\n## Team\n~~~\n",
+                       "<!--\n## Team\n-->\n",
+                       # the team.md template quoted whole: a longer fence around a fence
+                       "````markdown\n```markdown\n## Team\n```\n````\n",
+                       "  ```\n## Team\n  ```\n",          # a fence indented in a list
+                       "```\n## Team\n"):                  # a fence never closed
+            self.assertFalse(sc.has_team_section("# reading guide\n\n" + quoted), quoted)
+            with tempfile.TemporaryDirectory() as d:
+                seed(d, "ai_docs/README.md", "# reading guide\n\n" + quoted)
+                seed(d, "ai_docs/audit/requests/REQUEST_x.md", REQUEST_RECORD)
+                _, out = run_orient(root=d)
+                self.assertIn(sc.ORIENT_TEAM_LINE, out, quoted)
+        with tempfile.TemporaryDirectory() as d:
+            seed(d, "ai_docs/README.md",
+                 "# reading guide\n\n```markdown\n## Team\n```\n\n" + TEAM_SECTION)
+            seed(d, "ai_docs/audit/requests/REQUEST_x.md", REQUEST_RECORD)
+            _, out = run_orient(root=d)
+            self.assertNotIn(sc.ORIENT_TEAM_LINE, out)
+
+    def test_a_real_section_is_never_hidden_by_what_surrounds_it(self):
+        """The opposite error: prose that mentions `<!--`, a comment on the
+        section's own source line, CRLF and trailing blanks hide nothing."""
+        for readme in ("Write a comment as `<!--` and close it later.\n\n" + TEAM_SECTION
+                       + "\nThe closing mark is `-->`.\n",
+                       "```\ncode\n```\n\n" + TEAM_SECTION,
+                       TEAM_SECTION.replace("\n", "\r\n"),
+                       "## Team  \t\n- Members: the owner; one agent.\n",
+                       "<!-- a note -->\n" + TEAM_SECTION):
+            self.assertTrue(sc.has_team_section(readme), readme)
+        for readme in ("## Teams\n", "## Team: x\n", "### Team\n", "    ## Team\n", "## team\n"):
+            self.assertFalse(sc.has_team_section(readme), readme)
+
+    def test_an_unreadable_readme_gives_no_line(self):
+        """T7: a README that exists and cannot be read is skipped like any other
+        doc -- nothing is claimed about a file that was not read."""
+        with tempfile.TemporaryDirectory() as d:
+            seed(d, "ai_docs/INDEX.md", "INDEX-BODY")
+            os.makedirs(os.path.join(d, "ai_docs", "README.md"))   # a directory: unreadable
+            seed(d, "ai_docs/audit/requests/REQUEST_x.md", REQUEST_RECORD)
+            rc, out = run_orient(root=d)
+            self.assertEqual(rc, 0)
+            self.assertNotIn(sc.ORIENT_TEAM_LINE, out)
+
+    def test_both_reads_of_the_team_check_are_confined(self):
+        """T7: on another docs root the check also reads ai_docs/README.md --
+        through confine_under, like every other read of the orientation."""
+        with tempfile.TemporaryDirectory() as d:
+            seed(d, "mkt_docs/README.md", "# marketing reading guide\n")
+            seed(d, "ai_docs/README.md", "# reading guide\n")
+            seed(d, "mkt_docs/audit/requests/REQUEST_x.md", REQUEST_RECORD)
+            calls = []
+            real = sdlc_core.confine_under
+
+            def spy(base, rel):
+                calls.append(rel)
+                return real(base, rel)
+
+            sdlc_core.confine_under = spy
+            try:
+                with patch.object(sc, "docs_dir", lambda: "mkt_docs"):
+                    run_orient(root=d)
+            finally:
+                sdlc_core.confine_under = real
+            self.assertIn("ai_docs/README.md", calls)
+            self.assertIn("mkt_docs/audit/requests", calls)
+
+    def test_no_readme_no_line(self):
+        """Fail-open: with no reading guide to look in, nothing is claimed."""
+        with tempfile.TemporaryDirectory() as d:
+            seed(d, "ai_docs/INDEX.md", "INDEX-BODY")
+            seed(d, "ai_docs/audit/requests/REQUEST_x.md", REQUEST_RECORD)
+            rc, out = run_orient(root=d)
+            self.assertEqual(rc, 0)
+            self.assertNotIn(sc.ORIENT_TEAM_LINE, out)
+
+    def test_on_another_docs_root_the_section_in_ai_docs_silences_the_line(self):
+        """FS1: one section per project, in ai_docs/README.md when that root exists."""
+        with tempfile.TemporaryDirectory() as d:
+            seed(d, "mkt_docs/README.md", "# marketing reading guide\n")
+            seed(d, "mkt_docs/audit/requests/REQUEST_x.md", REQUEST_RECORD)
+            with patch.object(sc, "docs_dir", lambda: "mkt_docs"):
+                _, without = run_orient(root=d)
+                seed(d, "ai_docs/README.md", "# reading guide\n\n" + TEAM_SECTION)
+                _, with_section = run_orient(root=d)
+            self.assertIn(sc.ORIENT_TEAM_LINE, without)
+            self.assertNotIn(sc.ORIENT_TEAM_LINE, with_section)
+
+    def test_the_line_keeps_the_orientation_within_its_bound(self):
+        """T7: the line sits in the fixed head the budget already subtracts."""
+        with tempfile.TemporaryDirectory() as d:
+            seed(d, "ai_docs/README.md", "R" * 6000)
+            seed(d, "ai_docs/INDEX.md", "I" * 6000)
+            seed(d, "ai_docs/audit/requests/REQUEST_x.md", REQUEST_RECORD)
+            seed(d, "ai_docs/reference/INDEX.md",
+                 router_file([("GUIDE_%02d.md" % i, "CURRENT", "when " + "w" * 150)
+                              for i in range(40)]))
+            seed_registry(d, [("F-%03d unit" % i, "L3", "main", "PROGRESS", "n" * 200)
+                              for i in range(40)])
+            _, out = run_orient(root=d)
+            self.assertIn(sc.ORIENT_TEAM_LINE, out)
+            self.assertLessEqual(len(out), sc.ORIENT_MAX_TOTAL_CHARS - sc.ORIENT_APPEND_RESERVE)
+
+    def test_the_team_check_reads_nothing_from_stdin_and_never_raises(self):
+        with tempfile.TemporaryDirectory() as d:
+            seed(d, "ai_docs/README.md", "# reading guide\n")
+            seed(d, "ai_docs/audit/requests/REQUEST_x.md", REQUEST_RECORD)
+            with patch.object(sys, "stdin") as fake:
+                rc, _ = run_orient(root=d)
+            self.assertEqual((rc, fake.mock_calls), (0, []))
+            with patch.object(sc, "team_not_defined", side_effect=OSError("boom")):
+                rc, out = run_orient(root=d)
+            self.assertEqual(rc, 0)
 
 
 if __name__ == "__main__":
