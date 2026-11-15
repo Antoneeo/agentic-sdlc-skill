@@ -1,10 +1,10 @@
 ---
 id: F-022
 feature: Multi-Domain Core (one spine, three domain skills)
-status: IN_PROGRESS
+status: COMPLETED
 level: L3
 start_date: 2026-07-31
-end_date:
+end_date: 2026-11-14
 ---
 # Feature Analysis: Multi-Domain Core
 
@@ -676,3 +676,12 @@ who did nothing are not paying for this refactor.
   4. kb does not claim `comprehension_guides`; mkt does not claim `architect_pass` or
      `taxonomy_pass`. Declared in each profile.
 - **Next step:** the owner's call on 1, 2 and 3.
+- **2026-11-14 — closed as COMPLETED on the owner's word** (`REQUEST_open_fronts.md` R3;
+  found by F-096 and F-097 as an analysis in progress that no workstream file carried).
+  The status had never been flipped. The three open items above happened after this
+  Diary stopped: (1) the monorepo exists — the three sibling lenses live under
+  `distributions/` in this repository; (2) the packages are published — releases up to
+  1.55.0 / kb 1.37.0 / mkt 0.32.0 are recorded in `audit/project_notes.md`; (3) kb no
+  longer ships thin — `taxonomy.md`, `distillation.md` and `reconciliation.md` are 89,
+  295 and 152 lines. Item 4 stands as declared in each profile. The end date is the day
+  the state was corrected, not the day the work ended, which no document records.

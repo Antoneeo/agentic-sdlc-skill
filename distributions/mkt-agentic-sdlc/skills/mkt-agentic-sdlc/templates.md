@@ -644,6 +644,10 @@ workstream with no row is invisible to the next cold agent. **DELETED at the fea
 closure**, in the same step that flips the ANALYSIS to COMPLETED: deleting it *is*
 removing the row.
 
+**From when.** It exists, at the latest, from the moment its analysis declares `IN_PROGRESS`,
+and its `details:` names that analysis: `validate` notes an `IN_PROGRESS` analysis that no
+workstream file names.
+
 **The DRY boundary, restated because the file is no longer rare.** What used to keep
 narrative out of it was that it barely existed; now it always does. So: the ANALYSIS
 Diary keeps **what happened and why** (decisions, state of the work — survives

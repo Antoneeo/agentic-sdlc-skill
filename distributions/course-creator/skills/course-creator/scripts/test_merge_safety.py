@@ -689,5 +689,186 @@ class MS_ClosedWorkstreams(unittest.TestCase):
             self.assertFalse([ln for ln in out.splitlines() if ln.startswith("[note]")])
 
 
+def analysis(root, name, uid, status, domain=None, first_line=None):
+    """Write one solutions/ANALYSIS_[name].md and return its path."""
+    sol = root / "ai_docs" / "solutions"
+    sol.mkdir(parents=True, exist_ok=True)
+    head = ["---"] + ([f"id: {uid}"] if uid else []) + [f"feature: {name}"]
+    if domain:
+        head.append(f"domain: {domain}")
+    head += [f"status: {status}", "level: L3", "start_date: 2026-06-01", "end_date:", "---"]
+    lines = ([first_line] if first_line else []) + head + [f"# Feature Analysis: {name}", ""]
+    p = sol / f"ANALYSIS_{name}.md"
+    p.write_text("\n".join(lines), encoding="utf-8")
+    return p
+
+
+class MS_UncarriedAnalyses(unittest.TestCase):
+    """F-097 FS4 -- an ANALYSIS that declares IN_PROGRESS while no workstream
+    source names it is invisible in the registry: it is named, one advisory per
+    file, never a reason to fail a build."""
+
+    def _out(self, fn, *a, **kw):
+        buf = StringIO()
+        with redirect_stdout(buf):
+            rc = fn(*a, **kw)
+        return rc, buf.getvalue()
+
+    def _named(self, root):
+        return [p.name for p in sc.uncarried_analyses(root)]
+
+    def test_in_progress_with_no_source_naming_it_is_named(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source(root, "a", "F-001 alpha", details="ANALYSIS_alpha.md")
+            analysis(root, "alpha", "F-001", "IN_PROGRESS")
+            analysis(root, "beta", "F-002", "IN_PROGRESS")
+            self.assertEqual(self._named(root), ["ANALYSIS_beta.md"])
+
+    def test_a_source_names_it_by_file_name_or_by_unit_id(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source(root, "a", "untitled work", details="see ANALYSIS_alpha.md and a spike")
+            source(root, "b", "F-002 beta", details="-")
+            analysis(root, "alpha", "F-001", "IN_PROGRESS")
+            analysis(root, "beta", "F-002", "IN_PROGRESS")
+            self.assertEqual(self._named(root), [])
+
+    def test_a_unit_id_is_matched_as_a_whole_token(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source(root, "a", "F-0021 other", details="-")
+            analysis(root, "beta", "F-002", "IN_PROGRESS")
+            self.assertEqual(self._named(root), ["ANALYSIS_beta.md"])
+
+    def test_a_mention_in_the_body_of_a_source_does_not_carry_it(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            p = source(root, "a", "F-001 alpha", details="-")
+            p.write_text(p.read_text(encoding="utf-8") + "\nsee ANALYSIS_beta.md\n",
+                         encoding="utf-8")
+            analysis(root, "beta", "F-002", "IN_PROGRESS")
+            self.assertEqual(self._named(root), ["ANALYSIS_beta.md"])
+
+    def test_planned_and_closed_analyses_are_not_named(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source(root, "a", "F-001 alpha")
+            analysis(root, "p", "F-002", "PLANNED")
+            analysis(root, "c", "F-003", "COMPLETED")
+            analysis(root, "x", "F-004", "CANCELLED")
+            self.assertEqual(self._named(root), [])
+
+    def test_an_emptied_generated_registry_still_reports(self):
+        """Every workstream closed, an analysis still in progress: the registry
+        reads "none" -- the fullest form of the defect (design review R1, B1)."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            p = source(root, "a", "F-001 alpha")
+            self._out(sc.rc_registry, root)
+            p.unlink()
+            self._out(sc.rc_registry, root)
+            self.assertEqual(sc.list_workstreams(root), [])
+            analysis(root, "beta", "F-002", "IN_PROGRESS")
+            self.assertEqual(self._named(root), ["ANALYSIS_beta.md"])
+
+    def test_a_project_that_never_generated_a_registry_reports_nothing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            analysis(root, "beta", "F-002", "IN_PROGRESS")
+            self.assertEqual(self._named(root), [])
+            aud = root / "ai_docs" / "audit"
+            aud.mkdir(parents=True)
+            (aud / "handoff.md").write_text("# Handoff\nDate: 2026-06-01\n\n- by hand\n",
+                                            encoding="utf-8")
+            self.assertEqual(self._named(root), [])
+
+    def test_a_shadow_is_not_an_analysis(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source(root, "a", "F-001 alpha")
+            analysis(root, "legacy", "F-002", "IN_PROGRESS",
+                     first_line="<!-- SHADOW generated from devPNT (e_tdd v1.0) - "
+                                "do not edit by hand -->")
+            self.assertEqual(self._named(root), [])
+
+    def test_an_analysis_with_no_unit_id_is_matched_by_file_name_only(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source(root, "a", "F-001 alpha", details="ANALYSIS_named.md")
+            analysis(root, "named", None, "IN_PROGRESS")
+            analysis(root, "unnamed", None, "IN_PROGRESS")
+            self.assertEqual(self._named(root), ["ANALYSIS_unnamed.md"])
+
+    def test_a_course_domain_analysis_is_not_named(self):
+        """The course lens owes a workstream file for concurrent work only."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source(root, "a", "F-001 alpha")
+            analysis(root, "course_x", "C-001", "IN_PROGRESS", domain="course")
+            self.assertEqual(self._named(root), [])
+
+    def test_the_course_domain_is_also_reached_through_the_project_default(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source(root, "a", "F-001 alpha")
+            analysis(root, "untagged", "C-002", "IN_PROGRESS")
+            self.assertEqual(self._named(root), ["ANALYSIS_untagged.md"])
+            (root / "ai_docs" / "README.md").write_text(
+                "---\ndefault_domain: course\n---\n# ai_docs\n", encoding="utf-8")
+            self.assertEqual(self._named(root), [])
+
+    def test_the_text_names_the_file_and_both_gestures(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source(root, "a", "F-001 alpha")
+            analysis(root, "beta", "F-002", "IN_PROGRESS")
+            (text,) = sc.uncarried_analysis_advisories(root)
+            self.assertIn("solutions/ANALYSIS_beta.md", text)
+            self.assertIn("no workstream file", text)
+            self.assertIn("details:", text)
+            self.assertIn("set its status", text)
+
+    def test_the_readers_it_uses_return_what_they_did(self):
+        """P2, P3: it reads list_analyses and list_workstreams, it filters neither."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source(root, "a", "F-001 alpha")
+            analysis(root, "beta", "F-002", "IN_PROGRESS")
+            before = ([p.name for p, _m, _t in sc.list_analyses(root)],
+                      [p.name for p, _m in sc.list_workstreams(root)])
+            sc.uncarried_analysis_advisories(root)
+            after = ([p.name for p, _m, _t in sc.list_analyses(root)],
+                     [p.name for p, _m in sc.list_workstreams(root)])
+            self.assertEqual(before, after)
+            self.assertEqual(before, (["ANALYSIS_beta.md"], ["HANDOFF_a.md"]))
+
+    def test_validate_names_it_once_as_an_advisory_and_keeps_its_exit(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source(root, "a", "F-001 alpha")
+            regenerate(root)
+            analysis(root, "beta", "F-002", "PLANNED")
+            rc_planned, _ = self._out(sc.cmd_validate, root, strict=True)
+            analysis(root, "beta", "F-002", "IN_PROGRESS")
+            rc_open, out = self._out(sc.cmd_validate, root, strict=True)
+            lines = [ln for ln in out.splitlines()
+                     if "ANALYSIS_beta.md" in ln and "no workstream file" in ln]
+            self.assertEqual(len(lines), 1, out)
+            self.assertTrue(lines[0].startswith("[note]"), lines[0])
+            self.assertEqual(rc_open, rc_planned)
+
+    def test_validate_prints_what_the_reader_returns(self):
+        """Mutation: drop the call from cmd_validate -> red."""
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source(root, "a", "F-001 alpha")
+            regenerate(root)
+            with mock.patch.object(sc, "uncarried_analysis_advisories",
+                                   return_value=["SENTINEL-UNCARRIED"], create=True):
+                _, out = self._out(sc.cmd_validate, root)
+            self.assertIn("SENTINEL-UNCARRIED", out)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

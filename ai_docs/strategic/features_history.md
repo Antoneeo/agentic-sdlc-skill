@@ -15,7 +15,7 @@
 | F-019 | Parallel Handoff (workstream registry + per-feature resume files) | code | L3 | COMPLETED | 2026-07-27 | 2026-07-27 | solutions/ANALYSIS_parallel_handoff.md |
 | F-020 | Architect Pass (capabilities before files) | code | L3 | COMPLETED | 2026-07-28 | 2026-07-28 | solutions/ANALYSIS_architect_pass.md |
 | F-021 | Design Review Gate (Standalone) | code | L3 | COMPLETED | 2026-07-28 | 2026-07-28 | solutions/ANALYSIS_design_review_gate.md |
-| F-022 | Multi-Domain Core (one spine, three domain skills) | code | L3 | IN_PROGRESS | 2026-07-31 |  | solutions/ANALYSIS_multi_domain_core.md |
+| F-022 | Multi-Domain Core (one spine, three domain skills) | code | L3 | COMPLETED | 2026-07-31 | 2026-11-14 | solutions/ANALYSIS_multi_domain_core.md |
 | F-023 | Vision Shape Rules (rules defined by function, not by form) | code | L3 | COMPLETED | 2026-07-31 | 2026-08-01 | solutions/ANALYSIS_vision_shape_rules.md |
 | F-024 | kb Knowledge Method (the topic graph over a governed corpus) | code | L3 | COMPLETED | 2026-08-01 | 2026-08-01 | solutions/ANALYSIS_kb_knowledge_method.md |
 | F-025 | Claim Ledger (assertions with provenance; conflicts held open, never auto-resolved) | code | L3 | COMPLETED | 2026-08-01 | 2026-08-01 | solutions/ANALYSIS_claim_ledger.md |
@@ -84,3 +84,4 @@
 | F-094 | F-094 | code | L3 | COMPLETED | 2026-11-12 | 2026-11-12 | solutions/ANALYSIS_whole_guide_read.md |
 | F-095 | F-095 | code | L3 | COMPLETED | 2026-11-12 | 2026-11-12 | solutions/ANALYSIS_coordinator_delegates.md |
 | F-096 | Honest signals - closure, open workstreams and resume say what they measure | code | L3 | COMPLETED | 2026-11-14 | 2026-11-14 | solutions/ANALYSIS_honest_signals.md |
+| F-097 | Open fronts - the open workstreams shown when a new unit opens, and an open analysis no workstream file carries | code | L3 | IN_PROGRESS | 2026-11-14 |  | solutions/ANALYSIS_open_fronts.md |

@@ -75,7 +75,11 @@ Qualunque lente sia attiva, l'agente:
 2. **Si orienta prima di creare** — e, se lavora da un riassunto (contesto compattato,
    riepilogo incollato), rilegge registro delle richieste e vision del lavoro aperto
    prima di rispondere su di esso; `orient` lo ricorda con una riga costante a ogni avvio
-   (F-096): registro dei workstream (`handoff.md`, una riga
+   (F-096). Quando apre un'unità nuova di livello 3 mostra al proprietario, nel messaggio
+   che dichiara il livello, le righe del registro così come sono dichiarate (filone,
+   stato, prossimo passo: nessun conteggio, giudizio o suggerimento, nessuna riga
+   tagliata, nessuna attesa: l'unità si apre nello stesso messaggio); se la richiesta
+   appartiene già a una riga, riprende quel filone (F-097). Legge: registro dei workstream (`handoff.md`, una riga
    per lavoro aperto), indici generati (mai scritti a mano — il validator
    fallisce su uno editato), guide operative con fedeltà alla fonte (snapshot
    verbatim + hash, `stale` rileva il drift); una guida che corrisponde al lavoro
@@ -147,6 +151,9 @@ Qualunque lente sia attiva, l'agente:
    Il messaggio di chiusura lo dichiara (`re-read whole: …`). `check` copre solo la forma
    e lo dice nella riga `[scope]` dopo il verdetto; `validate` e `index` nominano il file
    di passaggio il cui `status` dichiara il lavoro chiuso (advisory, mai un errore) (F-096).
+   Il caso inverso: `validate` nomina l'analisi che dichiara `IN_PROGRESS` mentre nessun
+   file di passaggio la nomina, in un progetto che genera il registro (advisory; non per
+   `PLANNED`, non per il dominio corso) (F-097).
 6. **Può delegare** (dispatch opt-in): piano validato o niente dispatch
    (`plan validate`, confinamento fail-closed), `verify` stampato mai eseguito,
    escalation di tier solo dopo 2 fail consecutivi.

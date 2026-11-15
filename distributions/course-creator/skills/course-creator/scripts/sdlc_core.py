@@ -922,6 +922,52 @@ def closed_workstream_advisories(root):
             for p, word in closed_workstreams(root)]
 
 
+def uncarried_analyses(root):
+    """[path] of each ANALYSIS that declares IN_PROGRESS while no workstream
+    source names it (F-097): no file means no row, so the unit is invisible in
+    the registry. A finding on a named file from two declarations the method
+    already requires -- no count, order or selection.
+
+    Only in a project that GENERATES its registry: it has a source, or its
+    handoff.md is a generated registry -- emptied included, the state where the
+    registry reads "none" and an analysis still says in progress. A source names
+    an analysis by file name in its frontmatter (`details:` is where the
+    template puts it) or by unit id, as a whole token, in `workstream:`; a
+    mention in its body does not carry it. PLANNED is not reported: the file is
+    due when implementation starts. Course-domain analyses are not reported:
+    that lens owes a workstream file for concurrent work only."""
+    sources = list_workstreams(root)
+    if not sources:
+        hand = ai_path(root, "audit", "handoff.md")
+        if not (hand.is_file() and is_generated_registry(read_text(hand))):
+            return []
+    named = " ".join(str(v) for _p, meta in sources for v in meta.values())
+    streams = " ".join(str(meta.get("workstream") or "") for _p, meta in sources)
+    default = project_default_domain(root)
+    out = []
+    for p, meta, _text in list_analyses(root):
+        if meta.get("status") != "IN_PROGRESS":
+            continue
+        if resolve_domain(meta, default)[0] == "course":
+            continue
+        if p.name in named:
+            continue
+        m = UNIT_ID_RE.search(str(meta.get("id") or ""))
+        if m and re.search(rf"(?<![\w-]){re.escape(m.group(1))}(?![\w-])", streams):
+            continue
+        out.append(p)
+    return out
+
+
+def uncarried_analysis_advisories(root):
+    """One advisory per such analysis -- never a warning: `--strict` must not
+    turn red on a tree written before the upgrade."""
+    return [f"solutions/{p.name} declares IN_PROGRESS and no workstream file names it: "
+            "if the work is open, write its audit/HANDOFF_*.md with this file in "
+            "'details:' and run 'index'; if it is finished, set its status"
+            for p in uncarried_analyses(root)]
+
+
 def _registry_cell(value):
     text = str(value if value is not None else "").strip()
     return text.replace("|", "\\|") or "-"
@@ -2058,6 +2104,7 @@ def cmd_validate(root, strict=False, hybrid=False):
 
     advisories.extend(chronology_advisories(root))   # A1, A2 (F-073)
     advisories.extend(closed_workstream_advisories(root))   # F-096
+    advisories.extend(uncarried_analysis_advisories(root))  # F-097
     for a in advisories:
         print(f"[note]  {a}")
     for w in warnings:

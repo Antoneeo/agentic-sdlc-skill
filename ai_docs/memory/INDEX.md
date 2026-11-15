@@ -90,8 +90,9 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/ANALYSIS_merge_review.md | code |  | Feature Analysis: Merge review brief and human E2E test script | 06c7fee503ece195c1b299f60c41483ad7f5443b9f3622b934ce23f5f186ffac |
 | solutions/ANALYSIS_mergeable_docs.md | code |  | Feature Analysis: Mergeable documentation | bccc3b2ba0612acd67cdc1c4b255ccd75b3669e1016f5b1cffbe919839f241ef |
 | solutions/ANALYSIS_mkt_read_diet.md | code |  | F-052 - the mandatory-read diet applied to the marketing lens, and measured NOT to apply to the knowledge lens. Extracts mkt's Hybrid seam; makes F-051's conservation check derived rather than hardcoded so it works in any lens; fixes a pre-existing dangling citation in mkt. | 54b0e91b5099770562f3537fb748d4a157b2a4ec6e2f3c6c008bda0325dfdd23 |
-| solutions/ANALYSIS_multi_domain_core.md | code |  | Feature Analysis: Multi-Domain Core | c0ee31d1498f7957911357e96b200d9035b5e1ee4112e42c5c926f57622ceb50 |
+| solutions/ANALYSIS_multi_domain_core.md | code |  | Feature Analysis: Multi-Domain Core | 2deda8e38f29d4d13ffcfdb07275cf141e89fdf40cd853a7b7edbe7e87a2ba50 |
 | solutions/ANALYSIS_npm_whats_new.md | code |  | Feature Analysis: "What's new" for users on the npm pages | b165830e86a8fd02f88c450bd87c8fc6a0ee107303229ee5b7664d57c2cc9375 |
+| solutions/ANALYSIS_open_fronts.md | code |  | F-097 - what F-096 left out (its R10, R11) - the registry's rows shown to the owner, as declared, when a new L3 unit opens; a validator advisory naming an ANALYSIS that declares IN_PROGRESS while no workstream file names it; F-022 closed on the owner's word. | 39d5f4b9b61fa0cf426aa75d36a79b3330de9e10489ac44c2044c0a9dcbe2f4a |
 | solutions/ANALYSIS_owner_design_approval.md | code |  | Analisi: approvazione del design da parte del proprietario | 30e40a6d321e32fa5cf537fb9dc02895a1590f360e8b641dfd32fce26fe738f2 |
 | solutions/ANALYSIS_parallel_handoff.md | code |  | Feature Analysis: Parallel Handoff | 35178aa910c865e6976b221b91dfd4d6af246bf130ccecc8a383487b47556129 |
 | solutions/ANALYSIS_parallel_sessions.md | code |  | Feature Analysis: coordinating parallel sessions on one repository | be73f49ce224ad36fb77c5cec4d801da1e236670df3152efa1f442771a27e606 |
@@ -131,6 +132,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/E2E_TEST_kb_site.md | code |  | E2E test: docs site | 05ee2b0c09319940a770d351c69adb92e626a4d4ade31e29700867ef55180dae |
 | solutions/E2E_TEST_merge_review.md | code |  | E2E test: Merge review brief and E2E script | aececd283613b0f412235902edcec128e39989a61ee91fcb77ffd30c6f46d3ef |
 | solutions/E2E_TEST_npm_whats_new.md | code |  | E2E test: "What's new" on the npm pages | a30a194eb9b9856981d1f849cbc5e10f6d8f481be3e4afcefe730ef2d84a4e95 |
+| solutions/E2E_TEST_open_fronts.md | code |  | E2E test: open fronts | 67010419a9cad89b15ef1c5079bcf1ac4791ecdf1b5f1683bc59c97c3ee421b3 |
 | solutions/E2E_TEST_owner_design_approval.md | code |  | E2E test: il proprietario approva il design L3 prima del lavoro | 15168a7d22f251eee8a5b2c451363bba5e05d9906e462aabfa1b577a302f5cc9 |
 | solutions/E2E_TEST_parallel_sessions.md | code |  | E2E test: coordinating parallel sessions on one repository | 7d4de89835cfae2b5bc339a231418218a6419957d82f4d98b9114b164fb40478 |
 | solutions/E2E_TEST_parallel_sessions_gaps.md | code |  | E2E test: the shared checkout, shared files and coordinator handover | a3145f793544d7e9580a33bdac119ae630c569b6fc1f58c1d71fa0d469d88990 |
@@ -155,6 +157,7 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/MERGE_REVIEW_kb_site.md | code |  | Merge review: docs site | cea970366286de12eb6d1d21855573f269d17ceb54e37ac2b73649f631d37375 |
 | solutions/MERGE_REVIEW_merge_review.md | code |  | Merge review: Merge review brief and human E2E test script | 1263fddd76a2ced684c7d2cca295b7e4857cdf4fe5d7f1fb5d7154234ee81fb2 |
 | solutions/MERGE_REVIEW_npm_whats_new.md | code |  | Merge review: "What's new" on the npm pages | 686b2c4c665902fc788b8e81d3824228e198afab8db1f46e7d4d1ea48b17a00d |
+| solutions/MERGE_REVIEW_open_fronts.md | code |  | Merge review: open fronts (F-097) | e0eac68c7c0eec75f8ec7544d747ca8ae59006c6a2e69bdfc1b3ff1607984603 |
 | solutions/MERGE_REVIEW_owner_design_approval.md | code |  | Merge review: il proprietario approva il design L3 prima del lavoro | c5c9e377c2c4037c22b4842100dd251e397347489551b8249050a57310f036f1 |
 | solutions/MERGE_REVIEW_parallel_sessions.md | code |  | Merge review: coordinating parallel sessions on one repository | 126c7407705b9b697188df73dfc3ca454d40a12dd6013e6549952257488e862d |
 | solutions/MERGE_REVIEW_parallel_sessions_gaps.md | code |  | Merge review: gaps in coordinating parallel sessions | 7e3b13862b5ac84d2199e7c2fa62f55a5578bd7d413116a5ff60c7390eb605bb |
@@ -356,11 +359,11 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | solutions/courses/agentic-sdlc-kb-agentic/simulation_control_p1_response.md | code |  | simulation_control_p1_response | 86bf58dccd77bd63018ffab67eeb99c9535c81a63be5a0a2437db4a4ac250918 |
 | solutions/courses/agentic-sdlc-kb-agentic/simulation_course_p1_response.md | code |  | simulation_course_p1_response | 2bd2daaebb08755f4492911b2b54f842eefb52d22acb79b25f0767b2e9c91ff2 |
 | solutions/courses/agentic-sdlc-kb-agentic/sources.md | code |  | Fonti del corso | 712b51e3d0cf34b921f638eca63f5c814af7193fdffeda42901bc8fbb7bc8761 |
-| strategic/architecture.md | code |  | Stack, package structure, component map and architectural patterns of the skill repository. | 902c1b1537ff32cdfec8da048a2fd2d7743a67aec8bcab221d1ace95e5328d6f |
+| strategic/architecture.md | code |  | Stack, package structure, component map and architectural patterns of the skill repository. | 4aa3622b1c199a4cfaaad1db4f16a6f6e465bb81bbba36e1683996ed426e4b50 |
 | strategic/capabilities_and_positioning.md | code |  | Dated, evidence-based comparison of agentic-sdlc 1.26.1 and Superpowers 6.2.0: advantages, parity, remaining gaps and deliberate non-adoptions. | 8c7e8acae048545eaf5707db24c242b8701af5a2e32cd10090f9c9d6146ea394 |
 | strategic/existing_features.md | code |  | Concise catalog of the skill's existing features. | 28be32a7a9801862ecc401fae6d7758a6d98e5e978c8eb606e6d7e3201e8ed92 |
 | strategic/process_agentic_sdlc_devpnt.md | code |  | The joint agentic-sdlc × devPNT governance process — pipeline, documents, human vs agent reviews, mandatory checks, and why it works. Read to understand how a change goes from idea to release. | ec90b59d68bf6da79f395782e63eefb005525ce23f5b575be990e5f5cbec40da |
-| strategic/skill_family_agent_workflows.md | code |  | How the four skills differ in the way an agent works under each; the course lens is Standalone in its first release. For the owner; body in Italian. | 52462f77c8f42998aa5f42717b015849f9fa052837d8c4daa04efddc707b43b2 |
+| strategic/skill_family_agent_workflows.md | code |  | How the four skills differ in the way an agent works under each; the course lens is Standalone in its first release. For the owner; body in Italian. | f5fd5e2c3021d5d2cbef9471dd168bfda59e0461eb4471dd3f6d213bf76f52a2 |
 | strategic/skills_vs_standard_agents_team.md | knowledge |  | Per il team di sviluppo: vantaggi di kb-agentic e agentic-sdlc rispetto all'uso di un agente senza memoria e processo di progetto. | d17c9c35c2d3d4b847418ade83f45a3c6a81999e22a5aa85c1942f752784b934 |
 | vision/features/VISION_agentic_sdlc_vnext.md | code |  | Feature vision for the vNext evolution (triage, support files, mechanical validation, devPNT symbiosis) delivered in 1.5.0/1.6.0. | 5c7bc38f24bc0d6b78f5cb4f8ffc9edc6f9ae19713897e0311c0ed6903d8d7cd |
 | vision/features/VISION_course_agentic-sdlc-kb-agentic.md | course |  | Vision del corso per sviluppatori su kb-agentic e agentic-sdlc, usato come primo banco di prova di course_creator. | 9f6257995619791689b970daf741cf5b6a47b00870d7a55003aa3e0b259ae5f7 |
@@ -373,4 +376,4 @@ Regenerate with the installed validator's index command. Paths are relative to t
 | vision/roadmap.md | code |  | Vision Roadmap | 3027a5c5ab701a3c30945ddea8b60ac94d71fe5b69ad6c7463ad498375ee9dcd |
 | vision/roadmap_evoluzione_agenti.md | code |  | Roadmap della milestone di evoluzione — subagent operativi, guide operative/KB agente, eliminazione conflitti di convivenza con devPNT e posizionamento open-core. Sostituisce la bozza in docs/. | d06cc1daee6af40a42ad7cc862d3c4910ba0713ea2439dca88602092d4c56ddf |
 | vision/roadmap_evoluzione_agenti_v1.md | code |  | Roadmap di evoluzione di agentic-sdlc: esecuzione a subagent operativi e strato di documentazione per la formazione degli agenti. Input per la prossima milestone. | b51d6354ddb9a4f991172f487a333c552e4fa8cdda627b2e8fe5c033cb8db597 |
-| vision/rulings.md | code |  | The admission-test precedent ledger — every ruling ever made, keyed by the question the capability answers. Read BEFORE interpreting the Vision's prose. | 380f32b2a7c1bebc5502239db72d3301f5a672c372f8d73add895fa627cfb8f8 |
+| vision/rulings.md | code |  | The admission-test precedent ledger — every ruling ever made, keyed by the question the capability answers. Read BEFORE interpreting the Vision's prose. | df303441c539ef88d3536a75671fb0d490ff67347cbebbd2bab03ee068cd56ac |

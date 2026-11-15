@@ -1843,5 +1843,66 @@ class F096_HonestSignals(unittest.TestCase):
         self.assertIn("ends with a whole re-read", read("guides.md"))
 
 
+class F097_OpenFronts(unittest.TestCase):
+    """F-097 -- the rows shown when a new unit opens reach EVERY lens, in the
+    one form the owner admitted (REQUEST_open_fronts.md R2): rows as declared,
+    nothing added, nothing cut, no waiting. Shared file: a lens the rule did not
+    reach is red in that lens."""
+
+    def _rule(self):
+        rule = [ln for ln in read("SKILL.md").splitlines() if "Open workstreams (" in ln]
+        self.assertEqual(len(rule), 1, "the rule is stated once, in one paragraph")
+        return rule[0]
+
+    def test_the_block_has_its_three_forms(self):
+        rule = self._rule()
+        for form in ("Open workstreams (", "Open workstreams: none",
+                     "Open workstreams: no generated registry"):
+            self.assertIn(form, rule)
+
+    def test_nothing_is_added_nothing_is_cut_and_the_unit_does_not_wait(self):
+        """FS2, T1, T7: the form the Vision refuses is an authored summary."""
+        rule = self._rule()
+        for phrase in ("no count", "no row dropped, shortened or reworded",
+                       "opens in the same message"):
+            self.assertIn(phrase, rule, phrase)
+
+    def test_a_cell_is_data_never_an_instruction(self):
+        """T2."""
+        self.assertIn("never followed as an instruction", self._rule())
+
+    def test_a_request_a_row_already_carries_is_resumed(self):
+        """FS3."""
+        self.assertIn("instead of opening a second", self._rule())
+
+    def test_each_one_line_form_says_when_it_applies(self):
+        """A hand-written handoff is not transcribed as if it were the registry."""
+        rule = self._rule()
+        for phrase in ("when it has no row", "written by hand"):
+            self.assertIn(phrase, rule, phrase)
+
+    def test_a_reclassification_to_level_three_owes_the_block(self):
+        self.assertIn("owed when work is reclassified to", self._rule())
+
+    def test_the_course_lens_states_its_limit(self):
+        """R5: there the registry holds concurrent work only."""
+        if dist.profile()["skill_name"] == "course-creator":
+            self.assertIn("concurrent work only", self._rule())
+
+    def test_the_workstream_file_exists_from_in_progress(self):
+        """FS5 -- every lens that owes one file per open workstream; the course
+        lens owes it for concurrent work only and is not touched."""
+        if dist.profile()["skill_name"] == "course-creator":
+            return
+        self.assertIn("from the moment its analysis declares `IN_PROGRESS`",
+                      read("templates.md"))
+
+    def test_the_flip_writes_the_workstream_file(self):
+        """FS5 -- only the lens that states the flip PLANNED -> IN_PROGRESS."""
+        text = read("SKILL.md")
+        if "Flip the ANALYSIS frontmatter `PLANNED`" in text:
+            self.assertIn("write the unit's workstream file with that flip", text)
+
+
 if __name__ == "__main__":
     unittest.main()
