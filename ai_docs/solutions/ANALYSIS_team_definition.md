@@ -2,9 +2,10 @@
 id: F-098
 feature: Team definition - asked once at the start, kept where every session finds it
 description: F-098 - the skill never asks how the team working on a project is made (members, what stays with the owner, what each member does without asking, how work and reports pass), so roles are settled while work is under way; the design asks it once, at the first significant unit, and keeps the answer in the docs root's README.
-status: IN_PROGRESS
+status: COMPLETED
 level: L3
 start_date: 2026-11-14
+end_date: 2026-11-15
 domain: code
 ---
 # Feature Analysis: Team definition (F-098)
@@ -616,3 +617,9 @@ the brief lists the standing warnings, none corrected after the last round. The 
 confirmed the cost as measured and accepted the divergent replay run as it stands, to be
 watched in the field (R6). The unit stays open until `main` holds it: the fast-forward is
 the coordinator's, on the owner's yes given to it. Not done here: the release.
+
+**2026-11-15 - closed: `main` holds the unit.** The coordinating session fast-forwarded
+`main` to 301f2f75 on the owner's word given to it (`REQUEST_honest_signals.md` R15), after
+re-running the four batteries on that commit. Workstream file deleted, analysis COMPLETED.
+Not pushed and not released. Left for after the release: the E2E script, and the field
+signal S1. Standing warnings of the closure review: `MERGE_REVIEW_team_definition.md`.

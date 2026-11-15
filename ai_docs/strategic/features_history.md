@@ -85,4 +85,4 @@
 | F-095 | F-095 | code | L3 | COMPLETED | 2026-11-12 | 2026-11-12 | solutions/ANALYSIS_coordinator_delegates.md |
 | F-096 | Honest signals - closure, open workstreams and resume say what they measure | code | L3 | COMPLETED | 2026-11-14 | 2026-11-14 | solutions/ANALYSIS_honest_signals.md |
 | F-097 | Open fronts - the open workstreams shown when a new unit opens, and an open analysis no workstream file carries | code | L3 | COMPLETED | 2026-11-14 | 2026-11-15 | solutions/ANALYSIS_open_fronts.md |
-| F-098 | Team definition - asked once at the start, kept where every session finds it | code | L3 | IN_PROGRESS | 2026-11-14 |  | solutions/ANALYSIS_team_definition.md |
+| F-098 | Team definition - asked once at the start, kept where every session finds it | code | L3 | COMPLETED | 2026-11-14 | 2026-11-15 | solutions/ANALYSIS_team_definition.md |
