@@ -121,3 +121,10 @@ Context (agent): "Quando F-097 è committata e CLEAN, porto main su di lei in fa
 Context (agent): "Quando F-098 è committata e CLEAN, porto main su di lei in fast-forward?" — asked after F-098 reported its implementation and closure review complete and uncommitted, with three questions put to the owner in its own session (measured cost, one divergent replay, the commit).
 
 > Sì, fai il merge
+
+### R16 — 2026-11-15 — push of main to origin
+Context (agent): "Faccio il push di main su origin?" — asked with F-096, F-097 and F-098 closed on local `main` (93659d62), `check` CLEAN, ten commits ahead of `origin/main`.
+
+> Sì, fai il push
+
+Not a release: no version number or CHANGELOG entry is written.
