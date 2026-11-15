@@ -2,10 +2,10 @@
 id: F-097
 feature: Open fronts - the open workstreams shown when a new unit opens, and an open analysis no workstream file carries
 description: F-097 - what F-096 left out (its R10, R11) - the registry's rows shown to the owner, as declared, when a new L3 unit opens; a validator advisory naming an ANALYSIS that declares IN_PROGRESS while no workstream file names it; F-022 closed on the owner's word.
-status: IN_PROGRESS
+status: COMPLETED
 level: L3
 start_date: 2026-11-14
-end_date:
+end_date: 2026-11-15
 domain: code
 ---
 # Feature Analysis: Open fronts (F-097)
@@ -637,3 +637,15 @@ open, its workstream file kept, until it is on `main`.
 **2026-11-15 — the owner approved the commit (R7).** Committed on this branch; the three
 analysed areas then marked by commit hash in a second commit; `check` re-run on it. The
 fast-forward of `main` is asked of the coordinating session.
+
+**2026-11-15 — on `main`; unit closed.** The coordinating session fast-forwarded local
+`main` to `154fc495` (owner's authorization in its record, `REQUEST_honest_signals.md`
+R14) after checking this branch: R7 present, tree clean, `check` CLEAN. Not pushed.
+Closure: this analysis `COMPLETED`, `audit/HANDOFF_open_fronts.md` deleted, `index` run.
+Preservation constraints P1 to P3 are given back through the Validator core row of the
+Component Map (`strategic/architecture.md`), which names this table; no
+`source_kind: code` guide covers that component. Left to the release: version numbers
+and the four CHANGELOG entries. Left open, as recorded in
+`MERGE_REVIEW_open_fronts.md`: the READMEs' summary of the advisory omits "in a project
+that generates its registry"; the doctrine replays were not repeated on the final
+wording.

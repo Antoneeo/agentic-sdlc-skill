@@ -67,3 +67,8 @@ Context (agent): "F-097: in R4 hai accettato «circa 700 byte di dottrina per le
 Context (agent): "Commit F-097 on its branch now?" — asked after the closure review passed at its third round (REVIEW_LOG row of 2026-11-15, FAIL → FAIL → PASS), with the batteries green and `check` CLEAN. Options offered: "Yes, commit"; "Not yet". The closing message stated what follows the yes: commit on this branch, mark the three edited areas by commit hash, commit that, re-run `check`, ask the coordinating session for the fast-forward of `main`; no push.
 
 > Yes, commit
+
+### R8 — 2026-11-15 — approval: commit the closure of F-097
+Context (agent): "Commit the closure of F-097 on its branch?" — asked with `main` at `154fc495` and the closure prepared in the working tree: `audit/HANDOFF_open_fronts.md` deleted, `ANALYSIS_open_fronts.md` set to COMPLETED, indexes regenerated, `check` CLEAN. Options offered: "Yes, commit"; "Not yet".
+
+> Yes, commit
