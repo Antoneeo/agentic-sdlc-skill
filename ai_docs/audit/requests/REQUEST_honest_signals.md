@@ -104,3 +104,15 @@ Context (agent): "Se vuoi, faccio io il commit sul ramo `feat/f096-honest-signal
 
 Read as: commit, re-mark, close the unit and merge into `main`. A push and a release were not named and are not done.
 
+
+### R13 — 2026-11-15 — the owner names this session coordinator of F-097 and F-098
+Context (agent): said after this session reported that both sessions it had started were waiting on the owner — «Open work looked at before new work is accepted» (F-097, branch `claude/brave-dhawan-3f37ee`) and «The skill asks how the team is made, at the start» (F-098, branch `claude/intelligent-roentgen-4c68ce`). F-096 is closed; this entry is kept here because this record holds the words the owner said to this session.
+
+> coordinale tu. Una alla volta cercando che non facciano danni
+
+Read as: this session coordinates the two units (`coordination.md`); they reach `main` one at a time. Not read as a delegation of the approvals the skill reserves to the owner (design approval, cost acceptance, Vision rulings, commit and merge): each stays his, given in the session that asks.
+
+### R14 — 2026-11-15 — merge of F-097 into main by the coordinator, once it is committed and CLEAN
+Context (agent): "Quando F-097 è committata e CLEAN, porto main su di lei in fast-forward?" — asked after F-097 reported its closure review PASS and asked the owner, in its own session, for the commit on its branch. The agent had also said it would commit its two coordination files (R13, `leases.md`) with it.
+
+> Sì, fai il merge
