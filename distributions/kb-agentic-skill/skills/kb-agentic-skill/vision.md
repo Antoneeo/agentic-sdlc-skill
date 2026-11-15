@@ -1,7 +1,8 @@
 # Writing a Vision that a cold reviewer can actually apply
 
 Support file for `ai_docs/vision/project_vision.md`, `vision/features/VISION_*.md`
-and (Hybrid) the devPNT M-VISION. Read it when writing or amending any of them.
+and (Hybrid) the devPNT M-VISION. Read it when writing or amending any of them, and §8 when a design derives a
+restriction from one.
 The template lives in `templates.md`; this file is the *why it works*.
 
 **The problem this solves.** A Vision's job is to be read cold — by a later
@@ -306,3 +307,39 @@ removes the structural classes, not judgement errors. Expect one blind round to
 find real things and a second to confirm. What it should NOT take is five rounds
 of discovering the same class of defect in a new disguise; that is the specific
 waste this file exists to prevent.
+
+## 8. Downstream: a restriction answers to its source
+
+A Vision binds nothing that does not obstruct its benefit (§What a Vision IS). What
+an artifact derived from it binds, it binds because a source asks it. The Vision is
+read at the gate; each later artifact derives from the one before it, and a review
+checks an artifact against what is upstream of it. Without this section nothing
+compares a requirement with the Vision again, and a requirement can grow stricter
+at every step while each step conforms to the last.
+
+- **Every restriction names its source.** In a significant design (L3, or the
+  lens's top level; in Hybrid the governed D-IC, P-TM, E-ISP and E-TDD), a
+  requirement that restricts — a protection, a prohibition, a closed list, a
+  "never" or "only", a mitigation — names its source: a Vision clause
+  quoted, the owner's words with their request-record entry, or a threat of the
+  design's own threat model. One quotation may serve several restrictions.
+- **It asks no more than that source's test.** A Vision clause's test is its own
+  question; the owner's words, what they asked; a mitigation's, what stopping its
+  threat requires. It forbids nothing the test allows, and its wording is no
+  stricter: "a guest cannot edit the plan" does not become
+  "a guest sees no plan".
+  A restriction stricter than its source is a divergence, like scope added: tighten
+  it back to the test, or bring the stricter reading to the owner as a choice about
+  the Vision. One that takes away what the Vision promises elsewhere (an obligation,
+  a Success Signal, an actor's good experience) is out as written, whatever its
+  source, a threat included: it enters the design only if the owner chooses it,
+  and the owner is told in the same message either way. A protection the Vision
+  did not ask for is not extra safety; it is scope, and it may ration a benefit.
+- **Never below the source.** Tightening back stops at the source's test. This
+  section never removes a restriction because no Vision clause names it: a
+  restriction with no source that takes nothing the Vision promises is a doubt to
+  ask the owner, or a threat to write down, never a deletion.
+
+Design reviews check this direction too (`review.md`, conformance statement), and
+a second design-review FAIL of the same class sends the author back here before
+another round (`review.md`, re-anchor). Nothing here applies at L1 or L2.

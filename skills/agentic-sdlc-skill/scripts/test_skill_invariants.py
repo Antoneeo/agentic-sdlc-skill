@@ -1982,5 +1982,54 @@ class F098_TeamDefinition(unittest.TestCase):
                          "the owner ruled on the exact text (REQUEST_team_definition.md R5)")
 
 
+class F099_VisionAnchored(unittest.TestCase):
+    """F-099 -- a restriction answers to the source it serves. The rule's home is
+    the shared `vision.md` §8 and `review.md`; each lens points at it from its own
+    `SKILL.md`. Shared files: a lens the rule did not reach is red in that lens."""
+
+    def _section(self, rel, heading):
+        text = read(rel)
+        start = text.find(heading)
+        self.assertNotEqual(start, -1, "%s has no %r" % (rel, heading))
+        end = text.find("\n## ", start + len(heading))
+        return text[start:] if end == -1 else text[start:end]
+
+    def test_vision_md_states_the_downstream_rule(self):
+        """FS1-FS4: source named, within its test, a Vision promise kept, never below it."""
+        sec = self._section("vision.md", "## 8. Downstream: a restriction answers to its source")
+        for anchor in ("names its source", "a threat", "no more than", "the owner",
+                       "takes away", "never removes a restriction", "what stopping its",
+                       "is told in the same message", "Nothing here applies at L1 or L2"):
+            self.assertIn(anchor, sec)
+
+    def test_review_checks_the_restriction_in_reverse(self):
+        """FS5: one conformance row per restriction, inside the statement already owed."""
+        text = read("review.md")
+        start = text.index("**Conformance statement")
+        bullet = text[start:text.index("\n- ", start)]
+        self.assertIn("**Each restriction is a row in the", bullet)
+        self.assertIn("source's test", bullet)
+        self.assertIn("`vision.md` §8", bullet)
+        self.assertRegex(bullet, r"never a\s+deletion")
+
+    def test_review_re_anchors_at_the_second_fail_of_one_class(self):
+        """FS6, inside the unchanged cap of 3 rounds."""
+        text = read("review.md")
+        self.assertIn("**Re-anchor at the second FAIL of the same class.**", text)
+        self.assertIn("**Rounds are capped at 3.**", text)
+        para = text[text.index("**Re-anchor at the second FAIL"):]
+        para = para[:para.index("\n\n")]
+        self.assertIn("design-review FAILs", para)
+        for anchor in ("vision.md", "REVIEW_LOG", "not another round"):
+            self.assertIn(anchor, para)
+
+    def test_the_lens_points_at_the_rule(self):
+        """FS7: one sentence of the lens's SKILL.md names vision.md §8."""
+        hits = [ln for ln in read("SKILL.md").splitlines() if "`vision.md` §8" in ln]
+        self.assertEqual(len(hits), 1, "SKILL.md: the rule is pointed at once")
+        self.assertIn("source", hits[0])
+        self.assertRegex(hits[0], r"A restriction an? (L3|E3) ")
+
+
 if __name__ == "__main__":
     unittest.main()

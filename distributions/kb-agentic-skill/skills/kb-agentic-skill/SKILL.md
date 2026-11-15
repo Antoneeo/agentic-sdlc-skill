@@ -18,7 +18,7 @@ Support files in the skill directory:
 - `portability.md`: carrying knowledge between projects — what a bundle is, why export is a closure rather than a selection, and the rule that knowledge crosses a project boundary while authority does not (`prov: IMPORTED`), and adopting kb-agentic on an existing `ai_docs/` (§6). Read before `export`/`import`/`adopt`.
 - `taxonomy.md`: placing a claim in the topic graph — descent over the generated index, the five verdicts (EXISTS / INADEQUATE / MISSING / GENERALIZES / UNPLACED), the sibling rule, guarded re-parenting, canonicalization — and the answer-mode descent (`§6`). Run at L3 before drafting.
 - `guides.md`: pipeline for distilling user-provided indications into `ai_docs/reference/GUIDE_[topic].md`.
-- `vision.md`: how to write a Vision a cold reviewer can actually apply — the properties that make a rule hold, the minimum operable sections, and the blind check.
+- `vision.md`: how to write a Vision a cold reviewer can actually apply, and (§8) how a design's restrictions answer to it — the properties that make a rule hold, the minimum operable sections, and the blind check.
 - `distillation.md`: from a source to claim rows — intake (content-addressed originals, stored canonical extraction, every provenance a real file), the claim table, extraction discipline, signal rules (symbiosis with `distill`).
 - `reconciliation.md`: what happens when two claims meet — five outcomes, detect-and-hold (the machine never decides), rulings with mandatory `basis:`, the claim state machine, the batched escalation form.
 - `review.md`: the review discipline — when a review is due, how to request one, how to receive findings, how to review.
@@ -38,7 +38,7 @@ Read these files only when needed. `SKILL.md` is the operating contract; the sup
 - **Apply DRY and Single Source of Truth:** do not duplicate knowledge across files; extend existing notes (`ANALYSIS_[topic].md` or `GUIDE_[topic].md`).
 - **Signal & Distillation:** eliminate fluff, filler, and speculative statements; keep deterministic facts, constraints, decisions, and clear SOP steps (symbiosis with `distill`).
 - **Lifecycle & Freshness:** mark superseded knowledge (`status: SUPERSEDED` or `DEPRECATED`) so outdated information does not cause hallucination.
-- **Protect the Vision & User Style:** align all knowledge work with user strategic goals, operational preferences, and expected outcomes.
+- **Protect the Vision & User Style:** align all knowledge work with user strategic goals, operational preferences, and expected outcomes. A restriction an L3 design writes (an exclusion, a claim boundary, a closed list, a "never") names its source — a quoted Vision clause, the owner's words, or a risk — and asks no more than that source's test (`vision.md` §8).
 - **Map-First Navigation:** rely on `ai_docs/README.md`, `INDEX.md`, and `reference/INDEX.md` router for targeted retrieval before creating new documents — and before *answering from model memory* on the project's domain (`## Topic Recall`).
 
 ## Shared project memory

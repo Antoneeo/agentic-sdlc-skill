@@ -1,5 +1,12 @@
 # ai_docs — reading guide
 
+## Team
+<!-- source: audit/requests/REQUEST_vision_anchored.md#R3 (2026-11-15) -->
+- Members: the owner and one agent.
+- Reserved to the owner: the Vision (approval); how to make the skills more effective and efficient, ceremony cost included, discussed with the owner; publication (push, release, npm); merge into main.
+- Without asking: the agent plans, designs, develops, tests, approves design documents and ADRs, keeps devPNT nodes, commits locally; it reports each in one line.
+- Work and reports: the owner gives work in the session; reports stay there and in the unit's request record and handoff.
+
 Must-reads for this repository, in order. The full manifest of canonical docs is
 `INDEX.md` (generated — regenerate with `sdlc_check.py index`, never edit by hand).
 

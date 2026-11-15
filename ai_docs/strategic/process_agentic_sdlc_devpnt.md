@@ -83,7 +83,7 @@ Ogni stadio produce qualcosa e passa un gate.
 - **Design depth** — l'E-ISP nomina **ogni** file impattato; l'E-TDD ha un blocco per-file con firme. Regola dura: **"no file named, no design"**.
 - **Input completo** — autore **e** reviewer leggono `VISION` + `UC` + `TM`, non solo la Vision. L'impatto traccia a use case specifici e copre ogni superficie di minaccia.
 - **Vision Alignment** — ogni artefatto avanza un beneficio dichiarato della M-VISION e non viola nessun Non-Goal. Lo scope creep silenzioso è BLOCK.
-- **Conformance statement** — il verdetto mappa **ogni vincolo → dove soddisfatto (evidence) | finding**. Un **PASS è invalido su "found nothing"**: la review **prova** la copertura, non la asserisce.
+- **Conformance statement** — il verdetto mappa **ogni vincolo → dove soddisfatto (evidence) | finding**. Un **PASS è invalido su "found nothing"**: la review **prova** la copertura, non la asserisce. E nell'altra direzione: ogni restrizione del design nomina la sua fonte e non chiede più del test di quella fonte (`vision.md` §8, F-099).
 - **Node-linkage** — un artefatto governato senza `node_id` viene **rifiutato** (fail-closed). Niente artefatti orfani.
 - **Closure gate** — `check --hybrid` CLEAN · test verdi · `REVIEW_LOG` aggiornato · shadow rigenerato · docs nello stesso commit del codice.
 

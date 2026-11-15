@@ -17,7 +17,7 @@ Support files in the skill directory:
 - `templates.md`: templates for Vision, ANALYSIS, Spike, audit plan and handoff.
 - `architect.md`: the architect pass — do the components and services this feature needs already exist? Run at L3 before drafting the Impact.
 - `guides.md`: pipeline for distilling user-provided indications into `ai_docs/reference/GUIDE_[topic].md`.
-- `vision.md`: how to write a Vision a cold reviewer can actually apply — the properties that make a rule hold, the minimum operable sections, and the blind check run before promoting one to APPROVED.
+- `vision.md`: how to write a Vision a cold reviewer can actually apply, and (§8) how a design's restrictions answer to it — the properties that make a rule hold, the minimum operable sections, and the blind check run before promoting one to APPROVED.
 - `hybrid.md`: the devPNT seam — the authoritative hierarchy, the ownership matrix (who owns what when both authorities are live), the triage equivalence, the feature-state mapping and the shadow discipline. Read it when the `devpnt_*` tools point at this project; a Standalone session never needs it.
 - `routing.md`: which lens owns this unit of work. Read ONLY when a sibling lens skill is installed alongside this one; a single-lens install never reads it.
 - `coordination.md`: several sessions on one repository, one of them coordinating. Read ONLY when the owner has named a coordinating session; otherwise never.
@@ -37,7 +37,7 @@ Read these files only when needed. `SKILL.md` is the operating contract; the sup
 - **Preserve quality:** every change must maintain or improve stability, testability and maintainability.
 - **Verify technically:** close implementation work with tests, lint, smoke checks or an explicit reason.
 - **Keep useful memory:** document relevant decisions and operational state, not filler text.
-- **Protect the Vision:** every decision must stay aligned with expected benefits, the actors it serves (and the UX they expect), non-goals and success signals.
+- **Protect the Vision:** every decision must stay aligned with expected benefits, the actors it serves (and the UX they expect), non-goals and success signals. A restriction an L3 design writes (a protection, a prohibition, a closed list, a "never") names its source — a quoted Vision clause, the owner's words, or a threat — and asks no more than that source's test (`vision.md` §8).
 
 If a patch looks easy but you do not understand why the current code is shaped the way it is, investigate first.
 

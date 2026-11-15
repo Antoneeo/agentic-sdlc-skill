@@ -39,7 +39,7 @@ No process guarantees market success, and this skill never claims one. What it g
 - **Positioning must exclude:** a positioning statement that could describe any competitor is a defect. The swap test (replace our name with the top competitor's) must fail.
 - **Honesty about uncertainty:** assumptions are declared with ranges and confidence, never laundered into facts. A plan built on assumptions says so on page one.
 - **Measurability:** every tactic has a KPI, every objective a success signal, every plan explicit kill/scale criteria and a review cadence.
-- **Protect the Marketing Vision:** every downstream choice must serve a stated expected benefit or success signal; unauthorized scope is a vision divergence, not initiative.
+- **Protect the Marketing Vision:** every downstream choice must serve a stated expected benefit or success signal; unauthorized scope is a vision divergence, not initiative. A restriction an E3 plan writes (an excluded channel, a claim boundary, a closed list, a "never") names its source — a quoted Vision clause, the owner's words, or a risk — and asks no more than that source's test (`vision.md` §8).
 
 If a strategic choice looks obvious but you cannot trace it to evidence, research first.
 

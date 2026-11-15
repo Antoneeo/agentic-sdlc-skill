@@ -198,6 +198,15 @@ is a belief: the row would say a gate ran and never whether it could do its job,
 the correlation with `revise_rounds` and `findings_real` — the only evidence the
 policy pays — could not be drawn.
 
+**Re-anchor at the second FAIL of the same class.** Two design-review FAILs (L3, or
+the lens's top level) on findings of one class (the same requirement, surface or property, even with different instances)
+say the requirement may be wrong, not only the artifact. Before revising again, the
+author re-reads that requirement's source and checks it against the source's test
+(`vision.md` §8). If it asks more, the next step is the question to whoever owns
+the requirement (the owner, for a reading of the Vision), not another round of
+mechanism. Write the answer in the REVIEW_LOG row's notes, either way. The cap
+above is unchanged: this is a question inside it, never a fourth round.
+
 **The owner approves the design before the work starts (L3).** The reviewer judges
 whether the design holds and serves the Vision; only the owner can say whether it is
 what they meant beyond what the Vision wrote, and an intent error costs least before
@@ -447,7 +456,12 @@ When you are the reviewer:
   every use-case/user-need (and the Actor it serves — a use-case with no defined Actor,
   or an Actor UX expectation the solution does not meet, is a finding), every threat, and
   every applicable Vision benefit/Non-Goal, state WHERE the artifact satisfies it (section
-  or `file:line`) or raise it as a finding. **For an L3/E3 unit, each outcome the owner
+  or `file:line`) or raise it as a finding. **Each restriction is a row in the
+  other direction** (`vision.md` §8): its source, and whether it stays within that
+  source's test; a restriction with no source, or stricter than its source, or one
+  that takes away what the Vision promises elsewhere, is a finding. The fix for a
+  missing source is a source asked of the owner or a threat written down, never a
+  deletion. **For an L3/E3 unit, each outcome the owner
   named — in the request record (the opening request and every entry widening scope) or
   in an approved north star — is a row too, weighed by effort**: where the design serves
   it and what share of the design (its sections and planned changes) goes to it. An
