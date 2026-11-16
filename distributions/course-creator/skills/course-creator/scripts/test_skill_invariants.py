@@ -2031,5 +2031,55 @@ class F099_VisionAnchored(unittest.TestCase):
         self.assertRegex(hits[0], r"A restriction an? (L3|E3) ")
 
 
+NEXT_H2 = chr(10) + "## "
+
+
+class F100_SubagentEconomy(unittest.TestCase):
+    """F-100 -- a subagent keeps its guides, proves it read them whole, and gets a
+    tier and a split sized to them; the team question says what sessions cost.
+    Home: the shared `dispatch.md` (one block inside the family-wide section, the
+    loop pointing at it) and `team.md`. Shared files: a lens it did not reach is red."""
+
+    BLOCK = "### Guides a subagent must read"
+    REF = "§Guides a subagent must read"
+
+    def _between(self, text, start, end):
+        i = text.index(start)
+        j = text.find(end, i + len(start))
+        return text[i:] if j == -1 else text[i:j]
+
+    def test_the_block_sits_in_the_family_wide_section(self):
+        """FS1: inside §What may be delegated at all, so the SKILL.md pointers stay whole."""
+        text = read("dispatch.md")
+        sec = self._between(text, "## What may be delegated at all", NEXT_H2)
+        self.assertIn(self.BLOCK, sec)
+
+    def test_the_block_states_the_rules(self):
+        """FS2-FS4 and their precedence over the loop."""
+        block = " ".join(self._between(read("dispatch.md"), self.BLOCK, NEXT_H2).split())
+        for anchor in ("total lines", "last line", "real length", "asked once",
+                       "is not work", "`failed`", "not a round of its cap",
+                       "never by files alone", "two consecutive failed rounds",
+                       "still go to deep", "`plan validate`", "goes to the owner",
+                       "further message", "fresh context", "compacted",
+                       "Never across roles"):
+            self.assertIn(anchor, block)
+
+    def test_the_loop_points_at_the_block(self):
+        """One block owns the rules; the loop, tiers and slots cite it."""
+        text = read("dispatch.md")
+        for start, end in (("## The loop", "**Guide consumption under dispatch.**"),
+                           ("## Model tiers", "## What may be delegated at all"),
+                           ("## Review slots", "## Ledger protocol summary")):
+            self.assertIn(self.REF, self._between(text, start, end), start)
+
+    def test_the_team_question_carries_the_cost(self):
+        """FS5: cost and gain of several sessions, in the question, no shape recommended."""
+        sec = " ".join(self._between(read("team.md"), "## When it is asked", NEXT_H2).split())
+        for anchor in ("cost and buy", "one session with subagents", "rereads",
+                       "returns whole", "opens and steers", "recommends no shape"):
+            self.assertIn(anchor, sec)
+
+
 if __name__ == "__main__":
     unittest.main()

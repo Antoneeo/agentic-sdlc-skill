@@ -87,3 +87,4 @@
 | F-097 | Open fronts - the open workstreams shown when a new unit opens, and an open analysis no workstream file carries | code | L3 | COMPLETED | 2026-11-14 | 2026-11-15 | solutions/ANALYSIS_open_fronts.md |
 | F-098 | Team definition - asked once at the start, kept where every session finds it | code | L3 | COMPLETED | 2026-11-14 | 2026-11-15 | solutions/ANALYSIS_team_definition.md |
 | F-099 | Vision anchored - a restriction answers to the source it serves | code | L3 | COMPLETED | 2026-11-15 | 2026-11-15 | solutions/ANALYSIS_vision_anchored.md |
+| F-100 | Subagent economy - a subagent keeps its guides, proves it read them whole, and gets a tier and a split sized to them | code | L3 | COMPLETED | 2026-11-16 | 2026-11-16 | solutions/ANALYSIS_subagent_economy.md |

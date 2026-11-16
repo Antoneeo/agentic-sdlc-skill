@@ -3,6 +3,12 @@
 Every significant change to this skill is recorded here.
 
 
+## [Unreleased]
+
+### Changed
+
+- Subagents prove they read their guides whole: a brief that names guides asks for each guide's total lines and last line read, `plan brief` prints the request, a partial read is not verified or reviewed, two failed rounds move a task to a higher tier or a split by guide set, and a correction goes back to the subagent that already holds the guides. The team question says what several sessions cost and buy against one session with subagents, recommending no shape (F-100).
+
 ## [1.38.0] - 2026-11-16
 
 ### What's new

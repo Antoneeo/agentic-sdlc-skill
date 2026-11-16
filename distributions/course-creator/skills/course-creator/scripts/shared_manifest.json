@@ -3,7 +3,7 @@
   "files": {
     "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
     "NOTICE": "8414f424f7c1db19d89d74286fd2d6b1acdd9eedde910fa57a16d6835602e4bd",
-    "dispatch.md": "935d59b0c84ea51e8ef83bf1471fb8f197331c15ba0ad633b729e3cc4e7da341",
+    "dispatch.md": "88b0a37253badb40f014e819bbc2c03a7726bbf56d07ccbe0b3b971c0cf3b869",
     "docs_site/app.js": "ce9ed4341f7d24b648dee7531700d09f4af07f7e9ffc4be90aff29ecc276f27f",
     "docs_site/index.html": "2b64167470f754e46fa4bb4e73a3d2c34ee632d91fe2f17705a58d18b5018af5",
     "docs_site/strings.js": "440c11830f87602152422766b6d5b84da904150c37b0b6347e2ad53a7fec62b8",
@@ -15,7 +15,7 @@
     "scripts/docs_site.py": "bfc7a521142251b85b229e1873ccf2e375bb5c7f1990cef574e1a78ef14f0091",
     "scripts/entry_point.py": "4a560d4d41db989d3426182f1b24270cbb934b3db0f3246c700578a4ed93089b",
     "scripts/knowledge.py": "6047deb7a2be4cf9ef2949cbcf8a52a8ea61500f4e12d203f1c58076540d50ab",
-    "scripts/sdlc_core.py": "9f4265820c95f6a95a1fc9205cca6159519b10dad79b978c86c59c85a4d71289",
+    "scripts/sdlc_core.py": "ff12b965638f97a56c9483ae02bfddec4fa87d4347c841918ceb6cdd63ba8680",
     "scripts/shared_files.py": "e5d49471a765b21b8557744a5a052ed5fa708f127e7bfa29c5ac0afac5d3b911",
     "scripts/test_audit_refs.py": "5c207be46da566db47069b08373195e748fca19c047418f09cc2f78841dfd9a5",
     "scripts/test_chronology.py": "cd595dcfa6d75b44c3b37483dec2c678c87dab9874ad3f6a60a28f9ec361cdc7",
@@ -28,12 +28,12 @@
     "scripts/test_guide_check.py": "19c7a6f009fa1b7f70b0beba059b97fa05e69255f6b2dec8829a87bd9fba283f",
     "scripts/test_merge_safety.py": "841f323131512fdbcc363ab3314c68267cfd026fc648a0dde14cddf41fa562d8",
     "scripts/test_migrate.py": "c129823bf4feb0614acd975351632a6ae62d7896a0ef32724419a8e9335e3110",
-    "scripts/test_plan.py": "4c011a63aa834b55e9c5d13fb4ea76b131b742356001364b0a508435ba013e27",
+    "scripts/test_plan.py": "ac1a65c6df15e5ccf8e42a3a588cb769a95d7f3b13a88d76a3d00c0dbf8ce5fa",
     "scripts/test_project_memory.py": "2cb85cef01161d881a11d84cfe9ebb72915104e8d1822e4de739f7d00ae6cd59",
     "scripts/test_session_start.py": "ca25acdc85d10975cdfa5e3202995b9eb3c23efe930f3472663450c0f6ee6657",
-    "scripts/test_skill_invariants.py": "74fedb62a078466958933c966bc9ef53b59dd64cd8c84c61a690f9a12ff6537c",
+    "scripts/test_skill_invariants.py": "8af88a07ba83b4fbaf5648072ebbd251dac8922b8441be803fe1a86c02cd01ce",
     "scripts/test_verdict.py": "24e33e6cdfe3f40f0c2735687ff7933564bf8c7846ec339d4dc22148df5a4935",
-    "team.md": "35ca6e509a9fc4132a78c4b20485f0e3cbdc2d57911a1a6bfd86e712ff1854a8",
+    "team.md": "bfba9a0e3d4e974d8fca36e6650c98f8372d02eeefa16c09682abbf187336cb2",
     "vision.md": "859da770528116bd2aa38d030118be7d5cf7df3dbb20ea8e6fb1600ce3625f7c"
   }
 }

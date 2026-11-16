@@ -85,7 +85,9 @@ Qualunque lente sia attiva, l'agente:
    chi c'è nel team, che cosa resta a lui, che cosa ciascun membro decide da solo e a chi
    riferisce, come passano lavoro e rapporti; scrive la risposta nella sezione, citando il
    registro delle richieste, e da lì legge quali scelte decidere e riferire in una riga e
-   quali portare al proprietario. `orient` avvisa con una riga costante finché la sezione
+   quali portare al proprietario; la domanda sui membri dice in una o due righe che cosa
+   costano e che cosa danno più sessioni rispetto a una sessione con sottoagenti, senza
+   consigliare una forma (F-100). `orient` avvisa con una riga costante finché la sezione
    manca in un progetto che ha già un registro delle richieste (F-098, `team.md`). Legge: registro dei workstream (`handoff.md`, una riga
    per lavoro aperto), indici generati (mai scritti a mano — il validator
    fallisce su uno editato), guide operative con fedeltà alla fonte (snapshot
@@ -108,7 +110,7 @@ Qualunque lente sia attiva, l'agente:
 3. **Passa i gate**: Vision gate (DRAFT informa, APPROVED vincola — promozione solo
    tua, dopo il blind check; ogni Vision, M-VISION compresa, nasce da un'intervista
    all'owner in sei domande e da una north star approvata nelle tue parole, prima
-   di qualunque testo — `vision.md` §The owner interview); **design review indipendente prima di implementare, poi la tua approvazione del design** (l'agente si ferma dopo il PASS, ti presenta il design e aspetta il tuo sì, registrato nel request record come `design approved`)
+   di qualunque testo — `vision.md` §The owner interview); **design review indipendente prima di implementare, poi la tua approvazione del design** (l'agente si ferma dopo il PASS, ti presenta il design e aspetta il tuo sì, registrato nel request record come `design approved`; ogni restrizione del design nomina la sua fonte — una clausola della Vision, le tue parole, una minaccia — e non chiede più di quella, la review lo controlla, e un secondo FAIL della stessa classe rimanda alla fonte invece che a un altro giro, F-099)
    e closure review prima di dichiarare DONE (non dovuta su un delta post-PASS che solo
    riformula lavoro già giudicato, né a livello 2 fuori dalle aree security, F-071; la
    design review non è mai saltata) — ogni richiesta apre con il blocco
@@ -163,7 +165,14 @@ Qualunque lente sia attiva, l'agente:
    `PLANNED`, non per il dominio corso) (F-097).
 6. **Può delegare** (dispatch opt-in): piano validato o niente dispatch
    (`plan validate`, confinamento fail-closed), `verify` stampato mai eseguito,
-   escalation di tier solo dopo 2 fail consecutivi.
+   escalation di tier dopo 2 fail consecutivi. Chi riceve guide da leggere intere riferisce
+   per ciascuna righe totali e ultima riga letta (`plan brief` lo chiede), e l'agente
+   confronta i totali con le guide prima di `verify`: una lettura parziale non è lavoro e
+   conta come un round fallito; due round falliti di fila, di lettura o di `verify`,
+   spostano il task a un tier più alto o lo dividono per insieme di guide. Dove il client
+   lo permette, le correzioni tornano al sottoagente che ha già le guide in contesto; un
+   autore non rivede mai il proprio lavoro e la review resta in un contesto nuovo (F-100,
+   `dispatch.md` §Guides a subagent must read).
 
 ## agentic-sdlc — la lente del codice
 

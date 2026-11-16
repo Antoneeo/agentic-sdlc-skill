@@ -3892,6 +3892,13 @@ def _validate_plan_tasks(root, data, rel_label, errors, warnings):
     return tasks
 
 
+# F-100: `task.verify` scores the work, never the reading, so a plan brief that
+# names guides asks for the read back (`dispatch.md` §Guides a subagent must read).
+# Constant: printed under a non-empty guide list, never otherwise.
+PLAN_BRIEF_READ_BACK = ("Read each guide above whole, and report for each its total lines "
+                        "and the last line you read.")
+
+
 def cmd_plan(root, args):
     """Zero-execution: validates/briefs a PLAN_[feature].md. Never spawns a
     process, never calls a git_* helper, never runs the opaque `verify` text —
@@ -3970,6 +3977,7 @@ def cmd_plan(root, args):
     if guides:
         for g in guides:
             print(f"- {g}")
+        print(PLAN_BRIEF_READ_BACK)
     else:
         print("(none)")
     print()

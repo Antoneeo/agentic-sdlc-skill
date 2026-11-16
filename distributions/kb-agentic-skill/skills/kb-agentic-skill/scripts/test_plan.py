@@ -310,6 +310,33 @@ class PlanBriefTests(unittest.TestCase):
         self.assertIn("ai_docs/solutions/iface.md", out)
         self.assertIn("GUIDE_topic.md", out)
 
+    def _brief_out(self, tasks, task_id):
+        p = write_plan(self.root, "PLAN_readback.md", tasks)
+        stdout = StringIO()
+        old_stdout = sys.stdout
+        sys.stdout = stdout
+        try:
+            rc = self.run_brief(p, task_id)
+        finally:
+            sys.stdout = old_stdout
+        self.assertEqual(rc, 0)
+        return stdout.getvalue()
+
+    def test_brief_asks_for_the_read_back_when_it_names_guides(self):
+        """F-100 FS2: the request is in every plan brief that names a guide."""
+        (self.root / "ai_docs" / "reference" / "GUIDE_topic.md").write_text("g", encoding="utf-8")
+        out = self._brief_out([valid_task(id="T1", guides=["GUIDE_topic.md"])], "T1")
+        line = sc.PLAN_BRIEF_READ_BACK
+        self.assertIn(line, out)
+        self.assertLess(out.index("GUIDE_topic.md"), out.index(line))
+        self.assertLess(out.index(line), out.index("## Verify"))
+        self.assertIn("total lines", line)
+        self.assertIn("last line", line)
+
+    def test_brief_without_guides_has_no_read_back(self):
+        out = self._brief_out([valid_task(id="T1")], "T1")
+        self.assertNotIn(sc.PLAN_BRIEF_READ_BACK, out)
+
     def test_brief_on_invalid_plan_rc2_no_output_side_effect(self):
         t = valid_task()
         del t["verify"]

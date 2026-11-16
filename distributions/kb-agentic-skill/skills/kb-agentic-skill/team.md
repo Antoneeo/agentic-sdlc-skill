@@ -36,6 +36,12 @@ E-levels), or takes up an open one, and there is no `## Team`: put the four entr
 the owner as four questions in the unit's next numbered question set, with the default
 offered, so that one word accepts all four. Record the reply verbatim in the unit's
 request record, then write the section citing that entry, and name both in the reply.
+The question on members says, in a line or two, what several sessions (a coordinating
+session and the sessions it starts) cost and buy against one session with subagents: each
+session starts empty and rereads the guides, records and project another already holds, and
+their reports cross as notes and shared files; a subagent's report returns whole and, where
+the client lets a session message it again, it can be sent its corrections and keeps what it
+read; sessions buy work the owner opens and steers directly. It recommends no shape.
 Never at level 1 or level 2.
 Never again once the section exists.
 
