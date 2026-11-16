@@ -13,6 +13,8 @@ Date: 2026-10-23 (UTC)
 Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
+**2026-11-16 — release 1.56.0 / kb 1.38.0 / mkt 0.33.0 / course 0.1.0-beta.22: the team asked once (F-098), a restriction answers to its source (F-099), open workstreams shown when work opens (F-097), checks say what they measure (F-096).**
+
 **2026-11-14 — F-096: shared core, doctrine in the four lenses, derived documents aligned (skill_family_agent_workflows.md, READMEs).**
 
 **2026-11-12 — release 1.55.0 / kb 1.37.0 / mkt 0.32.0 / course 0.1.0-beta.21: a matched guide is read whole (F-094), the coordinator does not do a part's work (F-095).**

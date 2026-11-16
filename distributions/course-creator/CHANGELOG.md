@@ -1,6 +1,28 @@
 # Changelog
 
 
+## [0.1.0-beta.22] - 2026-11-16
+
+### What's new
+
+**The team is asked once, at the start, and kept where every session finds it.** At the first new course (L3) of a project the agent asks you four questions: who is in the team, what stays with you, what each member decides alone and to whom it reports, and how work and reports pass. It keeps the answer in a `## Team` section of `ai_docs/README.md`, so a later session, a session another one started and a resumed one all find it, and roles are no longer settled while the work is under way. One word accepts the default: one agent, and you keep your own decisions and the reserved approvals. A smaller change is never asked (F-098).
+
+**A design no longer drifts stricter than the reason it was written for.** Every restriction an L3 course design writes now names its source (a clause of your Vision, your own words in the request record, or a threat) and goes no further than that source asks. One that goes further is tightened back or brought to you, and one that takes away something your Vision promises enters the design only if you choose it. The independent design review checks this, and a second failed review of the same kind sends the agent back to the restriction's source instead of into another round of fixes (F-099).
+
+**When new work opens, you see what is already open.** In the message that opens a new L3 course, the agent copies the rows of the workstream registry (`ai_docs/audit/handoff.md`) as they are written, workstream, status and next step, adding and cutting nothing, and goes on in the same message. If your request belongs to an open workstream, it resumes that one instead of opening a second (F-097).
+
+**The checks say what they measure.** `check` now ends with a line stating that it verifies the form of the documents, not whether their sentences are still true, so a CLEAN result is no longer read as "the documents are correct". `validate` and `index` name a workstream file whose status says the work is closed, since closing means deleting that file. An agent resuming from a summary is told to re-read the unit's request record and Vision before acting, and an edited guide is re-read whole and its outdated sentences rewritten, not patched with a change-log row (F-096).
+
+#### New files
+
+| File | Skill | Who reads it |
+|---|---|---|
+| `team.md` | course-creator | the agent, at the first new course (L3) of a project |
+
+#### What to do
+
+Everyone who has this package installed: run `npm install -g @antoneeo/course-creator@latest`, then `course-creator-install-skill`, and restart your agent sessions. The install step copies the updated doctrine, `team.md` and the validator into your skills directory; sessions already open keep the old ones until restarted. At the first new course (L3) of each project, expect the four team questions: answer them, or reply with one word to accept the default. An existing project may see a new note from `validate`, never a failure: a workstream file (`audit/HANDOFF_*.md`) whose `status:` says DONE, COMPLETED or CANCELLED, which you delete once the work is really closed, after moving what is still worth reading elsewhere, or keep with an open status and a `next:` if it still waits on you; then run `index`. To check it worked, run `npm ls -g @antoneeo/course-creator` and look for 0.1.0-beta.22.
+
 ## [0.1.0-beta.21] - 2026-11-12
 
 ### What's new
