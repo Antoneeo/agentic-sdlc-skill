@@ -2,6 +2,7 @@ Repo is CRLF (edit as content-delta). devPNT off — Standalone. Standing Vision
 battery: `audit/reviews/BLIND_VISION_REVIEW_2026-07-27.md`, re-run on every Vision edit.
 
 **2026-11-16 — release 1.56.0 / kb 1.38.0 / mkt 0.33.0 / course 0.1.0-beta.22: the team asked once (F-098), a restriction answers to its source (F-099), open workstreams shown when work opens (F-097), checks say what they measure (F-096).**
+Published from release commit `c67e5792`, on origin/main, and verified on npm, each on latest: code 1.56.0, KB 1.38.0, marketing 0.33.0, Course 0.1.0-beta.22. Tags v1.56.0 / kb-v1.38.0 / mkt-v0.33.0 / course-v0.1.0-beta.22.
 
 **2026-11-14 — F-096: shared core, doctrine in the four lenses, derived documents aligned (skill_family_agent_workflows.md, READMEs).**
 
