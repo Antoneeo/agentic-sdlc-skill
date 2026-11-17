@@ -281,7 +281,7 @@ unchanged in every lens.
 - [x] Replay of the new text on fixture v4: 5/5 criteria for both readers (`RESULTS.md`);
   eval scenario; rulings r53–r56; derived documents; `[Unreleased]` in the four CHANGELOGs.
 - [x] Closure review (FAIL, then PASS); merge brief; `check`; local commit.
-- [ ] The owner: confirm the measured figures (§Ceremony cost); merge into `main`.
+- [x] The owner confirmed the measured figures and the merge into `main` (R5).
 
 ## Test Strategy
 

@@ -54,3 +54,10 @@ Read as: the estimate accepted with the design (Non-Goal "No ceremony ratchet");
 
 ### R4 — 2026-11-16 — design approved (delegated)
 Under the reading guide's `## Team` (source `REQUEST_vision_anchored.md#R3`: the agent approves design documents), the agent approves `ANALYSIS_subagent_economy.md` as revised after design review round 3 (PASS, REVIEW_LOG), with the ceremony accepted in R3. Implementation starts.
+
+### R5 — 2026-11-17 — measured cost confirmed; merge (answer to the agent's question)
+Context (agent): the measured cost is above the accepted estimate — `dispatch.md` +3,496 bytes against about +2.5 KB, `team.md` +538 against +0.4 KB, read only when delegating or when the team is asked; `SKILL.md` unchanged. «Do you confirm the measured cost of F-100?»
+
+> Confirm and merge
+
+Read as: the measured figures confirmed (Non-Goal "No ceremony ratchet", precedent r40), and the branch merged into `main`. Not read as a push or a release.
