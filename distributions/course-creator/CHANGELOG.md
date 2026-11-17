@@ -1,11 +1,19 @@
 # Changelog
 
 
-## [Unreleased]
+## [0.1.0-beta.23] - 2026-11-17
 
-### Changed
+### What's new
 
-- Subagents prove they read their guides whole: a brief that names guides asks for each guide's total lines and last line read, `plan brief` prints the request, a partial read is not verified or reviewed, two failed rounds move a task to a higher tier or a split by guide set, and a correction goes back to the subagent that already holds the guides. The team question says what several sessions cost and buy against one session with subagents, recommending no shape (F-100).
+**Work you hand to subagents is no longer built on guides they read only in part.** When the agent gives a subagent guides to follow, it now asks how much of each guide the subagent read (total lines and last line read) and checks the totals before testing or reviewing the work; `plan brief` prints that request under the guide list. A test that passes cannot show a guide was skipped, so work built on a guide read in part is redone after the rest is read, instead of being tested, reviewed and found wrong later (F-100).
+
+**Less spent on rereading and on work thrown away.** Corrections go back to the subagent that already has the guides in mind, where your client lets the agent message it again, instead of a new one that must reread them; an author is never sent its own work to review. A subagent that stops partway through a guide twice does not get that guide again: the work goes to a stronger model or is split by guide, and a set that even the strongest model cannot read whole comes to you (F-100).
+
+**When the agent asks how your team is made, it tells you what each shape costs.** The question on members now says, in a line or two, what several sessions cost and give you compared with one session and its subagents, and recommends neither (F-100).
+
+#### What to do
+
+Everyone who has this package installed: run `npm install -g @antoneeo/course-creator@latest`, then `course-creator-install-skill`, and restart your agent sessions. The install step copies the updated doctrine and validator into your skills directory; sessions already open keep the old ones until restarted. Expect subagents' reports to carry one extra line per guide they were given, and the agent to ask a subagent once for it when it is missing. To check it worked, run `npm ls -g @antoneeo/course-creator` and look for 0.1.0-beta.23.
 
 ## [0.1.0-beta.22] - 2026-11-16
 
